@@ -1,5 +1,5 @@
 % LaTeX Canvas: Chapter Outline
-\chapter{Remote Computing Fundamentals: SSH, VPN, Tunneling, and Cloud}
+\chapter{Remote Computing}
 \label{ch:remote-computing}
 
 \section*{Purpose}
@@ -89,7 +89,7 @@ ssh username@hostname
 \item The first time you connect, SSH will ask about the host fingerprint.
 \end{itemize}
 
-\subsection{Host identity and \texttt{known_hosts}}
+\subsection{Host identity and \texttt{known\_hosts}}
 \begin{itemize}
 \item SSH remembers server fingerprints to prevent ``man-in-the-middle'' attacks.
 \item Warning: a changed fingerprint may be benign (server rebuilt) or dangerous (impersonation).
@@ -172,7 +172,7 @@ ssh-keygen
 ssh -L 8888:localhost:8888 username@hostname
 \end{verbatim}
 \begin{itemize}
-\item Then visit \texttt{[http://localhost:8888}](http://localhost:8888}) in your local browser.
+\item Then visit \texttt{[http://localhost:8888}](http://localhost:8888) in your local browser.
 \item If \texttt{8888} is taken locally, choose another local port (e.g., 8899).
 \end{itemize}
 

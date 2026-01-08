@@ -1,5 +1,5 @@
 % LaTeX Canvas: Chapter Outline
-\chapter{Debugging Best Practices: Decomposition, Testing, and Logging}
+\chapter{Debugging Best Practices}
 \label{ch:debugging}
 
 \section*{Purpose}
@@ -72,7 +72,7 @@ Your goal is to replace “I think” with “I can show.” The core loop is: \
 
 \subsection{Decompose into a fault tree}
 \begin{enumerate}
-\item List plausible layers: data \rightarrow parsing \rightarrow transformation \rightarrow model/logic \rightarrow I/O \rightarrow presentation.
+\item List plausible layers: data $\rightarrow$ parsing $\rightarrow$ transformation $\rightarrow$ model/logic $\rightarrow$ I/O $\rightarrow$ presentation.
 \item For each layer, identify invariants (what must always be true).
 \item Instrument checks at boundaries (assertions, validations, logging).
 \end{enumerate}

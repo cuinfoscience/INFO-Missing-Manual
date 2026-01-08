@@ -1,5 +1,5 @@
 % LaTeX Canvas: Chapter Outline
-\chapter{Scripts and Notebooks: Writing Reusable Code, Passing Parameters, and Choosing the Right Medium}
+\chapter{Scripting}
 \label{ch:scripts-vs-notebooks}
 
 \section*{Purpose}
@@ -25,7 +25,7 @@ The logic (data loading, cleaning, analysis) should live in importable functions
 \begin{description}
 \item[Script] A file you run (e.g., \texttt{python analyze.py}).
 \item[Module] A file you import (e.g., \texttt{import analysis}).
-\item[Package] A directory of modules (typically with \texttt{__init__.py}) installed or importable.
+\item[Package] A directory of modules (typically with \texttt{\_\_init\_\_.py}) installed or importable.
 \end{description}
 
 \subsection{Entry point vs library code}
@@ -47,7 +47,7 @@ The logic (data loading, cleaning, analysis) should live in importable functions
 \item Constants/config
 \item Functions
 \item \texttt{main()} function
-\item \texttt{if __name__ == "__main__":} block
+\item \texttt{if \_\_name\_\_ == "\_\_main\_\_":} block
 \end{itemize}
 
 \subsection{Why \texttt{main()} matters}
@@ -264,7 +264,7 @@ The logic (data loading, cleaning, analysis) should live in importable functions
 
 \subsection{Example 2: Write a CLI script around your functions}
 \begin{itemize}
-\item Create \texttt{scripts/run_cleaning.py}.
+\item Create \texttt{scripts/run\_cleaning.py}.
 \item Parse \texttt{--input} and \texttt{--output}.
 \item Write outputs and print a short run summary.
 \end{itemize}
