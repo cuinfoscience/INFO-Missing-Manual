@@ -6,7 +6,7 @@
 Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using SSH and VPNs, move files, run remote jobs, and use tunneling to access remote services (including Jupyter) as if they were local.
 
 \section*{Learning objectives}
-By the end of this chapter, a reader should be able to:
+By the end of this chapter, you should be able to:
 \begin{enumerate}
 \item Explain client/server basics and what ``remote computing'' means.
 \item Use SSH to connect to a remote machine and run commands interactively.
@@ -383,7 +383,7 @@ ssh -L 8888:localhost:8888 username@hostname
 \end{itemize}
 
 % \appendix
-\section{Reference: common SSH commands}
+\section{Quick reference: common SSH commands}
 \begin{verbatim}
 ssh username@hostname
 ssh -p 2222 username@hostname
@@ -393,7 +393,7 @@ scp localfile username@hostname:/remote/path/
 sftp username@hostname
 \end{verbatim}
 
-\section{Reference: vocabulary}
+\section{Quick reference: vocabulary}
 \begin{description}
 \item[SSH] Secure Shell protocol for encrypted remote access.
 \item[VPN] Virtual Private Network; encrypted connection to a private network.

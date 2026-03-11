@@ -8,7 +8,7 @@
 Package management is the discipline of installing and updating third-party software (libraries) in a way that is consistent, reproducible, and unlikely to break your work. For novices, the most common failure mode is mixing global installs, different Python interpreters, and ad-hoc updates until nothing imports. This chapter teaches a stable workflow using project-level environments, clear dependency records, and a conflict-resolution playbook.
 
 \section*{Learning objectives}
-By the end of this chapter, a reader should be able to:
+By the end of this chapter, you should be able to:
 \begin{enumerate}
 \item Explain what a \textbf{package}, \textbf{dependency}, and \textbf{environment} are.
 \item Choose between \texttt{conda} and \texttt{pip} for a given situation.
@@ -329,7 +329,7 @@ python -m pip install -r requirements.txt
 \subsection{Example 4: Notebook/IDE kernel mismatch}
 \begin{itemize}
 \item Symptom: notebook cannot import a package that the terminal can.
-\item Diagnosis: wrong kernel/interpreter.
+\item Diagnosis: wrong kernel/interpreter (see Chapter~\ref{ch:jupyter} for kernel management in Jupyter).
 \item Fix: select the correct kernel; verify versions.
 \end{itemize}
 
