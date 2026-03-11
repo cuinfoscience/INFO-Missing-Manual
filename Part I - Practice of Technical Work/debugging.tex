@@ -120,7 +120,7 @@ You do not need to memorize every error, but it helps to recognize common famili
   \item \textbf{Indexing and keys}: \texttt{IndexError}, \texttt{KeyError}, missing columns or out-of-range indices.
   \item \textbf{Files and paths}: \texttt{FileNotFoundError}, wrong directory, permissions.
   \item \textbf{Parsing and formats}: \texttt{ValueError} when converting strings to numbers/dates.
-  \item \textbf{Imports and environments}: \texttt{ModuleNotFoundError}, version conflicts.
+  \item \textbf{Imports and environments}: \texttt{ModuleNotFoundError}, version conflicts (see Chapter~\ref{ch:pkg-mgmt}).
 \end{itemize}
 
 Each family suggests a different debugging move. For example, \texttt{KeyError} suggests printing available keys/columns; \texttt{ModuleNotFoundError} suggests checking environments.
@@ -327,7 +327,7 @@ Countermeasures:
 \end{enumerate}
 
 \subsection{Command-line and OS-level bugs}
-Some ``code'' bugs are actually environment bugs:
+Some ``code'' bugs are actually environment bugs (see Chapter~\ref{ch:terminal} for the full command-line skill set):
 \begin{itemize}[noitemsep]
   \item wrong working directory,
   \item missing permissions,
