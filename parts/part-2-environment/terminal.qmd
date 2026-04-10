@@ -39,63 +39,48 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 ## A beginner mental model
 
-### Terminal vs shell
+The first piece of vocabulary worth getting right is the difference between a **terminal** and a **shell**, because the words are often used interchangeably and the distinction matters when you read documentation. The **terminal** is the application window you type in — Terminal.app on macOS, Windows Terminal or PowerShell on Windows, GNOME Terminal or Konsole on Linux. The **shell** is the program running *inside* that window — usually `bash` or `zsh` on macOS and Linux, `pwsh` (PowerShell) or `cmd.exe` on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A **command** is the actual thing you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
 
--   **Terminal:** the application window you type in.
+When you press Enter on a command line, a small choreographed sequence happens. The shell reads the line of text you typed. It expands any shortcuts you used — globs like `*.csv`, variables like `$HOME`, command substitutions like `$(date)`. It searches a list of folders called `PATH` to find the program you named. It launches that program as a new process, hands it the arguments you provided, and shows you whatever the program prints. When the program finishes, it returns a small integer called an **exit code** — `0` conventionally means "everything worked," and any nonzero value means "something went wrong." The shell then displays a prompt and waits for your next command.
 
--   **Shell:** the command interpreter (often `bash` or `zsh`) that runs programs.
+```bash
+$ ls -l data/             # 1. read the line
+                           # 2. expand any shortcuts (none here)
+                           # 3. find 'ls' on PATH
+                           # 4. run it with the argument 'data/'
+                           # 5. print output, return exit code 0
+total 16
+-rw-r--r-- 1 you staff 8421 Apr 10 12:34 input.csv
+$ echo $?                  # check the exit code of the previous command
+0
+```
 
--   **Command:** a program + arguments you ask the shell to run.
-
-### What happens when you press Enter
-
-1.  The shell reads your command line.
-
-2.  It expands shortcuts (globs, variables).
-
-3.  It locates the program (via `PATH`).
-
-4.  It runs the program in a process and prints output.
-
-5.  It returns an **exit code**: 0 usually means success.
-
-### Why the command line matters
-
--   High action-to-keystroke ratio (fast for repetitive work).
-
--   Composability (small tools + pipes).
-
--   Automation (scripts; reproducible workflows).
-
--   Remote access (SSH; see @sec-remote-computing).
+The reason any of this is worth learning, when GUI file managers are right there, is that the command line gives you four things the GUI cannot. It has a high **action-to-keystroke ratio** for repetitive work — moving fifty files into the right folders is one short command at the prompt and a fifteen-minute drag-and-drop session in the GUI. It is **composable**: small focused tools combined with pipes and redirection give you a flexible toolkit instead of fifty single-purpose buttons. It is **automatable**: anything you can type once, you can save in a script and run again on a schedule. And it is **remote-friendly**, which is the entire reason you can do real work on a server you have never physically seen (see @sec-remote-computing). None of those properties are nice-to-haves; they are the difference between doing a job once and doing it reliably for an entire semester.
 
 ## Orientation and safety first
 
-### Know where you are (the current working directory)
+The single most useful habit at the command line is to always know where you are. Three commands give you the answer at any time: `pwd` prints your current working directory, `ls` lists the contents of that directory, and `cd` changes you to a different one. Before you do anything that touches files, run `pwd` and `ls` so you can confirm the world is what you think it is.
 
--   Use `pwd` to print the current directory.
+```bash
+$ pwd
+/Users/you/Courses/INFO-3010/Project
+$ ls
+README.md   data/   notebooks/   src/
+$ cd data
+$ pwd
+/Users/you/Courses/INFO-3010/Project/data
+```
 
--   Use `ls` to list contents.
+The mindset that prevents most beginner disasters is what experienced users call **guardrails first**. When you are not sure what a command is going to do, prefer the read-only commands (`pwd`, `ls`, `cat`, `head`, `wc`, `file`) before you reach for anything that modifies the filesystem. When you are about to do something destructive like delete or move files, do a dry run first by listing the targets so you can see exactly what is about to be affected. When you can copy instead of move, copy. When you can move instead of delete, move. Each of these habits costs nothing and protects you from the small number of irreversible mistakes that account for almost all command-line tragedies.
 
--   Use `cd` to change directories.
+```bash
+# Dry run before destructive action: list, then act
+$ ls *.tmp                 # see exactly what *.tmp expands to
+file1.tmp  file2.tmp  notes.tmp
+$ rm *.tmp                 # only after the listing looked right
+```
 
-### The "guardrails" mindset
-
--   Prefer **read-only** commands first: `pwd`, `ls`, `cat`, `head`.
-
--   Before destructive actions: do a dry run (list the targets).
-
--   When in doubt: copy instead of move; move instead of delete.
-
-### Common irreversible mistakes
-
--   Deleting the wrong directory (especially with recursive delete).
-
--   Running a command in the wrong directory.
-
--   Overwriting files with redirection (`>`).
-
--   Using `sudo` to "fix" permission problems without understanding them.
+The mistakes worth being paranoid about are a short list. The first is **deleting the wrong directory**, especially with `rm -rf`, which removes everything underneath a directory and gives you no chance to take it back. The second is **running a command in the wrong directory** — most often a destructive one — because you forgot to `cd` first. The third is **overwriting a file with output redirection**: `python script.py > results.csv` will silently obliterate any existing `results.csv`, with no prompt and no undo. And the fourth is **reflexive `sudo`**, where you use elevated privileges to "fix" a permission problem you do not yet understand. Each of these has cost real students real assignments. Build the habit of pausing for one extra second before any of them, and the disasters never happen.
 
 ## Command anatomy and help
 
@@ -129,87 +114,90 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 ## File system navigation
 
-### Key path concepts
+A handful of single characters carry most of the load in command-line paths, and learning them is the difference between fluent and stuck. The forward slash `/` at the start of a path is the **root directory** — the very top of your filesystem. The tilde `~` is shorthand for **your home directory** (`/Users/you` on macOS, `/home/you` on Linux). A single dot `.` means **the current directory**, and two dots `..` mean **the parent directory**, one level up. With these, you can build any path you need:
 
--   `/` root directory; ` ` your home directory.
+```bash
+~/Courses/INFO-3010/Project/data/input.csv   # absolute, from your home
+./data/input.csv                              # relative, from cwd
+../data/input.csv                             # one folder up, then into data/
+/Users/you/Documents                          # absolute, from filesystem root
+```
 
--   `.` current directory; `..` parent directory.
+Absolute paths always work no matter where you are; relative paths depend on your current directory. (@sec-filesystem covers the broader file-system mental model in depth.)
 
--   Absolute vs relative paths (@sec-filesystem covers file system organization in depth).
+The three workhorse navigation commands are `pwd`, `ls`, and `cd`. You already know `pwd` prints your current location. `ls` lists the contents of a directory, and a few flags make it dramatically more useful: `-l` shows the long format (permissions, owner, size, date), `-a` includes hidden files (those starting with a dot), and `-h` makes file sizes human-readable. Combine them: `ls -lah` is the listing you want when you are inspecting a folder for the first time. `cd` changes directories — `cd ~` or just `cd` takes you home, `cd ..` goes up one level, `cd -` returns to the previous directory.
 
-### Core navigation commands
+```bash
+$ ls -lah
+total 32K
+drwxr-xr-x  6 you staff  192B Apr 10 12:34 .
+drwxr-xr-x  4 you staff  128B Apr 09 10:12 ..
+-rw-r--r--  1 you staff  1.2K Apr 10 12:34 README.md
+drwxr-xr-x  4 you staff  128B Apr 10 12:34 data
+drwxr-xr-x  3 you staff   96B Apr 10 12:34 src
+```
 
--   `pwd` (where am I?)
+Once you are typing commands and paths, the two keyboard tricks that pay off most are **Tab completion** and **command history**. When you start typing a filename or a command, hit **Tab** and the shell will fill in the rest if there is exactly one match (and beep if there is not — hit Tab twice to see the candidates). This is not just a convenience; it eliminates a huge fraction of typo bugs, because if Tab refuses to complete, the file you are reaching for does not exist by that name. **Up Arrow** scrolls back through commands you have already run, and `Ctrl+R` lets you search the history for a substring — both let you reuse a slightly-modified version of a command rather than retyping it from scratch.
 
--   `ls` (what's here?) and useful flags (`-l`, `-a`, `-h`)
-
--   `cd` (go there)
-
-### Tab completion and history
-
--   Use **Tab** to complete commands and paths.
-
--   Use **Up Arrow** (and reverse search if taught) to reuse commands.
-
--   Best practice: edit a recalled command instead of retyping.
 
 ## Creating, viewing, and editing files
 
-### Creating directories and empty files
+To make a new directory, use `mkdir`. The flag worth knowing on day one is `-p`, which creates any missing parent directories along the way and silently does nothing if the target already exists — both conveniences that make `mkdir -p` safe to use in scripts. To create an empty file (or to update the timestamp on an existing one), use `touch`.
 
--   `mkdir` for directories (and `-p` for nested directories).
+```bash
+mkdir -p ~/Courses/INFO-3010/Project/data/raw
+touch README.md
+touch data/raw/.gitkeep
+```
 
--   `touch` to create a file or update its timestamp.
+To look at a file without opening it in an editor, the right command depends on the file's size. For small text files, `cat file` dumps the whole thing to your terminal in one shot — fine for a 30-line config file, terrible for a 50,000-line CSV. For files of any meaningful size, `less file` opens a scrolling viewer where you can move with arrow keys, search forward with `/pattern`, and quit with `q`. For just the first or last few lines of a file, `head file` and `tail file` show you ten lines by default; use `head -n 5` or `tail -n 20` to control how many. The combination `head` and `tail` is the fastest way to peek at a CSV without waiting for the whole thing to render.
 
-### Viewing file contents safely
+```bash
+cat config.yml             # small files only
+less data/raw/sales.csv    # any size; q to quit
+head data/raw/sales.csv    # first 10 lines
+tail -n 20 logs/run.log    # last 20 lines
+```
 
--   Small files: `cat`
+To create a small text file directly from the command line, you can use **redirection** with `echo` — `echo "hello" > greeting.txt` writes one line into a new file. This is useful for one-line files, but for anything multi-line you should use a real text editor. The terminal-friendly options are `nano` (the most beginner-friendly — its keyboard shortcuts are listed at the bottom of the screen, and `Ctrl+X` exits) or `vim` (much more powerful, much steeper learning curve). For longer-term work, a GUI editor like VS Code is almost always the right choice (see @sec-text-editors). The main reason to know `nano` exists is so that when you SSH into a server and need to fix a single line in a config file, you have a tool you can drive without panic.
 
--   Large files: `less` (scroll/search)
-
--   Previews: `head`, `tail`
-
-### Creating small files from the command line
-
--   Redirection to create simple text files.
-
--   Prefer a text editor for multi-line content.
-
-### Editors in the terminal
-
--   Use a beginner-friendly editor flow (e.g., `nano`) for quick edits.
-
--   Know how to exit without panic.
-
--   For longer-term work, use a full editor (VS Code, etc.).
+```bash
+nano notes.txt    # opens nano; Ctrl+O to save, Ctrl+X to exit
+```
 
 ## File operations: copy, move, delete (with safety)
 
-### Copy and move
+The three commands you will use most are `cp`, `mv`, and `rm`. `cp source dest` copies a file from one place to another. `mv source dest` moves it (or renames it, which is just moving from one name to another in the same folder). `rm file` deletes a file. All three accept either a single source or multiple sources, and all three accept the `-i` flag, which makes them prompt you before they overwrite or delete anything. For the first few weeks of using the terminal, using `-i` by default is a sensible safety net.
 
--   `cp source dest` (copy)
+```bash
+cp data/raw.csv data/raw-backup.csv      # copy a file
+mv old-name.py new-name.py               # rename a file
+mv old-name.py ../backup/                # move it to another folder
+rm scratch.txt                            # delete a file
+rm -i scratch.txt                        # delete with confirmation prompt
+```
 
--   `mv source dest` (move/rename)
+Deleting a *directory* needs the `-r` flag, which means "recursive": delete everything inside it as well as the directory itself. `rm -r build/` removes a build folder and all of its contents. This is genuinely useful, but it is also where every cautionary tale starts. The version with both `-r` and `-f` together — `rm -rf` — recursively deletes *and* suppresses every confirmation prompt and error message, which means a single typo can vaporize huge amounts of work without any chance to stop it. The most famous version of this is `rm -rf /` (delete everything starting from the root), but the more common real disaster is `rm -rf $VAR/something` where `$VAR` is unset and silently expands to nothing, leaving `rm -rf /something` — which can delete a system directory you needed. The defense is always the same: list the targets with `ls` *before* you `rm` them, and never combine `-r` and `-f` unless you can articulate exactly what is about to be removed.
 
--   Use interactive flags where available to prevent overwrites.
+```bash
+# Safe: confirm what will be deleted, then delete
+$ ls -d build/
+build/
+$ rm -r build/
 
-### Deleting files and directories
+# Dangerous: skips all confirmations and error messages
+$ rm -rf $SOME_DIR/   # if SOME_DIR is empty, this becomes rm -rf /
+```
 
--   `rm file` deletes a file.
+Closely related are **globs** — the wildcard patterns the shell expands into lists of filenames before passing them to a command. `*` matches any number of characters (so `*.csv` matches every CSV in the current directory), and `?` matches exactly one character. The crucial thing to understand is that globs are expanded by the *shell*, not by the command, and they are expanded *before* the command runs. That means `rm *.tmp` is not "remove any file matching `*.tmp`" from `rm`'s perspective; it is "remove `file1.tmp`, `file2.tmp`, `notes.tmp`" — `rm` has no idea you used a glob at all. The safety habit that follows from this is to preview what a glob will match by running `echo` with it first:
 
--   `rm -r dir` deletes a directory tree.
+```bash
+$ echo *.tmp
+file1.tmp file2.tmp notes.tmp
+$ rm *.tmp                # only run this after the echo looked right
+```
 
--   **High-risk:** `rm -rf`. Teach why it is dangerous.
-
--   Safe practice: `ls` the targets first; consider `rm -i`.
-
-### Globbing (wildcards) and why it matters
-
--   `*` matches many characters; `?` matches one.
-
--   Globs expand *before* the command runs.
-
--   Safety: run `echo *.csv` to preview what a glob matches.
+Two seconds of preview prevents the entire category of "I deleted way more than I meant to" disasters.
 
 ## Searching and inspecting
 
@@ -235,27 +223,35 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 ## Pipes and redirection: building workflows
 
-### Standard streams
+The reason the command line composes so well is that almost every Unix tool is built around the same three streams of data: **stdin** (where input comes from), **stdout** (where normal output goes), and **stderr** (where error messages go). By default stdin is your keyboard and stdout/stderr are your terminal, but you can redirect any of them to a file or to another command, and that is where the power lives.
 
--   `stdin` (input), `stdout` (output), `stderr` (errors).
+Output redirection uses `>` to send stdout to a file. The catch is that `>` *overwrites* whatever was already in that file, with no warning and no undo. If you want to append instead, use `>>`. Both are extremely useful; both bite people who confuse them.
 
-### Redirection
+```bash
+ls > files.txt          # overwrite files.txt with the listing
+ls >> files.txt         # append the listing instead
+python script.py > output.csv      # save script output to a CSV
+python script.py 2> errors.log     # save stderr to a separate log
+```
 
--   `>` overwrite output to a file; `>>` append.
+The tool that turns redirection into a programming model is the **pipe**, written `|`. A pipe takes the stdout of one command and feeds it as the stdin of the next, so you can chain small focused programs into larger ones without ever writing a temporary file. Two of the most common patterns are sending a long listing through a pager (`ls -la | less`) and filtering one tool's output through `grep` to keep only the lines you care about (`grep ERROR app.log | head`). A pipe can have any number of stages, and each stage runs as soon as it has data — which is why pipes can process gigabyte files using almost no memory.
 
--   Safety: avoid accidental overwrite; teach creating backups.
+```bash
+ls -la | less                              # paginate a long directory
+grep ERROR logs/*.log | head -20           # first 20 ERROR lines
+ps aux | grep python | grep -v grep        # currently running python
+```
 
-### Pipes
+Every command that runs at the prompt finishes by returning an **exit code** — a small integer where `0` conventionally means success and any nonzero value means something went wrong. You can check the exit code of the most recent command with `echo $?`, and you can chain commands so that one only runs if the previous one succeeded with `&&`, or only if the previous one failed with `||`. This is the foundation for writing little shell scripts that fail safely instead of barreling onward after an error.
 
--   `|` sends output of one command into the next.
+```bash
+$ python clean.py && python analyze.py     # only analyze if clean succeeded
+$ make build || echo "build failed"        # message on failure
+$ command1; echo $?                        # see exit code explicitly
+0
+```
 
--   Common patterns: `ls | less`, `grep pattern file | head`.
-
-### Exit codes and "did it work?"
-
--   Teach the idea: commands signal success/failure.
-
--   Encourage checking outputs, not assuming.
+The habit that follows from this is to always check that your commands actually succeeded, not to assume they did because the prompt came back. Pay attention to error output, look at exit codes when you are scripting, and treat any nonzero result as evidence to investigate before you move on.
 
 ## Environment basics: `PATH`, variables, and reproducibility
 
@@ -291,27 +287,36 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 ### When to use `sudo` (and when not to)
 
--   `sudo` runs a single command with elevated privileges.
+`sudo` runs a single command with elevated (root) privileges. It exists for one specific purpose: to let you make changes that affect the whole system, like installing software through a system package manager or editing a system configuration file. When you genuinely need that, `sudo` is the right tool. The trap is using `sudo` reflexively to "fix" a permission problem you do not yet understand, because the elevated command will succeed whether or not it was the right thing to do — and if it was the wrong thing, you have just made the problem harder to undo.
 
--   Use it for system-level changes (installing software, editing system configs) when appropriate.
+A reliable rule of thumb: never use `sudo` on anything inside your project folder. If a script in `~/Courses/INFO-3010/Project/` is failing with a permission error, the cause is almost certainly that the file is owned by someone other than you (often root, because of an earlier accidental `sudo`), and the fix is to restore correct ownership — *not* to add another `sudo`. Adding `sudo` to "make it work" usually creates files owned by root in the middle of your project, which you will then trip over for weeks afterward.
 
--   Do **not** use `sudo` to fix a broken project folder or to run routine scripts.
+```bash
+# Reasonable uses of sudo (system-level changes)
+sudo apt update && sudo apt install build-essential   # Linux: install system packages
+sudo systemctl restart nginx                           # Linux: restart a service
+
+# Bad uses (you should never need these)
+sudo python my_script.py        # never run your own code as root
+sudo rm -rf ~/project/data       # using sudo on your own files is a code smell
+```
 
 ### Safe `sudo` practices
 
--   Read the command twice before running.
-
--   Prefer explicit paths over wildcards.
-
--   Avoid piping into `sudo` unless you understand the implications.
-
--   Never run unreviewed copy-pasted commands with `sudo`.
+When you do reach for `sudo`, treat it like a loaded tool. Read the command twice before pressing Enter, especially the parts you copy-pasted from somewhere. Prefer explicit paths to wildcards (`sudo rm /var/log/old.log` is fine; `sudo rm -rf /var/log/*` is one wrong character away from disaster). Avoid piping random output into `sudo` from the internet unless you are willing to commit to understanding what each step does (`curl ... | sudo bash` is the canonical example of the wrong reflex). And the firmest rule is the simplest: never paste a command containing `sudo` from a forum or AI assistant without first reading every flag and confirming the path it operates on.
 
 ### Recovering from permission issues
 
--   First identify ownership/permissions and the target directory.
+When you hit a permission error, the first move is *not* to add `sudo`. The first move is to figure out what the actual ownership and permissions are with `ls -l`:
 
--   If you created a mess with `sudo`, stop and ask for help.
+```bash
+$ ls -l data/output.csv
+-rw-r--r--  1 root  staff  1234 Apr 10 12:34 output.csv
+                  ^^^^
+                  owned by root, not you
+```
+
+If a file in your project ends up owned by `root` (because an earlier command was run with `sudo`), the fix is to restore your ownership: `sudo chown $(whoami) data/output.csv`. If you have created a tangle of root-owned files inside a project — which is a not-uncommon way for a debugging session to go sideways — stop, do not run any more `sudo` commands, and ask for help. Untangling root-owned files is a small task when you catch it early and a much larger one if you keep adding more.
 
 ## Security hygiene for terminal users
 
@@ -397,35 +402,102 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 5.  If still stuck: create a minimal reproduction and ask a precise question.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Build a course workspace
+### Building a course workspace from the terminal
 
--   Create directories for `courses/`, `assignments/`, `project/`.
+You are starting a new semester with three courses, and you want one stable home for everything. From the terminal, the whole setup is one command:
 
--   Practice navigation and listing.
+```bash
+mkdir -p ~/Courses/INFO-3010/{Assignments,Labs,Project}
+mkdir -p ~/Courses/INFO-4040/{Assignments,Project}
+mkdir -p ~/Courses/STAT-2010/{Assignments,Labs}
+```
 
-### Example 2: Create and inspect a dataset file
+The `{...}` part is shell **brace expansion**, which is shorthand for "create one directory for each name inside the braces." After running it, navigate and list to confirm:
 
--   Download/move a `.csv`.
+```bash
+$ cd ~/Courses
+$ ls -l
+total 0
+drwxr-xr-x  5 you staff  160 Apr 10 12:34 INFO-3010
+drwxr-xr-x  4 you staff  128 Apr 10 12:34 INFO-4040
+drwxr-xr-x  4 you staff  128 Apr 10 12:34 STAT-2010
+$ ls -l INFO-3010
+total 0
+drwxr-xr-x  2 you staff  64 Apr 10 12:34 Assignments
+drwxr-xr-x  2 you staff  64 Apr 10 12:34 Labs
+drwxr-xr-x  2 you staff  64 Apr 10 12:34 Project
+```
 
--   Preview with `head` and `less`.
+Three lines of terminal input replace several minutes of clicking through a file manager.
 
--   Search for a column name with `grep`.
+### Inspecting a dataset file you have not seen before
 
-### Example 3: Build a small pipeline
+A new CSV lands in your `data/raw/` folder. Before you load it into pandas, look at it from the terminal — sometimes the answer is faster there. The first thing you want is the *shape* of the file: how big is it, how many lines, what does the first row look like?
 
--   Combine commands with pipes.
+```bash
+$ ls -lh data/raw/sales.csv
+-rw-r--r--  1 you staff  4.2M Apr 10 12:34 data/raw/sales.csv
+$ wc -l data/raw/sales.csv
+   42103 data/raw/sales.csv
+$ head -n 3 data/raw/sales.csv
+order_id,date,customer_id,amount
+1001,2026-01-15,C-447,28.50
+1002,2026-01-15,C-098,140.00
+```
 
--   Redirect output to a file.
+Now you know the file is 4.2 MB, has 42,103 lines (which is roughly the row count), and uses commas with a header row. To check whether a particular column name actually exists, you can search the header row directly:
 
--   Verify results.
+```bash
+$ head -n 1 data/raw/sales.csv | grep -o "customer_id"
+customer_id
+```
 
-### Example 4: Diagnose and fix a "file not found" error
+If `grep` finds nothing, the column is not there — and you have just saved yourself a `KeyError` debugging session.
 
--   Identify working directory mismatch.
+### Building a small pipeline
 
--   Repair using relative paths and project root conventions.
+A small pipeline that counts how many distinct customers placed orders on a given day, using nothing but standard tools:
+
+```bash
+$ grep "2026-01-15" data/raw/sales.csv | cut -d, -f3 | sort -u | wc -l
+142
+```
+
+The pipeline reads as a sequence of small steps: `grep` filters the file to lines containing the date; `cut -d, -f3` extracts the third comma-separated field (the customer id); `sort -u` removes duplicates; and `wc -l` counts the remaining lines. That is your answer: 142 distinct customers ordered that day. The same calculation in pandas is one line, but the terminal version is faster to write when you do not yet trust the data and are still inspecting it.
+
+You can also save the result for later with redirection:
+
+```bash
+grep "2026-01-15" data/raw/sales.csv | cut -d, -f3 | sort -u > customers-jan15.txt
+```
+
+### Diagnosing a "file not found" error
+
+You run a Python script and it crashes with `FileNotFoundError: data/input.csv`. Walk through three checks before changing the code. First, confirm where you are:
+
+```bash
+$ pwd
+/Users/you/Courses/INFO-3010/Project/notebooks
+```
+
+If `pwd` says you are in `notebooks/` and your script expects to find `data/input.csv` relative to the project root, then the path it is computing is `notebooks/data/input.csv` — which does not exist. Two fixes: either `cd ..` to the project root and rerun, or rewrite the path in the script to be computed from `__file__`. Second, confirm the file actually exists where you think it does:
+
+```bash
+$ ls -lh ../data/
+total 8.3M
+-rw-r--r--  1 you staff  4.2M Apr 10 12:34 input.csv
+```
+
+If `input.csv` does not appear in the listing, the bug is *not* in the code — the file is genuinely missing. If it appears with a different name (a trailing space, an extra `.txt` extension), fix the filename. Third, confirm there are no Unicode lookalikes or hidden characters in the name:
+
+```bash
+$ ls ../data/ | od -c | head -3
+0000000   i   n   p   u   t   .   c   s   v  \n
+```
+
+If the bytes look like the filename you expected, you are good. If they include surprises, that is the bug. With those three checks, "file not found" becomes diagnosable in under a minute.
 
 ## Templates
 

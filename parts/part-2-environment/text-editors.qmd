@@ -37,85 +37,23 @@ Choose an editor that fits the task, and build habits that transfer across edito
 
 ## A beginner mental model
 
-### Text files are infrastructure
+A surprising amount of computing happens inside plain text files. Your code is plain text. Your configuration files (`.gitignore`, `pyproject.toml`, `_quarto.yml`, `requirements.txt`) are plain text. Your data, when it is in a friendly format like CSV or JSON, is plain text. Your logs are plain text. Your README is plain text. The text editor is the universal workbench you use to read and modify all of those, and learning to drive one well pays back across every other tool in this book.
 
--   Code, configuration, logs, and data dictionaries are often plain text.
+What an editor actually *does* under the hood is conceptually simple. It reads bytes from disk and interprets them as characters using an **encoding** (usually UTF-8 in modern projects). It displays those characters on your screen with line breaks and whitespace where they belong, and it lets you change them. When you save, it writes the bytes back to disk in the same encoding. Most editor problems — strange characters, files that look fine in one tool and broken in another, mysterious "invalid syntax" errors — come from a mismatch somewhere in that pipeline: wrong encoding, wrong line endings, or invisible whitespace where the language did not expect it.
 
--   Editors are the \"workbench\" for these artifacts.
-
-### What an editor does (conceptually)
-
--   Reads bytes from disk and interprets them as text using an **encoding** (often UTF-8).
-
--   Displays text with line breaks and whitespace.
-
--   Writes bytes back to disk when you save.
-
-### Key terms
-
-Encoding
-
-:   How bytes become characters (UTF-8, etc.).
-
-Line endings
-
-:   Newline conventions (LF vs CRLF) that affect cross-platform projects.
-
-Whitespace
-
-:   Spaces/tabs/newlines that can change program behavior.
-
-Syntax highlighting
-
-:   Visual cues based on language rules.
-
-Linting/formatting
-
-:   Automated checks and style normalization.
-
-IDE
-
-:   Integrated Development Environment: editor + build + run + debug + tooling.
+A small vocabulary will save you a lot of confusion. **Encoding** is the rule for turning raw bytes into characters; UTF-8 is the modern default and you should not save files in anything else unless you have a specific reason. **Line endings** are the invisible characters that mark the end of each line; macOS and Linux use a single newline (LF, byte `\n`), while Windows uses a carriage-return-then-newline pair (CRLF, bytes `\r\n`), and projects shared between OSes can produce noisy diffs and parser errors when they get mixed. **Whitespace** is the catch-all term for spaces, tabs, and newlines, and it matters more in some languages than others — Python, YAML, and Makefiles in particular treat whitespace as significant and will fail on tabs-vs-spaces confusion. **Syntax highlighting** is when an editor colors keywords, strings, and comments differently so the structure of the code is visually obvious. **Linting and formatting** are automated tools that check style and normalize it (see @sec-linting). And an **IDE** ("integrated development environment") is a heavier kind of editor that bundles a build system, a debugger, and language tooling into one package — useful for some ecosystems, overkill for others.
 
 ## Choosing your tool: three editor classes
 
-### Terminal editors (nano, vim, emacs)
+Editors come in three rough sizes, and it is worth knowing which size fits which job.
 
--   Best for: remote servers, quick config edits, minimal environments.
+The smallest are **terminal editors** like `nano`, `vim`, and `emacs`. They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: `vim`'s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough `nano` to confidently open a file, change one line, and save and exit. That single skill turns "I have to fix one character on a remote server and I cannot do it" from an impasse into a thirty-second task.
 
--   Strengths: always available, low overhead, works over SSH.
+The middle tier is **GUI code editors** — VS Code is by far the most popular today, with Sublime Text and Cursor as alternatives. These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.
 
--   Trade-offs: steeper learning curve (especially modal editing), fewer visual affordances.
+The largest tier is **IDEs**: Visual Studio for C# and .NET work, IntelliJ for Java, Xcode for Swift and iOS, RStudio for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.
 
--   Recommended student baseline: learn **nano** for emergencies; optionally learn **vim** motions over time.
-
-### GUI code editors (VS Code, Sublime, etc.)
-
--   Best for: daily coursework, scripting, notebooks, lightweight projects.
-
--   Strengths: search across files, integrated terminal, extensions, formatting, linting.
-
--   Trade-offs: can become plugin-heavy; configuration drift across machines.
-
--   Recommended student default: choose one primary GUI editor and learn it well.
-
-### IDEs (Visual Studio, Eclipse, Xcode, etc.)
-
--   Best for: large language ecosystems and complex build systems (Java, C#, Swift, etc.).
-
--   Strengths: deep refactoring, project models, integrated debugging/build tooling.
-
--   Trade-offs: heavier setup; more concepts up front; project configuration can be fragile.
-
-### A decision table (student version)
-
--   **Quick edit on a remote server:** terminal editor.
-
--   **Python scripting + small projects:** GUI editor.
-
--   **Course uses a specific ecosystem (e.g., Java/C#/iOS):** IDE.
-
--   **When unsure:** GUI editor with an integrated terminal.
+The decision rule for a typical Python data student is straightforward. For a quick edit on a remote server, use `nano` (or `vim` if you are comfortable with it). For everything else — Python scripting, notebooks, small projects — use a GUI editor with an integrated terminal, defaulting to VS Code. Reach for a full IDE only if your course or project specifically requires it.
 
 ## Essential editor skills (transfer across tools)
 
@@ -197,35 +135,23 @@ IDE
 
 ### Wrong file, wrong place
 
--   Symptom: edits do not change program behavior.
-
--   Cause: you edited a duplicate file or ran from a different directory.
-
--   Fix: confirm the working directory; search for duplicates; use absolute paths temporarily.
+The most disorienting editor failure is when your edits seem to have no effect — you save, you rerun, and the program behaves as if you changed nothing. The cause is almost always one of two things: you edited a *different copy* of the file from the one your code is actually loading, or you ran the code from a directory where the file you edited does not live. Both are failures of "where am I" awareness rather than failures of the editor. The fix is to confirm your working directory (`pwd`), search the project for any duplicate filenames so you know which copy you are looking at, and — as a temporary diagnostic — switch to absolute paths in the failing code so the question of "which file?" is unambiguous. Once the bug is found, you can usually go back to relative paths.
 
 ### Wrong extension or hidden extension
 
--   Symptom: file opens in the wrong program or fails to run.
-
--   Fix: show file extensions; confirm `.py`, `.csv`, `.txt`.
+A file that opens in the wrong program, or that "isn't a Python file" even though you saved it as Python, is almost always a victim of a hidden or wrong extension. The classic version: you save `script.py` in an editor that adds `.txt` for you, end up with `script.py.txt`, and your file manager's "hide extensions" setting makes it look identical to a real `script.py`. The fix is to turn on **show file extensions** in your file manager (see @sec-filesystem) and to look at the actual filename in your editor's title bar, which always shows the truth.
 
 ### Encoding and invisible characters
 
--   Symptom: weird symbols, parsing errors, or \"invalid character\" errors.
-
--   Fix: re-save as UTF-8; inspect for non-printing characters; normalize line endings.
+When you see weird symbols (`â€™` where a curly apostrophe should be, or boxes where letters should be), parser errors that mention "invalid character," or sudden Python `SyntaxError`s on lines that look fine, the cause is almost always an encoding mismatch or an invisible character. The fix is to re-save the file explicitly as UTF-8 (every modern editor has a "Save with Encoding" or similar option), and to turn on visible whitespace so non-printing characters become visible. A common culprit is a non-breaking space (`U+00A0`) that crept in from a copy-paste — it looks like a space but Python treats it as something else entirely.
 
 ### Line endings (Windows/macOS collaboration)
 
--   Symptom: scripts fail, diffs look huge, or tools complain about CRLF/LF.
-
--   Fix: configure editor to use consistent line endings; rely on repo configuration if provided.
+When a project is shared between Windows and macOS or Linux developers, you can hit a class of bugs that show up as scripts failing with strange "command not found" errors, diffs that look enormous because every line "changed," or tools complaining about CRLF vs LF. The cause is the line-ending convention: Windows uses `\r\n` and Unix systems use `\n`, and tools that expect one and find the other will misbehave. The fix is to configure your editor to use a consistent style (LF is the cross-platform-friendly default), and to let Git normalize line endings on commit if your repository has a `.gitattributes` file — most well-set-up repositories do.
 
 ### Config files and indentation-sensitive formats
 
--   YAML and similar formats can break with tabs or incorrect indentation.
-
--   Use visible whitespace; validate with the tool that reads the config.
+YAML, Python, and Makefiles all care about the difference between tabs and spaces, and YAML in particular breaks in subtle ways when you mix them. The symptom is usually a parser error pointing at a line that looks correct to your eyes. The fix is to turn on visible whitespace so you can *see* whether a line is using tabs or spaces, and to validate the file with the tool that reads it — `python -c "import yaml; yaml.safe_load(open('config.yml'))"` will tell you immediately whether your YAML is parseable.
 
 ## Terminal editors: survival skills
 
@@ -339,39 +265,71 @@ IDE
 
 -   Revert when experiments go wrong.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Write and run a tiny script
+### Writing and running a tiny script
 
--   Create `hello.py`.
+The simplest possible loop: write a small Python script in your editor, run it from the integrated terminal, and fix the first error you hit. Open VS Code (or your editor of choice) in your project folder, create a new file called `hello.py`, and type:
 
--   Run from the terminal.
+```python
+def greet(name):
+    print(f"hello, {name}!"
 
--   Fix a syntax error using the editor's line/column cues.
+greet("world")
+```
 
-### Example 2: Debug a broken config file
+(Yes, the missing closing parenthesis on the `print` call is intentional.) Save the file and open the integrated terminal (`Ctrl+\`` in VS Code, or `View → Terminal`). Run it:
 
--   Identify indentation and invisible-character issues.
+```bash
+$ python hello.py
+  File "hello.py", line 3
+    greet("world")
+    ^^^^^
+SyntaxError: '(' was never closed
+```
 
--   Turn on visible whitespace.
+The error message points at line 3, but it says "'(' was never closed" — Python is telling you that an open parenthesis somewhere *before* line 3 was never matched. Click on the file in your editor and look at line 2: there is the missing `)`. Add it, save, and rerun:
 
--   Validate by re-running the tool.
+```bash
+$ python hello.py
+hello, world!
+```
 
-### Example 3: Safe rename/refactor with find/replace
+That is the entire write-run-read-fix loop. It will run thousands of times over the course of your degree, and the editor's job is to make each iteration as fast as possible.
 
--   Use multi-file search.
+### Debugging a broken config file
 
--   Replace with confirmation.
+A teammate sends you a `config.yml` and says "Quarto won't load it." You open it and it looks fine to your eyes. The problem is almost always invisible whitespace. Turn on visible whitespace in your editor (`View → Render Whitespace` in VS Code) and look again — now you can see whether each indentation step is a tab or a space. YAML requires spaces, and a single tab character can break the entire file. Fix the offending tabs by replacing them with the same number of spaces, save, and validate from the terminal:
 
--   Run tests.
+```bash
+python -c "import yaml; yaml.safe_load(open('config.yml'))"
+```
 
-### Example 4: Remote emergency edit over SSH
+If the command produces no output, the YAML now parses. If it raises a `YAMLError`, the message will name the line and column of the next problem. Repeat until clean.
 
--   Open a config file in nano.
+### A safe find/replace across a project
 
--   Make a minimal change.
+You decide to rename a function from `compute_mean` to `weighted_mean` everywhere in your project. The unsafe version is to use a one-shot global replace and hope. The safe version is three steps. First, search for the old name across the project (`Cmd+Shift+F` in VS Code) and look at every match — confirm that they all really are references to the function, not, say, a variable named `compute_mean_squared`. Second, replace with confirmation: VS Code's search panel has a "Replace" button on each individual match, so you can step through them one at a time. Third, run your tests immediately afterward:
 
--   Save/exit; verify.
+```bash
+pytest tests/ -q
+```
+
+If anything broke, the tests catch it while the change is still small enough to undo. (See @sec-testing for the testing skill set itself.) The whole protocol takes longer than a one-shot replace by maybe a minute, and it has saved many people from very long days.
+
+### A remote emergency edit over SSH
+
+You SSH into a server and discover that one config file has a wrong value that is keeping a service from starting. You do not have time to set up a full remote-development workflow. The minimal sequence is:
+
+```bash
+ssh you@server
+nano /etc/myservice/config.conf
+# arrow keys to navigate; type the change; Ctrl+O to save; Ctrl+X to exit
+sudo systemctl restart myservice
+exit
+```
+
+The whole interaction is under a minute if you know the basic `nano` keystrokes. The reason the chapter recommended learning `nano` for emergencies is exactly this scenario: you want a tool that is already installed on every Unix box you might log into and that you can drive without a tutorial open in front of you.
 
 ## Templates
 

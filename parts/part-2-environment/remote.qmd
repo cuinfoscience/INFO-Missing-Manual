@@ -39,37 +39,13 @@ The goal is not cleverness; it is predictable workflows that minimize risk.
 
 ## A beginner mental model
 
-### Local vs remote
+The vocabulary here is simpler than it sounds. Your **local machine** is the laptop or desktop in front of you, the one whose keyboard you can touch. A **remote machine** is any other computer you reach over a network connection: a university server, a high-performance cluster login node, a cloud VM, a lab workstation. The **network** between them is whichever path actually connects them — your campus network, your home Wi-Fi, the public internet, or some combination.
 
--   **Local machine:** your laptop/desktop.
+Most remote tools use **client/server** language. The **client** is the program you run locally to initiate the connection (an SSH client, a VPN client, your web browser). The **server** is the remote program waiting to accept connections (an SSH server, a web server). The protocol — SSH, HTTPS, whatever — is the rule for how the two halves talk to each other. Once you have that picture in mind, every tool in this chapter is a variant of "run a client locally that talks to a server somewhere else."
 
--   **Remote machine:** a computer you access over the network.
+A few details about how connections behave matter in practice. An **SSH session** is a connection plus a shell — when you log out, the shell exits, and any program you started that depends on that shell may also stop. If you want a long-running job to survive your logout, you need a job-control tool like `tmux`, `screen`, or `nohup`. The remote computer also has its **own** filesystem, users, permissions, and installed software, which means a file on the remote machine is not the same as a file with the same path on your laptop, and "I have pandas installed" on your laptop tells you nothing about whether pandas is installed on the server.
 
--   **Network:** the path between them (campus, home Wi-Fi, internet).
-
-### Client/server language
-
--   **Client:** the tool you run locally (SSH client, VPN client, browser).
-
--   **Server:** the remote service or machine you connect to (SSH server, web server).
-
-### Sessions, processes, and persistence
-
--   A remote **SSH session** is a connection + a shell.
-
--   Programs you start remotely may stop when your session ends unless you use job control tools.
-
--   Remote computers have their own file system, users, permissions, and installed software.
-
-### Why remote computing exists
-
--   Access to more CPU/RAM/GPU.
-
--   Access to shared datasets and licensed tools.
-
--   Reliability (servers run longer than laptops).
-
--   Collaboration (shared environments).
+Given all that overhead, why use remote computing at all? Four reasons. The first is **resources**: the server has more CPU, more RAM, more disk, or a GPU your laptop does not have. The second is **shared data and licensed software**: some datasets and tools live on a server because they are too large, too sensitive, or too expensive to copy. The third is **reliability**: a server runs continuously and gets backed up, while your laptop closes its lid and dies on Wi-Fi. The fourth is **collaboration**: when several people share a remote environment, everyone runs the same code against the same data with the same library versions, which eliminates an entire category of "works on my machine" bugs.
 
 ## Prerequisites and safe defaults
 
@@ -101,41 +77,41 @@ The goal is not cleverness; it is predictable workflows that minimize risk.
 
 ### What SSH provides
 
--   Encrypted remote login.
-
--   Secure file transfer.
-
--   Secure tunneling of other network traffic.
+SSH (Secure Shell) is the workhorse protocol for remote computing on Unix-like systems. It does three things, all of them encrypted: it gives you a secure remote login (a shell on a server somewhere), it lets you securely transfer files in and out of that server, and it lets you tunnel other kinds of network traffic through the same connection. The three uses are the same protocol with different command-line shapes, which is why "learn SSH" turns out to be one of the highest-leverage skills in remote work.
 
 ### The simplest connection
 
-    ssh username@hostname
+The most common SSH command is:
 
--   You may need `-p <port>` if SSH uses a nonstandard port.
+```bash
+ssh username@hostname
+```
 
--   The first time you connect, SSH will ask about the host fingerprint.
+For example, `ssh agandler@server.cs.example.edu`. If the server is running SSH on a non-standard port (some institutions do this), you add `-p`:
+
+```bash
+ssh -p 2222 username@hostname
+```
+
+The first time you connect to a new server, SSH will ask whether you trust the **host fingerprint** — a long string of characters that uniquely identifies the server's identity. Type `yes` to accept it (this is the moment when you should verify the fingerprint with your instructor or sysadmin if you have any doubt), and SSH will record it in a file called `~/.ssh/known_hosts`. After that, every future connection silently checks that the server still presents the same fingerprint.
 
 ### Host identity and `known_hosts`
 
--   SSH remembers server fingerprints to prevent "man-in-the-middle" attacks.
-
--   Warning: a changed fingerprint may be benign (server rebuilt) or dangerous (impersonation).
-
--   Best practice: verify changes via a trusted channel (course staff / sysadmin).
+The reason SSH bothers with fingerprints is to defend against a class of attack called "man-in-the-middle," where someone impersonates the server you intended to reach and tricks you into typing your password into theirs. Once you have accepted a server's fingerprint, SSH will refuse to connect if it ever changes — which is what you want. The catch is that fingerprints can also change for benign reasons: the server was rebuilt, the SSH daemon was reinstalled, the keys were rotated. When you see a fingerprint warning, do *not* just accept it because you are in a hurry. Verify the change through a trusted channel (an email from sysadmin, an announcement from your instructor) before you remove the old fingerprint and accept the new one.
 
 ### Authentication: passwords vs keys
 
--   **Password:** easy to start, less secure, often disabled on managed servers.
+You can authenticate to an SSH server with a **password** or with a **key**. Passwords are easier to start with and are how most people first encounter SSH, but they are less secure (passwords can be guessed and reused) and many managed servers disable them entirely. **Keys** are the recommended approach. A key pair is two files: a **private key** that stays on your device (and that you should never share with anyone) and a **public key** that is safe to copy onto the servers you want to log into. The server uses the public key to verify, mathematically, that you possess the corresponding private key — which you prove without ever sending the private key over the network. The whole point is that even if someone intercepts your traffic, they cannot impersonate you, because they do not have the private key.
 
--   **Keys:** recommended; a private key stays on your device and proves identity.
+You generate a key pair with `ssh-keygen` and protect the private key with a passphrase, which means that even someone who steals the private key file cannot use it without also knowing your passphrase:
 
-### Key-based authentication basics
+```bash
+ssh-keygen -t ed25519 -C "your.email@example.com"
+# When asked for a file path: accept the default (~/.ssh/id_ed25519)
+# When asked for a passphrase: pick a strong one
+```
 
--   A key pair: **private key** (secret) + **public key** (shareable).
-
--   The public key is added to the server's authorized keys list.
-
--   Protect the private key with a passphrase.
+After generating, copy the public key (the file ending in `.pub`, never the one without an extension) onto the server's authorized keys list. On many systems the easy way to do this is `ssh-copy-id username@hostname`, which appends your `id_ed25519.pub` to the right file in one command.
 
 ### Generating a key pair (conceptual)
 
@@ -197,36 +173,25 @@ The goal is not cleverness; it is predictable workflows that minimize risk.
 
 ### Local forwarding (most common)
 
--   Scenario: remote server runs a service on `127.0.0.1:8888`; you want to open it in your local browser.
+The form you will use ninety percent of the time is **local forwarding**, where you tell SSH "make port X on my laptop behave as if I were connected to port Y on the remote server." The most common case is starting Jupyter on a server and viewing it in your local browser:
 
-```{=html}
-<!-- -->
+```bash
+ssh -L 8888:localhost:8888 username@hostname
 ```
-    ssh -L 8888:localhost:8888 username@hostname
 
--   Then visit `[http://localhost:8888`\](http://localhost:8888) in your local browser.
-
--   If `8888` is taken locally, choose another local port (e.g., 8899).
+Read the `-L` argument as "Local 8888 → remote `localhost:8888`." After running this, you can open `http://localhost:8888` in your *local* browser and it will be talking to the Jupyter server running on the remote machine, through the encrypted SSH tunnel. If port 8888 is already in use on your laptop (maybe because you have a local Jupyter running too), pick a different local port: `ssh -L 8899:localhost:8888 username@hostname` and then visit `http://localhost:8899`.
 
 ### Remote forwarding (advanced)
 
--   Scenario: you need the remote machine to reach a service running locally.
-
--   Use cautiously; it changes the exposure model.
+The mirror image of local forwarding is **remote forwarding** with `-R`, where you tell SSH "make port X on the remote server behave as if I were connecting to port Y on my laptop." This is much less common and changes the exposure model — you are exposing something on your laptop to the remote machine — so use it cautiously and only when you have a specific reason.
 
 ### Dynamic forwarding (SOCKS proxy)
 
--   Scenario: route a browser or tool through the remote network.
-
--   Use only when you understand policies and implications.
+A third variant is **dynamic forwarding** with `-D`, which sets up a SOCKS proxy on a local port that routes arbitrary traffic through the remote machine's network. This is useful for "browse the web as if I were on the campus network" scenarios, but it interacts with institutional policies in ways you should understand before relying on it. Treat it as advanced territory.
 
 ### Tunnel hygiene
 
--   Use `-N` when you only need forwarding (no remote shell).
-
--   Prefer binding to `localhost` on your machine to avoid exposing ports to others.
-
--   Close tunnels when you are done.
+A few small habits keep tunnels safe and easy to manage. When you only need a tunnel and not an interactive shell, add `-N` (`ssh -N -L 8888:localhost:8888 username@hostname`) so SSH does not open a shell you do not need. Always bind the local side to `localhost` (the default) rather than `0.0.0.0`, so other users on your network cannot piggyback on your tunnel. And close tunnels when you are done with them — leaving them open consumes resources and leaves an open authenticated path you do not need.
 
 ## VPN fundamentals
 
@@ -394,39 +359,97 @@ Networking rules
 
 -   It may be a server-side access control issue.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: First SSH login
+### Your first SSH login
 
--   Verify prerequisites (account, host, VPN).
+You have an account on a department server and you have never logged in before. Three things to confirm: you know your **username**, the **hostname** of the server, and whether your institution requires a **VPN** connection before you can reach it. If a VPN is required, connect to it first. Then SSH in:
 
--   Connect and interpret the login banner.
+```bash
+$ ssh agandler@server.cs.example.edu
+The authenticity of host 'server.cs.example.edu (...)' can't be established.
+ED25519 key fingerprint is SHA256:abcdef...
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+agandler@server.cs.example.edu's password:
+Last login: Mon Apr  7 09:14:22 2026 from 10.0.0.42
+[agandler@server ~]$
+```
 
--   Navigate remote directories and run a simple command.
+The first prompt is the host fingerprint check — type `yes` (and ideally verify the fingerprint with sysadmin first). The second is your password. After login you see a banner from the server and a shell prompt. Run a couple of commands to orient yourself:
 
-### Example 2: Move a dataset to a server
+```bash
+[agandler@server ~]$ hostname
+server.cs.example.edu
+[agandler@server ~]$ whoami
+agandler
+[agandler@server ~]$ pwd
+/home/agandler
+[agandler@server ~]$ ls
+projects/  scratch/
+[agandler@server ~]$ exit
+```
 
--   Identify local and remote paths.
+That is the entire arc of a basic interactive session. The remote shell is just a shell — every command you know from your local terminal works the same way here, against the server's own filesystem instead of your laptop's.
 
--   Transfer with `scp` or `sftp`.
+### Moving a dataset to a server
 
--   Verify integrity (file size, checksums if taught).
+The simplest way to move files is with `scp` (secure copy), which has the same shape as `cp` but with one side being a remote path. The remote path is written as `username@hostname:/absolute/remote/path`. To upload a single file:
 
-### Example 3: Remote Jupyter via SSH tunnel
+```bash
+scp data/raw/sales.csv agandler@server.cs.example.edu:~/projects/sales/data/raw/
+```
 
--   Start Jupyter on the server bound to `localhost`.
+To upload a whole directory tree, add `-r` for recursive:
 
--   Create a local tunnel.
+```bash
+scp -r data/raw/ agandler@server.cs.example.edu:~/projects/sales/data/
+```
 
--   Connect in browser; close tunnel when done.
+After the transfer, log in and verify it actually arrived and is the right size:
 
-### Example 4: Launch and secure a small cloud VM
+```bash
+ssh agandler@server.cs.example.edu "ls -lh ~/projects/sales/data/raw/"
+```
 
--   Create instance; restrict inbound SSH to your IP.
+For an interactive session where you want to transfer multiple files without retyping the connection, use `sftp` instead — it gives you a small interactive prompt with `cd`, `ls`, `put`, and `get` commands. For very large transfers (gigabytes or more), `rsync` is the right tool because it can resume interrupted transfers and skip files that are already up to date on the destination.
 
--   SSH in; run a short job.
+### Running remote Jupyter via an SSH tunnel
 
--   Terminate instance; confirm costs stop accruing.
+You want to run a Jupyter notebook on the server (which has the data and the GPU) but use the notebook in your laptop's browser. The recipe is two terminals.
+
+In the first terminal, log into the server and start Jupyter, but bind it to `localhost` so it is not exposed to the internet:
+
+```bash
+$ ssh agandler@server.cs.example.edu
+[agandler@server ~]$ cd projects/sales
+[agandler@server sales]$ source .venv/bin/activate
+(.venv) [agandler@server sales]$ jupyter lab --no-browser --ip=127.0.0.1 --port=8888
+[I 12:34:56 ServerApp] http://127.0.0.1:8888/lab?token=abc123def456...
+```
+
+Copy that URL with the token. In a *second* local terminal, set up the tunnel:
+
+```bash
+$ ssh -N -L 8888:localhost:8888 agandler@server.cs.example.edu
+```
+
+The `-N` means "do not open a remote shell, just maintain the tunnel," and the `-L` means "forward my local port 8888 to the server's localhost:8888." Now paste the URL into your local browser. Jupyter loads as if it were running locally; under the hood every keystroke and every cell execution is going through the encrypted tunnel to the server.
+
+When you are done, hit `Ctrl+C` in the tunnel terminal to close the tunnel, and stop Jupyter on the server.
+
+### Launching and securing a small cloud VM
+
+You need a server for an afternoon — to run a long job your laptop cannot handle, or to try something that requires GPU access — and you decide to rent one from a cloud provider. The general workflow is the same on AWS, GCP, and Azure: create an instance, configure SSH access, do your work, and shut it down.
+
+First, in the provider's web console, create the instance: pick the smallest size that meets your needs (you are paying by the minute), pick a region that is geographically close, and choose an OS image (Ubuntu LTS is a sensible default for most data work). When the instance creation flow asks about an SSH key, paste your *public* key (`~/.ssh/id_ed25519.pub`) — *never* the private key. Configure the firewall (called "security groups" on AWS) to allow inbound SSH (port 22) only from your current IP address, not from `0.0.0.0/0`. The default of "open SSH to the entire internet" is one of the most common ways small cloud servers get compromised within hours of being created.
+
+Once the instance is running, the console will show you its public IP. Connect:
+
+```bash
+ssh -i ~/.ssh/id_ed25519 ubuntu@203.0.113.42
+```
+
+Run your job. When you are done — and this is the part students forget — go back to the cloud console and **terminate** (not just stop) the instance, so that you stop paying for storage too. Confirm in the billing dashboard that no resources are still running. Cloud bills can compound quickly if you forget about a forgotten VM, and the failure mode of "I left it running for a month" is a real and expensive mistake.
 
 ## Exercises
 

@@ -35,135 +35,70 @@ A script, notebook, or application often assumes files are in specific locations
 
 ## A beginner mental model
 
-### Files vs folders
+The smallest piece of vocabulary you need is the difference between a **file** and a **folder**. A file is a single named unit of stored data — a `report.docx` document, a `data.csv` table, a `cleaning.py` script. A folder (sometimes called a *directory*; the words are interchangeable) is a container that holds files, and it can hold other folders too. Folders inside folders form a tree, and your entire computer's file system is one big tree growing out of a single root.
 
--   **File:** a named unit of stored data (e.g., `report.docx`, `data.csv`).
+Every file in that tree has a **path**, which is the address that points at it. There are two flavors. An **absolute path** describes where a file is starting from the very root of the tree, so it works no matter where you currently are. A **relative path** describes where a file is starting from wherever you happen to be right now — it is shorter, but it depends on context. Both kinds use a separator character to divide each step of the descent into the tree, and the choice of separator differs between operating systems: Windows uses a backslash (`\`), while macOS and Linux use a forward slash (`/`). On Windows, paths usually start with a drive letter like `C:\Users\you\Documents`, and there are also network paths that begin with `\\server\share`. On macOS, the root is just `/`, your home folder lives at `/Users/you`, and your Documents at `/Users/you/Documents`.
 
--   **Folder/directory:** a container that holds files and other folders.
+```text
+Absolute path (Windows):   C:\Users\you\Documents\project\data.csv
+Absolute path (macOS):     /Users/you/Documents/project/data.csv
+Relative path (either):    project/data.csv         (from inside Documents)
+Relative path (either):    ../data.csv              (one folder up)
+```
 
--   **Hierarchy:** folders inside folders form a tree.
+A practical Windows quirk worth knowing: the operating system has historical limits on how long a path can be, and some tools still trip over paths longer than 260 characters. The mitigation is the same one you would adopt for readability anyway: keep project paths short and avoid burying things ten folders deep.
 
-### Paths: how the computer points to a location
+Each filename usually ends with an **extension** like `.csv`, `.py`, or `.docx`, separated from the name by a dot. Extensions are how your operating system (and most applications) decide which program to open a file with — `.csv` opens in Excel or a text editor, `.py` opens in Python, `.docx` opens in Word. When you can choose the format you save in, prefer stable plain-text formats like `.csv`, `.txt`, and `.md` over proprietary binary ones (`.xlsx`, `.docx`, `.pdf`). Plain-text files can be read by any tool, version-controlled cleanly with `git diff`, and recovered from when something goes wrong; binary formats can do none of those things well.
 
--   **Absolute path:** full location from a root.
+## Access and navigation on Windows
 
--   **Relative path:** location relative to your current folder.
+When you open File Explorer on Windows (the icon is a manila folder, usually pinned to the taskbar), you see three things you should learn to recognize: a **sidebar** down the left with shortcuts to common locations like Quick Access and This PC, a **main pane** in the middle showing the contents of whichever folder you have selected, and an **address bar** along the top showing your current location as a sequence of clickable segments. Those segments are called *breadcrumbs*, and clicking any one of them jumps you back to that folder — so if you are deep inside `C:\Users\you\Documents\project\notebooks\drafts`, you can click `Documents` once and land in your Documents folder without using the Back button five times.
 
--   **Separators:** Windows uses backslashes (`\`); macOS uses forward slashes (`/`).
+Beyond pointing and clicking, File Explorer rewards a few specific skills. **Search** can be scoped to the current folder or the entire machine, and the difference matters: searching all of `This PC` for `data.csv` will find every CSV on your computer, which is rarely what you want, while searching from inside your project folder limits the result to that project. **Sort** and **view** options (right-click in the main pane or use the View tab) let you order files by name, date modified, type, or size; sorting by date modified is especially useful when you are trying to remember "what did I save yesterday?" In the View tab there are also two toggles you should know exist before you need them: **show file name extensions** and **show hidden items**. The first prevents the classic confusion where `data.csv` and `data.csv.txt` look identical to you in the GUI but are completely different files to your code. The second is occasionally needed when troubleshooting `.env` files, `.git` folders, or other dotfiles. Turn these on temporarily for diagnostics, and turn them off again when you are done so you do not accidentally delete a system file.
 
-### Windows vs macOS path conventions (what novices must know)
+A second important Windows-specific concept is **OneDrive sync**. If your account uses OneDrive, your `Documents` folder may not actually live on your laptop — it may live in the cloud, with placeholder files on disk that download on demand when you open them. Sync status icons next to each file or folder tell you what state things are in: a cloud icon means "in the cloud only, not local," a green checkmark means "always kept on this device," and a circular arrow means "currently syncing." For programming and data work, this matters because a script that tries to read a 2 GB CSV will silently trigger a download that may or may not finish before the script tries to use the file. The fix is to right-click any folder you actively work in and select "Always keep on this device," which forces a full local copy.
 
--   **Windows:** drive letters and fully-qualified paths like `C:\Users\name\Documents`; also network (UNC) paths like `\server \share`.
+## Access and navigation on macOS
 
--   **macOS:** volume-and-directory paths like `/Users/name/Documents` (POSIX-style).
+Finder on macOS plays the same role as File Explorer on Windows. You open it by clicking the smiley-face icon in the Dock, and you immediately see a **sidebar** with Favorites and iCloud Drive on the left, a **toolbar** with view-mode buttons across the top, and the **main pane** showing whichever folder is selected. The view-mode buttons are worth learning: icon view is good for browsing photos, list view is good for sorting by date or size, column view is the fastest way to drill down through several folders in a row, and gallery view is mostly useful for media. Column view in particular is the best macOS feature for "where am I?" — each column shows the contents of the next level down, so you can navigate a deep folder hierarchy without losing your place.
 
--   **Path length and odd edge cases:** Windows has historical maximum path-length constraints and special path forms; you should keep project paths short and avoid deeply nested folders when possible.
+Finder's search box (top-right or `Command + F`) is powerful but defaults to searching your entire Mac. If you only want to search inside the current folder, click the scope button in the search bar and choose the folder name. You can also refine results by file kind, modification date, and other metadata, which is the easiest way to find that "report from last week" you cannot remember the name of. macOS also has **tags** (the colored circles you sometimes see on file icons), which act as lightweight categories — tag a file as "Course X" or "needs review" without moving it, and then filter by that tag later. Tags are an underused habit that pays off for long-running projects.
 
-### Extensions and file types
+A few system folders are hidden by default — the macOS root, the `~/Library` folder, anything starting with a dot. Treat them as off-limits unless you have a reason to be there: they hold configuration files for the operating system and your applications, and editing them by mistake can break things in subtle ways. When you do need to see them (most often `~/.ssh` for key files, see @sec-remote-computing), the keystroke `Command + Shift + .` toggles hidden items in any Finder window. Use it for the diagnosis you need, then toggle it off so you do not accidentally drag the wrong thing into the trash.
 
--   Extensions (e.g., `.csv`, `.py`) help your OS and apps guess how to open a file.
-
--   For reproducible work, prefer stable, plain formats (`.csv`, `.txt`, `.md`) over opaque or proprietary formats when possible.
-
-## Access and navigation on Windows (File Explorer)
-
-### Opening and orienting
-
--   Open File Explorer; identify the sidebar (Quick access/Home), main pane, and address bar.
-
--   Learn the breadcrumbs: click segments in the path bar to jump to parent folders.
-
-### Core navigation skills
-
--   Move up/down the hierarchy, open in new tabs/windows, and return to recent locations.
-
--   Use search correctly: search within the current folder vs across the whole machine.
-
--   Use sort and view options: by name, date modified, type, size.
-
-### Make file extensions and hidden items visible (when troubleshooting)
-
--   Toggle viewing extensions to avoid confusion (`data.csv` vs `data.csv.txt`).
-
--   Toggle hidden items when necessary for diagnostics.
-
-### Local vs synced locations (OneDrive)
-
--   Understand sync status indicators and what they imply about local availability.
-
--   Recognize online-only" vs always keep on this device'' behaviors, especially when working offline.
-
-## Access and navigation on macOS (Finder)
-
-### Opening and orienting
-
--   Open Finder; identify the sidebar (Favorites, iCloud Drive), toolbar, and path location.
-
--   Understand view modes: icons, list, columns, gallery (choose based on task).
-
-### Core navigation skills
-
--   Use the hierarchy: parent folders, column view for rapid browsing.
-
--   Use Finder search and filters; search this Mac vs this folder.
-
--   Use tags to create lightweight categories without moving files.
-
-### Hidden files and system folders (what to avoid)
-
--   Finder hides some system locations by default; treat hidden/system folders as "do not edit unless you know why.''
-
--   If you must inspect hidden files for troubleshooting, do so carefully and revert the view when done.
-
-### Local vs iCloud behavior
-
--   macOS can optimize storage by moving less-used files to iCloud and downloading them on demand.
-
--   Implication for projects: ensure critical files are actually present locally before running analyses.
+The macOS equivalent of OneDrive's "files on demand" behavior is **iCloud Drive optimization**. If macOS thinks you are running low on disk space, it will quietly evict the least-used files in `Documents` and `Desktop` to iCloud, leaving placeholder icons that re-download when you open them. Same problem, same fix: for any folder where you actually run code, make sure the files are present locally. You can confirm by selecting a file and pressing `Command + I` to bring up the Get Info window, which says whether the file is on your Mac or only in iCloud.
 
 ## Organizing work: conventions that scale
 
-### A default structure for students
+The single biggest improvement most students can make to their file management is to **stop working out of `Downloads/` and `Desktop/`** and instead create a stable top-level home for everything school-related. The exact name does not matter — `School/`, `Courses/`, `Coursework/` are all fine — but the existence of one designated place does matter, because it gives every assignment, lab, and project a predictable parent. Inside that home, give each course its own folder, and inside each course folder, separate `Assignments/`, `Labs/`, and `Project/`. The reward is enormous: when you come back to the work in three weeks, you do not have to remember where you put things; you just open the path you always use.
 
-Recommend a stable home for course work:
+```text
+~/Courses/
+├── INFO-3010/
+│   ├── Assignments/
+│   ├── Labs/
+│   └── Project/
+└── INFO-4040/
+    ├── Assignments/
+    └── Project/
+```
 
--   `School/` or `Courses/`
+For data-science projects specifically, one folder layout has become a near-universal standard, and adopting it from day one will save you grief. At the project root you put a `README.md` describing what the project is and how to run it. You put your inputs in `data/raw/` and treat them as **read-only** — never edit raw data in place, no matter how tempting. Anything derived from those raw files (cleaned versions, joined tables, intermediate aggregates) goes in `data/processed/`. Reusable Python code lives in `src/`, exploratory notebooks live in `notebooks/`, and final figures or tables go in `reports/` or `figures/`. The whole point of the layout is that someone — including future you — should be able to delete `data/processed/`, run one command, and rebuild it. That property only holds if you respect the read-only rule on `data/raw/`.
 
--   `CourseName/`
+```text
+project/
+├── README.md
+├── data/
+│   ├── raw/         # immutable inputs — never overwrite
+│   └── processed/   # rebuildable outputs
+├── src/             # importable Python code
+├── notebooks/       # exploration only, not production
+└── reports/         # figures and tables for sharing
+```
 
--   `Assignments/`, `Labs/`, `Project/`
+Naming conventions are the other lever that pays back compounding interest. Use meaningful, stable names that describe the file's contents — `clean-survey-2026-01.csv` instead of `data2.csv`. Prefix dated artifacts with `YYYY-MM-DD` so they sort chronologically when you list them: `2026-01-15-pilot-results.csv` will always sort next to `2026-01-22-pilot-results.csv` no matter what tool you use. Avoid spaces and special characters in any filename you might pass to code — `survey results.csv` is a recipe for shell quoting bugs, while `survey-results.csv` or `survey_results.csv` will work everywhere. And never, ever fall into the `final.docx` / `final-final.docx` / `final-final-USE-THIS.docx` trap. Use dates or version numbers, not adjectives, to track iterations.
 
-### A default structure for data projects
-
--   `README.md` (how to run, where things are)
-
--   `data/raw/` (immutable inputs)
-
--   `data/processed/` (derived outputs)
-
--   `src/` (scripts and reusable code)
-
--   `notebooks/` (exploration, not production)
-
--   `reports/` or `figures/`
-
-### Naming conventions
-
--   Use meaningful, stable names: `YYYY-MM-DD` prefixes for dated artifacts.
-
--   Avoid spaces and special characters when files will be used in code.
-
--   Prefer lowercase with hyphens/underscores: `clean-survey-2026-01.csv`.
-
--   Never use `final.docx`, `final-final.docx`; use semantic versioning or dates.
-
-### Provenance and duplicates
-
--   Keep raw files read-only; do not edit original data in place.
-
--   When you must create variants, record why and how (notes in README or a changelog).
-
--   Learn to detect duplicates (same name, different content; same content, different name).
+The provenance habit is the same idea applied to data. Keep raw files read-only; if you need a variant of one (a smaller subset, a column rename, an encoding fix), save the variant under a new name in `data/processed/` and write down in your README or a changelog *what* you changed and *why*. The same week, this seems like overkill. Six weeks later, when you cannot reproduce your own results, it is the difference between five minutes of investigation and an afternoon of guessing.
 
 ## Search, metadata, and "finding it later''
 
@@ -205,29 +140,13 @@ Recommend a stable home for course work:
 
 ## Common student pitfalls (and how to avoid them)
 
-### Pitfall: working from Downloads/Desktop forever
+A small number of mistakes account for almost all the file-management pain that beginners suffer, and they are all preventable. The most common one is **working out of `Downloads/` or `Desktop/` forever**: every assignment lands wherever it was downloaded, duplicates accumulate, version `final-2.csv` ends up next to `final-3.csv` next to `data.csv`, and three weeks later nothing can be found. The fix is the one from the previous section — create a stable project root under `Courses/` or `Projects/` and move work there immediately, every time.
 
--   Symptom: files disappear, duplicates accumulate, paths break.
+The second is **confusing cloud sync with local storage**, which usually shows up as a notebook that cannot find the data file you can clearly see on your screen. The file is not really there; it is a placeholder that OneDrive or iCloud is going to download on demand, and your code reached the read before the download finished (or while you were offline). The fix is to make the project folder always-local: right-click and "Always keep on this device" on Windows, or "Download Now" / "Keep Downloaded" on macOS, before you ever try to run the code.
 
--   Fix: move projects into a stable `Courses/` or `Projects/` location.
+The third is **accidental extension changes**, where you rename `data.csv` to `data` (because the GUI was hiding the extension and you thought you were renaming the whole filename), or where you save a CSV "as text" and end up with `data.csv.txt`. Both produce the same kind of confusing failure: the file opens in the wrong program, or your code says "no such file." The fix is to turn on **show file extensions** in your file manager and leave it on. The few seconds of cognitive overhead are worth never being burned by this again.
 
-### Pitfall: confusing cloud-sync with local storage
-
--   Symptom: notebook cannot find data, or files are not available offline."
-
--   Fix: confirm local availability; understand sync icons and on demand'' downloads.
-
-### Pitfall: accidental extension changes
-
--   Symptom: file opens in the wrong program or fails to load.
-
--   Fix: show extensions when working with data/code; avoid manual extension edits unless you understand the effect.
-
-### Pitfall: moving folders after writing code
-
--   Symptom: scripts break because paths are hard-coded.
-
--   Fix: keep a stable project root; use relative paths inside projects.
+The fourth is **moving folders after you have written code that depends on them**. A script that references `data/input.csv` works fine until you reorganize and the data file moves. The fix is twofold: pick your project root early, do not move it casually, and inside the project use *relative* paths so that everything is stable as long as the project root stays put. If you must use absolute paths, compute them at runtime from `__file__` rather than hard-coding `/Users/alex/...`, since hard-coded absolute paths immediately break when anyone else clones the project — including future you on a different laptop.
 
 ## Bridging to the terminal and programming
 
@@ -243,31 +162,54 @@ Recommend a stable home for course work:
 
 -   Keep paths short, avoid special characters, and standardize folder structure.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Build a course workspace on Windows and macOS
+### Building a course workspace from scratch
 
--   Create the `Courses/` directory.
+You are starting a new semester with three classes. The first thing to do, before you download any handouts, is to create the home that will hold all of them. Open a terminal in your user directory and run:
 
--   Create an assignment folder with a consistent template.
+```bash
+mkdir -p ~/Courses/INFO-3010/{Assignments,Labs,Project}
+mkdir -p ~/Courses/INFO-4040/{Assignments,Project}
+mkdir -p ~/Courses/STAT-2010/{Labs,Assignments}
+```
 
--   Pin/favorite the folder for quick access.
+(On Windows, do the same in PowerShell with `New-Item -ItemType Directory -Force -Path` or just create them by right-clicking in File Explorer.) Then add the top-level `Courses` folder to your file manager's favorites: drag it to the Finder sidebar on macOS, or right-click and choose "Pin to Quick access" in File Explorer on Windows. From this point on, every assignment you save lives somewhere predictable, and you can get to any of them in two clicks.
 
-### Example 2: Turn a messy Downloads folder into a clean project
+### Turning a messy Downloads folder into a clean project
 
--   Identify project files by extension and date.
+You started a project a month ago by downloading a few CSVs into `~/Downloads/` and writing some throwaway code. Now there are seventeen files mixed up with a semester's worth of unrelated downloads, and the project is starting to matter. Time to rescue it.
 
--   Move into a new project root.
+The mechanical version of the rescue is just three steps. First, create the new project root and the standard subfolders:
 
--   Create `data/raw` vs `data/processed` and update references.
+```bash
+mkdir -p ~/Courses/INFO-3010/Project/{data/raw,data/processed,src,notebooks,reports}
+cd ~/Courses/INFO-3010/Project
+touch README.md
+```
 
-### Example 3: Diagnose "file not found''
+Second, move the project files out of `Downloads`. Sort `Downloads` by date or by filename to identify them, and move everything related to this project — `*.csv` data files into `data/raw/`, notebooks into `notebooks/`, scripts into `src/` — into the new project. Third, open every script and notebook, find any path that points at `~/Downloads/something.csv`, and rewrite it to a relative path like `data/raw/something.csv` so the project no longer depends on the absolute location of your old Downloads folder. Run the code from the project root once to confirm everything still works. Now the project is portable, reproducible, and almost impossible to lose.
 
--   Confirm the file exists, the name matches exactly, and the extension is correct.
+### Diagnosing "file not found"
 
--   Confirm you are searching/running from the intended directory.
+You run a script and Python tells you `FileNotFoundError: data/input.csv`. Resist the urge to immediately edit the path. Instead, gather evidence in three short steps. First, confirm the file actually exists where you think it does by listing the directory:
 
--   Confirm cloud-sync availability and permissions.
+```bash
+ls -la data/        # macOS / Linux
+dir data\           # Windows
+```
+
+If `input.csv` does not appear in the listing, the bug is not in the code — the file is genuinely missing or has a different name (a trailing space, a typo, a `.csv.txt` extension you cannot see). Fix the file or the filename; do not fix the code.
+
+If the file *does* appear in the listing but Python still cannot find it, the second check is your current working directory:
+
+```bash
+pwd                 # macOS / Linux  (Windows: cd with no arguments)
+```
+
+A relative path like `data/input.csv` is interpreted relative to whatever directory you launched Python from. If you launched Python from the project root, `data/input.csv` works. If you launched it from inside `notebooks/` or `src/`, the same path no longer resolves. Either `cd` to the project root before running, or rewrite the path so it is computed from `__file__`.
+
+The third check, only if the first two pass, is whether the file is sync-stranded: you can see a placeholder for it but the bytes are still in the cloud. On macOS you can confirm with `Command + I` in Finder; on Windows the sync icon next to the file tells you. Force a local copy and try again. Most "file not found" errors will be solved by one of these three checks; only after all three should you start looking at code.
 
 ## Exercises
 
