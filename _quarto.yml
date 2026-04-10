@@ -1,0 +1,116 @@
+project:
+  type: book
+  output-dir: _book
+  resources:
+    - graphics/**
+
+book:
+  title: "Paratechnical Computing Handbook"
+  subtitle: "The hidden curriculum of computing for data scientists"
+  author:
+    - "Brian C. Keegan"
+    - "Abram Handler"
+  date: today
+  date-format: "MMMM YYYY"
+  search: true
+  repo-url: https://github.com/brianckeegan/ParatechnicalComputingHandbook
+  repo-branch: main
+  repo-actions: [edit, issue]
+  downloads: [pdf]
+  sharing: [twitter, linkedin]
+  sidebar:
+    style: docked
+    collapse-level: 2
+
+  chapters:
+    - index.qmd
+
+    - part: "Part I — Practice of Technical Work"
+      chapters:
+        - parts/part-1-practice/questions.qmd
+        - parts/part-1-practice/documentation.qmd
+        - parts/part-1-practice/debugging.qmd
+        - parts/part-1-practice/tracebacks.qmd
+        - parts/part-1-practice/ai-llm.qmd
+
+    - part: "Part II — Computing Environment"
+      chapters:
+        - parts/part-2-environment/operating-system.qmd
+        - parts/part-2-environment/file-system.qmd
+        - parts/part-2-environment/terminal.qmd
+        - parts/part-2-environment/text-editors.qmd
+        - parts/part-2-environment/remote.qmd
+
+    - part: "Part III — Python Management"
+      chapters:
+        - parts/part-3-python/package-management.qmd
+        - parts/part-3-python/virtual-environments.qmd
+        - parts/part-3-python/jupyter.qmd
+        - parts/part-3-python/scripting.qmd
+        - parts/part-3-python/testing.qmd
+
+    - part: "Part IV — Working with Data"
+      chapters:
+        - parts/part-4-data/data-file-formats.qmd
+
+    - part: "Part V — Project Management"
+      chapters:
+        - parts/part-5-projects/project-management.qmd
+        - parts/part-5-projects/version-control.qmd
+        - parts/part-5-projects/collaboration.qmd
+        - parts/part-5-projects/automation.qmd
+
+    - part: "Part VI — Algorithmic Systems"
+      chapters:
+        - parts/part-6-algorithmic/llm-internals.qmd
+        - parts/part-6-algorithmic/ai-agents.qmd
+        - parts/part-6-algorithmic/evaluating-ai.qmd
+
+    - conclusion.qmd
+
+  appendices:
+    - appendix-glossary.qmd
+
+# Books inherit most website options from `book:`, but Quarto 1.9 routes
+# `llms-txt` through the website config specifically. Declaring a sibling
+# `website:` block with only this key makes llms.txt / .llms.md generation work.
+website:
+  llms-txt: true
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 2
+    code-copy: true
+    code-overflow: wrap
+    code-block-bg: true
+    reference-location: margin
+    citation-location: margin
+    fig-cap-location: margin
+    link-external-icon: true
+    link-external-newwindow: true
+
+  pdf:
+    documentclass: scrbook
+    papersize: letter
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    number-depth: 2
+    colorlinks: true
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1.25in
+      - right=1.25in
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}

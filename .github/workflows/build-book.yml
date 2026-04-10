@@ -1,0 +1,37 @@
+name: Build book
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          # Pinned because `llms-txt: true` requires Quarto >= 1.9.0
+          # (see _quarto.yml -> website.llms-txt).
+          version: "1.9.37"
+
+      - name: Set up TinyTeX for PDF rendering
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+          version: "1.9.37"
+
+      - name: Render book (HTML + PDF)
+        run: quarto render
+
+      - name: Upload rendered book
+        uses: actions/upload-artifact@v4
+        with:
+          name: paratechnical-computing-handbook
+          path: _book/
+          retention-days: 30

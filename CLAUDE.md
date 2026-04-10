@@ -6,36 +6,49 @@ This file guides Claude Code sessions working on this repository. Read it before
 
 ## Project Overview
 
-The **Paratechnical Computing Handbook** is a LaTeX textbook for undergraduate non-CS majors — students in social science, humanities, data science, and adjacent fields who use computing as a tool but haven't learned the systematic practices that surround it. The handbook fills the "hidden curriculum" gap: the skills that fall between knowing what to type and understanding how to work professionally.
+The **Paratechnical Computing Handbook** is a Quarto book for undergraduate non-CS majors — students in data science, social science, humanities, and adjacent fields who use computing as a tool but haven't learned the systematic practices that surround it. The handbook fills the "hidden curriculum" gap: the skills that fall between knowing what to type and understanding how to work professionally.
 
 **Authors:** Brian C. Keegan & Abram Handler
-**Format:** LaTeX using the Tufte-book class
-**Main file:** `!main.tex` (the exclamation mark makes it sort to the top)
+**Format:** [Quarto book](https://quarto.org/docs/books/) rendered to HTML (primary) and PDF
+**Intended use:** **Reference documentation**, not a front-to-back read. Each chapter is designed to stand on its own so a reader can drop in mid-book and still get value.
 
 ---
 
 ## How to Build
 
 ### Prerequisites
-- TeX Live Full (Linux/macOS) or MacTeX (macOS) or MiKTeX (Windows)
-- Packages used: `amsmath`, `enumitem`, `booktabs`, `titlesec`, `listings`, `fvextra`, `xcolor`, `hyperref`, `geometry`, `mdframed`, `fontenc`, `inputenc`, `microtype`, `datetime`, `graphicx`
-- Custom Tufte-book class files in the repo root: `tufte-book.cls`, `tufte-common.def`, `tufte.bst`
 
-### Compile
-Run `pdflatex` **twice** to resolve cross-references and the table of contents:
+- **Quarto ≥ 1.9.0** (required for `llms-txt` support) — https://quarto.org/docs/download/
+- **TinyTeX** for PDF rendering — `quarto install tinytex`
+- Optional: Python 3.11+ if you want to add executable code cells (not currently used)
+
+### Commands
 
 ```bash
-pdflatex "!main.tex"
-pdflatex "!main.tex"
+# Live preview (auto-rebuild on save)
+quarto preview
+
+# Full render to all formats (HTML + PDF)
+quarto render
+
+# Render just HTML
+quarto render --to html
+
+# Render just PDF
+quarto render --to pdf
 ```
 
-Run a third time if cross-reference page numbers in the output show `??`.
+Output lands in `_book/` (gitignored). The landing page is `_book/index.html`. The PDF is `_book/Paratechnical-Computing-Handbook.pdf`. The LLM-friendly files are `_book/llms.txt` and one `*.llms.md` per chapter.
 
 ### Verify
-After compilation, check:
-- No `Undefined reference` warnings
-- Table of contents renders correctly
-- All `\ref{}` commands resolve (no `??` in PDF)
+
+After `quarto render`:
+
+- **Zero warnings** from `quarto render`.
+- `_book/index.html` opens and the sidebar lists all six parts with their chapters.
+- `_book/llms.txt` exists and enumerates all chapters.
+- At least a handful of `@sec-*` cross-references resolve (click through in HTML).
+- `_book/Paratechnical-Computing-Handbook.pdf` renders without LaTeX errors.
 
 ---
 
@@ -44,232 +57,284 @@ After compilation, check:
 ```
 ParatechnicalComputingHandbook/
 │
-├── !main.tex                        # Master document: preamble, \input order
-├── ch00_introduction.tex            # Introduction (no label needed)
-├── ch20_conclusion.tex              # Conclusion chapter
-├── ch99_appendices.tex              # Appendices (glossary / how-tos)
-├── references.bib                   # BibTeX bibliography
+├── _quarto.yml                      # book config (HTML + PDF, llms-txt: true)
+├── index.qmd                        # landing page (Introduction)
+├── conclusion.qmd                   # final chapter
+├── appendix-glossary.qmd            # Appendix A (glossary with term anchors)
+├── references.bib                   # BibTeX bibliography (22 entries)
+├── .github/workflows/build-book.yml # CI: renders HTML + PDF on push/PR
 │
-├── tufte-book.cls                   # Tufte book class — DO NOT EDIT
-├── tufte-common.def                 # Tufte common definitions — DO NOT EDIT
-├── tufte.bst                        # Tufte bibliography style — DO NOT EDIT
+├── parts/
+│   ├── part-1-practice/             # Part I — Practice of Technical Work
+│   │   ├── questions.qmd
+│   │   ├── documentation.qmd
+│   │   ├── debugging.qmd
+│   │   ├── tracebacks.qmd           # NEW (gap chapter)
+│   │   └── ai-llm.qmd
+│   ├── part-2-environment/          # Part II — Computing Environment
+│   │   ├── operating-system.qmd
+│   │   ├── file-system.qmd
+│   │   ├── terminal.qmd
+│   │   ├── text-editors.qmd
+│   │   └── remote.qmd
+│   ├── part-3-python/               # Part III — Python Management
+│   │   ├── package-management.qmd
+│   │   ├── virtual-environments.qmd # NEW (gap chapter)
+│   │   ├── jupyter.qmd
+│   │   ├── scripting.qmd
+│   │   └── testing.qmd              # NEW (gap chapter)
+│   ├── part-4-data/                 # Part IV — Working with Data
+│   │   └── data-file-formats.qmd    # NEW (gap chapter)
+│   ├── part-5-projects/             # Part V — Project Management
+│   │   ├── project-management.qmd
+│   │   ├── version-control.qmd
+│   │   ├── collaboration.qmd
+│   │   └── automation.qmd
+│   └── part-6-algorithmic/          # Part VI — Algorithmic Systems
+│       ├── llm-internals.qmd
+│       ├── ai-agents.qmd
+│       └── evaluating-ai.qmd
 │
-├── Part I - Practice of Technical Work/
-│   ├── questions.tex                # Asking Technical Questions (ch:asking-questions)
-│   ├── documentation.tex            # Technical Documentation (ch:documentation)
-│   ├── debugging.tex                # Debugging (ch:debugging)
-│   └── ai_llm.tex                   # Using AI Tools (ch:ai-llm)
-│
-├── Part II - Computing Environment/
-│   ├── operating_system.tex         # Operating System (ch:os-management)
-│   ├── file_system.tex              # Local File System (ch:filesystem)
-│   ├── terminal.tex                 # Command Line (ch:terminal)
-│   ├── text_editors.tex             # Text Editors (ch:text-editors)
-│   └── remote.tex                   # Remote Computing (ch:remote-computing)
-│
-├── Part III - Python Management/
-│   ├── package_management.tex       # Package Management (ch:pkg-mgmt)
-│   ├── jupyter.tex                  # Jupyter (ch:jupyter)
-│   └── scripting.tex                # Scripting (ch:scripts-vs-notebooks)
-│
-├── Part IV - Project Management/
-│   ├── project_management.tex       # Project Management (ch:project-management)
-│   ├── version_control.tex          # Version Control (ch:git-github)
-│   ├── collaboration.tex            # Collaboration Mechanics (ch:collaboration)
-│   └── automation.tex               # Automation (ch:automation)
-│
-└── graphics/                        # PNG images referenced in chapters
+└── graphics/                        # PNGs referenced from chapters
 ```
+
+**Naming rules:**
+
+- Directory slugs: lowercase, hyphens, `part-N-<topic>` (no spaces, no uppercase).
+- Chapter file slugs: lowercase, hyphens (`virtual-environments.qmd`, not `virtual_environments.qmd` — underscores collide with Quarto's section-ID syntax).
+- Section IDs: `{#sec-<slug>}`, matching the chapter file name without the extension.
 
 ---
 
-## Chapter Labels (for \ref{})
+## Section Labels (for `@sec-*` cross-references)
 
-Every content chapter already has a `\label{}` immediately after `\chapter{}`. Use these labels for cross-references:
+Every chapter has an explicit H1 section ID immediately after the heading. Use them in other chapters with `@sec-<name>`.
 
 | Chapter | Label |
-|---------|-------|
-| Asking Technical Questions | `\ref{ch:asking-questions}` |
-| Technical Documentation | `\ref{ch:documentation}` |
-| Debugging | `\ref{ch:debugging}` |
-| Using AI Tools | `\ref{ch:ai-llm}` |
-| Operating System | `\ref{ch:os-management}` |
-| Local File System | `\ref{ch:filesystem}` |
-| Command Line | `\ref{ch:terminal}` |
-| Text Editors | `\ref{ch:text-editors}` |
-| Remote Computing | `\ref{ch:remote-computing}` |
-| Package Management | `\ref{ch:pkg-mgmt}` |
-| Jupyter | `\ref{ch:jupyter}` |
-| Scripting | `\ref{ch:scripts-vs-notebooks}` |
-| Project Management | `\ref{ch:project-management}` |
-| Version Control | `\ref{ch:git-github}` |
-| Collaboration Mechanics | `\ref{ch:collaboration}` |
-| Automation | `\ref{ch:automation}` |
+|---|---|
+| Asking Technical Questions | `@sec-asking-questions` |
+| Technical Documentation | `@sec-documentation` |
+| Debugging | `@sec-debugging` |
+| Reading Python Tracebacks | `@sec-tracebacks` |
+| Using AI Tools | `@sec-ai-llm` |
+| Operating System | `@sec-os-management` |
+| Local File System | `@sec-filesystem` |
+| Command Line | `@sec-terminal` |
+| Text Editors | `@sec-text-editors` |
+| Remote Computing | `@sec-remote-computing` |
+| Package Management | `@sec-pkg-mgmt` |
+| Virtual Environments | `@sec-virtual-environments` |
+| Jupyter | `@sec-jupyter` |
+| Scripting | `@sec-scripts-vs-notebooks` |
+| Testing Basics with pytest | `@sec-testing` |
+| Data File Formats | `@sec-data-file-formats` |
+| Project Management | `@sec-project-management` |
+| Version Control | `@sec-git-github` |
+| Collaboration Mechanics | `@sec-collaboration` |
+| Automation | `@sec-automation` |
+| LLM Internals | `@sec-llm-internals` |
+| AI Agents | `@sec-ai-agents` |
+| Evaluating AI | `@sec-evaluating-ai` |
+| Glossary (appendix) | `@sec-glossary` |
 
-**Inline reference format:**
-```latex
-(see Chapter~\ref{ch:debugging})
+**Inline reference form:**
+
+```markdown
+See @sec-debugging for the investigative loop.
 ```
 
-**Margin note format** (use when the reference is supplementary, not essential):
-```latex
-\marginnote{Debugging techniques are covered in Chapter~\ref{ch:debugging}.}
-```
+Quarto auto-prefixes `Chapter` when rendering, so do **not** write "Chapter @sec-debugging" — it becomes "Chapter Chapter 4 Debugging."
 
 ---
 
 ## Style Guide
 
 ### Tone and Voice
-- **Friendly guide** — warm, second-person, like a knowledgeable senior colleague
-- Always address the reader as **"you"** (not "the user", "the student", "one", or "a reader")
-- Empathetic about frustration; high expectations about capability
-- Direct and imperative for instructions: "Run this command", "Check the version"
-- Non-judgmental about mistakes and questions
 
-### Chapter Structure (canonical — every content chapter follows this)
-1. `\section*{Purpose}` — one to three paragraphs explaining why this chapter exists
-2. `\section*{Learning objectives}` — numbered list; intro always: *"By the end of this chapter, you should be able to:"*
-3. `\section*{Running theme: <short phrase>}` — one-sentence principle for the chapter
-4. `\section{...}` — numbered content sections
-5. `\section{Worked examples (outline)}` — subsections with bullet-list outlines
-6. `\section{Templates}` — subsections with `\begin{verbatim}` blocks (not all chapters)
-7. `\section{Exercises}` — numbered list with `[noitemsep]`
-8. `\section{One-page checklist}` — bulleted list with `[noitemsep]`
-9. `\section{Quick reference: ...}` — optional; named consistently as "Quick reference: ..."
+- **Friendly guide** — warm, second-person, like a knowledgeable senior colleague.
+- Always address the reader as **"you"** (not "the user," "the student," "one," or "a reader").
+- Empathetic about frustration; high expectations about capability.
+- Direct and imperative for instructions: "Run this command," "Check the version."
+- Non-judgmental about mistakes and questions.
 
-### Formatting Rules
+### Canonical Chapter Structure
 
-**Lists:**
-```latex
-\begin{itemize}[noitemsep,topsep=0pt]
-  \item ...
-\end{itemize}
+Every content chapter follows this structure:
 
-\begin{enumerate}[noitemsep,topsep=0pt]
-  \item ...
-\end{enumerate}
+1.  `# Chapter Title {#sec-<slug>}` (H1 with explicit section ID)
+2.  **Prerequisites callout** (top of chapter, `::: {.callout-tip collapse="true"}`)
+3.  `## Purpose {.unnumbered}` — one to three paragraphs explaining why this chapter exists
+4.  `## Learning objectives {.unnumbered}` — numbered list; intro is always *"By the end of this chapter, you should be able to:"*
+5.  `## Running theme: <short phrase> {.unnumbered}` — one-sentence principle for the chapter
+6.  Numbered `## Section` blocks — main content
+7.  `## Worked examples` — numbered subsections
+8.  `## Templates` — reusable snippets (optional, varies by chapter)
+9.  `## Exercises` — numbered list
+10. `## One-page checklist` — bullet list for quick reference
+11. `## Quick reference: ...` — tables and one-liners (optional)
+
+### Prerequisites and see-also callout (chapter independence)
+
+Every content chapter begins with a collapsible callout that lists 0–3 prerequisite chapters and 0–3 related chapters. This is how we signal that each chapter is self-contained but linkable.
+
+```markdown
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites (read first if unfamiliar):** @sec-foo, @sec-bar.
+
+**See also:** @sec-baz, @sec-qux.
+:::
 ```
 
-**Code — multi-line blocks:**
-```latex
-\begin{verbatim}
-code goes here
-\end{verbatim}
+Inline `(see @sec-foo)` references are also fine inside prose — the two mechanisms reinforce each other.
+
+### Formatting Conventions
+
+**Emphasis:**
+
+```markdown
+**bold first definitions**   <!-- bold for first mention of a term -->
+*italic emphasis*            <!-- italic for concepts -->
+`code`                       <!-- backticks for commands/filenames -->
 ```
 
-**Code — inline:**
-```latex
-\texttt{command-name}
+**Lists:** plain markdown; no pandoc-style list options. Quarto respects list spacing automatically.
+
+**Code blocks:** fenced blocks with a language hint where it helps highlighting.
+
+````markdown
+```bash
+pip install pandas
 ```
 
-**Bold / emphasis:**
-```latex
-\textbf{important term}    % bold for first definitions
-\emph{concept}             % italic for emphasis
+```python
+df = pd.read_csv("data.csv")
+```
+````
+
+Non-executable code blocks are the default; the book does not currently use Jupyter/Python execution. If you add executable cells, use ` ```{python} ` and configure `execute: enabled: true`.
+
+**Citations:**
+
+```markdown
+[@wilson2017goodenough]
+[@wilson2017goodenough; @chacon2014progit]
 ```
 
-**Section headings by level:**
-```latex
-\section{Top-level numbered content section}
-\subsection{Sub-topic}
-\paragraph{Named inline break.}  % no extra space below
+Bibliography file: `references.bib` at the repo root. Bibliography rendering is handled automatically via `bibliography: references.bib` in `_quarto.yml`.
+
+**Links and margin notes:**
+
+```markdown
+[link text](https://example.com)
+
+^[A sidenote appears as a numbered margin note in HTML.]
+
+::: {.column-margin}
+![Caption.](graphics/figure.png){#fig-my-figure}
+:::
 ```
 
-**Unnumbered sections (Purpose, Learning objectives, Running theme only):**
-```latex
-\section*{Purpose}
-\section*{Learning objectives}
-\section*{Running theme: phrase here}
+**Callouts** (five flavors: `note`, `tip`, `warning`, `important`, `caution`):
+
+```markdown
+::: {.callout-note}
+A helpful note.
+:::
 ```
 
 **Cross-references:**
-```latex
-Chapter~\ref{ch:label}   % tilde prevents line break between "Chapter" and number
+
+- Section: `## Topic {#sec-topic}` → `@sec-topic`
+- Figure: `![Caption.](img.png){#fig-foo}` → `@fig-foo`
+- Table: `| col |\n|---|\n| data |` with `: Caption {#tbl-foo}` → `@tbl-foo`
+
+**Glossary links:**
+
+```markdown
+A [virtual environment](../../appendix-glossary.qmd#term-virtual-environment) is...
 ```
 
-**Citations:**
-```latex
-\cite{key}
-\cite{key1,key2}
-```
-
-**Links:**
-```latex
-\href{https://example.com}{link text}
-```
-
-**Margin notes** (Tufte feature):
-```latex
-\marginnote{Short supplementary note.}
-\sidenote{Numbered footnote in the margin.}
-```
+Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` anchor. Use these sparingly — link only on first use in a chapter.
 
 ### What Not to Change
-- **`tufte-book.cls`, `tufte-common.def`, `tufte.bst`** — template files; never edit these
-- **`!main.tex` preamble** — only add `\input{}` lines at the bottom when adding chapters; do not change package imports without a clear reason
-- **`\kibitz{}` and `\abe{}` comment macros** — these are author annotation macros that can be toggled on/off; leave them in place
+
+- `_quarto.yml` top-level structure without a reason. In particular, do not remove the sibling `website: { llms-txt: true }` block; Quarto 1.9.37 has a bug where `llms-txt` under `book:` does not activate llms.txt generation, but under `website:` it does. See @sec-automation analog in the issue tracker if you want to upstream this.
+- Section ID prefixes. They are baked into cross-references across the book.
 
 ---
 
 ## Common Tasks
 
 ### Add a new chapter
-1. Create `Part X - Name/new_chapter.tex`
-2. Add `\chapter{Title}\label{ch:slug}` at the top of the file
-3. Follow the canonical 8-section structure above
-4. Add `\input{Part X - Name/new_chapter}` in `!main.tex` at the correct position
-5. Run `pdflatex` twice to update the ToC
+
+1.  Create a file at `parts/part-N-<topic>/<slug>.qmd`.
+2.  Start the file with `# Chapter Title {#sec-<slug>}`.
+3.  Add the Prerequisites callout template (copy from any existing chapter).
+4.  Follow the canonical 8-section structure above.
+5.  Register the chapter in `_quarto.yml` under the appropriate `part:`.
+6.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
+7.  Run `quarto preview` and verify the sidebar and cross-references work.
 
 ### Add a cross-reference
-1. Confirm the target chapter has a `\label{ch:slug}` (all current chapters do)
-2. In the source chapter, add: `(see Chapter~\ref{ch:slug})`
-3. Run `pdflatex` twice; verify no `??` warnings
+
+1.  Confirm the target chapter has a `{#sec-<slug>}` on its H1 (all current chapters do; see the label table above).
+2.  Write `@sec-<slug>` in the source chapter. Quarto auto-prefixes "Chapter" on render.
+3.  Run `quarto render` and confirm no `Unable to resolve crossref` warnings.
 
 ### Add a figure
-1. Place the PNG in `graphics/`
-2. Use the Tufte margin figure for small images:
-   ```latex
-   \begin{marginfigure}
-     \includegraphics[width=\textwidth]{graphics/filename.png}
-     \caption{Caption text.}
-     \label{fig:slug}
-   \end{marginfigure}
-   ```
+
+1.  Place the PNG in `graphics/`.
+2.  Reference it with:
+
+    ```markdown
+    ::: {.column-margin}
+    ![Short descriptive caption.](graphics/filename.png){#fig-slug}
+    :::
+    ```
+
+3.  Cross-reference it in prose with `@fig-slug`.
 
 ### Add a bibliography entry
-1. Add the BibTeX entry to `references.bib`
-2. Cite with `\cite{key}` in the text
-3. The `\nobibliography` style is used — entries appear as inline citations only
+
+1.  Add the BibTeX entry to `references.bib`.
+2.  Cite with `[@key]` in the text.
+3.  Quarto renders the full bibliography at the end of the book automatically.
 
 ---
 
-## Gap Analysis (Known Missing Content)
+## Gap Chapter Backlog
 
-The following paratechnical topics are absent or under-served. These are candidates for future chapters or section additions:
+The first cut of the handbook added four high-priority gap chapters: `tracebacks`, `virtual-environments`, `testing`, and `data-file-formats`. The following remain as candidates for future work. Scaffolding each would be a good first PR for a contributor.
 
 **High priority:**
-- Testing (`pytest` basics, what a test is) — strongest case for a new `testing.tex` chapter in Part III
-- Reading Python tracebacks — new section in `debugging.tex`
-- Regular expressions — new section in `terminal.tex` under "Searching"
-- HTTP/APIs/`requests` — new section in Part III (`scripting.tex` or new chapter)
-- `.env` files and secrets hygiene — expand `terminal.tex` or `package_management.tex`
+
+- **Regular expressions** — new chapter in Part II or III (expand `terminal.qmd`'s "Searching" or stand alone).
+- **HTTP/APIs/`requests`** — new chapter in Part III or IV.
+- **`.env` files and secrets hygiene** — expand `package-management.qmd` or new short chapter.
+- **Reading official documentation / docstrings** — new section in `documentation.qmd`.
 
 **Medium priority:**
-- Code style/linting (`black`, `ruff`) — add to `scripting.tex` or `collaboration.tex`
-- How to read official documentation / docstrings — new section in `documentation.tex`
-- Data file formats (CSV vs JSON vs Parquet) — new section in `file_system.tex`
-- `venv` workflow — add subsection in `package_management.tex`
-- `pre-commit` hooks — add to `version_control.tex` or `automation.tex`
+
+- **Code style / linting (`black`, `ruff`)** — add to `scripting.qmd` or `collaboration.qmd`.
+- **Data dictionary / schema docs** — new section in `project-management.qmd`.
+- **`pre-commit` hooks** — add to `version-control.qmd` or `automation.qmd`.
+- **SQL basics** — new chapter in Part IV (Working with Data).
+- **Dataframe basics (pandas orientation)** — new chapter in Part IV for students who have literally never used pandas.
 
 **Lower priority:**
-- Shell scripting (bash `.sh`) — expand `automation.tex`
-- Profiling/performance (`%%timeit`, `cProfile`) — add to `jupyter.tex`
-- Containers/Docker intro — add to `automation.tex`
-- Markdown syntax — add to `documentation.tex`
+
+- **Shell scripting (bash `.sh`)** — expand `automation.qmd`.
+- **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd`.
+- **Containers / Docker intro** — add to `automation.qmd` or stand alone.
+- **Markdown syntax as its own reference** — add to `documentation.qmd`.
+- **Stack Overflow hygiene** — add to `asking-questions.qmd`.
 
 ---
 
 ## CI/CD
 
-A GitHub Actions workflow at `.github/workflows/build-pdf.yml` runs `pdflatex` on every push and PR using `xu-cheng/latex-action@v3`. The compiled PDF is uploaded as a build artifact named `handbook-pdf`. Check the Actions tab on GitHub to verify builds pass after edits.
+`.github/workflows/build-book.yml` runs `quarto render` on every push and PR, uploading the full `_book/` output as an artifact named `paratechnical-computing-handbook`. The workflow pins Quarto to 1.9.37 because the `llms-txt` feature requires 1.9.0+ and we want the exact same renderer in CI as locally.
+
+If you bump the Quarto version, also update the pin in `.github/workflows/build-book.yml` **and** the prerequisites in this file.

@@ -1,0 +1,109 @@
+# Glossary {#sec-glossary}
+
+This alphabetized glossary defines important terms from across the handbook so you can look up a word you hit mid-chapter without reading from the top. Each entry has an anchor ID that other chapters link to (for example, a mention of a **package manager** elsewhere in the book will be a direct link to the entry below).
+
+The "technology stack" is the collection of hardware and software systems that enables an application to run. On contemporary personal computers it includes the following components. If you know the name of the component that is confusing you, you will have more success finding help online or from your instructors and peers.
+
+### Application {#term-application}
+
+A self-contained program that allows a user to perform specific tasks. Applications are built differently depending on the operating system and typically need permission to access the file system to store and retrieve data. Microsoft Word and Excel, Google Chrome, and Apple Mail are all applications.
+
+### Channel {#term-channel}
+
+When you install packages using `conda`, it downloads packages from a *channel* — a named bin that holds packages you can choose. Most often you will download packages from a large channel called `conda-forge` using `-c conda-forge` in conda commands. If conda can't find a package, make sure you are using an appropriate channel.
+
+### Command line interface (CLI) {#term-cli}
+
+The most direct method for interacting with a computer's operating and file systems. A CLI accepts only specifically-formatted text commands to navigate the file system and run applications and scripts, but it is potentially more customizable than graphical interfaces. The macOS CLI lives in the "Terminal" application; the Windows CLI lives in "Command Prompt," "PowerShell," or "Windows Terminal."
+
+### CSV (Comma-Separated Values) {#term-csv}
+
+A plain-text file format for tabular data where each row is a line and each column is separated by a delimiter (traditionally a comma, sometimes a tab or semicolon). See @sec-data-file-formats for the quirks of reading CSVs reliably.
+
+### Driver {#term-driver}
+
+Software that interfaces between hardware and software (for example, allowing an operating system to receive information from your mouse and keyboard) or between software programs (for example, allowing your web browser to combine network packets into a complete data request). Your operating system will typically keep drivers for hardware like video cards, sound, and networking up-to-date.
+
+### Environment {#term-environment}
+
+Code on your computer does not run in isolation. To run a Python file you need a Python interpreter stored somewhere on your computer that reads and executes each line of your code. Your Python program will sometimes load files from a given directory or access packages stored somewhere on your machine. A program's *environment* is the combination of the interpreter, installed packages, environment variables, and working directory that the program uses to run. `conda` and `venv` both manage Python environments; see @sec-virtual-environments.
+
+### File system {#term-file-system}
+
+The software and hardware that store, retrieve, and organize the data folders, files, and their permissions for the users on your computer.
+
+### Graphical user interface (GUI) {#term-gui}
+
+A way of interacting with a computer by clicking on icons rather than typing text commands. The macOS file system is accessed graphically via "Finder"; the Windows file system is accessed via "File Explorer." You will sometimes hear GUI pronounced "ghee-you-eye" or "gooey."
+
+### JSON (JavaScript Object Notation) {#term-json}
+
+A plain-text file format for structured data that supports nested objects and arrays. It is the dominant format for data returned from web APIs. See @sec-data-file-formats.
+
+### Jupyter kernel {#term-kernel}
+
+The computational engine that executes the code in a Jupyter notebook. Each notebook is connected to a kernel; the kernel determines which Python interpreter (and therefore which environment) your code runs in. If your imports fail or the wrong version of a package shows up, check the kernel first. See @sec-jupyter.
+
+### Library {#term-library}
+
+A set of software resources that expand the functionality of a programming language. The basic version of Python only includes a core set of functionality; libraries like `numpy`, `pandas`, and `matplotlib` add numerical computation, data manipulation, and plotting. "Library" and "package" are often used interchangeably in Python.
+
+### Notebook {#term-notebook}
+
+An interactive document that mixes executable code, prose, and output. In Python, the Jupyter notebook format (`.ipynb`) is the dominant choice. A notebook runs in a particular environment; see @sec-jupyter.
+
+### Operating system {#term-operating-system}
+
+The software that coordinates the hardware (processor, hard drive, keyboard, mouse, and so on) and other software (file system, interfaces, programs, compilers, drivers, and so on) on your computer. macOS, Windows, and Linux are operating systems. See @sec-os-management.
+
+### Package {#term-package}
+
+Computer code that somebody else has already written and published for others to install and use. [numpy](https://numpy.org/) and [pandas](https://pandas.pydata.org/) are common packages for data science.
+
+### Package manager {#term-package-manager}
+
+A tool that installs, updates, and removes packages, tracking their versions and dependencies. `conda` and `pip` are the two package managers most commonly used in Python data science. See @sec-pkg-mgmt.
+
+### Parquet {#term-parquet}
+
+A column-oriented binary file format for tabular data, designed for fast reads of large datasets. Parquet files are smaller and faster to load than CSVs for analytical work. See @sec-data-file-formats.
+
+### PATH {#term-path}
+
+An environment variable that tells your computer where to look for programs. If you see errors like `command not found`, it often means a program you want is not on your `PATH`.
+
+### `pip` {#term-pip}
+
+A package manager for Python, typically paired with `venv`. See @sec-pkg-mgmt and @sec-virtual-environments.
+
+### Programming language {#term-programming-language}
+
+A structured language that a computer can execute. Python, Java, Ruby, C++, and JavaScript are examples. Languages share concepts like variables, loops, and functions but their syntax usually does not translate directly.
+
+### REPL (Read–Eval–Print Loop) {#term-repl}
+
+An interactive prompt that reads code, evaluates it, prints the result, and loops. Typing `python` with no arguments drops you into Python's REPL. Jupyter notebooks are a graphical form of REPL.
+
+### Script {#term-script}
+
+A file of source code intended to be executed as a program. In Python, a script is typically a `.py` file you run with `python script.py`. See @sec-scripts-vs-notebooks.
+
+### Terminal {#term-terminal}
+
+A program that launches a shell and shows its input and output in a window. "Terminal" and "shell" are sometimes used interchangeably, but technically the terminal is the window and the shell is the program that interprets your commands. See @sec-terminal.
+
+### Text editor {#term-text-editor}
+
+A program for editing files — like a word processor but for code. Common choices are VS Code, Sublime Text, Notepad++, vim, and emacs. See @sec-text-editors.
+
+### Traceback {#term-traceback}
+
+The sequence of function calls Python prints when an error occurs, showing the path from your entry point down to the line that raised the exception. Reading tracebacks is one of the highest-leverage debugging skills. See @sec-tracebacks.
+
+### Version {#term-version}
+
+An identifier (usually something like `1.2.3`) that marks a specific release of a package or language. Good package management pins the versions you depend on so your work reproduces later. See @sec-pkg-mgmt.
+
+### Virtual environment {#term-virtual-environment}
+
+An isolated Python installation scoped to a single project, so packages you install for one project don't leak into others. `python -m venv .venv` creates one; `source .venv/bin/activate` turns it on. See @sec-virtual-environments.

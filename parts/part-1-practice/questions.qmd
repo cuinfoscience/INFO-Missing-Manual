@@ -1,0 +1,570 @@
+# Asking Technical Questions {#sec-asking-questions}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites:** none. This chapter stands on its own.
+
+**See also:** @sec-documentation, @sec-debugging, @sec-ai-llm.
+:::
+
+## Purpose {.unnumbered}
+
+Computing education often assumes that students will "figure it out" when something breaks: how to describe an error, how to ask for help, and how to turn a confusing symptom into an answerable question. In practice, asking good technical questions is a core professional skill. It determines how quickly you can diagnose problems, how effectively you can use documentation, and how well you can collaborate with classmates, teaching assistants, colleagues, and online communities.
+
+This chapter teaches a repeatable method for asking questions that are specific, reproducible, and respectful of other people's time. It also explains why technical questions fail, how to make progress when you are stuck, and how to document your own work so that future you (or your teammates) can understand what happened.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Convert a vague problem statement ("it doesn't work") into a specific, testable question.
+
+2.  Produce a minimal, reproducible example (MRE) that someone else can run.
+
+3.  Provide the right context: environment, inputs, expected output, actual output, and what you tried.
+
+4.  Use a structured workflow to debug before you ask, so your question reflects real investigation.
+
+5.  Choose an appropriate help channel (instructor, teammate, issue tracker, forum) and follow its norms.
+
+6.  Close the loop by summarizing the solution for others and for your future self.
+
+## Running theme: make your question runnable {.unnumbered}
+
+The highest-impact upgrade you can make to a technical question is to ensure that another person could reproduce the issue (or at least understand exactly what you saw) without guessing. Good questions are not longer; they are *more structured*. They reduce uncertainty.
+
+## A mental model of technical help
+
+When you ask for help, you are not asking someone to read your mind. You are inviting them to participate in a small investigation. In that investigation, three things matter:
+
+1.  **The claim**: what you expected and what you observed.
+
+2.  **The evidence**: the smallest set of steps and artifacts that support the claim.
+
+3.  **The context**: the environment and constraints that shape what counts as a valid solution.
+
+If any of these are missing, helpers must fill the gaps by asking follow-up questions. That is normal, but it slows everything down. Your goal is not to impress people with technical vocabulary. Your goal is to supply the claim, evidence, and context so the investigation can start immediately.
+
+### Why "help me" fails
+
+Most unproductive questions have one of the following issues:
+
+-   **Ambiguous symptom**: "it doesn't work" without saying what "work" means.
+
+-   **Missing reproduction steps**: no clear sequence that triggers the issue.
+
+-   **No expected outcome**: we cannot tell whether the program is wrong or the expectation is.
+
+-   **No evidence**: no error message, no output, no screenshots, no code snippet.
+
+-   **Too much irrelevant detail**: a full notebook dump with no clue where to look.
+
+-   **The wrong channel**: asking for a deep debugging session in a venue designed for quick Q&A.
+
+The good news is that each failure mode has a direct fix.
+
+## Before you ask: a short self-debugging loop
+
+A productive question usually comes after 5--15 minutes of structured investigation. You are not required to solve the problem alone, but you should make a good-faith attempt to understand it. @sec-debugging develops this investigation mindset into a full systematic workflow; the triage loop here is your minimum viable version.
+
+### The 10-minute triage
+
+Use this checklist before you ask for help:
+
+1.  **Re-run once.** Many issues are transient or caused by stale state.
+
+2.  **Reduce scope.** Can you reproduce the issue in a smaller script or notebook cell?
+
+3.  **Read the error.** Copy it exactly; do not paraphrase it.
+
+4.  **Locate the first relevant line.** Stack traces often include many internal frames.
+
+5.  **Check recent changes.** What did you change last?
+
+6.  **Search with precision.** Use the exact error message and library name.
+
+7.  **Consult primary docs.** Look up the function you are using.
+
+8.  **Try one hypothesis.** Change one thing and observe the result.
+
+9.  **Record what you tried.** This becomes part of the question.
+
+10. **Stop when you are looping.** If you are repeating the same attempt, ask.
+
+This loop matters because it generates valuable information: what triggers the bug, what does not, and what you have ruled out. That is the raw material of a good question.
+
+### What counts as "what I tried"
+
+"What I tried" should be concrete actions with outcomes. Examples:
+
+-   "I verified the file exists with `ls` and it is in the correct folder."
+
+-   "I printed the dataframe columns and confirmed `date` is a string, not a datetime."
+
+-   "I tried `pip install package==1.2.3` and the import error changed to ..."
+
+Avoid vague statements like "I tried a bunch of things" or "I looked online." Your helper needs to know what is still possible.
+
+## The anatomy of a high-quality technical question
+
+A strong technical question can often be expressed using five fields:
+
+1.  **Goal**: what you are trying to do.
+
+2.  **Expected**: what you expected to happen.
+
+3.  **Actual**: what actually happened.
+
+4.  **Reproduction**: the minimal steps/code/data that reproduce the issue.
+
+5.  **Context**: environment details and constraints.
+
+This structure works across domains: Python errors, spreadsheet formulas, Git conflicts, file path confusion, and even conceptual misunderstandings.
+
+### Goal
+
+State your goal in one sentence. Good goals are verbs with objects:
+
+-   "Load a CSV into pandas and parse the date column."
+
+-   "Connect to the remote server via SSH and run JupyterLab."
+
+-   "Merge my feature branch into `main` without losing changes."
+
+The goal matters because sometimes the best help is not "fix this error" but "there is an easier way to achieve the goal."
+
+### Expected vs. actual
+
+Always distinguish between expected and actual behavior. This reduces confusion and helps others evaluate whether you are interpreting the output correctly.
+
+> Expected: a dataframe with 10 columns and a datetime index.
+>
+> Actual: `ValueError: time data ’2026/13/01’ does not match format %Y-%m-%d`.
+
+Note that the expected behavior is not a guess about what the library does; it is the behavior you intend for your program.
+
+### Reproduction
+
+If you can reproduce the problem reliably, you can probably solve it. If someone else can reproduce it reliably, they can help you quickly.
+
+A reproduction should specify:
+
+-   the exact command(s) you ran (including directory),
+
+-   the exact code snippet,
+
+-   the input data (or a small synthetic sample), and
+
+-   the output/error as text.
+
+### Context
+
+Context is the set of details that affect whether a solution will work:
+
+-   operating system (Windows/macOS/Linux),
+
+-   Python version and environment (conda, venv),
+
+-   package versions,
+
+-   hardware constraints (memory),
+
+-   whether you have admin access,
+
+-   whether the work is local or remote.
+
+You do not need to provide everything every time. Provide enough context to rule out major classes of problems.
+
+## Minimal Reproducible Examples (MREs)
+
+A minimal reproducible example is the most powerful tool you have for asking questions. It is also a tool for debugging yourself.
+
+### What "minimal" means
+
+"Minimal" does not mean tiny at all costs; it means "no irrelevant parts." An MRE includes only the elements required to trigger the issue.
+
+For example, if your notebook has 50 cells, but the error happens in one function call, your MRE might be a 10-line script that imports the same library, constructs a small input, and calls that function.
+
+### Three ways to build an MRE
+
+##### 1) Deletion.
+
+Start with your real code and delete pieces until the error goes away. The last version that still fails is your MRE.
+
+##### 2) Construction.
+
+Start from a blank script and add pieces until the error appears. This is slower, but it clarifies which part triggers the failure.
+
+##### 3) Substitution.
+
+Replace your real data with synthetic or small sample data that has the same structure. This is essential when your data are large, private, or messy.
+
+### A template for MREs
+
+The following template is appropriate for many Python questions:
+
+    # mre.py
+    import sys
+    import platform
+    import package  # replace
+
+    print("Python:", sys.version)
+    print("Platform:", platform.platform())
+    print("Package:", package.__version__)
+
+    # minimal input
+    x = ...
+
+    # reproduce
+    result = package.some_function(x)
+    print(result)
+
+When you share an MRE, you can delete the environment printouts if they are irrelevant, but they are valuable when version mismatches are common.
+
+## How much context is enough?
+
+Students often oscillate between too little context and too much. Use the following rule:
+
+> **Include anything a helper would need to run the same steps and see the same output.**
+
+If you are not sure, include the context once, and then trim based on feedback.
+
+### Environment context: the "three lines"
+
+For Python projects, the following three lines solve many mysteries:
+
+-   `python –version`
+
+-   `which python` (macOS/Linux) or `where python` (Windows)
+
+-   `pip show <package>` or `conda list <package>`
+
+These reveal whether you are using the environment you think you are using.
+
+### File system context
+
+If your issue involves missing files, always include:
+
+-   your current working directory,
+
+-   the relative/absolute path you used, and
+
+-   a directory listing showing whether the file exists.
+
+A surprising number of "file not found" errors are simply "you are in the wrong folder."
+
+## Choosing the right channel
+
+Different venues have different expectations.
+
+### In-class and office hours
+
+When asking instructors or TAs:
+
+-   Bring your MRE and the error text.
+
+-   Explain what you have tried.
+
+-   Be ready to reproduce the problem live.
+
+Office hours are not just for bugs. They are for clarifying concepts and improving your workflow.
+
+### Teammates
+
+When asking teammates:
+
+-   Respect their time by preparing a concise problem statement.
+
+-   Make it easy to help asynchronously (share a link, paste the error, summarize).
+
+-   Avoid dumping a full repository without guidance.
+
+### Issue trackers
+
+If your course uses GitHub Issues (or similar), treat an issue as a formal question with an audit trail.
+
+A good issue title is specific:
+
+> "`pd.read_csv` fails when `sep=’'͡` with UTF-8 BOM"
+
+Issues are excellent for:
+
+-   bugs that affect multiple people,
+
+-   questions whose answer should be preserved,
+
+-   tasks that require follow-up.
+
+### Public forums
+
+Public forums (Stack Overflow, GitHub Discussions, course Discords) can be extremely helpful. They also have norms:
+
+-   Show that you did basic investigation.
+
+-   Provide an MRE.
+
+-   Use a clear title.
+
+-   Avoid sharing sensitive data.
+
+If you are a beginner, do not worry about perfect terminology. Do worry about reproducibility and clarity.
+
+## Common traps and how to avoid them
+
+### The XY problem
+
+The XY problem is when you ask about your attempted solution (Y) instead of your real goal (X). Example:
+
+> "How do I parse this weird string with regex?" (Y)
+>
+> Real goal: "How do I extract the year from this date column?" (X)
+
+To avoid XY problems:
+
+-   State your goal first.
+
+-   Mention your attempted solution as one option.
+
+-   Invite alternatives.
+
+### Copying errors by hand
+
+Do not retype error messages. Copy and paste them as text. Retyping introduces mistakes and removes critical details.
+
+### Screenshot-only questions
+
+Screenshots are sometimes useful, but text is searchable and copyable. Prefer text for:
+
+-   stack traces,
+
+-   commands,
+
+-   code snippets.
+
+If you include a screenshot, also include the relevant text.
+
+### Sharing entire notebooks
+
+Large notebooks make it hard for helpers to find the failing region. If you must share a notebook, also:
+
+-   identify the cell that fails,
+
+-   provide an MRE,
+
+-   clear irrelevant outputs.
+
+## Using AI tools when asking questions
+
+AI tools can accelerate the process of forming a good question, but they can also produce misleading confidence. Use AI to improve *structure* and *communication*, not to outsource verification. @sec-ai-llm covers disciplined AI workflows in full, including verification loops, risk categories, and prompt patterns.
+
+### Good uses of AI in question formation
+
+-   Turn a messy description into a structured template (goal, expected, actual, reproduction).
+
+-   Suggest what environment details might matter.
+
+-   Help you reduce code to an MRE by proposing deletions.
+
+-   Propose search terms based on your exact error message.
+
+### Bad uses of AI in question formation
+
+-   Asking AI to "fix it" without reproducing the steps yourself.
+
+-   Pasting secrets, tokens, or private data.
+
+-   Accepting AI-suggested commands that you do not understand, especially with `sudo`.
+
+### A safe workflow
+
+1.  Reproduce the error.
+
+2.  Draft the question using the five-field structure.
+
+3.  Ask AI to improve clarity and completeness of context.
+
+4.  Verify any AI-proposed commands in official documentation.
+
+5.  Post the question.
+
+## Worked examples
+
+This section illustrates how vague questions become answerable.
+
+### Example 1: "Jupyter shows no notebooks"
+
+##### Vague question.
+
+"Jupyter opens but my notebook files aren't there."
+
+##### Revised question (structured).
+
+> Goal: Open `analysis.ipynb` in JupyterLab.
+>
+> Expected: JupyterLab file browser shows my `notebooks/` folder and `analysis.ipynb`.
+>
+> Actual: JupyterLab opens in a browser, but the file browser shows an empty directory that does not include my project.
+>
+> Reproduction:
+>
+>     cd ~/Desktop/project
+>     jupyter lab
+>
+> Context: macOS 14.3, conda env `ds101`, JupyterLab 4.1. I can see `notebooks/analysis.ipynb` in Finder.
+>
+> What I tried: restarted JupyterLab; confirmed I ran `cd` into the project; tried `jupyter lab –notebook-dir=.` and it worked.
+
+Notice how the revised question contains the seed of the solution: Jupyter was launching with a different working directory, and specifying `–notebook-dir=.` fixed it. Even if you did not know why, the helper can now explain it.
+
+### Example 2: "Git push rejected"
+
+##### Vague question.
+
+"Git won't let me push."
+
+##### Revised question.
+
+> Goal: Push my local commits on branch `feature-cleaning` to GitHub.
+>
+> Expected: `git push` updates the remote.
+>
+> Actual: `rejected` message saying the remote contains work I do not have locally.
+>
+> Reproduction:
+>
+>     git status
+>     # On branch feature-cleaning
+>
+>     git push
+>     # ! [rejected] feature-cleaning -> feature-cleaning
+>     # (fetch first)
+>
+> Context: I am collaborating with one teammate; we both push to the same branch.
+>
+> What I tried: I ran `git pull` and got a merge conflict in `cleaning.py`.
+
+Now a helper can quickly guide you: fetch/pull first, resolve conflicts, then push.
+
+### Example 3: "pandas read_csv weird columns"
+
+##### Vague question.
+
+"My CSV loads wrong."
+
+##### Revised question with an MRE.
+
+> Goal: Load a tab-delimited file into pandas.
+>
+> Expected: Columns are `name`, `age`, `city`.
+>
+> Actual: pandas creates a single column with the entire line as a string.
+>
+> Reproduction:
+>
+>     import pandas as pd
+>     from io import StringIO
+>
+>     raw = "name\tage\tcity\nAda\t35\tLondon\n"
+>     df = pd.read_csv(StringIO(raw))
+>     print(df.columns)
+>
+> Output:
+>
+>     Index(['name\tage\tcity'], dtype='object')
+>
+> Context: pandas 2.2.0.
+>
+> What I tried: setting `sep=’'͡` fixes it.
+
+This is a model question because the reproduction uses synthetic data and demonstrates the fix.
+
+## Closing the loop: after you get help
+
+Your responsibility does not end when you receive an answer.
+
+### Summarize the solution
+
+In a class forum, issue tracker, or chat thread, summarize:
+
+-   what the root cause was,
+
+-   what fixed it,
+
+-   what you learned (e.g., a principle about paths or environments).
+
+This turns one person's help into a reusable resource.
+
+### Update your documentation
+
+If the fix reveals a fragile step ("always activate the environment"), update your README or project notes so future you does not repeat the mistake.
+
+### Turn recurrent problems into checklists
+
+If you keep encountering the same class of errors, create a personal checklist. For example: "file not found" checklist, "import error" checklist, "git conflict" checklist.
+
+## Templates you can reuse
+
+### Template A: question skeleton (copy/paste)
+
+    Goal:
+    Expected:
+    Actual:
+    Reproduction steps (exact commands / minimal code):
+
+    Context (OS, versions, environment):
+
+    What I tried (and what happened):
+
+    What I think is happening (optional hypothesis):
+
+### Template B: minimal environment report
+
+    OS:
+    Python:
+    Environment (conda/venv):
+    Key packages + versions:
+    Working directory:
+
+### Template C: MRE checklist
+
+-   Uses the smallest amount of code that still fails.
+
+-   Uses public or synthetic data (no secrets).
+
+-   Includes exact error/output text.
+
+-   Includes all necessary imports.
+
+-   Uses explicit file paths or includes the file contents.
+
+## Exercises
+
+1.  Take three vague questions (from your own experience or provided by the instructor) and rewrite them using the five-field structure.
+
+2.  Create an MRE for a bug you encountered this week. Reduce it until it is fewer than 20 lines.
+
+3.  Practice the 10-minute triage loop on a new error and document each step you took.
+
+4.  Post a structured question to your course forum, then update it with a solution summary after you receive help.
+
+5.  Swap questions with a classmate: can they reproduce your MRE without asking you follow-ups?
+
+## One-page checklist
+
+-   My goal is stated as a verb + object.
+
+-   I clearly distinguish expected vs actual behavior.
+
+-   I include the smallest reproducible steps.
+
+-   I include the exact error/output as text.
+
+-   I include relevant environment context (OS, versions, env).
+
+-   I describe what I tried and what happened.
+
+-   I chose the right channel and followed its norms.
+
+-   I closed the loop with a summary and documentation update.

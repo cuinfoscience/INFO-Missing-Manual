@@ -1,8 +1,8 @@
 # Paratechnical Computing Handbook
 
-[![Build PDF](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-pdf.yml/badge.svg)](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-pdf.yml)
+[![Build book](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml/badge.svg)](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml)
 
-A textbook for the skills that fall between knowing what to type and working like a professional. The *Paratechnical Computing Handbook* teaches the "hidden curriculum" of computing: the tools, practices, and mental models that most courses assume you already know.
+A reference book for the skills that fall between knowing what to type and working like a professional. The *Paratechnical Computing Handbook* teaches the "hidden curriculum" of computing: the tools, practices, and mental models that most courses assume you already know.
 
 **Authors:** Brian C. Keegan & Abram Handler
 
@@ -10,104 +10,96 @@ A textbook for the skills that fall between knowing what to type and working lik
 
 ## Who this is for
 
-Undergraduate students in social science, humanities, data science, and adjacent fields who use Python and computing as tools. No prior CS background assumed. The handbook covers what happens around the code — environments, documentation, debugging, collaboration, and automation.
+Undergraduate students in data science, social science, humanities, and adjacent fields who use Python and computing as tools. No prior CS background assumed. The handbook covers what happens around the code — environments, documentation, debugging, collaboration, and automation — and is designed to be **used as reference documentation** rather than read front-to-back. Drop into any chapter that matches your current problem; each chapter opens with a "Prerequisites and see-also" callout linking to related material if you need more context.
 
 ---
 
-## Building the PDF
+## Building the book
 
 ### Prerequisites
 
-Install a full TeX Live distribution:
+- **Quarto ≥ 1.9.0** — https://quarto.org/docs/download/ (the `llms-txt` feature requires 1.9.0+)
+- **TinyTeX** for PDF rendering — run `quarto install tinytex` after installing Quarto
 
-| Platform | Installer |
-|----------|-----------|
-| Linux | `sudo apt install texlive-full` |
-| macOS | [MacTeX](https://www.tug.org/mactex/) |
-| Windows | [MiKTeX](https://miktex.org/) or WSL + `texlive-full` |
+### Commands
 
-### Compile
-
-Run `pdflatex` twice from the repository root (two passes are required to resolve the table of contents and cross-references):
+From the repo root:
 
 ```bash
-pdflatex "!main.tex"
-pdflatex "!main.tex"
+# Interactive preview with live reload
+quarto preview
+
+# Full render to HTML + PDF
+quarto render
+
+# HTML only (much faster iteration)
+quarto render --to html
+
+# PDF only
+quarto render --to pdf
 ```
 
-The output file is `!main.pdf`.
+Output lands in `_book/`:
 
-If cross-reference page numbers show as `??`, run a third pass:
-
-```bash
-pdflatex "!main.tex"
-```
+- `_book/index.html` — landing page for the HTML book
+- `_book/Paratechnical-Computing-Handbook.pdf` — printable PDF
+- `_book/llms.txt` and per-chapter `*.llms.md` — machine-readable versions designed to be ingested by LLMs (see https://quarto.org/docs/websites/website-llms.html)
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
 ParatechnicalComputingHandbook/
 │
-├── !main.tex                          # Master document
-├── ch00_introduction.tex              # Introduction
-├── ch20_conclusion.tex                # Conclusion
-├── ch99_appendices.tex                # Glossary and appendices
-├── references.bib                     # Bibliography
+├── _quarto.yml                      # book configuration
+├── index.qmd                        # landing page / introduction
+├── conclusion.qmd                   # final chapter
+├── appendix-glossary.qmd            # Appendix A — Glossary
+├── references.bib                   # BibTeX bibliography
 │
-├── Part I - Practice of Technical Work/
-│   ├── questions.tex                  # Asking Technical Questions
-│   ├── documentation.tex              # Technical Documentation
-│   ├── debugging.tex                  # Debugging
-│   └── ai_llm.tex                     # Using AI Tools
+├── parts/
+│   ├── part-1-practice/             # Part I — Practice of Technical Work
+│   ├── part-2-environment/          # Part II — Computing Environment
+│   ├── part-3-python/               # Part III — Python Management
+│   ├── part-4-data/                 # Part IV — Working with Data
+│   ├── part-5-projects/             # Part V — Project Management
+│   └── part-6-algorithmic/          # Part VI — Algorithmic Systems
 │
-├── Part II - Computing Environment/
-│   ├── operating_system.tex           # Operating System
-│   ├── file_system.tex                # Local File System
-│   ├── terminal.tex                   # Command Line
-│   ├── text_editors.tex               # Text Editors
-│   └── remote.tex                     # Remote Computing
-│
-├── Part III - Python Management/
-│   ├── package_management.tex         # Package Management
-│   ├── jupyter.tex                    # Jupyter
-│   └── scripting.tex                  # Scripting
-│
-├── Part IV - Project Management/
-│   ├── project_management.tex         # Project Management
-│   ├── version_control.tex            # Version Control
-│   ├── collaboration.tex              # Collaboration Mechanics
-│   └── automation.tex                 # Automation
-│
-└── graphics/                          # Images used in chapters
+├── graphics/                        # images used in chapters
+└── .github/workflows/build-book.yml # CI: renders HTML + PDF
 ```
 
 ---
 
-## Handbook Contents
+## Book contents
 
 | Part | Chapters | Theme |
 |------|----------|-------|
-| **I — Practice of Technical Work** | Asking Questions, Documentation, Debugging, AI Tools | Human and cognitive skills that underpin all technical work |
+| **I — Practice of Technical Work** | Asking Questions, Documentation, Debugging, Reading Tracebacks, AI Tools | Human and cognitive skills that underpin all technical work |
 | **II — Computing Environment** | OS, File System, Terminal, Text Editors, Remote Computing | The infrastructure you work inside |
-| **III — Python Management** | Package Management, Jupyter, Scripting | The Python working context |
-| **IV — Project Management** | Project Management, Version Control, Collaboration, Automation | Shipping and sustaining work with others |
+| **III — Python Management** | Package Management, Virtual Environments, Jupyter, Scripting, Testing | The Python working context |
+| **IV — Working with Data** | Data File Formats | Moving data from files into your analysis |
+| **V — Project Management** | Project Management, Version Control, Collaboration, Automation | Shipping and sustaining work with others |
+| **VI — Algorithmic Systems** | LLM Internals, AI Agents, Evaluating AI | Working with AI tools deliberately |
 
 ---
 
 ## Contributing
 
-Before contributing, read `CLAUDE.md` for the full style guide, chapter structure template, LaTeX conventions, and cross-reference patterns.
+Before contributing, read `CLAUDE.md` for the full style guide, chapter structure template, cross-reference syntax, and conventions.
 
 The short version:
-- Each content chapter follows an 8-section structure (Purpose → Learning objectives → Running theme → Content → Worked examples → Exercises → One-page checklist → optional Quick reference)
-- Tone: friendly guide, second-person ("you"), empathetic but rigorous
-- Lists use `[noitemsep,topsep=0pt]`; code blocks use `\begin{verbatim}` (multi-line) and `\texttt{}` (inline)
-- Cross-references use `Chapter~\ref{ch:label}` — see `CLAUDE.md` for the full label table
+
+- Each content chapter follows the canonical 8-section structure (Purpose → Learning objectives → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
+- Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.
+- Tone: friendly guide, second-person ("you"), empathetic but rigorous.
+- Cross-references: `@sec-<slug>` (see the label table in `CLAUDE.md`).
+- Citations: `[@bibkey]`, with entries in `references.bib`.
+- Formatting: `**bold**`, `*italic*`, `` `code` ``, fenced code blocks with language hints.
 
 ---
 
 ## CI
 
-Every push and pull request triggers a GitHub Actions workflow that compiles the handbook to PDF using `xu-cheng/latex-action`. The compiled PDF is available as a build artifact in the Actions tab.
+Every push and pull request triggers `.github/workflows/build-book.yml`, which runs `quarto render` in an Ubuntu runner with a pinned Quarto version and TinyTeX. The rendered `_book/` output is uploaded as an artifact named `paratechnical-computing-handbook` and retained for 30 days.

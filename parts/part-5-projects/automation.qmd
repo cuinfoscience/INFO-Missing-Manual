@@ -1,0 +1,493 @@
+# Automation {#sec-automation}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites (read first if unfamiliar):** @sec-terminal, @sec-scripts-vs-notebooks.
+
+**See also:** @sec-git-github, @sec-testing, @sec-remote-computing.
+:::
+
+## Purpose {.unnumbered}
+
+Automation is how you turn 'I can do this once'' into 'we can do this reliably.'' In data science and computing projects, automation reduces errors, makes work reproducible, and enables collaboration by ensuring that the same steps run the same way on every machine. This chapter introduces a practical automation ladder: (1) scripts, (2) task runners and rebuild tools, (3) scheduling, and (4) continuous integration (CI). It also shows how to incorporate AI tools responsibly to speed up routine work without weakening verification.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Identify tasks worth automating and write them as repeatable scripts.
+
+2.  Use a task runner / build tool (e.g., `make`) to create named, repeatable commands.
+
+3.  Understand incremental rebuilds (targets and dependencies) and why they save time.
+
+4.  Schedule scripts to run automatically (cron on Unix-like systems; Task Scheduler on Windows).
+
+5.  Explain what CI is and set up a basic CI workflow that runs on pushes and pull requests.
+
+6.  Add common CI checks: formatting, linting, tests, and artifact collection.
+
+7.  Manage automation hygiene: logs, exit codes, idempotence, and safe failure.
+
+8.  Use AI tools to draft automation artifacts (Makefiles, YAML workflows, docs) while maintaining human verification.
+
+## Running theme: make the correct path the easy path {.unnumbered}
+
+If running checks and builds is one command, people will do it. If it is a long checklist, people will skip it.
+
+## A mental model: the automation ladder
+
+### Level 0: manual commands
+
+-   You type commands repeatedly.
+
+-   Risk: missed steps, inconsistent runs.
+
+### Level 1: scripts
+
+-   Put the sequence in a `.py`, `.sh`, or `.ps1` file.
+
+-   Benefit: repeatability and shareability.
+
+### Level 2: task runners and rebuild tools
+
+-   Named tasks: `make test`, `make report`.
+
+-   Rebuild only what changed (dependency graph).
+
+### Level 3: schedulers
+
+-   Run tasks on a time-based schedule (daily, hourly).
+
+-   Benefit: unattended operation.
+
+### Level 4: CI
+
+-   Run checks automatically on every push/PR.
+
+-   Benefit: catches integration errors early; creates a shared quality gate.
+
+## Deciding what to automate (student-friendly heuristics)
+
+### Automate if
+
+-   you repeat the task more than twice,
+
+-   you need the task to be done the same way every time,
+
+-   mistakes are costly (grading, publication, deployment),
+
+-   teammates need a one-command workflow.
+
+### Do not automate (yet) if
+
+-   the process is still unclear,
+
+-   the task changes every hour,
+
+-   automation would hide important learning.
+
+### The "minimum viable automation" set
+
+-   One command to set up environment.
+
+-   One command to run a smoke test.
+
+-   One command to build core outputs.
+
+## Automation fundamentals: scripts that behave well
+
+### Exit codes and failure
+
+-   Success should exit with code 0.
+
+-   Failure should exit nonzero and print a clear message.
+
+### Idempotence and safe re-runs
+
+-   A task is idempotent if re-running it yields the same final state.
+
+-   Avoid scripts that require manual cleanup to rerun.
+
+### Inputs/outputs as first-class
+
+-   Treat file paths and parameters as explicit.
+
+-   Write outputs to predictable locations.
+
+-   Never overwrite raw data.
+
+### Logging and observability (intro)
+
+-   Print progress markers for long tasks.
+
+-   Save logs for scheduled/CI runs.
+
+## Repeatable tasks with `make` (and the idea of rebuilds)
+
+### Why use a task runner/build tool
+
+-   Memorability: `make lint` beats "remember five commands."
+
+-   Standardization: everyone runs the same targets.
+
+-   Incremental rebuilds: do less work when inputs haven't changed.
+
+### Makefile concepts
+
+Target
+
+:   What you want (e.g., `report.pdf`).
+
+Prerequisites
+
+:   Inputs the target depends on.
+
+Recipe
+
+:   Commands to build/update the target.
+
+### Phony targets for "commands"
+
+-   Targets that do not correspond to files (e.g., `test`, `clean`).
+
+-   Encourages a consistent interface.
+
+### A student target set (recommended)
+
+-   `make setup` (create env, install deps)
+
+-   `make format` (auto-format code)
+
+-   `make lint` (static checks)
+
+-   `make test` (unit tests / smoke tests)
+
+-   `make run` (execute pipeline)
+
+-   `make report` (generate figures/tables)
+
+-   `make clean` (remove generated artifacts)
+
+### Incremental builds for data pipelines (intro pattern)
+
+-   Raw data → processed data → figures → report.
+
+-   Each step becomes a target with prerequisites.
+
+-   Benefit: change one input and only downstream targets rebuild.
+
+## Scheduling scripts
+
+### Scheduling on macOS/Linux: cron (concept + safe usage)
+
+-   Cron runs commands when time fields match.
+
+-   Teach: absolute paths, explicit environment, redirected logs.
+
+-   Common novice bug: script works interactively but fails under cron due to PATH/env.
+
+### Scheduling on Windows: Task Scheduler (concept + CLI)
+
+-   Tasks can run periodically or at specific times.
+
+-   Teach: "Start in" directory, user account, and logging.
+
+### Scheduling hygiene
+
+-   Write logs to a known folder.
+
+-   Add timestamps to outputs.
+
+-   Avoid running overlapping copies (lock files / "already running" check).
+
+-   Alerting concept: what should happen if the job fails.
+
+## Rebuilds and repeatable workflows beyond `make`
+
+### Task runners as interfaces
+
+-   The main value is a stable command interface.
+
+-   Even if you do not use full dependency graphs, a task runner reduces friction.
+
+### Artifacts vs caches (concept)
+
+-   Cache: speed up by reusing dependencies.
+
+-   Artifact: save outputs of a run for inspection/download.
+
+## Continuous Integration (CI): automation as a quality gate
+
+### What CI is (student definition)
+
+-   Frequent integration into a shared branch.
+
+-   Each integration is verified by an automated build/test.
+
+-   Outcome: detect integration errors early.
+
+### CI events and triggers (GitHub Actions framing)
+
+-   Run on push and pull requests.
+
+-   Use path filters to avoid unnecessary runs.
+
+### Jobs, steps, runners
+
+-   A workflow is a set of jobs.
+
+-   Jobs run on runners (virtual machines).
+
+-   Steps are commands or reusable actions.
+
+### A minimal CI workflow for students
+
+1.  Check out code.
+
+2.  Set up language/runtime.
+
+3.  Install dependencies.
+
+4.  Run format/lint checks.
+
+5.  Run tests (or smoke tests).
+
+6.  Save logs/artifacts if failures occur.
+
+### CI performance hygiene
+
+-   Dependency caching to speed up installs.
+
+-   Matrix builds (optional): test multiple versions.
+
+-   Keep CI fast so it runs often.
+
+### CI security basics (novice-appropriate)
+
+-   Do not print secrets in logs.
+
+-   Understand the difference between untrusted PRs and trusted branches.
+
+-   Use least privilege for tokens and permissions.
+
+## Incorporating AI tools into automation (responsibly)
+
+### What AI is good for
+
+-   Drafting boilerplate: Makefiles, CI YAML, doc templates.
+
+-   Suggesting test cases and edge checks.
+
+-   Summarizing PRs and highlighting risk areas.
+
+### What AI is not good for (without verification)
+
+-   Inventing correct tool flags or syntax without testing.
+
+-   Making security decisions (permissions, secrets handling).
+
+-   "Fixing" failing CI by random changes.
+
+### Guardrails for AI-assisted automation
+
+-   Always run locally before trusting CI changes.
+
+-   Use small diffs: one change per PR.
+
+-   Require "how to test" steps in PR descriptions.
+
+-   Treat AI output as a draft; confirm against docs.
+
+-   Never paste secrets into prompts.
+
+### A practical workflow: AI as a junior assistant
+
+1.  You specify the intent and constraints.
+
+2.  AI drafts the file (Makefile/workflow).
+
+3.  You validate against documentation.
+
+4.  You run smoke tests.
+
+5.  You open a PR and request review.
+
+## Common failure modes and fixes
+
+### "Works on my machine" automation
+
+-   Fix: pin dependencies, record environment, run in clean env/CI.
+
+### Scheduling failures (wrong PATH, wrong working directory)
+
+-   Fix: use absolute paths, set working directory, log environment.
+
+### CI failures due to missing files or secrets
+
+-   Fix: ensure CI does not depend on local files; store non-secret config in repo.
+
+### Slow CI that everyone ignores
+
+-   Fix: reduce scope, add caching, split jobs.
+
+### Automation that overwrites important artifacts
+
+-   Fix: write outputs to dedicated folders; add "are you sure" safeguards for destructive steps.
+
+## Worked examples (outline)
+
+### Example 1: Turn a 6-step checklist into `make` targets
+
+-   Create `make format`, `make test`, `make report`.
+
+-   Add a default target `make all`.
+
+### Example 2: Schedule a daily pipeline run
+
+-   Create a script with logs.
+
+-   Add a cron entry (macOS/Linux) or Task Scheduler entry (Windows).
+
+-   Verify outputs and failure behavior.
+
+### Example 3: Add GitHub Actions CI
+
+-   Run on push and pull request.
+
+-   Install deps, run tests.
+
+-   Upload artifacts on failure.
+
+### Example 4: Speed up CI with caching
+
+-   Add dependency caching.
+
+-   Compare runtimes before/after.
+
+### Example 5: Add pre-commit hooks + CI enforcement
+
+-   Run lightweight checks before commit.
+
+-   Ensure CI runs the same checks.
+
+### Example 6: Use AI to draft a workflow, then validate
+
+-   Draft YAML with AI.
+
+-   Verify triggers/permissions.
+
+-   Run locally and via PR.
+
+## Templates
+
+### Template A: Makefile skeleton (task interface)
+
+    .PHONY: help format lint test run report clean
+
+    help:
+    @echo "make format | lint | test | run | report | clean"
+
+    format:
+    ...
+
+    lint:
+    ...
+
+    test:
+    ...
+
+    run:
+    ...
+
+    report:
+    ...
+
+    clean:
+    ...
+
+### Template B: Cron entry (conceptual)
+
+
+    # minute hour day month weekday  command
+
+    # redirect stdout/stderr to a log file
+
+### Template C: Windows scheduled task (conceptual)
+
+
+    # schtasks /create ...
+
+    # run a script at a scheduled time with a named task
+
+### Template D: GitHub Actions workflow skeleton
+
+    name: CI
+    on:
+    push:
+    pull_request:
+
+    jobs:
+    test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up runtime
+    ...
+    - name: Install deps
+    ...
+    - name: Run checks
+    ...
+
+### Template E: PR checklist for automation changes
+
+
+    * What problem does this automation solve?
+    * How do I test it locally?
+    * What does it do on failure?
+    * Any permissions/secrets involved?
+    * Links to documentation
+
+## Exercises
+
+1.  Identify three repeated tasks in your project and turn them into `make` targets.
+
+2.  Create a script that writes logs and exits nonzero on failure.
+
+3.  Schedule the script (cron or Task Scheduler) and confirm it runs.
+
+4.  Add a CI workflow that runs tests on every pull request.
+
+5.  Add dependency caching and measure CI runtime change.
+
+6.  Add pre-commit hooks; mirror the same checks in CI.
+
+7.  Use an AI tool to draft a workflow file, then validate it against official docs and run a test PR.
+
+## One-page checklist
+
+-   I can turn multi-step tasks into one-command targets.
+
+-   My scripts have clear inputs/outputs and safe re-run behavior.
+
+-   Scheduled jobs use explicit paths, working directory, and logging.
+
+-   CI runs on pushes/PRs and includes a minimal quality gate.
+
+-   CI is fast enough to be used continuously; caching is used appropriately.
+
+-   Automation changes are documented and reviewed like code.
+
+-   AI assistance is used to draft, not to bypass verification.
+
+## Quick reference: common automation concepts
+
+-   Targets, prerequisites, recipes (rebuild logic).
+
+-   Schedulers: cron fields and Windows task schedules.
+
+-   CI: triggers, runners, jobs, artifacts, caches.
+
+-   Hygiene: idempotence, exit codes, logs, secrets.

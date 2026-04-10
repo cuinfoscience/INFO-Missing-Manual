@@ -1,0 +1,487 @@
+# Data File Formats {#sec-data-file-formats}
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites (read first if unfamiliar):** @sec-filesystem, @sec-scripts-vs-notebooks.
+
+**See also:** @sec-jupyter, @sec-pkg-mgmt, @sec-tracebacks.
+:::
+
+## Purpose {.unnumbered}
+
+A huge fraction of your time in a first data science course is spent moving data from a file into a pandas DataFrame. On paper, this is a one-liner: `pd.read_csv("data.csv")`. In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren't sheets, JSON that is almost but not quite valid.
+
+This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — [CSV](../../appendix-glossary.qmd#term-csv), TSV, [JSON](../../appendix-glossary.qmd#term-json), Excel, and [Parquet](../../appendix-glossary.qmd#term-parquet) — with the specific quirks of each, the `pandas` reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Pick the right file format for a given situation (and explain why).
+2.  Read a CSV reliably, controlling the delimiter, quoting, encoding, missing-value sentinels, and dtype inference.
+3.  Diagnose and fix the three most common `pd.read_csv` failures.
+4.  Read a JSON file into a DataFrame using `pd.read_json` or `json.load`, and handle nested structures with `pd.json_normalize`.
+5.  Read an Excel file, select a specific sheet, and handle merged cells and multi-level headers.
+6.  Explain when Parquet is the right choice and how to read/write it with `pd.read_parquet` / `df.to_parquet`.
+7.  Recognize text encoding errors (`UnicodeDecodeError`) and recover from them.
+8.  Follow a short checklist to validate that a file was loaded correctly before you start analysis.
+
+## Running theme: never trust a file you just read {.unnumbered}
+
+Always verify shape, columns, dtypes, and head/tail of a DataFrame in the cell right after `read_*`. Most data bugs are actually loading bugs in disguise.
+
+## 1. CSV: the workhorse, and its quirks
+
+A [CSV](../../appendix-glossary.qmd#term-csv) file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.
+
+It is also the most common source of data-loading bugs, for exactly the same reasons: "plain text" and "human-readable" leave a lot of room for inconsistency.
+
+### The simple case
+
+```python
+import pandas as pd
+df = pd.read_csv("sales.csv")
+```
+
+When this works, it works great. It rarely works the first time on a file you did not generate yourself. Here are the things `pd.read_csv` tries to do automatically and the parameters you use when it guesses wrong.
+
+### Delimiters other than comma
+
+Many files use tabs, semicolons, or pipes.
+
+```python
+df = pd.read_csv("sales.tsv", sep="\t")          # tab-separated
+df = pd.read_csv("european.csv", sep=";")        # common in European data
+df = pd.read_csv("weird.csv", sep="|")           # pipe-separated
+```
+
+A file with a `.csv` extension is *not guaranteed* to be comma-separated. Open the file in a text editor first and look at the first line. If columns are separated by something other than commas, pass `sep=` explicitly.
+
+You can also let pandas sniff:
+
+```python
+df = pd.read_csv("unknown.csv", sep=None, engine="python")
+```
+
+but sniffing is slower and occasionally wrong; it is a last resort, not a habit.
+
+### Encoding: `UnicodeDecodeError`
+
+You will eventually hit:
+
+```
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 42: invalid continuation byte
+```
+
+This means the file is not UTF-8. Data from Excel on Windows is often Latin-1 (a.k.a. `cp1252`). Try:
+
+```python
+df = pd.read_csv("legacy.csv", encoding="latin-1")
+```
+
+If that fails, try `encoding="cp1252"`, then `encoding="utf-16"`. If *none* work, the file is probably binary (it is not actually a CSV) or corrupted.
+
+### Missing values: the many faces of "nothing"
+
+Data comes with all kinds of sentinels for "this value is missing":
+
+-   `""` (empty string)
+-   `NA`, `N/A`, `n/a`
+-   `NULL`, `null`
+-   `-`, `--`
+-   `999`, `-999`, `9999` (the "numeric sentinel" tradition)
+-   blank cells
+
+`pd.read_csv` treats a small set (`NA`, `N/A`, `NULL`, empty) as missing by default, but not all. The rest will sneak in as strings and silently poison any numeric operation (see the `ValueError: could not convert string to float` example in @sec-tracebacks).
+
+Fix it at read time:
+
+```python
+df = pd.read_csv("survey.csv", na_values=["-", "--", "999", "n/a", "unknown"])
+```
+
+### Dtypes: the "everything is a string" trap
+
+If a single "bad" cell sneaks into a numeric column — maybe a footnote or an accidental space — pandas will read the entire column as `object` (string). You discover this later when `df["revenue"].sum()` concatenates strings instead of adding numbers.
+
+Two fixes:
+
+```python
+# Option 1: handle missing values at read time, as above
+df = pd.read_csv("revenue.csv", na_values=["-", ""])
+
+# Option 2: coerce after loading
+df["revenue"] = pd.to_numeric(df["revenue"], errors="coerce")
+```
+
+`errors="coerce"` turns unconvertible cells into `NaN`, which you can then inspect with `df["revenue"].isna().sum()`.
+
+Always check dtypes after loading:
+
+```python
+df.dtypes
+```
+
+If a column you expect to be numeric shows as `object`, you have a hidden non-number somewhere.
+
+### Dates
+
+pandas does not parse dates by default; dates come in as strings. Parse them at read time:
+
+```python
+df = pd.read_csv("sales.csv", parse_dates=["date"])
+```
+
+If pandas cannot guess the format and you see `2024-13-01` (January 13 in day-first locales) parsed as month 13, pass the format explicitly:
+
+```python
+df = pd.read_csv(
+    "sales.csv",
+    parse_dates=["date"],
+    date_format="%d/%m/%Y",
+)
+```
+
+### Headers and index columns
+
+A CSV with no header row:
+
+```python
+df = pd.read_csv("data.csv", header=None)
+```
+
+A CSV whose first column should become the DataFrame index:
+
+```python
+df = pd.read_csv("data.csv", index_col=0)
+```
+
+A CSV with metadata garbage above the header (comments, export timestamps, Excel dumps):
+
+```python
+df = pd.read_csv("export.csv", skiprows=3)       # skip 3 lines, then header
+```
+
+### Large files: do not read what you do not need
+
+If a CSV is bigger than your RAM, do not read it all at once.
+
+```python
+# Read only the columns you need
+df = pd.read_csv("huge.csv", usecols=["date", "store", "revenue"])
+
+# Read in chunks
+for chunk in pd.read_csv("huge.csv", chunksize=100_000):
+    process(chunk)
+```
+
+For files bigger than ~1 GB, also consider Parquet (see section 5) — it is faster and smaller.
+
+## 2. TSV and other delimited formats
+
+A TSV file is a CSV file where the delimiter is a tab. TSVs are marginally better than CSVs because tabs are very rarely used inside cell values, so quoting is less important. Read them with:
+
+```python
+df = pd.read_csv("data.tsv", sep="\t")
+```
+
+Everything else from the CSV section applies.
+
+## 3. JSON: when the structure is nested
+
+[JSON](../../appendix-glossary.qmd#term-json) is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.
+
+### Flat JSON
+
+If the file is a JSON array of flat objects, `pd.read_json` reads it directly:
+
+```python
+df = pd.read_json("users.json")
+```
+
+### Nested JSON
+
+Real-world API responses are rarely flat. A typical response looks like:
+
+```json
+{
+  "data": [
+    {"id": 1, "name": "Alice", "address": {"city": "Boulder", "zip": "80301"}},
+    {"id": 2, "name": "Bob",   "address": {"city": "Denver",  "zip": "80202"}}
+  ],
+  "meta": {"page": 1, "total": 2}
+}
+```
+
+Load it as Python data first, then flatten the list you actually want:
+
+```python
+import json
+import pandas as pd
+
+with open("users.json") as f:
+    payload = json.load(f)
+
+df = pd.json_normalize(payload["data"])
+# columns: id, name, address.city, address.zip
+```
+
+`pd.json_normalize` expands nested dictionaries into dot-separated column names, which is usually what you want.
+
+### Newline-delimited JSON (NDJSON / JSONL)
+
+Some data sources write one JSON object per line:
+
+```
+{"id": 1, "name": "Alice"}
+{"id": 2, "name": "Bob"}
+```
+
+Read it with:
+
+```python
+df = pd.read_json("events.jsonl", lines=True)
+```
+
+### JSON encoding gotchas
+
+-   JSON strings must be double-quoted. Files with single quotes will fail with `json.decoder.JSONDecodeError`.
+-   Trailing commas are not allowed in strict JSON. Some tools emit them; you may need to pre-process.
+-   JSON has no native date type — dates are always strings. Convert after loading with `pd.to_datetime(df["date"])`.
+
+## 4. Excel: the format you cannot escape
+
+Excel files (`.xlsx`, `.xls`) are not plain text. They are binary (or XML-in-a-zip for `.xlsx`) and contain one or more *sheets*, each with its own rows, columns, formulas, formatting, and occasional merged cells. pandas reads them via `openpyxl` (which you may need to install):
+
+```bash
+python -m pip install openpyxl
+```
+
+### Basic usage
+
+```python
+df = pd.read_excel("report.xlsx")              # reads the first sheet
+```
+
+### Multiple sheets
+
+```python
+df = pd.read_excel("report.xlsx", sheet_name="Sales")           # one sheet by name
+df = pd.read_excel("report.xlsx", sheet_name=0)                 # one sheet by index
+sheets = pd.read_excel("report.xlsx", sheet_name=None)          # dict of all sheets
+sheets = pd.read_excel("report.xlsx", sheet_name=["Sales","Q4"])# dict of some sheets
+```
+
+When you pass `sheet_name=None`, you get a dict mapping sheet name to DataFrame. Iterate or pick.
+
+### Dealing with messy Excel layouts
+
+Excel files are often designed for humans, not computers. Common issues:
+
+-   **Header rows buried below a title and blank rows.** Use `skiprows=`:
+    ```python
+    df = pd.read_excel("report.xlsx", skiprows=4)
+    ```
+-   **Multi-level column headers** (two header rows for grouped columns):
+    ```python
+    df = pd.read_excel("report.xlsx", header=[0, 1])
+    ```
+-   **Merged cells.** pandas unmerges them and fills only the top-left cell with the value; other cells become `NaN`. You may need to forward-fill: `df["group"] = df["group"].ffill()`.
+-   **Formulas.** pandas reads the last-computed *value* of a formula cell, not the formula. If Excel did not compute the formulas before saving, you get `NaN`.
+
+### Save back to Excel
+
+```python
+df.to_excel("cleaned.xlsx", index=False)
+```
+
+Always pass `index=False` unless you explicitly want the row index as a column.
+
+## 5. Parquet: the format for real data work
+
+[Parquet](../../appendix-glossary.qmd#term-parquet) is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need `pyarrow` installed:
+
+```bash
+python -m pip install pyarrow
+```
+
+### Reading and writing
+
+```python
+df = pd.read_parquet("sales.parquet")
+df.to_parquet("sales.parquet")
+```
+
+### Why Parquet instead of CSV
+
+-   **Smaller.** Parquet compresses columns individually. Expect 5–10× smaller than the equivalent CSV.
+-   **Faster.** Reading a Parquet file is 10–50× faster than reading a CSV of the same data, because it is binary and column-oriented.
+-   **Dtype-preserving.** Parquet stores dtypes natively — no more "why did my date column become a string?"
+-   **Column selection is free.** `pd.read_parquet("f.parquet", columns=["date", "revenue"])` reads only those columns from disk. CSVs must read the whole file and then drop columns in memory.
+
+### When not to use Parquet
+
+-   You need to open the file in a spreadsheet or text editor. Parquet is binary, so editors show garbage.
+-   You are handing the file to a collaborator who does not have pyarrow installed.
+-   The dataset is tiny (a few hundred rows) — the CSV is fine and everyone understands it.
+
+A common pattern: keep the raw data in CSV (or whatever you received), convert to Parquet once at the start of your pipeline, and do all subsequent reads from Parquet.
+
+```python
+raw = pd.read_csv("raw/sales.csv", parse_dates=["date"], na_values=["-", "N/A"])
+raw.to_parquet("intermediate/sales.parquet")
+
+# From now on, every notebook starts with:
+df = pd.read_parquet("intermediate/sales.parquet")
+```
+
+## 6. Text encoding in general
+
+If you remember only one thing about encoding, remember this: **encoding is the rule for turning bytes into characters.** UTF-8 is the standard for modern text and should be your default. Files that are not UTF-8 are usually Latin-1 (or `cp1252` on Windows), which covers Western European characters but not Greek, Cyrillic, Chinese, etc.
+
+To check a file's encoding, on macOS/Linux:
+
+```bash
+file -i data.csv
+```
+
+On Python, if you are unsure:
+
+```python
+with open("data.csv", "rb") as f:
+    raw = f.read(1000)
+raw[:100]   # look at the raw bytes
+```
+
+Unusual bytes like `\xe9` (é in Latin-1, invalid in UTF-8) are the telltale of a non-UTF-8 file.
+
+When you write a file yourself, always write UTF-8:
+
+```python
+df.to_csv("out.csv", index=False, encoding="utf-8")
+```
+
+## 7. Worked examples
+
+### Example 1: a "normal" CSV that is not normal
+
+You run:
+
+```python
+df = pd.read_csv("sales.csv")
+```
+
+and get:
+
+```
+ParserError: Error tokenizing data. C error: Expected 5 fields in line 237, saw 6
+```
+
+**Diagnosis:** line 237 has an extra field. Usually this means a cell in that row contains a comma that was not properly quoted, or the CSV has an inconsistent number of columns per row.
+
+**Fix:** open the file in a text editor, jump to line 237, and inspect. You will probably find a value like `"Acme, Inc."` that was written without quotes. If you cannot fix the source, read with a more forgiving parser:
+
+```python
+df = pd.read_csv("sales.csv", engine="python", on_bad_lines="warn")
+```
+
+This logs the bad lines and skips them, which is better than failing silently but worse than fixing the source.
+
+### Example 2: silent missing-value corruption
+
+You load a temperature dataset:
+
+```python
+df = pd.read_csv("weather.csv")
+df["temp_c"].mean()
+```
+
+and get:
+
+```
+ValueError: could not convert string to float: '-999'
+```
+
+**Diagnosis:** `-999` is a common "no reading" sentinel in weather data. pandas read the column as string because of it.
+
+**Fix:**
+
+```python
+df = pd.read_csv("weather.csv", na_values=["-999"])
+df["temp_c"].mean()   # now works, missing values are NaN
+```
+
+### Example 3: nested JSON from a web API
+
+You downloaded a GitHub API response:
+
+```python
+import json
+with open("repos.json") as f:
+    data = json.load(f)
+
+df = pd.json_normalize(data, record_path="items", meta=["total_count"])
+```
+
+`record_path="items"` tells pandas which nested list to flatten into rows; `meta=["total_count"]` adds the top-level metadata as extra columns on every row.
+
+### Example 4: Excel with a four-row banner
+
+```python
+df = pd.read_excel(
+    "quarterly_report.xlsx",
+    sheet_name="Q4 Sales",
+    skiprows=4,                  # skip the title, date, and blank rows
+    header=0,                    # first row after skipping is the header
+    usecols="B:G",               # only these columns (Excel letters!)
+)
+```
+
+## 8. Templates
+
+**A defensive `read_csv` that handles most of the common quirks:**
+
+```python
+df = pd.read_csv(
+    "data.csv",
+    sep=",",
+    encoding="utf-8",
+    na_values=["-", "--", "N/A", "NA", "n/a", "NULL", "null", "999", "-999"],
+    parse_dates=["date"],          # adjust to your date columns
+    dtype={"sku": "string"},       # force string dtype for columns you know are strings
+)
+```
+
+**A validation snippet to run after every load:**
+
+```python
+print("shape:", df.shape)
+print("columns:", df.columns.tolist())
+print(df.dtypes)
+print(df.head())
+print("nulls per column:")
+print(df.isna().sum())
+```
+
+## 9. Exercises
+
+1.  Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor, note the delimiter, the header row, and any obviously-missing-value sentinels. Then load it with `pd.read_csv`, passing the correct parameters the first time.
+2.  Deliberately save a CSV with `encoding="latin-1"` (e.g., a file with accented characters). Try to read it with the default UTF-8 and observe the `UnicodeDecodeError`. Then read it correctly.
+3.  Find a dataset with numeric sentinels for missing values (temperature, survey responses). Load it both ways — once without `na_values`, once with — and run `.describe()` on both. Compare.
+4.  Load a nested JSON file (e.g., a GitHub API response or a tweet dump). Use `pd.json_normalize` to flatten the records you care about.
+5.  Load an Excel file with multiple sheets. Use `sheet_name=None` to get a dict, then loop over it to print the shape of each sheet.
+6.  Convert a CSV you use often into Parquet. Compare file sizes and load times (`%time df = pd.read_csv(...)` vs `%time df = pd.read_parquet(...)`).
+7.  Write the "validate after load" snippet from section 8 as a reusable function `validate(df)` that prints the report. Put it in a module you can import from any notebook.
+
+## 10. One-page checklist
+
+-   Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.
+-   Default to UTF-8 encoding; fall back to Latin-1 / cp1252 only when needed.
+-   Pass `na_values=` liberally; domain data has its own missing-value sentinels.
+-   Use `parse_dates=` at read time instead of converting later.
+-   Check `df.shape`, `df.columns`, `df.dtypes`, and `df.head()` in the cell right after every `read_*`.
+-   If a numeric column shows up as `object`, you have hidden strings. Use `pd.to_numeric(..., errors="coerce")` to find them.
+-   Use Parquet for intermediate files and anything over ~100 MB.
+-   Always pass `index=False` when writing a CSV or Excel file unless you want the row index as a column.
+-   When in doubt, `df.head()` and `df.tail()` and trust your eyes over your assumptions.

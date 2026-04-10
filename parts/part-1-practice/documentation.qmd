@@ -1,0 +1,589 @@
+# Technical Documentation {#sec-documentation}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites:** none. This chapter stands on its own.
+
+**See also:** @sec-asking-questions, @sec-git-github, @sec-collaboration.
+:::
+
+## Purpose {.unnumbered}
+
+Computing courses often teach you *what* to type, but they do not always teach you how to learn what to type next. In real projects, the fastest path forward is rarely a memorized recipe. It is the ability to locate authoritative documentation, interpret it, test it against your situation, and---when needed---write documentation that helps other people reproduce, maintain, and extend your work.
+
+This chapter treats documentation as a practical tool and a collaborative artifact. You will learn how to (1) find documentation efficiently, (2) read it with the right level of skepticism and precision, and (3) write documentation that is usable by people who do not share your context. Along the way, we will separate different kinds of documentation (reference, tutorials, how-to guides, explanations), show how they support different questions, and give you templates you can reuse throughout the course.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Identify common documentation genres and choose the right one for your task.
+
+2.  Locate primary sources of truth (official docs, READMEs, man pages, API references) and distinguish them from secondary commentary.
+
+3.  Read documentation actively: extract assumptions, constraints, inputs/outputs, and failure modes.
+
+4.  Reconcile documentation with your local context (OS, version, environment, permissions) and confirm behavior with small experiments.
+
+5.  Write documentation that enables others to set up, run, and verify your work.
+
+6.  Maintain documentation as an ongoing practice: update it when code changes and record decisions that affect reproducibility.
+
+7.  Use AI tools to assist documentation work while maintaining verification, citations, and security hygiene.
+
+## Running theme: documentation is an interface {.unnumbered}
+
+Documentation is an interface between *your intent* and *someone else's understanding*. The "someone else" might be a teammate, a future version of you, or even a tool like a build system or continuous integration job. Good documentation lowers the cost of correct action and raises the cost of confusion.
+
+## A beginner mental model of documentation
+
+A common misconception is that documentation is a single thing: "the docs." In practice, documentation is a *stack* of artifacts produced by different actors and optimized for different questions. When you learn to navigate that stack, you stop treating confusion as personal failure and start treating it as a routing problem: "Which source should answer this question?"
+
+### Two complementary roles: learning and coordination
+
+Documentation does two jobs at the same time:
+
+-   **Learning support**: It teaches you how a tool works and how to use it.
+
+-   **Coordination support**: It aligns multiple people on how a project should be run, changed, and evaluated.
+
+Many frustrations occur when we ask documentation to do the wrong job. An API reference is a poor tutorial. A tutorial is a poor specification. A README is not a substitute for a change log.
+
+### A simple hierarchy of authority
+
+When sources conflict, it helps to rank them by authority and proximity:
+
+1.  **Primary sources**: official documentation, man pages, upstream source code, published specifications.
+
+2.  **Project-local sources**: your repository README, CONTRIBUTING guide, code comments, and issues.
+
+3.  **Secondary sources**: blog posts, videos, forum answers, AI-generated suggestions.
+
+Secondary sources can be valuable, especially for novices, but they are more likely to be outdated or context-specific. Your goal is to use them as *navigation aids* to primary sources, not as final authority.
+
+## Documentation genres and the questions they answer
+
+A useful classification (popularized in multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.
+
+### Reference documentation
+
+**Question it answers**: "What are the exact inputs, outputs, options, and behaviors?"
+
+Reference documentation includes:
+
+-   API references (functions, classes, parameters)
+
+-   command-line help and man pages
+
+-   configuration schemas
+
+Reference is dense, structured, and typically not narrative. It is the place you go to settle precise details.
+
+### Tutorials
+
+**Question it answers**: "How do I learn this from scratch in a guided way?"
+
+Tutorials are linear and scaffolded. They assume you have time to follow a sequence and that you want a working example even if you do not fully understand every piece yet.
+
+### How-to guides
+
+**Question it answers**: "How do I accomplish a specific task?"
+
+How-to guides are goal-oriented and practical. They should be short, focused, and opinionated about the steps.
+
+### Explanations and concepts
+
+**Question it answers**: "Why does this work that way?" or "What is the mental model?"
+
+Concept docs clarify terminology, architecture, trade-offs, and design rationale. This is often where you learn what not to do.
+
+### Why this classification matters
+
+When a student says "I read the docs and still don't get it," the hidden question is often: "Which kind of docs did you read, and which kind did you need?" A quick diagnostic:
+
+-   If you cannot find the correct function name, you need a **tutorial** or **how-to**.
+
+-   If you know the function name but not the parameter, you need **reference**.
+
+-   If you keep making the same conceptual mistake, you need **explanations**.
+
+## Finding documentation efficiently
+
+Finding documentation is a skill because the web contains too much material, and search engines optimize for popularity rather than correctness. You should develop a repeatable workflow that reliably gets you to primary sources.
+
+### Start with "what is the object?"
+
+Your first step is to identify what you are dealing with:
+
+-   A **language feature** (Python list slicing)
+
+-   A **library** (pandas, numpy, scikit-learn)
+
+-   A **tool** (Git, conda, Jupyter)
+
+-   A **platform** (GitHub Actions, Windows Task Scheduler)
+
+-   A **file format** (CSV, JSON, Parquet)
+
+Once you know the object class, you know where "official" information is most likely to live.
+
+### Search queries that route you to primary sources
+
+Novices often search for "how to do X" and end up in secondary sources. Instead, search for:
+
+-   `<tool> documentation <topic>` (e.g., `pip documentation requirements.txt`)
+
+-   `<library> API <function>` (e.g., `pandas API read_csv`)
+
+-   `<tool> man page <command>` (e.g., `ssh man page ProxyJump`)
+
+-   `<error message>` + `<library>` + `version` (when relevant)
+
+If you land on a blog, use it to extract keywords (function names, flags, concepts), then jump to the official docs.
+
+### Know the "home bases"
+
+A small set of sites recur in data science work:
+
+-   Python packaging and installation: [@python_packaging_user_guide; @pip_user_guide; @conda_manage_environments]
+
+-   Jupyter ecosystem: [@project_jupyter_docs; @jupyterlab_docs]
+
+-   Version control and collaboration: [@chacon2014progit]
+
+You do not need to memorize URLs. You do need to recognize which domains and organizations produce the authoritative references for a given tool.
+
+### Use built-in documentation before the web
+
+Before you open a browser, check what is already available locally:
+
+-   **Command line**: `tool –help`, `man tool`, or `help tool`
+
+-   **Python**: `help(obj)` and `obj? ` in Jupyter
+
+-   **R**: `?function` and `help(function)`
+
+-   **Git**: `git help <subcommand>`
+
+Local help is often aligned with your installed version, which is exactly what you need when version differences matter.
+
+## Reading documentation actively
+
+Reading technical documentation is not like reading a novel. You do not "consume" it from start to finish. You interrogate it.
+
+### The "extract five facts" method
+
+For a function, command, or tool behavior, extract:
+
+1.  **Inputs**: required arguments and accepted types
+
+2.  **Outputs**: return types, files created, side effects
+
+3.  **Defaults**: what happens if you do nothing special
+
+4.  **Constraints**: version requirements, OS restrictions, permissions
+
+5.  **Failure modes**: common errors and their meaning
+
+If you cannot locate these, you may be in the wrong documentation genre.
+
+### Identify assumptions and hidden context
+
+Documentation frequently assumes:
+
+-   you are in the right directory,
+
+-   your environment is activated,
+
+-   you have network access,
+
+-   you have permissions to read/write certain paths,
+
+-   your input data match a schema.
+
+As you read, ask: "What must be true for these steps to work?" Then compare those assumptions to your situation.
+
+### Examples are executable contracts
+
+Examples are not decoration. They are the closest thing documentation has to a contract. When you see an example:
+
+-   copy it into a scratch file,
+
+-   run it with the same version you have,
+
+-   modify one variable at a time to map it onto your goal.
+
+If the example fails on your machine, you have learned something important: either the docs are out of date, you are in a different version, or you misunderstood a prerequisite.
+
+### Beware the "happy path"
+
+Tutorials often show the happy path: clean inputs, correct permissions, and a fresh environment. Real work includes:
+
+-   missing files,
+
+-   corrupted data,
+
+-   partial installs,
+
+-   conflicting versions,
+
+-   network interruptions.
+
+When you read docs, look for sections labeled "Troubleshooting," "Common issues," "FAQ," "Compatibility," and "Upgrading."
+
+## Reconciling documentation with versions and environments
+
+A high percentage of "the docs are wrong" complaints are actually version mismatches. The documentation might be correct for *some version* of the tool, just not yours.
+
+### Always capture version context
+
+When you are stuck, record:
+
+-   tool or library version,
+
+-   operating system,
+
+-   Python version (if relevant),
+
+-   environment manager (conda, pip, venv),
+
+-   where the executable is located.
+
+This practice aligns with broader reproducibility guidance [@wilson2017goodenough; @turingway2025zenodo]. It also makes questions answerable (see @sec-asking-questions).
+
+### Doc version selectors and release notes
+
+Many doc sites include version selectors. If your library has major versions, explicitly pick the correct one. When behavior changes, consult release notes or change logs. (You do not need to read every change; you need to confirm whether your symptom matches a known change.)
+
+### The "pin or upgrade" decision
+
+When documentation and behavior mismatch, you often face a decision:
+
+-   **Pin**: keep your environment as-is and use docs for your version.
+
+-   **Upgrade**: move to the current version and follow the latest docs.
+
+For class projects, upgrading is often fine if it does not break the assignment. For collaborative projects, pinning is often safer to preserve team consistency. Either way, write the choice down in your project documentation.
+
+## Project-local documentation: READMEs and runbooks
+
+A project README is the most important document in your repository. It is the front door. It should answer: "What is this?" and "How do I run it?"
+
+### Minimum viable README
+
+A minimal README for a class project should include:
+
+1.  **One-paragraph purpose**: what the project does and why.
+
+2.  **Setup**: environment creation and dependency installation.
+
+3.  **How to run**: exact commands.
+
+4.  **Expected outputs**: what files or results should appear.
+
+5.  **Project structure**: what key folders contain.
+
+6.  **Data notes**: where data come from and any restrictions.
+
+This is not busywork. It is an investment that pays back the first time you return to the project after a week.
+
+### Runbooks and operational docs
+
+When a project has recurring operational tasks (refresh data, rebuild figures, re-run pipeline), create a short runbook:
+
+-   What the task is
+
+-   When to run it
+
+-   The command to run it
+
+-   Where logs and outputs go
+
+-   What to do when it fails
+
+Runbooks are especially valuable when tasks become automated (see the automation chapter in your handbook).
+
+## Writing documentation that people actually use
+
+The hard part of writing documentation is not typing words. It is choosing what to include and what to omit.
+
+### Write for a specific reader
+
+Before you write, decide:
+
+-   Who is the reader (classmate, TA, future you)?
+
+-   What do they already know?
+
+-   What do they need to accomplish?
+
+Documentation that tries to serve everyone often serves no one. Prefer clear, scoped docs over universal docs.
+
+### Structure beats cleverness
+
+Use predictable headings and consistent patterns. For procedural docs, a reliable structure is:
+
+1.  Purpose
+
+2.  Prerequisites
+
+3.  Steps (numbered)
+
+4.  Verification (what "success" looks like)
+
+5.  Troubleshooting (common failures)
+
+If your reader can skim the headings and understand the shape, you have already reduced friction.
+
+### Make commands copyable
+
+When documentation includes commands:
+
+-   use code blocks,
+
+-   include the working directory context,
+
+-   avoid placeholders unless you explain them,
+
+-   show expected output when useful.
+
+A common novice mistake is to document "run the script" without specifying *which environment*, *from which folder*, and *with which parameters*.
+
+### Document intent, not just mechanics
+
+Good docs explain *why* key steps exist:
+
+-   Why you pin versions
+
+-   Why you never edit raw data in place
+
+-   Why you run formatting checks before committing
+
+A short rationale prevents future collaborators from "optimizing away" the steps that preserve correctness.
+
+### Use examples as anchors
+
+For conceptual documentation, include one example that is fully worked:
+
+-   a real command invocation,
+
+-   a real function call with realistic inputs,
+
+-   a sample configuration file.
+
+Examples turn abstract descriptions into something testable.
+
+## Documentation maintenance as a habit
+
+Documentation is not a one-time deliverable. It is a living layer that must move with your code.
+
+### Docs are part of "done"
+
+Adopt a simple policy: if a change affects how someone uses the project, update the docs in the same pull request. This prevents drift and reduces the cognitive load of "remembering to update later."
+
+### When docs drift, treat it as a bug
+
+If instructions stop working, file an issue. Drift is not shameful; it is normal. The problem is leaving drift invisible.
+
+### Decision logs and "why we chose this"
+
+Some choices are not obvious from code:
+
+-   why you selected a dataset,
+
+-   why you used a specific model or parameter,
+
+-   why you excluded certain records,
+
+-   why you used one workflow rather than another.
+
+A lightweight decision log prevents repeated debates and helps future readers interpret results. This practice aligns with reproducible project guidance [@turingway2025zenodo; @wilson2017goodenough].
+
+## AI tools in documentation workflows
+
+AI tools can help with documentation, but they also introduce risks: hallucinated facts, mismatched versions, and accidental leakage of sensitive data. The goal is to use AI as an assistant for drafting and structuring, not as an authority.
+
+### High-value uses
+
+AI tools can be effective for:
+
+-   drafting a README skeleton from a project structure,
+
+-   rewriting rough notes into a coherent how-to guide,
+
+-   generating consistent templates (issue forms, PR checklists),
+
+-   proposing likely troubleshooting steps (to be verified),
+
+-   improving clarity and concision for a novice audience.
+
+### Guardrails
+
+Use the following guardrails:
+
+1.  **Never paste secrets**: tokens, keys, private data.
+
+2.  **Treat outputs as drafts**: verify against official docs and by running commands.
+
+3.  **Prefer local evidence**: your logs, your versions, your environment.
+
+4.  **Cite primary sources**: do not let AI replace authoritative references.
+
+A practical rule: if the AI suggests a command that could be destructive (`rm`, `sudo`, permissions changes), stop and verify in official documentation or with an instructor.
+
+## Worked examples
+
+This section demonstrates how documentation practices appear in typical novice workflows.
+
+### Example 1: Turning a notebook into a runnable project
+
+A student's initial workflow often begins in a Jupyter notebook. That is fine, but as the project grows, collaborators need a stable way to reproduce results.
+
+A documentation upgrade path:
+
+1.  Create a README with a one-sentence purpose and "How to run."
+
+2.  Add an environment section (conda or pip).
+
+3.  Add an "Outputs" section describing what files appear after running.
+
+4.  Add a "Project structure" section describing folders.
+
+This minimal documentation shift turns a private artifact into a collaborative artifact.
+
+### Example 2: Documenting a data intake pipeline
+
+Even a simple "load a CSV and clean it" pipeline has assumptions:
+
+-   file encoding,
+
+-   delimiter,
+
+-   missing value markers,
+
+-   expected columns,
+
+-   row-level integrity.
+
+A good intake document includes:
+
+1.  dataset source and date,
+
+2.  schema and column meanings,
+
+3.  known quirks (e.g., numbers stored as text),
+
+4.  checks you run before analysis.
+
+This bridges the gap between raw files and analysis claims.
+
+### Example 3: Writing troubleshooting notes
+
+Troubleshooting notes become valuable when they are specific. Compare:
+
+##### Weak.
+
+"If conda doesn't work, reinstall it."
+
+##### Better.
+
+"If `conda activate` fails with 'command not found,' confirm your shell initialization includes conda. On macOS, check your `.zshrc` and restart the terminal. If you installed Anaconda/Miniconda after opening the terminal, the current session may not have the PATH update."
+
+The "better" version specifies symptoms, a hypothesis, and a verification step.
+
+## Templates
+
+### Template A: How-to guide
+
+    # Title: How to <do a specific task>
+
+    ## Purpose
+    One sentence describing what this accomplishes.
+
+    ## Prerequisites
+    - Required software / permissions
+    - Required files or environment
+
+    ## Steps
+    1.
+    2.
+    3.
+
+    ## Verify
+    What success looks like (expected output / files / screenshots).
+
+    ## Troubleshooting
+    - Symptom -> likely cause -> fix
+
+### Template B: README skeleton (student project)
+
+    # Project Title
+
+    ## Purpose
+    What this project does (2-4 sentences).
+
+    ## Quickstart
+    Commands to set up and run.
+
+    ## Environment
+    - How to create/activate env
+    - Key dependencies
+
+    ## Data
+    - Source
+    - How to obtain
+    - Restrictions (if any)
+
+    ## How to run
+    Exact command(s) and expected outputs.
+
+    ## Project structure
+    - data/
+    - src/
+    - notebooks/
+    - outputs/
+
+    ## Reproducibility notes
+    Versions, seeds, and known pitfalls.
+
+### Template C: Decision log entry
+
+    Decision:
+    Date:
+    Context:
+    Options considered:
+    Chosen option:
+    Rationale:
+    Consequences / follow-ups:
+
+## Exercises
+
+1.  Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.
+
+2.  Write a one-page README for a class assignment repository. Swap with a classmate and attempt to run each other's project using only the README. Record what was missing and revise.
+
+3.  Take a confusing error you encountered and create a "troubleshooting note" that includes: symptom, likely cause, verification step, fix.
+
+4.  Rewrite a set of rough notes into a how-to guide using Template A. Include a verification step that a reader can perform.
+
+5.  Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.
+
+## One-page checklist
+
+-   I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.
+
+-   I can route from secondary sources to primary sources.
+
+-   When reading docs, I extract inputs, outputs, defaults, constraints, and failure modes.
+
+-   I record version/environment details when behavior is surprising.
+
+-   My README contains purpose, setup, run instructions, and verification.
+
+-   I update docs when code changes affect usage.
+
+-   I keep a short decision log for consequential choices.
+
+-   If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.

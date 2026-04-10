@@ -1,0 +1,439 @@
+# Project Management {#sec-project-management}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites:** none. This chapter stands on its own.
+
+**See also:** @sec-git-github, @sec-collaboration, @sec-documentation.
+:::
+
+## Purpose {.unnumbered}
+
+Most student projects fail for non-technical reasons: files scattered across desktops, unclear goals, missing data provenance, undocumented assumptions, and work tracked in private messages rather than a shared system. This chapter introduces lightweight project management practices that make small data-science projects stable, auditable, and collaborative.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Define a project goal, success criteria, and constraints in a short project brief.
+
+2.  Set up a reproducible project structure with clear locations for data, code, notebooks, outputs, and docs.
+
+3.  Apply data management hygiene: provenance, naming, immutability of raw data, and data dictionaries.
+
+4.  Write minimal project documentation that enables another person (or future you) to reproduce results.
+
+5.  Use issue tracking to plan work, document decisions, and coordinate collaboration.
+
+6.  Maintain a simple cadence for planning, execution, review, and delivery.
+
+## Running theme: make progress visible and work repeatable {.unnumbered}
+
+A well-managed project makes its assumptions and status legible: what the data are, what changed, what remains, and how to rerun.
+
+## Mental model: a project is a system of artifacts
+
+### Artifacts you must manage
+
+-   **Data:** raw inputs, processed outputs, intermediate files.
+
+-   **Code:** scripts, reusable modules, notebooks.
+
+-   **Environment:** dependencies and runtime assumptions.
+
+-   **Documentation:** purpose, decisions, usage, and interpretation.
+
+-   **Work tracking:** tasks, bugs, questions, and priorities.
+
+### The lifecycle: plan → build → verify → deliver
+
+-   **Plan:** decide what success looks like.
+
+-   **Build:** implement data pipelines/analysis.
+
+-   **Verify:** check quality, reproduce outputs.
+
+-   **Deliver:** package results and communicate limitations.
+
+## Project planning for novices (lightweight, not bureaucratic)
+
+### The one-page project brief
+
+-   Problem statement (one paragraph).
+
+-   Audience and use case.
+
+-   Deliverables (tables, plots, memo, dashboard, model).
+
+-   Success criteria (what "done" means).
+
+-   Constraints (time, compute, access, privacy).
+
+-   Risks and unknowns (data availability, definitions, biases).
+
+### Decompose work into milestones
+
+-   Milestone 1: data acquisition + intake note.
+
+-   Milestone 2: cleaning + data dictionary.
+
+-   Milestone 3: analysis + validation.
+
+-   Milestone 4: outputs + narrative + reproducibility check.
+
+### Define decision points
+
+-   What choices might change results? (filters, joins, missingness handling)
+
+-   Where will you record those decisions? (issues, changelog, notebook narrative)
+
+## Reproducible project structure
+
+### Design principles
+
+-   One project folder = one project.
+
+-   Raw data are read-only.
+
+-   Outputs are reproducible from code.
+
+-   Paths are relative to the project root.
+
+-   Clear separation: data vs code vs docs vs outputs.
+
+### A student-friendly directory template
+
+    project/
+    README.md
+    environment.yml   (or requirements.txt)
+    data/
+    raw/
+    processed/
+    external/
+    notebooks/
+    src/
+    scripts/
+    reports/
+    figures/
+    docs/
+    tests/            (optional)
+
+### Naming conventions and consistency
+
+-   Use lowercase and hyphens/underscores (choose one).
+
+-   Date stamps for snapshots (e.g., `2026-01-08`).
+
+-   Avoid spaces and ambiguous names (`final_final2.csv`).
+
+### What goes where (and what does not)
+
+-   `data/raw`: original sources; never edited.
+
+-   `data/processed`: generated outputs from cleaning.
+
+-   `notebooks`: narrative drivers; keep tidy.
+
+-   `src`: reusable functions and modules.
+
+-   `scripts`: command-line entry points.
+
+-   `reports/figures`: final artifacts for sharing.
+
+-   Avoid storing secrets or credentials anywhere in the repo.
+
+## Data management hygiene
+
+### Provenance: where did this data come from?
+
+-   Source URL or file origin.
+
+-   Retrieval date/time.
+
+-   License/terms of use.
+
+-   Any access restrictions or privacy considerations.
+
+### Raw data immutability
+
+-   Treat raw data as evidence: do not edit.
+
+-   If you must fix an obvious error, do it in a processing step that is documented.
+
+### Data dictionary and codebook
+
+-   One table with: variable name, type, meaning, units, allowable values, missingness codes.
+
+-   Record transformations: derived fields, recodes, joins.
+
+### Versioning data
+
+-   When datasets change, create dated snapshots or version tags.
+
+-   Record checksums or file sizes for integrity (intro concept).
+
+-   Keep "what changed" notes (new rows, new columns, schema shifts).
+
+### Sensitive data hygiene (baseline)
+
+-   Identify whether data contain identifiers.
+
+-   Minimize access: store sensitive data outside repos when required.
+
+-   Never commit secrets, API keys, or tokens.
+
+-   Redact or aggregate before sharing.
+
+## Documentation that makes a project runnable
+
+@sec-documentation covers how to find, read, and write technical documentation in depth; this section focuses on the documentation artifacts specific to a project.
+
+### README as the single source of truth
+
+-   What the project does (one paragraph).
+
+-   What data are required and where they go.
+
+-   How to set up the environment.
+
+-   One "copy/paste" command to reproduce core outputs.
+
+-   How to interpret outputs (where to find the key tables/figures).
+
+### Decision log
+
+-   Record consequential choices: filtering rules, outlier handling, join keys.
+
+-   Store decisions in issues or a dedicated `DECISIONS.md`.
+
+### Docstrings and inline comments (just enough)
+
+-   Explain intent, not obvious syntax.
+
+-   Document inputs, outputs, assumptions.
+
+### Reproducibility notes
+
+-   Environment file is required.
+
+-   Note OS-specific dependencies.
+
+-   Include a small "smoke test" script or notebook cell.
+
+## Issue tracking fundamentals (for students)
+
+### Why issues are not just for bugs
+
+-   Tasks, questions, data problems, and design decisions.
+
+-   A shared memory and audit trail.
+
+### Anatomy of a good issue
+
+-   Clear title: action + object.
+
+-   Description: context, objective, definition of done.
+
+-   Evidence: links, screenshots, error messages.
+
+-   Labels: type (bug/task/question), priority, area (data/code/docs).
+
+### Issue workflow: triage → do → review → close
+
+-   Triage: clarify, label, assign, and break down.
+
+-   Do: create a branch or working copy tied to the issue (concept).
+
+-   Review: verify outputs, update docs.
+
+-   Close: summarize what changed and link artifacts.
+
+### Milestones and project boards (optional)
+
+-   Milestones map to deliverables.
+
+-   Boards visualize status (To do / Doing / Done).
+
+-   Keep it lightweight: avoid over-customization early.
+
+## Quality gates: make "done" meaningful
+
+### The reproducibility check
+
+-   Fresh environment or clean restart.
+
+-   Run the pipeline end-to-end.
+
+-   Confirm outputs match expectations.
+
+### Data checks
+
+-   Row/column counts.
+
+-   Missingness summary.
+
+-   Value ranges and plausibility.
+
+-   Join coverage and key uniqueness.
+
+### Output checks
+
+-   Figures labeled, units clear, captions present.
+
+-   Tables have consistent formatting and definitions.
+
+-   Narrative explains limitations and uncertainty.
+
+## Common failure modes and how to prevent them
+
+### Folder chaos and lost files
+
+-   Prevention: stable project root + fixed structure.
+
+-   Recovery: search by extension/date; reconstruct from outputs.
+
+### Silent data drift
+
+-   Prevention: snapshot raw data; record retrieval dates and checksums.
+
+-   Detection: schema checks and summary stats comparisons.
+
+### Undocumented assumptions
+
+-   Prevention: decision log + notebook narrative.
+
+-   Practice: "if this changed, results would change" gets documented.
+
+### Work tracked in private channels
+
+-   Prevention: issues for tasks/questions; link decisions and artifacts.
+
+## Worked examples (outline)
+
+### Example 1: Start a new course project in 20 minutes
+
+-   Create the folder structure.
+
+-   Add environment file.
+
+-   Write a README with "how to run".
+
+### Example 2: Intake a dataset with provenance and a data dictionary
+
+-   Place raw file.
+
+-   Write provenance notes.
+
+-   Draft codebook and a first-pass quality report.
+
+### Example 3: Use issues to manage a cleaning pipeline
+
+-   Create issues for missingness, type conversions, duplicates, joins.
+
+-   Close each issue with a summary and link to outputs.
+
+### Example 4: Final reproducibility check before submission
+
+-   Recreate env.
+
+-   Run end-to-end.
+
+-   Confirm outputs and update README.
+
+## Templates
+
+### Template A: One-page project brief
+
+    Title:
+    Problem:
+    Audience:
+    Deliverables:
+    Success criteria:
+    Constraints:
+    Risks/unknowns:
+    Milestones:
+
+### Template B: README skeleton
+
+
+    # Project name
+
+    ## Purpose
+
+    ## Data
+
+    * Source:
+    * Retrieved:
+    * License/notes:
+    * Location: data/raw/
+
+    ## Setup
+
+    * Create environment:
+    * Activate environment:
+
+    ## Run
+
+    * Command(s) to reproduce key outputs:
+
+    ## Outputs
+
+    * reports/
+    * figures/
+
+    ## Notes
+
+    * Decisions and limitations
+
+### Template C: Issue template (student version)
+
+    Title:
+    Type: bug/task/question
+    Context:
+    What I tried:
+    Evidence (errors, screenshots, links):
+    Definition of done:
+
+## Exercises
+
+1.  Create a new project folder using the template and write a README that someone else could follow.
+
+2.  Intake a dataset: place it in `data/raw`, write provenance notes, and draft a data dictionary.
+
+3.  Create five issues that decompose the project into milestones and tasks; label and prioritize them.
+
+4.  Implement one task and close its issue with a short "what changed" summary.
+
+5.  Perform a reproducibility check by recreating your environment and rerunning the pipeline.
+
+## One-page checklist
+
+-   I have a clear project goal and definition of done.
+
+-   My project folder has a reproducible structure.
+
+-   Raw data are immutable and provenance is recorded.
+
+-   I maintain a data dictionary and transformation notes.
+
+-   My README explains setup, run, and outputs.
+
+-   Work is tracked in issues with labels and clear closure notes.
+
+-   I can reproduce results from a clean environment.
+
+## Quick reference: "minimum viable" project operations
+
+-   Create structure.
+
+-   Write README.
+
+-   Record environment.
+
+-   Intake data with provenance.
+
+-   Track work in issues.
+
+-   Reproduce end-to-end before delivery.

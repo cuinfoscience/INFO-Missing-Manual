@@ -1,0 +1,446 @@
+# Version Control {#sec-git-github}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites (read first if unfamiliar):** @sec-terminal.
+
+**See also:** @sec-collaboration, @sec-automation, @sec-project-management.
+:::
+
+## Purpose {.unnumbered}
+
+Version control is the safety system for technical work. Git records a history of changes so you can recover, compare, and collaborate without overwriting each other. GitHub adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Explain what version control is and why Git is "distributed."
+
+2.  Create or clone a repository and make clean commits.
+
+3.  Understand the working tree, staging area, and commit history.
+
+4.  Use branches for features/fixes and merge changes safely.
+
+5.  Work with remotes (`origin`, `upstream`) and synchronize using fetch/pull/push.
+
+6.  Use GitHub to open a pull request, respond to feedback, and merge.
+
+7.  Resolve common merge conflicts with a disciplined playbook.
+
+8.  Use forks for contributing to projects you do not control.
+
+9.  Write good commit messages and PR descriptions; comment constructively in reviews.
+
+## Running theme: make changes small, reviewable, and reversible {.unnumbered}
+
+A healthy Git workflow favors small commits, small pull requests, clear messages, and frequent synchronization.
+
+## Mental models and vocabulary
+
+### Repository, snapshot, history
+
+-   A **repository** is your project folder plus a hidden `.git` directory.
+
+-   A **commit** is a snapshot of tracked files with metadata (author, time, message).
+
+-   Git history is a graph, not a single line.
+
+### The three zones: working tree, staging area, commits
+
+-   **Working tree:** your edited files.
+
+-   **Staging area (index):** the exact changes you plan to commit.
+
+-   **Commit:** saved snapshot in history.
+
+### Branching as pointers
+
+-   A **branch** is a movable pointer to a commit.
+
+-   A branch is cheap; use them.
+
+### Remote repositories
+
+-   **Local repo:** on your computer.
+
+-   **Remote repo:** hosted on GitHub.
+
+-   **origin:** the default remote name.
+
+-   **upstream:** the source repository for forks.
+
+### Pull request (PR)
+
+-   A PR is a proposal to merge changes, with discussion and review.
+
+-   PRs are where teams make decisions visible.
+
+## Why version control matters for student data work
+
+### Use cases
+
+-   Recover from mistakes (accidental edits, deletions).
+
+-   Understand what changed and when.
+
+-   Collaborate without overwriting.
+
+-   Create an audit trail for decisions.
+
+### What to version and what not to version
+
+-   Version: code, notebooks (with discipline), docs, small configuration files.
+
+-   Avoid committing: secrets, credentials, large raw datasets (unless instructed), generated artifacts.
+
+## Getting started: create or clone
+
+### Initialize a repository (local)
+
+-   When you start a project from scratch.
+
+-   Add a `README.md` and a reasonable `.gitignore` early.
+
+### Clone an existing repository
+
+-   When the course/lab provides starter code.
+
+-   Understand that cloning includes full history.
+
+### First-time setup (identity and defaults)
+
+-   Set your name/email.
+
+-   Choose a default branch name consistent with the course/lab.
+
+## Daily Git workflow (the minimum viable loop)
+
+### Status and diff first
+
+-   Check what changed before committing.
+
+-   Review diffs so commits are intentional.
+
+### Stage intentionally
+
+-   Stage the smallest coherent change.
+
+-   Avoid committing unrelated changes together.
+
+### Commit with meaning
+
+-   Commit messages: short summary + optional details.
+
+-   Prefer imperative mood: "Add data intake checks".
+
+### Sync with the remote
+
+-   Push your work so it is backed up and shareable.
+
+-   Pull (or fetch+merge) so you do not drift from teammates.
+
+## Branches and merges (collaboration without chaos)
+
+### Why branches
+
+-   Keep `main` stable.
+
+-   Work on features and fixes in isolation.
+
+### A standard branch workflow
+
+1.  Update `main`.
+
+2.  Create a new branch with a descriptive name.
+
+3.  Make commits on that branch.
+
+4.  Open a PR.
+
+5.  Merge after review.
+
+### Merge vs rebase (novice policy)
+
+-   **Merge** preserves history of parallel work.
+
+-   **Rebase** rewrites commits to create a linear story.
+
+-   Student default: use merges unless your instructor/team specifies a rebase policy.
+
+### Undo safely (intro)
+
+-   Undo a working-tree change vs undo a commit are different.
+
+-   Prefer "make a new commit that fixes it" over rewriting shared history.
+
+## Remotes: fetch, pull, push
+
+### What these commands do conceptually
+
+-   `fetch`: download remote history without changing your current branch.
+
+-   `pull`: fetch + merge (or fetch + rebase).
+
+-   `push`: upload your commits to the remote.
+
+### The drift problem
+
+-   If multiple people push, your local copy can become stale.
+
+-   Best practice: fetch/pull frequently; push small, complete units.
+
+## GitHub fundamentals
+
+### Repository anatomy on GitHub
+
+-   Code view, issues, pull requests, actions, releases (@sec-automation covers GitHub Actions and CI in depth).
+
+-   The README is the front door.
+
+### Pull requests: the core collaboration primitive
+
+-   What a PR contains: commits, file diffs, discussion.
+
+-   Draft PRs for early feedback.
+
+-   Keep PRs small and focused.
+
+### PR merge strategies (team policy)
+
+-   Merge commit vs squash-and-merge vs rebase-and-merge.
+
+-   Student guidance: pick one strategy per repository and be consistent.
+
+### Reviews and commenting best practices
+
+-   Comment on code with context: what, why, and suggested change.
+
+-   Prefer actionable, specific feedback.
+
+-   Separate 'nit'' (minor style) from 'blocker'' (correctness).
+
+-   When you respond, acknowledge and summarize what you changed.
+
+### Linking work: issues $\leftrightarrow$ PRs
+
+-   Use issues to track tasks and decisions.
+
+-   Reference issues in PR descriptions and commit messages.
+
+## Forking workflow (contributing without direct write access)
+
+### Fork vs clone
+
+-   Fork creates your copy on GitHub.
+
+-   Clone downloads a repository to your computer.
+
+### The standard fork contribution flow
+
+1.  Fork the repository.
+
+2.  Clone your fork.
+
+3.  Add `upstream` remote pointing to the original repo.
+
+4.  Create a feature branch.
+
+5.  Push to your fork.
+
+6.  Open a PR from your fork to upstream.
+
+### Keeping your fork up to date
+
+-   Fetch from upstream.
+
+-   Merge (or rebase) into your branch.
+
+-   Resolve conflicts early rather than letting them accumulate.
+
+## Merge conflicts: a disciplined resolution playbook
+
+### What a conflict is
+
+-   Git cannot automatically reconcile changes to the same lines/regions.
+
+-   Conflicts are normal in collaboration.
+
+### The safe sequence
+
+1.  Stop and read the error.
+
+2.  Identify which files are conflicted.
+
+3.  Open the files and locate conflict markers.
+
+4.  Decide the correct combined content (not "pick one side\" by default).
+
+5.  Stage resolved files.
+
+6.  Complete the merge.
+
+7.  Run a quick smoke test.
+
+### When to ask for help
+
+-   If you cannot explain what each side of a conflict represents.
+
+-   If conflicts involve data files or notebooks that are difficult to merge.
+
+## Special considerations for data science projects
+
+### `.gitignore` hygiene
+
+-   Ignore environment folders (`.venv/`, conda env dirs).
+
+-   Ignore caches and generated outputs (`__pycache__`, `.ipynb_checkpoints/`).
+
+-   Ignore secrets files (`.env`).
+
+### Notebooks in Git
+
+-   Notebooks are JSON; diffs can be noisy.
+
+-   Practices: clear unnecessary outputs, keep cells ordered, consider paired text formats.
+
+### Large files and datasets
+
+-   Avoid committing large raw data unless instructed.
+
+-   Prefer storing raw data outside the repo and documenting retrieval.
+
+### Releases and tags (optional)
+
+-   Tag a version that corresponds to a submission or report.
+
+-   Helps you reproduce exactly what was delivered.
+
+## Worked examples (outline)
+
+### Example 1: The daily loop
+
+-   Edit file, check status/diff, stage, commit, push.
+
+### Example 2: Branch + PR workflow
+
+-   Create feature branch, commit in small steps, open PR, respond to review, merge.
+
+### Example 3: Resolve a merge conflict
+
+-   Create an intentional conflict, resolve using the playbook, run a smoke test.
+
+### Example 4: Fork contribution
+
+-   Fork, clone, add upstream, sync, open PR to upstream.
+
+## Templates
+
+### Template A: Commit message
+
+     <Short summary in imperative mood>
+
+    Why:
+
+    * ...
+
+    What changed:
+
+    * ...
+
+### Template B: Pull request description
+
+
+    ## Summary
+
+    ## Why
+
+    ## What changed
+
+    *
+
+    ## How to test
+
+    *
+
+    ## Screenshots/outputs (if relevant)
+
+    ## Related issues
+
+    Closes #
+
+### Template C: Review comment taxonomy
+
+    Blocker: correctness, security, reproducibility
+    Suggestion: improvement, alternative approach
+    Question: clarify intent, edge cases
+    Nit: formatting, naming (non-blocking)
+
+## Exercises
+
+1.  Initialize a repo, add a README and `.gitignore`, and make three meaningful commits.
+
+2.  Create a branch, make changes, push it, and open a PR.
+
+3.  Review a classmate's PR using the comment taxonomy; request one change and approve after revision.
+
+4.  Create a merge conflict deliberately and resolve it using the playbook.
+
+5.  Fork a repository, add an upstream remote, sync it, and open a PR from your fork.
+
+## One-page checklist
+
+-   I understand working tree vs staging vs commits.
+
+-   I can create branches and keep `main` stable.
+
+-   I can fetch/pull/push and explain what each does.
+
+-   I can open, review, and merge pull requests.
+
+-   I can use forks and keep them synchronized with upstream.
+
+-   I can resolve merge conflicts methodically.
+
+-   I follow hygiene: `.gitignore`, no secrets, controlled notebook diffs.
+
+## Quick reference: common commands (student set)
+
+
+    # create/clone
+
+    git init
+    git clone <url>
+
+    # inspect
+
+    git status
+    git diff
+    git log --oneline --graph --decorate
+
+    # stage/commit
+
+    git add <file>
+    git add -p
+    git commit -m "..."
+
+    # branches
+
+    git branch
+    git switch -c <name>
+    git switch <name>
+
+    # remotes
+
+    git remote -v
+    git fetch
+    git pull
+    git push -u origin <branch>
+
+    # merge/conflicts
+
+    git merge <branch>
+    git merge --abort

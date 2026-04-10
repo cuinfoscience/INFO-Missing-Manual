@@ -1,0 +1,506 @@
+# Package Management {#sec-pkg-mgmt}
+
+
+::: {.callout-tip collapse="true"}
+## Prerequisites and see-also
+
+**Prerequisites (read first if unfamiliar):** @sec-terminal.
+
+**See also:** @sec-virtual-environments, @sec-jupyter, @sec-scripts-vs-notebooks.
+:::
+
+## Purpose {.unnumbered}
+
+Package management is the discipline of installing and updating third-party software (libraries) in a way that is consistent, reproducible, and unlikely to break your work. For novices, the most common failure mode is mixing global installs, different Python interpreters, and ad-hoc updates until nothing imports. This chapter teaches a stable workflow using project-level environments, clear dependency records, and a conflict-resolution playbook.
+
+## Learning objectives {.unnumbered}
+
+By the end of this chapter, you should be able to:
+
+1.  Explain what a **package**, **dependency**, and **environment** are.
+
+2.  Choose between `conda` and `pip` for a given situation.
+
+3.  Create, activate, and remove isolated environments (conda environments and/or `venv`).
+
+4.  Install packages with good hygiene (no 'random global installs'', avoid base/root env).
+
+5.  Record dependencies for reproducibility (`environment.yml`, `requirements.txt`, optional lockfiles).
+
+6.  Diagnose 'it worked yesterday'' failures: wrong interpreter, wrong environment, conflicts.
+
+7.  Resolve dependency conflicts using solver output, pinning, and environment recreation.
+
+8.  Apply maintenance practices: updates, audits, and cleaning without breaking environments.
+
+## Running theme: environments are disposable, projects are not {.unnumbered}
+
+Your project should be stable because it describes what it needs. If an environment breaks, you should be able to recreate it.
+
+## Mental models and vocabulary
+
+### Packages and dependencies
+
+-   **Package:** third-party code you install (e.g., `pandas`).
+
+-   **Dependency:** another package your package needs.
+
+-   **Version constraints:** rules like `>=`, `<`, `==` that restrict compatible versions.
+
+### Environments and interpreters
+
+-   A Python **interpreter** runs your code (and determines where packages are installed).
+
+-   An **environment** is an isolated set of installed packages tied to a specific interpreter.
+
+-   You can have many environments on one computer; each project should use one.
+
+### Reproducibility artifacts
+
+-   `environment.yml`: conda-style environment specification.
+
+-   `requirements.txt`: pip-style install list.
+
+-   **Lockfile:** a fully resolved, exact list of versions for repeatable installs.
+
+## Choosing tools: `conda` vs `pip` vs `venv`
+
+### What conda is good at
+
+-   Cross-language, compiled dependencies (e.g., scientific stacks, system libraries).
+
+-   Environments that include non-Python packages.
+
+-   Solving complex dependency graphs across compiled packages.
+
+### What pip is good at
+
+-   Installing Python packages from PyPI.
+
+-   Lightweight environments using the standard library `venv`.
+
+-   Working with Python packaging metadata (`pyproject.toml`, wheels).
+
+### Practical student guidance
+
+-   If your course provides a conda environment file, use conda.
+
+-   If a library is only on PyPI, use pip (inside an environment).
+
+-   Do not install packages globally for coursework.
+
+## Baseline hygiene rules (non-negotiable)
+
+### Rule 1: never work in the base/root conda environment
+
+-   Keep base/root for conda itself.
+
+-   Create a separate environment per project.
+
+### Rule 2: one project, one environment
+
+-   Avoid "one giant environment for everything".
+
+-   Name environments clearly (e.g., `ds101-week3`, `housing-audit`).
+
+### Rule 3: prefer explicit specs over memory
+
+-   Record dependencies in a file in the project repository.
+
+-   Make install steps repeatable.
+
+### Rule 4: avoid mixing managers casually
+
+-   If you combine conda and pip: install as much as possible with conda first.
+
+-   After using pip inside a conda environment, prefer recreating the environment rather than adding more conda packages.
+
+## Core workflows with conda
+
+### Create and activate an environment
+
+    conda create -n myproj python=3.12
+    conda activate myproj
+
+### Install, update, remove
+
+    conda install pandas numpy
+    conda update pandas
+    conda remove pandas
+
+### Search and inspect
+
+-   Search packages, inspect what is installed.
+
+-   Confirm which environment is active before installing.
+
+### Channels and channel priority (why you should care)
+
+-   Channels are sources of packages; mixing channels can cause incompatibilities.
+
+-   Prefer a consistent channel strategy for a project.
+
+-   When using community channels (e.g., conda-forge), adopt strict channel priority to reduce incompatibilities.
+
+### Exporting and sharing environments
+
+-   Export an environment spec to share with teammates.
+
+-   Store the spec (not the whole environment folder) in version control.
+
+### Cleaning and cache hygiene (cautious)
+
+-   Conda caches downloaded packages; cleaning can reclaim space.
+
+-   Cleaning can have side effects; do it intentionally and only when needed.
+
+## Core workflows with `venv` + `pip`
+
+### Create and activate a `venv`
+
+    python -m venv .venv
+
+    # activate (platform-specific)
+
+### Install and record dependencies
+
+    python -m pip install --upgrade pip
+    python -m pip install pandas
+    python -m pip freeze > requirements.txt
+
+### Recreate an environment from a requirements file
+
+    python -m venv .venv
+
+    # activate
+
+    python -m pip install -r requirements.txt
+
+### Sanity checks
+
+-   Confirm `which python` / `where python` points inside the environment.
+
+-   Use `pip check` to detect inconsistent installs.
+
+## Dependency conflicts: what they are and why they happen
+
+### The conflict pattern
+
+-   You request package A and package B.
+
+-   A requires version range of C; B requires a different version of C.
+
+-   No single version satisfies both constraints.
+
+### Symptoms novices see
+
+-   Install fails with "ResolutionImpossible" (pip) or solver errors (conda).
+
+-   Imports fail after an upgrade.
+
+-   Runtime errors due to incompatible versions.
+
+## Conflict-resolution playbook (a disciplined sequence)
+
+### Step 0: stop making it worse
+
+-   Do not keep trying random installs.
+
+-   Record the exact error output.
+
+### Step 1: verify you are in the right environment
+
+-   Confirm environment activation.
+
+-   Confirm interpreter path and package locations.
+
+### Step 2: reduce the problem
+
+-   Try installing the smallest set of packages that triggers the conflict.
+
+-   Install packages in one command when possible so the solver sees the full set.
+
+### Step 3: read the solver's explanation
+
+-   Identify the conflicting dependency (the shared package with incompatible constraints).
+
+-   Identify which packages are forcing the constraints.
+
+### Step 4: choose a strategy
+
+Pin a compatible version
+
+:   Constrain one or more packages to versions known to work.
+
+Relax a constraint
+
+:   If you pinned something unnecessarily, unpin it.
+
+Change channels/builds
+
+:   In conda, ensure consistent channels and strict priority.
+
+Split environments
+
+:   If two tools fundamentally conflict, they may need separate envs.
+
+Recreate the environment
+
+:   Often fastest and cleanest once an environment is messy.
+
+### Step 5: verify with a smoke test
+
+-   Import key libraries.
+
+-   Run a minimal script/notebook.
+
+-   Re-run tests if available.
+
+## Mixing conda and pip safely (when you must)
+
+### The recommended order
+
+1.  Create a new conda environment.
+
+2.  Install as many dependencies as possible with conda.
+
+3.  Use pip for packages unavailable via conda.
+
+4.  If you later need more conda packages, consider recreating the environment.
+
+### Recording mixed dependencies
+
+-   Keep conda dependencies in `environment.yml`.
+
+-   Keep pip-only dependencies as a pip section or a separate `requirements.txt`.
+
+## Reproducible environments: pins, constraints, and lockfiles
+
+### Pins vs ranges
+
+-   Pins (`==`) maximize repeatability but can reduce upgradability.
+
+-   Ranges (`>=,<`) allow updates but may introduce drift.
+
+-   Teach a project policy: coursework often benefits from tighter pins.
+
+### Constraints files (pip concept)
+
+-   Separate 'what to install'' from 'allowed versions''.
+
+-   Useful for controlling transitive dependencies.
+
+### Lockfiles
+
+-   Why: avoid solving at install time; install exactly known-good versions.
+
+-   Conda: generate lockfiles for platforms.
+
+-   Pip ecosystem: lockfile tools exist; understand the concept and when your course uses one.
+
+## Package management hygiene over time
+
+### Updates (intentional, not accidental)
+
+-   Update deliberately: "why am I updating?"
+
+-   Prefer updating in a fresh environment or on a branch.
+
+-   After updates: run smoke tests.
+
+### Auditing your environment
+
+-   Check inconsistencies (pip).
+
+-   Identify unused packages (conceptual).
+
+-   Keep dependency lists minimal.
+
+### Avoiding common foot-guns
+
+-   Do not use `pip –user` for project work.
+
+-   Do not run pip outside an active environment.
+
+-   Avoid reinstalling random versions until imports succeed.
+
+-   Avoid "works on one machine" by storing environment specs.
+
+## Troubleshooting guide (novice-oriented)
+
+### "ModuleNotFoundError"
+
+-   Installed into the wrong environment.
+
+-   Wrong interpreter selected (IDE/kernel mismatch).
+
+-   Fix: confirm interpreter path; reinstall in the active env.
+
+### "It installed, but now something else broke"
+
+-   A dependency was upgraded/downgraded.
+
+-   Fix: inspect versions; consider reverting or recreating the environment.
+
+### Conda solver is slow or failing
+
+-   Too many channels or inconsistent channel priority.
+
+-   Conflicting constraints.
+
+-   Fix: use strict channel priority and simplify requirements.
+
+### Pip is backtracking forever
+
+-   Pip is searching for a compatible version set.
+
+-   Fix: add constraints/pins, or start from a clean environment.
+
+## Worked examples (outline)
+
+### Example 1: Create a clean conda environment for a project
+
+-   Create env, install core packages.
+
+-   Export environment spec.
+
+-   Recreate from spec on a second machine.
+
+### Example 2: Use pip inside a venv for a small script
+
+-   Create `.venv`, install two packages.
+
+-   Freeze to `requirements.txt`.
+
+-   Recreate and verify with a smoke test.
+
+### Example 3: Diagnose a dependency conflict
+
+-   Trigger a conflict.
+
+-   Read the error output to find the incompatible dependency.
+
+-   Resolve by pinning or splitting environments.
+
+### Example 4: Notebook/IDE kernel mismatch
+
+-   Symptom: notebook cannot import a package that the terminal can.
+
+-   Diagnosis: wrong kernel/interpreter (see @sec-jupyter for kernel management in Jupyter).
+
+-   Fix: select the correct kernel; verify versions.
+
+## Templates
+
+### Template A: Minimal `environment.yml` (conceptual)
+
+    name: myproj
+    channels:
+
+    * conda-forge
+    * defaults
+      dependencies:
+    * python=3.12
+    * pandas
+    * numpy
+    * pip
+    * pip:
+
+      * some-pypi-only-package
+
+### Template B: Environment "smoke test"
+
+    python -c "import sys; print(sys.version)"
+    python -c "import pandas as pd; print(pd.**version**)"
+    python -m pip check
+
+### Template C: Project dependency policy (student-friendly)
+
+
+    * Every project has an environment file.
+    * No installs in base/root.
+    * All installs happen through conda (preferred) or pip (only in an env).
+    * If the environment breaks, recreate it.
+    * Before submission, restart kernel/run all notebooks to confirm the env works.
+
+## Exercises
+
+1.  Create a new conda environment, install two packages, and export an environment spec.
+
+2.  Create a new `venv`, install one package, write `requirements.txt`, and recreate it.
+
+3.  Intentionally install conflicting requirements in a fresh env; read the error and identify the conflicting dependency.
+
+4.  Fix the conflict by pinning one package version or splitting into two envs.
+
+5.  Demonstrate a kernel/interpreter mismatch and then correct it.
+
+6.  Write a one-page "environment README": how to create, activate, and verify the environment.
+
+## One-page checklist
+
+-   I do not install packages globally for projects.
+
+-   I can create and activate a project environment.
+
+-   I can confirm which `python` and `pip` I am using.
+
+-   I record dependencies in a file tracked with the project.
+
+-   I understand how conflicts arise and can read solver output.
+
+-   I can resolve conflicts by pinning, simplifying, or recreating an environment.
+
+-   I use conda channels deliberately and prefer strict priority when appropriate.
+
+-   I verify environments with a small smoke test before important work.
+
+## Quick reference: commands students use most
+
+### conda
+
+    conda create -n NAME python=3.12
+    conda activate NAME
+    conda install PKG
+    conda update PKG
+    conda env export > environment.yml
+    conda env remove -n NAME
+
+### pip (inside an env)
+
+    python -m pip install PKG
+    python -m pip install -r requirements.txt
+    python -m pip freeze > requirements.txt
+    python -m pip check
+
+The steps for downloading, installing, using, and maintaining Python with `conda` will differ based on your operating system. `conda` can be used by Macs running macOS (OS X), PCs running Windows, and PCs running Linux. `conda` cannot be installed or used on managed operating systems like ChromeOS (*e.g.*, Chromebooks) or iOS (*e.g.*, iPads). It is unlikely that you will be able to install or configure `conda` yourself on "managed" computers like those found in libraries or computer labs.
+
+`conda` is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, *etc*. At this stage you can either (1) install Anaconda Individual Edition[^1] that includes hundreds of popular libraries and their dependencies or (2) install "miniconda"[^2] and choose which libraries you want installed. In either case, `conda` will be the package manager that helps you install and maintain these libraries. @fig-conda-mini-ana captures the relationships between `conda`, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.
+
+::: {.column-margin}
+![Relationships between `conda`, miniconda, and Anaconda.](graphics/conda_mini_ana.png){#fig-conda-mini-ana}
+:::
+
+## Downloading
+
+## Installation
+
+### Testing
+
+### Updating
+
+### Common problems
+
+## Installing libraries
+
+like `numpy`, `matplotlib`, `pandas`, `scikit-learn`, and `networkx`
+
+## Maintaining libraries
+
+## Removing libraries
+
+## Environments
+
+[^1]: <https://www.anaconda.com/products/individual>
+
+[^2]: <https://docs.conda.io/en/latest/miniconda.html>
