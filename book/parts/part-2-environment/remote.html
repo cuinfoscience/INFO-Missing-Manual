@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Remote Computing – Paratechnical Computing Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../parts/part-3-python/package-management.html" rel="next">
+<link href="../../parts/part-2-environment/text-editors.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a46c92d1a3b8d11f1f9fb1f566cd2c52.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/remote.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Paratechnical Computing Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/remote.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Testing Basics with pytest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style, Linting, and Formatting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data: Shape, Cleaning, and Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/pre-commit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Pre-commit Hooks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-remote-access-is-powerful-so-make-it-boring" id="toc-running-theme-remote-access-is-powerful-so-make-it-boring" class="nav-link" data-scroll-target="#running-theme-remote-access-is-powerful-so-make-it-boring">Running theme: remote access is powerful, so make it boring</a></li>
+  <li><a href="#a-beginner-mental-model" id="toc-a-beginner-mental-model" class="nav-link" data-scroll-target="#a-beginner-mental-model"><span class="header-section-number">12.1</span> A beginner mental model</a>
+  <ul class="collapse">
+  <li><a href="#local-vs-remote" id="toc-local-vs-remote" class="nav-link" data-scroll-target="#local-vs-remote">Local vs remote</a></li>
+  <li><a href="#clientserver-language" id="toc-clientserver-language" class="nav-link" data-scroll-target="#clientserver-language">Client/server language</a></li>
+  <li><a href="#sessions-processes-and-persistence" id="toc-sessions-processes-and-persistence" class="nav-link" data-scroll-target="#sessions-processes-and-persistence">Sessions, processes, and persistence</a></li>
+  <li><a href="#why-remote-computing-exists" id="toc-why-remote-computing-exists" class="nav-link" data-scroll-target="#why-remote-computing-exists">Why remote computing exists</a></li>
+  </ul></li>
+  <li><a href="#prerequisites-and-safe-defaults" id="toc-prerequisites-and-safe-defaults" class="nav-link" data-scroll-target="#prerequisites-and-safe-defaults"><span class="header-section-number">12.2</span> Prerequisites and safe defaults</a>
+  <ul class="collapse">
+  <li><a href="#accounts-and-credentials" id="toc-accounts-and-credentials" class="nav-link" data-scroll-target="#accounts-and-credentials">Accounts and credentials</a></li>
+  <li><a href="#installlocate-your-tools" id="toc-installlocate-your-tools" class="nav-link" data-scroll-target="#installlocate-your-tools">Install/locate your tools</a></li>
+  <li><a href="#golden-safety-rules" id="toc-golden-safety-rules" class="nav-link" data-scroll-target="#golden-safety-rules">Golden safety rules</a></li>
+  </ul></li>
+  <li><a href="#ssh-fundamentals" id="toc-ssh-fundamentals" class="nav-link" data-scroll-target="#ssh-fundamentals"><span class="header-section-number">12.3</span> SSH fundamentals</a>
+  <ul class="collapse">
+  <li><a href="#what-ssh-provides" id="toc-what-ssh-provides" class="nav-link" data-scroll-target="#what-ssh-provides">What SSH provides</a></li>
+  <li><a href="#the-simplest-connection" id="toc-the-simplest-connection" class="nav-link" data-scroll-target="#the-simplest-connection">The simplest connection</a></li>
+  <li><a href="#host-identity-and-known_hosts" id="toc-host-identity-and-known_hosts" class="nav-link" data-scroll-target="#host-identity-and-known_hosts">Host identity and <code>known_hosts</code></a></li>
+  <li><a href="#authentication-passwords-vs-keys" id="toc-authentication-passwords-vs-keys" class="nav-link" data-scroll-target="#authentication-passwords-vs-keys">Authentication: passwords vs keys</a></li>
+  <li><a href="#key-based-authentication-basics" id="toc-key-based-authentication-basics" class="nav-link" data-scroll-target="#key-based-authentication-basics">Key-based authentication basics</a></li>
+  <li><a href="#generating-a-key-pair-conceptual" id="toc-generating-a-key-pair-conceptual" class="nav-link" data-scroll-target="#generating-a-key-pair-conceptual">Generating a key pair (conceptual)</a></li>
+  <li><a href="#ssh-agent-optional-but-useful" id="toc-ssh-agent-optional-but-useful" class="nav-link" data-scroll-target="#ssh-agent-optional-but-useful">SSH agent (optional but useful)</a></li>
+  <li><a href="#quality-of-life-.sshconfig" id="toc-quality-of-life-.sshconfig" class="nav-link" data-scroll-target="#quality-of-life-.sshconfig">Quality-of-life: <code>&nbsp;/.ssh/config</code></a></li>
+  </ul></li>
+  <li><a href="#file-transfer-getting-data-in-and-out" id="toc-file-transfer-getting-data-in-and-out" class="nav-link" data-scroll-target="#file-transfer-getting-data-in-and-out"><span class="header-section-number">12.4</span> File transfer: getting data in and out</a>
+  <ul class="collapse">
+  <li><a href="#the-basic-question-where-is-the-file" id="toc-the-basic-question-where-is-the-file" class="nav-link" data-scroll-target="#the-basic-question-where-is-the-file">The basic question: where is the file?</a></li>
+  <li><a href="#secure-copy-scp" id="toc-secure-copy-scp" class="nav-link" data-scroll-target="#secure-copy-scp">Secure copy (<code>scp</code>)</a></li>
+  <li><a href="#sftp-sftp" id="toc-sftp-sftp" class="nav-link" data-scroll-target="#sftp-sftp">SFTP (<code>sftp</code>)</a></li>
+  <li><a href="#what-not-to-do" id="toc-what-not-to-do" class="nav-link" data-scroll-target="#what-not-to-do">What not to do</a></li>
+  </ul></li>
+  <li><a href="#tunneling-and-port-forwarding-making-remote-services-usable" id="toc-tunneling-and-port-forwarding-making-remote-services-usable" class="nav-link" data-scroll-target="#tunneling-and-port-forwarding-making-remote-services-usable"><span class="header-section-number">12.5</span> Tunneling and port forwarding (making remote services usable)</a>
+  <ul class="collapse">
+  <li><a href="#why-tunneling-exists" id="toc-why-tunneling-exists" class="nav-link" data-scroll-target="#why-tunneling-exists">Why tunneling exists</a></li>
+  <li><a href="#local-forwarding-most-common" id="toc-local-forwarding-most-common" class="nav-link" data-scroll-target="#local-forwarding-most-common">Local forwarding (most common)</a></li>
+  <li><a href="#remote-forwarding-advanced" id="toc-remote-forwarding-advanced" class="nav-link" data-scroll-target="#remote-forwarding-advanced">Remote forwarding (advanced)</a></li>
+  <li><a href="#dynamic-forwarding-socks-proxy" id="toc-dynamic-forwarding-socks-proxy" class="nav-link" data-scroll-target="#dynamic-forwarding-socks-proxy">Dynamic forwarding (SOCKS proxy)</a></li>
+  <li><a href="#tunnel-hygiene" id="toc-tunnel-hygiene" class="nav-link" data-scroll-target="#tunnel-hygiene">Tunnel hygiene</a></li>
+  </ul></li>
+  <li><a href="#vpn-fundamentals" id="toc-vpn-fundamentals" class="nav-link" data-scroll-target="#vpn-fundamentals"><span class="header-section-number">12.6</span> VPN fundamentals</a>
+  <ul class="collapse">
+  <li><a href="#what-a-vpn-does-student-relevant" id="toc-what-a-vpn-does-student-relevant" class="nav-link" data-scroll-target="#what-a-vpn-does-student-relevant">What a VPN does (student-relevant)</a></li>
+  <li><a href="#when-you-need-a-vpn" id="toc-when-you-need-a-vpn" class="nav-link" data-scroll-target="#when-you-need-a-vpn">When you need a VPN</a></li>
+  <li><a href="#common-vpn-pitfalls" id="toc-common-vpn-pitfalls" class="nav-link" data-scroll-target="#common-vpn-pitfalls">Common VPN pitfalls</a></li>
+  <li><a href="#practical-advice" id="toc-practical-advice" class="nav-link" data-scroll-target="#practical-advice">Practical advice</a></li>
+  </ul></li>
+  <li><a href="#remote-work-patterns-from-simple-to-professional" id="toc-remote-work-patterns-from-simple-to-professional" class="nav-link" data-scroll-target="#remote-work-patterns-from-simple-to-professional"><span class="header-section-number">12.7</span> Remote work patterns: from simple to professional</a>
+  <ul class="collapse">
+  <li><a href="#pattern-1-login-node-compute-node-hpc-concept" id="toc-pattern-1-login-node-compute-node-hpc-concept" class="nav-link" data-scroll-target="#pattern-1-login-node-compute-node-hpc-concept">Pattern 1: login node + compute node (HPC concept)</a></li>
+  <li><a href="#pattern-2-remote-development" id="toc-pattern-2-remote-development" class="nav-link" data-scroll-target="#pattern-2-remote-development">Pattern 2: remote development</a></li>
+  <li><a href="#pattern-3-notebooks-on-servers" id="toc-pattern-3-notebooks-on-servers" class="nav-link" data-scroll-target="#pattern-3-notebooks-on-servers">Pattern 3: notebooks on servers</a></li>
+  </ul></li>
+  <li><a href="#cloud-computing-basics-what-novices-must-know" id="toc-cloud-computing-basics-what-novices-must-know" class="nav-link" data-scroll-target="#cloud-computing-basics-what-novices-must-know"><span class="header-section-number">12.8</span> Cloud computing basics (what novices must know)</a>
+  <ul class="collapse">
+  <li><a href="#what-the-cloud-is" id="toc-what-the-cloud-is" class="nav-link" data-scroll-target="#what-the-cloud-is">What “the cloud” is</a></li>
+  <li><a href="#core-terms" id="toc-core-terms" class="nav-link" data-scroll-target="#core-terms">Core terms</a></li>
+  <li><a href="#a-safe-first-cloud-vm-workflow" id="toc-a-safe-first-cloud-vm-workflow" class="nav-link" data-scroll-target="#a-safe-first-cloud-vm-workflow">A safe “first cloud VM” workflow</a></li>
+  <li><a href="#cost-and-risk" id="toc-cost-and-risk" class="nav-link" data-scroll-target="#cost-and-risk">Cost and risk</a></li>
+  </ul></li>
+  <li><a href="#security-best-practices-for-remote-computing" id="toc-security-best-practices-for-remote-computing" class="nav-link" data-scroll-target="#security-best-practices-for-remote-computing"><span class="header-section-number">12.9</span> Security best practices for remote computing</a>
+  <ul class="collapse">
+  <li><a href="#key-hygiene" id="toc-key-hygiene" class="nav-link" data-scroll-target="#key-hygiene">Key hygiene</a></li>
+  <li><a href="#least-privilege-and-separation" id="toc-least-privilege-and-separation" class="nav-link" data-scroll-target="#least-privilege-and-separation">Least privilege and separation</a></li>
+  <li><a href="#safe-networking-defaults" id="toc-safe-networking-defaults" class="nav-link" data-scroll-target="#safe-networking-defaults">Safe networking defaults</a></li>
+  <li><a href="#logging-and-traceability-student-level" id="toc-logging-and-traceability-student-level" class="nav-link" data-scroll-target="#logging-and-traceability-student-level">Logging and traceability (student level)</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting-and-diagnostics" id="toc-troubleshooting-and-diagnostics" class="nav-link" data-scroll-target="#troubleshooting-and-diagnostics"><span class="header-section-number">12.10</span> Troubleshooting and diagnostics</a>
+  <ul class="collapse">
+  <li><a href="#connection-failures" id="toc-connection-failures" class="nav-link" data-scroll-target="#connection-failures">Connection failures</a></li>
+  <li><a href="#host-key-warnings" id="toc-host-key-warnings" class="nav-link" data-scroll-target="#host-key-warnings">Host key warnings</a></li>
+  <li><a href="#timeouts-and-unstable-connections" id="toc-timeouts-and-unstable-connections" class="nav-link" data-scroll-target="#timeouts-and-unstable-connections">Timeouts and unstable connections</a></li>
+  <li><a href="#permission-denied" id="toc-permission-denied" class="nav-link" data-scroll-target="#permission-denied">“Permission denied”</a></li>
+  </ul></li>
+  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">12.11</span> Worked examples (outline)</a>
+  <ul class="collapse">
+  <li><a href="#example-1-first-ssh-login" id="toc-example-1-first-ssh-login" class="nav-link" data-scroll-target="#example-1-first-ssh-login">Example 1: First SSH login</a></li>
+  <li><a href="#example-2-move-a-dataset-to-a-server" id="toc-example-2-move-a-dataset-to-a-server" class="nav-link" data-scroll-target="#example-2-move-a-dataset-to-a-server">Example 2: Move a dataset to a server</a></li>
+  <li><a href="#example-3-remote-jupyter-via-ssh-tunnel" id="toc-example-3-remote-jupyter-via-ssh-tunnel" class="nav-link" data-scroll-target="#example-3-remote-jupyter-via-ssh-tunnel">Example 3: Remote Jupyter via SSH tunnel</a></li>
+  <li><a href="#example-4-launch-and-secure-a-small-cloud-vm" id="toc-example-4-launch-and-secure-a-small-cloud-vm" class="nav-link" data-scroll-target="#example-4-launch-and-secure-a-small-cloud-vm">Example 4: Launch and secure a small cloud VM</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">12.13</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-ssh-commands" id="toc-quick-reference-common-ssh-commands" class="nav-link" data-scroll-target="#quick-reference-common-ssh-commands"><span class="header-section-number">12.14</span> Quick reference: common SSH commands</a></li>
+  <li><a href="#quick-reference-vocabulary" id="toc-quick-reference-vocabulary" class="nav-link" data-scroll-target="#quick-reference-vocabulary"><span class="header-section-number">12.15</span> Quick reference: vocabulary</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/remote.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/remote.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-remote-computing" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="#sec-terminal" class="quarto-xref"><span class="quarto-unresolved-ref">sec-terminal</span></a>.</p>
+<p><strong>See also:</strong> <a href="#sec-git-github" class="quarto-xref"><span class="quarto-unresolved-ref">sec-git-github</span></a>, <a href="#sec-automation" class="quarto-xref"><span class="quarto-unresolved-ref">sec-automation</span></a>, <a href="#sec-collaboration" class="quarto-xref"><span class="quarto-unresolved-ref">sec-collaboration</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+<p>Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using SSH and VPNs, move files, run remote jobs, and use tunneling to access remote services (including Jupyter) as if they were local.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Explain client/server basics and what “remote computing” means.</p></li>
+<li><p>Use SSH to connect to a remote machine and run commands interactively.</p></li>
+<li><p>Use key-based authentication safely (generate keys, protect private keys, manage known hosts).</p></li>
+<li><p>Transfer files with <code>scp</code> or <code>sftp</code> (and understand when to use GUI tools).</p></li>
+<li><p>Use SSH tunneling (local, remote, and dynamic forwarding) for safe access to remote services.</p></li>
+<li><p>Understand what a VPN does, when it is required, and common pitfalls.</p></li>
+<li><p>Describe cloud computing at a practical level (instances, regions, networking rules, costs).</p></li>
+<li><p>Apply baseline security practices: least privilege, MFA, key hygiene, and avoiding data leaks.</p></li>
+</ol>
+</section>
+<section id="running-theme-remote-access-is-powerful-so-make-it-boring" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-remote-access-is-powerful-so-make-it-boring">Running theme: remote access is powerful, so make it boring</h2>
+<p>The goal is not cleverness; it is predictable workflows that minimize risk.</p>
+</section>
+<section id="a-beginner-mental-model" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="a-beginner-mental-model"><span class="header-section-number">12.1</span> A beginner mental model</h2>
+<section id="local-vs-remote" class="level3">
+<h3 class="anchored" data-anchor-id="local-vs-remote">Local vs remote</h3>
+<ul>
+<li><p><strong>Local machine:</strong> your laptop/desktop.</p></li>
+<li><p><strong>Remote machine:</strong> a computer you access over the network.</p></li>
+<li><p><strong>Network:</strong> the path between them (campus, home Wi-Fi, internet).</p></li>
+</ul>
+</section>
+<section id="clientserver-language" class="level3">
+<h3 class="anchored" data-anchor-id="clientserver-language">Client/server language</h3>
+<ul>
+<li><p><strong>Client:</strong> the tool you run locally (SSH client, VPN client, browser).</p></li>
+<li><p><strong>Server:</strong> the remote service or machine you connect to (SSH server, web server).</p></li>
+</ul>
+</section>
+<section id="sessions-processes-and-persistence" class="level3">
+<h3 class="anchored" data-anchor-id="sessions-processes-and-persistence">Sessions, processes, and persistence</h3>
+<ul>
+<li><p>A remote <strong>SSH session</strong> is a connection + a shell.</p></li>
+<li><p>Programs you start remotely may stop when your session ends unless you use job control tools.</p></li>
+<li><p>Remote computers have their own file system, users, permissions, and installed software.</p></li>
+</ul>
+</section>
+<section id="why-remote-computing-exists" class="level3">
+<h3 class="anchored" data-anchor-id="why-remote-computing-exists">Why remote computing exists</h3>
+<ul>
+<li><p>Access to more CPU/RAM/GPU.</p></li>
+<li><p>Access to shared datasets and licensed tools.</p></li>
+<li><p>Reliability (servers run longer than laptops).</p></li>
+<li><p>Collaboration (shared environments).</p></li>
+</ul>
+</section>
+</section>
+<section id="prerequisites-and-safe-defaults" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="prerequisites-and-safe-defaults"><span class="header-section-number">12.2</span> Prerequisites and safe defaults</h2>
+<section id="accounts-and-credentials" class="level3">
+<h3 class="anchored" data-anchor-id="accounts-and-credentials">Accounts and credentials</h3>
+<ul>
+<li><p>You need: a username, a host address, and an authentication method.</p></li>
+<li><p>Prefer: institutional identity + MFA, and key-based SSH.</p></li>
+</ul>
+</section>
+<section id="installlocate-your-tools" class="level3">
+<h3 class="anchored" data-anchor-id="installlocate-your-tools">Install/locate your tools</h3>
+<ul>
+<li><p><strong>macOS:</strong> Terminal includes <code>ssh</code>, <code>scp</code>, <code>sftp</code>.</p></li>
+<li><p><strong>Windows:</strong> OpenSSH client is commonly available; otherwise enable/install it.</p></li>
+<li><p>Optional: a code editor that supports remote development.</p></li>
+</ul>
+</section>
+<section id="golden-safety-rules" class="level3">
+<h3 class="anchored" data-anchor-id="golden-safety-rules">Golden safety rules</h3>
+<ul>
+<li><p>Never share passwords or private keys.</p></li>
+<li><p>Never paste secrets into commands or notebooks.</p></li>
+<li><p>Assume your command history is readable by future you (and sometimes by administrators).</p></li>
+<li><p>Use the minimum access needed; log out when done.</p></li>
+</ul>
+</section>
+</section>
+<section id="ssh-fundamentals" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="ssh-fundamentals"><span class="header-section-number">12.3</span> SSH fundamentals</h2>
+<section id="what-ssh-provides" class="level3">
+<h3 class="anchored" data-anchor-id="what-ssh-provides">What SSH provides</h3>
+<ul>
+<li><p>Encrypted remote login.</p></li>
+<li><p>Secure file transfer.</p></li>
+<li><p>Secure tunneling of other network traffic.</p></li>
+</ul>
+</section>
+<section id="the-simplest-connection" class="level3">
+<h3 class="anchored" data-anchor-id="the-simplest-connection">The simplest connection</h3>
+<pre><code>ssh username@hostname</code></pre>
+<ul>
+<li><p>You may need <code>-p &lt;port&gt;</code> if SSH uses a nonstandard port.</p></li>
+<li><p>The first time you connect, SSH will ask about the host fingerprint.</p></li>
+</ul>
+</section>
+<section id="host-identity-and-known_hosts" class="level3">
+<h3 class="anchored" data-anchor-id="host-identity-and-known_hosts">Host identity and <code>known_hosts</code></h3>
+<ul>
+<li><p>SSH remembers server fingerprints to prevent “man-in-the-middle” attacks.</p></li>
+<li><p>Warning: a changed fingerprint may be benign (server rebuilt) or dangerous (impersonation).</p></li>
+<li><p>Best practice: verify changes via a trusted channel (course staff / sysadmin).</p></li>
+</ul>
+</section>
+<section id="authentication-passwords-vs-keys" class="level3">
+<h3 class="anchored" data-anchor-id="authentication-passwords-vs-keys">Authentication: passwords vs keys</h3>
+<ul>
+<li><p><strong>Password:</strong> easy to start, less secure, often disabled on managed servers.</p></li>
+<li><p><strong>Keys:</strong> recommended; a private key stays on your device and proves identity.</p></li>
+</ul>
+</section>
+<section id="key-based-authentication-basics" class="level3">
+<h3 class="anchored" data-anchor-id="key-based-authentication-basics">Key-based authentication basics</h3>
+<ul>
+<li><p>A key pair: <strong>private key</strong> (secret) + <strong>public key</strong> (shareable).</p></li>
+<li><p>The public key is added to the server’s authorized keys list.</p></li>
+<li><p>Protect the private key with a passphrase.</p></li>
+</ul>
+</section>
+<section id="generating-a-key-pair-conceptual" class="level3">
+<h3 class="anchored" data-anchor-id="generating-a-key-pair-conceptual">Generating a key pair (conceptual)</h3>
+<pre><code>ssh-keygen</code></pre>
+<ul>
+<li><p>Choose a strong passphrase.</p></li>
+<li><p>Store keys in the default <code>&nbsp;/.ssh/</code> location.</p></li>
+<li><p>Keep your private key file permissions restrictive.</p></li>
+</ul>
+</section>
+<section id="ssh-agent-optional-but-useful" class="level3">
+<h3 class="anchored" data-anchor-id="ssh-agent-optional-but-useful">SSH agent (optional but useful)</h3>
+<ul>
+<li><p>An agent holds decrypted keys in memory so you do not type your passphrase repeatedly.</p></li>
+<li><p>Treat agent forwarding as advanced; do not enable it by default.</p></li>
+</ul>
+</section>
+<section id="quality-of-life-.sshconfig" class="level3">
+<h3 class="anchored" data-anchor-id="quality-of-life-.sshconfig">Quality-of-life: <code>&nbsp;/.ssh/config</code></h3>
+<ul>
+<li><p>Create short nicknames for hosts.</p></li>
+<li><p>Store per-host usernames, ports, and identity files.</p></li>
+<li><p>Keep configuration readable; document nonstandard choices.</p></li>
+</ul>
+</section>
+</section>
+<section id="file-transfer-getting-data-in-and-out" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="file-transfer-getting-data-in-and-out"><span class="header-section-number">12.4</span> File transfer: getting data in and out</h2>
+<section id="the-basic-question-where-is-the-file" class="level3">
+<h3 class="anchored" data-anchor-id="the-basic-question-where-is-the-file">The basic question: where is the file?</h3>
+<ul>
+<li><p>‘Local path’’ (your computer) vs ‘remote path’’ (server).</p></li>
+<li><p>Use absolute paths if you are unsure.</p></li>
+</ul>
+</section>
+<section id="secure-copy-scp" class="level3">
+<h3 class="anchored" data-anchor-id="secure-copy-scp">Secure copy (<code>scp</code>)</h3>
+<ul>
+<li><p>Good for quick transfers and scripts.</p></li>
+<li><p>Learn directory copies (recursive) and quoting paths with spaces.</p></li>
+</ul>
+</section>
+<section id="sftp-sftp" class="level3">
+<h3 class="anchored" data-anchor-id="sftp-sftp">SFTP (<code>sftp</code>)</h3>
+<ul>
+<li><p>Interactive file transfer session.</p></li>
+<li><p>Many GUI tools use SFTP under the hood.</p></li>
+</ul>
+</section>
+<section id="what-not-to-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-not-to-do">What not to do</h3>
+<ul>
+<li><p>Do not email datasets or copy them into unapproved cloud storage.</p></li>
+<li><p>Do not move large files through a slow interactive session if a better transfer method exists.</p></li>
+</ul>
+</section>
+</section>
+<section id="tunneling-and-port-forwarding-making-remote-services-usable" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="tunneling-and-port-forwarding-making-remote-services-usable"><span class="header-section-number">12.5</span> Tunneling and port forwarding (making remote services usable)</h2>
+<section id="why-tunneling-exists" class="level3">
+<h3 class="anchored" data-anchor-id="why-tunneling-exists">Why tunneling exists</h3>
+<ul>
+<li><p>Many services (Jupyter, databases, dashboards) bind to <code>localhost</code> on the server for safety.</p></li>
+<li><p>A tunnel lets your local machine reach that service through an encrypted channel.</p></li>
+</ul>
+</section>
+<section id="local-forwarding-most-common" class="level3">
+<h3 class="anchored" data-anchor-id="local-forwarding-most-common">Local forwarding (most common)</h3>
+<ul>
+<li>Scenario: remote server runs a service on <code>127.0.0.1:8888</code>; you want to open it in your local browser.</li>
+</ul>
+<!-- -->
+<pre><code>ssh -L 8888:localhost:8888 username@hostname</code></pre>
+<ul>
+<li><p>Then visit <code>[http://localhost:8888</code>](http://localhost:8888) in your local browser.</p></li>
+<li><p>If <code>8888</code> is taken locally, choose another local port (e.g., 8899).</p></li>
+</ul>
+</section>
+<section id="remote-forwarding-advanced" class="level3">
+<h3 class="anchored" data-anchor-id="remote-forwarding-advanced">Remote forwarding (advanced)</h3>
+<ul>
+<li><p>Scenario: you need the remote machine to reach a service running locally.</p></li>
+<li><p>Use cautiously; it changes the exposure model.</p></li>
+</ul>
+</section>
+<section id="dynamic-forwarding-socks-proxy" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-forwarding-socks-proxy">Dynamic forwarding (SOCKS proxy)</h3>
+<ul>
+<li><p>Scenario: route a browser or tool through the remote network.</p></li>
+<li><p>Use only when you understand policies and implications.</p></li>
+</ul>
+</section>
+<section id="tunnel-hygiene" class="level3">
+<h3 class="anchored" data-anchor-id="tunnel-hygiene">Tunnel hygiene</h3>
+<ul>
+<li><p>Use <code>-N</code> when you only need forwarding (no remote shell).</p></li>
+<li><p>Prefer binding to <code>localhost</code> on your machine to avoid exposing ports to others.</p></li>
+<li><p>Close tunnels when you are done.</p></li>
+</ul>
+</section>
+</section>
+<section id="vpn-fundamentals" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="vpn-fundamentals"><span class="header-section-number">12.6</span> VPN fundamentals</h2>
+<section id="what-a-vpn-does-student-relevant" class="level3">
+<h3 class="anchored" data-anchor-id="what-a-vpn-does-student-relevant">What a VPN does (student-relevant)</h3>
+<ul>
+<li><p>Creates a secure network path to a private network (campus/lab).</p></li>
+<li><p>Makes your device behave as if it is “on campus” for protected resources.</p></li>
+<li><p>Often required to reach SSH hosts that are not publicly reachable.</p></li>
+</ul>
+</section>
+<section id="when-you-need-a-vpn" class="level3">
+<h3 class="anchored" data-anchor-id="when-you-need-a-vpn">When you need a VPN</h3>
+<ul>
+<li><p>Accessing university resources from off campus.</p></li>
+<li><p>Using internal-only hosts, file shares, or licensed services.</p></li>
+<li><p>Connecting to a protected cluster login node.</p></li>
+</ul>
+</section>
+<section id="common-vpn-pitfalls" class="level3">
+<h3 class="anchored" data-anchor-id="common-vpn-pitfalls">Common VPN pitfalls</h3>
+<ul>
+<li><p>VPN drops cause SSH disconnections.</p></li>
+<li><p>Split-tunneling vs full-tunneling changes which traffic goes through the VPN.</p></li>
+<li><p>Some VPNs interfere with local networking (printers, local dev servers).</p></li>
+</ul>
+</section>
+<section id="practical-advice" class="level3">
+<h3 class="anchored" data-anchor-id="practical-advice">Practical advice</h3>
+<ul>
+<li><p>Connect VPN first, then SSH.</p></li>
+<li><p>If you lose connection, reconnect VPN and re-establish SSH; do not assume remote processes survived.</p></li>
+<li><p>Learn where your VPN client shows connection status and logs.</p></li>
+</ul>
+</section>
+</section>
+<section id="remote-work-patterns-from-simple-to-professional" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="remote-work-patterns-from-simple-to-professional"><span class="header-section-number">12.7</span> Remote work patterns: from simple to professional</h2>
+<section id="pattern-1-login-node-compute-node-hpc-concept" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-1-login-node-compute-node-hpc-concept">Pattern 1: login node + compute node (HPC concept)</h3>
+<ul>
+<li><p>You SSH into a <strong>login node</strong> for editing and job submission.</p></li>
+<li><p>Actual computation runs on separate nodes via a scheduler.</p></li>
+<li><p>Rule: do not run heavy jobs on login nodes.</p></li>
+</ul>
+</section>
+<section id="pattern-2-remote-development" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-2-remote-development">Pattern 2: remote development</h3>
+<ul>
+<li><p>Edit locally and run remotely, or edit remotely using a remote extension.</p></li>
+<li><p>Keep projects in version control; avoid manual copying back and forth.</p></li>
+</ul>
+</section>
+<section id="pattern-3-notebooks-on-servers" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-3-notebooks-on-servers">Pattern 3: notebooks on servers</h3>
+<ul>
+<li><p>Start Jupyter remotely.</p></li>
+<li><p>Use SSH local port forwarding to access it.</p></li>
+<li><p>Prefer passwords/tokens and binding to <code>localhost</code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="cloud-computing-basics-what-novices-must-know" class="level2" data-number="12.8">
+<h2 data-number="12.8" class="anchored" data-anchor-id="cloud-computing-basics-what-novices-must-know"><span class="header-section-number">12.8</span> Cloud computing basics (what novices must know)</h2>
+<section id="what-the-cloud-is" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-cloud-is">What “the cloud” is</h3>
+<ul>
+<li><p>Renting computing resources (virtual machines, storage, managed services).</p></li>
+<li><p>You control enough to break things, including security.</p></li>
+</ul>
+</section>
+<section id="core-terms" class="level3">
+<h3 class="anchored" data-anchor-id="core-terms">Core terms</h3>
+<dl>
+<dt>Instance/VM</dt>
+<dd>
+<p>A rented computer.</p>
+</dd>
+<dt>Region/zone</dt>
+<dd>
+<p>Where the machine physically resides.</p>
+</dd>
+<dt>Storage</dt>
+<dd>
+<p>Object storage (buckets) vs attached disks.</p>
+</dd>
+<dt>Networking rules</dt>
+<dd>
+<p>Firewalls/security groups controlling inbound/outbound.</p>
+</dd>
+</dl>
+</section>
+<section id="a-safe-first-cloud-vm-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="a-safe-first-cloud-vm-workflow">A safe “first cloud VM” workflow</h3>
+<ol type="1">
+<li><p>Create the instance in a region.</p></li>
+<li><p>Create or choose an SSH key pair.</p></li>
+<li><p>Configure inbound access: allow SSH only from your IP (not from the whole internet).</p></li>
+<li><p>Connect via SSH.</p></li>
+<li><p>Shut down/terminate when finished to control cost.</p></li>
+</ol>
+</section>
+<section id="cost-and-risk" class="level3">
+<h3 class="anchored" data-anchor-id="cost-and-risk">Cost and risk</h3>
+<ul>
+<li><p>Cloud resources cost money while running (and sometimes while stored).</p></li>
+<li><p>Set budget alerts if available.</p></li>
+<li><p>Do not expose services publicly unless required and reviewed.</p></li>
+</ul>
+</section>
+</section>
+<section id="security-best-practices-for-remote-computing" class="level2" data-number="12.9">
+<h2 data-number="12.9" class="anchored" data-anchor-id="security-best-practices-for-remote-computing"><span class="header-section-number">12.9</span> Security best practices for remote computing</h2>
+<section id="key-hygiene" class="level3">
+<h3 class="anchored" data-anchor-id="key-hygiene">Key hygiene</h3>
+<ul>
+<li><p>Use passphrases; do not store private keys in shared folders.</p></li>
+<li><p>Avoid key sprawl: use separate keys per purpose if required, and retire unused keys.</p></li>
+<li><p>If a key might be compromised, rotate it immediately.</p></li>
+</ul>
+</section>
+<section id="least-privilege-and-separation" class="level3">
+<h3 class="anchored" data-anchor-id="least-privilege-and-separation">Least privilege and separation</h3>
+<ul>
+<li><p>Use non-admin accounts for daily work.</p></li>
+<li><p>Use sudo/admin only when necessary.</p></li>
+<li><p>Keep data access minimal and policy-compliant.</p></li>
+</ul>
+</section>
+<section id="safe-networking-defaults" class="level3">
+<h3 class="anchored" data-anchor-id="safe-networking-defaults">Safe networking defaults</h3>
+<ul>
+<li><p>Restrict inbound ports (SSH only; no public databases).</p></li>
+<li><p>Prefer tunnels over opening ports.</p></li>
+<li><p>Keep software patched on remote machines.</p></li>
+</ul>
+</section>
+<section id="logging-and-traceability-student-level" class="level3">
+<h3 class="anchored" data-anchor-id="logging-and-traceability-student-level">Logging and traceability (student level)</h3>
+<ul>
+<li><p>Keep a small “remote session log”: what host, what you did, what changed.</p></li>
+<li><p>Use version control for code changes.</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting-and-diagnostics" class="level2" data-number="12.10">
+<h2 data-number="12.10" class="anchored" data-anchor-id="troubleshooting-and-diagnostics"><span class="header-section-number">12.10</span> Troubleshooting and diagnostics</h2>
+<section id="connection-failures" class="level3">
+<h3 class="anchored" data-anchor-id="connection-failures">Connection failures</h3>
+<ul>
+<li><p>Check: internet, VPN status, host name, username.</p></li>
+<li><p>Check: port and firewall rules.</p></li>
+<li><p>Check: key permissions and correct key selection.</p></li>
+</ul>
+</section>
+<section id="host-key-warnings" class="level3">
+<h3 class="anchored" data-anchor-id="host-key-warnings">Host key warnings</h3>
+<ul>
+<li><p>Do not ignore.</p></li>
+<li><p>Verify with a trusted source before accepting changes.</p></li>
+</ul>
+</section>
+<section id="timeouts-and-unstable-connections" class="level3">
+<h3 class="anchored" data-anchor-id="timeouts-and-unstable-connections">Timeouts and unstable connections</h3>
+<ul>
+<li><p>Use keep-alives if permitted.</p></li>
+<li><p>Prefer running long tasks via schedulers or detached sessions.</p></li>
+</ul>
+</section>
+<section id="permission-denied" class="level3">
+<h3 class="anchored" data-anchor-id="permission-denied">“Permission denied”</h3>
+<ul>
+<li><p>It may be the wrong username.</p></li>
+<li><p>It may be the wrong key.</p></li>
+<li><p>It may be a server-side access control issue.</p></li>
+</ul>
+</section>
+</section>
+<section id="worked-examples-outline" class="level2" data-number="12.11">
+<h2 data-number="12.11" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">12.11</span> Worked examples (outline)</h2>
+<section id="example-1-first-ssh-login" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-first-ssh-login">Example 1: First SSH login</h3>
+<ul>
+<li><p>Verify prerequisites (account, host, VPN).</p></li>
+<li><p>Connect and interpret the login banner.</p></li>
+<li><p>Navigate remote directories and run a simple command.</p></li>
+</ul>
+</section>
+<section id="example-2-move-a-dataset-to-a-server" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-move-a-dataset-to-a-server">Example 2: Move a dataset to a server</h3>
+<ul>
+<li><p>Identify local and remote paths.</p></li>
+<li><p>Transfer with <code>scp</code> or <code>sftp</code>.</p></li>
+<li><p>Verify integrity (file size, checksums if taught).</p></li>
+</ul>
+</section>
+<section id="example-3-remote-jupyter-via-ssh-tunnel" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-remote-jupyter-via-ssh-tunnel">Example 3: Remote Jupyter via SSH tunnel</h3>
+<ul>
+<li><p>Start Jupyter on the server bound to <code>localhost</code>.</p></li>
+<li><p>Create a local tunnel.</p></li>
+<li><p>Connect in browser; close tunnel when done.</p></li>
+</ul>
+</section>
+<section id="example-4-launch-and-secure-a-small-cloud-vm" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-launch-and-secure-a-small-cloud-vm">Example 4: Launch and secure a small cloud VM</h3>
+<ul>
+<li><p>Create instance; restrict inbound SSH to your IP.</p></li>
+<li><p>SSH in; run a short job.</p></li>
+<li><p>Terminate instance; confirm costs stop accruing.</p></li>
+</ul>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="12.12">
+<h2 data-number="12.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.12</span> Exercises</h2>
+<ol type="1">
+<li><p>Generate an SSH key pair with a passphrase and identify where keys are stored.</p></li>
+<li><p>Create an <code>&nbsp;/.ssh/config</code> entry for a host and connect using the alias.</p></li>
+<li><p>Transfer a directory of files to a server and verify the transfer.</p></li>
+<li><p>Create a local port forward and access a remote service in your browser.</p></li>
+<li><p>Connect to a required campus resource through a VPN and note how your network behavior changes.</p></li>
+<li><p>Cloud practice (if allowed): launch a VM, SSH in, then shut it down and confirm termination.</p></li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="12.13">
+<h2 data-number="12.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">12.13</span> One-page checklist</h2>
+<ul>
+<li><p>I know whether I need a VPN before SSH.</p></li>
+<li><p>I can state: username, hostname, and authentication method.</p></li>
+<li><p>My private key is protected (passphrase, correct permissions, not shared).</p></li>
+<li><p>I understand host key prompts and do not ignore warnings.</p></li>
+<li><p>I can transfer files securely and verify destination paths.</p></li>
+<li><p>I can set up a local SSH tunnel for remote services.</p></li>
+<li><p>I restrict network exposure (no unnecessary public ports).</p></li>
+<li><p>I log out and terminate cloud resources when finished.</p></li>
+</ul>
+</section>
+<section id="quick-reference-common-ssh-commands" class="level2" data-number="12.14">
+<h2 data-number="12.14" class="anchored" data-anchor-id="quick-reference-common-ssh-commands"><span class="header-section-number">12.14</span> Quick reference: common SSH commands</h2>
+<pre><code>ssh username@hostname
+ssh -p 2222 username@hostname
+ssh -i ~/.ssh/my_key username@hostname
+ssh -L 8888:localhost:8888 username@hostname
+scp localfile username@hostname:/remote/path/
+sftp username@hostname</code></pre>
+</section>
+<section id="quick-reference-vocabulary" class="level2" data-number="12.15">
+<h2 data-number="12.15" class="anchored" data-anchor-id="quick-reference-vocabulary"><span class="header-section-number">12.15</span> Quick reference: vocabulary</h2>
+<dl>
+<dt>SSH</dt>
+<dd>
+<p>Secure Shell protocol for encrypted remote access.</p>
+</dd>
+<dt>VPN</dt>
+<dd>
+<p>Virtual Private Network; encrypted connection to a private network.</p>
+</dd>
+<dt>Tunnel/Port forward</dt>
+<dd>
+<p>Using SSH to carry traffic for another service.</p>
+</dd>
+<dt>Public key</dt>
+<dd>
+<p>Shareable key used by the server to verify the corresponding private key.</p>
+</dd>
+<dt>Private key</dt>
+<dd>
+<p>Secret key that proves your identity; must be protected.</p>
+</dd>
+<dt>Host key</dt>
+<dd>
+<p>Server identity fingerprint stored in <code>known_hosts</code>.</p>
+</dd>
+<dt>Security group/firewall</dt>
+<dd>
+<p>Rules controlling allowed inbound/outbound network traffic.</p>
+</dd>
+</dl>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../parts/part-2-environment/text-editors.html" class="pagination-link" aria-label="Text Editors">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../parts/part-3-python/package-management.html" class="pagination-link" aria-label="Package Management">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/remote.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Debugging – Paratechnical Computing Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../parts/part-1-practice/tracebacks.html" rel="next">
+<link href="../../parts/part-1-practice/reading-docs.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a46c92d1a3b8d11f1f9fb1f566cd2c52.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-1-practice/questions.html">Part I — Practice of Technical Work</a></li><li class="breadcrumb-item"><a href="../../parts/part-1-practice/debugging.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Paratechnical Computing Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/debugging.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Testing Basics with pytest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style, Linting, and Formatting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data: Shape, Cleaning, and Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/pre-commit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Pre-commit Hooks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-change-one-thing-observe-one-thing" id="toc-running-theme-change-one-thing-observe-one-thing" class="nav-link" data-scroll-target="#running-theme-change-one-thing-observe-one-thing">Running theme: change one thing, observe one thing</a></li>
+  <li><a href="#a-mental-model-debugging-as-an-evidence-driven-loop" id="toc-a-mental-model-debugging-as-an-evidence-driven-loop" class="nav-link" data-scroll-target="#a-mental-model-debugging-as-an-evidence-driven-loop"><span class="header-section-number">5.1</span> A mental model: debugging as an evidence-driven loop</a>
+  <ul class="collapse">
+  <li><a href="#why-the-random-edits-strategy-fails" id="toc-why-the-random-edits-strategy-fails" class="nav-link" data-scroll-target="#why-the-random-edits-strategy-fails">Why the “random edits” strategy fails</a></li>
+  </ul></li>
+  <li><a href="#start-with-a-clear-problem-statement" id="toc-start-with-a-clear-problem-statement" class="nav-link" data-scroll-target="#start-with-a-clear-problem-statement"><span class="header-section-number">5.2</span> Start with a clear problem statement</a></li>
+  <li><a href="#reproduce-the-bug-and-capture-the-evidence" id="toc-reproduce-the-bug-and-capture-the-evidence" class="nav-link" data-scroll-target="#reproduce-the-bug-and-capture-the-evidence"><span class="header-section-number">5.3</span> Reproduce the bug and capture the evidence</a>
+  <ul class="collapse">
+  <li><a href="#what-to-capture" id="toc-what-to-capture" class="nav-link" data-scroll-target="#what-to-capture">What to capture</a></li>
+  <li><a href="#reproduction-in-notebooks-versus-scripts" id="toc-reproduction-in-notebooks-versus-scripts" class="nav-link" data-scroll-target="#reproduction-in-notebooks-versus-scripts">Reproduction in notebooks versus scripts</a></li>
+  </ul></li>
+  <li><a href="#read-error-messages-and-stack-traces" id="toc-read-error-messages-and-stack-traces" class="nav-link" data-scroll-target="#read-error-messages-and-stack-traces"><span class="header-section-number">5.4</span> Read error messages and stack traces</a>
+  <ul class="collapse">
+  <li><a href="#the-difference-between-an-error-and-a-symptom" id="toc-the-difference-between-an-error-and-a-symptom" class="nav-link" data-scroll-target="#the-difference-between-an-error-and-a-symptom">The difference between an error and a symptom</a></li>
+  <li><a href="#how-to-read-a-python-stack-trace" id="toc-how-to-read-a-python-stack-trace" class="nav-link" data-scroll-target="#how-to-read-a-python-stack-trace">How to read a Python stack trace</a></li>
+  <li><a href="#error-taxonomies-learn-a-few-recurring-families" id="toc-error-taxonomies-learn-a-few-recurring-families" class="nav-link" data-scroll-target="#error-taxonomies-learn-a-few-recurring-families">Error taxonomies: learn a few recurring families</a></li>
+  </ul></li>
+  <li><a href="#decomposition-make-the-problem-smaller" id="toc-decomposition-make-the-problem-smaller" class="nav-link" data-scroll-target="#decomposition-make-the-problem-smaller"><span class="header-section-number">5.5</span> Decomposition: make the problem smaller</a>
+  <ul class="collapse">
+  <li><a href="#three-decomposition-strategies" id="toc-three-decomposition-strategies" class="nav-link" data-scroll-target="#three-decomposition-strategies">Three decomposition strategies</a></li>
+  <li><a href="#the-minimal-reproducible-example-mre-as-a-debugging-tool" id="toc-the-minimal-reproducible-example-mre-as-a-debugging-tool" class="nav-link" data-scroll-target="#the-minimal-reproducible-example-mre-as-a-debugging-tool">The minimal reproducible example (MRE) as a debugging tool</a></li>
+  <li><a href="#practical-mre-techniques" id="toc-practical-mre-techniques" class="nav-link" data-scroll-target="#practical-mre-techniques">Practical MRE techniques</a></li>
+  </ul></li>
+  <li><a href="#hypotheses-and-controlled-experiments" id="toc-hypotheses-and-controlled-experiments" class="nav-link" data-scroll-target="#hypotheses-and-controlled-experiments"><span class="header-section-number">5.6</span> Hypotheses and controlled experiments</a>
+  <ul class="collapse">
+  <li><a href="#what-a-good-hypothesis-looks-like" id="toc-what-a-good-hypothesis-looks-like" class="nav-link" data-scroll-target="#what-a-good-hypothesis-looks-like">What a good hypothesis looks like</a></li>
+  <li><a href="#designing-a-controlled-experiment" id="toc-designing-a-controlled-experiment" class="nav-link" data-scroll-target="#designing-a-controlled-experiment">Designing a controlled experiment</a></li>
+  </ul></li>
+  <li><a href="#instrumentation-print-statements-and-sanity-checks" id="toc-instrumentation-print-statements-and-sanity-checks" class="nav-link" data-scroll-target="#instrumentation-print-statements-and-sanity-checks"><span class="header-section-number">5.7</span> Instrumentation: print statements and sanity checks</a>
+  <ul class="collapse">
+  <li><a href="#strategic-printing" id="toc-strategic-printing" class="nav-link" data-scroll-target="#strategic-printing">Strategic printing</a></li>
+  <li><a href="#assertions-as-executable-assumptions" id="toc-assertions-as-executable-assumptions" class="nav-link" data-scroll-target="#assertions-as-executable-assumptions">Assertions as executable assumptions</a></li>
+  </ul></li>
+  <li><a href="#logging-debugging-that-scales-beyond-one-run" id="toc-logging-debugging-that-scales-beyond-one-run" class="nav-link" data-scroll-target="#logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">5.8</span> Logging: debugging that scales beyond one run</a>
+  <ul class="collapse">
+  <li><a href="#what-logging-is-and-is-not" id="toc-what-logging-is-and-is-not" class="nav-link" data-scroll-target="#what-logging-is-and-is-not">What logging is (and is not)</a></li>
+  <li><a href="#logging-levels" id="toc-logging-levels" class="nav-link" data-scroll-target="#logging-levels">Logging levels</a></li>
+  <li><a href="#a-minimal-python-logging-setup" id="toc-a-minimal-python-logging-setup" class="nav-link" data-scroll-target="#a-minimal-python-logging-setup">A minimal Python logging setup</a></li>
+  <li><a href="#avoid-logging-secrets" id="toc-avoid-logging-secrets" class="nav-link" data-scroll-target="#avoid-logging-secrets">Avoid logging secrets</a></li>
+  </ul></li>
+  <li><a href="#testing-confirm-fixes-and-prevent-regressions" id="toc-testing-confirm-fixes-and-prevent-regressions" class="nav-link" data-scroll-target="#testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">5.9</span> Testing: confirm fixes and prevent regressions</a>
+  <ul class="collapse">
+  <li><a href="#what-a-test-is" id="toc-what-a-test-is" class="nav-link" data-scroll-target="#what-a-test-is">What a test is</a></li>
+  <li><a href="#a-testing-ladder-for-novices" id="toc-a-testing-ladder-for-novices" class="nav-link" data-scroll-target="#a-testing-ladder-for-novices">A testing ladder for novices</a></li>
+  <li><a href="#write-a-test-that-would-have-caught-the-bug" id="toc-write-a-test-that-would-have-caught-the-bug" class="nav-link" data-scroll-target="#write-a-test-that-would-have-caught-the-bug">Write a test that would have caught the bug</a></li>
+  <li><a href="#golden-rule-tests-should-be-deterministic" id="toc-golden-rule-tests-should-be-deterministic" class="nav-link" data-scroll-target="#golden-rule-tests-should-be-deterministic">Golden rule: tests should be deterministic</a></li>
+  </ul></li>
+  <li><a href="#debugging-in-common-environments" id="toc-debugging-in-common-environments" class="nav-link" data-scroll-target="#debugging-in-common-environments"><span class="header-section-number">5.10</span> Debugging in common environments</a>
+  <ul class="collapse">
+  <li><a href="#notebook-specific-hazards" id="toc-notebook-specific-hazards" class="nav-link" data-scroll-target="#notebook-specific-hazards">Notebook-specific hazards</a></li>
+  <li><a href="#command-line-and-os-level-bugs" id="toc-command-line-and-os-level-bugs" class="nav-link" data-scroll-target="#command-line-and-os-level-bugs">Command-line and OS-level bugs</a></li>
+  </ul></li>
+  <li><a href="#a-practical-debugging-checklist" id="toc-a-practical-debugging-checklist" class="nav-link" data-scroll-target="#a-practical-debugging-checklist"><span class="header-section-number">5.11</span> A practical debugging checklist</a></li>
+  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies"><span class="header-section-number">5.12</span> Case studies</a>
+  <ul class="collapse">
+  <li><a href="#case-study-1-file-not-found-that-is-really-wrong-folder" id="toc-case-study-1-file-not-found-that-is-really-wrong-folder" class="nav-link" data-scroll-target="#case-study-1-file-not-found-that-is-really-wrong-folder">Case study 1: “File not found” that is really “wrong folder”</a></li>
+  <li><a href="#case-study-2-it-runs-but-results-are-wrong" id="toc-case-study-2-it-runs-but-results-are-wrong" class="nav-link" data-scroll-target="#case-study-2-it-runs-but-results-are-wrong">Case study 2: “It runs but results are wrong”</a></li>
+  </ul></li>
+  <li><a href="#using-ai-tools-in-debugging" id="toc-using-ai-tools-in-debugging" class="nav-link" data-scroll-target="#using-ai-tools-in-debugging"><span class="header-section-number">5.13</span> Using AI tools in debugging</a>
+  <ul class="collapse">
+  <li><a href="#good-uses-of-ai" id="toc-good-uses-of-ai" class="nav-link" data-scroll-target="#good-uses-of-ai">Good uses of AI</a></li>
+  <li><a href="#guardrails" id="toc-guardrails" class="nav-link" data-scroll-target="#guardrails">Guardrails</a></li>
+  </ul></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">5.14</span> Templates</a>
+  <ul class="collapse">
+  <li><a href="#template-a-debugging-journal-entry" id="toc-template-a-debugging-journal-entry" class="nav-link" data-scroll-target="#template-a-debugging-journal-entry">Template A: debugging journal entry</a></li>
+  <li><a href="#template-b-minimal-test-checklist" id="toc-template-b-minimal-test-checklist" class="nav-link" data-scroll-target="#template-b-minimal-test-checklist">Template B: minimal test checklist</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">5.15</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">5.16</span> One-page checklist</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-1-practice/debugging.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-1-practice/questions.html">Part I — Practice of Technical Work</a></li><li class="breadcrumb-item"><a href="../../parts/part-1-practice/debugging.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-debugging" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="#sec-terminal" class="quarto-xref"><span class="quarto-unresolved-ref">sec-terminal</span></a>.</p>
+<p><strong>See also:</strong> <a href="#sec-tracebacks" class="quarto-xref"><span class="quarto-unresolved-ref">sec-tracebacks</span></a>, <a href="#sec-testing" class="quarto-xref"><span class="quarto-unresolved-ref">sec-testing</span></a>, <a href="#sec-asking-questions" class="quarto-xref"><span class="quarto-unresolved-ref">sec-asking-questions</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+<p>When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.</p>
+<p>In computing courses, beginners sometimes treat debugging as a chaotic activity: rerun the same cell, change random lines, search the error message, and hope it works. Professionals do something different. They treat debugging as a structured investigation. They narrow the search space, form hypotheses, run controlled experiments, collect evidence (including logs), and confirm the fix with tests.</p>
+<p>This chapter gives you a repeatable debugging workflow you can use in Python scripts, Jupyter notebooks, spreadsheets, and command-line tools. The emphasis is not on fancy tools. The emphasis is on disciplined thinking: decomposition, minimal reproduction, instrumentation, and verification.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Describe debugging as an investigation: symptoms, hypotheses, experiments, and evidence.</p></li>
+<li><p>Produce a minimal reproducible example (MRE) that isolates a bug.</p></li>
+<li><p>Decompose a failing program into smaller units and test them independently.</p></li>
+<li><p>Read error messages and stack traces to locate the relevant failure point.</p></li>
+<li><p>Use print statements and the <code>logging</code> module to collect useful diagnostic information.</p></li>
+<li><p>Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.</p></li>
+<li><p>Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.</p></li>
+<li><p>Use AI tools to assist debugging without outsourcing verification or creating new risks.</p></li>
+</ol>
+</section>
+<section id="running-theme-change-one-thing-observe-one-thing" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-change-one-thing-observe-one-thing">Running theme: change one thing, observe one thing</h2>
+<p>Most debugging becomes easier when you adopt one rule: make one change at a time, then observe the result. When you change multiple things at once, you cannot tell which change mattered. Debugging is a science experiment, not a guessing game.</p>
+</section>
+<section id="a-mental-model-debugging-as-an-evidence-driven-loop" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="a-mental-model-debugging-as-an-evidence-driven-loop"><span class="header-section-number">5.1</span> A mental model: debugging as an evidence-driven loop</h2>
+<p>A bug is a situation where the program behaves differently than you expect. Debugging is the process of reconciling expectations with reality.</p>
+<p>A useful way to think about debugging is a loop:</p>
+<ol type="1">
+<li><p><strong>State the symptom.</strong> What exactly went wrong? What did you expect instead?</p></li>
+<li><p><strong>Reproduce it reliably.</strong> Can you make it fail again on demand?</p></li>
+<li><p><strong>Localize the problem.</strong> Where (roughly) does the failure occur?</p></li>
+<li><p><strong>Form hypotheses.</strong> What could cause this symptom?</p></li>
+<li><p><strong>Run a controlled experiment.</strong> Change one thing to test one hypothesis.</p></li>
+<li><p><strong>Collect evidence.</strong> Use output, logs, and small checks.</p></li>
+<li><p><strong>Apply a fix.</strong> Make the smallest change that resolves the cause.</p></li>
+<li><p><strong>Verify and prevent regression.</strong> Confirm the fix and write a test.</p></li>
+</ol>
+<p>This loop is not linear. You may circle back several times. But it is structured: each iteration should reduce uncertainty.</p>
+<section id="why-the-random-edits-strategy-fails" class="level3">
+<h3 class="anchored" data-anchor-id="why-the-random-edits-strategy-fails">Why the “random edits” strategy fails</h3>
+<p>Beginners often respond to a bug by changing multiple lines, rerunning, and hoping. This fails for three reasons:</p>
+<ul>
+<li><p><strong>No causality.</strong> If the bug disappears, you do not know why.</p></li>
+<li><p><strong>New bugs.</strong> Random edits can break working code.</p></li>
+<li><p><strong>Wasted time.</strong> You spend effort without learning.</p></li>
+</ul>
+<p>A disciplined debugging workflow is not slower; it is faster because it avoids loops of confusion.</p>
+</section>
+</section>
+<section id="start-with-a-clear-problem-statement" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="start-with-a-clear-problem-statement"><span class="header-section-number">5.2</span> Start with a clear problem statement</h2>
+<p>Before you dive into code, write a one-sentence statement:</p>
+<blockquote class="blockquote">
+<p><strong>When I do <u>X</u>, I expect <u>Y</u>, but instead I observe <u>Z</u>.</strong></p>
+</blockquote>
+<p>Examples:</p>
+<ul>
+<li><p>“When I call <code>pd.read_csv</code> on this file, I expect three columns, but I get one combined column.”</p></li>
+<li><p>“When I run <code>python pipeline.py</code>, I expect an <code>outputs/</code> folder, but nothing is created and there is no error.”</p></li>
+<li><p>“When I merge my branch, I expect a clean history, but I get a merge conflict in <code>analysis.ipynb</code>.”</p></li>
+</ul>
+<p>This statement forces you to name your expectation. Many issues turn out to be misunderstandings of what a function or tool is supposed to do.</p>
+</section>
+<section id="reproduce-the-bug-and-capture-the-evidence" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="reproduce-the-bug-and-capture-the-evidence"><span class="header-section-number">5.3</span> Reproduce the bug and capture the evidence</h2>
+<p>If you cannot reproduce a bug, you cannot reliably confirm a fix. Reproduction does not always mean “every time.” It means “often enough that you can test changes.”</p>
+<section id="what-to-capture" class="level3">
+<h3 class="anchored" data-anchor-id="what-to-capture">What to capture</h3>
+<p>When something fails, capture the evidence immediately:</p>
+<ul>
+<li><p>The exact command(s) you ran (including directory).</p></li>
+<li><p>The exact error message (copy/paste, do not retype).</p></li>
+<li><p>The stack trace (if present).</p></li>
+<li><p>The inputs: file path, parameters, small sample data.</p></li>
+<li><p>The environment: OS, Python version, key package versions, and which environment is active.</p></li>
+</ul>
+<p>A practical rule: if the information disappears when you close the terminal or restart the notebook, write it down.</p>
+</section>
+<section id="reproduction-in-notebooks-versus-scripts" class="level3">
+<h3 class="anchored" data-anchor-id="reproduction-in-notebooks-versus-scripts">Reproduction in notebooks versus scripts</h3>
+<p>Jupyter notebooks are convenient, but they create a common debugging hazard: <em>hidden state</em>. You can run cells out of order, redefine variables, or keep stale objects in memory. Two ways to protect yourself:</p>
+<ol type="1">
+<li><p>Restart the kernel and run all cells from top to bottom.</p></li>
+<li><p>When you can, reproduce the issue in a plain script.</p></li>
+</ol>
+<p>If a bug appears in a notebook but not in a script (or vice versa), that difference is evidence.</p>
+</section>
+</section>
+<section id="read-error-messages-and-stack-traces" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="read-error-messages-and-stack-traces"><span class="header-section-number">5.4</span> Read error messages and stack traces</h2>
+<p>Error messages are not insults. They are structured signals.</p>
+<section id="the-difference-between-an-error-and-a-symptom" class="level3">
+<h3 class="anchored" data-anchor-id="the-difference-between-an-error-and-a-symptom">The difference between an error and a symptom</h3>
+<p>Sometimes the error message is the symptom (e.g., <code>FileNotFoundError</code>). Sometimes the symptom is incorrect output with no error (e.g., a column is all zeros). Both require debugging. Errors are easier because the program tells you where it stopped.</p>
+</section>
+<section id="how-to-read-a-python-stack-trace" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-read-a-python-stack-trace">How to read a Python stack trace</h3>
+<p>A Python stack trace shows the sequence of function calls that led to the error. Beginners often stare at the last line only. Instead:</p>
+<ol type="1">
+<li><p>Find the exception type (e.g., <code>KeyError</code>, <code>TypeError</code>).</p></li>
+<li><p>Read the exception message (it often includes the missing key or wrong type).</p></li>
+<li><p>Scan upward for the first line that refers to <em>your code</em> (a file path in your project).</p></li>
+<li><p>Treat the frames below that line as internal details of libraries.</p></li>
+</ol>
+<p>Common novice mistake: trying to “fix” library code in <code>site-packages</code>. If the traceback points into a library, the cause is usually your inputs or your environment.</p>
+</section>
+<section id="error-taxonomies-learn-a-few-recurring-families" class="level3">
+<h3 class="anchored" data-anchor-id="error-taxonomies-learn-a-few-recurring-families">Error taxonomies: learn a few recurring families</h3>
+<p>You do not need to memorize every error, but it helps to recognize common families:</p>
+<ul>
+<li><p><strong>Name and scope errors</strong>: <code>NameError</code>, variables not defined, typos.</p></li>
+<li><p><strong>Type mismatches</strong>: <code>TypeError</code>, operations on wrong data type.</p></li>
+<li><p><strong>Indexing and keys</strong>: <code>IndexError</code>, <code>KeyError</code>, missing columns or out-of-range indices.</p></li>
+<li><p><strong>Files and paths</strong>: <code>FileNotFoundError</code>, wrong directory, permissions.</p></li>
+<li><p><strong>Parsing and formats</strong>: <code>ValueError</code> when converting strings to numbers/dates.</p></li>
+<li><p><strong>Imports and environments</strong>: <code>ModuleNotFoundError</code>, version conflicts (see <a href="#sec-pkg-mgmt" class="quarto-xref"><span class="quarto-unresolved-ref">sec-pkg-mgmt</span></a>).</p></li>
+</ul>
+<p>Each family suggests a different debugging move. For example, <code>KeyError</code> suggests printing available keys/columns; <code>ModuleNotFoundError</code> suggests checking environments.</p>
+</section>
+</section>
+<section id="decomposition-make-the-problem-smaller" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="decomposition-make-the-problem-smaller"><span class="header-section-number">5.5</span> Decomposition: make the problem smaller</h2>
+<p>Decomposition is the most important debugging skill. You reduce a complex failure to a small failure.</p>
+<section id="three-decomposition-strategies" class="level3">
+<h3 class="anchored" data-anchor-id="three-decomposition-strategies">Three decomposition strategies</h3>
+<section id="divide-and-conquer." class="level5">
+<h5 class="anchored" data-anchor-id="divide-and-conquer.">1) Divide and conquer.</h5>
+<p>Split the workflow into stages and find where the bug first appears. In data science pipelines:</p>
+<ol type="1">
+<li><p>load data,</p></li>
+<li><p>clean/transform,</p></li>
+<li><p>compute features,</p></li>
+<li><p>fit model,</p></li>
+<li><p>evaluate,</p></li>
+<li><p>produce outputs.</p></li>
+</ol>
+<p>Run each stage separately and inspect the intermediate result.</p>
+</section>
+<section id="binary-search-over-history." class="level5">
+<h5 class="anchored" data-anchor-id="binary-search-over-history.">2) Binary search over history.</h5>
+<p>If the code worked yesterday, look at what changed. Version control makes this dramatically easier. Even without Git, you can copy a working version and compare.</p>
+</section>
+<section id="strip-to-a-minimal-reproducible-example." class="level5">
+<h5 class="anchored" data-anchor-id="strip-to-a-minimal-reproducible-example.">3) Strip to a minimal reproducible example.</h5>
+<p>Remove everything unrelated until the failure remains.</p>
+</section>
+</section>
+<section id="the-minimal-reproducible-example-mre-as-a-debugging-tool" class="level3">
+<h3 class="anchored" data-anchor-id="the-minimal-reproducible-example-mre-as-a-debugging-tool">The minimal reproducible example (MRE) as a debugging tool</h3>
+<p>An MRE is not only for asking questions. It is a debugging instrument. If you can recreate the problem in 15 lines, you have already learned:</p>
+<ul>
+<li><p>which inputs matter,</p></li>
+<li><p>which library call triggers the failure,</p></li>
+<li><p>what assumptions were hidden.</p></li>
+</ul>
+</section>
+<section id="practical-mre-techniques" class="level3">
+<h3 class="anchored" data-anchor-id="practical-mre-techniques">Practical MRE techniques</h3>
+<ol type="1">
+<li><p><strong>Replace real data with synthetic data.</strong> Use <code>io.StringIO</code> or small lists.</p></li>
+<li><p><strong>Hard-code a small example.</strong> A 3-row dataframe is often enough.</p></li>
+<li><p><strong>Delete code aggressively.</strong> If removing a block does not change the failure, it was not relevant.</p></li>
+<li><p><strong>Freeze randomness.</strong> Set random seeds so behavior is repeatable.</p></li>
+</ol>
+</section>
+</section>
+<section id="hypotheses-and-controlled-experiments" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="hypotheses-and-controlled-experiments"><span class="header-section-number">5.6</span> Hypotheses and controlled experiments</h2>
+<p>Once you have localized the issue, do not jump straight to a fix. First, form a hypothesis.</p>
+<section id="what-a-good-hypothesis-looks-like" class="level3">
+<h3 class="anchored" data-anchor-id="what-a-good-hypothesis-looks-like">What a good hypothesis looks like</h3>
+<p>A good debugging hypothesis is specific and falsifiable:</p>
+<ul>
+<li><p>“The file path is relative to the working directory, and I am running from the wrong folder.”</p></li>
+<li><p>“This column is stored as strings with commas, so numeric conversion fails.”</p></li>
+<li><p>“I installed the package into a different environment than the one running Jupyter.”</p></li>
+</ul>
+<p>A weak hypothesis is vague:</p>
+<ul>
+<li><p>“Something is wrong with pandas.”</p></li>
+<li><p>“My computer is broken.”</p></li>
+</ul>
+</section>
+<section id="designing-a-controlled-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="designing-a-controlled-experiment">Designing a controlled experiment</h3>
+<p>A controlled experiment changes one factor and observes one outcome. Common experiments include:</p>
+<ul>
+<li><p>Print a variable right before the error line.</p></li>
+<li><p>Replace one input value (e.g., a date string) with a known-good value.</p></li>
+<li><p>Run the same code in a fresh environment.</p></li>
+<li><p>Comment out one transformation step.</p></li>
+</ul>
+<p>When you run an experiment, record the result. The result is progress even if the bug remains, because you ruled something out.</p>
+</section>
+</section>
+<section id="instrumentation-print-statements-and-sanity-checks" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="instrumentation-print-statements-and-sanity-checks"><span class="header-section-number">5.7</span> Instrumentation: print statements and sanity checks</h2>
+<p>Instrumentation means adding temporary measurements to observe program state.</p>
+<section id="strategic-printing" class="level3">
+<h3 class="anchored" data-anchor-id="strategic-printing">Strategic printing</h3>
+<p>Print statements are a legitimate debugging tool when used strategically. Good print debugging follows these rules:</p>
+<ol type="1">
+<li><p>Print <em>labels</em> and <em>values</em> (so you know what you are seeing).</p></li>
+<li><p>Print right before and right after suspicious lines.</p></li>
+<li><p>Print shapes, types, and small samples—not entire datasets.</p></li>
+<li><p>Remove or convert prints to logs after you finish.</p></li>
+</ol>
+<p>Examples of useful prints in data work:</p>
+<ul>
+<li><p><code>print(df.shape)</code></p></li>
+<li><p><code>print(df.dtypes)</code></p></li>
+<li><p><code>print(df.head(3))</code></p></li>
+<li><p><code>print(df[’col’].isna().mean())</code></p></li>
+</ul>
+</section>
+<section id="assertions-as-executable-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="assertions-as-executable-assumptions">Assertions as executable assumptions</h3>
+<p>An assertion is a statement that should be true. If it is false, the program stops with a clear signal.</p>
+<p>For beginners, assertions are useful because they turn silent wrongness into loud wrongness.</p>
+<p>Examples:</p>
+<pre><code>assert df.shape[0] &gt; 0, "Dataframe has no rows"
+assert 'date' in df.columns, "Missing expected column: date"
+assert df['age'].min() &gt;= 0, "Negative age values present"</code></pre>
+<p>Use assertions to encode assumptions you would otherwise hold in your head.</p>
+</section>
+</section>
+<section id="logging-debugging-that-scales-beyond-one-run" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">5.8</span> Logging: debugging that scales beyond one run</h2>
+<p>Print statements are fine during exploration, but logging is better when:</p>
+<ul>
+<li><p>your code runs for a long time,</p></li>
+<li><p>you run it as a scheduled job,</p></li>
+<li><p>you need to keep evidence for later,</p></li>
+<li><p>multiple people will run the code.</p></li>
+</ul>
+<section id="what-logging-is-and-is-not" class="level3">
+<h3 class="anchored" data-anchor-id="what-logging-is-and-is-not">What logging is (and is not)</h3>
+<p>Logging is a structured way to record events. It is not the same as printing everything. Logs should help you answer:</p>
+<ul>
+<li><p>Where did the program get to?</p></li>
+<li><p>What inputs and configuration did it use?</p></li>
+<li><p>How long did steps take?</p></li>
+<li><p>Why did it fail?</p></li>
+</ul>
+</section>
+<section id="logging-levels" class="level3">
+<h3 class="anchored" data-anchor-id="logging-levels">Logging levels</h3>
+<p>Most logging systems have levels such as <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>. A beginner-friendly interpretation:</p>
+<ul>
+<li><p><code>DEBUG</code>: details useful for developers while diagnosing.</p></li>
+<li><p><code>INFO</code>: major milestones (started, loaded data, finished).</p></li>
+<li><p><code>WARNING</code>: something unexpected but not fatal.</p></li>
+<li><p><code>ERROR</code>: the operation failed.</p></li>
+</ul>
+</section>
+<section id="a-minimal-python-logging-setup" class="level3">
+<h3 class="anchored" data-anchor-id="a-minimal-python-logging-setup">A minimal Python logging setup</h3>
+<p>You do not need a complicated configuration. A simple pattern:</p>
+<pre><code>import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s"
+)
+logger = logging.getLogger(__name__)
+
+logger.info("Starting pipeline")</code></pre>
+<p>Then replace prints with <code>logger.info(...)</code> or <code>logger.debug(...)</code>.</p>
+</section>
+<section id="avoid-logging-secrets" class="level3">
+<h3 class="anchored" data-anchor-id="avoid-logging-secrets">Avoid logging secrets</h3>
+<p>Never log:</p>
+<ul>
+<li><p>passwords,</p></li>
+<li><p>API keys,</p></li>
+<li><p>private personal data,</p></li>
+<li><p>full rows of sensitive datasets.</p></li>
+</ul>
+<p>If you need to confirm that a token exists, log only that it is set, not its value.</p>
+</section>
+</section>
+<section id="testing-confirm-fixes-and-prevent-regressions" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">5.9</span> Testing: confirm fixes and prevent regressions</h2>
+<p>Testing is the final stage of debugging. Without tests, a bug can return quietly.</p>
+<section id="what-a-test-is" class="level3">
+<h3 class="anchored" data-anchor-id="what-a-test-is">What a test is</h3>
+<p>A test is an executable claim about behavior. It says: for this input, the output should satisfy this condition.</p>
+<p>Beginners often think tests are only for large professional projects. In reality, small tests are one of the best study tools in programming.</p>
+</section>
+<section id="a-testing-ladder-for-novices" class="level3">
+<h3 class="anchored" data-anchor-id="a-testing-ladder-for-novices">A testing ladder for novices</h3>
+<p>Start small and build up:</p>
+<ol type="1">
+<li><p><strong>Smoke tests</strong>: does the script run end-to-end without crashing?</p></li>
+<li><p><strong>Property checks</strong>: outputs have expected shape, columns, ranges.</p></li>
+<li><p><strong>Unit tests</strong>: a single function behaves correctly on small inputs.</p></li>
+<li><p><strong>Integration tests</strong>: multiple components work together.</p></li>
+</ol>
+<p>For most class projects, smoke tests and a handful of unit tests are enough.</p>
+</section>
+<section id="write-a-test-that-would-have-caught-the-bug" class="level3">
+<h3 class="anchored" data-anchor-id="write-a-test-that-would-have-caught-the-bug">Write a test that would have caught the bug</h3>
+<p>After fixing a bug, ask: “What condition was violated?” Then write a test that fails on the old behavior and passes on the new.</p>
+<p>Examples:</p>
+<ul>
+<li><p>If a column was missing: test that required columns exist.</p></li>
+<li><p>If parsing failed on a weird value: test that that value is handled.</p></li>
+<li><p>If a function returned wrong units: test numeric values within expected range.</p></li>
+</ul>
+</section>
+<section id="golden-rule-tests-should-be-deterministic" class="level3">
+<h3 class="anchored" data-anchor-id="golden-rule-tests-should-be-deterministic">Golden rule: tests should be deterministic</h3>
+<p>A test should give the same result every run. If randomness is involved, set a seed or test statistical properties rather than exact values.</p>
+</section>
+</section>
+<section id="debugging-in-common-environments" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="debugging-in-common-environments"><span class="header-section-number">5.10</span> Debugging in common environments</h2>
+<p>Different environments create different failure modes.</p>
+<section id="notebook-specific-hazards" class="level3">
+<h3 class="anchored" data-anchor-id="notebook-specific-hazards">Notebook-specific hazards</h3>
+<p>Common notebook debugging pitfalls:</p>
+<ul>
+<li><p>Running cells out of order.</p></li>
+<li><p>Redefining functions and forgetting which version is active.</p></li>
+<li><p>Keeping old dataframes in memory and thinking they updated.</p></li>
+<li><p>Installing a package in one environment while Jupyter uses another.</p></li>
+</ul>
+<p>Countermeasures:</p>
+<ol type="1">
+<li><p>Restart kernel + run all.</p></li>
+<li><p>Use clearly named cells and avoid hidden side effects.</p></li>
+<li><p>Print versions and environment information when uncertain.</p></li>
+</ol>
+</section>
+<section id="command-line-and-os-level-bugs" class="level3">
+<h3 class="anchored" data-anchor-id="command-line-and-os-level-bugs">Command-line and OS-level bugs</h3>
+<p>Some “code” bugs are actually environment bugs (see <a href="#sec-terminal" class="quarto-xref"><span class="quarto-unresolved-ref">sec-terminal</span></a> for the full command-line skill set):</p>
+<ul>
+<li><p>wrong working directory,</p></li>
+<li><p>missing permissions,</p></li>
+<li><p>PATH not set,</p></li>
+<li><p>file encoding,</p></li>
+<li><p>line-ending differences (Windows vs macOS).</p></li>
+</ul>
+<p>If a command works in one terminal but not another, treat the environment as a suspect.</p>
+</section>
+</section>
+<section id="a-practical-debugging-checklist" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="a-practical-debugging-checklist"><span class="header-section-number">5.11</span> A practical debugging checklist</h2>
+<p>When you feel stuck, use this checklist as a reset:</p>
+<ol type="1">
+<li><p>What exactly is the symptom (expected vs actual)?</p></li>
+<li><p>Can I reproduce it?</p></li>
+<li><p>What is the smallest example that fails?</p></li>
+<li><p>Where is the failure located (line/function/stage)?</p></li>
+<li><p>What are 2–3 plausible hypotheses?</p></li>
+<li><p>What experiment tests one hypothesis with one change?</p></li>
+<li><p>What evidence will confirm or refute it?</p></li>
+<li><p>After the fix, what test will prevent regression?</p></li>
+</ol>
+<p>Print it and keep it near your desk.</p>
+</section>
+<section id="case-studies" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="case-studies"><span class="header-section-number">5.12</span> Case studies</h2>
+<p>The goal of case studies is to show the loop in action.</p>
+<section id="case-study-1-file-not-found-that-is-really-wrong-folder" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-1-file-not-found-that-is-really-wrong-folder">Case study 1: “File not found” that is really “wrong folder”</h3>
+<section id="symptom." class="level5">
+<h5 class="anchored" data-anchor-id="symptom.">Symptom.</h5>
+<p>You run a script and get <code>FileNotFoundError: data/input.csv</code>.</p>
+</section>
+<section id="investigation." class="level5">
+<h5 class="anchored" data-anchor-id="investigation.">Investigation.</h5>
+<p>Rather than editing the path randomly, you gather evidence:</p>
+<ul>
+<li><p>Print the current working directory.</p></li>
+<li><p>List the <code>data/</code> folder.</p></li>
+</ul>
+</section>
+<section id="hypothesis." class="level5">
+<h5 class="anchored" data-anchor-id="hypothesis.">Hypothesis.</h5>
+<p>The script uses a relative path, and you are running it from the wrong directory.</p>
+</section>
+<section id="experiment." class="level5">
+<h5 class="anchored" data-anchor-id="experiment.">Experiment.</h5>
+<p>Run the script from the project root, or change the script to compute absolute paths based on <code>__file__</code>.</p>
+</section>
+<section id="verification." class="level5">
+<h5 class="anchored" data-anchor-id="verification.">Verification.</h5>
+<p>Add a small check:</p>
+<pre><code>from pathlib import Path
+assert Path("data/input.csv").exists(), "Missing data/input.csv"</code></pre>
+<p>This case illustrates a common debugging lesson: many failures are about context, not about code logic.</p>
+</section>
+</section>
+<section id="case-study-2-it-runs-but-results-are-wrong" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-2-it-runs-but-results-are-wrong">Case study 2: “It runs but results are wrong”</h3>
+<p>Silent wrongness is harder than crashes. Suppose you compute an average age and get 0.0.</p>
+<section id="decomposition." class="level5">
+<h5 class="anchored" data-anchor-id="decomposition.">Decomposition.</h5>
+<p>Break the pipeline:</p>
+<ol type="1">
+<li><p>Load ages.</p></li>
+<li><p>Convert ages to numeric.</p></li>
+<li><p>Compute average.</p></li>
+</ol>
+</section>
+<section id="instrumentation." class="level5">
+<h5 class="anchored" data-anchor-id="instrumentation.">Instrumentation.</h5>
+<p>Print:</p>
+<ul>
+<li><p><code>df[’age’].head()</code></p></li>
+<li><p><code>df[’age’].dtype</code></p></li>
+<li><p><code>df[’age’].isna().mean()</code></p></li>
+</ul>
+</section>
+<section id="hypothesis.-1" class="level5">
+<h5 class="anchored" data-anchor-id="hypothesis.-1">Hypothesis.</h5>
+<p>Ages are strings with non-numeric values; conversion produced NaNs, and the computation treated NaNs as zeros (or you filled missing values incorrectly).</p>
+</section>
+<section id="fix-test." class="level5">
+<h5 class="anchored" data-anchor-id="fix-test.">Fix + test.</h5>
+<p>Fix conversion and add a test that the NaN rate is below an expected threshold.</p>
+<p>The lesson: debugging is often about inspecting intermediate representations.</p>
+</section>
+</section>
+</section>
+<section id="using-ai-tools-in-debugging" class="level2" data-number="5.13">
+<h2 data-number="5.13" class="anchored" data-anchor-id="using-ai-tools-in-debugging"><span class="header-section-number">5.13</span> Using AI tools in debugging</h2>
+<p>AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.</p>
+<section id="good-uses-of-ai" class="level3">
+<h3 class="anchored" data-anchor-id="good-uses-of-ai">Good uses of AI</h3>
+<ul>
+<li><p>Summarize an error message and propose likely categories (type mismatch, missing key).</p></li>
+<li><p>Suggest questions to ask (What is the dtype? What is the working directory?).</p></li>
+<li><p>Propose an MRE by stripping code.</p></li>
+<li><p>Draft a unit test skeleton once you know the expected behavior.</p></li>
+</ul>
+</section>
+<section id="guardrails" class="level3">
+<h3 class="anchored" data-anchor-id="guardrails">Guardrails</h3>
+<ol type="1">
+<li><p>Do not paste secrets or private data.</p></li>
+<li><p>Verify AI-suggested commands in official docs.</p></li>
+<li><p>Prefer small diffs: one change at a time.</p></li>
+<li><p>If the AI proposes a fix, make it fail/pass with a test.</p></li>
+</ol>
+<p>A practical motto: AI can suggest hypotheses; you supply the evidence.</p>
+</section>
+</section>
+<section id="templates" class="level2" data-number="5.14">
+<h2 data-number="5.14" class="anchored" data-anchor-id="templates"><span class="header-section-number">5.14</span> Templates</h2>
+<section id="template-a-debugging-journal-entry" class="level3">
+<h3 class="anchored" data-anchor-id="template-a-debugging-journal-entry">Template A: debugging journal entry</h3>
+<p>When debugging takes more than a few minutes, keep a short journal:</p>
+<pre><code>Symptom:
+Expected vs actual:
+Reproduction steps:
+Evidence captured (error/trace/logs):
+Hypotheses:
+Experiments tried (one per line) + outcomes:
+Fix applied:
+Test added:</code></pre>
+</section>
+<section id="template-b-minimal-test-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="template-b-minimal-test-checklist">Template B: minimal test checklist</h3>
+<ul>
+<li><p>Test name describes behavior.</p></li>
+<li><p>Inputs are small and synthetic.</p></li>
+<li><p>Expected outcome is explicit.</p></li>
+<li><p>Test is deterministic.</p></li>
+<li><p>Test fails on the buggy version.</p></li>
+</ul>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="5.15">
+<h2 data-number="5.15" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.15</span> Exercises</h2>
+<ol type="1">
+<li><p>Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).</p></li>
+<li><p>Create an MRE that reproduces the error in fewer than 20 lines.</p></li>
+<li><p>Add two assertions that encode assumptions about your data (columns, ranges, missingness).</p></li>
+<li><p>Convert three print statements into logging calls with levels.</p></li>
+<li><p>Fix a bug and then write a unit test that would have caught it.</p></li>
+<li><p>In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.</p></li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="5.16">
+<h2 data-number="5.16" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">5.16</span> One-page checklist</h2>
+<ul>
+<li><p>I can state the symptom clearly (expected vs actual).</p></li>
+<li><p>I can reproduce the bug and capture the evidence.</p></li>
+<li><p>I can localize the failure and reduce scope.</p></li>
+<li><p>I form hypotheses and test them with one-change experiments.</p></li>
+<li><p>I use prints/assertions/logs to collect useful signals.</p></li>
+<li><p>I verify the fix and add a test to prevent regression.</p></li>
+<li><p>In notebooks, I manage hidden state (restart + run all).</p></li>
+<li><p>If I use AI tools, I treat outputs as drafts and verify with tests.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../parts/part-1-practice/reading-docs.html" class="pagination-link" aria-label="Reading Official Documentation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../parts/part-1-practice/tracebacks.html" class="pagination-link" aria-label="Reading Python Tracebacks">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-1-practice/debugging.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,608 @@
+# 5  Debugging
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-terminal](#sec-terminal).
+>
+> **See also:** [sec-tracebacks](#sec-tracebacks), [sec-testing](#sec-testing), [sec-asking-questions](#sec-asking-questions).
+
+## Purpose
+
+When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.
+
+In computing courses, beginners sometimes treat debugging as a chaotic activity: rerun the same cell, change random lines, search the error message, and hope it works. Professionals do something different. They treat debugging as a structured investigation. They narrow the search space, form hypotheses, run controlled experiments, collect evidence (including logs), and confirm the fix with tests.
+
+This chapter gives you a repeatable debugging workflow you can use in Python scripts, Jupyter notebooks, spreadsheets, and command-line tools. The emphasis is not on fancy tools. The emphasis is on disciplined thinking: decomposition, minimal reproduction, instrumentation, and verification.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Describe debugging as an investigation: symptoms, hypotheses, experiments, and evidence.
+
+2.  Produce a minimal reproducible example (MRE) that isolates a bug.
+
+3.  Decompose a failing program into smaller units and test them independently.
+
+4.  Read error messages and stack traces to locate the relevant failure point.
+
+5.  Use print statements and the `logging` module to collect useful diagnostic information.
+
+6.  Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.
+
+7.  Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.
+
+8.  Use AI tools to assist debugging without outsourcing verification or creating new risks.
+
+## Running theme: change one thing, observe one thing
+
+Most debugging becomes easier when you adopt one rule: make one change at a time, then observe the result. When you change multiple things at once, you cannot tell which change mattered. Debugging is a science experiment, not a guessing game.
+
+## 5.1 A mental model: debugging as an evidence-driven loop
+
+A bug is a situation where the program behaves differently than you expect. Debugging is the process of reconciling expectations with reality.
+
+A useful way to think about debugging is a loop:
+
+1.  **State the symptom.** What exactly went wrong? What did you expect instead?
+
+2.  **Reproduce it reliably.** Can you make it fail again on demand?
+
+3.  **Localize the problem.** Where (roughly) does the failure occur?
+
+4.  **Form hypotheses.** What could cause this symptom?
+
+5.  **Run a controlled experiment.** Change one thing to test one hypothesis.
+
+6.  **Collect evidence.** Use output, logs, and small checks.
+
+7.  **Apply a fix.** Make the smallest change that resolves the cause.
+
+8.  **Verify and prevent regression.** Confirm the fix and write a test.
+
+This loop is not linear. You may circle back several times. But it is structured: each iteration should reduce uncertainty.
+
+### Why the “random edits” strategy fails
+
+Beginners often respond to a bug by changing multiple lines, rerunning, and hoping. This fails for three reasons:
+
+- **No causality.** If the bug disappears, you do not know why.
+
+- **New bugs.** Random edits can break working code.
+
+- **Wasted time.** You spend effort without learning.
+
+A disciplined debugging workflow is not slower; it is faster because it avoids loops of confusion.
+
+## 5.2 Start with a clear problem statement
+
+Before you dive into code, write a one-sentence statement:
+
+> **When I do *X*, I expect *Y*, but instead I observe *Z*.**
+
+Examples:
+
+- “When I call `pd.read_csv` on this file, I expect three columns, but I get one combined column.”
+
+- “When I run `python pipeline.py`, I expect an `outputs/` folder, but nothing is created and there is no error.”
+
+- “When I merge my branch, I expect a clean history, but I get a merge conflict in `analysis.ipynb`.”
+
+This statement forces you to name your expectation. Many issues turn out to be misunderstandings of what a function or tool is supposed to do.
+
+## 5.3 Reproduce the bug and capture the evidence
+
+If you cannot reproduce a bug, you cannot reliably confirm a fix. Reproduction does not always mean “every time.” It means “often enough that you can test changes.”
+
+### What to capture
+
+When something fails, capture the evidence immediately:
+
+- The exact command(s) you ran (including directory).
+
+- The exact error message (copy/paste, do not retype).
+
+- The stack trace (if present).
+
+- The inputs: file path, parameters, small sample data.
+
+- The environment: OS, Python version, key package versions, and which environment is active.
+
+A practical rule: if the information disappears when you close the terminal or restart the notebook, write it down.
+
+### Reproduction in notebooks versus scripts
+
+Jupyter notebooks are convenient, but they create a common debugging hazard: *hidden state*. You can run cells out of order, redefine variables, or keep stale objects in memory. Two ways to protect yourself:
+
+1.  Restart the kernel and run all cells from top to bottom.
+
+2.  When you can, reproduce the issue in a plain script.
+
+If a bug appears in a notebook but not in a script (or vice versa), that difference is evidence.
+
+## 5.4 Read error messages and stack traces
+
+Error messages are not insults. They are structured signals.
+
+### The difference between an error and a symptom
+
+Sometimes the error message is the symptom (e.g., `FileNotFoundError`). Sometimes the symptom is incorrect output with no error (e.g., a column is all zeros). Both require debugging. Errors are easier because the program tells you where it stopped.
+
+### How to read a Python stack trace
+
+A Python stack trace shows the sequence of function calls that led to the error. Beginners often stare at the last line only. Instead:
+
+1.  Find the exception type (e.g., `KeyError`, `TypeError`).
+
+2.  Read the exception message (it often includes the missing key or wrong type).
+
+3.  Scan upward for the first line that refers to *your code* (a file path in your project).
+
+4.  Treat the frames below that line as internal details of libraries.
+
+Common novice mistake: trying to “fix” library code in `site-packages`. If the traceback points into a library, the cause is usually your inputs or your environment.
+
+### Error taxonomies: learn a few recurring families
+
+You do not need to memorize every error, but it helps to recognize common families:
+
+- **Name and scope errors**: `NameError`, variables not defined, typos.
+
+- **Type mismatches**: `TypeError`, operations on wrong data type.
+
+- **Indexing and keys**: `IndexError`, `KeyError`, missing columns or out-of-range indices.
+
+- **Files and paths**: `FileNotFoundError`, wrong directory, permissions.
+
+- **Parsing and formats**: `ValueError` when converting strings to numbers/dates.
+
+- **Imports and environments**: `ModuleNotFoundError`, version conflicts (see [sec-pkg-mgmt](#sec-pkg-mgmt)).
+
+Each family suggests a different debugging move. For example, `KeyError` suggests printing available keys/columns; `ModuleNotFoundError` suggests checking environments.
+
+## 5.5 Decomposition: make the problem smaller
+
+Decomposition is the most important debugging skill. You reduce a complex failure to a small failure.
+
+### Three decomposition strategies
+
+##### 1) Divide and conquer.
+
+Split the workflow into stages and find where the bug first appears. In data science pipelines:
+
+1.  load data,
+
+2.  clean/transform,
+
+3.  compute features,
+
+4.  fit model,
+
+5.  evaluate,
+
+6.  produce outputs.
+
+Run each stage separately and inspect the intermediate result.
+
+##### 2) Binary search over history.
+
+If the code worked yesterday, look at what changed. Version control makes this dramatically easier. Even without Git, you can copy a working version and compare.
+
+##### 3) Strip to a minimal reproducible example.
+
+Remove everything unrelated until the failure remains.
+
+### The minimal reproducible example (MRE) as a debugging tool
+
+An MRE is not only for asking questions. It is a debugging instrument. If you can recreate the problem in 15 lines, you have already learned:
+
+- which inputs matter,
+
+- which library call triggers the failure,
+
+- what assumptions were hidden.
+
+### Practical MRE techniques
+
+1.  **Replace real data with synthetic data.** Use `io.StringIO` or small lists.
+
+2.  **Hard-code a small example.** A 3-row dataframe is often enough.
+
+3.  **Delete code aggressively.** If removing a block does not change the failure, it was not relevant.
+
+4.  **Freeze randomness.** Set random seeds so behavior is repeatable.
+
+## 5.6 Hypotheses and controlled experiments
+
+Once you have localized the issue, do not jump straight to a fix. First, form a hypothesis.
+
+### What a good hypothesis looks like
+
+A good debugging hypothesis is specific and falsifiable:
+
+- “The file path is relative to the working directory, and I am running from the wrong folder.”
+
+- “This column is stored as strings with commas, so numeric conversion fails.”
+
+- “I installed the package into a different environment than the one running Jupyter.”
+
+A weak hypothesis is vague:
+
+- “Something is wrong with pandas.”
+
+- “My computer is broken.”
+
+### Designing a controlled experiment
+
+A controlled experiment changes one factor and observes one outcome. Common experiments include:
+
+- Print a variable right before the error line.
+
+- Replace one input value (e.g., a date string) with a known-good value.
+
+- Run the same code in a fresh environment.
+
+- Comment out one transformation step.
+
+When you run an experiment, record the result. The result is progress even if the bug remains, because you ruled something out.
+
+## 5.7 Instrumentation: print statements and sanity checks
+
+Instrumentation means adding temporary measurements to observe program state.
+
+### Strategic printing
+
+Print statements are a legitimate debugging tool when used strategically. Good print debugging follows these rules:
+
+1.  Print *labels* and *values* (so you know what you are seeing).
+
+2.  Print right before and right after suspicious lines.
+
+3.  Print shapes, types, and small samples—not entire datasets.
+
+4.  Remove or convert prints to logs after you finish.
+
+Examples of useful prints in data work:
+
+- `print(df.shape)`
+
+- `print(df.dtypes)`
+
+- `print(df.head(3))`
+
+- `print(df[’col’].isna().mean())`
+
+### Assertions as executable assumptions
+
+An assertion is a statement that should be true. If it is false, the program stops with a clear signal.
+
+For beginners, assertions are useful because they turn silent wrongness into loud wrongness.
+
+Examples:
+
+    assert df.shape[0] > 0, "Dataframe has no rows"
+    assert 'date' in df.columns, "Missing expected column: date"
+    assert df['age'].min() >= 0, "Negative age values present"
+
+Use assertions to encode assumptions you would otherwise hold in your head.
+
+## 5.8 Logging: debugging that scales beyond one run
+
+Print statements are fine during exploration, but logging is better when:
+
+- your code runs for a long time,
+
+- you run it as a scheduled job,
+
+- you need to keep evidence for later,
+
+- multiple people will run the code.
+
+### What logging is (and is not)
+
+Logging is a structured way to record events. It is not the same as printing everything. Logs should help you answer:
+
+- Where did the program get to?
+
+- What inputs and configuration did it use?
+
+- How long did steps take?
+
+- Why did it fail?
+
+### Logging levels
+
+Most logging systems have levels such as `DEBUG`, `INFO`, `WARNING`, `ERROR`. A beginner-friendly interpretation:
+
+- `DEBUG`: details useful for developers while diagnosing.
+
+- `INFO`: major milestones (started, loaded data, finished).
+
+- `WARNING`: something unexpected but not fatal.
+
+- `ERROR`: the operation failed.
+
+### A minimal Python logging setup
+
+You do not need a complicated configuration. A simple pattern:
+
+    import logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(message)s"
+    )
+    logger = logging.getLogger(__name__)
+
+    logger.info("Starting pipeline")
+
+Then replace prints with `logger.info(...)` or `logger.debug(...)`.
+
+### Avoid logging secrets
+
+Never log:
+
+- passwords,
+
+- API keys,
+
+- private personal data,
+
+- full rows of sensitive datasets.
+
+If you need to confirm that a token exists, log only that it is set, not its value.
+
+## 5.9 Testing: confirm fixes and prevent regressions
+
+Testing is the final stage of debugging. Without tests, a bug can return quietly.
+
+### What a test is
+
+A test is an executable claim about behavior. It says: for this input, the output should satisfy this condition.
+
+Beginners often think tests are only for large professional projects. In reality, small tests are one of the best study tools in programming.
+
+### A testing ladder for novices
+
+Start small and build up:
+
+1.  **Smoke tests**: does the script run end-to-end without crashing?
+
+2.  **Property checks**: outputs have expected shape, columns, ranges.
+
+3.  **Unit tests**: a single function behaves correctly on small inputs.
+
+4.  **Integration tests**: multiple components work together.
+
+For most class projects, smoke tests and a handful of unit tests are enough.
+
+### Write a test that would have caught the bug
+
+After fixing a bug, ask: “What condition was violated?” Then write a test that fails on the old behavior and passes on the new.
+
+Examples:
+
+- If a column was missing: test that required columns exist.
+
+- If parsing failed on a weird value: test that that value is handled.
+
+- If a function returned wrong units: test numeric values within expected range.
+
+### Golden rule: tests should be deterministic
+
+A test should give the same result every run. If randomness is involved, set a seed or test statistical properties rather than exact values.
+
+## 5.10 Debugging in common environments
+
+Different environments create different failure modes.
+
+### Notebook-specific hazards
+
+Common notebook debugging pitfalls:
+
+- Running cells out of order.
+
+- Redefining functions and forgetting which version is active.
+
+- Keeping old dataframes in memory and thinking they updated.
+
+- Installing a package in one environment while Jupyter uses another.
+
+Countermeasures:
+
+1.  Restart kernel + run all.
+
+2.  Use clearly named cells and avoid hidden side effects.
+
+3.  Print versions and environment information when uncertain.
+
+### Command-line and OS-level bugs
+
+Some “code” bugs are actually environment bugs (see [sec-terminal](#sec-terminal) for the full command-line skill set):
+
+- wrong working directory,
+
+- missing permissions,
+
+- PATH not set,
+
+- file encoding,
+
+- line-ending differences (Windows vs macOS).
+
+If a command works in one terminal but not another, treat the environment as a suspect.
+
+## 5.11 A practical debugging checklist
+
+When you feel stuck, use this checklist as a reset:
+
+1.  What exactly is the symptom (expected vs actual)?
+
+2.  Can I reproduce it?
+
+3.  What is the smallest example that fails?
+
+4.  Where is the failure located (line/function/stage)?
+
+5.  What are 2–3 plausible hypotheses?
+
+6.  What experiment tests one hypothesis with one change?
+
+7.  What evidence will confirm or refute it?
+
+8.  After the fix, what test will prevent regression?
+
+Print it and keep it near your desk.
+
+## 5.12 Case studies
+
+The goal of case studies is to show the loop in action.
+
+### Case study 1: “File not found” that is really “wrong folder”
+
+##### Symptom.
+
+You run a script and get `FileNotFoundError: data/input.csv`.
+
+##### Investigation.
+
+Rather than editing the path randomly, you gather evidence:
+
+- Print the current working directory.
+
+- List the `data/` folder.
+
+##### Hypothesis.
+
+The script uses a relative path, and you are running it from the wrong directory.
+
+##### Experiment.
+
+Run the script from the project root, or change the script to compute absolute paths based on `__file__`.
+
+##### Verification.
+
+Add a small check:
+
+    from pathlib import Path
+    assert Path("data/input.csv").exists(), "Missing data/input.csv"
+
+This case illustrates a common debugging lesson: many failures are about context, not about code logic.
+
+### Case study 2: “It runs but results are wrong”
+
+Silent wrongness is harder than crashes. Suppose you compute an average age and get 0.0.
+
+##### Decomposition.
+
+Break the pipeline:
+
+1.  Load ages.
+
+2.  Convert ages to numeric.
+
+3.  Compute average.
+
+##### Instrumentation.
+
+Print:
+
+- `df[’age’].head()`
+
+- `df[’age’].dtype`
+
+- `df[’age’].isna().mean()`
+
+##### Hypothesis.
+
+Ages are strings with non-numeric values; conversion produced NaNs, and the computation treated NaNs as zeros (or you filled missing values incorrectly).
+
+##### Fix + test.
+
+Fix conversion and add a test that the NaN rate is below an expected threshold.
+
+The lesson: debugging is often about inspecting intermediate representations.
+
+## 5.13 Using AI tools in debugging
+
+AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.
+
+### Good uses of AI
+
+- Summarize an error message and propose likely categories (type mismatch, missing key).
+
+- Suggest questions to ask (What is the dtype? What is the working directory?).
+
+- Propose an MRE by stripping code.
+
+- Draft a unit test skeleton once you know the expected behavior.
+
+### Guardrails
+
+1.  Do not paste secrets or private data.
+
+2.  Verify AI-suggested commands in official docs.
+
+3.  Prefer small diffs: one change at a time.
+
+4.  If the AI proposes a fix, make it fail/pass with a test.
+
+A practical motto: AI can suggest hypotheses; you supply the evidence.
+
+## 5.14 Templates
+
+### Template A: debugging journal entry
+
+When debugging takes more than a few minutes, keep a short journal:
+
+    Symptom:
+    Expected vs actual:
+    Reproduction steps:
+    Evidence captured (error/trace/logs):
+    Hypotheses:
+    Experiments tried (one per line) + outcomes:
+    Fix applied:
+    Test added:
+
+### Template B: minimal test checklist
+
+- Test name describes behavior.
+
+- Inputs are small and synthetic.
+
+- Expected outcome is explicit.
+
+- Test is deterministic.
+
+- Test fails on the buggy version.
+
+## 5.15 Exercises
+
+1.  Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).
+
+2.  Create an MRE that reproduces the error in fewer than 20 lines.
+
+3.  Add two assertions that encode assumptions about your data (columns, ranges, missingness).
+
+4.  Convert three print statements into logging calls with levels.
+
+5.  Fix a bug and then write a unit test that would have caught it.
+
+6.  In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.
+
+## 5.16 One-page checklist
+
+- I can state the symptom clearly (expected vs actual).
+
+- I can reproduce the bug and capture the evidence.
+
+- I can localize the failure and reduce scope.
+
+- I form hypotheses and test them with one-change experiments.
+
+- I use prints/assertions/logs to collect useful signals.
+
+- I verify the fix and add a test to prevent regression.
+
+- In notebooks, I manage hidden state (restart + run all).
+
+- If I use AI tools, I treat outputs as drafts and verify with tests.

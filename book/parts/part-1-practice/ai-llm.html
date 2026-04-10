@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Using AI Tools – Paratechnical Computing Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../parts/part-2-environment/operating-system.html" rel="next">
+<link href="../../parts/part-1-practice/tracebacks.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a46c92d1a3b8d11f1f9fb1f566cd2c52.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-1-practice/questions.html">Part I — Practice of Technical Work</a></li><li class="breadcrumb-item"><a href="../../parts/part-1-practice/ai-llm.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Paratechnical Computing Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/ai-llm.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Testing Basics with pytest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style, Linting, and Formatting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data: Shape, Cleaning, and Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/pre-commit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Pre-commit Hooks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#what-an-ai-assistant-is-doing" id="toc-what-an-ai-assistant-is-doing" class="nav-link" data-scroll-target="#what-an-ai-assistant-is-doing"><span class="header-section-number">7.1</span> What an AI assistant is doing</a>
+  <ul class="collapse">
+  <li><a href="#what-ai-is-usually-good-at" id="toc-what-ai-is-usually-good-at" class="nav-link" data-scroll-target="#what-ai-is-usually-good-at">What AI is usually good at</a></li>
+  <li><a href="#what-ai-is-not-reliable-at" id="toc-what-ai-is-not-reliable-at" class="nav-link" data-scroll-target="#what-ai-is-not-reliable-at">What AI is not reliable at</a></li>
+  </ul></li>
+  <li><a href="#a-risk-based-verification-policy" id="toc-a-risk-based-verification-policy" class="nav-link" data-scroll-target="#a-risk-based-verification-policy"><span class="header-section-number">7.2</span> A risk-based verification policy</a>
+  <ul class="collapse">
+  <li><a href="#low-risk-drafting-and-formatting" id="toc-low-risk-drafting-and-formatting" class="nav-link" data-scroll-target="#low-risk-drafting-and-formatting">Low risk: drafting and formatting</a></li>
+  <li><a href="#medium-risk-technical-guidance-you-can-test-quickly" id="toc-medium-risk-technical-guidance-you-can-test-quickly" class="nav-link" data-scroll-target="#medium-risk-technical-guidance-you-can-test-quickly">Medium risk: technical guidance you can test quickly</a></li>
+  <li><a href="#high-risk-destructive-commands-security-changes-and-sensitive-data" id="toc-high-risk-destructive-commands-security-changes-and-sensitive-data" class="nav-link" data-scroll-target="#high-risk-destructive-commands-security-changes-and-sensitive-data">High risk: destructive commands, security changes, and sensitive data</a></li>
+  <li><a href="#a-non-negotiable-warning-for-destructive-commands" id="toc-a-non-negotiable-warning-for-destructive-commands" class="nav-link" data-scroll-target="#a-non-negotiable-warning-for-destructive-commands">A non-negotiable warning for destructive commands</a></li>
+  </ul></li>
+  <li><a href="#the-assistive-loop-a-workflow-that-forces-evidence" id="toc-the-assistive-loop-a-workflow-that-forces-evidence" class="nav-link" data-scroll-target="#the-assistive-loop-a-workflow-that-forces-evidence"><span class="header-section-number">7.3</span> The assistive loop: a workflow that forces evidence</a>
+  <ul class="collapse">
+  <li><a href="#step-1-write-a-short-specification" id="toc-step-1-write-a-short-specification" class="nav-link" data-scroll-target="#step-1-write-a-short-specification">Step 1: write a short specification</a></li>
+  <li><a href="#step-2-request-alternatives-and-checkpoints" id="toc-step-2-request-alternatives-and-checkpoints" class="nav-link" data-scroll-target="#step-2-request-alternatives-and-checkpoints">Step 2: request alternatives and checkpoints</a></li>
+  <li><a href="#step-3-validate-claims-in-primary-documentation" id="toc-step-3-validate-claims-in-primary-documentation" class="nav-link" data-scroll-target="#step-3-validate-claims-in-primary-documentation">Step 3: validate claims in primary documentation</a></li>
+  <li><a href="#step-4-run-a-minimal-experiment" id="toc-step-4-run-a-minimal-experiment" class="nav-link" data-scroll-target="#step-4-run-a-minimal-experiment">Step 4: run a minimal experiment</a></li>
+  <li><a href="#step-5-lock-in-the-outcome" id="toc-step-5-lock-in-the-outcome" class="nav-link" data-scroll-target="#step-5-lock-in-the-outcome">Step 5: lock in the outcome</a></li>
+  </ul></li>
+  <li><a href="#prompt-patterns-that-produce-usable-how-to-guidance" id="toc-prompt-patterns-that-produce-usable-how-to-guidance" class="nav-link" data-scroll-target="#prompt-patterns-that-produce-usable-how-to-guidance"><span class="header-section-number">7.4</span> Prompt patterns that produce usable how-to guidance</a>
+  <ul class="collapse">
+  <li><a href="#pattern-a-decision-tree-diagnosis" id="toc-pattern-a-decision-tree-diagnosis" class="nav-link" data-scroll-target="#pattern-a-decision-tree-diagnosis">Pattern A: decision tree diagnosis</a></li>
+  <li><a href="#pattern-b-minimal-reproducible-example-reduction" id="toc-pattern-b-minimal-reproducible-example-reduction" class="nav-link" data-scroll-target="#pattern-b-minimal-reproducible-example-reduction">Pattern B: minimal reproducible example reduction</a></li>
+  <li><a href="#pattern-c-test-first-scaffold" id="toc-pattern-c-test-first-scaffold" class="nav-link" data-scroll-target="#pattern-c-test-first-scaffold">Pattern C: test-first scaffold</a></li>
+  <li><a href="#pattern-d-documentation-rewrite-without-inventing-steps" id="toc-pattern-d-documentation-rewrite-without-inventing-steps" class="nav-link" data-scroll-target="#pattern-d-documentation-rewrite-without-inventing-steps">Pattern D: documentation rewrite without inventing steps</a></li>
+  <li><a href="#pattern-e-safe-command-review" id="toc-pattern-e-safe-command-review" class="nav-link" data-scroll-target="#pattern-e-safe-command-review">Pattern E: safe command review</a></li>
+  <li><a href="#pattern-f-request-a-patch-instead-of-a-rewrite" id="toc-pattern-f-request-a-patch-instead-of-a-rewrite" class="nav-link" data-scroll-target="#pattern-f-request-a-patch-instead-of-a-rewrite">Pattern F: request a patch instead of a rewrite</a></li>
+  </ul></li>
+  <li><a href="#using-ai-to-improve-technical-questions" id="toc-using-ai-to-improve-technical-questions" class="nav-link" data-scroll-target="#using-ai-to-improve-technical-questions"><span class="header-section-number">7.5</span> Using AI to improve technical questions</a>
+  <ul class="collapse">
+  <li><a href="#rewrite-into-a-standard-template" id="toc-rewrite-into-a-standard-template" class="nav-link" data-scroll-target="#rewrite-into-a-standard-template">Rewrite into a standard template</a></li>
+  <li><a href="#generate-a-context-checklist" id="toc-generate-a-context-checklist" class="nav-link" data-scroll-target="#generate-a-context-checklist">Generate a context checklist</a></li>
+  </ul></li>
+  <li><a href="#using-ai-in-debugging-hypotheses-checks-and-minimal-diffs" id="toc-using-ai-in-debugging-hypotheses-checks-and-minimal-diffs" class="nav-link" data-scroll-target="#using-ai-in-debugging-hypotheses-checks-and-minimal-diffs"><span class="header-section-number">7.6</span> Using AI in debugging: hypotheses, checks, and minimal diffs</a>
+  <ul class="collapse">
+  <li><a href="#import-errors-identify-the-interpreter-and-environment" id="toc-import-errors-identify-the-interpreter-and-environment" class="nav-link" data-scroll-target="#import-errors-identify-the-interpreter-and-environment">Import errors: identify the interpreter and environment</a></li>
+  <li><a href="#data-ingestion-bugs-inspect-the-intermediate" id="toc-data-ingestion-bugs-inspect-the-intermediate" class="nav-link" data-scroll-target="#data-ingestion-bugs-inspect-the-intermediate">Data ingestion bugs: inspect the intermediate</a></li>
+  <li><a href="#path-and-working-directory-confusion" id="toc-path-and-working-directory-confusion" class="nav-link" data-scroll-target="#path-and-working-directory-confusion">Path and working directory confusion</a></li>
+  <li><a href="#prefer-minimal-diffs-over-large-rewrites" id="toc-prefer-minimal-diffs-over-large-rewrites" class="nav-link" data-scroll-target="#prefer-minimal-diffs-over-large-rewrites">Prefer minimal diffs over large rewrites</a></li>
+  </ul></li>
+  <li><a href="#using-ai-for-documentation-and-project-hygiene" id="toc-using-ai-for-documentation-and-project-hygiene" class="nav-link" data-scroll-target="#using-ai-for-documentation-and-project-hygiene"><span class="header-section-number">7.7</span> Using AI for documentation and project hygiene</a>
+  <ul class="collapse">
+  <li><a href="#draft-a-readme-that-can-be-executed" id="toc-draft-a-readme-that-can-be-executed" class="nav-link" data-scroll-target="#draft-a-readme-that-can-be-executed">Draft a README that can be executed</a></li>
+  <li><a href="#troubleshooting-sections-symptom-cause-check-fix" id="toc-troubleshooting-sections-symptom-cause-check-fix" class="nav-link" data-scroll-target="#troubleshooting-sections-symptom-cause-check-fix">Troubleshooting sections: symptom, cause, check, fix</a></li>
+  <li><a href="#runbooks-for-repetitive-tasks" id="toc-runbooks-for-repetitive-tasks" class="nav-link" data-scroll-target="#runbooks-for-repetitive-tasks">Runbooks for repetitive tasks</a></li>
+  </ul></li>
+  <li><a href="#using-ai-for-code-constraints-review-and-tests" id="toc-using-ai-for-code-constraints-review-and-tests" class="nav-link" data-scroll-target="#using-ai-for-code-constraints-review-and-tests"><span class="header-section-number">7.8</span> Using AI for code: constraints, review, and tests</a>
+  <ul class="collapse">
+  <li><a href="#request-small-testable-units" id="toc-request-small-testable-units" class="nav-link" data-scroll-target="#request-small-testable-units">Request small, testable units</a></li>
+  <li><a href="#verification-ladder" id="toc-verification-ladder" class="nav-link" data-scroll-target="#verification-ladder">Verification ladder</a></li>
+  <li><a href="#ask-for-tests-before-implementations" id="toc-ask-for-tests-before-implementations" class="nav-link" data-scroll-target="#ask-for-tests-before-implementations">Ask for tests before implementations</a></li>
+  <li><a href="#warnings-for-file-operations-in-code" id="toc-warnings-for-file-operations-in-code" class="nav-link" data-scroll-target="#warnings-for-file-operations-in-code">Warnings for file operations in code</a></li>
+  </ul></li>
+  <li><a href="#security-and-privacy-hygiene" id="toc-security-and-privacy-hygiene" class="nav-link" data-scroll-target="#security-and-privacy-hygiene"><span class="header-section-number">7.9</span> Security and privacy hygiene</a>
+  <ul class="collapse">
+  <li><a href="#never-paste-secrets" id="toc-never-paste-secrets" class="nav-link" data-scroll-target="#never-paste-secrets">Never paste secrets</a></li>
+  <li><a href="#prefer-synthetic-or-summarized-data" id="toc-prefer-synthetic-or-summarized-data" class="nav-link" data-scroll-target="#prefer-synthetic-or-summarized-data">Prefer synthetic or summarized data</a></li>
+  <li><a href="#treat-privilege-escalation-as-high-risk" id="toc-treat-privilege-escalation-as-high-risk" class="nav-link" data-scroll-target="#treat-privilege-escalation-as-high-risk">Treat privilege escalation as high risk</a></li>
+  </ul></li>
+  <li><a href="#academic-integrity-and-collaboration" id="toc-academic-integrity-and-collaboration" class="nav-link" data-scroll-target="#academic-integrity-and-collaboration"><span class="header-section-number">7.10</span> Academic integrity and collaboration</a>
+  <ul class="collapse">
+  <li><a href="#disclose-ai-assistance-when-required" id="toc-disclose-ai-assistance-when-required" class="nav-link" data-scroll-target="#disclose-ai-assistance-when-required">Disclose AI assistance when required</a></li>
+  <li><a href="#use-ai-to-support-learning" id="toc-use-ai-to-support-learning" class="nav-link" data-scroll-target="#use-ai-to-support-learning">Use AI to support learning</a></li>
+  <li><a href="#collaboration-keep-humans-in-the-loop" id="toc-collaboration-keep-humans-in-the-loop" class="nav-link" data-scroll-target="#collaboration-keep-humans-in-the-loop">Collaboration: keep humans in the loop</a></li>
+  </ul></li>
+  <li><a href="#when-ai-advice-conflicts-with-your-observations" id="toc-when-ai-advice-conflicts-with-your-observations" class="nav-link" data-scroll-target="#when-ai-advice-conflicts-with-your-observations"><span class="header-section-number">7.11</span> When AI advice conflicts with your observations</a>
+  <ul class="collapse">
+  <li><a href="#resolution-protocol" id="toc-resolution-protocol" class="nav-link" data-scroll-target="#resolution-protocol">Resolution protocol</a></li>
+  </ul></li>
+  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies"><span class="header-section-number">7.12</span> Case studies</a>
+  <ul class="collapse">
+  <li><a href="#case-study-1-notebook-kernel-mismatch" id="toc-case-study-1-notebook-kernel-mismatch" class="nav-link" data-scroll-target="#case-study-1-notebook-kernel-mismatch">Case study 1: notebook kernel mismatch</a></li>
+  <li><a href="#case-study-2-csv-delimiter-confusion" id="toc-case-study-2-csv-delimiter-confusion" class="nav-link" data-scroll-target="#case-study-2-csv-delimiter-confusion">Case study 2: CSV delimiter confusion</a></li>
+  <li><a href="#case-study-3-git-merge-conflict-in-a-notebook" id="toc-case-study-3-git-merge-conflict-in-a-notebook" class="nav-link" data-scroll-target="#case-study-3-git-merge-conflict-in-a-notebook">Case study 3: Git merge conflict in a notebook</a></li>
+  <li><a href="#case-study-4-unsafe-suggested-fix" id="toc-case-study-4-unsafe-suggested-fix" class="nav-link" data-scroll-target="#case-study-4-unsafe-suggested-fix">Case study 4: unsafe suggested fix</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">7.14</span> One-page checklist</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-1-practice/ai-llm.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-1-practice/questions.html">Part I — Practice of Technical Work</a></li><li class="breadcrumb-item"><a href="../../parts/part-1-practice/ai-llm.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ai-llm" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="#sec-asking-questions" class="quarto-xref"><span class="quarto-unresolved-ref">sec-asking-questions</span></a>.</p>
+<p><strong>See also:</strong> <a href="#sec-debugging" class="quarto-xref"><span class="quarto-unresolved-ref">sec-debugging</span></a>, <a href="#sec-llm-internals" class="quarto-xref"><span class="quarto-unresolved-ref">sec-llm-internals</span></a>, <a href="#sec-documentation" class="quarto-xref"><span class="quarto-unresolved-ref">sec-documentation</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+<p>AI assistants can reduce friction in programming and data science. They can draft documentation, summarize error messages, propose alternative implementations, and generate boilerplate. They can also produce plausible but incorrect guidance. This chapter treats AI assistance as one input to a disciplined workflow. The goal is not to get answers faster. The goal is to produce correct, reproducible, and safe work with less unnecessary effort.</p>
+<p>The governing rule is simple:</p>
+<blockquote class="blockquote">
+<p><strong>AI can propose. You must verify.</strong></p>
+</blockquote>
+<p>Verification means using primary documentation, running small experiments, and adding tests. Those practices remain your responsibility, even if an assistant produced the first draft.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Identify high-value AI uses and common failure modes.</p></li>
+<li><p>Apply a risk-based policy to decide how much verification is required.</p></li>
+<li><p>Write prompts that produce usable how-to guidance, not vague advice.</p></li>
+<li><p>Validate AI outputs using primary sources, minimal experiments, and automated tests.</p></li>
+<li><p>Avoid privacy and security mistakes when sharing context.</p></li>
+<li><p>Use AI in coursework and collaboration without undermining learning or integrity.</p></li>
+</ol>
+</section>
+<section id="what-an-ai-assistant-is-doing" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="what-an-ai-assistant-is-doing"><span class="header-section-number">7.1</span> What an AI assistant is doing</h2>
+<p>Most AI assistants in technical settings are built on large language models (LLMs). An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.</p>
+<p>A practical interpretation is to treat AI output as a draft produced by a fast collaborator who can be wrong. Your job is to turn drafts into reliable artifacts.</p>
+<section id="what-ai-is-usually-good-at" class="level3">
+<h3 class="anchored" data-anchor-id="what-ai-is-usually-good-at">What AI is usually good at</h3>
+<p>LLM assistance is strongest when the task is primarily about language, structure, or recall of common patterns:</p>
+<ul>
+<li><p>Drafting outlines, READMEs, docstrings, issue templates, and lab instructions.</p></li>
+<li><p>Rewriting an explanation for a novice reader.</p></li>
+<li><p>Producing boilerplate code patterns (argument parsing, logging setup) that you then review.</p></li>
+<li><p>Suggesting search terms, likely documentation sections, and common failure modes.</p></li>
+<li><p>Generating checklists that you then shorten and validate.</p></li>
+</ul>
+</section>
+<section id="what-ai-is-not-reliable-at" class="level3">
+<h3 class="anchored" data-anchor-id="what-ai-is-not-reliable-at">What AI is not reliable at</h3>
+<p>These failures appear frequently enough that you should plan around them:</p>
+<ul>
+<li><p><strong>Hallucinated details</strong>: invented flags, APIs, or citations.</p></li>
+<li><p><strong>Version mismatch</strong>: correct advice for a different version of a tool than yours.</p></li>
+<li><p><strong>Hidden prerequisites</strong>: missing steps such as activating an environment, changing directories, or installing a system dependency.</p></li>
+<li><p><strong>Silent logic bugs</strong>: code that runs but is wrong on edge cases.</p></li>
+<li><p><strong>Unsafe defaults</strong>: suggestions that weaken security or increase destructive behavior.</p></li>
+</ul>
+<p>You should assume any of these errors are possible. This assumption leads to good habits: request sources, run small tests, and prefer minimal changes.</p>
+</section>
+</section>
+<section id="a-risk-based-verification-policy" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="a-risk-based-verification-policy"><span class="header-section-number">7.2</span> A risk-based verification policy</h2>
+<p>Not all tasks have the same consequences if something goes wrong. Use risk level to decide how careful you need to be.</p>
+<section id="low-risk-drafting-and-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="low-risk-drafting-and-formatting">Low risk: drafting and formatting</h3>
+<p>Low-risk tasks are those where an error is easy to spot and easy to correct:</p>
+<ul>
+<li><p>Rewrite a paragraph for clarity.</p></li>
+<li><p>Draft a README skeleton.</p></li>
+<li><p>Produce a checklist or template.</p></li>
+</ul>
+<p>Verification: read for accuracy, completeness, and alignment with your assignment or project requirements.</p>
+</section>
+<section id="medium-risk-technical-guidance-you-can-test-quickly" class="level3">
+<h3 class="anchored" data-anchor-id="medium-risk-technical-guidance-you-can-test-quickly">Medium risk: technical guidance you can test quickly</h3>
+<p>Medium-risk tasks involve technical claims but can be validated with small experiments:</p>
+<ul>
+<li><p>Interpreting a stack trace and proposing checks.</p></li>
+<li><p>Suggesting commands to inspect an environment.</p></li>
+<li><p>Drafting a unit test scaffold.</p></li>
+<li><p>Proposing a refactor that you can validate with tests.</p></li>
+</ul>
+<p>Verification: run the checks, confirm in primary documentation, and add tests or assertions.</p>
+</section>
+<section id="high-risk-destructive-commands-security-changes-and-sensitive-data" class="level3">
+<h3 class="anchored" data-anchor-id="high-risk-destructive-commands-security-changes-and-sensitive-data">High risk: destructive commands, security changes, and sensitive data</h3>
+<p>High-risk tasks require strict guardrails:</p>
+<ul>
+<li><p>Commands that delete, overwrite, or move files recursively.</p></li>
+<li><p>Privilege escalation (<code>sudo</code>) and broad permission changes (<code>chmod 777</code>).</p></li>
+<li><p>Network and authentication configuration (SSH keys, VPNs, firewall rules).</p></li>
+<li><p>Any handling of protected, confidential, or regulated data.</p></li>
+</ul>
+<p>Verification: consult primary documentation; prefer supervised help (instructor/TA); test in a sandbox; do not execute commands you do not understand.</p>
+</section>
+<section id="a-non-negotiable-warning-for-destructive-commands" class="level3">
+<h3 class="anchored" data-anchor-id="a-non-negotiable-warning-for-destructive-commands">A non-negotiable warning for destructive commands</h3>
+<p>Treat these as stop signs until you have confirmed paths, backups, and intent:</p>
+<pre><code># Examples of destructive patterns (do not run blindly)
+# rm -rf &lt;path&gt;              # macOS/Linux: recursive delete
+# del /s &lt;path&gt;              # Windows: recursive delete
+# mv &lt;source&gt; &lt;dest&gt;         # can overwrite depending on flags/context
+# chmod -R 777 &lt;path&gt;        # broad permissions (usually wrong)
+# sudo &lt;anything&gt;            # elevated privileges</code></pre>
+<p>If an assistant suggests one of these as a fix, pause. Ask: What exactly will this change? What evidence says this is the right change? How do I undo it?</p>
+</section>
+</section>
+<section id="the-assistive-loop-a-workflow-that-forces-evidence" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="the-assistive-loop-a-workflow-that-forces-evidence"><span class="header-section-number">7.3</span> The assistive loop: a workflow that forces evidence</h2>
+<p>A reliable workflow is an assistive loop: you use AI to propose an approach, then you validate it with evidence.</p>
+<section id="step-1-write-a-short-specification" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-write-a-short-specification">Step 1: write a short specification</h3>
+<p>Include:</p>
+<ul>
+<li><p>Goal (one sentence).</p></li>
+<li><p>Context (OS, Python version, environment name, relevant package versions).</p></li>
+<li><p>Inputs (code snippet, command, file path, sample data).</p></li>
+<li><p>Observed behavior (exact error/output).</p></li>
+<li><p>Expected behavior.</p></li>
+<li><p>What you tried and what happened.</p></li>
+</ul>
+<p>This structure is also the structure of a good technical question.</p>
+</section>
+<section id="step-2-request-alternatives-and-checkpoints" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-request-alternatives-and-checkpoints">Step 2: request alternatives and checkpoints</h3>
+<p>Avoid prompts that ask for a single answer. Ask for:</p>
+<ul>
+<li><p>2 to 4 plausible root causes.</p></li>
+<li><p>A short decision tree of checks.</p></li>
+<li><p>A step-by-step plan with verification checkpoints.</p></li>
+</ul>
+<p>This reduces the chance you follow one incorrect path.</p>
+</section>
+<section id="step-3-validate-claims-in-primary-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-validate-claims-in-primary-documentation">Step 3: validate claims in primary documentation</h3>
+<p>If the output depends on external truth (API behavior, command flags), verify it in official documentation for your version. If the assistant cannot point to a primary source, treat the claim as tentative.</p>
+</section>
+<section id="step-4-run-a-minimal-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-run-a-minimal-experiment">Step 4: run a minimal experiment</h3>
+<p>Convert advice into the smallest experiment that can succeed or fail. Change one factor at a time. Record results.</p>
+</section>
+<section id="step-5-lock-in-the-outcome" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-lock-in-the-outcome">Step 5: lock in the outcome</h3>
+<p>After a fix, add one of:</p>
+<ul>
+<li><p>a unit test,</p></li>
+<li><p>an assertion (shape, type, range),</p></li>
+<li><p>a checklist item in project documentation.</p></li>
+</ul>
+<p>This is how you prevent regression.</p>
+</section>
+</section>
+<section id="prompt-patterns-that-produce-usable-how-to-guidance" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="prompt-patterns-that-produce-usable-how-to-guidance"><span class="header-section-number">7.4</span> Prompt patterns that produce usable how-to guidance</h2>
+<p>Prompts work best when they specify output format and constraints. The goal is to be unambiguous.</p>
+<section id="pattern-a-decision-tree-diagnosis" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-a-decision-tree-diagnosis">Pattern A: decision tree diagnosis</h3>
+<pre><code># "I am seeing: &lt;symptom or exact error&gt;. Provide a decision tree with 8 checks.
+# Each check must be a concrete command or observation, and you must say what
+# each outcome implies. Keep it specific to &lt;OS&gt; and &lt;tool/version&gt;."</code></pre>
+</section>
+<section id="pattern-b-minimal-reproducible-example-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-b-minimal-reproducible-example-reduction">Pattern B: minimal reproducible example reduction</h3>
+<pre><code># "Here is my current minimal failing snippet. Reduce it further if possible.
+# Replace real data with synthetic data. Output:
+# (1) reduced code, (2) what you removed and why, (3) how to verify failure."</code></pre>
+</section>
+<section id="pattern-c-test-first-scaffold" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-c-test-first-scaffold">Pattern C: test-first scaffold</h3>
+<pre><code># "Write 4 pytest tests for the intended behavior below (include 2 edge cases).
+# Then propose an implementation that satisfies the tests. State assumptions."</code></pre>
+</section>
+<section id="pattern-d-documentation-rewrite-without-inventing-steps" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-d-documentation-rewrite-without-inventing-steps">Pattern D: documentation rewrite without inventing steps</h3>
+<pre><code># "Rewrite these notes into a how-to guide with sections: Purpose, Prerequisites,
+# Steps, Verify, Troubleshooting. Do not invent commands I did not provide.
+# If prerequisites are missing, list questions under 'Prerequisites'."</code></pre>
+</section>
+<section id="pattern-e-safe-command-review" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-e-safe-command-review">Pattern E: safe command review</h3>
+<p>Use when you want to understand a command before running it.</p>
+<pre><code># "Explain what this command does, what it changes on disk, and how to undo it:
+# &lt;command&gt;
+# Then give a safer alternative or a dry run option if available."</code></pre>
+</section>
+<section id="pattern-f-request-a-patch-instead-of-a-rewrite" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-f-request-a-patch-instead-of-a-rewrite">Pattern F: request a patch instead of a rewrite</h3>
+<p>For code changes, request a minimal diff rather than a full replacement.</p>
+<pre><code># "Here is the current function. Provide a minimal patch (diff-style) to fix
+# &lt;specific bug&gt;. Do not refactor unrelated code. Explain how to test the fix."</code></pre>
+</section>
+</section>
+<section id="using-ai-to-improve-technical-questions" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="using-ai-to-improve-technical-questions"><span class="header-section-number">7.5</span> Using AI to improve technical questions</h2>
+<p>Good questions produce good answers. AI can help you edit and structure questions before you ask a human.</p>
+<section id="rewrite-into-a-standard-template" class="level3">
+<h3 class="anchored" data-anchor-id="rewrite-into-a-standard-template">Rewrite into a standard template</h3>
+<p>Ask the assistant to convert a messy description into:</p>
+<ul>
+<li><p>Goal</p></li>
+<li><p>Expected</p></li>
+<li><p>Actual</p></li>
+<li><p>Reproduction steps</p></li>
+<li><p>Context (versions, OS)</p></li>
+<li><p>What you tried</p></li>
+</ul>
+<p>Then audit the result for correctness. Do not let an assistant improve a question by inventing details.</p>
+</section>
+<section id="generate-a-context-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="generate-a-context-checklist">Generate a context checklist</h3>
+<p>If you do not know what context matters, ask for a checklist. Common context fields include:</p>
+<ul>
+<li><p>OS and version</p></li>
+<li><p>Python version and interpreter path</p></li>
+<li><p>Environment manager (conda, venv) and active environment name</p></li>
+<li><p>Package versions (<code>pip show</code> or <code>conda list</code>)</p></li>
+<li><p>Working directory and relevant file paths</p></li>
+</ul>
+<p>Report unknowns as unknowns rather than guessing.</p>
+</section>
+</section>
+<section id="using-ai-in-debugging-hypotheses-checks-and-minimal-diffs" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="using-ai-in-debugging-hypotheses-checks-and-minimal-diffs"><span class="header-section-number">7.6</span> Using AI in debugging: hypotheses, checks, and minimal diffs</h2>
+<p>Use AI to propose hypotheses and checks. Keep control of the debugging loop.</p>
+<section id="import-errors-identify-the-interpreter-and-environment" class="level3">
+<h3 class="anchored" data-anchor-id="import-errors-identify-the-interpreter-and-environment">Import errors: identify the interpreter and environment</h3>
+<p>Most import problems are environment problems. Confirm which Python is running and where packages are installed.</p>
+<pre><code># Interpreter and environment checks
+python --version
+python -c "import sys; print(sys.executable)"
+
+# macOS/Linux:
+which python
+
+# Windows:
+where python
+
+# Package presence:
+pip show &lt;package&gt;
+conda list &lt;package&gt;</code></pre>
+<p>Interpretation:</p>
+<ul>
+<li><p>If <code>sys.executable</code> is not in the environment you expect, you are using the wrong interpreter.</p></li>
+<li><p>If <code>pip show</code> reports a package under a different Python than <code>sys.executable</code>, you installed into the wrong environment.</p></li>
+</ul>
+<p>Ask the assistant to propose a diagnosis tree, but do not accept environment-changing commands without understanding them.</p>
+</section>
+<section id="data-ingestion-bugs-inspect-the-intermediate" class="level3">
+<h3 class="anchored" data-anchor-id="data-ingestion-bugs-inspect-the-intermediate">Data ingestion bugs: inspect the intermediate</h3>
+<p>For many data issues, the right move is to inspect intermediate representations.</p>
+<p>Example: a CSV loads into one column instead of many. Plausible causes include the wrong delimiter, quoting, or encoding artifacts. A useful debugging sequence is:</p>
+<ol type="1">
+<li><p>print the first few lines of the file,</p></li>
+<li><p>test delimiters explicitly,</p></li>
+<li><p>check column names and types after load.</p></li>
+</ol>
+<pre><code># Quick inspection approach (Python)
+import pandas as pd
+
+path = "data/input.csv"
+with open(path, "r", encoding="utf-8", errors="replace") as f:
+for _ in range(5):
+print(f.readline().rstrip(""))
+
+df = pd.read_csv(path) # default delimiter is comma
+print(df.shape)
+print(df.columns.tolist())
+
+df_tab = pd.read_csv(path, sep=""͡)
+print(df_tab.shape)</code></pre>
+<p>Use AI to suggest likely causes and checks, but interpret the output yourself. A model cannot see your file contents unless you provide them, and you should avoid pasting sensitive data.</p>
+</section>
+<section id="path-and-working-directory-confusion" class="level3">
+<h3 class="anchored" data-anchor-id="path-and-working-directory-confusion">Path and working directory confusion</h3>
+<p>Many errors are simple path mistakes. Validate where you are before changing code.</p>
+<pre><code># Working directory checks
+# macOS/Linux:
+pwd
+ls -la
+
+# Windows:
+cd
+dir</code></pre>
+<p>If AI suggests changing or deleting files to solve a path problem, stop. Verify the path and fix the invocation first.</p>
+</section>
+<section id="prefer-minimal-diffs-over-large-rewrites" class="level3">
+<h3 class="anchored" data-anchor-id="prefer-minimal-diffs-over-large-rewrites">Prefer minimal diffs over large rewrites</h3>
+<p>A common anti-pattern is accepting a large rewrite because it makes an error disappear. Large changes reduce your ability to identify cause and increase the chance of introducing new bugs. If an assistant proposes a rewrite:</p>
+<ul>
+<li><p>ask for the smallest change that preserves intent,</p></li>
+<li><p>apply one change at a time,</p></li>
+<li><p>verify with a test or a checkpoint.</p></li>
+</ul>
+</section>
+</section>
+<section id="using-ai-for-documentation-and-project-hygiene" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="using-ai-for-documentation-and-project-hygiene"><span class="header-section-number">7.7</span> Using AI for documentation and project hygiene</h2>
+<p>Documentation is a strong target for AI assistance because outputs are reviewable and verifiable.</p>
+<section id="draft-a-readme-that-can-be-executed" class="level3">
+<h3 class="anchored" data-anchor-id="draft-a-readme-that-can-be-executed">Draft a README that can be executed</h3>
+<p>A README is good only if a reader can follow it. Use AI to draft structure, then validate it by running it from scratch.</p>
+<p>Minimum sections:</p>
+<ul>
+<li><p>Purpose</p></li>
+<li><p>Setup (environment creation)</p></li>
+<li><p>How to run</p></li>
+<li><p>Verify (what success looks like)</p></li>
+<li><p>Troubleshooting (common failures)</p></li>
+</ul>
+<p>Provide the actual commands you use. Ask the assistant to format them. Then test them in a fresh environment. This is often where missing steps are discovered.</p>
+</section>
+<section id="troubleshooting-sections-symptom-cause-check-fix" class="level3">
+<h3 class="anchored" data-anchor-id="troubleshooting-sections-symptom-cause-check-fix">Troubleshooting sections: symptom, cause, check, fix</h3>
+<p>Ask the assistant to propose troubleshooting entries in a strict format:</p>
+<ul>
+<li><p>Symptom</p></li>
+<li><p>Likely cause</p></li>
+<li><p>Check (a command or observable)</p></li>
+<li><p>Fix (a minimal action)</p></li>
+</ul>
+<p>Then validate each fix on your system. Remove entries you cannot verify.</p>
+</section>
+<section id="runbooks-for-repetitive-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="runbooks-for-repetitive-tasks">Runbooks for repetitive tasks</h3>
+<p>For recurring tasks (refreshing a dataset, rebuilding outputs), create a runbook. Include:</p>
+<ul>
+<li><p>prerequisites and inputs,</p></li>
+<li><p>step-by-step commands,</p></li>
+<li><p>verification checks,</p></li>
+<li><p>rollback or recovery steps.</p></li>
+</ul>
+<p>AI can draft a runbook; you must execute it to confirm it works.</p>
+</section>
+</section>
+<section id="using-ai-for-code-constraints-review-and-tests" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="using-ai-for-code-constraints-review-and-tests"><span class="header-section-number">7.8</span> Using AI for code: constraints, review, and tests</h2>
+<p>AI-generated code is useful when you control scope and require verification.</p>
+<section id="request-small-testable-units" class="level3">
+<h3 class="anchored" data-anchor-id="request-small-testable-units">Request small, testable units</h3>
+<p>Instead of asking for an entire pipeline, request one function with a clear contract:</p>
+<ul>
+<li><p>Inputs: types and constraints</p></li>
+<li><p>Output: type and invariants</p></li>
+<li><p>Examples: at least one realistic case</p></li>
+<li><p>Tests: include edge cases</p></li>
+</ul>
+<p>This makes review manageable and encourages correct design.</p>
+</section>
+<section id="verification-ladder" class="level3">
+<h3 class="anchored" data-anchor-id="verification-ladder">Verification ladder</h3>
+<p>Use this ladder for any AI-generated code you plan to keep:</p>
+<ol type="1">
+<li><p>Read it line by line. You should be able to explain it.</p></li>
+<li><p>Run a smoke test on tiny inputs.</p></li>
+<li><p>Add assertions for invariants (shape, type, ranges).</p></li>
+<li><p>Add unit tests (including edge cases).</p></li>
+<li><p>Compare outputs to a baseline if replacing existing code.</p></li>
+</ol>
+<p>If you cannot explain the code, do not ship it. “It works” is not a sufficient reason to keep code you do not understand, especially in an educational context.</p>
+</section>
+<section id="ask-for-tests-before-implementations" class="level3">
+<h3 class="anchored" data-anchor-id="ask-for-tests-before-implementations">Ask for tests before implementations</h3>
+<p>A reliable pattern is to ask for tests first. Tests clarify the contract and catch silent errors.</p>
+<p>For example, if you are cleaning a column:</p>
+<ul>
+<li><p>define how empty strings should be treated,</p></li>
+<li><p>define how whitespace is handled,</p></li>
+<li><p>define whether case is preserved,</p></li>
+<li><p>define how non-string values should behave.</p></li>
+</ul>
+<p>Then request tests that lock that behavior in.</p>
+</section>
+<section id="warnings-for-file-operations-in-code" class="level3">
+<h3 class="anchored" data-anchor-id="warnings-for-file-operations-in-code">Warnings for file operations in code</h3>
+<p>Code that writes files can destroy work. When an assistant proposes code that deletes or overwrites:</p>
+<ul>
+<li><p>request a dry run mode,</p></li>
+<li><p>request explicit confirmation before destructive operations,</p></li>
+<li><p>request that outputs go to a dedicated <code>outputs/</code> directory,</p></li>
+<li><p>confirm the code uses explicit paths, not implicit working-directory assumptions.</p></li>
+</ul>
+</section>
+</section>
+<section id="security-and-privacy-hygiene" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="security-and-privacy-hygiene"><span class="header-section-number">7.9</span> Security and privacy hygiene</h2>
+<p>Security mistakes often begin as convenience: pasting too much context.</p>
+<section id="never-paste-secrets" class="level3">
+<h3 class="anchored" data-anchor-id="never-paste-secrets">Never paste secrets</h3>
+<p>Do not paste:</p>
+<ul>
+<li><p>passwords,</p></li>
+<li><p>API keys or tokens,</p></li>
+<li><p>private SSH keys,</p></li>
+<li><p>institutional credentials,</p></li>
+<li><p>confidential datasets.</p></li>
+</ul>
+<p>If you need help, describe the structure and the error. If you need an example, use synthetic values.</p>
+</section>
+<section id="prefer-synthetic-or-summarized-data" class="level3">
+<h3 class="anchored" data-anchor-id="prefer-synthetic-or-summarized-data">Prefer synthetic or summarized data</h3>
+<p>If you need help with data issues, share:</p>
+<ul>
+<li><p>schema (columns and types),</p></li>
+<li><p>3 to 5 synthetic rows that match structure,</p></li>
+<li><p>aggregate statistics (counts, missingness, ranges).</p></li>
+</ul>
+<p>Avoid copying raw records when they include personal or sensitive information. If policy or law applies, assume raw disclosure is not allowed.</p>
+</section>
+<section id="treat-privilege-escalation-as-high-risk" class="level3">
+<h3 class="anchored" data-anchor-id="treat-privilege-escalation-as-high-risk">Treat privilege escalation as high risk</h3>
+<p>Commands that request elevated privileges require extra caution. If an assistant suggests <code>sudo</code> or broad permission changes:</p>
+<ul>
+<li><p>consult primary documentation,</p></li>
+<li><p>confirm the scope of the change,</p></li>
+<li><p>prefer least-privilege alternatives,</p></li>
+<li><p>ask a human when you are unsure.</p></li>
+</ul>
+</section>
+</section>
+<section id="academic-integrity-and-collaboration" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="academic-integrity-and-collaboration"><span class="header-section-number">7.10</span> Academic integrity and collaboration</h2>
+<p>Courses and teams differ in their policies. Follow the policy that governs your work.</p>
+<section id="disclose-ai-assistance-when-required" class="level3">
+<h3 class="anchored" data-anchor-id="disclose-ai-assistance-when-required">Disclose AI assistance when required</h3>
+<p>When disclosure is expected, keep it concrete:</p>
+<ul>
+<li>“Used AI assistance to draft README structure and suggest unit test scaffolding; verified commands by running locally; edited output for accuracy.”</li>
+</ul>
+<p>Avoid vague statements that do not clarify what was assisted and what was verified.</p>
+</section>
+<section id="use-ai-to-support-learning" class="level3">
+<h3 class="anchored" data-anchor-id="use-ai-to-support-learning">Use AI to support learning</h3>
+<p>If you receive an answer, convert it into learning:</p>
+<ul>
+<li><p>Ask for a smaller example.</p></li>
+<li><p>Ask for assumptions and edge cases.</p></li>
+<li><p>Predict what will happen if an input changes.</p></li>
+<li><p>Test those predictions.</p></li>
+</ul>
+<p>A useful personal rule is: if you cannot explain it, you do not own it.</p>
+</section>
+<section id="collaboration-keep-humans-in-the-loop" class="level3">
+<h3 class="anchored" data-anchor-id="collaboration-keep-humans-in-the-loop">Collaboration: keep humans in the loop</h3>
+<p>In team settings, AI can accelerate drafting, but humans should review:</p>
+<ul>
+<li><p>Pull requests should explain intent and include tests.</p></li>
+<li><p>Code review comments should reference evidence (tests, logs, docs).</p></li>
+<li><p>Generated code should be treated like any other contribution: reviewed, tested, and justified.</p></li>
+</ul>
+</section>
+</section>
+<section id="when-ai-advice-conflicts-with-your-observations" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="when-ai-advice-conflicts-with-your-observations"><span class="header-section-number">7.11</span> When AI advice conflicts with your observations</h2>
+<p>Conflicts are common. Resolve them with evidence.</p>
+<section id="resolution-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="resolution-protocol">Resolution protocol</h3>
+<ol type="1">
+<li><p>Trust local evidence: what happened when you ran the code.</p></li>
+<li><p>Confirm versions and environment.</p></li>
+<li><p>Consult primary documentation for that version.</p></li>
+<li><p>If still unclear, ask a human with a structured question.</p></li>
+</ol>
+<p>If the assistant cannot provide a verifiable primary source, treat its claim as tentative.</p>
+</section>
+</section>
+<section id="case-studies" class="level2" data-number="7.12">
+<h2 data-number="7.12" class="anchored" data-anchor-id="case-studies"><span class="header-section-number">7.12</span> Case studies</h2>
+<p>These case studies illustrate how AI fits into a disciplined workflow.</p>
+<section id="case-study-1-notebook-kernel-mismatch" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-1-notebook-kernel-mismatch">Case study 1: notebook kernel mismatch</h3>
+<p>Symptom: a package imports in the terminal but fails in Jupyter.</p>
+<p>Workflow:</p>
+<ol type="1">
+<li><p>Use AI to propose checks: inspect <code>sys.executable</code> in the notebook.</p></li>
+<li><p>Run the check and confirm the notebook kernel points to the wrong environment.</p></li>
+<li><p>Switch kernels or install into the correct environment.</p></li>
+<li><p>Add a note to your README: “Kernel must be <code>&lt;env-name&gt;</code>.”</p></li>
+</ol>
+<p>AI helped propose checks. Local evidence determined the fix.</p>
+</section>
+<section id="case-study-2-csv-delimiter-confusion" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-2-csv-delimiter-confusion">Case study 2: CSV delimiter confusion</h3>
+<p>Symptom: a CSV loads into one column.</p>
+<p>Workflow:</p>
+<ol type="1">
+<li><p>Ask AI for plausible causes: delimiter, quoting, encoding.</p></li>
+<li><p>Inspect the first lines of the file; test <code>sep</code> explicitly.</p></li>
+<li><p>Confirm the correct delimiter and update load code.</p></li>
+<li><p>Add an assertion: expected columns present.</p></li>
+</ol>
+<p>The fix is reliable because it is backed by inspection and an assertion.</p>
+</section>
+<section id="case-study-3-git-merge-conflict-in-a-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-3-git-merge-conflict-in-a-notebook">Case study 3: Git merge conflict in a notebook</h3>
+<p>Symptom: merge conflict in <code>analysis.ipynb</code>.</p>
+<p>Workflow:</p>
+<ol type="1">
+<li><p>Ask AI to outline options: resolve in an editor, use a notebook diff tool, or rerun to regenerate.</p></li>
+<li><p>Choose an option consistent with your course and team workflow.</p></li>
+<li><p>After resolving, add a practice note: avoid committing noisy notebook outputs if your policy allows (see <a href="#sec-git-github" class="quarto-xref"><span class="quarto-unresolved-ref">sec-git-github</span></a> for Git and version control practices).</p></li>
+</ol>
+<p>AI can propose approaches, but your team’s policy determines the acceptable option.</p>
+</section>
+<section id="case-study-4-unsafe-suggested-fix" class="level3">
+<h3 class="anchored" data-anchor-id="case-study-4-unsafe-suggested-fix">Case study 4: unsafe suggested fix</h3>
+<p>Symptom: permission error writing to a directory.</p>
+<p>The assistant suggests <code>sudo</code> or a broad permission change.</p>
+<p>Correct response:</p>
+<ul>
+<li><p>Stop and identify the correct output directory.</p></li>
+<li><p>Prefer writing to a user-owned folder (project <code>outputs/</code> under your home directory).</p></li>
+<li><p>Consult documentation or a TA if you think system permissions are required.</p></li>
+</ul>
+<p>High-risk suggestions require human judgment and primary sources.</p>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="7.13">
+<h2 data-number="7.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.13</span> Exercises</h2>
+<ol type="1">
+<li><p>Take a recent error. Ask an assistant for three hypotheses and two checks per hypothesis. Run the checks and record which hypotheses you eliminated.</p></li>
+<li><p>Draft a structured help request (Goal/Expected/Actual/Repro/Context/What I tried). Ask the assistant to improve clarity without changing facts. Audit the result and then post it.</p></li>
+<li><p>Ask for a README skeleton for your project. Verify each command in a fresh environment. Add a Verify section and one troubleshooting entry.</p></li>
+<li><p>Ask for a small function plus unit tests. Run the tests. If any fail, revise until they pass.</p></li>
+<li><p>Create a personal “do not paste” list (credentials, tokens, private data). Keep it near your workstation.</p></li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="7.14">
+<h2 data-number="7.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">7.14</span> One-page checklist</h2>
+<ul>
+<li><p>I treat AI output as a proposal and require evidence.</p></li>
+<li><p>I scale verification to risk.</p></li>
+<li><p>I request alternatives and checkpoints, not a single answer.</p></li>
+<li><p>I confirm commands and API behavior in primary documentation.</p></li>
+<li><p>I run minimal experiments and change one thing at a time.</p></li>
+<li><p>I add tests or assertions after fixes.</p></li>
+<li><p>I do not paste secrets or sensitive data.</p></li>
+<li><p>I disclose AI assistance when required and keep it specific.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../parts/part-1-practice/tracebacks.html" class="pagination-link" aria-label="Reading Python Tracebacks">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../parts/part-2-environment/operating-system.html" class="pagination-link" aria-label="Operating System">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-1-practice/ai-llm.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

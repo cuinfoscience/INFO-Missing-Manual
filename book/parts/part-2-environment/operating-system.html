@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Operating System – Paratechnical Computing Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../parts/part-2-environment/file-system.html" rel="next">
+<link href="../../parts/part-1-practice/ai-llm.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a46c92d1a3b8d11f1f9fb1f566cd2c52.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Paratechnical Computing Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/operating-system.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Testing Basics with pytest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style, Linting, and Formatting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data: Shape, Cleaning, and Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/pre-commit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Pre-commit Hooks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-stability-comes-from-routines" id="toc-running-theme-stability-comes-from-routines" class="nav-link" data-scroll-target="#running-theme-stability-comes-from-routines">Running theme: stability comes from routines</a></li>
+  <li><a href="#a-beginner-mental-model-of-the-os" id="toc-a-beginner-mental-model-of-the-os" class="nav-link" data-scroll-target="#a-beginner-mental-model-of-the-os"><span class="header-section-number">8.1</span> A beginner mental model of the OS</a>
+  <ul class="collapse">
+  <li><a href="#what-the-os-is-responsible-for" id="toc-what-the-os-is-responsible-for" class="nav-link" data-scroll-target="#what-the-os-is-responsible-for">What the OS is responsible for</a></li>
+  <li><a href="#what-you-control-vs-what-you-should-avoid" id="toc-what-you-control-vs-what-you-should-avoid" class="nav-link" data-scroll-target="#what-you-control-vs-what-you-should-avoid">What you control vs what you should avoid</a></li>
+  </ul></li>
+  <li><a href="#getting-oriented-where-settings-live" id="toc-getting-oriented-where-settings-live" class="nav-link" data-scroll-target="#getting-oriented-where-settings-live"><span class="header-section-number">8.2</span> Getting oriented: where settings live</a>
+  <ul class="collapse">
+  <li><a href="#windows-settings-app-windows-security-and-the-remaining-control-panel" id="toc-windows-settings-app-windows-security-and-the-remaining-control-panel" class="nav-link" data-scroll-target="#windows-settings-app-windows-security-and-the-remaining-control-panel">Windows: Settings app, Windows Security, and the remaining Control Panel</a></li>
+  <li><a href="#macos-system-settings-finder-and-utilities" id="toc-macos-system-settings-finder-and-utilities" class="nav-link" data-scroll-target="#macos-system-settings-finder-and-utilities">macOS: System Settings, Finder, and utilities</a></li>
+  <li><a href="#settings-search-is-your-best-friend" id="toc-settings-search-is-your-best-friend" class="nav-link" data-scroll-target="#settings-search-is-your-best-friend">Settings search is your best friend</a></li>
+  </ul></li>
+  <li><a href="#know-your-system-version-storage-and-constraints" id="toc-know-your-system-version-storage-and-constraints" class="nav-link" data-scroll-target="#know-your-system-version-storage-and-constraints"><span class="header-section-number">8.3</span> Know your system: version, storage, and constraints</a>
+  <ul class="collapse">
+  <li><a href="#check-os-versionbuild" id="toc-check-os-versionbuild" class="nav-link" data-scroll-target="#check-os-versionbuild">Check OS version/build</a></li>
+  <li><a href="#check-storage-health-early-and-often" id="toc-check-storage-health-early-and-often" class="nav-link" data-scroll-target="#check-storage-health-early-and-often">Check storage health (early and often)</a></li>
+  <li><a href="#understand-local-vs-synced-storage" id="toc-understand-local-vs-synced-storage" class="nav-link" data-scroll-target="#understand-local-vs-synced-storage">Understand local vs synced storage</a></li>
+  </ul></li>
+  <li><a href="#updates-and-patching-best-practices" id="toc-updates-and-patching-best-practices" class="nav-link" data-scroll-target="#updates-and-patching-best-practices"><span class="header-section-number">8.4</span> Updates and patching: best practices</a>
+  <ul class="collapse">
+  <li><a href="#why-updates-matter" id="toc-why-updates-matter" class="nav-link" data-scroll-target="#why-updates-matter">Why updates matter</a></li>
+  <li><a href="#types-of-updates-student-relevant" id="toc-types-of-updates-student-relevant" class="nav-link" data-scroll-target="#types-of-updates-student-relevant">Types of updates (student-relevant)</a></li>
+  <li><a href="#a-safe-patching-workflow" id="toc-a-safe-patching-workflow" class="nav-link" data-scroll-target="#a-safe-patching-workflow">A safe patching workflow</a></li>
+  <li><a href="#windows-update-practices" id="toc-windows-update-practices" class="nav-link" data-scroll-target="#windows-update-practices">Windows update practices</a></li>
+  <li><a href="#macos-update-practices" id="toc-macos-update-practices" class="nav-link" data-scroll-target="#macos-update-practices">macOS update practices</a></li>
+  </ul></li>
+  <li><a href="#security-baseline-for-students" id="toc-security-baseline-for-students" class="nav-link" data-scroll-target="#security-baseline-for-students"><span class="header-section-number">8.5</span> Security baseline for students</a>
+  <ul class="collapse">
+  <li><a href="#accounts-and-authentication" id="toc-accounts-and-authentication" class="nav-link" data-scroll-target="#accounts-and-authentication">Accounts and authentication</a></li>
+  <li><a href="#screen-lock-and-physical-security" id="toc-screen-lock-and-physical-security" class="nav-link" data-scroll-target="#screen-lock-and-physical-security">Screen lock and physical security</a></li>
+  <li><a href="#built-in-protections" id="toc-built-in-protections" class="nav-link" data-scroll-target="#built-in-protections">Built-in protections</a></li>
+  <li><a href="#encryption-awareness-and-recovery-keys" id="toc-encryption-awareness-and-recovery-keys" class="nav-link" data-scroll-target="#encryption-awareness-and-recovery-keys">Encryption awareness (and recovery keys)</a></li>
+  <li><a href="#software-installation-hygiene" id="toc-software-installation-hygiene" class="nav-link" data-scroll-target="#software-installation-hygiene">Software installation hygiene</a></li>
+  </ul></li>
+  <li><a href="#backups-and-recovery-the-student-safety-net" id="toc-backups-and-recovery-the-student-safety-net" class="nav-link" data-scroll-target="#backups-and-recovery-the-student-safety-net"><span class="header-section-number">8.6</span> Backups and recovery: the student safety net</a>
+  <ul class="collapse">
+  <li><a href="#what-backups-are-and-are-not" id="toc-what-backups-are-and-are-not" class="nav-link" data-scroll-target="#what-backups-are-and-are-not">What backups are (and are not)</a></li>
+  <li><a href="#windows-backups-conceptual-map" id="toc-windows-backups-conceptual-map" class="nav-link" data-scroll-target="#windows-backups-conceptual-map">Windows backups (conceptual map)</a></li>
+  <li><a href="#macos-backups-conceptual-map" id="toc-macos-backups-conceptual-map" class="nav-link" data-scroll-target="#macos-backups-conceptual-map">macOS backups (conceptual map)</a></li>
+  <li><a href="#recovery-tools-when-something-breaks" id="toc-recovery-tools-when-something-breaks" class="nav-link" data-scroll-target="#recovery-tools-when-something-breaks">Recovery tools (when something breaks)</a></li>
+  </ul></li>
+  <li><a href="#performance-and-stability-maintenance" id="toc-performance-and-stability-maintenance" class="nav-link" data-scroll-target="#performance-and-stability-maintenance"><span class="header-section-number">8.7</span> Performance and stability maintenance</a>
+  <ul class="collapse">
+  <li><a href="#storage-cleanup-do-no-harm" id="toc-storage-cleanup-do-no-harm" class="nav-link" data-scroll-target="#storage-cleanup-do-no-harm">Storage cleanup (do no harm)</a></li>
+  <li><a href="#startup-and-background-apps" id="toc-startup-and-background-apps" class="nav-link" data-scroll-target="#startup-and-background-apps">Startup and background apps</a></li>
+  <li><a href="#battery-and-laptop-health-practical-notes" id="toc-battery-and-laptop-health-practical-notes" class="nav-link" data-scroll-target="#battery-and-laptop-health-practical-notes">Battery and laptop health (practical notes)</a></li>
+  <li><a href="#drivers-and-peripherals" id="toc-drivers-and-peripherals" class="nav-link" data-scroll-target="#drivers-and-peripherals">Drivers and peripherals</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting-playbook-student-friendly" id="toc-troubleshooting-playbook-student-friendly" class="nav-link" data-scroll-target="#troubleshooting-playbook-student-friendly"><span class="header-section-number">8.8</span> Troubleshooting playbook (student-friendly)</a>
+  <ul class="collapse">
+  <li><a href="#start-with-the-simplest-reversible-steps" id="toc-start-with-the-simplest-reversible-steps" class="nav-link" data-scroll-target="#start-with-the-simplest-reversible-steps">Start with the simplest reversible steps</a></li>
+  <li><a href="#use-safe-modes-and-diagnostics" id="toc-use-safe-modes-and-diagnostics" class="nav-link" data-scroll-target="#use-safe-modes-and-diagnostics">Use safe modes and diagnostics</a></li>
+  <li><a href="#gather-evidence-for-help" id="toc-gather-evidence-for-help" class="nav-link" data-scroll-target="#gather-evidence-for-help">Gather evidence for help</a></li>
+  </ul></li>
+  <li><a href="#a-semester-maintenance-schedule" id="toc-a-semester-maintenance-schedule" class="nav-link" data-scroll-target="#a-semester-maintenance-schedule"><span class="header-section-number">8.9</span> A semester maintenance schedule</a>
+  <ul class="collapse">
+  <li><a href="#weekly-10-minutes" id="toc-weekly-10-minutes" class="nav-link" data-scroll-target="#weekly-10-minutes">Weekly (10 minutes)</a></li>
+  <li><a href="#monthly-2030-minutes" id="toc-monthly-2030-minutes" class="nav-link" data-scroll-target="#monthly-2030-minutes">Monthly (20–30 minutes)</a></li>
+  <li><a href="#before-major-milestones-projects-finals" id="toc-before-major-milestones-projects-finals" class="nav-link" data-scroll-target="#before-major-milestones-projects-finals">Before major milestones (projects, finals)</a></li>
+  </ul></li>
+  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">8.10</span> Worked examples (outline)</a>
+  <ul class="collapse">
+  <li><a href="#example-1-set-up-a-safe-update-routine" id="toc-example-1-set-up-a-safe-update-routine" class="nav-link" data-scroll-target="#example-1-set-up-a-safe-update-routine">Example 1: Set up a safe update routine</a></li>
+  <li><a href="#example-2-configure-backups-and-test-a-restore" id="toc-example-2-configure-backups-and-test-a-restore" class="nav-link" data-scroll-target="#example-2-configure-backups-and-test-a-restore">Example 2: Configure backups and test a restore</a></li>
+  <li><a href="#example-3-recover-from-a-broken-update" id="toc-example-3-recover-from-a-broken-update" class="nav-link" data-scroll-target="#example-3-recover-from-a-broken-update">Example 3: Recover from a broken update</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">8.12</span> One-page checklist</a></li>
+  <li><a href="#quick-map-where-common-settings-live" id="toc-quick-map-where-common-settings-live" class="nav-link" data-scroll-target="#quick-map-where-common-settings-live"><span class="header-section-number">8.13</span> Quick map: where common settings live</a>
+  <ul class="collapse">
+  <li><a href="#windows-typical" id="toc-windows-typical" class="nav-link" data-scroll-target="#windows-typical">Windows (typical)</a></li>
+  <li><a href="#macos-typical" id="toc-macos-typical" class="nav-link" data-scroll-target="#macos-typical">macOS (typical)</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/operating-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-os-management" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites:</strong> none. This chapter stands on its own.</p>
+<p><strong>See also:</strong> <a href="#sec-filesystem" class="quarto-xref"><span class="quarto-unresolved-ref">sec-filesystem</span></a>, <a href="#sec-terminal" class="quarto-xref"><span class="quarto-unresolved-ref">sec-terminal</span></a>, <a href="#sec-pkg-mgmt" class="quarto-xref"><span class="quarto-unresolved-ref">sec-pkg-mgmt</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+<p>Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping Windows and macOS stable, updated, and recoverable.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Find key OS settings on Windows and macOS using built-in search and navigation.</p></li>
+<li><p>Check OS version/build information and interpret what matters for troubleshooting.</p></li>
+<li><p>Understand types of updates and apply a safe patching workflow.</p></li>
+<li><p>Set a baseline security posture (account hygiene, screen lock, encryption awareness).</p></li>
+<li><p>Configure backups and understand restore/recovery options.</p></li>
+<li><p>Apply a simple troubleshooting playbook (what to try first, what evidence to gather).</p></li>
+<li><p>Establish a sustainable maintenance schedule for a semester.</p></li>
+</ol>
+</section>
+<section id="running-theme-stability-comes-from-routines" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-stability-comes-from-routines">Running theme: stability comes from routines</h2>
+<p>Most OS problems are predictable. The goal is not perfection; it is consistent, low-effort habits that prevent avoidable failures.</p>
+</section>
+<section id="a-beginner-mental-model-of-the-os" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="a-beginner-mental-model-of-the-os"><span class="header-section-number">8.1</span> A beginner mental model of the OS</h2>
+<section id="what-the-os-is-responsible-for" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-os-is-responsible-for">What the OS is responsible for</h3>
+<ul>
+<li><p>User accounts, permissions, and security boundaries</p></li>
+<li><p>Hardware and drivers (keyboard, Wi-Fi, storage)</p></li>
+<li><p>Networking, storage, and application launching</p></li>
+<li><p>Updates for the OS and built-in security protections</p></li>
+<li><p>Recovery tools when something goes wrong</p></li>
+</ul>
+</section>
+<section id="what-you-control-vs-what-you-should-avoid" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-control-vs-what-you-should-avoid">What you control vs what you should avoid</h3>
+<ul>
+<li><p>You <strong>should</strong> manage settings, updates, backups, storage, and accounts.</p></li>
+<li><p>You <strong>should avoid</strong> aggressive “cleaners,” registry hacks, random driver sites, or changing security settings without understanding the impact.</p></li>
+</ul>
+</section>
+</section>
+<section id="getting-oriented-where-settings-live" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="getting-oriented-where-settings-live"><span class="header-section-number">8.2</span> Getting oriented: where settings live</h2>
+<section id="windows-settings-app-windows-security-and-the-remaining-control-panel" class="level3">
+<h3 class="anchored" data-anchor-id="windows-settings-app-windows-security-and-the-remaining-control-panel">Windows: Settings app, Windows Security, and the remaining Control Panel</h3>
+<ul>
+<li><p>Primary hub: <strong>Settings</strong> app (System, Windows Update, Apps, Accounts, Privacy &amp; security).</p></li>
+<li><p>Security hub: <strong>Windows Security</strong> app (Defender, Firewall).</p></li>
+<li><p>Legacy hub: <strong>Control Panel</strong> still hosts some tools (common example: File History).</p></li>
+</ul>
+</section>
+<section id="macos-system-settings-finder-and-utilities" class="level3">
+<h3 class="anchored" data-anchor-id="macos-system-settings-finder-and-utilities">macOS: System Settings, Finder, and utilities</h3>
+<ul>
+<li><p>Primary hub: <strong>System Settings</strong> (General, Privacy &amp; Security, Network).</p></li>
+<li><p>Utilities: <strong>Disk Utility</strong>, <strong>System Information</strong>, <strong>Activity Monitor</strong>.</p></li>
+</ul>
+</section>
+<section id="settings-search-is-your-best-friend" class="level3">
+<h3 class="anchored" data-anchor-id="settings-search-is-your-best-friend">Settings search is your best friend</h3>
+<ul>
+<li><p>Use Settings/System Settings search to jump directly to the correct page.</p></li>
+<li><p>Learn a small vocabulary: <code>update</code>, <code>backup</code>, <code>encryption</code>, <code>privacy</code>, <code>firewall</code>, <code>storage</code>, <code>recovery</code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="know-your-system-version-storage-and-constraints" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="know-your-system-version-storage-and-constraints"><span class="header-section-number">8.3</span> Know your system: version, storage, and constraints</h2>
+<section id="check-os-versionbuild" class="level3">
+<h3 class="anchored" data-anchor-id="check-os-versionbuild">Check OS version/build</h3>
+<ul>
+<li><p>Record OS version as part of your troubleshooting notes.</p></li>
+<li><p>Understand the difference between:</p>
+<ul>
+<li><p>Major OS version (e.g., Windows 11; macOS <em>name/version</em>)</p></li>
+<li><p>Feature releases/updates (Windows feature updates; macOS major upgrades)</p></li>
+<li><p>Security/patch updates (smaller, frequent fixes)</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="check-storage-health-early-and-often" class="level3">
+<h3 class="anchored" data-anchor-id="check-storage-health-early-and-often">Check storage health (early and often)</h3>
+<ul>
+<li><p>Many failures are simply a full disk.</p></li>
+<li><p>Learn to check free space and largest folders.</p></li>
+<li><p>Keep a safety buffer of free space (rule of thumb: do not run at 99</p></li>
+</ul>
+</section>
+<section id="understand-local-vs-synced-storage" class="level3">
+<h3 class="anchored" data-anchor-id="understand-local-vs-synced-storage">Understand local vs synced storage</h3>
+<ul>
+<li><p>OneDrive (Windows) and iCloud Drive (macOS) can make files “on demand”.</p></li>
+<li><p>For programming/data work, ensure key datasets are available locally before running.</p></li>
+</ul>
+</section>
+</section>
+<section id="updates-and-patching-best-practices" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="updates-and-patching-best-practices"><span class="header-section-number">8.4</span> Updates and patching: best practices</h2>
+<section id="why-updates-matter" class="level3">
+<h3 class="anchored" data-anchor-id="why-updates-matter">Why updates matter</h3>
+<ul>
+<li><p>Security vulnerabilities are routinely discovered.</p></li>
+<li><p>Updates also fix reliability issues and driver compatibility.</p></li>
+</ul>
+</section>
+<section id="types-of-updates-student-relevant" class="level3">
+<h3 class="anchored" data-anchor-id="types-of-updates-student-relevant">Types of updates (student-relevant)</h3>
+<dl>
+<dt>Security updates</dt>
+<dd>
+<p>Fix vulnerabilities; highest priority.</p>
+</dd>
+<dt>Quality/bug-fix updates</dt>
+<dd>
+<p>Improve stability; usually safe.</p>
+</dd>
+<dt>Feature updates / major upgrades</dt>
+<dd>
+<p>Larger changes; can break workflows.</p>
+</dd>
+<dt>Driver/firmware updates</dt>
+<dd>
+<p>Hardware compatibility; should come from OS/vendor.</p>
+</dd>
+</dl>
+</section>
+<section id="a-safe-patching-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="a-safe-patching-workflow">A safe patching workflow</h3>
+<ol type="1">
+<li><p><strong>Back up first</strong> (or confirm backups are recent).</p></li>
+<li><p><strong>Pick a good time window</strong> (not 10 minutes before a deadline).</p></li>
+<li><p><strong>Install updates</strong> and allow required restarts.</p></li>
+<li><p><strong>Verify</strong> core tools still work (browser, spreadsheet, Python/conda, Jupyter).</p></li>
+<li><p><strong>Record</strong> what changed if something breaks (update history).</p></li>
+</ol>
+</section>
+<section id="windows-update-practices" class="level3">
+<h3 class="anchored" data-anchor-id="windows-update-practices">Windows update practices</h3>
+<ul>
+<li><p>Know where Windows Update settings live.</p></li>
+<li><p>Understand restarts and “active hours”.</p></li>
+<li><p>Use pause controls sparingly and intentionally.</p></li>
+<li><p>Keep track of optional updates and driver updates.</p></li>
+</ul>
+</section>
+<section id="macos-update-practices" class="level3">
+<h3 class="anchored" data-anchor-id="macos-update-practices">macOS update practices</h3>
+<ul>
+<li><p>Know where Software Update settings live.</p></li>
+<li><p>Distinguish between point updates (safer) and major upgrades (plan ahead).</p></li>
+<li><p>Consider enabling automatic updates, but still check periodically.</p></li>
+</ul>
+</section>
+</section>
+<section id="security-baseline-for-students" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="security-baseline-for-students"><span class="header-section-number">8.5</span> Security baseline for students</h2>
+<section id="accounts-and-authentication" class="level3">
+<h3 class="anchored" data-anchor-id="accounts-and-authentication">Accounts and authentication</h3>
+<ul>
+<li><p>Use strong, unique passwords; prefer a password manager.</p></li>
+<li><p>Enable multi-factor authentication (MFA) for your key accounts.</p></li>
+<li><p>Avoid daily use of administrator accounts unless required.</p></li>
+</ul>
+</section>
+<section id="screen-lock-and-physical-security" class="level3">
+<h3 class="anchored" data-anchor-id="screen-lock-and-physical-security">Screen lock and physical security</h3>
+<ul>
+<li><p>Require a password on wake.</p></li>
+<li><p>Set a short auto-lock timer for laptops.</p></li>
+</ul>
+</section>
+<section id="built-in-protections" class="level3">
+<h3 class="anchored" data-anchor-id="built-in-protections">Built-in protections</h3>
+<ul>
+<li><p>Windows: understand where to find Virus &amp; threat protection and Firewall settings.</p></li>
+<li><p>macOS: understand privacy controls and app permission prompts.</p></li>
+</ul>
+</section>
+<section id="encryption-awareness-and-recovery-keys" class="level3">
+<h3 class="anchored" data-anchor-id="encryption-awareness-and-recovery-keys">Encryption awareness (and recovery keys)</h3>
+<ul>
+<li><p>Encryption protects data if a device is lost or stolen, but it introduces a new dependency: <strong>recovery keys</strong>.</p></li>
+<li><p>Windows: device encryption/BitLocker concepts; ensure you know where recovery keys are stored.</p></li>
+<li><p>macOS: FileVault concepts; store recovery information safely.</p></li>
+<li><p>Rule: never proceed with encryption changes unless you understand recovery.</p></li>
+</ul>
+</section>
+<section id="software-installation-hygiene" class="level3">
+<h3 class="anchored" data-anchor-id="software-installation-hygiene">Software installation hygiene</h3>
+<ul>
+<li><p>Install software from official sources (vendor site, app store, trusted package managers).</p></li>
+<li><p>Keep browsers updated.</p></li>
+<li><p>Uninstall software you do not use.</p></li>
+</ul>
+</section>
+</section>
+<section id="backups-and-recovery-the-student-safety-net" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="backups-and-recovery-the-student-safety-net"><span class="header-section-number">8.6</span> Backups and recovery: the student safety net</h2>
+<section id="what-backups-are-and-are-not" class="level3">
+<h3 class="anchored" data-anchor-id="what-backups-are-and-are-not">What backups are (and are not)</h3>
+<ul>
+<li><p>A backup is a second copy you can restore.</p></li>
+<li><p>Sync is not always a backup (sync can propagate deletions).</p></li>
+<li><p>Backups should be: automatic, regular, and restorable.</p></li>
+</ul>
+</section>
+<section id="windows-backups-conceptual-map" class="level3">
+<h3 class="anchored" data-anchor-id="windows-backups-conceptual-map">Windows backups (conceptual map)</h3>
+<ul>
+<li><p>Windows Backup (settings and account-based restore workflows).</p></li>
+<li><p>File History (versioned file copies; external drive/network location).</p></li>
+</ul>
+</section>
+<section id="macos-backups-conceptual-map" class="level3">
+<h3 class="anchored" data-anchor-id="macos-backups-conceptual-map">macOS backups (conceptual map)</h3>
+<ul>
+<li><p>Time Machine (automatic backups to an external disk or approved location).</p></li>
+<li><p>Practice restoring a file so you know it works.</p></li>
+</ul>
+</section>
+<section id="recovery-tools-when-something-breaks" class="level3">
+<h3 class="anchored" data-anchor-id="recovery-tools-when-something-breaks">Recovery tools (when something breaks)</h3>
+<ul>
+<li><p>Windows: recovery options, reset, restore points (when enabled), recovery media.</p></li>
+<li><p>macOS: macOS Recovery, Disk Utility First Aid, reinstall macOS.</p></li>
+</ul>
+</section>
+</section>
+<section id="performance-and-stability-maintenance" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="performance-and-stability-maintenance"><span class="header-section-number">8.7</span> Performance and stability maintenance</h2>
+<section id="storage-cleanup-do-no-harm" class="level3">
+<h3 class="anchored" data-anchor-id="storage-cleanup-do-no-harm">Storage cleanup (do no harm)</h3>
+<ul>
+<li><p>Identify large files and old downloads.</p></li>
+<li><p>Prefer deleting duplicates and stale installers.</p></li>
+<li><p>Avoid deleting unknown system files.</p></li>
+</ul>
+</section>
+<section id="startup-and-background-apps" class="level3">
+<h3 class="anchored" data-anchor-id="startup-and-background-apps">Startup and background apps</h3>
+<ul>
+<li><p>Too many startup items slow boot and drain battery.</p></li>
+<li><p>Learn where to view and disable unnecessary login/startup apps.</p></li>
+</ul>
+</section>
+<section id="battery-and-laptop-health-practical-notes" class="level3">
+<h3 class="anchored" data-anchor-id="battery-and-laptop-health-practical-notes">Battery and laptop health (practical notes)</h3>
+<ul>
+<li><p>Keep ventilation clear; avoid constant thermal throttling.</p></li>
+<li><p>Replace failing batteries and chargers early if they create reliability issues.</p></li>
+</ul>
+</section>
+<section id="drivers-and-peripherals" class="level3">
+<h3 class="anchored" data-anchor-id="drivers-and-peripherals">Drivers and peripherals</h3>
+<ul>
+<li><p>Prefer OS/vendor-provided updates.</p></li>
+<li><p>Be cautious about third-party driver websites.</p></li>
+<li><p>For printers and Wi-Fi, document the exact model and error messages.</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting-playbook-student-friendly" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="troubleshooting-playbook-student-friendly"><span class="header-section-number">8.8</span> Troubleshooting playbook (student-friendly)</h2>
+<section id="start-with-the-simplest-reversible-steps" class="level3">
+<h3 class="anchored" data-anchor-id="start-with-the-simplest-reversible-steps">Start with the simplest reversible steps</h3>
+<ol type="1">
+<li><p>Restart the affected app.</p></li>
+<li><p>Restart the computer.</p></li>
+<li><p>Check free disk space.</p></li>
+<li><p>Check network connectivity.</p></li>
+<li><p>Identify what changed recently (updates, installs, new files).</p></li>
+</ol>
+</section>
+<section id="use-safe-modes-and-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="use-safe-modes-and-diagnostics">Use safe modes and diagnostics</h3>
+<ul>
+<li><p>macOS: Safe Mode to isolate login items and caches.</p></li>
+<li><p>Windows: safe boot/recovery tools (conceptually) when normal startup fails.</p></li>
+</ul>
+</section>
+<section id="gather-evidence-for-help" class="level3">
+<h3 class="anchored" data-anchor-id="gather-evidence-for-help">Gather evidence for help</h3>
+<ul>
+<li><p>OS version/build, device model, and available disk space.</p></li>
+<li><p>Exact error message and when it occurs.</p></li>
+<li><p>Steps to reproduce.</p></li>
+<li><p>Screenshot only when text cannot be copied.</p></li>
+</ul>
+</section>
+</section>
+<section id="a-semester-maintenance-schedule" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="a-semester-maintenance-schedule"><span class="header-section-number">8.9</span> A semester maintenance schedule</h2>
+<section id="weekly-10-minutes" class="level3">
+<h3 class="anchored" data-anchor-id="weekly-10-minutes">Weekly (10 minutes)</h3>
+<ul>
+<li><p>Check for OS updates (or confirm automatic updates are active).</p></li>
+<li><p>Confirm backups ran recently.</p></li>
+<li><p>Quick storage check.</p></li>
+</ul>
+</section>
+<section id="monthly-2030-minutes" class="level3">
+<h3 class="anchored" data-anchor-id="monthly-2030-minutes">Monthly (20–30 minutes)</h3>
+<ul>
+<li><p>Install pending feature/major updates only if you have time to recover.</p></li>
+<li><p>Review startup apps.</p></li>
+<li><p>Remove unused applications.</p></li>
+</ul>
+</section>
+<section id="before-major-milestones-projects-finals" class="level3">
+<h3 class="anchored" data-anchor-id="before-major-milestones-projects-finals">Before major milestones (projects, finals)</h3>
+<ul>
+<li><p>Ensure backups are current and restorable.</p></li>
+<li><p>Avoid major upgrades immediately before deadlines.</p></li>
+<li><p>Confirm core tools (conda, notebook environment, editors) still run.</p></li>
+</ul>
+</section>
+</section>
+<section id="worked-examples-outline" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">8.10</span> Worked examples (outline)</h2>
+<section id="example-1-set-up-a-safe-update-routine" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-set-up-a-safe-update-routine">Example 1: Set up a safe update routine</h3>
+<ul>
+<li><p>Identify Windows Update / macOS Software Update.</p></li>
+<li><p>Enable/confirm automatic updates.</p></li>
+<li><p>Schedule restarts to avoid deadline collisions.</p></li>
+</ul>
+</section>
+<section id="example-2-configure-backups-and-test-a-restore" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-configure-backups-and-test-a-restore">Example 2: Configure backups and test a restore</h3>
+<ul>
+<li><p>Windows: enable a backup approach and locate restore instructions.</p></li>
+<li><p>macOS: set up Time Machine and restore a deleted file.</p></li>
+</ul>
+</section>
+<section id="example-3-recover-from-a-broken-update" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-recover-from-a-broken-update">Example 3: Recover from a broken update</h3>
+<ul>
+<li><p>Identify update history.</p></li>
+<li><p>Use recovery options appropriately.</p></li>
+<li><p>If needed: reinstall OS (last resort) after backing up.</p></li>
+</ul>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="8.11">
+<h2 data-number="8.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.11</span> Exercises</h2>
+<ol type="1">
+<li><p>Record your OS version/build and device model in a troubleshooting note.</p></li>
+<li><p>Find the update settings page and take a screenshot of where you would check for updates.</p></li>
+<li><p>Configure a backup (Windows Backup/File History or Time Machine) and verify the last backup time.</p></li>
+<li><p>Locate your encryption setting (Windows device encryption/BitLocker or macOS FileVault) and write down where the recovery key would be stored (do not paste the key into your notes).</p></li>
+<li><p>Identify and disable one unnecessary startup/login item.</p></li>
+<li><p>Simulate a recovery: restore one older version of a document from backup.</p></li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="8.12">
+<h2 data-number="8.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">8.12</span> One-page checklist</h2>
+<ul>
+<li><p>I can find key settings (updates, backups, security, storage).</p></li>
+<li><p>I know my OS version/build and can report it.</p></li>
+<li><p>Updates are enabled and I install them on a schedule.</p></li>
+<li><p>I avoid major upgrades right before deadlines.</p></li>
+<li><p>Backups are configured, recent, and I have practiced a restore.</p></li>
+<li><p>I keep adequate free disk space.</p></li>
+<li><p>Screen lock is enabled and accounts use strong authentication.</p></li>
+<li><p>I understand encryption recovery keys and where they are stored.</p></li>
+<li><p>I can follow a basic troubleshooting playbook and gather evidence.</p></li>
+</ul>
+</section>
+<section id="quick-map-where-common-settings-live" class="level2" data-number="8.13">
+<h2 data-number="8.13" class="anchored" data-anchor-id="quick-map-where-common-settings-live"><span class="header-section-number">8.13</span> Quick map: where common settings live</h2>
+<section id="windows-typical" class="level3">
+<h3 class="anchored" data-anchor-id="windows-typical">Windows (typical)</h3>
+<ul>
+<li><p><strong>Windows Update:</strong> Settings → Windows Update</p></li>
+<li><p><strong>Security:</strong> Windows Security app; Settings → Privacy &amp; security</p></li>
+<li><p><strong>Recovery:</strong> Settings → System → Recovery</p></li>
+<li><p><strong>Backups:</strong> Settings → Accounts/Backup areas; Control Panel for File History (on many systems)</p></li>
+</ul>
+</section>
+<section id="macos-typical" class="level3">
+<h3 class="anchored" data-anchor-id="macos-typical">macOS (typical)</h3>
+<ul>
+<li><p><strong>Software Update:</strong> System Settings → General → Software Update</p></li>
+<li><p><strong>Privacy &amp; security:</strong> System Settings → Privacy &amp; Security</p></li>
+<li><p><strong>Encryption:</strong> Privacy &amp; Security → FileVault</p></li>
+<li><p><strong>Backups:</strong> System Settings → General → Time Machine</p></li>
+</ul>
+<p>An operating system manages all of the resources that you interact with while using a computer. For instance, it manages input from the keyboard, what is displayed on a screen, and how you open and close programs. When you interact with your computer, you are interacting with the operating system. For instance, Windows is an operating system.</p>
+<p>Keeping your operating system up-to-date ensures that you have the latest features, security, and bug fixes.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../parts/part-1-practice/ai-llm.html" class="pagination-link" aria-label="Using AI Tools">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../parts/part-2-environment/file-system.html" class="pagination-link" aria-label="Local File System">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/operating-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

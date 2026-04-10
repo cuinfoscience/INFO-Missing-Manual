@@ -1,0 +1,460 @@
+# 23  SQL Basics
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-tabular-data](#sec-tabular-data).
+>
+> **See also:** [sec-pandas-basics](#sec-pandas-basics), [sec-data-file-formats](#sec-data-file-formats), [sec-http-apis](#sec-http-apis).
+
+## Purpose
+
+A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `JOIN`, `ORDER BY`, `LIMIT`) cover 80% of what a novice data scientist needs.
+
+This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run SQL against a local SQLite database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).
+
+If you already know pandas, you will notice that SQL and pandas are almost word-for-word equivalent in their core verbs. The translation table in section 10 is a fast way to transfer skills in either direction.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Explain what a relational database is, and how tables, rows, and columns relate to a DataFrame.
+2.  Write `SELECT`, `WHERE`, `ORDER BY`, and `LIMIT` queries to filter and sort rows.
+3.  Use `GROUP BY` with aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) to compute summaries.
+4.  Write `INNER JOIN` and `LEFT JOIN` to combine tables on a shared key.
+5.  Run SQL from Python against a SQLite database using the `sqlite3` module and load the result into pandas.
+6.  Recognize the three most common novice SQL bugs: missing `GROUP BY` columns, `NULL` comparisons, and unquoted strings.
+7.  Decide when SQL is the right tool (filtering big tables, joins across tables) and when pandas is (reshaping, plotting, ad-hoc analysis).
+
+## Running theme: SQL is a declarative language — describe what you want, not how
+
+SQL does not tell the database how to get the answer. It tells the database *what* answer you want, and the query planner figures out the rest. That flip in mindset is most of the conceptual work of learning SQL.
+
+## 23.1 1. What a relational database is
+
+A **relational database** is a collection of **tables**. Each table has rows (records) and columns (fields), like a DataFrame. Relations between tables are made explicit through **keys**: a primary key uniquely identifies a row, and a foreign key in one table points at the primary key of another.
+
+A simple example with two tables:
+
+**`customers`**
+
+| customer_id | name  | city    |
+|-------------|-------|---------|
+| 1           | Alice | Boulder |
+| 2           | Bob   | Denver  |
+| 3           | Carol | Boulder |
+
+**`orders`**
+
+| order_id | customer_id | amount | date       |
+|----------|-------------|--------|------------|
+| 101      | 1           | 29.99  | 2024-03-01 |
+| 102      | 2           | 15.50  | 2024-03-02 |
+| 103      | 1           | 42.00  | 2024-03-03 |
+
+`customer_id` is the primary key in `customers`, and a foreign key in `orders`. The relationship is “one customer, many orders” — each order row points to exactly one customer, but a customer can have any number of orders.
+
+This split of data across tables is called **normalization** and it is how databases avoid the repeated-data problems of one giant wide table.
+
+## 23.2 2. `SELECT ... FROM`: the basic query
+
+The simplest query returns columns from one table:
+
+``` sql
+SELECT name, city
+FROM customers;
+```
+
+Use `*` to return every column (fine in the REPL, discouraged in scripts because it couples your code to the current schema):
+
+``` sql
+SELECT *
+FROM customers;
+```
+
+Every SQL statement ends with a semicolon. Keywords are traditionally UPPERCASE; column and table names are lowercase. Neither is required — SQL is case-insensitive — but the convention makes queries easier to read.
+
+## 23.3 3. `WHERE`: filtering rows
+
+``` sql
+SELECT *
+FROM customers
+WHERE city = 'Boulder';
+```
+
+Strings go in single quotes. Double quotes are for identifiers (table and column names), which trips people up who come from Python and JavaScript.
+
+Multiple conditions use `AND`, `OR`, and `NOT`:
+
+``` sql
+SELECT *
+FROM orders
+WHERE amount > 20
+  AND date >= '2024-03-02';
+```
+
+Useful operators:
+
+| Operator | Meaning |
+|----|----|
+| `=`, `<>` or `!=` | equals, not equals |
+| `<`, `<=`, `>`, `>=` | numeric/date comparison |
+| `BETWEEN x AND y` | inclusive range |
+| `IN (a, b, c)` | set membership |
+| `LIKE '%pattern%'` | string pattern (`%` = any chars, `_` = single char) |
+| `IS NULL`, `IS NOT NULL` | null check |
+
+### The `NULL` gotcha
+
+`NULL` is not a value — it is the absence of one. `x = NULL` is *never true*, even if `x` is `NULL`. Use `IS NULL` and `IS NOT NULL`.
+
+``` sql
+-- Wrong: returns nothing even if there are rows with NULL city
+SELECT * FROM customers WHERE city = NULL;
+
+-- Right
+SELECT * FROM customers WHERE city IS NULL;
+```
+
+Every three-valued-logic bug in SQL traces back to this rule.
+
+## 23.4 4. `ORDER BY` and `LIMIT`
+
+``` sql
+SELECT * FROM orders
+ORDER BY amount DESC
+LIMIT 10;
+```
+
+`ORDER BY` is ascending by default. Add `DESC` for descending. Use `LIMIT` to cap the result size; `LIMIT 10` returns at most 10 rows.
+
+Most databases support `OFFSET` for pagination:
+
+``` sql
+SELECT * FROM orders
+ORDER BY date
+LIMIT 10 OFFSET 20;   -- skip 20, return the next 10
+```
+
+## 23.5 5. Aggregates and `GROUP BY`
+
+An aggregate function collapses many rows into one.
+
+| Function               | What it does              |
+|------------------------|---------------------------|
+| `COUNT(*)`             | number of rows            |
+| `COUNT(col)`           | number of non-NULL values |
+| `SUM(col)`             | sum                       |
+| `AVG(col)`             | mean                      |
+| `MIN(col)`, `MAX(col)` | min / max                 |
+
+Without `GROUP BY`, the aggregate is over the whole table:
+
+``` sql
+SELECT COUNT(*) AS n, SUM(amount) AS total
+FROM orders;
+```
+
+`AS` renames the output column.
+
+With `GROUP BY`, the aggregate is per group:
+
+``` sql
+SELECT customer_id, COUNT(*) AS n_orders, SUM(amount) AS total
+FROM orders
+GROUP BY customer_id;
+```
+
+This is the SQL equivalent of `df.groupby("customer_id")[["amount"]].agg(["count", "sum"])` in pandas.
+
+### The `GROUP BY` gotcha
+
+Every column in the `SELECT` list must either appear in `GROUP BY` or be wrapped in an aggregate function. This fails:
+
+``` sql
+-- BAD: name is not in GROUP BY and not aggregated
+SELECT customer_id, name, COUNT(*)
+FROM orders
+JOIN customers USING (customer_id)
+GROUP BY customer_id;
+```
+
+Most databases reject it outright. The fix is either to add `name` to `GROUP BY` or to wrap it in something like `MIN(name)` (when every row in the group has the same name, this works).
+
+## 23.6 6. Filtering aggregates: `HAVING`
+
+`WHERE` filters rows *before* aggregation. `HAVING` filters groups *after* aggregation. If you want “customers who placed more than five orders”:
+
+``` sql
+SELECT customer_id, COUNT(*) AS n_orders
+FROM orders
+GROUP BY customer_id
+HAVING COUNT(*) > 5;
+```
+
+A useful mnemonic: `WHERE` is for individual rows, `HAVING` is for aggregate results.
+
+## 23.7 7. `JOIN`: combining tables
+
+`JOIN` matches rows from two tables on a shared key.
+
+``` sql
+SELECT o.order_id, o.amount, c.name, c.city
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+```
+
+A few things to notice:
+
+- **Table aliases.** `orders o` and `customers c` are shortcuts so you can write `o.order_id` instead of `orders.order_id`.
+- **`ON` clause.** The condition that pairs rows. Usually an equality on a foreign key.
+- **`SELECT` qualifies columns** with `o.` and `c.` to avoid ambiguity.
+
+### The four types of `JOIN`
+
+| Type | Keeps |
+|----|----|
+| `INNER JOIN` (default) | only rows that match in both tables |
+| `LEFT JOIN` | every row from the left table; NULL on the right if no match |
+| `RIGHT JOIN` | every row from the right table |
+| `FULL OUTER JOIN` | everything from both sides |
+
+You will use `INNER JOIN` and `LEFT JOIN` almost exclusively. `LEFT JOIN` is the right choice for “give me all my orders and add customer info where it exists”:
+
+``` sql
+SELECT o.order_id, o.amount, c.name
+FROM orders o
+LEFT JOIN customers c ON o.customer_id = c.customer_id;
+```
+
+Rows in `orders` with a missing `customer_id` still appear; their `name` will be `NULL`.
+
+### `USING` as a shorthand
+
+When the join column has the same name in both tables, `USING (customer_id)` is shorter and clearer:
+
+``` sql
+SELECT o.order_id, o.amount, c.name
+FROM orders o
+JOIN customers c USING (customer_id);
+```
+
+## 23.8 8. Running SQL from Python
+
+### SQLite from the standard library
+
+SQLite is a database that lives in a single file. It ships with Python and is perfect for learning, prototyping, and analyzing datasets up to a few GB.
+
+``` python
+import sqlite3
+
+conn = sqlite3.connect("data/shop.db")
+cur = conn.cursor()
+
+cur.execute("""
+    SELECT customer_id, COUNT(*) AS n_orders
+    FROM orders
+    GROUP BY customer_id
+    ORDER BY n_orders DESC
+    LIMIT 10
+""")
+rows = cur.fetchall()
+for row in rows:
+    print(row)
+
+conn.close()
+```
+
+Use a context manager to avoid leaking connections:
+
+``` python
+with sqlite3.connect("data/shop.db") as conn:
+    rows = conn.execute("SELECT COUNT(*) FROM orders").fetchall()
+```
+
+### SQL → pandas in one line
+
+For analysis, you usually want the result as a DataFrame:
+
+``` python
+import pandas as pd
+import sqlite3
+
+with sqlite3.connect("data/shop.db") as conn:
+    df = pd.read_sql_query(
+        """
+        SELECT o.order_id, o.amount, c.name, c.city
+        FROM orders o
+        JOIN customers c USING (customer_id)
+        WHERE o.date >= '2024-01-01'
+        """,
+        conn,
+    )
+
+print(df.head())
+```
+
+From here you can plot, reshape, and compute with pandas (see [sec-pandas-basics](#sec-pandas-basics)) on a pre-filtered, pre-joined slice of the database — much smaller than loading the whole dataset into memory.
+
+### Parameters: never string-concatenate!
+
+Embedding user input into a SQL query with Python string formatting is a **SQL injection** vulnerability. Use parameters instead:
+
+``` python
+# BAD
+cur.execute(f"SELECT * FROM customers WHERE city = '{city}'")
+
+# GOOD
+cur.execute("SELECT * FROM customers WHERE city = ?", (city,))
+```
+
+The `?` is a placeholder; the driver escapes the value. This is not paranoia: every professional SQL codebase uses parameters for everything, every time.
+
+## 23.9 9. SQL vs. pandas
+
+SQL and pandas overlap enormously. A rough rule for picking one:
+
+**Use SQL when:**
+
+- The data is already in a database and you just need to get the subset you want.
+- You are joining tables where the total data volume would not fit in memory.
+- You need row-level filtering that eliminates 99% of rows before analysis.
+- You need the query to be reproducible and reviewable by a teammate who does not speak Python.
+
+**Use pandas when:**
+
+- The data is already in memory and small (up to a few GB).
+- You need to reshape (pivot, melt), plot, or run operations that SQL handles awkwardly.
+- You are exploring interactively in a notebook and want the fastest feedback loop.
+- You are working with non-tabular operations (string normalization, feature engineering).
+
+A common hybrid pattern: write a SQL query that selects and joins the rows you need, load the result into pandas as a DataFrame, and do the rest in pandas. You get the best of both worlds — the database handles the heavy lifting of filtering and joining, and pandas handles the parts it is better at.
+
+## 23.10 10. SQL ↔︎ pandas translation table
+
+| SQL | pandas |
+|----|----|
+| `SELECT * FROM t` | `df` |
+| `SELECT a, b FROM t` | `df[["a", "b"]]` |
+| `SELECT * FROM t WHERE a > 5` | `df[df["a"] > 5]` |
+| `SELECT * FROM t ORDER BY a DESC` | `df.sort_values("a", ascending=False)` |
+| `SELECT * FROM t LIMIT 10` | `df.head(10)` |
+| `SELECT COUNT(*) FROM t` | `len(df)` |
+| `SELECT AVG(x) FROM t` | `df["x"].mean()` |
+| `SELECT k, COUNT(*) FROM t GROUP BY k` | `df.groupby("k").size()` |
+| `SELECT k, SUM(x) FROM t GROUP BY k` | `df.groupby("k")["x"].sum()` |
+| `SELECT * FROM a JOIN b USING (k)` | `a.merge(b, on="k")` |
+| `SELECT * FROM a LEFT JOIN b USING (k)` | `a.merge(b, on="k", how="left")` |
+| `SELECT DISTINCT k FROM t` | `df["k"].unique()` |
+
+## 23.11 11. Worked examples
+
+### Example 1: top customers by revenue
+
+``` sql
+SELECT c.name, SUM(o.amount) AS total
+FROM orders o
+JOIN customers c USING (customer_id)
+WHERE o.date >= '2024-01-01'
+GROUP BY c.name
+HAVING SUM(o.amount) > 100
+ORDER BY total DESC
+LIMIT 10;
+```
+
+Read the query top to bottom as a sentence: “from orders joined to customers, for rows dated this year, group by customer name, keep groups whose total is over 100, order by total descending, take the top ten.”
+
+### Example 2: customers with no orders (`LEFT JOIN` + `IS NULL`)
+
+``` sql
+SELECT c.customer_id, c.name
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+```
+
+The `LEFT JOIN` keeps every customer; the `WHERE o.order_id IS NULL` keeps only those with no matching order. This is the SQL idiom for “anti-join.”
+
+### Example 3: run a SQL query and chart the result
+
+``` python
+import pandas as pd
+import sqlite3
+import matplotlib.pyplot as plt
+
+with sqlite3.connect("data/shop.db") as conn:
+    daily = pd.read_sql_query(
+        """
+        SELECT DATE(date) AS day, SUM(amount) AS revenue
+        FROM orders
+        WHERE date >= '2024-01-01'
+        GROUP BY day
+        ORDER BY day
+        """,
+        conn,
+        parse_dates=["day"],
+    )
+
+daily.plot(x="day", y="revenue", figsize=(10, 4))
+plt.show()
+```
+
+The database does the aggregation over potentially millions of rows; pandas and matplotlib handle the plot. Both tools do what they are best at.
+
+## 23.12 12. Templates
+
+**A parameterized query function:**
+
+``` python
+import sqlite3
+import pandas as pd
+
+def query(sql, params=None, db="data/shop.db"):
+    with sqlite3.connect(db) as conn:
+        return pd.read_sql_query(sql, conn, params=params)
+
+top = query(
+    "SELECT * FROM orders WHERE amount > ? ORDER BY amount DESC LIMIT ?",
+    params=(50, 10),
+)
+```
+
+**A skeleton exploration workflow:**
+
+``` sql
+-- 1. What tables are here?
+SELECT name FROM sqlite_master WHERE type = 'table';
+
+-- 2. What columns does a table have?
+PRAGMA table_info(orders);
+
+-- 3. How big is it?
+SELECT COUNT(*) FROM orders;
+
+-- 4. What do the first 5 rows look like?
+SELECT * FROM orders LIMIT 5;
+```
+
+Every database has its own variant of these metadata queries. Learn them for whichever one you use.
+
+## 23.13 13. Exercises
+
+1.  Download the sample [Chinook SQLite database](https://github.com/lerocha/chinook-database) (or any other small public dataset). Write a `SELECT` that lists the top 10 tracks by length.
+2.  Using the same database, write a query that counts the number of tracks per genre and orders them descending.
+3.  Join two tables on a shared key and list the first 20 joined rows. Verify the row count matches your expectation.
+4.  Write a `LEFT JOIN` + `IS NULL` query that finds customers with no purchases (or whatever the analog is in your dataset).
+5.  Parameterize a query: write a function `customers_in(city)` that takes a city name and returns a DataFrame of customers in that city. Do not use f-strings.
+6.  Load the result of a SQL query directly into a pandas DataFrame and run `.describe()` on one of the numeric columns. Compare with running the same aggregate purely in SQL using `AVG`/`MIN`/`MAX`.
+7.  Take a pandas pipeline you already wrote and translate it line-for-line into SQL. Run both; confirm the row count and numeric totals agree.
+
+## 23.14 14. One-page checklist
+
+- Identifiers are lowercase; keywords are UPPERCASE; strings in single quotes.
+- End every statement with a semicolon.
+- Use `IS NULL` / `IS NOT NULL`, never `= NULL`.
+- Every non-aggregate column in `SELECT` must appear in `GROUP BY`.
+- `WHERE` filters rows; `HAVING` filters groups.
+- `INNER JOIN` for matches only; `LEFT JOIN` for “everything from the left.”
+- From Python, use parameterized queries — never string-format user input.
+- Load query results into pandas with `pd.read_sql_query` for analysis, plotting, and further shaping.
+- For anything beyond this chapter, the official docs of your specific database (SQLite, PostgreSQL, MySQL) are the authoritative reference. See [sec-reading-docs](#sec-reading-docs).

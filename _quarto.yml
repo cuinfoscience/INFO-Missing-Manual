@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _book
+  output-dir: book
   resources:
     - graphics/**
 
@@ -105,21 +105,3 @@ format:
     fig-cap-location: margin
     link-external-icon: true
     link-external-newwindow: true
-
-  pdf:
-    documentclass: scrbook
-    papersize: letter
-    toc: true
-    toc-depth: 2
-    number-sections: true
-    number-depth: 2
-    colorlinks: true
-    geometry:
-      - top=1in
-      - bottom=1in
-      - left=1.25in
-      - right=1.25in
-    include-in-header:
-      text: |
-        \usepackage{fvextra}
-        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}

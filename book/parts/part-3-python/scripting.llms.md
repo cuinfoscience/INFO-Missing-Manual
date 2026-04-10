@@ -1,0 +1,433 @@
+# 16  Scripting
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-pkg-mgmt](#sec-pkg-mgmt), [sec-jupyter](#sec-jupyter).
+>
+> **See also:** [sec-testing](#sec-testing), [sec-automation](#sec-automation), [sec-git-github](#sec-git-github).
+
+## Purpose
+
+As students progress, the limiting factor is rarely “can you write code”; it is whether your work can be reused, rerun, and explained. Scripts complement notebooks by making work *repeatable* from the command line and easier to automate, test, and share. This chapter teaches how to write simple scripts, import your own code into notebooks, translate notebooks into scripts, pass parameters from the command line, and make deliberate notebook-versus-script choices.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Write a Python script that can be run from the command line and imported as a module.
+
+2.  Organize reusable code into functions and (optionally) a small `src/` module.
+
+3.  Import custom scripts into a Jupyter notebook and reload changes during iteration.
+
+4.  Convert notebooks to scripts (and scripts to notebooks) using standard tools.
+
+5.  Pass parameters into scripts using a command-line interface (CLI) pattern.
+
+6.  Explain trade-offs: when a notebook is the right tool and when a script is.
+
+7.  Use a “notebook as narrative, script as engine” pattern to keep work reproducible.
+
+## Running theme: separate *logic* from *presentation*
+
+The logic (data loading, cleaning, analysis) should live in importable functions. The notebook (or script) should orchestrate and explain.
+
+## 16.1 Mental models and vocabulary
+
+### Script, module, package
+
+Script  
+A file you run (e.g., `python analyze.py`).
+
+Module  
+A file you import (e.g., `import analysis`).
+
+Package  
+A directory of modules (typically with `__init__.py`) installed or importable.
+
+### Entry point vs library code
+
+- **Entry point:** parsing parameters, calling functions, writing outputs.
+
+- **Library code:** reusable functions/classes that do the work.
+
+### Working directory and paths
+
+- Scripts and notebooks depend on the working directory for relative paths.
+
+- Habit: define a project root and use consistent relative paths inside it.
+
+## 16.2 Writing scripts: the essentials
+
+### A minimal script structure
+
+- Imports
+
+- Constants/config
+
+- Functions
+
+- `main()` function
+
+- `if __name__ == "__main__":` block
+
+### Why `main()` matters
+
+- Enables clean separation between code that runs on import vs code that runs on execution.
+
+- Makes the file usable both as a script and as an importable module.
+
+### Inputs, outputs, and side effects
+
+- Inputs: file paths, URLs, parameters.
+
+- Outputs: files (CSV, figures), printed summaries, logs.
+
+- Prefer writing outputs to named folders (e.g., `data/processed`, `figures/`).
+
+### Print vs logging (intro level)
+
+- Use print for small, human-facing status.
+
+- Introduce logging as a structured alternative for larger scripts.
+
+## 16.3 Organizing reusable code: from one file to `src/`
+
+### From monolith to functions
+
+- Identify repeated blocks and extract them into functions.
+
+- Make functions pure when possible: inputs in, outputs out.
+
+### A simple project layout
+
+- `notebooks/` (narrative and exploration)
+
+- `src/` (reusable code)
+
+- `scripts/` (CLI entry points)
+
+- `data/raw`, `data/processed`, `figures/`
+
+- `README.md` (how to run)
+
+### Import paths without pain (student-safe guidance)
+
+- Prefer running from the project root so imports and relative paths behave.
+
+- Avoid copying code between notebooks; import instead.
+
+- If imports are confusing, treat it as a project-structure problem, not a “magic command” problem.
+
+## 16.4 Loading custom scripts into notebooks
+
+### The basic pattern: import your code
+
+- Place reusable functions in `src/` (or a clearly named module file).
+
+- Import them in the notebook and call them like normal functions.
+
+- Keep notebooks thin: analysis orchestration + narrative.
+
+### Iterating on imported code: reloading
+
+- Notebooks keep a long-lived kernel; imports do not automatically update.
+
+- Teach a safe workflow:
+
+  1.  Edit code in the editor.
+
+  2.  Reload the module (conceptual introduction to `importlib.reload`).
+
+  3.  Re-run a small test cell.
+
+### Alternative: run a script from a notebook
+
+- Use notebook mechanisms to execute a script when appropriate.
+
+- Warn: running external processes can create confusing state splits (kernel state vs process state).
+
+### Notebook “smoke test” cell
+
+- A small cell near the top that:
+
+  - prints working directory
+
+  - checks required files exist
+
+  - imports your `src/` modules
+
+  - prints key versions
+
+## 16.5 Passing parameters from the command line
+
+### Why parameterize scripts
+
+- Make the same analysis run on different datasets or time ranges.
+
+- Enable automation (scheduled runs, batch processing).
+
+- Reduce copy/paste “variant” scripts.
+
+### Three levels of parameterization
+
+Level 1: constants  
+edit values in the script (fast, not scalable).
+
+Level 2: config files  
+store parameters in a small text file (scalable for teams).
+
+Level 3: CLI arguments  
+pass parameters at run time (best for automation).
+
+### The CLI pattern (student baseline)
+
+- Define required positional arguments (e.g., input file).
+
+- Define optional flags (e.g., `–out`, `–seed`, `–limit`).
+
+- Provide clear help text and defaults.
+
+### Validating inputs
+
+- Check that input paths exist.
+
+- Validate parameter ranges (e.g., nonnegative integers).
+
+- Fail fast with helpful error messages.
+
+### Reproducibility and auditability
+
+- Print or log the resolved parameters at start.
+
+- Write outputs to a deterministic location based on parameters.
+
+- Record the command used to run the script in `README.md` or an output metadata file.
+
+## 16.6 Translating notebooks into scripts (and vice versa)
+
+### Why convert
+
+- Scripts are easier to run in batch jobs and automation.
+
+- Scripts produce cleaner diffs in version control.
+
+- Converting can help reveal hidden-state problems.
+
+### One-way conversion: notebook to script
+
+- Convert an `.ipynb` into a `.py` for review, reuse, or batch runs.
+
+- Treat the output as a starting point: refactor into functions.
+
+### Round-trip conversion: paired notebooks
+
+- Pair an `.ipynb` with a text representation (e.g., percent script) so you can edit in a normal editor.
+
+- Benefit: better diffs, easier merges.
+
+### Parameterizing notebooks (bridge to automation)
+
+- Some workflows keep notebooks but run them repeatedly with different parameters.
+
+- Introduce the concept of tagging a “parameters” cell and executing programmatically.
+
+## 16.7 Notebook versus script: trade-offs and decision rules
+
+### Notebooks are best for
+
+- Exploration and rapid iteration.
+
+- Teaching, explanation, and narrative analysis.
+
+- Sharing a computational story with plots and commentary.
+
+### Scripts are best for
+
+- Repeatable runs with parameters.
+
+- Automation (cron, schedulers, CI).
+
+- Long-running jobs and robust logging.
+
+- Clean version control diffs and code review.
+
+### Common hybrid pattern (recommended)
+
+- **Notebook:** narrative driver, figures, interpretation.
+
+- **src/:** reusable functions.
+
+- **scripts/:** CLI entry points for batch runs.
+
+### Smells that suggest “move to a script”
+
+- You manually rerun the same notebook with small changes.
+
+- The notebook takes a long time and you want it to run unattended.
+
+- You need command-line parameters or scheduled runs.
+
+- You need robust logs, retries, or consistent outputs.
+
+### Smells that suggest “stay in a notebook”
+
+- The primary goal is interpretation and communication.
+
+- The analysis is exploratory and changing quickly.
+
+- You are teaching or documenting reasoning.
+
+## 16.8 Best practices: making scripts and notebooks play well together
+
+### Make data and paths explicit
+
+- Avoid absolute paths.
+
+- Use a consistent project root.
+
+- Add a small path-check function used by both notebooks and scripts.
+
+### Minimize hidden state
+
+- In notebooks: restart-and-run-all checks.
+
+- In scripts: pure functions and explicit parameters.
+
+### Document how to run
+
+- A `README.md` with one “copy/paste to run” command.
+
+- Record expected inputs, outputs, and runtime.
+
+### Version control discipline
+
+- Keep notebooks tidy: clear noisy outputs; avoid huge embedded data.
+
+- Prefer paired notebook formats or conversion to scripts for review.
+
+## 16.9 Worked examples (outline)
+
+### Example 1: Turn notebook code into importable functions
+
+- Identify a repeated transform.
+
+- Extract into `src/cleaning.py`.
+
+- Import and call from the notebook.
+
+### Example 2: Write a CLI script around your functions
+
+- Create `scripts/run_cleaning.py`.
+
+- Parse `–input` and `–output`.
+
+- Write outputs and print a short run summary.
+
+### Example 3: Debug “it imports in the terminal but not in the notebook”
+
+- Diagnose kernel/environment mismatch.
+
+- Diagnose project root/working directory mismatch.
+
+- Fix by selecting the correct kernel and running from the project root.
+
+### Example 4: Convert a notebook to a script and refactor
+
+- Convert `analysis.ipynb` to `analysis.py`.
+
+- Clean the result: remove interactive-only cells, extract functions.
+
+- Add a minimal `main()` and CLI args.
+
+### Example 5: Parameterize a notebook for repeated execution (optional)
+
+- Add a parameters cell.
+
+- Execute with different parameter sets and save outputs.
+
+## 16.10 Templates
+
+### Template A: Minimal script skeleton
+
+    """One-sentence purpose.
+
+    Inputs:
+    Outputs:
+    How to run:
+    """
+
+    from pathlib import Path
+
+    def main(...):
+    ...
+
+    if **name** == "**main**":
+    main(...)
+
+### Template B: Minimal CLI skeleton (conceptual)
+
+    import argparse
+
+    def parse_args():
+    p = argparse.ArgumentParser(...)
+    p.add_argument("--input", required=True)
+    p.add_argument("--output", required=True)
+    return p.parse_args()
+
+    def main():
+    args = parse_args()
+    ...
+
+    if **name** == "**main**":
+    main()
+
+### Template C: Notebook that calls scriptable functions
+
+    # 1) Purpose + imports
+
+    # 2) Parameters (as variables)
+
+    # 3) Call functions from src/
+
+    # 4) Save outputs
+
+    # 5) Interpretation
+
+    # 6) Restart-and-run-all proof
+
+## 16.11 Exercises
+
+1.  Write a script that loads a CSV and prints a short summary (rows, columns, missingness).
+
+2.  Refactor the script so the summary logic is in a function and the script is only an entry point.
+
+3.  Import that function into a notebook and use it on two datasets.
+
+4.  Add a CLI with `–input` and `–output` flags.
+
+5.  Convert a notebook to a script and identify at least three hidden-state problems you had to fix.
+
+6.  Write a short paragraph explaining whether your project should be a notebook, a script, or a hybrid—and why.
+
+## 16.12 One-page checklist
+
+- My script has a `main()` and does not run heavy work on import.
+
+- Reusable logic lives in importable functions/modules.
+
+- I can import my own code into notebooks and reload changes when iterating.
+
+- I can run the same analysis via a CLI with parameters.
+
+- I know how to convert notebooks to scripts and use conversion to improve reproducibility.
+
+- I choose notebooks for narrative/exploration and scripts for repeatable/automated runs.
+
+## 16.13 Quick reference: common tools (conceptual)
+
+- Notebook conversion to scripts and reports.
+
+- Paired notebook formats for better diffs.
+
+- Parameterized execution of notebooks for batch runs.

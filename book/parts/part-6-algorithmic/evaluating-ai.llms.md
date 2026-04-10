@@ -1,0 +1,370 @@
+# 33  Evaluating and Auditing AI Outputs
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-llm-internals](#sec-llm-internals), [sec-testing](#sec-testing).
+>
+> **See also:** [sec-ai-agents](#sec-ai-agents), [sec-debugging](#sec-debugging).
+
+## Purpose
+
+Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.
+
+Evaluation is the practice of measuring AI system behavior in a principled way. Auditing is the practice of looking critically for failures you did not anticipate: biases, edge cases, safety violations, and inconsistencies. Together they give you the evidence to know whether a system is working, in what ways it is failing, and whether a change made things better or worse.
+
+This chapter builds on the verification practices introduced in [sec-ai-llm](#sec-ai-llm) and applies them at scale: not just “check this output before you use it” but “design an evaluation system that tells you the truth about your AI application.”
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Explain why evaluating AI outputs is fundamentally harder than evaluating traditional software
+
+2.  Describe the key dimensions along which AI output quality can be measured
+
+3.  Construct a rubric for manually evaluating outputs in a specific domain
+
+4.  Build a simple evaluation test suite and run it against a prompt or model
+
+5.  Describe how LLM-as-judge evaluation works, including its limitations
+
+6.  Design a representative evaluation set that covers edge cases and known failure modes
+
+7.  Explain what drift is and describe how to monitor for it in a deployed system
+
+8.  Apply an auditing mindset to identify unexpected or biased behaviors
+
+## Running theme: measure before you trust
+
+A system you cannot measure is a system you cannot improve. Before deploying any AI application, decide how you will know if it is working. After deploying, keep measuring. AI systems that seem fine during development regularly surprise you in production.
+
+## 33.1 Why evaluation is hard
+
+Evaluating traditional software is relatively tractable: given input `X`, the function should return `Y`. If it returns something else, it is wrong. AI systems break this assumption in several ways.
+
+**There is often no single correct answer.** “Summarize this article” can have many valid outputs. “Is this response helpful?” involves human judgment that varies by person, context, and purpose. Traditional pass/fail testing does not map cleanly onto open-ended generation tasks.
+
+**Outputs are stochastic.** The same input at temperature \> 0 produces different outputs each time. A system that passes a test today may fail the same test tomorrow. You need to evaluate distributions of outputs, not just single examples.
+
+**Failures are subtle.** A wrong answer in traditional software is usually obvious (exception, wrong type, wrong value). An AI system can produce fluent, confident, plausible-sounding text that is subtly wrong, misleading, or harmful — and it will look fine to a casual reader.
+
+**The evaluation target moves.** Model providers update models. You change prompts. Data distributions shift. An evaluation suite that was passing last month may produce different results today, and without monitoring you will not know until a user complains.
+
+**Human judgment is expensive.** The most reliable evaluation is careful human review. But human review does not scale to thousands of outputs, and human raters disagree with each other. Building a scalable evaluation system requires a combination of automated and human methods.
+
+## 33.2 Dimensions of quality
+
+Before you can measure quality, you need to decide what quality means for your specific application. Different tasks call for different dimensions.
+
+**Correctness.** Does the output contain accurate information? For factual tasks (Q&A, data extraction, code generation), this is often the primary dimension. Correctness is usually verified by comparing to a reference answer or running the output (in the case of code).
+
+**Completeness.** Does the output include all the required information? A summary that omits a key finding is incomplete even if everything it says is accurate.
+
+**Consistency.** Does the system produce the same answer when the same question is asked in different ways? Inconsistency is a sign that the model is sensitive to phrasing rather than reasoning about the underlying question.
+
+**Relevance.** Does the output address what was asked? A model that answers a different question than the one posed may be technically accurate about something you did not ask.
+
+**Safety.** Does the output avoid harmful, offensive, or inappropriate content? Safety evaluation is required for any consumer-facing or sensitive application.
+
+**Format compliance.** If you specified a format (JSON, numbered list, specific fields), does the output follow it? Format failures break downstream code.
+
+**Tone and style.** For user-facing content, does the tone match the intended audience? Is it too formal, too casual, too long, or too terse?
+
+Not every dimension matters for every application. A classification system needs correctness and consistency. A customer-facing chatbot needs relevance, safety, and tone. Decide which dimensions matter for your task before designing your evaluation.
+
+## 33.3 Verification workflows at scale
+
+[sec-ai-llm](#sec-ai-llm) introduced a risk-based verification policy for individual outputs: low-risk outputs get a quick sanity check; high-risk outputs get careful verification against authoritative sources. The same principle scales to evaluation systems.
+
+**For low-stakes bulk processing** (summarizing internal documents, classifying records, generating draft content): automate evaluation with simple heuristics (length, format compliance, keyword presence) and sample a small fraction for human review.
+
+**For medium-stakes applications** (customer-facing responses, research assistance, code review): build a structured evaluation suite with representative test cases, run it on every prompt change and model update, and review failures before deploying.
+
+**For high-stakes applications** (medical, legal, financial, safety-critical): manual review of every output may be necessary. AI systems in these domains typically require human in the loop for the final decision regardless of how good the model is.
+
+## 33.4 Manual evaluation and auditing
+
+Manual evaluation is slower than automation but more reliable. It is your ground truth, and it is necessary for building and calibrating automated evaluators.
+
+### Rubrics
+
+A rubric is a structured scoring guide. Rather than asking “is this good?”, a rubric asks specific, answerable questions:
+
+    Correctness (0-2):
+      0 = Contains factual errors
+      1 = Mostly correct but missing key details
+      2 = Fully accurate and complete
+
+    Format (0-1):
+      0 = Does not follow required JSON structure
+      1 = Valid JSON with all required fields
+
+    Tone (0-1):
+      0 = Too technical for the intended audience
+      1 = Appropriate for a non-specialist reader
+
+Rubrics make evaluation faster, more consistent across raters, and easier to aggregate into metrics. When building a rubric, pilot it on 10–20 examples before scaling up: if two raters consistently disagree on a dimension, the dimension is underspecified.
+
+### Spot-checking
+
+For large-scale outputs, systematically sampling and reviewing a fraction is often more informative than exhaustive review of a small set. Sample *stratified by input type*: if your system handles different kinds of queries, make sure your sample includes all types, not just the most common.
+
+Review failures with as much context as possible: the original input, the full output, and the expected output. Understanding why a failure occurred is as important as knowing that it occurred.
+
+### Red-teaming and adversarial prompting
+
+Red-teaming is the practice of deliberately trying to break your system. Write inputs designed to:
+
+- Trigger harmful or policy-violating outputs
+
+- Confuse the model about what is being asked
+
+- Cause the model to ignore your system prompt instructions
+
+- Produce incorrect outputs by exploiting the model’s biases
+
+- Elicit confidential information (system prompt leakage)
+
+Red-teaming is most useful when done by someone other than the system’s author. You are too close to the system to imagine all the ways a user might misuse or confuse it.
+
+## 33.5 Automated evaluation
+
+Manual evaluation does not scale. Once you have calibrated your rubric against human judgments, you can automate significant parts of evaluation.
+
+### Regression test suites
+
+A regression test suite is a collection of (input, expected output) pairs that you run against your system on every change. Unlike unit tests for traditional software, AI regression tests are rarely exact-match: you test properties of the output rather than the exact string.
+
+    def test_json_output():
+        response = call_model(EXTRACTION_PROMPT, SAMPLE_DOCUMENT)
+        parsed = json.loads(response)
+        assert "title" in parsed
+        assert "date" in parsed
+        assert isinstance(parsed["date"], str)
+        assert len(parsed["title"]) > 0
+
+    def test_does_not_include_pii():
+        response = call_model(SUMMARY_PROMPT, DOCUMENT_WITH_NAMES)
+        assert "John Smith" not in response
+        assert "555-1234" not in response
+
+Structure your regression tests around behaviors that must hold, not around specific wording. Run them after any prompt change, model upgrade, or configuration change.
+
+### LLM-as-judge
+
+You can use a language model to evaluate another model’s outputs. The evaluator model receives a rubric, the original input, and the output to evaluate, and returns a structured score.
+
+    JUDGE_PROMPT = """
+    You are evaluating the quality of an AI assistant response.
+
+    Input to the assistant: {input}
+    Assistant response: {response}
+
+    Rate the response on correctness (0-2) and relevance (0-2).
+    Respond in JSON: {"correctness": <score>, "relevance": <score>,
+      "reasoning": "<brief explanation>"}
+    """
+
+LLM-as-judge is useful for evaluating dimensions like tone, helpfulness, and coherence that are hard to check programmatically. Its limitations:
+
+- The evaluator model has its own biases; it may prefer verbose responses, favor its own style, or miss subtle factual errors.
+
+- Agreement with human judgments varies by task. Always validate your LLM judge against human ratings on a sample before relying on it.
+
+- LLM-as-judge is itself a model call: it costs tokens, has non-zero failure rates, and can hallucinate scores.
+
+Use LLM-as-judge for scalable first-pass evaluation, not as a replacement for human review of high-stakes outputs.
+
+### Reference-based scoring
+
+When you have a ground-truth reference answer (a correct summary, the right extraction, the expected classification), you can compare the model’s output to the reference using similarity metrics:
+
+- **Exact match**: for short classifications, slot-filling, or constrained outputs.
+
+- **ROUGE / BLEU**: overlap-based metrics commonly used for summarization. Useful as a rough signal; not reliable as a sole metric.
+
+- **Semantic similarity**: embed both the reference and the output and compare vector similarity. More robust to paraphrase than exact or overlap metrics.
+
+No automated metric perfectly captures quality. Treat automated scores as signals that require human interpretation, especially when making deployment decisions.
+
+## 33.6 Building an evaluation set
+
+Your evaluation set is only as good as its coverage. A set of 50 easy examples that all succeed gives you false confidence; a set of 20 well-chosen examples that probe known failure modes is more informative.
+
+### Representative inputs
+
+Start with a sample of real inputs your system will encounter. If you are building a customer support bot, collect real support messages (anonymized). If you are building a data extraction tool, collect real documents. Distribution matters: the system that works on toy examples may fail on real ones.
+
+### Edge cases and boundary conditions
+
+Deliberately include inputs at the boundaries of your system’s expected behavior:
+
+- Very short inputs (one word, one sentence)
+
+- Very long inputs (near the context limit)
+
+- Inputs with unusual formatting (non-ASCII characters, code blocks, tables)
+
+- Inputs in a language other than the primary one
+
+- Ambiguous inputs that could be interpreted multiple ways
+
+- Inputs that fall outside the system’s intended scope
+
+### Known failure modes
+
+Include examples specifically designed to probe failures you have already observed or can anticipate. If the system has previously hallucinated a specific fact, include a test for that fact. If the system has failed on a particular phrasing, add that phrasing. An evaluation set should grow as you discover new failure modes.
+
+### Maintaining and versioning the evaluation set
+
+Treat your evaluation set like code: version it, document the rationale for each example, and review it when the system’s requirements change. Remove examples that are no longer relevant; add examples that cover new functionality.
+
+## 33.7 Managing outputs at scale
+
+Evaluation does not end at deployment. Production systems change in ways that are hard to predict.
+
+### Logging
+
+Log every input and output your system produces in production. Without logs, you cannot diagnose failures after the fact, monitor for drift, or build evaluation sets from real usage.
+
+At minimum, log:
+
+- Timestamp
+
+- Full input (including system prompt version)
+
+- Full output
+
+- Token count
+
+- Model version and parameters (temperature, max tokens)
+
+- Any error codes or latency information
+
+Store logs in a way that preserves privacy: redact or omit personally identifying information unless you have explicit authorization to store it.
+
+### Monitoring and drift detection
+
+After deployment, run your evaluation suite periodically on samples of real production traffic. Watch for:
+
+- Declining scores on your key metrics
+
+- New failure modes that were not in your original evaluation set
+
+- Changes in output length, format compliance, or response patterns
+
+- Increases in latency, error rates, or token usage
+
+Model providers silently update models. Prompt behavior that was consistent may change when the underlying model is updated. Set up alerts when evaluation scores drop below a threshold, not just when errors occur.
+
+### Rerunning evaluations after changes
+
+Treat any change to the system — prompt, model version, tool definition, retrieval parameters — as requiring a fresh evaluation run before redeployment. Track evaluation scores across versions so you can compare and roll back if a change causes regression.
+
+## 33.8 Auditing for bias and unexpected behaviors
+
+Beyond measuring performance on intended inputs, auditing looks for systematic patterns in how a system fails — particularly patterns that affect some users or groups differently.
+
+### What to look for
+
+- **Demographic disparities**: Does the system perform differently for names, dialects, or topics associated with different groups? A system that classifies job applications may score resumes with certain names lower.
+
+- **Topic sensitivity**: Are there topics the system handles inconsistently (over-refuses benign requests, under-refuses harmful ones, produces different quality answers)?
+
+- **Style sensitivity**: Does the system penalize non-standard grammar or non-native English in ways that disadvantage some users?
+
+- **Stereotype reinforcement**: Does the system associate roles, traits, or behaviors with particular groups in ways that reflect and amplify social biases?
+
+### Structured bias testing
+
+To test for demographic disparities, use counterfactual inputs: identical prompts with only the group-identifying information changed.
+
+    # Test 1: Identical prompts with different names
+    prompt_a = "Summarize the qualifications of candidate Alice Chen..."
+    prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
+
+    # Run both; compare tone, length, positive/negative framing
+
+If outputs differ systematically when only names change, the system may be amplifying training data biases. Document findings; address them by adjusting the prompt, the system design, or the scope of the application.
+
+### Sensitivity checks
+
+Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system’s handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.
+
+## 33.9 Worked examples (outline)
+
+### Building an evaluation suite for a summarization system
+
+- Collect 20 real documents from the intended domain
+
+- Write a rubric with three dimensions: completeness, accuracy, conciseness (each 0–2)
+
+- Have two human raters score 10 summaries with the rubric; compute inter-rater agreement
+
+- Revise rubric where agreement is low; establish a calibration set of rated examples
+
+- Set up an LLM judge using the calibrated rubric; validate it on the 10 human-rated examples
+
+- Run the full suite and establish a baseline score; track scores across future prompt changes
+
+### Auditing a classification system for demographic disparities
+
+- Identify the group-identifying signals in typical inputs (names, locations, writing style)
+
+- Create paired counterfactual examples for each group signal, holding all other content constant
+
+- Run the system on each pair; record classification, confidence, and any qualitative differences
+
+- Compute aggregate pass rates and score distributions broken down by group
+
+- Flag any dimension with a statistically meaningful difference for follow-up investigation
+
+- Document findings, whether or not they indicate a problem; maintain an audit log
+
+### Setting up production monitoring for an AI application
+
+- Instrument the application to log inputs, outputs, metadata, and any user feedback
+
+- Define key metrics: format compliance rate, average score on sampled evaluations, error rate
+
+- Set alert thresholds: alert if format compliance drops below 95%, if error rate exceeds 1%
+
+- Schedule a weekly evaluation run on a stratified sample of production traffic
+
+- Create a changelog that records every model update, prompt change, and configuration change
+
+- Review alerts weekly; investigate any metric that crosses a threshold before the next deployment
+
+## 33.10 Exercises
+
+1.  Choose a simple AI task (classify sentiment, extract named entities, summarize a paragraph). Write a rubric with three dimensions, each scored 0–2. Write three test cases that would each score differently on at least one dimension. Explain your scoring.
+
+2.  Write three automated test assertions for an AI system that extracts structured data from job postings (company name, location, salary range). Each assertion should test a property of the output rather than exact text match.
+
+3.  Design a 10-example evaluation set for a Q&A system about Python programming. Include at least: two easy cases, two edge cases, and one adversarial case. For each example, write the input, the expected behavior, and the dimension being tested.
+
+4.  Choose an AI-powered tool you use regularly (a code assistant, a writing tool, a search feature). Describe one way you would test it for inconsistency across paraphrased inputs, and one way you would test it for demographic bias. You do not need to run the tests; just design them.
+
+5.  You deploy a summarization tool and after two weeks notice that user complaints have increased but your evaluation scores look the same. List three possible explanations and describe what log data you would examine to distinguish between them.
+
+## 33.11 One-page checklist
+
+- Define which quality dimensions matter for your specific task before building evaluation
+
+- Write a rubric with specific, answerable questions rather than holistic “is this good?” judgments
+
+- Build your evaluation set from real inputs, not just toy examples; include edge cases and known failures
+
+- Validate any automated evaluator (including LLM-as-judge) against human ratings before relying on it
+
+- Run evaluation after every prompt change, model update, or configuration change before redeploying
+
+- Log all inputs, outputs, and metadata in production; treat logs as a source for future evaluation sets
+
+- Set monitoring alerts for metric degradation, not just for explicit errors
+
+- Test for demographic disparities using counterfactual inputs that hold content constant while varying group signals
+
+- Document evaluation results and audit findings, whether or not they indicate a problem
+
+- Treat evaluation rigor as proportional to stakes: more scrutiny for higher-risk applications

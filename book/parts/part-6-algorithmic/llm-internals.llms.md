@@ -1,0 +1,337 @@
+# 31  How Language Models Work
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-ai-llm](#sec-ai-llm).
+>
+> **See also:** [sec-ai-agents](#sec-ai-agents), [sec-evaluating-ai](#sec-evaluating-ai).
+
+## Purpose
+
+You have probably used a chatbot, had AI help you write code, or asked a language model to explain a confusing error message. These tools are now embedded in text editors, search engines, notebooks, and APIs. But most people use them with little understanding of what is actually happening under the hood — and that gap causes real problems: you paste in a prompt, get a confident-sounding answer, and have no way to judge whether it is trustworthy, or why it failed when it did.
+
+This chapter gives you the conceptual vocabulary you need to use language models more deliberately. You do not need to know how to train a model. You do not need to understand the mathematics of transformers. What you need is a working mental model: how text becomes input, how context shapes output, how temperature controls variation, how embeddings enable search, and what the difference is between typing into a chatbot and calling an API. With that mental model in place, you can write better prompts, diagnose failures faster, and build more reliable workflows around AI tools.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Explain what tokens are and why tokenization affects model behavior
+
+2.  Describe what a context window is and how to work within its limits
+
+3.  Explain what temperature and sampling do and when to adjust them
+
+4.  Define embeddings and describe at least one practical use
+
+5.  Construct a well-structured prompt using system and user roles
+
+6.  Identify when to use a chatbot interface versus an API call
+
+7.  Explain what function calling (tool use) is and how a model invokes a tool
+
+8.  Describe at least two reasons models hallucinate and how internals contribute
+
+## Running theme: the model sees text, not meaning
+
+Every behavior of a language model — useful and frustrating — follows from one fact: the model processes sequences of tokens and predicts likely continuations. It does not understand your intent, look things up, or reason the way a person does. The better you understand what the model actually sees, the better you can guide it toward what you actually want.
+
+## 31.1 Tokens and tokenization
+
+When you type a message into a language model, the first thing that happens is not reading. It is tokenization: your text is split into small chunks called **tokens**, and those tokens — not characters, not words — are what the model processes.
+
+A token is roughly four characters of English text on average, which works out to about three-quarters of a word. The sentence “the quick brown fox” might become five tokens: `the`, `quick`, `brown`, `fox` (approximately). But tokenization is not simply splitting on spaces. Subword tokenization means common words become single tokens while rare or compound words get split further. The word `unbelievable` might be three tokens: `un`, `believ`, `able`.
+
+Several practical implications follow from this:
+
+- **Non-English text uses more tokens.** Many tokenizers were trained primarily on English, so languages like Thai, Arabic, or Chinese may require two to four times as many tokens to express the same content. This affects both cost and context capacity.
+
+- **Code is tokenized differently from prose.** Symbols like `{`, `=>`, and indentation may each be their own tokens. Whitespace matters more than you might expect.
+
+- **Counting tokens is not counting words.** API pricing and context limits are in tokens, not words. Most providers offer tokenizer tools so you can measure before you send.
+
+- **Rare or technical terms may get fragmented.** A domain-specific word that the model rarely saw during training might be split into subwords that, individually, have different associations. This can subtly affect how the model interprets your request.
+
+When diagnosing unexpected model behavior, tokenization is worth checking. If a model consistently misinterprets a technical term, it may be seeing it as two or three tokens with different meanings rather than one cohesive concept.
+
+## 31.2 Context windows
+
+A language model does not have persistent memory between conversations. Everything the model “knows” about your current task is contained in the **context window**: the full sequence of tokens that is sent to the model for a given request.
+
+The context window includes your system prompt, the conversation history, any documents or code you paste in, and the model’s own previous responses. All of that must fit within a fixed limit — typically measured in thousands of tokens, with limits ranging from a few thousand to over a million tokens depending on the model.
+
+When your input exceeds the context window, the model does not crash or warn you in an obvious way. Depending on the implementation, older content is silently truncated from the beginning of the context, which means the model may answer as if it never saw your earlier instructions or data.
+
+Practical implications:
+
+- **Earlier instructions get lost in long conversations.** If you set up a detailed system prompt and then have a long back-and-forth, the original instructions may be pushed out. Restate important constraints periodically.
+
+- **Pasting large files into chat is risky.** A 10,000-line log file will consume most of a mid-range context window. Prefer to paste targeted excerpts rather than full files.
+
+- **Context position matters.** Models tend to attend more reliably to content at the beginning and end of the context than to content buried in the middle. For important instructions or key examples, placement matters.
+
+- **Context windows are not permanent storage.** If you start a new conversation, the model has no memory of previous sessions unless you explicitly provide that history.
+
+## 31.3 Sampling and temperature
+
+Language models do not produce a single deterministic answer. They produce a **probability distribution** over what token might come next, and then sample from that distribution. This is why the same prompt can produce different outputs each time you run it.
+
+**Temperature** is the parameter that controls how that distribution is shaped before sampling:
+
+- At **temperature 0**, the model always picks the highest-probability token. Output is deterministic and consistent, but can feel repetitive and may get stuck in predictable patterns.
+
+- At **low temperature** (0.1–0.4), the model strongly favors likely tokens but still has some variation. Good for tasks where accuracy and consistency matter: code generation, structured data extraction, classification.
+
+- At **medium temperature** (0.5–0.8), the model balances probability and diversity. A common default for general-purpose conversation.
+
+- At **high temperature** (0.9–2.0), the model explores less probable options more often. Useful for brainstorming, creative writing, and generating diverse options — but more likely to produce errors, inconsistencies, or off-topic content.
+
+Related parameters you may encounter:
+
+- **Top-p (nucleus sampling)**: instead of a fixed temperature, only sample from the smallest set of tokens whose cumulative probability exceeds a threshold. Temperature and top-p are often used together.
+
+- **Max tokens**: limits the length of the output. If you set this too low, responses get truncated mid-sentence.
+
+- **Stop sequences**: strings that tell the model to stop generating. Useful for structured output: you can stop the model when it produces a delimiter like `END` or `“‘`.
+
+When you need reproducible output (unit tests, data pipelines, evaluations), set temperature to 0. When you need variety (brainstorming, multiple drafts), raise it. When a model is giving you boring, repetitive answers, try increasing temperature slightly before rewriting your prompt.
+
+## 31.4 Embeddings
+
+Embeddings are a different use of language models from text generation. An **embedding model** converts text into a list of numbers — a vector — that encodes the meaning of that text in a high-dimensional space. Similar texts produce similar vectors; dissimilar texts produce vectors that are far apart.
+
+Embeddings are the foundation of several practical applications:
+
+- **Semantic search**: instead of keyword matching, embed the query and all documents, then find documents whose vectors are closest to the query vector. This works even when the exact words differ (“reduce memory usage” matches “optimize RAM consumption”).
+
+- **Retrieval-augmented generation (RAG)**: embed a large document collection, store embeddings in a vector database, and at query time retrieve the most relevant chunks to include in the model’s context. This is how you give a language model access to information that does not fit in its context window.
+
+- **Clustering and classification**: group texts by semantic similarity without labeling, or train a simple classifier on top of embedding vectors rather than raw text.
+
+- **Deduplication**: find near-duplicate records in a dataset by comparing embedding similarity.
+
+Embeddings come from specialized embedding models (distinct from chat models) and are typically cheaper and faster to generate. If your task involves finding similar text, organizing documents by topic, or connecting a model to a large knowledge base, embeddings are usually the right tool — not just pasting everything into a chat window.
+
+## 31.5 Prompting best practices
+
+A prompt is not just a question. It is structured input that shapes the model’s behavior across the entire response. Understanding the anatomy of a well-constructed prompt lets you get more reliable, predictable output.
+
+### The anatomy of a prompt
+
+Modern language model APIs organize input into **roles**:
+
+- **System**: Instructions set before the conversation begins. Use this for persistent context: who the model is, what format to use, what topics to avoid, and what assumptions to make.
+
+- **User**: The human’s turn. Your questions, requests, or data go here.
+
+- **Assistant**: The model’s responses. You can also pre-fill the assistant turn to steer the response format (“The answer is: …”).
+
+In a chat interface, the system prompt is often hidden. In an API call, you set it explicitly. One of the biggest practical differences between a chatbot and an API call is that you control the system prompt.
+
+### Principles for reliable prompts
+
+1.  **Be specific about the task.** Vague prompts produce vague answers. “Summarize this” is worse than “Summarize this in three bullet points for an audience with no background in statistics.”
+
+2.  **Provide format instructions.** If you need JSON, a table, a numbered list, or markdown, say so explicitly. Language models follow format instructions reliably when they are clear.
+
+3.  **Give examples (few-shot prompting).** Showing two or three examples of input-output pairs dramatically improves consistency. This is especially useful for classification, extraction, and rewriting tasks.
+
+4.  **Separate data from instructions.** Use clear delimiters (triple backticks, XML tags, or section headers) to mark the boundary between your instructions and the text you want the model to operate on.
+
+5.  **Assign a role when it helps.** “You are a careful code reviewer” or “You are a plain-language writer” primes the model toward a useful perspective. Do not over-specify; one clear role beats a paragraph of competing instructions.
+
+6.  **Ask for reasoning before the answer.** “Explain your reasoning step by step, then give the final answer” produces more accurate results on multi-step problems than asking for the answer directly.
+
+7.  **Test prompts systematically.** Small wording changes can produce large output changes. Treat prompt development like code development: make one change at a time and evaluate the result before moving on.
+
+## 31.6 API versus chatbot interfaces
+
+The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like ChatGPT, Claude.ai, or Gemini) and the **API** (a programmatic interface you call from code). Understanding the difference helps you choose the right tool.
+
+### What a chatbot gives you
+
+- Low friction: type a message, read the response
+
+- Session memory (within a single conversation)
+
+- Access to built-in tools like web browsing, code execution, or image generation
+
+- Operator-defined system prompts you cannot see or change
+
+- No need to manage authentication or rate limits
+
+Use a chatbot for exploratory, one-off tasks: getting an explanation, brainstorming, reviewing a single document, generating a first draft.
+
+### What an API gives you
+
+- Full control over system prompt, temperature, max tokens, and other parameters
+
+- The ability to call the model from inside code (scripts, notebooks, web apps)
+
+- Structured output via JSON mode or tool use
+
+- The ability to process many inputs in a loop (batch processing)
+
+- Cost transparency: you see exactly how many tokens each request consumes
+
+- No session memory by default — you manage conversation history yourself
+
+A minimal Python API call looks like:
+
+    import anthropic
+
+    client = anthropic.Anthropic()
+    message = client.messages.create(
+        model="claude-opus-4-6",
+        max_tokens=1024,
+        system="You are a helpful data analysis assistant.",
+        messages=[
+            {"role": "user", "content": "What is the median of [3, 7, 2, 9, 5]?"}
+        ]
+    )
+    print(message.content[0].text)
+
+When to use an API: any time you need to run the same prompt over multiple inputs, integrate AI into a script or pipeline, control parameters precisely, or build something reproducible.
+
+## 31.7 Tools and function calling
+
+Language models on their own cannot browse the web, run code, read files, or query databases. **Function calling** (also called tool use) is the mechanism by which a model can invoke external capabilities that you define.
+
+The pattern works as follows:
+
+1.  You describe available tools to the model in a structured format: tool name, description, and the parameters it accepts.
+
+2.  The model, when it decides a tool is needed, responds with a structured tool-call request rather than a text answer.
+
+3.  Your code receives the tool-call request, runs the actual function, and sends the result back to the model.
+
+4.  The model incorporates the result into its final response.
+
+A tool definition might look like:
+
+    {
+      "name": "get_weather",
+      "description": "Returns current weather for a given city.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "City name, e.g. Denver"
+          }
+        },
+        "required": ["city"]
+      }
+    }
+
+The model does not run the function. It decides whether to call it and constructs the arguments. Your code does the actual execution. This design keeps the model sandboxed: it can only invoke what you expose to it, with the parameters you define.
+
+Function calling is powerful for connecting language models to live data, APIs, and databases. It is also where safety considerations become important: if a tool can modify files, send emails, or execute code, you need to be deliberate about what you expose and when you actually run what the model requests (see [sec-ai-llm](#sec-ai-llm) for risk-based verification policies).
+
+## 31.8 Why models hallucinate
+
+“Hallucination” is the common term for when a language model confidently states something that is false. Understanding why this happens helps you anticipate and check for it.
+
+- **The model predicts likely text, not true statements.** Training on human-written text means the model learned what fluent, plausible-sounding sentences look like — not what is factually correct. A confident tone is common in training data even for false claims.
+
+- **Rare facts are underrepresented in training.** If the correct answer appeared rarely in training text, the model may not have learned it well. It may substitute a plausible-sounding but wrong answer drawn from more common patterns.
+
+- **The training cutoff limits recency.** Models are trained up to a knowledge cutoff date. Events, packages, APIs, and documentation that changed after that date may produce outdated or incorrect answers.
+
+- **Tokenization artifacts.** Fragmented tokens for technical terms can lead to misinterpretation and generation errors that look like factual errors.
+
+- **There is no “I don’t know” training signal.** Standard language modeling does not penalize the model for answering when uncertain; it is optimized to produce fluent completions. Some models have been fine-tuned to express uncertainty more reliably, but this is not universal.
+
+Practical responses to hallucination:
+
+- For factual claims, always verify against primary sources.
+
+- For code, run it and test it; reading is not sufficient.
+
+- Ask the model to cite or explain where its information comes from.
+
+- Use retrieval (RAG) to ground the model in verified documents.
+
+- Prefer lower temperatures for factual tasks.
+
+- Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.
+
+## 31.9 Worked examples (outline)
+
+### Diagnosing why a prompt produces inconsistent output
+
+- Start with the current prompt and several sample outputs that show the inconsistency
+
+- Check token count; verify the prompt fits comfortably within the context window
+
+- Lower temperature to 0 and re-run to isolate sampling variance from prompt variance
+
+- Add explicit format instructions (JSON schema, numbered list) and re-run
+
+- Add one or two few-shot examples showing the desired output format
+
+- Compare outputs across each change; identify which change resolved the inconsistency
+
+### Converting a chatbot workflow to an API call
+
+- Identify what you are currently doing interactively: the prompt, any pasted documents, the expected output format
+
+- Extract the system prompt (the instructions you repeat each time) and the user turn (the per-request input)
+
+- Set up an API client and write the call with explicit temperature and max tokens
+
+- Run the API call on a single example and compare the output to your chatbot result
+
+- Parameterize the user turn to accept a variable (file path, query string) and wrap in a loop
+
+- Log inputs, outputs, and token counts for review
+
+### Building a simple semantic search with embeddings
+
+- Assemble a small document collection (e.g., 50 paragraphs from a dataset)
+
+- Use an embedding API to generate a vector for each document; store as a matrix
+
+- When a query arrives, embed the query with the same model
+
+- Compute cosine similarity between the query vector and all document vectors
+
+- Return the top-3 most similar documents
+
+- Test with several queries; compare semantic search results to keyword search results
+
+## 31.10 Exercises
+
+1.  Use your model provider’s tokenizer tool to count the tokens in a 500-word essay. Then count the tokens in the same content in another language (use a translation tool if needed). How does the token count differ, and what does this imply for cost?
+
+2.  Write the same request (e.g., “Explain what a p-value is”) as both a vague prompt and a structured prompt with role, format instructions, and audience specification. Compare the outputs and describe what changed.
+
+3.  Run the same well-specified prompt five times at temperature 0 and five times at temperature 1.0. Document the variation. For what kinds of tasks does the difference matter most?
+
+4.  Write a short system prompt and a user prompt that together produce a consistent JSON output with three fields: `summary`, `key_terms`, and `confidence`. Test it on three different input documents.
+
+5.  Find a piece of text where a language model confidently gave you a wrong answer (or construct a case by asking about a recent event after the model’s training cutoff). Explain which of the hallucination causes from this chapter likely applies, and describe how you would verify the correct answer.
+
+6.  Make an API call from a Python script (using any model you have access to) that takes a string from the command line, sends it to the model with a system prompt you write, and prints the response. Confirm that the output changes when you change the system prompt.
+
+## 31.11 One-page checklist
+
+- Before sending a long prompt, check the token count to ensure it fits within the context window
+
+- Set temperature to 0 for tasks requiring consistency; raise it only when variation is desirable
+
+- Use system prompts (not just user prompts) to set persistent instructions and format expectations
+
+- Use few-shot examples for classification, extraction, and structured output tasks
+
+- Separate instructions from data with clear delimiters (backticks, XML tags, or section headers)
+
+- Verify factual claims from AI output against primary sources before using them
+
+- Use embeddings when the task involves finding similar documents or building retrieval systems
+
+- Use the API (not just a chatbot) when you need to automate, loop, or control parameters precisely
+
+- When exposing tools to a model, define them with precise descriptions and only expose what is necessary
+
+- When outputs are inconsistent, diagnose whether the cause is sampling variance, prompt ambiguity, or context length before changing the prompt

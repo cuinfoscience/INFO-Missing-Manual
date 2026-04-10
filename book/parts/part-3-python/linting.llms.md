@@ -1,0 +1,375 @@
+# 19  Code Style, Linting, and Formatting
+
+> **TIP:**
+>
+> **Prerequisites (read first if unfamiliar):** [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks).
+>
+> **See also:** [sec-collaboration](#sec-collaboration), [sec-pre-commit](#sec-pre-commit), [sec-git-github](#sec-git-github).
+
+## Purpose
+
+Code style is one of those skills people assume you will absorb by osmosis. You will not. Without being taught, most novices write code that is technically correct but visually noisy — inconsistent indentation, trailing whitespace, unused imports, variable names that start with a lowercase letter here and an uppercase letter there. In solo work, this is a cosmetic problem. In collaborative work, it becomes a real one: code review time is wasted on style nitpicks, diffs are noisy, and merge conflicts multiply.
+
+The fix is simple and has two parts:
+
+1.  **A formatter** rewrites your code to a canonical style automatically. You stop making style decisions.
+2.  **A linter** scans your code for problems that a formatter cannot fix — unused variables, shadowed builtins, likely bugs, style guide violations.
+
+Together, these two tools take about ten minutes to set up and pay for themselves within a week. This chapter teaches you the two tools that are now standard in Python: `black` (formatter) and `ruff` (linter and optional formatter). You will be up and running by the end.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Explain the difference between a formatter and a linter.
+2.  Install and run `black` to format a Python file or project.
+3.  Install and run `ruff check` to lint a Python file or project, and `ruff format` as a faster alternative to `black`.
+4.  Configure style rules in `pyproject.toml`.
+5.  Integrate a formatter with VS Code / PyCharm so your editor formats on save.
+6.  Explain what PEP 8 is and why you will almost never need to read it directly.
+7.  Recognize when a style rule is worth fighting and when it is worth accepting.
+8.  Set up a minimum viable linting workflow for a student project.
+
+## Running theme: make the machine handle style so humans can focus on logic
+
+If you find yourself debating spaces or import order with a collaborator, you have already lost. Delegate the decision to a formatter and a linter, commit their config to git, and move on to the actual code review.
+
+## 19.1 1. PEP 8 in one paragraph
+
+[PEP 8](https://peps.python.org/pep-0008/) is the official Python style guide. It is short and sensible: 4-space indents, 79-character lines (most people now use 88 or 100), snake_case for functions and variables, PascalCase for classes, `UPPER_SNAKE` for constants, imports at the top, one blank line between functions, two between top-level definitions, no trailing whitespace. The modern formatters (`black`, `ruff format`) implement PEP 8 with a handful of opinionated choices baked in, so you almost never need to read PEP 8 yourself — you just run the formatter and the code comes out compliant.
+
+## 19.2 2. Formatters vs. linters
+
+A **formatter** rewrites your code to look a certain way. It will not change what the code does. You run it, the file is rewritten, and the diff is entirely cosmetic. `black` is the canonical Python formatter.
+
+A **linter** reads your code and reports problems — without changing it. Problems can be anything from “you imported `os` but never used it” to “this function might return `None` on a path your caller doesn’t handle.” `ruff check` and `pylint` are linters.
+
+They are complementary. Formatters fix *style*; linters find *mistakes*.
+
+## 19.3 3. `black`: the boring formatter
+
+`black` is called “the uncompromising Python code formatter” for a reason: it does not take many options. You install it, you run it, your code is black-formatted. No discussions about whether to use single or double quotes. Black picks; you move on.
+
+Install it in your venv (see [sec-virtual-environments](#sec-virtual-environments)):
+
+``` bash
+python -m pip install black
+```
+
+Run it on a single file:
+
+``` bash
+black src/analysis.py
+```
+
+Run it on a whole project:
+
+``` bash
+black .
+```
+
+Run it in check-only mode (no changes, just exit non-zero if files would change — useful in CI):
+
+``` bash
+black --check .
+```
+
+See what it would change, without changing it:
+
+``` bash
+black --diff src/analysis.py
+```
+
+### Configuration
+
+Black takes its config from `pyproject.toml`:
+
+``` toml
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+```
+
+That is almost everything you can configure. The point of black is that it is opinionated; you are not meant to tune it much.
+
+## 19.4 4. `ruff`: the fast linter (and formatter)
+
+[`ruff`](https://docs.astral.sh/ruff/) is a modern Python linter written in Rust. It is 10–100× faster than the older tools (`flake8`, `pylint`), implements hundreds of rules, and increasingly doubles as a formatter compatible with `black`. If you are starting a new project today, the straightforward choice is “use `ruff` for both linting and formatting.”
+
+Install:
+
+``` bash
+python -m pip install ruff
+```
+
+Lint a file or project:
+
+``` bash
+ruff check .
+```
+
+Auto-fix problems that are safely auto-fixable (unused imports, trailing whitespace, import order):
+
+``` bash
+ruff check --fix .
+```
+
+Format (this is a newer feature; `ruff format` is drop-in compatible with `black`):
+
+``` bash
+ruff format .
+```
+
+### Configuration
+
+Like black, `ruff` reads from `pyproject.toml`:
+
+``` toml
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Which rule sets to enable. See https://docs.astral.sh/ruff/rules/
+select = [
+    "E",    # pycodestyle errors (PEP 8)
+    "F",    # pyflakes (logic errors)
+    "I",    # isort (import order)
+    "B",    # bugbear (likely bugs)
+    "UP",   # pyupgrade (modernize syntax)
+]
+ignore = [
+    "E501", # line too long — let the formatter handle it
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]   # allow unused imports in package init files
+```
+
+A sensible starting config for a student project: select `E`, `F`, `I`, `B`, `UP`, ignore line-length (the formatter controls that), and let per-file ignores handle the rest as you run into them.
+
+## 19.5 5. Editor integration: format on save
+
+The real magic happens when your editor runs the formatter automatically on every save. Your code is never in an unformatted state for more than a split second, and you stop thinking about style entirely.
+
+### VS Code
+
+Install the [Black Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) or [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) extension, then add to your workspace `settings.json`:
+
+``` json
+{
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  }
+}
+```
+
+Now every time you hit `Cmd+S` / `Ctrl+S`, Ruff formats and fixes imports and unused variables.
+
+### PyCharm
+
+Settings → Tools → External Tools → add Black or Ruff. Or use the built-in integrations: Settings → Tools → Black / Ruff, and enable “On save.”
+
+### Jupyter
+
+Notebooks are harder to lint because the cell model breaks some assumptions. `jupyter_black` is a drop-in package:
+
+``` bash
+python -m pip install jupyter_black
+```
+
+In the first cell of a notebook:
+
+``` python
+%load_ext jupyter_black
+```
+
+Every code cell is formatted on execution from then on.
+
+## 19.6 6. Rule sets: what do E, F, I, B, UP mean?
+
+`ruff` groups rules into sets that match the old pre-ruff tools they replace. The most useful ones for a student project are:
+
+| Code | Source | What it catches |
+|----|----|----|
+| `E`, `W` | pycodestyle | PEP 8 style (indentation, whitespace, line length) |
+| `F` | pyflakes | unused imports, undefined names, duplicate arguments |
+| `I` | isort | import ordering |
+| `B` | flake8-bugbear | likely bugs (mutable default args, unused loop variables) |
+| `UP` | pyupgrade | modernize syntax (f-strings over `.format`, etc.) |
+| `SIM` | flake8-simplify | simpler equivalent constructs |
+| `ANN` | flake8-annotations | missing type hints |
+| `D` | pydocstyle | docstring conventions |
+
+You do not need all of them. Start with `E`, `F`, `I`, `B`, `UP`. Add more as the project grows.
+
+## 19.7 7. When to override a rule
+
+Most linter rules are helpful and you should accept them. Some will not apply to your project. There are three ways to override:
+
+**Globally, in `pyproject.toml`:**
+
+``` toml
+[tool.ruff.lint]
+ignore = ["E501"]   # line too long
+```
+
+**Per-file, in `pyproject.toml`:**
+
+``` toml
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501", "S101"]
+```
+
+**Per-line, with a `# noqa` comment:**
+
+``` python
+from legacy_code import UNUSED  # noqa: F401
+```
+
+Use `# noqa` sparingly. Every one is a small promise that a human thought about it and decided the rule did not apply. Unexplained `# noqa` comments accumulate and become dead weight.
+
+## 19.8 8. Worked examples
+
+### Example 1: setting up a new project
+
+``` bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install ruff
+
+# Create a minimal pyproject.toml
+cat > pyproject.toml <<'EOF'
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+EOF
+
+# Run once on the existing code
+ruff check --fix .
+ruff format .
+
+git add pyproject.toml
+git commit -m "Add ruff config and initial formatting pass"
+```
+
+Now `ruff check` will run instantly on every subsequent change.
+
+### Example 2: fixing an unused import
+
+Before:
+
+``` python
+import os
+import sys
+import pandas as pd
+
+def main():
+    df = pd.read_csv("data.csv")
+    print(df.head())
+```
+
+Running `ruff check --fix main.py` rewrites the file to:
+
+``` python
+import pandas as pd
+
+def main():
+    df = pd.read_csv("data.csv")
+    print(df.head())
+```
+
+`os` and `sys` were unused; ruff removed them automatically.
+
+### Example 3: catching a real bug
+
+``` python
+# bug.py
+def greet(name, greetings=[]):
+    greetings.append(f"Hello, {name}!")
+    return greetings
+```
+
+Running `ruff check bug.py`:
+
+    bug.py:1:24: B006 Do not use mutable data structures for argument defaults
+
+The linter caught a classic Python gotcha: a mutable default argument is shared across calls, so `greet("Alice")` followed by `greet("Bob")` returns `["Hello, Alice!", "Hello, Bob!"]`, not `["Hello, Bob!"]`. The fix is:
+
+``` python
+def greet(name, greetings=None):
+    if greetings is None:
+        greetings = []
+    greetings.append(f"Hello, {name}!")
+    return greetings
+```
+
+This is a real bug. You would find it in production, not in your head. A linter finds it in 20 milliseconds.
+
+## 19.9 9. Templates
+
+**A minimal `pyproject.toml` for a student project:**
+
+``` toml
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["B011"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+```
+
+**A one-line CI check to add to your GitHub Actions workflow** (see [sec-automation](#sec-automation)):
+
+``` yaml
+- name: Lint
+  run: |
+    python -m pip install ruff
+    ruff check .
+    ruff format --check .
+```
+
+Wire this into the same workflow that runs `pytest` (see [sec-testing](#sec-testing)) and every push gets automatic style enforcement.
+
+## 19.10 10. Exercises
+
+1.  Install `ruff` in a venv, pick one of your own Python files, and run `ruff check` on it. How many issues does it report? Skim the output and pick two you do not understand.
+2.  Run `ruff check --fix` on the same file. Read the diff. Did anything you cared about change?
+3.  Run `ruff format` on the same file. Read the diff. How many changes are cosmetic vs. substantive?
+4.  Create a `pyproject.toml` with the template from section 9 and commit it.
+5.  Wire up format-on-save in your editor. Make a one-character change and save. Confirm ruff reformatted the file.
+6.  Deliberately introduce a mutable default argument (like the example in section 8) and confirm that `ruff check` reports it.
+7.  Add `ruff check` to your CI workflow. Intentionally break formatting in a commit and confirm CI fails.
+
+## 19.11 11. One-page checklist
+
+- Install `ruff` in every Python venv.
+- Commit a `pyproject.toml` with `[tool.ruff]` configuration.
+- Enable format-on-save in your editor.
+- Run `ruff check .` and `ruff format .` before every commit (or automate with [sec-pre-commit](#sec-pre-commit)).
+- Use `--fix` to auto-fix safe issues; read everything else manually.
+- Prefer `ruff format` over `black` in new projects; they produce near-identical output, `ruff` is just faster.
+- Use `# noqa: RULE` sparingly and always with the rule code.
+- Wire `ruff check --format --check` into CI so style drift cannot land on main.
+- Do not debate style with collaborators. Configure the formatter, run it, move on.

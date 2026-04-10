@@ -1,0 +1,393 @@
+# 8  Operating System
+
+> **TIP:**
+>
+> **Prerequisites:** none. This chapter stands on its own.
+>
+> **See also:** [sec-filesystem](#sec-filesystem), [sec-terminal](#sec-terminal), [sec-pkg-mgmt](#sec-pkg-mgmt).
+
+## Purpose
+
+Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping Windows and macOS stable, updated, and recoverable.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1.  Find key OS settings on Windows and macOS using built-in search and navigation.
+
+2.  Check OS version/build information and interpret what matters for troubleshooting.
+
+3.  Understand types of updates and apply a safe patching workflow.
+
+4.  Set a baseline security posture (account hygiene, screen lock, encryption awareness).
+
+5.  Configure backups and understand restore/recovery options.
+
+6.  Apply a simple troubleshooting playbook (what to try first, what evidence to gather).
+
+7.  Establish a sustainable maintenance schedule for a semester.
+
+## Running theme: stability comes from routines
+
+Most OS problems are predictable. The goal is not perfection; it is consistent, low-effort habits that prevent avoidable failures.
+
+## 8.1 A beginner mental model of the OS
+
+### What the OS is responsible for
+
+- User accounts, permissions, and security boundaries
+
+- Hardware and drivers (keyboard, Wi-Fi, storage)
+
+- Networking, storage, and application launching
+
+- Updates for the OS and built-in security protections
+
+- Recovery tools when something goes wrong
+
+### What you control vs what you should avoid
+
+- You **should** manage settings, updates, backups, storage, and accounts.
+
+- You **should avoid** aggressive “cleaners,” registry hacks, random driver sites, or changing security settings without understanding the impact.
+
+## 8.2 Getting oriented: where settings live
+
+### Windows: Settings app, Windows Security, and the remaining Control Panel
+
+- Primary hub: **Settings** app (System, Windows Update, Apps, Accounts, Privacy & security).
+
+- Security hub: **Windows Security** app (Defender, Firewall).
+
+- Legacy hub: **Control Panel** still hosts some tools (common example: File History).
+
+### macOS: System Settings, Finder, and utilities
+
+- Primary hub: **System Settings** (General, Privacy & Security, Network).
+
+- Utilities: **Disk Utility**, **System Information**, **Activity Monitor**.
+
+### Settings search is your best friend
+
+- Use Settings/System Settings search to jump directly to the correct page.
+
+- Learn a small vocabulary: `update`, `backup`, `encryption`, `privacy`, `firewall`, `storage`, `recovery`.
+
+## 8.3 Know your system: version, storage, and constraints
+
+### Check OS version/build
+
+- Record OS version as part of your troubleshooting notes.
+
+- Understand the difference between:
+
+  - Major OS version (e.g., Windows 11; macOS *name/version*)
+
+  - Feature releases/updates (Windows feature updates; macOS major upgrades)
+
+  - Security/patch updates (smaller, frequent fixes)
+
+### Check storage health (early and often)
+
+- Many failures are simply a full disk.
+
+- Learn to check free space and largest folders.
+
+- Keep a safety buffer of free space (rule of thumb: do not run at 99
+
+### Understand local vs synced storage
+
+- OneDrive (Windows) and iCloud Drive (macOS) can make files “on demand”.
+
+- For programming/data work, ensure key datasets are available locally before running.
+
+## 8.4 Updates and patching: best practices
+
+### Why updates matter
+
+- Security vulnerabilities are routinely discovered.
+
+- Updates also fix reliability issues and driver compatibility.
+
+### Types of updates (student-relevant)
+
+Security updates  
+Fix vulnerabilities; highest priority.
+
+Quality/bug-fix updates  
+Improve stability; usually safe.
+
+Feature updates / major upgrades  
+Larger changes; can break workflows.
+
+Driver/firmware updates  
+Hardware compatibility; should come from OS/vendor.
+
+### A safe patching workflow
+
+1.  **Back up first** (or confirm backups are recent).
+
+2.  **Pick a good time window** (not 10 minutes before a deadline).
+
+3.  **Install updates** and allow required restarts.
+
+4.  **Verify** core tools still work (browser, spreadsheet, Python/conda, Jupyter).
+
+5.  **Record** what changed if something breaks (update history).
+
+### Windows update practices
+
+- Know where Windows Update settings live.
+
+- Understand restarts and “active hours”.
+
+- Use pause controls sparingly and intentionally.
+
+- Keep track of optional updates and driver updates.
+
+### macOS update practices
+
+- Know where Software Update settings live.
+
+- Distinguish between point updates (safer) and major upgrades (plan ahead).
+
+- Consider enabling automatic updates, but still check periodically.
+
+## 8.5 Security baseline for students
+
+### Accounts and authentication
+
+- Use strong, unique passwords; prefer a password manager.
+
+- Enable multi-factor authentication (MFA) for your key accounts.
+
+- Avoid daily use of administrator accounts unless required.
+
+### Screen lock and physical security
+
+- Require a password on wake.
+
+- Set a short auto-lock timer for laptops.
+
+### Built-in protections
+
+- Windows: understand where to find Virus & threat protection and Firewall settings.
+
+- macOS: understand privacy controls and app permission prompts.
+
+### Encryption awareness (and recovery keys)
+
+- Encryption protects data if a device is lost or stolen, but it introduces a new dependency: **recovery keys**.
+
+- Windows: device encryption/BitLocker concepts; ensure you know where recovery keys are stored.
+
+- macOS: FileVault concepts; store recovery information safely.
+
+- Rule: never proceed with encryption changes unless you understand recovery.
+
+### Software installation hygiene
+
+- Install software from official sources (vendor site, app store, trusted package managers).
+
+- Keep browsers updated.
+
+- Uninstall software you do not use.
+
+## 8.6 Backups and recovery: the student safety net
+
+### What backups are (and are not)
+
+- A backup is a second copy you can restore.
+
+- Sync is not always a backup (sync can propagate deletions).
+
+- Backups should be: automatic, regular, and restorable.
+
+### Windows backups (conceptual map)
+
+- Windows Backup (settings and account-based restore workflows).
+
+- File History (versioned file copies; external drive/network location).
+
+### macOS backups (conceptual map)
+
+- Time Machine (automatic backups to an external disk or approved location).
+
+- Practice restoring a file so you know it works.
+
+### Recovery tools (when something breaks)
+
+- Windows: recovery options, reset, restore points (when enabled), recovery media.
+
+- macOS: macOS Recovery, Disk Utility First Aid, reinstall macOS.
+
+## 8.7 Performance and stability maintenance
+
+### Storage cleanup (do no harm)
+
+- Identify large files and old downloads.
+
+- Prefer deleting duplicates and stale installers.
+
+- Avoid deleting unknown system files.
+
+### Startup and background apps
+
+- Too many startup items slow boot and drain battery.
+
+- Learn where to view and disable unnecessary login/startup apps.
+
+### Battery and laptop health (practical notes)
+
+- Keep ventilation clear; avoid constant thermal throttling.
+
+- Replace failing batteries and chargers early if they create reliability issues.
+
+### Drivers and peripherals
+
+- Prefer OS/vendor-provided updates.
+
+- Be cautious about third-party driver websites.
+
+- For printers and Wi-Fi, document the exact model and error messages.
+
+## 8.8 Troubleshooting playbook (student-friendly)
+
+### Start with the simplest reversible steps
+
+1.  Restart the affected app.
+
+2.  Restart the computer.
+
+3.  Check free disk space.
+
+4.  Check network connectivity.
+
+5.  Identify what changed recently (updates, installs, new files).
+
+### Use safe modes and diagnostics
+
+- macOS: Safe Mode to isolate login items and caches.
+
+- Windows: safe boot/recovery tools (conceptually) when normal startup fails.
+
+### Gather evidence for help
+
+- OS version/build, device model, and available disk space.
+
+- Exact error message and when it occurs.
+
+- Steps to reproduce.
+
+- Screenshot only when text cannot be copied.
+
+## 8.9 A semester maintenance schedule
+
+### Weekly (10 minutes)
+
+- Check for OS updates (or confirm automatic updates are active).
+
+- Confirm backups ran recently.
+
+- Quick storage check.
+
+### Monthly (20–30 minutes)
+
+- Install pending feature/major updates only if you have time to recover.
+
+- Review startup apps.
+
+- Remove unused applications.
+
+### Before major milestones (projects, finals)
+
+- Ensure backups are current and restorable.
+
+- Avoid major upgrades immediately before deadlines.
+
+- Confirm core tools (conda, notebook environment, editors) still run.
+
+## 8.10 Worked examples (outline)
+
+### Example 1: Set up a safe update routine
+
+- Identify Windows Update / macOS Software Update.
+
+- Enable/confirm automatic updates.
+
+- Schedule restarts to avoid deadline collisions.
+
+### Example 2: Configure backups and test a restore
+
+- Windows: enable a backup approach and locate restore instructions.
+
+- macOS: set up Time Machine and restore a deleted file.
+
+### Example 3: Recover from a broken update
+
+- Identify update history.
+
+- Use recovery options appropriately.
+
+- If needed: reinstall OS (last resort) after backing up.
+
+## 8.11 Exercises
+
+1.  Record your OS version/build and device model in a troubleshooting note.
+
+2.  Find the update settings page and take a screenshot of where you would check for updates.
+
+3.  Configure a backup (Windows Backup/File History or Time Machine) and verify the last backup time.
+
+4.  Locate your encryption setting (Windows device encryption/BitLocker or macOS FileVault) and write down where the recovery key would be stored (do not paste the key into your notes).
+
+5.  Identify and disable one unnecessary startup/login item.
+
+6.  Simulate a recovery: restore one older version of a document from backup.
+
+## 8.12 One-page checklist
+
+- I can find key settings (updates, backups, security, storage).
+
+- I know my OS version/build and can report it.
+
+- Updates are enabled and I install them on a schedule.
+
+- I avoid major upgrades right before deadlines.
+
+- Backups are configured, recent, and I have practiced a restore.
+
+- I keep adequate free disk space.
+
+- Screen lock is enabled and accounts use strong authentication.
+
+- I understand encryption recovery keys and where they are stored.
+
+- I can follow a basic troubleshooting playbook and gather evidence.
+
+## 8.13 Quick map: where common settings live
+
+### Windows (typical)
+
+- **Windows Update:** Settings → Windows Update
+
+- **Security:** Windows Security app; Settings → Privacy & security
+
+- **Recovery:** Settings → System → Recovery
+
+- **Backups:** Settings → Accounts/Backup areas; Control Panel for File History (on many systems)
+
+### macOS (typical)
+
+- **Software Update:** System Settings → General → Software Update
+
+- **Privacy & security:** System Settings → Privacy & Security
+
+- **Encryption:** Privacy & Security → FileVault
+
+- **Backups:** System Settings → General → Time Machine
+
+An operating system manages all of the resources that you interact with while using a computer. For instance, it manages input from the keyboard, what is displayed on a screen, and how you open and close programs. When you interact with your computer, you are interacting with the operating system. For instance, Windows is an operating system.
+
+Keeping your operating system up-to-date ensures that you have the latest features, security, and bug fixes.

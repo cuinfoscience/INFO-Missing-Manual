@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>27&nbsp; Collaboration Mechanics – Paratechnical Computing Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../parts/part-5-projects/automation.html" rel="next">
+<link href="../../parts/part-5-projects/version-control.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a46c92d1a3b8d11f1f9fb1f566cd2c52.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2c510be64a6a9dae7b25a83ea934423.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-projects/project-management.html">Part V — Project Management</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-projects/collaboration.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Paratechnical Computing Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-1-practice/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-2-environment/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Testing Basics with pytest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-3-python/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style, Linting, and Formatting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data: Shape, Cleaning, and Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-4-data/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/collaboration.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-5-projects/pre-commit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Pre-commit Hooks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-make-work-visible-small-and-easy-to-review" id="toc-running-theme-make-work-visible-small-and-easy-to-review" class="nav-link" data-scroll-target="#running-theme-make-work-visible-small-and-easy-to-review">Running theme: make work visible, small, and easy to review</a></li>
+  <li><a href="#a-beginner-mental-model-collaboration-surfaces" id="toc-a-beginner-mental-model-collaboration-surfaces" class="nav-link" data-scroll-target="#a-beginner-mental-model-collaboration-surfaces"><span class="header-section-number">27.1</span> A beginner mental model: collaboration surfaces</a>
+  <ul class="collapse">
+  <li><a href="#where-collaboration-happens" id="toc-where-collaboration-happens" class="nav-link" data-scroll-target="#where-collaboration-happens">Where collaboration happens</a></li>
+  <li><a href="#the-core-collaboration-loop" id="toc-the-core-collaboration-loop" class="nav-link" data-scroll-target="#the-core-collaboration-loop">The core collaboration loop</a></li>
+  <li><a href="#roles-and-responsibilities" id="toc-roles-and-responsibilities" class="nav-link" data-scroll-target="#roles-and-responsibilities">Roles and responsibilities</a></li>
+  </ul></li>
+  <li><a href="#documentation-as-collaboration-infrastructure" id="toc-documentation-as-collaboration-infrastructure" class="nav-link" data-scroll-target="#documentation-as-collaboration-infrastructure"><span class="header-section-number">27.2</span> Documentation as collaboration infrastructure</a>
+  <ul class="collapse">
+  <li><a href="#what-documentation-is-for-student-framing" id="toc-what-documentation-is-for-student-framing" class="nav-link" data-scroll-target="#what-documentation-is-for-student-framing">What documentation is for (student framing)</a></li>
+  <li><a href="#minimum-viable-documentation-set" id="toc-minimum-viable-documentation-set" class="nav-link" data-scroll-target="#minimum-viable-documentation-set">Minimum viable documentation set</a></li>
+  <li><a href="#writing-for-your-audience" id="toc-writing-for-your-audience" class="nav-link" data-scroll-target="#writing-for-your-audience">Writing for your audience</a></li>
+  <li><a href="#documentation-upkeep-avoid-staleness" id="toc-documentation-upkeep-avoid-staleness" class="nav-link" data-scroll-target="#documentation-upkeep-avoid-staleness">Documentation upkeep: avoid staleness</a></li>
+  </ul></li>
+  <li><a href="#work-planning-mechanics-issues-and-task-decomposition" id="toc-work-planning-mechanics-issues-and-task-decomposition" class="nav-link" data-scroll-target="#work-planning-mechanics-issues-and-task-decomposition"><span class="header-section-number">27.3</span> Work planning mechanics: issues and task decomposition</a>
+  <ul class="collapse">
+  <li><a href="#why-issues-beat-chat-threads" id="toc-why-issues-beat-chat-threads" class="nav-link" data-scroll-target="#why-issues-beat-chat-threads">Why issues beat chat threads</a></li>
+  <li><a href="#anatomy-of-a-good-issue" id="toc-anatomy-of-a-good-issue" class="nav-link" data-scroll-target="#anatomy-of-a-good-issue">Anatomy of a good issue</a></li>
+  <li><a href="#decomposition-patterns-novice-friendly" id="toc-decomposition-patterns-novice-friendly" class="nav-link" data-scroll-target="#decomposition-patterns-novice-friendly">Decomposition patterns (novice-friendly)</a></li>
+  </ul></li>
+  <li><a href="#code-review-fundamentals-what-it-is-and-why-it-works" id="toc-code-review-fundamentals-what-it-is-and-why-it-works" class="nav-link" data-scroll-target="#code-review-fundamentals-what-it-is-and-why-it-works"><span class="header-section-number">27.4</span> Code review fundamentals (what it is and why it works)</a>
+  <ul class="collapse">
+  <li><a href="#goals-of-review" id="toc-goals-of-review" class="nav-link" data-scroll-target="#goals-of-review">Goals of review</a></li>
+  <li><a href="#what-review-is-not" id="toc-what-review-is-not" class="nav-link" data-scroll-target="#what-review-is-not">What review is not</a></li>
+  <li><a href="#review-checklists-student-baseline" id="toc-review-checklists-student-baseline" class="nav-link" data-scroll-target="#review-checklists-student-baseline">Review checklists (student baseline)</a></li>
+  </ul></li>
+  <li><a href="#authoring-reviewable-changes" id="toc-authoring-reviewable-changes" class="nav-link" data-scroll-target="#authoring-reviewable-changes"><span class="header-section-number">27.5</span> Authoring reviewable changes</a>
+  <ul class="collapse">
+  <li><a href="#small-pr-discipline" id="toc-small-pr-discipline" class="nav-link" data-scroll-target="#small-pr-discipline">Small PR discipline</a></li>
+  <li><a href="#pr-descriptions-that-help-reviewers" id="toc-pr-descriptions-that-help-reviewers" class="nav-link" data-scroll-target="#pr-descriptions-that-help-reviewers">PR descriptions that help reviewers</a></li>
+  <li><a href="#pre-review-self-check" id="toc-pre-review-self-check" class="nav-link" data-scroll-target="#pre-review-self-check">Pre-review self-check</a></li>
+  </ul></li>
+  <li><a href="#reviewing-and-commenting-mechanics" id="toc-reviewing-and-commenting-mechanics" class="nav-link" data-scroll-target="#reviewing-and-commenting-mechanics"><span class="header-section-number">27.6</span> Reviewing and commenting mechanics</a>
+  <ul class="collapse">
+  <li><a href="#comment-taxonomy-so-feedback-is-legible" id="toc-comment-taxonomy-so-feedback-is-legible" class="nav-link" data-scroll-target="#comment-taxonomy-so-feedback-is-legible">Comment taxonomy (so feedback is legible)</a></li>
+  <li><a href="#writing-effective-comments" id="toc-writing-effective-comments" class="nav-link" data-scroll-target="#writing-effective-comments">Writing effective comments</a></li>
+  <li><a href="#tone-and-collaboration-hygiene" id="toc-tone-and-collaboration-hygiene" class="nav-link" data-scroll-target="#tone-and-collaboration-hygiene">Tone and collaboration hygiene</a></li>
+  <li><a href="#thread-management" id="toc-thread-management" class="nav-link" data-scroll-target="#thread-management">Thread management</a></li>
+  <li><a href="#responding-to-reviews-as-an-author" id="toc-responding-to-reviews-as-an-author" class="nav-link" data-scroll-target="#responding-to-reviews-as-an-author">Responding to reviews as an author</a></li>
+  </ul></li>
+  <li><a href="#merging-ownership-and-handoffs" id="toc-merging-ownership-and-handoffs" class="nav-link" data-scroll-target="#merging-ownership-and-handoffs"><span class="header-section-number">27.7</span> Merging, ownership, and handoffs</a>
+  <ul class="collapse">
+  <li><a href="#definition-of-done-team-agreement" id="toc-definition-of-done-team-agreement" class="nav-link" data-scroll-target="#definition-of-done-team-agreement">Definition of done (team agreement)</a></li>
+  <li><a href="#handoff-notes" id="toc-handoff-notes" class="nav-link" data-scroll-target="#handoff-notes">Handoff notes</a></li>
+  </ul></li>
+  <li><a href="#collaboration-practices-for-data-science-artifacts" id="toc-collaboration-practices-for-data-science-artifacts" class="nav-link" data-scroll-target="#collaboration-practices-for-data-science-artifacts"><span class="header-section-number">27.8</span> Collaboration practices for data science artifacts</a>
+  <ul class="collapse">
+  <li><a href="#notebooks-and-noisy-diffs" id="toc-notebooks-and-noisy-diffs" class="nav-link" data-scroll-target="#notebooks-and-noisy-diffs">Notebooks and noisy diffs</a></li>
+  <li><a href="#data-and-model-artifacts" id="toc-data-and-model-artifacts" class="nav-link" data-scroll-target="#data-and-model-artifacts">Data and model artifacts</a></li>
+  <li><a href="#reproducibility-check-as-a-collaboration-contract" id="toc-reproducibility-check-as-a-collaboration-contract" class="nav-link" data-scroll-target="#reproducibility-check-as-a-collaboration-contract">Reproducibility check as a collaboration contract</a></li>
+  </ul></li>
+  <li><a href="#cadences-and-rituals-lightweight-student-friendly" id="toc-cadences-and-rituals-lightweight-student-friendly" class="nav-link" data-scroll-target="#cadences-and-rituals-lightweight-student-friendly"><span class="header-section-number">27.9</span> Cadences and rituals (lightweight, student-friendly)</a>
+  <ul class="collapse">
+  <li><a href="#weekly-planning" id="toc-weekly-planning" class="nav-link" data-scroll-target="#weekly-planning">Weekly planning</a></li>
+  <li><a href="#dailyasync-updates" id="toc-dailyasync-updates" class="nav-link" data-scroll-target="#dailyasync-updates">Daily/async updates</a></li>
+  <li><a href="#retrospectives-optional" id="toc-retrospectives-optional" class="nav-link" data-scroll-target="#retrospectives-optional">Retrospectives (optional)</a></li>
+  </ul></li>
+  <li><a href="#common-failure-modes-and-fixes" id="toc-common-failure-modes-and-fixes" class="nav-link" data-scroll-target="#common-failure-modes-and-fixes"><span class="header-section-number">27.10</span> Common failure modes and fixes</a>
+  <ul class="collapse">
+  <li><a href="#work-hidden-in-private-messages" id="toc-work-hidden-in-private-messages" class="nav-link" data-scroll-target="#work-hidden-in-private-messages">Work hidden in private messages</a></li>
+  <li><a href="#mega-prs-that-no-one-can-review" id="toc-mega-prs-that-no-one-can-review" class="nav-link" data-scroll-target="#mega-prs-that-no-one-can-review">Mega-PRs that no one can review</a></li>
+  <li><a href="#review-ping-pong-and-stalled-progress" id="toc-review-ping-pong-and-stalled-progress" class="nav-link" data-scroll-target="#review-ping-pong-and-stalled-progress">Review ping-pong and stalled progress</a></li>
+  <li><a href="#unclear-ownership" id="toc-unclear-ownership" class="nav-link" data-scroll-target="#unclear-ownership">Unclear ownership</a></li>
+  <li><a href="#documentation-drift" id="toc-documentation-drift" class="nav-link" data-scroll-target="#documentation-drift">Documentation drift</a></li>
+  </ul></li>
+  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">27.11</span> Worked examples (outline)</a>
+  <ul class="collapse">
+  <li><a href="#example-1-turn-a-chat-question-into-a-good-issue" id="toc-example-1-turn-a-chat-question-into-a-good-issue" class="nav-link" data-scroll-target="#example-1-turn-a-chat-question-into-a-good-issue">Example 1: Turn a chat question into a good issue</a></li>
+  <li><a href="#example-2-author-a-reviewable-pr" id="toc-example-2-author-a-reviewable-pr" class="nav-link" data-scroll-target="#example-2-author-a-reviewable-pr">Example 2: Author a reviewable PR</a></li>
+  <li><a href="#example-3-perform-a-constructive-code-review" id="toc-example-3-perform-a-constructive-code-review" class="nav-link" data-scroll-target="#example-3-perform-a-constructive-code-review">Example 3: Perform a constructive code review</a></li>
+  <li><a href="#example-4-close-the-loop-after-merge" id="toc-example-4-close-the-loop-after-merge" class="nav-link" data-scroll-target="#example-4-close-the-loop-after-merge">Example 4: Close the loop after merge</a></li>
+  </ul></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">27.12</span> Templates</a>
+  <ul class="collapse">
+  <li><a href="#template-a-pr-checklist" id="toc-template-a-pr-checklist" class="nav-link" data-scroll-target="#template-a-pr-checklist">Template A: PR checklist</a></li>
+  <li><a href="#template-b-review-comment-format" id="toc-template-b-review-comment-format" class="nav-link" data-scroll-target="#template-b-review-comment-format">Template B: Review comment format</a></li>
+  <li><a href="#template-c-decision-record-lightweight" id="toc-template-c-decision-record-lightweight" class="nav-link" data-scroll-target="#template-c-decision-record-lightweight">Template C: Decision record (lightweight)</a></li>
+  <li><a href="#template-d-contributing-basics" id="toc-template-d-contributing-basics" class="nav-link" data-scroll-target="#template-d-contributing-basics">Template D: CONTRIBUTING basics</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">27.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">27.14</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-collaboration-norms" id="toc-quick-reference-collaboration-norms" class="nav-link" data-scroll-target="#quick-reference-collaboration-norms"><span class="header-section-number">27.15</span> Quick reference: collaboration norms</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/collaboration.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-projects/project-management.html">Part V — Project Management</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-projects/collaboration.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-collaboration" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="#sec-git-github" class="quarto-xref"><span class="quarto-unresolved-ref">sec-git-github</span></a>.</p>
+<p><strong>See also:</strong> <a href="#sec-project-management" class="quarto-xref"><span class="quarto-unresolved-ref">sec-project-management</span></a>, <a href="#sec-documentation" class="quarto-xref"><span class="quarto-unresolved-ref">sec-documentation</span></a>, <a href="#sec-asking-questions" class="quarto-xref"><span class="quarto-unresolved-ref">sec-asking-questions</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+<p>Collaboration is not a vague soft skill. It is a set of repeatable mechanics that make work legible, reviewable, and safe to change. In computing and data science, effective collaboration relies on shared artifacts (docs, issues, pull requests), disciplined communication (clear requests and responses), and predictable workflows (review, merge, release). This chapter teaches novice-friendly practices for working with other people without creating confusion, duplication, or fragile “tribal knowledge.”</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Explain why collaboration depends on shared artifacts (docs, issues, PRs) rather than private messages.</p></li>
+<li><p>Write project documentation that supports onboarding and reproduction.</p></li>
+<li><p>Participate in code review as an author and reviewer using a respectful, actionable style.</p></li>
+<li><p>Use comment threads to clarify intent, document decisions, and close the loop.</p></li>
+<li><p>Propose and follow a lightweight workflow for tasks, reviews, and merges.</p></li>
+<li><p>Maintain collaboration hygiene: small changes, clear ownership, explicit decisions, and visible status.</p></li>
+</ol>
+</section>
+<section id="running-theme-make-work-visible-small-and-easy-to-review" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-make-work-visible-small-and-easy-to-review">Running theme: make work visible, small, and easy to review</h2>
+<p>If teammates can understand what changed, why it changed, and how to verify it, collaboration scales.</p>
+</section>
+<section id="a-beginner-mental-model-collaboration-surfaces" class="level2" data-number="27.1">
+<h2 data-number="27.1" class="anchored" data-anchor-id="a-beginner-mental-model-collaboration-surfaces"><span class="header-section-number">27.1</span> A beginner mental model: collaboration surfaces</h2>
+<section id="where-collaboration-happens" class="level3">
+<h3 class="anchored" data-anchor-id="where-collaboration-happens">Where collaboration happens</h3>
+<ul>
+<li><p><strong>Repository</strong>: code, notebooks, documentation.</p></li>
+<li><p><strong>Issues</strong>: tasks, bugs, questions, decision records.</p></li>
+<li><p><strong>Pull requests</strong>: proposed changes + discussion + review.</p></li>
+<li><p><strong>Code review comments</strong>: feedback and decisions tied to specific diffs.</p></li>
+<li><p><strong>Project board/milestones</strong>: status tracking.</p></li>
+<li><p><strong>Chat/meetings</strong>: coordination, but not the system of record.</p></li>
+</ul>
+</section>
+<section id="the-core-collaboration-loop" class="level3">
+<h3 class="anchored" data-anchor-id="the-core-collaboration-loop">The core collaboration loop</h3>
+<div class="center">
+<p>Plan in issues → implement on a branch → open PR → review/comment → revise → merge → document → repeat</p>
+</div>
+</section>
+<section id="roles-and-responsibilities" class="level3">
+<h3 class="anchored" data-anchor-id="roles-and-responsibilities">Roles and responsibilities</h3>
+<ul>
+<li><p><strong>Author</strong>: proposes changes, provides context, responds to review.</p></li>
+<li><p><strong>Reviewer</strong>: protects quality, asks clarifying questions, mentors.</p></li>
+<li><p><strong>Maintainer/lead</strong>: sets policy, arbitrates decisions, ensures follow-through.</p></li>
+</ul>
+</section>
+</section>
+<section id="documentation-as-collaboration-infrastructure" class="level2" data-number="27.2">
+<h2 data-number="27.2" class="anchored" data-anchor-id="documentation-as-collaboration-infrastructure"><span class="header-section-number">27.2</span> Documentation as collaboration infrastructure</h2>
+<section id="what-documentation-is-for-student-framing" class="level3">
+<h3 class="anchored" data-anchor-id="what-documentation-is-for-student-framing">What documentation is for (student framing)</h3>
+<ul>
+<li><p>Onboarding: a new collaborator can start quickly.</p></li>
+<li><p>Reproducibility: a collaborator can rerun results.</p></li>
+<li><p>Decision trace: why key choices were made.</p></li>
+<li><p>Operations: how to build/run/test.</p></li>
+</ul>
+</section>
+<section id="minimum-viable-documentation-set" class="level3">
+<h3 class="anchored" data-anchor-id="minimum-viable-documentation-set">Minimum viable documentation set</h3>
+<ul>
+<li><p><code>README.md</code>: purpose, setup, how to run, outputs.</p></li>
+<li><p><code>CONTRIBUTING.md</code>: how to contribute, style rules, review expectations.</p></li>
+<li><p><code>CODE_OF_CONDUCT.md</code> (when appropriate): norms and escalation.</p></li>
+<li><p><code>DECISIONS.md</code> (or ADRs): consequential decisions and rationale.</p></li>
+<li><p>Data dictionary / codebook: dataset meaning and transformations.</p></li>
+</ul>
+</section>
+<section id="writing-for-your-audience" class="level3">
+<h3 class="anchored" data-anchor-id="writing-for-your-audience">Writing for your audience</h3>
+<ul>
+<li><p>Assume the reader is competent but unfamiliar with your local context.</p></li>
+<li><p>Put the most common tasks first.</p></li>
+<li><p>Provide “copy/paste to run” commands and expected outputs.</p></li>
+</ul>
+</section>
+<section id="documentation-upkeep-avoid-staleness" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-upkeep-avoid-staleness">Documentation upkeep: avoid staleness</h3>
+<ul>
+<li><p>Update docs in the same PR as code changes.</p></li>
+<li><p>Treat docs as part of the definition of done.</p></li>
+<li><p>If documentation is missing, file an issue.</p></li>
+</ul>
+</section>
+</section>
+<section id="work-planning-mechanics-issues-and-task-decomposition" class="level2" data-number="27.3">
+<h2 data-number="27.3" class="anchored" data-anchor-id="work-planning-mechanics-issues-and-task-decomposition"><span class="header-section-number">27.3</span> Work planning mechanics: issues and task decomposition</h2>
+<section id="why-issues-beat-chat-threads" class="level3">
+<h3 class="anchored" data-anchor-id="why-issues-beat-chat-threads">Why issues beat chat threads</h3>
+<ul>
+<li><p>Searchable, linkable, and persistent.</p></li>
+<li><p>Establishes a shared memory.</p></li>
+<li><p>Supports prioritization and assignment.</p></li>
+</ul>
+</section>
+<section id="anatomy-of-a-good-issue" class="level3">
+<h3 class="anchored" data-anchor-id="anatomy-of-a-good-issue">Anatomy of a good issue</h3>
+<ul>
+<li><p>Clear title: verb + object.</p></li>
+<li><p>Context: why it matters.</p></li>
+<li><p>Definition of done.</p></li>
+<li><p>Evidence: links, examples, errors.</p></li>
+<li><p>Labels: type (bug/task/question), priority, area (data/code/docs).</p></li>
+</ul>
+</section>
+<section id="decomposition-patterns-novice-friendly" class="level3">
+<h3 class="anchored" data-anchor-id="decomposition-patterns-novice-friendly">Decomposition patterns (novice-friendly)</h3>
+<ul>
+<li><p>Split by artifact: data ingestion, cleaning, analysis, visualization, report.</p></li>
+<li><p>Split by risk: do uncertain tasks early.</p></li>
+<li><p>Split by reviewability: tasks that fit in a small PR.</p></li>
+</ul>
+</section>
+</section>
+<section id="code-review-fundamentals-what-it-is-and-why-it-works" class="level2" data-number="27.4">
+<h2 data-number="27.4" class="anchored" data-anchor-id="code-review-fundamentals-what-it-is-and-why-it-works"><span class="header-section-number">27.4</span> Code review fundamentals (what it is and why it works)</h2>
+<section id="goals-of-review" class="level3">
+<h3 class="anchored" data-anchor-id="goals-of-review">Goals of review</h3>
+<ul>
+<li><p>Improve correctness, readability, and maintainability.</p></li>
+<li><p>Catch bugs and edge cases.</p></li>
+<li><p>Transfer knowledge across the team.</p></li>
+<li><p>Align changes with project standards.</p></li>
+</ul>
+</section>
+<section id="what-review-is-not" class="level3">
+<h3 class="anchored" data-anchor-id="what-review-is-not">What review is not</h3>
+<ul>
+<li><p>Not a personal critique.</p></li>
+<li><p>Not a substitute for testing.</p></li>
+<li><p>Not a place to redesign the whole system in one comment.</p></li>
+</ul>
+</section>
+<section id="review-checklists-student-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="review-checklists-student-baseline">Review checklists (student baseline)</h3>
+<ul>
+<li><p>Correctness and clarity: does it do what it says?</p></li>
+<li><p>Tests or verification steps: how do we know?</p></li>
+<li><p>Reproducibility: can someone else run it?</p></li>
+<li><p>Documentation: README/comments updated?</p></li>
+<li><p>Data impacts: schema changes, file paths, assumptions documented?</p></li>
+<li><p>Security/privacy: secrets avoided, sensitive data handled properly?</p></li>
+</ul>
+</section>
+</section>
+<section id="authoring-reviewable-changes" class="level2" data-number="27.5">
+<h2 data-number="27.5" class="anchored" data-anchor-id="authoring-reviewable-changes"><span class="header-section-number">27.5</span> Authoring reviewable changes</h2>
+<section id="small-pr-discipline" class="level3">
+<h3 class="anchored" data-anchor-id="small-pr-discipline">Small PR discipline</h3>
+<ul>
+<li><p>One purpose per PR.</p></li>
+<li><p>Avoid mixing refactors with new features.</p></li>
+<li><p>Keep diffs readable: remove dead code separately.</p></li>
+</ul>
+</section>
+<section id="pr-descriptions-that-help-reviewers" class="level3">
+<h3 class="anchored" data-anchor-id="pr-descriptions-that-help-reviewers">PR descriptions that help reviewers</h3>
+<ul>
+<li><p>Summary: what changed.</p></li>
+<li><p>Motivation: why.</p></li>
+<li><p>How to test: steps and expected outputs.</p></li>
+<li><p>Screenshots/figures (if relevant).</p></li>
+<li><p>Links: related issues, background docs.</p></li>
+</ul>
+</section>
+<section id="pre-review-self-check" class="level3">
+<h3 class="anchored" data-anchor-id="pre-review-self-check">Pre-review self-check</h3>
+<ul>
+<li><p>Re-read your own diff.</p></li>
+<li><p>Run a smoke test.</p></li>
+<li><p>Confirm docs updated.</p></li>
+<li><p>Ensure no secrets or large accidental files are included.</p></li>
+</ul>
+</section>
+</section>
+<section id="reviewing-and-commenting-mechanics" class="level2" data-number="27.6">
+<h2 data-number="27.6" class="anchored" data-anchor-id="reviewing-and-commenting-mechanics"><span class="header-section-number">27.6</span> Reviewing and commenting mechanics</h2>
+<section id="comment-taxonomy-so-feedback-is-legible" class="level3">
+<h3 class="anchored" data-anchor-id="comment-taxonomy-so-feedback-is-legible">Comment taxonomy (so feedback is legible)</h3>
+<dl>
+<dt>Blocker</dt>
+<dd>
+<p>Must fix before merge (correctness, security, reproducibility).</p>
+</dd>
+<dt>Suggestion</dt>
+<dd>
+<p>Improvement that is optional.</p>
+</dd>
+<dt>Question</dt>
+<dd>
+<p>Clarification needed to evaluate.</p>
+</dd>
+<dt>Nit</dt>
+<dd>
+<p>Minor style/detail; non-blocking.</p>
+</dd>
+</dl>
+</section>
+<section id="writing-effective-comments" class="level3">
+<h3 class="anchored" data-anchor-id="writing-effective-comments">Writing effective comments</h3>
+<ul>
+<li><p>Be specific: point to a line and explain the issue.</p></li>
+<li><p>Provide rationale: tie to a goal (correctness, clarity, consistency).</p></li>
+<li><p>Offer a concrete suggestion when possible.</p></li>
+<li><p>Prefer questions when intent is unclear (see <a href="#sec-asking-questions" class="quarto-xref"><span class="quarto-unresolved-ref">sec-asking-questions</span></a> for how to frame a well-structured technical question).</p></li>
+</ul>
+</section>
+<section id="tone-and-collaboration-hygiene" class="level3">
+<h3 class="anchored" data-anchor-id="tone-and-collaboration-hygiene">Tone and collaboration hygiene</h3>
+<ul>
+<li><p>Assume good intent.</p></li>
+<li><p>Critique the code, not the person.</p></li>
+<li><p>Use neutral language and avoid sarcasm.</p></li>
+<li><p>Acknowledge good work and improvements.</p></li>
+</ul>
+</section>
+<section id="thread-management" class="level3">
+<h3 class="anchored" data-anchor-id="thread-management">Thread management</h3>
+<ul>
+<li><p>One issue per thread.</p></li>
+<li><p>Resolve threads when addressed.</p></li>
+<li><p>Summarize decisions in the PR description or decision log when important.</p></li>
+</ul>
+</section>
+<section id="responding-to-reviews-as-an-author" class="level3">
+<h3 class="anchored" data-anchor-id="responding-to-reviews-as-an-author">Responding to reviews as an author</h3>
+<ul>
+<li><p>Reply to each thread: explain what you changed or why you disagree.</p></li>
+<li><p>If you disagree, propose an alternative and ask for alignment.</p></li>
+<li><p>Avoid “drive-by” changes that introduce new behavior without explanation.</p></li>
+</ul>
+</section>
+</section>
+<section id="merging-ownership-and-handoffs" class="level2" data-number="27.7">
+<h2 data-number="27.7" class="anchored" data-anchor-id="merging-ownership-and-handoffs"><span class="header-section-number">27.7</span> Merging, ownership, and handoffs</h2>
+<section id="definition-of-done-team-agreement" class="level3">
+<h3 class="anchored" data-anchor-id="definition-of-done-team-agreement">Definition of done (team agreement)</h3>
+<ul>
+<li><p>Review approvals obtained.</p></li>
+<li><p>Tests and smoke checks pass.</p></li>
+<li><p>Documentation updated.</p></li>
+<li><p>Issue linked and closed with a summary.</p></li>
+</ul>
+</section>
+<section id="handoff-notes" class="level3">
+<h3 class="anchored" data-anchor-id="handoff-notes">Handoff notes</h3>
+<ul>
+<li><p>If someone else will continue the work, leave a short status note.</p></li>
+<li><p>Identify next steps and open questions.</p></li>
+</ul>
+</section>
+</section>
+<section id="collaboration-practices-for-data-science-artifacts" class="level2" data-number="27.8">
+<h2 data-number="27.8" class="anchored" data-anchor-id="collaboration-practices-for-data-science-artifacts"><span class="header-section-number">27.8</span> Collaboration practices for data science artifacts</h2>
+<section id="notebooks-and-noisy-diffs" class="level3">
+<h3 class="anchored" data-anchor-id="notebooks-and-noisy-diffs">Notebooks and noisy diffs</h3>
+<ul>
+<li><p>Keep notebooks tidy: avoid huge outputs.</p></li>
+<li><p>Clear unnecessary output before merging.</p></li>
+<li><p>Prefer “notebook as narrative, code in <code>src/</code>”.</p></li>
+</ul>
+</section>
+<section id="data-and-model-artifacts" class="level3">
+<h3 class="anchored" data-anchor-id="data-and-model-artifacts">Data and model artifacts</h3>
+<ul>
+<li><p>Avoid committing large raw datasets unless policy says otherwise.</p></li>
+<li><p>Document data retrieval and transformations.</p></li>
+<li><p>Store outputs deterministically and link from reports.</p></li>
+</ul>
+</section>
+<section id="reproducibility-check-as-a-collaboration-contract" class="level3">
+<h3 class="anchored" data-anchor-id="reproducibility-check-as-a-collaboration-contract">Reproducibility check as a collaboration contract</h3>
+<ul>
+<li><p>Another collaborator should be able to recreate the environment and rerun.</p></li>
+<li><p>Include a minimal “how to reproduce” section in the PR.</p></li>
+</ul>
+</section>
+</section>
+<section id="cadences-and-rituals-lightweight-student-friendly" class="level2" data-number="27.9">
+<h2 data-number="27.9" class="anchored" data-anchor-id="cadences-and-rituals-lightweight-student-friendly"><span class="header-section-number">27.9</span> Cadences and rituals (lightweight, student-friendly)</h2>
+<section id="weekly-planning" class="level3">
+<h3 class="anchored" data-anchor-id="weekly-planning">Weekly planning</h3>
+<ul>
+<li><p>Review open issues, reprioritize, assign.</p></li>
+<li><p>Identify blockers and dependencies.</p></li>
+</ul>
+</section>
+<section id="dailyasync-updates" class="level3">
+<h3 class="anchored" data-anchor-id="dailyasync-updates">Daily/async updates</h3>
+<ul>
+<li><p>Short status: what I did, what I will do, what is blocking me.</p></li>
+<li><p>Post updates in issues/PRs when they affect others.</p></li>
+</ul>
+</section>
+<section id="retrospectives-optional" class="level3">
+<h3 class="anchored" data-anchor-id="retrospectives-optional">Retrospectives (optional)</h3>
+<ul>
+<li><p>What went well, what was painful, what to change next time.</p></li>
+<li><p>Convert pain points into issues and documentation improvements.</p></li>
+</ul>
+</section>
+</section>
+<section id="common-failure-modes-and-fixes" class="level2" data-number="27.10">
+<h2 data-number="27.10" class="anchored" data-anchor-id="common-failure-modes-and-fixes"><span class="header-section-number">27.10</span> Common failure modes and fixes</h2>
+<section id="work-hidden-in-private-messages" class="level3">
+<h3 class="anchored" data-anchor-id="work-hidden-in-private-messages">Work hidden in private messages</h3>
+<ul>
+<li>Fix: move decisions into issues/PRs; link evidence.</li>
+</ul>
+</section>
+<section id="mega-prs-that-no-one-can-review" class="level3">
+<h3 class="anchored" data-anchor-id="mega-prs-that-no-one-can-review">Mega-PRs that no one can review</h3>
+<ul>
+<li>Fix: split into smaller PRs; stage refactors separately.</li>
+</ul>
+</section>
+<section id="review-ping-pong-and-stalled-progress" class="level3">
+<h3 class="anchored" data-anchor-id="review-ping-pong-and-stalled-progress">Review ping-pong and stalled progress</h3>
+<ul>
+<li>Fix: clarify blockers vs suggestions; propose a decision; time-box debates.</li>
+</ul>
+</section>
+<section id="unclear-ownership" class="level3">
+<h3 class="anchored" data-anchor-id="unclear-ownership">Unclear ownership</h3>
+<ul>
+<li>Fix: assign issues; define a driver for each milestone.</li>
+</ul>
+</section>
+<section id="documentation-drift" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-drift">Documentation drift</h3>
+<ul>
+<li>Fix: require doc updates in PR checklist; treat missing docs as a bug.</li>
+</ul>
+</section>
+</section>
+<section id="worked-examples-outline" class="level2" data-number="27.11">
+<h2 data-number="27.11" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">27.11</span> Worked examples (outline)</h2>
+<section id="example-1-turn-a-chat-question-into-a-good-issue" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-turn-a-chat-question-into-a-good-issue">Example 1: Turn a chat question into a good issue</h3>
+<ul>
+<li>Convert vague request into context + definition of done.</li>
+</ul>
+</section>
+<section id="example-2-author-a-reviewable-pr" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-author-a-reviewable-pr">Example 2: Author a reviewable PR</h3>
+<ul>
+<li>Create a small branch, open PR with testing steps, request review.</li>
+</ul>
+</section>
+<section id="example-3-perform-a-constructive-code-review" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-perform-a-constructive-code-review">Example 3: Perform a constructive code review</h3>
+<ul>
+<li>Use the comment taxonomy; request one blocker and one suggestion.</li>
+</ul>
+</section>
+<section id="example-4-close-the-loop-after-merge" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-close-the-loop-after-merge">Example 4: Close the loop after merge</h3>
+<ul>
+<li>Update docs, close issue with summary, tag next steps.</li>
+</ul>
+</section>
+</section>
+<section id="templates" class="level2" data-number="27.12">
+<h2 data-number="27.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">27.12</span> Templates</h2>
+<section id="template-a-pr-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="template-a-pr-checklist">Template A: PR checklist</h3>
+<pre><code>## PR Checklist
+
+* [ ] Linked issue(s)
+* [ ] Summary and motivation included
+* [ ] How to test included
+* [ ] Docs updated (README/notes)
+* [ ] No secrets or large accidental files
+* [ ] Smoke test run</code></pre>
+</section>
+<section id="template-b-review-comment-format" class="level3">
+<h3 class="anchored" data-anchor-id="template-b-review-comment-format">Template B: Review comment format</h3>
+<pre><code>Type: Blocker / Suggestion / Question / Nit
+What I see:
+Why it matters:
+Suggested change:</code></pre>
+</section>
+<section id="template-c-decision-record-lightweight" class="level3">
+<h3 class="anchored" data-anchor-id="template-c-decision-record-lightweight">Template C: Decision record (lightweight)</h3>
+<pre><code>Decision:
+Date:
+Context:
+Options considered:
+Chosen option:
+Rationale:
+Consequences:</code></pre>
+</section>
+<section id="template-d-contributing-basics" class="level3">
+<h3 class="anchored" data-anchor-id="template-d-contributing-basics">Template D: CONTRIBUTING basics</h3>
+<pre><code>* How to set up environment
+* Branch naming and PR policy
+* Review expectations
+* Style/testing expectations
+* Where to ask questions</code></pre>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="27.13">
+<h2 data-number="27.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">27.13</span> Exercises</h2>
+<ol type="1">
+<li><p>Write a README for a small class project that a classmate can run.</p></li>
+<li><p>Turn three vague tasks into well-scoped issues with a definition of done.</p></li>
+<li><p>Open a PR with a strong description and testing steps.</p></li>
+<li><p>Review a peer’s PR using the taxonomy; request one change and one clarification.</p></li>
+<li><p>Close an issue by summarizing what changed, what remains, and how to reproduce.</p></li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="27.14">
+<h2 data-number="27.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">27.14</span> One-page checklist</h2>
+<ul>
+<li><p>Work is tracked in issues/PRs, not only chat.</p></li>
+<li><p>Documentation exists and is updated with code changes.</p></li>
+<li><p>PRs are small and include “how to test”.</p></li>
+<li><p>Reviews are respectful, actionable, and categorized.</p></li>
+<li><p>Decisions are recorded and threads are resolved.</p></li>
+<li><p>After merge, issues are closed with a clear summary and links.</p></li>
+</ul>
+</section>
+<section id="quick-reference-collaboration-norms" class="level2" data-number="27.15">
+<h2 data-number="27.15" class="anchored" data-anchor-id="quick-reference-collaboration-norms"><span class="header-section-number">27.15</span> Quick reference: collaboration norms</h2>
+<ul>
+<li><p>Prefer artifacts over memory.</p></li>
+<li><p>Prefer clarity over speed.</p></li>
+<li><p>Prefer small, reversible changes.</p></li>
+<li><p>Ask questions early; document decisions.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../parts/part-5-projects/version-control.html" class="pagination-link" aria-label="Version Control">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../parts/part-5-projects/automation.html" class="pagination-link" aria-label="Automation">
+        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Automation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/collaboration.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
