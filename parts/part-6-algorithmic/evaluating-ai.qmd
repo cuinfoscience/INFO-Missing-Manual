@@ -294,49 +294,19 @@ If outputs differ systematically when only names change, the system may be ampli
 
 Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system's handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.
 
-## Worked examples (outline)
+## Worked examples
 
 ### Building an evaluation suite for a summarization system
 
--   Collect 20 real documents from the intended domain
-
--   Write a rubric with three dimensions: completeness, accuracy, conciseness (each 0--2)
-
--   Have two human raters score 10 summaries with the rubric; compute inter-rater agreement
-
--   Revise rubric where agreement is low; establish a calibration set of rated examples
-
--   Set up an LLM judge using the calibrated rubric; validate it on the 10 human-rated examples
-
--   Run the full suite and establish a baseline score; track scores across future prompt changes
+You want to know whether your summarization prompt is actually any good — and whether it gets better or worse when you change it. Start by collecting **20 real documents** from the domain your system will be summarizing. Toy examples are tempting, but they will mislead you about real performance. Then write a **rubric** with three concrete dimensions — say, completeness (does it include the key findings?), accuracy (no fabrications?), and conciseness (no padding?), each scored 0–2. Have **two human raters** independently score 10 summaries with the rubric and **compute inter-rater agreement**. Wherever the raters disagree, the rubric is underspecified — revise the question until the raters land on the same score. The final 10 rated examples become your **calibration set**, the ground truth against which you can test automated evaluators. Now build an LLM judge using the calibrated rubric, run it on the same 10 examples, and compare its scores to the human ratings. If they agree closely, you have a scalable evaluator. If not, refine the judge's prompt or fall back to human review for the dimensions it cannot score reliably. Run the validated suite on the full set of 20 documents to establish a **baseline**, and rerun it after every prompt change so you can see whether you are making things better or worse.
 
 ### Auditing a classification system for demographic disparities
 
--   Identify the group-identifying signals in typical inputs (names, locations, writing style)
-
--   Create paired counterfactual examples for each group signal, holding all other content constant
-
--   Run the system on each pair; record classification, confidence, and any qualitative differences
-
--   Compute aggregate pass rates and score distributions broken down by group
-
--   Flag any dimension with a statistically meaningful difference for follow-up investigation
-
--   Document findings, whether or not they indicate a problem; maintain an audit log
+You suspect your classification system might treat different groups inconsistently, and you want concrete evidence one way or the other. Begin by identifying the **group-identifying signals** in typical inputs — names, locations, writing styles, dialects, anything that might serve as a demographic proxy. Then construct **paired counterfactual examples**: identical inputs that differ only in the group signal (a resume with the same qualifications but a different name, a complaint with the same content but a different location). Run the system on each pair and record the classification, the model's confidence, and any qualitative differences you notice in the response. Aggregate the results: pass rates broken down by group, score distributions, false-positive and false-negative rates. **Flag any dimension** where the difference is large enough to be statistically meaningful, and follow up with deeper investigation. Document the findings *whether or not they indicate a problem* — a clean audit is itself a valuable artifact, and the trail of "we looked and here is what we found" is what makes future audits cheaper.
 
 ### Setting up production monitoring for an AI application
 
--   Instrument the application to log inputs, outputs, metadata, and any user feedback
-
--   Define key metrics: format compliance rate, average score on sampled evaluations, error rate
-
--   Set alert thresholds: alert if format compliance drops below 95%, if error rate exceeds 1%
-
--   Schedule a weekly evaluation run on a stratified sample of production traffic
-
--   Create a changelog that records every model update, prompt change, and configuration change
-
--   Review alerts weekly; investigate any metric that crosses a threshold before the next deployment
+You have shipped an AI feature and you want to know if it is silently degrading in the wild. The first step is **instrumentation**: log every input, every output, the metadata (model version, temperature, prompt version), and any user feedback signals (thumbs up, thumbs down, escalation to human). Then define **key metrics** that map to the dimensions you care about — format compliance rate (what percentage of outputs parse as valid JSON?), the average rubric score on sampled evaluations, the explicit error rate. Set **alert thresholds** that match the stakes of your application (alert if format compliance drops below 95%, alert if error rate exceeds 1%, alert if user satisfaction signals degrade by more than X%). Schedule a **weekly evaluation run** on a stratified sample of production traffic so you can compare current behavior to your baseline. Maintain a **changelog** that records every model update, every prompt change, every configuration change — this is what lets you correlate degradations with specific changes. Review alerts on a regular cadence and investigate every metric that crosses a threshold *before* you ship the next change, not after.
 
 ## Exercises
 

@@ -6,7 +6,7 @@ A handbook that teaches students how to use AI tools responsibly would be hypocr
 
 We are writing this in the voice of the human authors, not the model — Brian C. Keegan and Abram Handler. If you are using this book in a classroom and want a concrete example of what "AI disclosure" looks like for a piece of academic work, the first half of this appendix is it. The second half discusses the harder editorial and pedagogical questions the tools forced us to confront.
 
-## 1. What AI tools were used
+## What AI tools were used
 
 During the drafting and conversion of this handbook we used:
 
@@ -17,7 +17,7 @@ During the drafting and conversion of this handbook we used:
 
 The model weights, providers, and versions were chosen based on access and cost, not endorsement. A handbook written today would include somewhat different tools than one written a year ago; we expect the list above to keep shifting.
 
-## 2. What the AI was asked to do
+## What the AI was asked to do
 
 We used the models for roughly five kinds of work, in decreasing order of editorial latitude:
 
@@ -27,17 +27,17 @@ We used the models for roughly five kinds of work, in decreasing order of editor
 4.  **Code example review.** Worked examples in Python, SQL, and shell were run or mentally executed by the human authors regardless of where they came from. When the AI wrote code, the human authors verified behavior and edited for clarity.
 5.  **Brainstorming and outlining.** Before any prose was written for a gap chapter, we sometimes used Claude or ChatGPT as a brainstorming partner: "What are the seven things a novice data scientist gets wrong about CSVs?" The outputs informed our outlines but never replaced editorial judgment about what belonged in the book.
 
-## 3. What the AI was *not* asked to do
+## What the AI was *not* asked to do
 
 Some decisions we explicitly kept out of AI hands:
 
 -   **The book's overall scope and table of contents.** The human authors decided what parts the book would have and what the canonical chapter structure would be. Claude proposed candidate gap chapters during a plan-mode session, but the final choice of which to write, which to defer, and how to order them was ours.
--   **Claims about specific authors, papers, or attributions.** Bibliography entries were curated and verified by the human authors. When the models invented a plausible-sounding citation, we removed it. See section 5.
+-   **Claims about specific authors, papers, or attributions.** Bibliography entries were curated and verified by the human authors. When the models invented a plausible-sounding citation, we removed it. See the section on what we got wrong.
 -   **Factual claims about specific tools' behavior.** We cross-checked any claim of the form "X does Y" against the tool's documentation before shipping it. This was particularly important for pandas method signatures, pytest features, SQL keyword support, and HTTP status codes, where the model's training data may reflect an older version of reality.
 -   **Representation of our own experiences as teachers.** The anecdotes and observations about "students in our courses" are from the human authors' actual experience. When the model drafted a chapter that included a "students often..." claim, we either verified the claim against our experience or cut it.
 -   **Judgments about pedagogical tradeoffs.** "Should we teach `conda` or `venv` first?" is a judgment call that requires knowing our students. We made those calls ourselves.
 
-## 4. Why we think this is OK
+## Why we think this is OK
 
 The case for using AI tools in authoring a textbook — especially a textbook about computing practices — comes down to three things:
 
@@ -45,7 +45,7 @@ The case for using AI tools in authoring a textbook — especially a textbook ab
 2.  **We retain editorial responsibility.** A draft is not a decision. Every paragraph in this book was read by a human author with discretion to rewrite, reorganize, or delete. The AI is a fast junior writer, not a co-author; the buck stops with us.
 3.  **Transparency is the right norm.** Many textbooks use AI tools and do not say so. We would rather disclose than let students guess. If our disclosure turns out to be more generous than our peers', so much the better — it gives readers a clear basis to evaluate our choices.
 
-## 5. What we got wrong, and what we watched for
+## What we got wrong, and what we watched for
 
 Honesty requires admitting the failure modes we hit. In rough order of how often:
 
@@ -57,7 +57,7 @@ Honesty requires admitting the failure modes we hit. In rough order of how often
 
 These are not disqualifying problems — they are workflow problems that we solved with editing. But they are worth naming so that a reader can calibrate the risk.
 
-## 6. What this means for students using the book
+## What this means for students using the book
 
 If you are a student reading this book to learn computing, three things are worth knowing:
 
@@ -67,7 +67,7 @@ If you are a student reading this book to learn computing, three things are wort
 
 You should apply the same skeptical habits we describe in @sec-ai-llm and @sec-evaluating-ai when you read this or any other text, regardless of how it was authored.
 
-## 7. Discussion: why we disclose at all
+## Discussion: why we disclose at all
 
 "Does it matter?" is a reasonable question. A textbook is supposed to be correct and clear; what does the provenance of individual sentences have to do with that?
 
@@ -79,19 +79,19 @@ We think it matters for three reasons, which correspond to three different audie
 
 **For the broader academic community.** Norms around AI authorship are still forming. Journals, publishers, and universities are all working out their own disclosure requirements, and the resulting guidelines are inconsistent and sometimes contradictory. By writing down what we did and why, we contribute one data point to that ongoing conversation. We do not expect our practices to become the standard, but we would rather be on the record with a defensible position than hope nobody asks.
 
-## 8. A note on the code we ship
+## A note on the code we ship
 
 A separate but related question is how AI tools were used in any software we publish alongside the book — currently the cleanup script referenced in CLAUDE.md and the `_quarto.yml` / CI workflow configuration. Those were drafted with AI assistance and then tested: the conversion script was run end-to-end on every chapter, and the render pipeline was validated by a clean HTML build with zero warnings. The same "draft, verify, own the result" discipline applies.
 
 If this book grows to include executable code cells (see @sec-jupyter) or tests that ship with the book itself, the same standard will apply to them: AI may draft, humans verify and take responsibility.
 
-## 9. How we will keep this appendix current
+## How we will keep this appendix current
 
 AI tools change. The list of tools we used, the ways we used them, and the kinds of mistakes they made are all moving targets. When we revise the book — adding a chapter, updating an example, responding to reader feedback — we will also update this appendix to reflect the new state of practice.
 
 If a reader notices a substantive gap between what this appendix says and what the book obviously contains, that is a bug and we would like to hear about it.
 
-## 10. Further reading
+## Further reading
 
 Students interested in the broader conversation about AI and scholarly authorship might start with:
 
@@ -100,7 +100,7 @@ Students interested in the broader conversation about AI and scholarly authorshi
 -   The editorial policies of the journals and publishers in your field — many now require authors to disclose AI use, and they disagree about what counts as sufficient disclosure.
 -   Prior essays and position papers on the topic, which are voluminous and moving quickly. Use your library rather than a search engine for the authoritative ones.
 
-## 11. Checklist for your own work
+## Checklist for your own work
 
 If you ever need to write a disclosure like this one for your own course work or research, these are the questions we found useful to answer:
 

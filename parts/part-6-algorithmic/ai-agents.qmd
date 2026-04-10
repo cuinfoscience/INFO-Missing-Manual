@@ -278,45 +278,19 @@ For any action that is hard to reverse --- writing to a database, sending a mess
                 return {"error": "Action cancelled by user."}
         return TOOL_REGISTRY[tool_call.name](**tool_call.args)
 
-## Worked examples (outline)
+## Worked examples
 
 ### Building a research agent with document retrieval
 
--   Define tools: `search_documents` (vector search over a corpus), `read_document` (fetch full text by ID)
-
--   Write a system prompt that instructs the agent to search before answering, cite sources, and express uncertainty when sources are insufficient
-
--   Test the loop with 3--5 research questions; read the trace to verify the model is using retrieval appropriately
-
--   Add a reflection step: after producing an answer, ask the model to identify gaps and search again if needed
-
--   Measure context growth per turn; set a context limit that triggers summarization
+You want an agent that can answer research questions by first searching a document corpus, then synthesizing an answer with citations. The minimum design has two tools: a `search_documents` tool that does vector search over your corpus and returns the top-k document IDs and snippets, and a `read_document` tool that fetches the full text of a document by ID. You then write a system prompt that explicitly tells the agent to *search first*, cite the sources it used, and acknowledge uncertainty when the retrieved documents do not contain the answer. Test the loop with three to five real research questions and read the trace carefully — you are watching for the agent to use retrieval in the cases where it should and to *not* invent answers when nothing is found. Once that core loop works, add a reflection step: after producing an initial answer, the agent re-reads its own answer and identifies any gaps, optionally searching again to fill them. As the conversation grows, monitor how much context each turn consumes and set a threshold at which older results get summarized rather than passed forward verbatim, so the agent does not run out of context window in the middle of a long session.
 
 ### Converting a multi-step notebook workflow into an agent
 
--   Identify the steps in the notebook that involve decisions (not just transformations)
-
--   Wrap each step in a tool: `load_data`, `run_analysis`, `generate_report`
-
--   Write a system prompt that describes the overall goal and when each tool should be used
-
--   Test the agent on a sample dataset; compare its outputs to the manual notebook outputs
-
--   Add a human-in-the-loop checkpoint before the report-generation step
+You have a notebook with five distinct stages — load data, clean it, run analysis, generate figures, write a report — and you want to wrap it in an agent that can run any subset on demand. Walk through the notebook and identify which steps involve *decisions* (which file to load, which analysis to run, whether to retry on failure) versus pure transformations. The decision points are where an agent helps; the pure transformations should stay as plain functions. Wrap each stage in a tool with a clear input schema (`load_data(path)`, `run_analysis(table)`, `generate_report(results)`) and write a system prompt that describes the overall goal and explains when each tool should be called. Test the agent end-to-end on a known sample dataset, and compare its outputs to the manual notebook outputs to confirm they match. Critically, add a **human-in-the-loop checkpoint** before any tool that touches shared output — the report generation step is the natural place — so a person reviews the analysis before it gets distributed.
 
 ### Diagnosing a misbehaving agent from its trace
 
--   Reproduce the failure and capture the full trace (model calls, tool calls, results)
-
--   Find the first step where the output diverges from the expected behavior
-
--   Check whether the error was in the model's reasoning or in the tool's execution
-
--   Check whether the model had the context it needed at the moment of the bad decision
-
--   Isolate the failing prompt and test it in a standalone API call to confirm the fix
-
--   Add a validation step after the problematic tool call to catch this class of error in future runs
+An agent ran in production and produced the wrong result. The first move is to **reproduce the failure** and capture the *full* trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the **first place where the output diverged** from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the **model's reasoning** (the model had the right context but drew a wrong conclusion), or was it in the **tool's execution** (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the **context it needed** at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool's return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.
 
 ## Exercises
 
