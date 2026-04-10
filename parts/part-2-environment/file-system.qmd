@@ -104,39 +104,67 @@ The provenance habit is the same idea applied to data. Keep raw files read-only;
 
 ### Search strategies that work
 
--   Search by extension (`.csv`, `.ipynb`) and by date modified.
+The single biggest determinant of whether you will ever find a file again is what you named it when you saved it. A file called `report.docx` is almost invisible to search because dozens of other people in your life have also saved a `report.docx`; a file called `info3010-project1-cleaned-2026-02-15.csv` practically jumps out at you. Before you reach for any search tool, it is worth pausing to write a filename you could find from memory in three weeks.
 
--   Use unique keywords in filenames so search works.
+When you do search, the most reliable narrowing is by **extension and date modified**, not by filename. Both File Explorer and Finder understand queries like `kind:csv` or `ext:ipynb`, which immediately drop the result set from "everything on your computer" down to "CSVs on your computer." Combining that with a date filter (macOS supports `date:last week`; Windows supports `modified:today` or a date range) is usually enough to find the file you saved yesterday even if you cannot remember what you called it. The one trick is to remember that search scope matters: make sure you are searching inside the folder you care about, not the whole drive, or you will wait a long time for results you did not want.
 
--   Use tags (macOS) or pinned/Quick Access folders (Windows) for frequently used locations.
+Frequently used locations deserve a shortcut. On macOS, drag any folder into the Finder sidebar and it becomes a one-click jump from any window; you can also tag a folder with a colored tag and then click that tag in the sidebar to see every tagged item at once. On Windows, right-click a folder and choose **Pin to Quick access** to put it at the top of every File Explorer window. In both systems, the payoff is that the folders you open ten times a day are always one click away, which kills any temptation to save things to `Desktop` "just for now."
 
 ### Sort and view for diagnosis
 
--   Sort by date modified to find what changed.
+When something goes wrong — a script writes an empty output, a download stalls, a notebook cannot find yesterday's file — the first diagnostic move is to sort a folder listing by **date modified, descending**. The most recently touched files bubble to the top, and you can immediately see whether the file you expected to write exists, whether it was written in the last minute, and whether a second stale copy is still hanging around confusing your code. This is the fastest way to answer "what just happened?" without ever running the script again.
 
--   View details (size, type) to spot suspicious zero-byte or unexpectedly large files.
+The second diagnostic view is the one that shows **size** and **type** as columns. Switch Finder to List view (`Command + 2`) or File Explorer to Details view, then add Size and Type if they are not visible. A 0-byte `data.csv` is almost certainly a failed download or a script that opened a file for writing and crashed before writing anything. A `dataset.csv` that is suddenly 12 GB instead of 200 MB means somebody — probably a runaway loop — appended much more than expected. Neither problem would be visible in icon view; both are obvious the moment you look at the size column.
+
+```text
+# What "sort by date modified" typically reveals
+data/processed/   2026-03-14  10:42   <DIR>
+  cleaned.csv     2026-03-14  10:42      5,418,220   <-- what you just wrote
+  cleaned.csv~    2026-03-14  10:39         12,004   <-- editor backup, ignore
+  cleaned.csv.tmp 2026-03-14  10:41              0   <-- aborted write, delete
+```
 
 ## File operations and safety
 
 ### Copy vs move vs rename
 
--   **Copy:** duplicates content; safer when experimenting.
+Three operations look nearly identical in a file manager but have very different consequences for any code that touches those files. **Copy** leaves the original in place and produces a second, independent file — changes to one do not affect the other. This is the safe choice whenever you want to experiment: copy `dataset.csv` to `dataset-experiment.csv`, mangle the copy however you like, and if anything goes wrong you throw the copy away and the original is untouched. **Move** takes the single file and changes where it lives; there is still only one file, but its path is different now. **Rename** is even more subtle: the file is still in the same folder, but its identity — the thing every script and notebook knows it by — has changed.
 
--   **Move:** changes location; can break code/notebooks that reference the old path.
+The practical rule is that copy is almost always safe, while move and rename break any code that mentions the old path. A notebook cell that says `pd.read_csv("data/raw/survey.csv")` silently stops working the moment you rename `survey.csv` to `survey-2026.csv`, and the error you see next time you run it (`FileNotFoundError`) gives no hint that the file is fine and the *code* is the one that got stale. Before you move or rename anything that code depends on, search the project for any reference to the old name — most editors have a "find in folder" command that will find it in seconds — and update the references in the same commit as the rename.
 
--   **Rename:** changes identity; can break references and links.
+```bash
+# Copy: safe, makes a second independent file
+cp data/raw/survey.csv data/raw/survey-backup.csv
+
+# Move: single file, new location (may break code that references old path)
+mv data/raw/survey.csv data/archive/survey-2025.csv
+
+# Rename: single file, new name in the same folder (same risk)
+mv data/raw/survey.csv data/raw/survey-2026-01.csv
+```
 
 ### Delete and recover
 
--   Understand Trash/Recycle Bin behavior.
+The Trash on macOS and the Recycle Bin on Windows are not deletion — they are a holding area. A file you drag to the trash stays on disk, taking up the same amount of space it always did, until you explicitly empty the bin. That forgiveness is deliberate: if you realize five minutes later that you needed `important.csv`, you can still recover it with a right-click and "Put Back." Only when you empty the bin, or use a shortcut like **shift-delete** on Windows, does the file become genuinely hard to recover. Treat every "empty trash" action as the destructive step it is, and get in the habit of looking at what you are about to empty before you confirm.
 
--   Treat permanent deletion as destructive; verify before emptying.
+A few operations skip the bin entirely and go straight to permanent deletion, and you should know which ones. On a network drive or a USB stick, Windows often deletes files outright because the bin lives on the local drive. In the terminal, `rm` (on macOS and Linux) and `del` (on Windows) do not use the bin — the file is gone the instant the command returns. And any "sync" tool, from OneDrive to iCloud to Dropbox, will propagate a deletion across every device within seconds, which is great until it is not. When in doubt, prefer the GUI for deletions you can reverse and be extra deliberate with terminal deletions.
+
+```bash
+# GUI trash: reversible
+# macOS:    drag to Trash, then "Put Back" if needed
+# Windows:  Delete key or drag to Recycle Bin, then "Restore"
+
+# Terminal: NOT reversible on most systems
+rm data/processed/old-output.csv   # gone immediately
+```
 
 ### Permissions basics (just enough)
 
--   Errors like Access denied" or Permission denied'' usually mean you lack rights to read/write/execute.
+On both macOS and Windows, every file carries a short record of who is allowed to read it, write to it, and (for scripts and programs) execute it. Most of the time you never think about this, because you own the files in your own home folder and you have full rights over them. Permissions only become visible when something goes wrong, and the error message is usually something like `Permission denied`, `Access is denied`, or `Operation not permitted`. All three are the operating system saying, "You, specifically, are not allowed to do that to this file."
 
--   Prefer working in your user home directory; avoid system directories.
+When you see one of those errors on a file you expected to own, there are only a few likely explanations. The first is that you are trying to write to a folder outside your home directory — `/Applications` on macOS, `C:\Program Files` on Windows, anything that requires administrator rights. Move the file into your home folder and the problem disappears. The second is that the file came from somewhere else — a USB stick, a zip downloaded from the web, a shared network drive — and it was created with different owner metadata that does not match your account. Copying (not moving) the file into your own folder usually fixes this. The third, more specific to macOS, is Gatekeeper refusing to run a script downloaded from the internet. The fix for that lives in @sec-os-management.
+
+The general habit that prevents permission problems is to **do your real work inside your user home directory** and treat everything outside it as read-only. `~/Courses/`, `~/Projects/`, `~/Documents/` — all fine. `/usr/local/`, `C:\Windows\`, `/System/` — all off-limits. If a tutorial ever tells you to `sudo` something while you are still learning, pause: there is almost always a safer path that does not require administrator rights, and using them casually is the single fastest way to break your computer.
 
 ## Common student pitfalls (and how to avoid them)
 
@@ -152,15 +180,46 @@ The fourth is **moving folders after you have written code that depends on them*
 
 ### Why file habits matter for code
 
--   Your "current working directory'' controls how relative paths resolve.
+When you run a script or a notebook, the operating system hands it a single piece of context that quietly controls almost every path it will ever read or write: the **current working directory**, or CWD. A relative path like `data/raw/survey.csv` is not an address on disk; it is an instruction to "start from the current working directory, then look for a folder called `data`, then a folder inside that called `raw`, then a file called `survey.csv`." Change the CWD, and the same path means something completely different — or nothing at all.
 
--   Cross-platform projects should avoid hard-coded, machine-specific absolute paths.
+This is why the advice earlier in the chapter — keep a stable project root, and launch your code from that root — is more than just tidiness. A notebook that works perfectly when you launch Jupyter from `~/Courses/INFO-3010/Project/` will throw `FileNotFoundError` for the same line of code if you launch it from `~/Courses/INFO-3010/`, because one extra level up means the `data/` folder is nowhere in sight. When something breaks, always check the CWD before you change the code:
+
+```bash
+# macOS / Linux — print the current working directory
+pwd
+
+# Windows PowerShell
+Get-Location
+```
+
+```python
+# From inside Python or a notebook cell
+import os
+print(os.getcwd())
+```
+
+The corollary is that **hard-coded, machine-specific absolute paths are a code smell**. A line like `pd.read_csv("/Users/alex/Downloads/survey.csv")` will work on exactly one laptop, owned by one person, until the day they move the file. Nobody else who clones the project — including you six months from now, on a new machine — can run it without editing the source. Relative paths anchored to the project root are portable for free; keep them.
 
 ### Cross-platform path handling (conceptual)
 
--   Prefer path-join utilities (e.g., language path libraries) rather than manual concatenation.
+If you only ever use macOS or only ever use Windows, path handling is usually invisible. The moment you share code with someone on the other platform, though, the separator character (`/` vs `\`) and the shape of the root (`/Users/...` vs `C:\Users\...`) start producing subtle bugs that are hard to track down. The safe habit is to stop writing paths as strings at all and instead use whatever path-handling utility your language provides. In Python, that utility is `pathlib`, and it is worth learning on day one:
 
--   Keep paths short, avoid special characters, and standardize folder structure.
+```python
+from pathlib import Path
+
+# Good: portable, works the same on Windows and macOS
+project_root = Path(__file__).resolve().parent
+raw_data     = project_root / "data" / "raw" / "survey.csv"
+df = pd.read_csv(raw_data)
+
+# Bad: breaks on the other operating system
+df = pd.read_csv("data\\raw\\survey.csv")   # Windows-only
+df = pd.read_csv("data/raw/survey.csv")     # usually fine, but brittle
+```
+
+`Path(__file__).resolve().parent` is the trick that makes a script find its own folder no matter where it is launched from: the script asks the operating system where its own source file lives, resolves any symlinks, and uses that as the anchor for all subsequent paths. Every relative path is then built by joining with the `/` operator, which `pathlib` translates into whatever separator the current operating system wants.
+
+Two small supporting habits make everything else smoother. **Keep paths short** — deep project trees hit Windows' legacy path-length limits and make every error message harder to read — and **avoid special characters** in filenames you pass to code. Spaces, parentheses, accented letters, and curly quotes all work in the GUI and all occasionally break in the terminal or a script. Stick to letters, digits, hyphens, and underscores for anything a script will touch, and you will never need to learn which layer of which tool is responsible for the broken quoting.
 
 ## Worked examples
 

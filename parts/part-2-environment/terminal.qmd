@@ -86,31 +86,79 @@ The mistakes worth being paranoid about are a short list. The first is **deletin
 
 ### Basic syntax
 
-    command [options] [arguments]
+Nearly every Unix-like command follows the same three-part shape, and internalizing it once makes every new tool feel familiar:
+
+```bash
+command [options] [arguments]
+```
+
+The **command** is the name of the program. **Options** (also called flags or switches) modify how the command behaves — whether it is quiet or verbose, whether it is recursive, which output format to use. **Arguments** are the things the command acts on, usually filenames or paths. Most commands accept zero or more of each, and the order is usually: command first, then options, then arguments. So `ls -la ~/Courses` says "run `ls`, with options `-l` and `-a`, on the target `~/Courses`."
+
+The reason this shape is worth memorizing is that every error message and every help page uses the same vocabulary. When a tool says `usage: ls [OPTION]... [FILE]...`, it is telling you where options go, where file arguments go, and that both are repeatable. Once you can read that line, you can pick up a brand-new command from its man page in under a minute.
 
 ### Flags and options
 
--   Short flags: `-l`, `-a`
+Options come in two styles, and almost every modern tool accepts both. **Short flags** are a single dash followed by one letter: `ls -l`, `grep -i`, `rm -r`. Short flags can almost always be combined into one token — `ls -l -a -h` is the same as `ls -lah` — which is where most of the terse-looking commands you see in documentation come from. **Long flags** are two dashes followed by a word: `ls --all`, `grep --ignore-case`, `rm --recursive`. Long flags take more typing but are self-documenting, which makes them the right choice in scripts and tutorials where someone else (or future you) will read the code.
 
--   Long flags: `–all`, `–help`
+```bash
+ls -l             # short flag: long listing
+ls --all          # long flag: include hidden files
+ls -lah           # three short flags combined
+```
 
--   Some flags take values: `-o filename` or `–output=filename`
+Some options take a **value**. For short flags, the value usually follows after a space: `grep -o output.txt` (the `-o` flag with an `output.txt` argument). For long flags, the convention is to join them with an equals sign: `grep --output=output.txt`. A few tools accept both forms for both styles; when in doubt, the `--help` output tells you.
+
+```bash
+curl -o page.html https://example.com
+curl --output page.html https://example.com
+tar --file=archive.tar.gz --extract    # equals form
+```
+
+The single most useful habit when you hit an unfamiliar command is to try its help flag *before* you try to use it. `command --help` prints a short usage summary on stdout for nearly every modern tool, and it is often the fastest way to answer "what does this flag do?"
 
 ### Built-in help
 
--   `command –help`
+Every Unix system ships with two help mechanisms, and the instinct worth building is to reach for them before you reach for a web search.
 
--   `man command`
+```bash
+ls --help          # quick summary, usually one screen
+man ls             # full manual page
+```
 
--   Skim `SYNOPSIS` first; then `OPTIONS`; then `EXAMPLES`.
+The `--help` flag is the fast version: it usually prints a one-screen summary with the usage line, a list of options, and sometimes a few examples. It is the right first stop for "I know this command, I just forgot the flag I need." The `man` (manual) command is the full reference: it opens a multi-page document in a pager, with sections for synopsis, description, options, and examples. You navigate it like `less` — arrow keys to scroll, `/pattern` to search, `q` to quit. Man pages can look dense, but they follow a reliable order, and once you know where to look, you can extract what you need quickly.
+
+The discipline for reading a man page under time pressure is **skim, don't read**. Go to `SYNOPSIS` first — that is the one-line usage pattern showing which options and arguments are available. Then skip to `OPTIONS` and search (`/flag_name`) for the specific flag you care about. Only if that fails should you look at `DESCRIPTION`. Many man pages end with an `EXAMPLES` section, which is often the fastest way to see what a realistic invocation looks like — jump there directly when you are stuck on "how do I use this at all?"
+
+```bash
+# Fast workflow for an unfamiliar command
+$ tar --help | head -20      # quick summary
+$ man tar                     # open the manual
+  /-x                         # jump to the -x option
+  /EXAMPLES                   # jump to the examples section
+  q                           # quit
+```
 
 ### Quoting and spaces
 
--   Spaces separate arguments. Use quotes for filenames with spaces.
+Spaces in a command line are not cosmetic — they are how the shell decides where one argument ends and the next begins. `rm my file.txt` is a request to delete *two* files, one called `my` and one called `file.txt`, not a single file called `my file.txt`. To pass a single argument that contains a space, you have to tell the shell to treat the whole thing as one token by wrapping it in quotes:
 
--   Single quotes usually prevent expansions; double quotes allow some expansions.
+```bash
+rm my file.txt         # WRONG: tries to delete two files
+rm "my file.txt"       # RIGHT: single filename with a space
+rm 'my file.txt'       # also right: single quotes work too
+```
 
--   Rule: quote variables and paths unless you deliberately want splitting/globbing.
+Single quotes and double quotes are almost interchangeable for the simple case, but they differ in one important way: **double quotes let the shell expand certain special constructs inside them; single quotes do not.** Variable references like `$HOME`, command substitutions like `$(date)`, and backtick expressions all expand inside double quotes and are left as literal text inside single quotes.
+
+```bash
+$ NAME=Alice
+$ echo "Hello, $NAME"
+Hello, Alice
+$ echo 'Hello, $NAME'
+Hello, $NAME
+```
+
+The rule of thumb to take away is: **quote variables and paths by default**, and use double quotes unless you specifically need the "no expansion" behavior of single quotes. The most common bug that comes from forgetting this is a variable that is empty or unset — `rm $TARGET_DIR/*` turns into `rm /*` if `$TARGET_DIR` is empty, which is the kind of afternoon nobody wants. `rm "$TARGET_DIR"/*` at least fails loudly instead of silently destroying things.
 
 ## File system navigation
 
@@ -203,23 +251,81 @@ Two seconds of preview prevents the entire category of "I deleted way more than 
 
 ### Finding files
 
--   `find` for locating files by name, type, time.
+The `find` command is how you locate files by their attributes rather than by their exact path. Its shape is a little unusual at first — you give it a starting directory, then a chain of predicates that describe what you are looking for — but once it clicks, it replaces a dozen one-off searches with a single dependable tool. The most common form is `find <where> -name <pattern>`, and you read it left-to-right as "starting here, find anything whose name matches this pattern":
 
--   Use carefully; start in a narrow directory scope.
+```bash
+find . -name "*.csv"              # every CSV under the current directory
+find ~/Courses -name "lab*.py"    # every lab*.py under ~/Courses
+find data/ -name "*.json" -type f # only regular files, not directories
+```
+
+The first gotcha is that `find` is *genuinely recursive*: if you run `find / -name "*.csv"` it will happily walk your entire filesystem, including system folders you should not be touching, and you will wait a long time for a result full of things you did not want. **Always start `find` in the narrowest directory that could possibly contain the answer.** If you think the file is somewhere in your project, start from the project root, not from `~`. If you think it is somewhere in your home folder, start from `~`, not from `/`. The fastest `find` is the one that has the smallest haystack to search.
+
+The second gotcha is that `find` has many more predicates than `-name`, and a few are worth knowing even if you rarely use them. `-type f` limits the results to regular files (skipping directories); `-type d` does the opposite. `-mtime -7` restricts to files modified in the last seven days, which is the fastest way to answer "what did I change this week?" And `-size +10M` finds files larger than 10 megabytes, which is the easiest way to hunt down what is filling up your disk.
+
+```bash
+find . -type f -mtime -1            # modified in the last 24 hours
+find ~ -size +100M -type f          # files over 100 MB in your home
+find . -name "*.pyc" -delete        # delete all matching files (careful!)
+```
+
+The last line is a warning in disguise: `-delete` tells `find` to remove each matching file, and combined with a broad pattern it can do real damage. Preview first by running the same command without `-delete` and confirming the listing is exactly what you meant to remove.
 
 ### Searching within files
 
--   `grep` for finding patterns in text.
+While `find` searches by filename and metadata, `grep` searches by the *contents* of files. The basic form is `grep <pattern> <file>`, which prints every line in the file that contains the pattern. Give it multiple files and it also tells you which file each match came from, which is the piece that makes it useful at scale.
 
--   Teach minimal flags: recursive search, case-insensitive search.
+```bash
+grep "TODO" src/cleaning.py          # lines containing TODO
+grep "TODO" src/*.py                 # every .py in src/
+grep -n "error" logs/run.log         # also show line numbers
+```
+
+The flags that matter most on day one are `-i` for **case-insensitive** matching (so `grep -i error` finds `Error`, `ERROR`, and `error` all at once) and `-r` for **recursive** search through a directory tree. `grep -r "TODO" src/` walks every file under `src/` and prints every line containing `TODO`, with filenames and line numbers included — that one command is often all you need to audit a whole project for leftover stubs.
+
+```bash
+grep -i "warning" app.log            # case-insensitive
+grep -r "deprecated" src/            # recursive over a directory
+grep -rn "api_key" .                 # recursive with line numbers
+grep -v "INFO" app.log               # invert: lines that do NOT match
+```
+
+Two more habits pay off quickly. `grep -v` **inverts** the match, showing lines that do *not* contain the pattern — this is how you filter out noise like `INFO` lines to see only the warnings and errors that are left. And piping `grep` into another `grep` is a natural way to narrow a search: `ps aux | grep python | grep -v grep` is the canonical one-liner for "show me the currently running Python processes, minus the grep command itself." (See "Pipes and redirection" below for the fuller story on how these chains work.)
 
 ### Inspecting file metadata
 
--   `ls -l` for permissions, size, timestamps.
+Before you do anything to a file you are not sure about, inspect it. The first command is one you already know: `ls -l` shows a long listing with permissions, owner, size, and modification time for each file in a directory. Add `-h` for human-readable sizes and `-a` for hidden files, and `ls -lah` becomes your default "tell me about this folder" command:
 
--   `file` to identify file types.
+```bash
+$ ls -lah
+-rw-r--r--  1 you  staff   1.2K Apr 10 12:34 README.md
+drwxr-xr-x  4 you  staff   128B Apr 10 12:34 data
+-rw-r--r--  1 you  staff   8.4M Apr 10 12:34 dataset.csv
+```
 
--   Checksums concept (optional): how to compare transfers.
+From that single listing you can see that `dataset.csv` is 8.4 MB (big, but not suspicious), owned by you, and last modified today. A `dataset.csv` of `0B` would tell you the file exists but is empty — almost always a sign of a failed download or a crashed write. A `dataset.csv` whose owner is `root` instead of your username would tell you something was run with `sudo` that should not have been.
+
+The second command is `file`, which looks at the actual bytes of a file and tells you what kind of content it contains, regardless of the extension:
+
+```bash
+$ file dataset.csv
+dataset.csv: ASCII text, with very long lines
+$ file report.pdf
+report.pdf: PDF document, version 1.5
+$ file mystery.dat
+mystery.dat: gzip compressed data, was "sales.csv", from Unix
+```
+
+`file` is invaluable when an extension is missing, wrong, or suspicious. The last example is a common one: a file you thought was plain data turns out to be a gzipped CSV that will never parse until you decompress it.
+
+Finally, when you transfer a file from one machine to another and you want to be *sure* it arrived intact, you use a **checksum** — a short fingerprint computed from the file's bytes. If the fingerprint on both sides matches, the bytes match. On macOS and Linux, the common tools are `md5` or `md5sum` for MD5 checksums, and `shasum -a 256` for SHA-256:
+
+```bash
+$ shasum -a 256 dataset.csv
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  dataset.csv
+```
+
+You do not need checksums for everyday work, but they are the right answer whenever you find yourself asking, "did that big download actually finish, or did it silently truncate?" Compare the checksum the source publishes to the one your file computes. If they match, the file is good; if they do not, transfer again.
 
 ## Pipes and redirection: building workflows
 
@@ -257,23 +363,72 @@ The habit that follows from this is to always check that your commands actually 
 
 ### Environment variables
 
--   What they are and why tools use them.
+Every process on your computer — your shell, every script it launches, every program — runs with a small bag of named values attached called the **environment**. Each name-value pair is an **environment variable**, and they are how programs pick up settings that are not part of the command line: where your home directory is (`$HOME`), what your username is (`$USER`), what language to use (`$LANG`), which editor to open (`$EDITOR`), and so on. When you launch a program, it inherits the environment of the shell that launched it, and most tools read a handful of specific variables to decide how to behave.
 
--   Basic operations: `echo $VAR`, setting variables (conceptual).
+Reading the current value of a variable is straightforward — prefix the name with a `$` and ask the shell to print it:
 
-### PATH and locating commands
+```bash
+$ echo $HOME
+/Users/you
+$ echo $USER
+you
+$ echo $SHELL
+/bin/zsh
+```
 
--   `PATH` controls where the shell searches for programs.
+Setting a variable for the current shell is just as simple, but the `export` keyword matters: without it, the variable only exists for the shell itself; with it, the variable is exported into the environment of any program the shell launches.
 
--   Use `which` (or equivalent) to see which program will run.
+```bash
+$ MY_VAR=hello              # visible in this shell only
+$ export MY_VAR=hello       # visible to any command launched from this shell
+$ echo $MY_VAR
+hello
+```
 
--   Common pitfall: multiple versions of a tool installed.
+The practical reason this matters is that many tools — databases, APIs, cloud SDKs — are configured through environment variables rather than through command-line flags. You do not type your database password on every command; you set `DATABASE_URL` once, and every tool that looks for it finds it. The discipline around secrets in environment variables (never commit them, never echo them into a shared log) lives in @sec-secrets.
+
+### `PATH` and locating commands
+
+There is one environment variable that matters more than any other for day-to-day command-line work, and its name is `PATH`. `PATH` is a colon-separated (or semicolon-separated on Windows) list of directories that the shell searches, in order, whenever you type a command name. When you run `python`, the shell walks each directory in `$PATH` looking for an executable file called `python`, and it runs the first one it finds. Any executable that is not in one of those directories is effectively invisible — typing its name will produce `command not found`.
+
+```bash
+$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+```
+
+To see *which* specific program the shell would actually run when you type a command, use `which` (or `type -a` for a more verbose answer that shows every match, not just the first):
+
+```bash
+$ which python
+/Users/you/miniconda3/bin/python
+$ type -a python
+python is /Users/you/miniconda3/bin/python
+python is /usr/bin/python3
+```
+
+The second line of that output illustrates the most common `PATH` pitfall: **multiple versions of the same tool are installed, and the shell is finding a different one than you expect.** A student installs a new Python, writes code that depends on it, and then gets weird errors because a different Python earlier in `$PATH` is the one actually running. When a tool is behaving strangely — wrong version, missing package, unexpected paths — the first diagnostic move is always `which <tool>` to confirm which binary is being run, and then `<tool> --version` to confirm it is the version you think it is. This is especially important for Python and conda environments (see @sec-pkg-mgmt and @sec-virtual-environments), where it is very easy to "install" a package into a Python that is not the one actually on your `PATH`.
 
 ### Working directory as a dependency
 
--   Relative paths depend on where you run the command.
+Every command you run has an invisible but consequential input: the **current working directory**, or CWD. Any relative path in the command — `data/input.csv`, `./clean.sh`, `../notes.md` — is resolved starting from the CWD, so the same command can succeed or fail depending only on where you were standing when you ran it. This is so central to reproducibility that it is worth treating the CWD as a first-class dependency of every script.
 
--   Best practice: adopt a stable project root and use relative paths within it.
+```bash
+$ pwd
+/Users/you/Courses/INFO-3010/Project
+$ python src/clean.py          # reads data/input.csv relative to Project/
+$ cd src
+$ python clean.py              # BROKEN: data/input.csv is now relative to src/
+```
+
+The fix is the habit you already met in @sec-filesystem: adopt a stable project root, always `cd` there before running your code, and write the code so that every path is either absolute (anchored at that root) or relative to a file the code can find reliably. In Python, `Path(__file__).resolve().parent` computes a script's own folder regardless of where it was launched from; in shell scripts, the idiomatic trick is `cd "$(dirname "$0")"` at the top to change into the script's own directory.
+
+```bash
+#!/usr/bin/env bash
+cd "$(dirname "$0")"    # change into the script's own folder
+python clean.py         # now all relative paths resolve predictably
+```
+
+A project whose scripts all start with this pattern is much harder to break by accident, because the code no longer depends on the CWD the user happened to be in.
 
 ## Permissions, ownership, and `sudo`
 
@@ -322,85 +477,197 @@ If a file in your project ends up owned by `root` (because an earlier command wa
 
 ### Secrets and command history
 
--   Your shell history may record commands.
+Your shell keeps a running log of every command you type, usually in a file called `.bash_history` or `.zsh_history` in your home directory. That log is a convenience — it is what powers the up arrow and `Ctrl+R` — but it is also a durable record of everything that passed through your terminal. Anyone who gets access to that file, whether through a backup, a shared account, or a compromised machine, can read it. That means **anything you type literally on the command line is effectively written down**, and the place you never want a password or API token written down is a plaintext file with no access controls.
 
--   Never put passwords/tokens directly on the command line if avoidable.
+The rule that follows is simple: **never put a secret directly on the command line if you can avoid it.** The obvious bad form is something like `curl -H "Authorization: Bearer sk-REAL-TOKEN" ...`, which parks the real token in your history forever and also in the process list while the command runs (where any other user on the machine can see it with `ps`). The better form is to load the secret from an environment variable that was set earlier, from a config file with strict permissions, or from a dedicated secret manager:
 
--   Prefer environment variables, config files with correct permissions, or secret managers (conceptual).
+```bash
+# BAD: the token goes into your shell history
+curl -H "Authorization: Bearer sk-1234567890abcdef" https://api.example.com
+
+# BETTER: load the token from an environment variable
+export API_TOKEN=$(cat ~/.secrets/api-token)
+curl -H "Authorization: Bearer $API_TOKEN" https://api.example.com
+```
+
+The even better form uses a `.env` file, a password manager, or a cloud secret store, which @sec-secrets covers in full. On the rare occasion you do need to type a secret interactively, use a tool that reads it without echoing it to the screen (`read -s PASSWORD`, `ssh-add` for keys) and never paste it into a command. If you ever realize you accidentally typed a secret on the command line, rotate the secret immediately and then edit your history file to remove the entry — in that order, because the rotation is the only thing that actually makes you safe.
 
 ### Copy/paste safety
 
--   Understand that copied commands may include hidden characters.
+The second category of terminal-specific security bugs is the pasted command. You see a command on Stack Overflow, a blog post, or in a chat with an AI assistant; you copy it; you paste it into your terminal; and you press Enter because the prompt came back and everything seemed fine. That reflex has cost real people real systems, because **pasting a command is morally the same as running a program you did not read first.** A malicious blog could include a command like:
 
--   Always inspect commands before running; avoid running multi-line scripts you do not understand.
+```
+echo "totally normal command"; rm -rf ~
+```
 
--   Prefer official documentation sources.
+where the semicolon and the destructive second command are hidden off-screen in a narrow code block, or embedded in invisible characters that only show up once you paste. Many modern terminals now refuse to auto-execute multi-line pastes for exactly this reason, but the defense you control is to **always read a pasted command before you press Enter**. Look at every flag, confirm every path, and if the command contains a pipe into `bash` or `sh` (`curl ... | sudo bash` is the classic form), stop and ask whether you are willing to run that script sight-unseen.
+
+The supporting habit is to prefer official documentation for install commands. A vendor's own install guide is not perfect, but it is accountable — they lose reputation if it breaks things. A random fix posted in a forum thread by a stranger has no accountability at all. When both exist, always go with the official source.
 
 ### Least privilege
 
--   Work in your home directory as a normal user.
+The single habit that prevents the most catastrophic terminal mistakes is **least privilege**: do your real work as a normal user, inside your own home directory, and only elevate to administrator rights for specific, well-scoped tasks that genuinely require them. Every command you run without `sudo` is bounded by what your normal account is allowed to touch, which means a typo can mess up your own files but cannot destroy the operating system, delete other users' data, or leave the machine unbootable.
 
--   Elevate privileges only for specific administrative tasks.
+In practice, "least privilege" means three things. First, **keep your project folders under your home directory**, never in system locations. `~/Courses/` and `~/Projects/` are yours to do whatever you like with; `/System/`, `C:\Windows\`, `/usr/local/` are not. Second, **resist the reflex to `sudo` a command that fails with a permission error**; ninety-nine percent of the time the error is telling you to move the work somewhere you own, not to override the check. Third, **when you do need `sudo`, use it for exactly the command that needs it, not as a blanket on a whole session.** `sudo apt install <package>` is reasonable; opening a root shell with `sudo -i` and forgetting you are in it is how accidents happen.
+
+```bash
+# Reasonable: specific elevated task, then immediately back to normal
+$ sudo apt install ripgrep
+$ rg "TODO" .
+
+# Risky: an entire session running as root
+$ sudo -i           # now every command is running as root
+# ... hours later, you forget and run something destructive
+```
+
+If you make a habit of running as your normal user by default, the rare occasions you do need `sudo` will stand out, and you will give them the care they deserve.
 
 ## Workflow patterns for students
 
 ### Pattern 1: "enter a project, run, exit"
 
-1.  `cd` into a project folder.
+Almost every command-line session on a project follows the same shape, and giving that shape a name makes it easier to do the same way every time. The pattern is *enter, confirm, run, save, exit*, and it looks like this:
 
-2.  List files; confirm you are in the right place.
+```bash
+$ cd ~/Courses/INFO-3010/Project        # 1. enter the project
+$ pwd                                    # 2. confirm where you are
+/Users/you/Courses/INFO-3010/Project
+$ ls                                     # 3. confirm what's there
+README.md   data/   notebooks/   src/
+$ python src/clean.py                    # 4. run the command
+$ ls data/processed/                     # 5. verify the output
+cleaned.csv
+```
 
-3.  Run a command (script, notebook server, tests).
+Every step exists for a reason. The `cd` pins you to a stable project root so that every relative path in every script resolves the same way. The `pwd` and `ls` are a thirty-seconds-of-paranoia check that catches "wrong directory" before it turns into "file not found" or, worse, "overwrote the wrong file." Running the command is the actual work; listing the output directory afterward confirms that the command actually produced the files it promised instead of failing silently. And exiting cleanly — closing the terminal or running `deactivate` on any active virtual environment — leaves the next session with a clean slate instead of carrying state you will forget about.
 
-4.  Save outputs into a clear directory.
-
-5.  Exit cleanly.
+The value of having a habitual pattern is that it does not depend on whether you are tired or distracted. Once the pattern is muscle memory, you do it even when you are not paying attention, and the small disasters that come from skipping steps stop happening.
 
 ### Pattern 2: creating a reproducible command log
 
--   Keep a `README.md` or `notes.txt` with the commands needed to reproduce results.
+After you run a command successfully, write down what you ran. This sounds like overkill until the first time you try to reproduce a result three weeks later and discover that "the script I ran on Tuesday" is not the same as "the script I ran on Wednesday with a slightly different flag." The fix is to keep a plain-text log of the commands that produced each meaningful artifact, either in the project's `README.md` or in a dedicated `notes.txt` next to the output.
 
--   Record inputs, outputs, and environment assumptions.
+```markdown
+## How to reproduce data/processed/cleaned.csv
+
+1. Ensure the virtual environment is active:
+   ```bash
+   source .venv/bin/activate
+   ```
+
+2. Confirm raw input exists:
+   ```bash
+   ls data/raw/survey.csv
+   ```
+
+3. Run the cleaning script:
+   ```bash
+   python src/clean.py --input data/raw/survey.csv --output data/processed/cleaned.csv
+   ```
+
+Produces: `data/processed/cleaned.csv` (expected ~5 MB, ~18,000 rows).
+```
+
+A reproducible log has three pieces. It records the **inputs** (which files the command reads, which environment is active), the **command itself** including every flag, and the **outputs** (what should exist afterward, and ideally how big it should be). With those three pieces, any future reader — including you — can retrace the work without guessing. The log belongs in version control alongside the code, because a script is only as reproducible as the instructions for running it.
 
 ### Pattern 3: safe cleanup
 
--   Identify targets with search and preview.
+Cleanup is the operation where beginner command-line disasters cluster, because it combines "I am about to delete something" with "I am not fully sure what I am deleting." The safe-cleanup pattern is designed to separate those two steps: figure out what you are about to remove, *then* remove it, and never let a single command do both.
 
--   Archive important outputs.
+```bash
+# 1. Identify and preview: what would be removed?
+$ find . -name "*.tmp" -type f
+./notebooks/draft.tmp
+./data/processed/intermediate.tmp
 
--   Delete with care; verify afterward.
+# 2. Archive anything you might want later
+$ mkdir -p archive/2026-04-10
+$ cp data/processed/*.csv archive/2026-04-10/
+
+# 3. Delete with care, using the exact list from step 1
+$ find . -name "*.tmp" -type f -delete
+
+# 4. Verify the delete did what you expected
+$ find . -name "*.tmp" -type f
+$           # empty output: no more .tmp files
+```
+
+The four steps are: identify, archive, delete, verify. Identification uses search and preview (`ls`, `find`, `echo *glob*`) so you can see the targets as a list before anything irreversible happens. Archiving copies anything you think you might want later into a dated folder — it costs almost nothing and prevents the "oh no, I needed that" moment. Deletion runs the actual removal, ideally against the exact same list the identification step produced. Verification runs the identification step again to confirm the targets are gone and nothing extra has joined them. Follow this pattern even on "obvious" cleanups, and the worst case of a mistake is that you have to restore a file from the archive folder rather than from a backup you hope exists.
 
 ## Troubleshooting playbook
 
 ### Common errors and what they mean
 
-`command not found`
+A few error messages account for the overwhelming majority of everyday terminal problems, and once you recognize them, most of the time you can fix the issue yourself in under a minute. The key is to read the error literally — the shell is telling you exactly what went wrong — and match it to the right diagnostic move.
 
-:   Program not installed or PATH misconfigured.
+**`command not found`** means the shell searched every directory on your `$PATH` and could not find a program with the name you typed. There are three reasons this happens, roughly in order of likelihood. First, you might have a typo (`pthon` instead of `python`). Second, the program might not be installed — a fresh machine, a new virtual environment, or a tool you forgot to `pip install`. Third, the program is installed but the directory that contains it is not on your `PATH`, which is especially common after installing a new Python or a language version manager.
 
-`No such file or directory`
+```bash
+$ pthon --version
+zsh: command not found: pthon       # typo — fix the spelling
 
-:   Wrong path, wrong working directory, or typo.
+$ python --version                   # confirm python is actually there
+$ which python                       # confirm where it resolves to
+```
 
-`Permission denied`
+**`No such file or directory`** means the command ran but it cannot find the file you pointed it at. The culprit is almost always one of three things: the file name is spelled wrong (case-sensitive on macOS and Linux!), you are in the wrong directory so a relative path does not resolve where you expect, or the file has a hidden extension like `.csv.txt` that the GUI was disguising.
 
-:   Insufficient rights; avoid reflexive `sudo`.
+```bash
+$ python src/Clean.py
+python: can't open file 'src/Clean.py': [Errno 2] No such file or directory
+$ ls src/                             # what's actually in src/?
+clean.py    __init__.py
+$ python src/clean.py                 # lowercase filename
+```
 
-`Is a directory`
+**`Permission denied`** means the file exists and the command tried to access it, but the operating system refused. The right response is almost *never* to prepend `sudo`. The right response is to run `ls -l` on the file and figure out *why* you do not have permission. Is it owned by a different user? Then fix the ownership instead of running as root. Is it in a system directory you should not be writing to? Then move the work into your own home folder.
 
-:   Command expected a file.
+```bash
+$ ./deploy.sh
+zsh: permission denied: ./deploy.sh
+$ ls -l deploy.sh                     # is it marked executable?
+-rw-r--r-- 1 you staff 1234 Apr 10 deploy.sh
+$ chmod +x deploy.sh                  # make it executable — no sudo needed
+```
+
+**`Is a directory`** means the command expected a regular file but you gave it a directory. The fix is to add the filename inside the directory, or to use a flag like `-r` (for `cp` and `rm`) that tells the command to operate recursively on everything beneath the directory.
+
+```bash
+$ cat data/                           # cat expects a file
+cat: data/: Is a directory
+$ cat data/survey.csv                 # point it at a file
+$ ls data/                            # or use the right tool for a directory
+```
 
 ### A disciplined response
 
-1.  Re-run the command slowly; check spelling.
+When a command fails and the error message is not immediately obvious, the temptation is to guess — retype the command with a small tweak and hope. That guessing spiral is where most stuck sessions happen. The alternative is a short, disciplined sequence you run every time, in order, without skipping steps:
 
-2.  Print current directory; list files.
+1.  **Re-read the command and the error.** Literally read what you typed aloud and what came back. A surprising fraction of bugs are typos that become obvious the moment you slow down.
 
-3.  Confirm paths and file extensions.
+2.  **Print your current directory and list its contents.** `pwd` tells you where you are; `ls` (or `ls -la` for more detail) tells you what is there. Ninety percent of "file not found" errors are resolved by this one step — either you are in the wrong place, or the file has a name you did not expect.
 
-4.  Consult `–help` or `man`.
+3.  **Confirm paths and file extensions explicitly.** If the error mentions a file, use `ls` to verify the file exists with exactly the name and extension the command is expecting. Pay special attention to hidden extensions (`.csv.txt`), case-sensitivity, and trailing spaces.
 
-5.  If still stuck: create a minimal reproduction and ask a precise question.
+4.  **Consult `--help` or `man` for the command.** When you are sure the inputs are right but the command is still failing, the problem might be that you are using a flag incorrectly. `command --help` usually answers this in one screen; `man command` gives the full reference.
+
+5.  **If you are still stuck, build a minimal reproduction and ask a precise question.** Strip the problem down to the shortest possible command that still shows the error, capture the exact error message, and include the output of `pwd`, `ls`, and `<tool> --version`. A question posed that way is almost always answerable, whether you are asking a classmate, a forum, or an AI assistant — and often the act of assembling it is enough to make the answer obvious on its own. (@sec-asking-questions covers this in more depth.)
+
+```bash
+# A minimal reproduction template to share when asking for help
+$ pwd
+/Users/you/Courses/INFO-3010/Project
+$ python --version
+Python 3.11.8
+$ ls src/clean.py
+src/clean.py
+$ python src/clean.py
+Traceback (most recent call last):
+  File "src/clean.py", line 12, in <module>
+    ...
+```
+
+Disciplined debugging is not glamorous, but it is reliable, and it is what separates people who lose an hour to a mystery error from people who spend two minutes and keep working.
 
 ## Worked examples
 

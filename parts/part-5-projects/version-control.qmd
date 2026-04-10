@@ -72,39 +72,56 @@ A **pull request** (PR, sometimes called a *merge request* on GitLab) is GitHub'
 
 ### Use cases
 
--   Recover from mistakes (accidental edits, deletions).
+The most immediate payoff of version control is **recovery from mistakes**. You delete a file by accident, or you rewrite a function and realize two hours later that the old version was right. Without Git, those mistakes are permanent — or at least they cost you however long it takes to retype everything. With Git, you run `git checkout` or `git restore` and the old version comes back exactly as it was. That safety net alone is worth learning the tool, even for solo projects.
 
--   Understand what changed and when.
+Beyond recovery, version control gives you a clear answer to *"what changed, and when?"*. Every commit has an author, a timestamp, and a message explaining why the change was made. A week from now, when you open a file and wonder why on earth a certain line looks the way it does, `git log` and `git blame` tell you exactly who wrote it and what commit introduced it. On a team, this is how you avoid silently trampling each other's work: everyone's edits live in tracked history instead of whatever version happened to be emailed around last.
 
--   Collaborate without overwriting.
-
--   Create an audit trail for decisions.
+The third reason, which matters most for coursework and research, is **audit trail**. Your commit history is a record of decisions — *"switched from mean to median imputation here, see issue #42"*, *"fixed the off-by-one error in the date parser"*. Six weeks later, when you are writing up your results or answering a reviewer's question, that history is how you reconstruct what you did and why. It is also how you *prove* to a collaborator, instructor, or future employer that your work is yours.
 
 ### What to version and what not to version
 
--   Version: code, notebooks (with discipline), docs, small configuration files.
+As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and `.gitignore`, and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git's line-by-line diffing works beautifully on text, and the storage cost is negligible.
 
--   Avoid committing: secrets, credentials, large raw datasets (unless instructed), generated artifacts.
+Do **not** version a short, specific list of things. **Secrets and credentials** — API keys, database passwords, `.env` files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see @sec-secrets for why, and how to recover if it happens). **Large raw datasets** — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every `git clone` slow forever. **Generated artifacts** — compiled binaries, cached model files, HTML output, `__pycache__` directories — should be reproducible from your code, which means they do not need to be versioned; `.gitignore` is where you list them. And **environment folders** — `.venv/`, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (`requirements.txt`, `environment.yml`) is the thing that goes in Git.
 
 ## Getting started: create or clone
 
 ### Initialize a repository (local)
 
--   When you start a project from scratch.
+When you are starting a project from scratch — a blank folder, no code yet — `git init` turns that folder into a Git repository. Run it inside the directory you want to track, and Git creates the hidden `.git/` folder that stores all your history. Before your first commit, add two files that every project should have from day one: a `README.md` that explains what the project is, and a `.gitignore` that tells Git which files to *never* track (see `Special considerations for data science projects` below for a starter `.gitignore`).
 
--   Add a `README.md` and a reasonable `.gitignore` early.
+```bash
+mkdir housing-audit && cd housing-audit
+git init
+# ... create README.md and .gitignore ...
+git add README.md .gitignore
+git commit -m "Initialize repository"
+```
+
+Making those two files your *first* commit matters more than it sounds. It establishes the project's intent in writing, and it ensures the `.gitignore` is active before you accidentally commit a `.venv/` folder or a 2 GB dataset. Do not skip this step with the promise of "I'll add the README later" — later never comes, and by the time you remember, your commit history is cluttered with junk.
 
 ### Clone an existing repository
 
--   When the course/lab provides starter code.
+When a course, lab, or open-source project gives you starter code, you do not initialize — you **clone**. `git clone` downloads the entire repository, including every commit in its history, into a new folder on your computer.
 
--   Understand that cloning includes full history.
+```bash
+git clone https://github.com/course-org/ds101-starter.git
+cd ds101-starter
+```
+
+What you get is a *full* copy, not just a snapshot of the current state. That is what "distributed version control" means: your clone is a complete, self-contained repository with the entire history, not a thin reference to a server. You can work offline, inspect old commits, create branches, and even reconstruct the project if the server disappears. The trade-off is that cloning a repository with a lot of history (or a lot of committed binary files) can be slow and take real disk space — which is one more reason not to commit large files.
 
 ### First-time setup (identity and defaults)
 
--   Set your name/email.
+Before your first commit on a new machine, tell Git who you are. Git stamps every commit with an author name and email, and if you skip this step you will either get an error on your first commit or — worse — end up with a history full of commits attributed to `root@your-laptop`.
 
--   Choose a default branch name consistent with the course/lab.
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.edu"
+git config --global init.defaultBranch main
+```
+
+Use the same email address you use on GitHub (or the email your course instructor expects), so commits made locally are correctly associated with your online account. The `init.defaultBranch main` line sets the name of the default branch in every new repository you create; `main` is the modern convention and matches what almost every course and open-source project uses today. These settings live in `~/.gitconfig` and only need to be run once per machine.
 
 ## Daily Git workflow (the minimum viable loop)
 
@@ -146,119 +163,164 @@ That is the entire daily loop: status, diff, add, commit, push, pull. Master tho
 
 ### Why branches
 
--   Keep `main` stable.
+Branches exist so that work in progress does not contaminate the version of the project that everyone else depends on. The idea is simple: `main` is the branch that always works. Every new feature, every bug fix, every experiment, happens on its own short-lived branch. You make your changes, you test them, you open a pull request, it gets reviewed, and only then does the work land on `main`. Anyone who clones the project at any time gets a working copy — no half-written functions, no broken imports.
 
--   Work on features and fixes in isolation.
+The second reason branches matter is **isolation**. Two people can work on two different features simultaneously without stepping on each other's toes, because their commits live on separate branches. When both are ready, Git merges them together — and if they touched the same lines, Git tells you about the conflict instead of silently choosing a winner. Without branches, parallel work on a shared file is a recipe for lost changes. Branches also let you experiment safely: create a branch called `try-new-parser`, make a mess, and if it does not pan out, just delete the branch. Nothing on `main` was ever at risk.
 
 ### A standard branch workflow
 
-1.  Update `main`.
+The workflow for almost every change, from a one-line typo fix to a multi-day feature, is the same five-step loop:
 
-2.  Create a new branch with a descriptive name.
+1.  **Update `main`** with `git switch main && git pull` so you start from the latest version.
+2.  **Create a new branch** with a descriptive name — `fix-date-parser`, `add-missing-tests`, `issue-42-cleanup-nulls` — so teammates (and future-you) can tell what is in it.
+3.  **Make commits on that branch**, one logical change at a time, following the daily Git loop above.
+4.  **Open a pull request** on GitHub as soon as there is something to discuss, even if the work is not finished (draft PRs are for exactly this).
+5.  **Merge after review**, once at least one other person has looked at the diff and tests pass.
 
-3.  Make commits on that branch.
+```bash
+git switch main
+git pull
+git switch -c fix-date-parser
+# ... edit files, run tests ...
+git add src/parsers.py tests/test_parsers.py
+git commit -m "Fix date parser off-by-one for February"
+git push -u origin fix-date-parser
+# Then open a PR on GitHub.
+```
 
-4.  Open a PR.
-
-5.  Merge after review.
+The `-u` flag on your first push tells Git "from now on, this local branch is linked to this remote branch", so subsequent `git push` and `git pull` commands do not need the branch name.
 
 ### Merge vs rebase (novice policy)
 
--   **Merge** preserves history of parallel work.
+When you are ready to integrate your branch with `main`, Git gives you two strategies. A **merge** creates a new commit — the *merge commit* — that ties the two branches together and preserves the full history of what each branch did in parallel. A **rebase** rewrites your branch's commits so they appear to have been created *on top of* the latest `main`, producing a linear history with no branch points. The result is cleaner-looking but the history is edited: the commit hashes change, and the original order of events is gone.
 
--   **Rebase** rewrites commits to create a linear story.
-
--   Student default: use merges unless your instructor/team specifies a rebase policy.
+For student work, use **merges** by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the "cluttered" history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (`git rebase` on a branch that other people have already pulled can destroy their work), and the handbook's advice is to defer that skill until a specific project policy asks for it. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.
 
 ### Undo safely (intro)
 
--   Undo a working-tree change vs undo a commit are different.
+Git gives you several "undo" commands, and the important thing is that they undo different things at different stages. If you edited a file and have not staged or committed it, you want `git restore <file>` to throw away the unsaved edits and bring back the last committed version. If you already staged a change with `git add` but want to unstage it, `git restore --staged <file>` puts it back into the working tree without losing your edits. If you already committed something and want to undo the commit while keeping the changes around, `git reset --soft HEAD~1` moves the branch pointer back one commit and leaves your work in the staging area.
 
--   Prefer "make a new commit that fixes it" over rewriting shared history.
+```bash
+git restore src/broken.py            # throw away unstaged edits
+git restore --staged src/broken.py   # unstage without losing edits
+git reset --soft HEAD~1               # undo last commit, keep changes
+```
+
+The rule that matters most when you are undoing things is this: **prefer "make a new commit that fixes it" over "rewrite history."** If the problematic commit has already been pushed to a shared remote, rewriting history with `git reset --hard`, `git rebase`, or `git push --force` can delete work that your teammates have already pulled. Instead, write a new commit that reverses the mistake (`git revert <sha>` does this for you automatically), push it normally, and leave the original in the history. It is uglier but safe. History rewriting is a tool for branches no one else is looking at yet.
+
+::: {.callout-warning}
+Never run `git push --force` on `main` or any branch your teammates share. If you genuinely need to rewrite history on your own feature branch, use `git push --force-with-lease`, which refuses to overwrite if someone else has pushed in the meantime. On a shared branch, force-pushing is how you erase a collaborator's work.
+:::
 
 ## Remotes: fetch, pull, push
 
 ### What these commands do conceptually
 
--   `fetch`: download remote history without changing your current branch.
+Three commands move work between your local repository and a remote one, and it helps to understand exactly what each one does. `git fetch` downloads the latest commits from the remote into your local copy, but it **does not change the files in your working tree**. It is the safest of the three: fetch, look at what came in, then decide what to do with it. After a fetch, you can run `git log main..origin/main` to see exactly which new commits the remote has that you do not.
 
--   `pull`: fetch + merge (or fetch + rebase).
+`git pull` is `git fetch` followed by a merge into your current branch. It is the convenient one-stop command you will use most of the time, but it is not magic — if the remote has changes that conflict with yours, `pull` will drop you into a merge conflict just like any other merge. `git push` goes the other direction: it uploads your local commits to the remote so other people can see them and so your work is backed up. Push only affects the branch you are currently on, and only uploads commits the remote does not already have.
 
--   `push`: upload your commits to the remote.
+```bash
+git fetch origin               # see what is on the remote without merging
+git pull                       # fetch + merge into current branch
+git push                       # upload current branch's commits to origin
+```
 
 ### The drift problem
 
--   If multiple people push, your local copy can become stale.
+On a team, multiple people are pushing to `main` every day. If you branched off `main` on Monday and do not look at it again until Friday, your local copy is now four days behind the world. This is "drift," and the longer you let it accumulate, the worse your eventual merge conflict becomes. Someone renamed the function you depend on; someone else restructured a file you were about to edit; the test you were writing now depends on an API that no longer exists.
 
--   Best practice: fetch/pull frequently; push small, complete units.
+The habit that prevents drift is simple: **pull before you start new work, and push small, complete units often**. Specifically, run `git pull` on `main` before every new branch, rebase or merge `main` into your long-lived feature branch at least once a day, and push your commits as soon as they are coherent. Small, frequent synchronizations mean every conflict is small. A once-a-week "catch-up" sync is where the scary merge conflicts live.
 
 ## GitHub fundamentals
 
 ### Repository anatomy on GitHub
 
--   Code view, issues, pull requests, actions, releases (@sec-automation covers GitHub Actions and CI in depth).
+A GitHub repository page has several tabs, and each one is a different surface your team uses for a different job. **Code** is the file browser — the current state of the default branch, with a rendering of the README at the bottom. **Issues** is where bugs, tasks, and open questions live; it is the project's to-do list and discussion forum. **Pull Requests** is where proposed changes are reviewed and merged. **Actions** is where automated workflows run on every push (@sec-automation covers GitHub Actions and CI in depth). **Releases** is where you publish tagged, named versions of your project that other people can download and cite.
 
--   The README is the front door.
+The single most important file in any repository is the **README**, because it is the front door. When someone lands on your repository for the first time — a classmate, a reviewer, a potential employer, or future-you — the README is what tells them what the project is, how to install it, and how to run it. If the README is missing or stale, every other tab is less useful because readers have no orientation. Invest in the README first and maintain it as part of the work (see @sec-project-management for what a good README contains).
 
 ### Pull requests: the core collaboration primitive
 
--   What a PR contains: commits, file diffs, discussion.
+A pull request is a proposal: "I would like these commits from this branch to become part of this other branch." Mechanically, a PR bundles together three things — the commits you made, the file-level diff those commits produce, and the discussion thread where reviewers and the author work out whether the change should merge. All three live on the same page, which is why PRs are the natural place for code review.
 
--   Draft PRs for early feedback.
-
--   Keep PRs small and focused.
+Two habits make PRs actually work. First, **open a draft PR early**, even before the code is finished, if you want feedback on the approach. A draft PR signals "do not merge this yet, but please comment." Second, **keep PRs small and focused on a single idea**. A PR that touches 30 files across three unrelated changes is almost impossible to review meaningfully — reviewers will skim and rubber-stamp, or they will refuse. A PR that touches five files for one clear purpose gets read carefully and merged quickly.
 
 ### PR merge strategies (team policy)
 
--   Merge commit vs squash-and-merge vs rebase-and-merge.
+GitHub offers three ways to merge a PR, and each produces slightly different history. **Merge commit** preserves every commit on the branch and adds a merge commit tying them into `main` — the most honest record of how the work happened. **Squash-and-merge** flattens all the PR's commits into a single commit on `main`, which keeps `main`'s history linear and clean but loses the fine-grained steps. **Rebase-and-merge** replays each commit onto `main` as if they had been written there directly, producing a linear history with the original commits preserved but without a merge commit.
 
--   Student guidance: pick one strategy per repository and be consistent.
+There is no "best" strategy — each has trade-offs. The important thing is to **pick one and be consistent within a repository**. Mixing strategies across PRs makes the history confusing. For student projects, squash-and-merge is a reasonable default because it means sloppy work-in-progress commits on a branch become a single clean commit on `main`. Whatever the policy is, you usually configure it once in the repository settings on GitHub, and then every PR uses it.
 
 ### Reviews and commenting best practices
 
--   Comment on code with context: what, why, and suggested change.
+Good review comments share three traits: they point to a specific line or region, they explain the *why*, and they propose a concrete direction. "This is wrong" is useless; "This assumes the column is never null, but the source data has about 3% nulls, so this line will crash on real input — consider adding a dropna or fillna before this step" is actionable. Aim for that level of specificity on every comment you leave.
 
--   Prefer actionable, specific feedback.
-
--   Separate 'nit'' (minor style) from 'blocker'' (correctness).
-
--   When you respond, acknowledge and summarize what you changed.
+It also helps reviewers and authors to tag the *kind* of feedback a comment is. A simple taxonomy — **Blocker** (must fix before merge, correctness or security), **Suggestion** (a better alternative, non-blocking), **Question** (asking the author to clarify intent), **Nit** (a minor style or naming point, explicitly non-blocking) — lets the author know what actually has to change before the PR can merge versus what is opinion. When you are the author responding to reviews, always reply to each thread explicitly: either "changed in commit abc123" or "kept as-is because..." so the reviewer can see the loop closed. Chapter @sec-collaboration has more on this.
 
 ### Linking work: issues $\leftrightarrow$ PRs
 
--   Use issues to track tasks and decisions.
+GitHub notices when you reference an issue number in a PR description, a commit message, or another issue's comments, and it automatically creates a link between them. Take advantage of this: every PR should reference the issue(s) it addresses, and every issue should be closed with a summary that links to the PR that resolved it. That cross-referencing turns the repository into a searchable, navigable history of *why* changes were made, not just *what* they were.
 
--   Reference issues in PR descriptions and commit messages.
+```markdown
+## Summary
+Fix the off-by-one in the date parser so February rolls over correctly.
+
+Closes #42.
+```
+
+The magic words — `Closes #42`, `Fixes #42`, or `Resolves #42` — will cause GitHub to automatically close issue #42 when the PR is merged. That single line is how you keep the issue tracker honest without any manual bookkeeping.
 
 ## Forking workflow (contributing without direct write access)
 
 ### Fork vs clone
 
--   Fork creates your copy on GitHub.
+Forking and cloning sound similar but do different things. **Cloning** downloads a repository to your computer — it is a local-vs-remote operation. **Forking** creates a personal copy of someone else's repository on GitHub, under your own account — it is a GitHub-to-GitHub operation. You fork when you do not have permission to push directly to the original repository, which is the normal situation for open-source projects and for most course repositories you did not create yourself.
 
--   Clone downloads a repository to your computer.
+The standard pattern is to fork *and* clone: fork the repo on GitHub to get `github.com/your-name/project`, then clone your fork to your laptop to get a working copy you can actually edit. From there, the fork is the remote you have write access to (`origin`), and the original project is a second read-only remote (`upstream`) you use to stay in sync.
 
 ### The standard fork contribution flow
 
-1.  Fork the repository.
+The full six-step workflow for contributing to a repository you do not own:
 
-2.  Clone your fork.
+1.  **Fork** the repository on GitHub by clicking the Fork button. You now own a copy at `github.com/your-name/project`.
+2.  **Clone** *your fork* (not the original) to your computer.
+3.  **Add `upstream`** as a second remote so you can pull updates from the original project.
+4.  **Create a feature branch** for your change (never work directly on your fork's `main`).
+5.  **Push** the feature branch to your fork.
+6.  **Open a PR** from your fork's feature branch *to the original repository's* `main`.
 
-3.  Add `upstream` remote pointing to the original repo.
+```bash
+# After forking on GitHub:
+git clone https://github.com/your-name/project.git
+cd project
+git remote add upstream https://github.com/original-owner/project.git
+git remote -v
+# origin    https://github.com/your-name/project.git  (fetch/push)
+# upstream  https://github.com/original-owner/project.git (fetch/push)
 
-4.  Create a feature branch.
+git switch -c fix-typo-in-readme
+# ... make changes ...
+git push -u origin fix-typo-in-readme
+# Then open a PR on GitHub targeting original-owner/project main.
+```
 
-5.  Push to your fork.
-
-6.  Open a PR from your fork to upstream.
+The one subtle point is that your PR goes from your fork's feature branch *into* the original repository's `main`. GitHub's PR creation page handles this automatically once both sides exist — you just confirm the source branch (yours) and the target branch (theirs).
 
 ### Keeping your fork up to date
 
--   Fetch from upstream.
+Forks get stale. While you are working on your feature, the original project continues to receive commits, and your fork's `main` branch will fall behind. If you let the drift get too large before you sync, your eventual PR will conflict with recent changes and reviewers will ask you to rebase.
 
--   Merge (or rebase) into your branch.
+The fix is to periodically pull from `upstream` into your local `main`, then push the updated `main` to your fork. Do this before you start any new branch:
 
--   Resolve conflicts early rather than letting them accumulate.
+```bash
+git switch main
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
+
+Once your local and forked `main` branches are current, you can branch off them with confidence. If you have a long-lived feature branch, merge the updated `main` into it the same day you see upstream has moved. Resolving a small conflict today is orders of magnitude easier than resolving a month's worth of accumulated drift when you are trying to get a PR over the finish line.
 
 ## Merge conflicts: a disciplined resolution playbook
 
@@ -306,29 +368,66 @@ Delete the conflict markers when you are done — they are not valid code and Gi
 
 ### `.gitignore` hygiene
 
--   Ignore environment folders (`.venv/`, conda env dirs).
+Data science projects accumulate files that *should not* be in Git — environment folders, caches, temporary outputs, secrets — and the tool for keeping them out is `.gitignore`. The file sits at the root of your repository and lists patterns that Git will refuse to track. Add it as one of your first commits, and adjust it as the project grows.
 
--   Ignore caches and generated outputs (`__pycache__`, `.ipynb_checkpoints/`).
+A reasonable starter `.gitignore` for a Python data-science project looks like this:
 
--   Ignore secrets files (`.env`).
+```text
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+.conda/
+
+# Secrets and local config
+.env
+.env.local
+credentials.json
+
+# Data (commit small reference data only; large files live elsewhere)
+data/raw/
+data/interim/
+data/processed/
+*.csv
+!data/examples/*.csv
+
+# Editor and OS junk
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+```
+
+The `!` prefix means "un-ignore this" — it is how you exclude a pattern from a broader rule. The block above ignores every `*.csv` except the ones under `data/examples/`, which is a useful trick when you want most data out of Git but a small fixture committed as test input. The `.vscode/*` / `!.vscode/settings.json` pair does the same for a shared editor config.
 
 ### Notebooks in Git
 
--   Notebooks are JSON; diffs can be noisy.
+Jupyter notebooks are JSON files, not plain text. They contain your code, your markdown, *and* your cell outputs (including any figures, tables, and printed values) all in one big structured blob. Git can diff them, but the diffs are noisy, hard to read in a PR, and prone to spurious changes that appear every time you re-run a cell.
 
--   Practices: clear unnecessary outputs, keep cells ordered, consider paired text formats.
+Three practices keep notebooks manageable in Git. **First, clear outputs before committing** — either manually via "Restart & Clear Outputs" in Jupyter, or automatically with a pre-commit hook using `nbstripout` (@sec-automation covers pre-commit hooks). The resulting notebook diffs capture only the code and prose you actually changed. **Second, keep cells in execution order** from top to bottom — a notebook with cells executed `[3]`, `[1]`, `[5]` is confusing for reviewers and unreliable when rerun. **Third, treat notebooks as narrative and keep heavy code in `src/`** — import helper functions from versioned Python modules rather than redefining them in every notebook. That way notebook diffs stay small and the code that really matters lives in files Git can review cleanly.
 
 ### Large files and datasets
 
--   Avoid committing large raw data unless instructed.
+Do not commit large raw datasets to Git. Git was designed for source code — thousands of small text files — and it does not compress or handle multi-megabyte binary files well. A committed 500 MB CSV makes every `git clone` slow forever, because Git keeps the file in history even if you delete it later. A committed 2 GB model file can push your repository past GitHub's size limits.
 
--   Prefer storing raw data outside the repo and documenting retrieval.
+The right pattern is to **store raw data outside the repository** — in a cloud bucket, a shared drive, a course-provided URL, or a dedicated data-storage service — and commit only the *retrieval script* that downloads it into your local `data/raw/` folder. That way the code to reproduce the dataset is versioned, the dataset itself is not, and a new collaborator can run `make data` or `python scripts/download_data.py` to populate their local copy. If you really do need to version large files inside a repository, look into **Git LFS** (Large File Storage), which is a separate system that stores big blobs alongside Git instead of inside it — but it is an advanced tool and overkill for most student projects.
 
 ### Releases and tags (optional)
 
--   Tag a version that corresponds to a submission or report.
+A **tag** is a name you attach to a specific commit that does not move as you continue to commit. Branches move; tags do not. Git tags are how you mark "this is the exact version of the project I submitted for the midterm" or "this is the version of the code used in the published figure," so that you — or anyone else — can come back months later and reproduce exactly that state:
 
--   Helps you reproduce exactly what was delivered.
+```bash
+git tag -a v1.0-midterm -m "Midterm submission, 2025-03-10"
+git push origin v1.0-midterm
+```
+
+On GitHub, you can promote a tag to a **release**, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference `v1.0-midterm` and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.
 
 ## Worked examples (outline)
 

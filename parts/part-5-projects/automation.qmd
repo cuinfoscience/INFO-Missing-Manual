@@ -103,151 +103,437 @@ The combination of clean exits, idempotence, explicit I/O, and logging is what t
 
 ## Repeatable tasks with `make` (and the idea of rebuilds)
 
-### Why use a task runner/build tool
+### Why use a task runner
 
--   Memorability: `make lint` beats "remember five commands."
+The single-sentence pitch for `make`: it turns "remember to run these five commands in this order, from this directory, with these flags" into `make report`. That is the whole value proposition, and it is enough on its own to justify learning it for any project that runs more than two scripts.
 
--   Standardization: everyone runs the same targets.
+Three benefits compound as a project grows. **Memorability** — `make test`, `make lint`, `make report` are short, consistent names you will actually remember a month later. **Standardization** — everyone on the team runs the same commands with the same flags, so "it works on your machine but not mine" stops happening. **Incremental rebuilds** — the `make` tool was originally designed for compiling large C programs where rebuilding everything takes hours, and its core feature is "do not rebuild outputs whose inputs have not changed." For a data pipeline, this is exactly the behavior you want: change one script and only the affected parts of the pipeline rerun.
 
--   Incremental rebuilds: do less work when inputs haven't changed.
+`make` is not the only task runner (`just`, `invoke`, `task`, and npm scripts all solve similar problems), but it is the one that is already installed on essentially every Unix machine you will ever touch, and it has been doing this job for forty years without breaking.
 
-### Makefile concepts
+### Makefile concepts: targets, prerequisites, recipes
 
-Target
+A `Makefile` is a plain text file listing **rules**. Each rule has three parts:
 
-:   What you want (e.g., `report.pdf`).
+```make
+target: prerequisites
+	recipe
+```
 
-Prerequisites
+A **target** is what you want to produce — a file like `reports/q3.html`, or a named command like `test`. **Prerequisites** are the files (or other targets) that the target depends on; `make` rebuilds the target whenever any prerequisite is newer than the target itself. The **recipe** is the shell commands that build the target — one command per line, each line indented with a literal **tab character** (not spaces — this is `make`'s most notorious pitfall).
 
-:   Inputs the target depends on.
+Here is a minimal real Makefile for a small data pipeline:
 
-Recipe
+```make
+# Makefile
+data/processed/sales.parquet: data/raw/sales.csv src/clean.py
+	python src/clean.py --input data/raw/sales.csv --output data/processed/sales.parquet
 
-:   Commands to build/update the target.
+reports/q3.html: data/processed/sales.parquet src/analyze.py
+	python src/analyze.py --input data/processed/sales.parquet --output reports/q3.html
+```
+
+Run `make reports/q3.html` and `make` figures out the dependency chain: to build the report, it needs `sales.parquet`; to build `sales.parquet`, it needs the raw CSV and `clean.py`. If the parquet file is already newer than both inputs, `make` skips the clean step entirely. If you change `clean.py`, `make` reruns both steps. This is the magic.
 
 ### Phony targets for "commands"
 
--   Targets that do not correspond to files (e.g., `test`, `clean`).
+Not every target corresponds to a file. `make test` and `make clean` are commands that do not produce a file named `test` or `clean` — they are just named shortcuts. To tell `make` "this target is a command, not a file," declare it as `.PHONY`:
 
--   Encourages a consistent interface.
+```make
+.PHONY: test clean format lint help
 
-### A student target set (recommended)
+test:
+	pytest tests/ -q
 
--   `make setup` (create env, install deps)
+clean:
+	rm -rf data/processed/ reports/ __pycache__/
 
--   `make format` (auto-format code)
+help:
+	@echo "Usage: make <target>"
+	@echo "  setup   — create venv and install dependencies"
+	@echo "  format  — auto-format code with ruff"
+	@echo "  lint    — static checks with ruff"
+	@echo "  test    — run unit and smoke tests"
+	@echo "  run     — execute the full pipeline"
+	@echo "  report  — generate figures and final report"
+	@echo "  clean   — remove generated artifacts"
+```
 
--   `make lint` (static checks)
+Without `.PHONY`, if you accidentally create a file or directory literally named `test`, `make` will think the target is already up to date and refuse to run it. Marking it `.PHONY` prevents that surprise.
 
--   `make test` (unit tests / smoke tests)
+### A recommended student target set
 
--   `make run` (execute pipeline)
+Convention matters more than cleverness here. Use these seven target names across your projects, and you will stop thinking about "what did I call this?" and just start typing:
 
--   `make report` (generate figures/tables)
+```make
+.PHONY: setup format lint test run report clean
 
--   `make clean` (remove generated artifacts)
+setup:
+	python -m venv .venv
+	. .venv/bin/activate && pip install -r requirements.txt
 
-### Incremental builds for data pipelines (intro pattern)
+format:
+	ruff format src/ tests/
 
--   Raw data → processed data → figures → report.
+lint:
+	ruff check src/ tests/
 
--   Each step becomes a target with prerequisites.
+test:
+	pytest tests/ -q
 
--   Benefit: change one input and only downstream targets rebuild.
+run:
+	python src/pipeline.py
+
+report: data/processed/results.parquet
+	python src/report.py
+
+clean:
+	rm -rf data/processed/ reports/ .pytest_cache/
+```
+
+With those seven names in every project, a new contributor who clones the repository can get productive in minutes: "`make setup`, then `make test`, then `make run`." They do not need to read the whole README to find the incantation; the Makefile *is* the incantation.
+
+### Incremental builds for data pipelines
+
+The pattern that pays off most for data work is one target per stage of the pipeline, with each stage declaring its inputs as prerequisites:
+
+```make
+RAW       := data/raw/sales.csv
+CLEAN     := data/processed/sales.parquet
+FEATURES  := data/processed/features.parquet
+REPORT    := reports/q3.html
+
+$(CLEAN): $(RAW) src/clean.py
+	python src/clean.py --input $(RAW) --output $(CLEAN)
+
+$(FEATURES): $(CLEAN) src/features.py
+	python src/features.py --input $(CLEAN) --output $(FEATURES)
+
+$(REPORT): $(FEATURES) src/report.py
+	python src/report.py --input $(FEATURES) --output $(REPORT)
+
+.PHONY: all
+all: $(REPORT)
+```
+
+Run `make all` and `make` walks the dependency chain in order. Now the magic kicks in:
+
+- Change `src/features.py`: `make` rebuilds features and report, but skips `clean` (because `sales.parquet` is still newer than its inputs).
+- Change the raw CSV: `make` rebuilds everything.
+- Change nothing: `make` says "Nothing to do for 'all'" and exits in milliseconds.
+
+The `$(CLEAN)` syntax defines a variable — it saves you from retyping the file path every time and makes the pipeline easier to read. On a small project this feels like overkill; on a mid-sized project it saves you minutes or hours per iteration and prevents the "I forgot to rerun the cleaning step after I changed the raw data" bug entirely.
 
 ## Scheduling scripts
 
-### Scheduling on macOS/Linux: cron (concept + safe usage)
+Once a task is scripted, the next capability is running it without you — every morning at 6 AM, every hour, every first-of-the-month. Both Unix and Windows ship with built-in schedulers that cover everything a student project will need.
 
--   Cron runs commands when time fields match.
+### Scheduling on macOS and Linux: `cron`
 
--   Teach: absolute paths, explicit environment, redirected logs.
+`cron` is the long-running background service that reads a "crontab" (a list of scheduled jobs) and runs each job when its time fields match the current time. Every user on a Unix system has their own crontab. Edit yours with:
 
--   Common novice bug: script works interactively but fails under cron due to PATH/env.
+```bash
+crontab -e      # opens your crontab in an editor
+crontab -l      # prints your current crontab
+```
 
-### Scheduling on Windows: Task Scheduler (concept + CLI)
+The format of each line is five time fields followed by the command to run:
 
--   Tasks can run periodically or at specific times.
+```text
+# ┌────── minute (0 - 59)
+# │ ┌──── hour (0 - 23)
+# │ │ ┌── day of month (1 - 31)
+# │ │ │ ┌── month (1 - 12)
+# │ │ │ │ ┌── day of week (0 - 6, Sunday = 0)
+# │ │ │ │ │
+  0 6 * * *   /home/agandler/projects/sales/run_pipeline.sh
+```
 
--   Teach: "Start in" directory, user account, and logging.
+That line runs the script every day at 6:00 AM. `*` means "any value." `*/15 * * * *` means "every 15 minutes." `0 * * * *` means "at the top of every hour." There are many cheat-sheets for writing cron expressions; <https://crontab.guru> will let you type an expression and explain in plain English when it will fire.
+
+**The single most common cron bug is environment.** When `cron` runs your script, it does *not* inherit your interactive shell's environment — it runs with a minimal `PATH`, no `PYTHONPATH`, no conda activation, no `LANG` — and a script that works perfectly when you run it by hand can fail mysteriously under `cron`. The symptom is usually "command not found" or "ModuleNotFoundError" for something that is clearly installed.
+
+The fix is to be explicit about everything the script needs. Write a wrapper script rather than calling Python directly from cron:
+
+```bash
+#!/usr/bin/env bash
+# ~/projects/sales/run_pipeline.sh
+set -euo pipefail
+
+# Be explicit about the working directory
+cd /home/agandler/projects/sales
+
+# Be explicit about the environment
+source .venv/bin/activate
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
+# Run the actual job, redirecting all output to a dated log
+mkdir -p logs
+timestamp=$(date +%Y%m%d-%H%M%S)
+python src/pipeline.py >> "logs/pipeline-${timestamp}.log" 2>&1
+```
+
+Then the crontab entry just runs the wrapper:
+
+```text
+0 6 * * *   /home/agandler/projects/sales/run_pipeline.sh
+```
+
+Three things are going right here: the wrapper `cd`s to a known directory, it activates the virtual environment so `python` finds the right packages, and it redirects both stdout and stderr to a log file you can read afterward. If the job fails at 6 AM tomorrow, the log file is what tells you why.
+
+### Scheduling on Windows: Task Scheduler
+
+Windows has its own equivalent, the **Task Scheduler**, which is both a GUI app and a command-line tool (`schtasks.exe`). The GUI is the friendlier place to start.
+
+Open "Task Scheduler" from the Start menu, click "Create Basic Task...", give it a name, pick a trigger (Daily, Weekly, When the computer starts...), pick an action ("Start a program"), and point it at the script you want to run. The two settings students most often get wrong are:
+
+- **"Start in (optional)"** — this is the working directory the task runs from. Leave it blank and your script runs from `C:\Windows\System32`, which is almost certainly not what you want. Set it explicitly to your project directory.
+- **"Run whether user is logged on or not"** and **"Run with highest privileges"** — these control whether the task runs in the background when you are logged out, and whether it has admin rights. For most student projects you want "Run whether user is logged on or not" (so it runs at 6 AM while you are asleep) and you do *not* want elevated privileges unless you have a specific reason.
+
+For scripted creation, `schtasks` on the command line does the same thing:
+
+```powershell
+schtasks /Create `
+  /TN "SalesPipeline" `
+  /TR "C:\Users\agandler\projects\sales\run_pipeline.bat" `
+  /SC DAILY /ST 06:00 `
+  /SD 04/10/2026
+```
+
+The `.bat` wrapper plays the same role as the `.sh` wrapper on Unix: set the working directory, activate the environment, run the script, and redirect output to a log file.
+
+```batch
+REM run_pipeline.bat
+cd /d C:\Users\agandler\projects\sales
+call .venv\Scripts\activate.bat
+python src\pipeline.py >> logs\pipeline.log 2>&1
+```
 
 ### Scheduling hygiene
 
--   Write logs to a known folder.
+Three habits make scheduled jobs maintainable:
 
--   Add timestamps to outputs.
+**Write logs to a known folder, and rotate them.** Every scheduled job should write its output somewhere you can find it later. A `logs/` directory in the project root is fine. If the job runs frequently, add a timestamp to the filename so you do not overwrite yesterday's log, and set up some kind of cleanup so the folder does not grow without bound — either a monthly `find logs/ -mtime +30 -delete`, or use `logrotate` on Linux.
 
--   Avoid running overlapping copies (lock files / "already running" check).
+**Add timestamps to outputs and include them in the log.** Start each log line with the date and time, so that when you look at a log a week later you can correlate events:
 
--   Alerting concept: what should happen if the job fails.
+```bash
+echo "$(date -Iseconds) starting cleaning step"
+python src/clean.py
+echo "$(date -Iseconds) cleaning done"
+```
+
+**Prevent overlapping runs with a lock file.** If your script sometimes takes longer than the interval between runs — a cron that fires hourly but a slow job that takes an hour and ten minutes — you can end up with two copies running at once and corrupting each other. Use a lock file to detect and refuse the overlap:
+
+```bash
+LOCK="/tmp/sales-pipeline.lock"
+if [ -e "$LOCK" ]; then
+    echo "$(date -Iseconds) another run is in progress; exiting" >&2
+    exit 0
+fi
+trap 'rm -f "$LOCK"' EXIT
+touch "$LOCK"
+# ...run the pipeline...
+```
+
+Finally, **decide what happens when the job fails.** The minimum is "write the failure to a log I actually read." A step up is "send me an email or a Slack message" — many small utilities like `mail` or webhook-based alert services can do this from a wrapper script. The worst pattern is "the job fails silently and I notice three weeks later," which is what happens when nobody is reading the logs.
 
 ## Rebuilds and repeatable workflows beyond `make`
 
 ### Task runners as interfaces
 
--   The main value is a stable command interface.
+The most important thing `make` gives a project is not the incremental rebuild logic — it is the **stable command interface**. `make test`, `make lint`, and `make report` become the canonical way to run those actions, and you can put that same vocabulary everywhere: in the README, in the CI workflow, in the PR template, in your own muscle memory. Any newcomer to the project learns six short commands and becomes productive.
 
--   Even if you do not use full dependency graphs, a task runner reduces friction.
+You do not need `make`'s dependency-graph features to get that benefit. Plenty of projects use `make` purely as a task runner — every target is `.PHONY`, none of them declare prerequisites, and the whole Makefile is just a list of named shortcuts. That is a completely reasonable use of the tool.
 
-### Artifacts vs caches (concept)
+If `make`'s syntax annoys you (the tab-vs-space rule genuinely trips people up), newer alternatives offer the same task-runner benefit without the historical baggage:
 
--   Cache: speed up by reusing dependencies.
+- **`just`** — a standalone task runner with a friendlier syntax, essentially "Makefile without the traps." Targets are listed in a `justfile` and run with `just <target>`.
+- **`invoke`** — a Python task runner where tasks are Python functions. Useful if you want complex logic inside a task.
+- **npm scripts** — if your project has a `package.json`, `npm run <script>` runs whatever is in the `scripts` block.
 
--   Artifact: save outputs of a run for inspection/download.
+Pick one and commit to it. The value is in having *a* standard interface for the project; the specific tool matters much less. For a Python data project where the only task-runner need is named shortcuts, `make` is the path of least resistance precisely because every machine already has it.
+
+### Artifacts vs caches
+
+As you start using CI and more complex workflows, you will run into two related concepts that are easy to confuse: **caches** and **artifacts**.
+
+A **cache** is a store of intermediate files you want to reuse across runs to make things faster. The canonical example is a pip package cache: instead of downloading and installing pandas from scratch every time CI runs, you cache the installed packages keyed on `requirements.txt`, so unchanged dependencies are restored from cache in seconds. Caches are optimizations — nothing breaks if the cache is empty, it is just slower.
+
+```yaml
+# GitHub Actions example — cache the pip download directory
+- uses: actions/cache@v4
+  with:
+    path: ~/.cache/pip
+    key: pip-${{ hashFiles('requirements.txt') }}
+```
+
+An **artifact** is an output of a run that you want to save, inspect, or share with other jobs or people. A PDF report, a CSV of results, a directory of logs, a wheel file for a package — these are all artifacts. Unlike caches, artifacts are meant to be consumed: you download them after the run, attach them to a release, or feed them into a later job.
+
+```yaml
+# GitHub Actions example — upload the built report as an artifact
+- uses: actions/upload-artifact@v4
+  with:
+    name: sales-report
+    path: reports/q3.html
+```
+
+The quick rule of thumb: **cache** the things you do not want to rebuild, **artifact** the things you want to look at. Confuse them and you will either waste space storing ephemeral build caches as long-lived artifacts or silently lose outputs that you assumed would be saved.
 
 ## Continuous Integration (CI): automation as a quality gate
 
-### What CI is (student definition)
+### What CI is, in one paragraph
 
--   Frequent integration into a shared branch.
+**Continuous integration** is the practice of having every change integrated into a shared branch be automatically verified by a build-and-test run. The two parts matter equally: *frequent integration*, which means small changes that land often (not month-long branches that merge in a single giant squash), and *automated verification*, which means that every push and every pull request triggers a workflow that runs your tests, your linter, and whatever other checks you care about. The result is a shared quality gate that everyone on the team passes through before their code reaches `main`, which catches breakages while they are still easy to fix — at the moment they are introduced, in the context of one small change, by the person who wrote the code.
 
--   Each integration is verified by an automated build/test.
+CI is the biggest single quality improvement most projects can make, and on GitHub it is free for public repositories.
 
--   Outcome: detect integration errors early.
+### CI events and triggers
 
-### CI events and triggers (GitHub Actions framing)
+CI systems run *workflows* in response to *events*. The two events that matter for students are **push** (code was pushed to any branch) and **pull_request** (a pull request was opened or updated). Almost every project wants both: push runs catch problems on long-running branches, and pull-request runs catch problems before code merges into `main`.
 
--   Run on push and pull requests.
+```yaml
+# .github/workflows/ci.yml
+name: CI
 
--   Use path filters to avoid unnecessary runs.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+```
 
-### Jobs, steps, runners
+The configuration above says: "run this workflow whenever something is pushed to `main`, or whenever a pull request targets `main`." That is the baseline every small project should start with.
 
--   A workflow is a set of jobs.
+For larger repositories, **path filters** let you skip CI runs that cannot possibly affect the outcome — for example, skip Python tests when only the README changed:
 
--   Jobs run on runners (virtual machines).
+```yaml
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/ci.yml'
+```
 
--   Steps are commands or reusable actions.
+Path filters are an optimization, not a correctness feature. Do not add them until you have a real "CI is too slow" problem.
+
+### Jobs, steps, and runners
+
+A **workflow** is a YAML file. It contains one or more **jobs**, which run independently (in parallel, by default). Each job runs on a **runner** — a fresh virtual machine that GitHub provisions for the duration of the job — and consists of **steps**, each of which is either a shell command or a reusable "action" from the marketplace.
+
+```text
+workflow ─── job: "test" ───── runner: ubuntu-latest
+                │                   │
+                │                   ├── step: checkout the code
+                │                   ├── step: set up Python
+                │                   ├── step: install dependencies
+                │                   └── step: run pytest
+                │
+                └── job: "lint" ──── runner: ubuntu-latest
+                                    ├── step: checkout the code
+                                    ├── step: set up Python
+                                    └── step: run ruff
+```
+
+Each job starts from a clean machine — nothing carries over from your previous run unless you explicitly restore a cache or download an artifact. This is a feature: CI enforces "does this work from scratch?" on every run, which is what catches "works on my machine" problems.
 
 ### A minimal CI workflow for students
 
-1.  Check out code.
+Here is a complete, working GitHub Actions workflow for a small Python project. Drop it in `.github/workflows/ci.yml` and commit; the next push runs the checks automatically.
 
-2.  Set up language/runtime.
+```yaml
+name: CI
 
-3.  Install dependencies.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-4.  Run format/lint checks.
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
 
-5.  Run tests (or smoke tests).
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
 
-6.  Save logs/artifacts if failures occur.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff pytest
+
+      - name: Lint
+        run: ruff check src/ tests/
+
+      - name: Format check
+        run: ruff format --check src/ tests/
+
+      - name: Run tests
+        run: pytest tests/ -q
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: logs/
+```
+
+Six real steps, each one named so that the CI results page tells you exactly which step failed. The lint, format-check, and test steps are your actual quality gate; the `if: failure()` at the end uploads your logs directory so you can download it and investigate when something breaks. That template is enough for 90% of student projects.
 
 ### CI performance hygiene
 
--   Dependency caching to speed up installs.
+A slow CI is a CI people learn to ignore, and an ignored CI is worse than no CI at all. Three habits keep it fast:
 
--   Matrix builds (optional): test multiple versions.
+**Cache your dependencies.** The `cache: pip` line in the `setup-python` action above restores your pip cache from a previous run keyed on `requirements.txt`. An install that took 90 seconds from scratch takes 5 seconds from cache. Do the same for conda caches, node_modules, or any other dependency store — every major action has a built-in cache option or works with the generic `actions/cache`.
 
--   Keep CI fast so it runs often.
+**Use matrix builds sparingly.** A matrix lets you run the same job across multiple versions of Python or multiple operating systems:
 
-### CI security basics (novice-appropriate)
+```yaml
+strategy:
+  matrix:
+    python-version: ["3.10", "3.11", "3.12"]
+```
 
--   Do not print secrets in logs.
+This is powerful for library authors who need to support many versions, but it multiplies your CI minutes. For a student project with one supported Python version, just pick that version and skip the matrix.
 
--   Understand the difference between untrusted PRs and trusted branches.
+**Aim for under five minutes per run.** If CI takes fifteen minutes, people push a change, switch to something else, and never come back to check. If it takes three minutes, they wait for it. The exact target depends on your tolerance, but "measure it and feel bad when it grows" is the right discipline. Common interventions when CI is slow: cache more aggressively, split slow tests into a separate job that only runs on `main`, or prune tests that take too long for what they prove.
 
--   Use least privilege for tokens and permissions.
+### CI security basics
+
+Three rules are enough for student projects:
+
+**Never print secrets in logs.** If you read an environment variable that contains a token and `echo` it to the terminal, CI logs capture it forever — and CI logs for public repositories are readable by anyone on the internet. Tokens and API keys should be passed to programs that need them, not logged. When you suspect a secret was leaked in a log, rotate it immediately.
+
+```yaml
+# Bad:
+- run: echo "API key is $MY_API_KEY"
+
+# Good:
+- run: python deploy.py
+  env:
+    MY_API_KEY: ${{ secrets.MY_API_KEY }}
+```
+
+**Understand untrusted pull requests.** When a pull request comes from a fork, GitHub runs the PR's code inside CI — which means a malicious PR can, in principle, access anything the CI job has access to. By default, GitHub restricts this: secrets are *not* passed to workflows triggered by pull requests from forks, precisely to prevent this attack. Do not work around that restriction without understanding exactly what you are exposing.
+
+**Use least privilege for tokens.** GitHub Actions gives each workflow run a `GITHUB_TOKEN` with permissions to read the repository. If your workflow only needs to *read* the repo, set the permissions explicitly to read-only at the top of the workflow:
+
+```yaml
+permissions:
+  contents: read
+```
+
+That one line prevents a compromised action from, say, pushing commits to your repo. Tighten permissions further as you learn what your workflow actually needs.
 
 ## Local quality gates: pre-commit hooks
 
@@ -304,67 +590,134 @@ This "commit twice" rhythm feels weird for a day, then becomes invisible. A few 
 
 ## Incorporating AI tools into automation (responsibly)
 
+Automation configuration files — Makefiles, GitHub Actions YAML, Dockerfiles, cron wrappers — are some of the highest-leverage uses of AI assistance for students. They are repetitive, their syntax is unforgiving, and small errors are tedious to debug. LLMs are surprisingly good at producing a reasonable first draft. They are also capable of producing confident nonsense, and the consequences of nonsense in a workflow file are higher than in regular application code, because a workflow file can run with write access to your repository, your cloud account, or your production environment. Use AI carefully here. See @sec-ai-llm for the broader treatment.
+
 ### What AI is good for
 
--   Drafting boilerplate: Makefiles, CI YAML, doc templates.
+A handful of tasks where AI assistance is genuinely useful:
 
--   Suggesting test cases and edge checks.
+- **Drafting boilerplate.** A blank CI YAML file in front of you is intimidating; "write me a GitHub Actions workflow that runs pytest on Python 3.11 with pip caching" produces a starting point in seconds. The draft will usually be roughly right and obviously wrong in a few specific ways, which is exactly the situation where a draft is easier to edit than a blank page.
+- **Explaining unfamiliar syntax.** You see a `${{ steps.foo.outputs.bar }}` expression in someone else's workflow and have no idea what it means; ask the AI to explain it. Cross-reference against the actual docs for the final word, but the AI explanation usually points you at the right section faster than a cold web search.
+- **Generating test cases and edge checks.** "Here's my `clean_sales_data` function; what edge cases should I test?" gets you a decent list of candidates — empty input, duplicate rows, null values in the key columns — that you then implement and verify.
+- **Summarizing PRs and surfacing risk areas.** A short "what did this PR actually change?" summary from an AI can be useful as a starting point for a reviewer, as long as the reviewer still reads the diff.
 
--   Summarizing PRs and highlighting risk areas.
+### What AI is not good for
 
-### What AI is not good for (without verification)
+An equally important list of things AI assistance is *not* reliable for:
 
--   Inventing correct tool flags or syntax without testing.
-
--   Making security decisions (permissions, secrets handling).
-
--   "Fixing" failing CI by random changes.
+- **Inventing correct tool flags or syntax without testing.** LLMs regularly hallucinate command-line flags, action names, and API methods that do not exist. A Makefile target or a `sbatch` directive that "looks right" but is silently wrong is a special kind of time sink.
+- **Making security decisions.** Whether to grant a token `write` access, whether a `secrets` value is safe to expose in a particular context, whether a permission model is least-privilege — these are judgment calls where an AI's confidence is not calibrated to the real risk. Make security decisions yourself, after consulting the official docs.
+- **"Fixing" failing CI by random changes.** A tight feedback loop of "CI failed, ask the AI to fix it, push, CI failed again, ask again" is one of the fastest ways to end up with a workflow that technically passes but does not actually test anything. If CI is failing, understand *why* before letting the AI propose fixes.
 
 ### Guardrails for AI-assisted automation
 
--   Always run locally before trusting CI changes.
+Five habits make AI assistance safer:
 
--   Use small diffs: one change per PR.
+**Always run locally before trusting CI changes.** If an AI suggests changes to a Makefile or a `run_pipeline.sh`, run them on your own machine first and verify the behavior matches what you expected. Do not commit changes whose behavior you have not observed at least once.
 
--   Require "how to test" steps in PR descriptions.
+**Keep diffs small.** One automation change per PR. If the AI proposes a sweeping refactor, break it into multiple PRs so each change can be reviewed in isolation.
 
--   Treat AI output as a draft; confirm against docs.
+**Require "how to test" in PR descriptions.** A PR that changes automation should include a short "how I verified this works" section: the commands you ran, the output you expected, what you saw. This is useful regardless of whether AI was involved, but it becomes essential when the code was partly generated.
 
--   Never paste secrets into prompts.
+```markdown
+## How I tested this
+
+- Ran `make test` locally; 42 tests passed.
+- Ran `make run` with the small dataset; output matches `reports/expected_q3.html`.
+- Pushed a draft branch; CI completed in 3:14 and green.
+```
+
+**Treat AI output as a draft; confirm against docs.** The relevant docs for a workflow change are the official GitHub Actions docs, the `make` manual, the cron documentation, and so on. When an AI suggests a specific flag or setting, search the docs for it before trusting it. If the flag does not appear in the docs, assume it is hallucinated and find the real one.
+
+**Never paste secrets into prompts.** LLM providers log your prompts. Pasting an API key or a password into a chat window is functionally equivalent to leaking it on a public pastebin. When you need to show the AI a file that contains secrets, redact them first.
 
 ### A practical workflow: AI as a junior assistant
 
-1.  You specify the intent and constraints.
+Treat the AI like a capable junior teammate who has read every tutorial on the internet but has never actually worked on your specific project. The responsibilities stay with you, and the sequence looks like this:
 
-2.  AI drafts the file (Makefile/workflow).
+1. **You specify the intent and constraints.** "I need a GitHub Actions workflow that installs from `requirements.txt`, runs `ruff check` and `pytest`, caches pip, and uploads logs on failure. Python 3.11, Ubuntu, runs on push to main and pull_request to main."
+2. **AI drafts the file.** You get a YAML workflow, probably about eighty percent right.
+3. **You validate against documentation.** Open the official GitHub Actions docs, cross-check each `uses: …` action against its README, confirm that syntax the AI used (`cache:`, `if: failure()`, `permissions:`) is real and means what you think it means.
+4. **You run a smoke test.** Push the workflow to a feature branch and watch it run end-to-end. Does it actually cache pip? Does the test step actually fail when you break a test? Does the "upload on failure" step actually produce an artifact?
+5. **You open a PR and request review.** Describe what the automation does, how you tested it, and any places you are uncertain. Reviewers still review. Nothing about "AI helped me write this" removes the human accountability for the result.
 
-3.  You validate against documentation.
-
-4.  You run smoke tests.
-
-5.  You open a PR and request review.
+The whole process is a few minutes longer than just having the AI write the file and merging blind. That extra time is the entire point.
 
 ## Common failure modes and fixes
 
+The failure modes below are the ones that bite every student project eventually. Knowing what they look like in advance makes them much cheaper to fix.
+
 ### "Works on my machine" automation
 
--   Fix: pin dependencies, record environment, run in clean env/CI.
+**Symptom.** Your Makefile runs perfectly on your laptop. On a teammate's laptop — or in CI — it fails with an import error, a missing command, or a subtly different output.
 
-### Scheduling failures (wrong PATH, wrong working directory)
+**Root cause.** Something about your local environment is different and your automation depends on it implicitly: a Python package you installed globally months ago, a tool in your `PATH` that is not on the new machine, an environment variable you set once and forgot, a data file in a location unique to your setup, even the version of `awk` being GNU vs BSD.
 
--   Fix: use absolute paths, set working directory, log environment.
+**Fix.** Make every assumption explicit. Pin your Python dependencies in `requirements.txt` or `environment.yml` with exact versions (see @sec-pkg-mgmt). Record any other system prerequisites in the README. And run the whole pipeline at least once in CI or a fresh container — the "clean environment" is what catches assumptions you did not know you were making.
+
+```bash
+# A useful habit: rebuild from scratch periodically
+make clean
+rm -rf .venv/
+make setup
+make run
+# If this works, your project is reproducible. If not, you just found a bug.
+```
+
+### Scheduling failures from wrong `PATH` or wrong working directory
+
+**Symptom.** Your script works fine when you run it interactively, but under `cron` or Task Scheduler it fails with "command not found," "No such file or directory," or "ModuleNotFoundError."
+
+**Root cause.** Schedulers do not inherit your interactive shell's environment. `PATH` is minimal, the working directory is your home directory (not the project), environment variables you set in `.bashrc` are not loaded, and the virtual environment you "activated this morning" is not active.
+
+**Fix.** Write a wrapper script that is explicit about everything: `cd` to the project directory with an absolute path, activate the environment, set any `PATH` additions you need, and redirect output to a log. Then schedule the wrapper, not the raw script. The wrapper pattern from earlier in this chapter is the template.
 
 ### CI failures due to missing files or secrets
 
--   Fix: ensure CI does not depend on local files; store non-secret config in repo.
+**Symptom.** CI fails with "file not found" or "authentication failed" for something that works perfectly on your laptop.
+
+**Root cause.** Your code depends on a file or secret that exists on your laptop but was never committed to the repo or made available to CI. Common culprits: a data file sitting in `data/raw/` that is gitignored, a `.env` file with an API token, a config file that was never checked in, a Python package installed manually and not listed in `requirements.txt`.
+
+**Fix.** For files, either commit them (if they are small and non-sensitive) or write your automation so it can fetch them at runtime from a URL or a data store. For secrets, use your CI system's secrets mechanism — in GitHub Actions, that is `secrets.MY_TOKEN` referenced from environment variables. In CI, the golden rule is: if a human can only reproduce the run by having access to something that only exists on your laptop, the automation is broken.
+
+```yaml
+# GitHub Actions: pass a secret into the environment of a step
+- name: Deploy
+  run: python deploy.py
+  env:
+    API_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+```
 
 ### Slow CI that everyone ignores
 
--   Fix: reduce scope, add caching, split jobs.
+**Symptom.** Your team treats the CI check as a suggestion. Pull requests get merged red. People stop looking at CI results.
+
+**Root cause.** CI takes long enough that waiting for it is painful, so people stop waiting. Once the habit of "merge anyway" sets in, every green-or-red distinction is lost and CI becomes decorative.
+
+**Fix.** Measure the runtime and attack the slowest steps. Common wins: cache dependencies aggressively, split slow tests into a separate job that only runs on `main` (so PR CI stays fast), run independent jobs in parallel, and prune tests that take longer than their value justifies. A CI that finishes in under three minutes will be trusted; a CI that takes fifteen will be worked around.
 
 ### Automation that overwrites important artifacts
 
--   Fix: write outputs to dedicated folders; add "are you sure" safeguards for destructive steps.
+**Symptom.** You run your pipeline and it happily overwrites a previously generated report — or worse, touches your raw data.
+
+**Root cause.** The script writes to a path without checking what was there, and nothing stops it from clobbering something important.
+
+**Fix.** Three habits. First, **keep raw data immutable**: the cleaning pipeline reads from `data/raw/` and writes to `data/processed/`, never the other way around (see @sec-tabular-data). Second, **write outputs to dedicated folders** named after the run, so a new run cannot stomp an old one — `reports/2026-04-10/q3.html` is safer than `reports/q3.html`. Third, **for genuinely destructive steps, require explicit confirmation**: a `make clean` target that nukes `data/processed/` should at minimum be a distinct target from `make run`, so no one runs it by accident.
+
+```make
+# Give destructive targets scary names and require them to be explicit
+.PHONY: clean distclean
+
+clean:
+	rm -rf data/processed/ reports/
+
+distclean: clean
+	@echo "WARNING: this will remove .venv and all caches. Ctrl-C to abort."
+	@sleep 3
+	rm -rf .venv/ .pytest_cache/ __pycache__/
+```
+
+The three-second pause before the `rm -rf` is not going to stop a determined mistake, but it is enough to catch the "wait, wrong terminal" moment before the damage is irreversible.
 
 ## Worked examples (outline)
 

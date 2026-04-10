@@ -45,71 +45,79 @@ Three roles show up in almost every collaboration. The **author** proposes a cha
 
 ### What documentation is for (student framing)
 
--   Onboarding: a new collaborator can start quickly.
+Documentation is often treated as something you write at the end of a project if you have time, like a polish pass. That framing is backwards. Documentation is *infrastructure* — the scaffolding that lets other people (and future-you) actually use the work you have done. Without it, even a technically perfect project is a black box that only its original author can run.
 
--   Reproducibility: a collaborator can rerun results.
-
--   Decision trace: why key choices were made.
-
--   Operations: how to build/run/test.
+A healthy project's documentation does four jobs. **Onboarding**: when a new collaborator joins, the docs are how they go from `git clone` to "I ran the analysis and got the expected output" in under an hour. Without good docs, onboarding is an afternoon of chat messages asking the original author what to do. **Reproducibility**: the docs tell a reader exactly how to recreate your environment, your data, and your results, so the project's claims are verifiable. **Decision trace**: the docs explain *why* the project is structured the way it is — why you chose one library over another, why a column was dropped, why the analysis was restricted to a date range. These decisions are invisible in the code, and they are what reviewers and future-you care about most. **Operations**: the docs tell a reader how to build, run, and test the project end-to-end without guessing.
 
 ### Minimum viable documentation set
 
--   `README.md`: purpose, setup, how to run, outputs.
+A useful student project ships with a short list of standard files, each with a specific job:
 
--   `CONTRIBUTING.md`: how to contribute, style rules, review expectations.
-
--   `CODE_OF_CONDUCT.md` (when appropriate): norms and escalation.
-
--   `DECISIONS.md` (or ADRs): consequential decisions and rationale.
-
--   Data dictionary / codebook: dataset meaning and transformations.
+- **`README.md`** is the front door. It states the project's purpose, how to install dependencies, how to run the code, and what outputs to expect. If only one file gets written, it should be the README.
+- **`CONTRIBUTING.md`** tells collaborators how you want them to work: branch naming conventions, how to open PRs, what style/linting rules apply, how reviews happen, and where to ask questions.
+- **`CODE_OF_CONDUCT.md`** is appropriate for projects with external contributors or a public presence — it sets expectations for respectful collaboration and explains how to escalate problems.
+- **`DECISIONS.md`** (or an `adr/` folder with Architecture Decision Records) captures consequential decisions — *"we switched from mean to median imputation because..."* — so the rationale survives the moment.
+- **A data dictionary or codebook** documents every column in every dataset: its meaning, its units, its source, and any transformations you applied. For a data-science project, this is the single most useful doc after the README.
 
 ### Writing for your audience
 
--   Assume the reader is competent but unfamiliar with your local context.
+The reader you are writing for is a competent peer who has never seen your project before. They know Python and Git; they do not know your local file paths, your course context, or the name of the lab server. That framing alone will improve your documentation, because it stops you from writing instructions like "activate the environment" and pushes you toward "run `conda activate housing-audit`."
 
--   Put the most common tasks first.
-
--   Provide "copy/paste to run" commands and expected outputs.
+Put the most common tasks first. A reader who opens your README wants to know *how to run the thing*, not the history of the project or a list of acknowledgments. Lead with a one-paragraph description, then a copy-paste "Quick start" block that takes the reader from `git clone` to `make run` with minimal ceremony, then the longer reference material underneath. Every command you give should be **copy-paste runnable** — no placeholders, no "configure your environment" handwaving — and every command should be paired with the *expected output* so a reader can verify they are on track.
 
 ### Documentation upkeep: avoid staleness
 
--   Update docs in the same PR as code changes.
+Stale documentation is worse than no documentation, because it actively misleads. The only way to keep docs accurate is to treat them as part of the code: if a PR changes how the project runs, the same PR updates the README. If a PR adds a new column to a dataset, the same PR updates the data dictionary. Treat "docs updated" as part of your definition of done for every change, and reviewers should push back on PRs that change behavior without updating the relevant docs.
 
--   Treat docs as part of the definition of done.
-
--   If documentation is missing, file an issue.
+When documentation is missing or outdated and you do not have time to fix it in the moment, **file an issue** rather than leaving the problem invisible. A tracked issue is a promise to come back; an undocumented gap in your head is not.
 
 ## Work planning mechanics: issues and task decomposition
 
 ### Why issues beat chat threads
 
--   Searchable, linkable, and persistent.
+Chat is a great place to unblock each other quickly and a terrible place to track work. Messages scroll off, threads get buried, and decisions made in DMs are invisible to anyone who was not in the conversation at the time. Issues solve these problems because they are **persistent, searchable, and linkable** — every decision has a stable URL you can point at, and every question has a title you can search for six months later.
 
--   Establishes a shared memory.
-
--   Supports prioritization and assignment.
+Issues also establish a **shared memory** for the project. When a teammate asks "didn't we talk about this?", you can point them at issue #42 and they can read the whole history — the original motivation, the options that were considered, the rationale for the chosen path. Without issues, "shared memory" is whoever happens to remember. And because issues can be assigned, labeled, and sorted into milestones or boards, they are the foundation of lightweight prioritization: *what are we actually working on this week, and who owns it?*
 
 ### Anatomy of a good issue
 
--   Clear title: verb + object.
+A well-written issue has five ingredients. A **clear title** that reads as a verb plus an object — *"Fix date parser off-by-one on leap years"*, not *"date bug"* — so a reader skimming the issue list knows what it is about without clicking. **Context** explaining why the issue matters, what the user (or analysis) experiences, and any background a future reader would need. A **definition of done** — the explicit criteria that let someone close the issue with confidence, usually a sentence or two like "The parser correctly handles Feb 29 and returns the right ISO date." **Evidence**: a link to the failing test, a paste of the stack trace, a screenshot, a row of data that triggers the bug — something concrete a reviewer can reproduce. And **labels**: a `bug`/`task`/`question` type, a priority marker if your team uses one, and an area label (`data`, `code`, `docs`) so issues can be filtered.
 
--   Context: why it matters.
+```markdown
+**Title:** Fix date parser off-by-one on leap years
 
--   Definition of done.
+## Context
+`src/parsers.py:parse_date()` returns 2024-03-01 for the input
+"2024-02-29", but the expected result is 2024-02-29. This breaks
+row 1423 in the cleaned sales dataset and propagates into the
+weekly rollup in notebook `03-aggregate.ipynb`.
 
--   Evidence: links, examples, errors.
+## Definition of done
+- `parse_date("2024-02-29")` returns the date `2024-02-29`.
+- A regression test in `tests/test_parsers.py` covers the
+  leap-year case.
+- `03-aggregate.ipynb` re-runs cleanly with the fix applied.
 
--   Labels: type (bug/task/question), priority, area (data/code/docs).
+## Evidence
+Stack trace from `pytest -k leap`:
+
+    tests/test_parsers.py::test_leap_year FAILED
+    assert datetime(2024, 3, 1) == datetime(2024, 2, 29)
+
+**Labels:** `bug`, `priority: high`, `area: data`
+```
+
+That shape — title, context, done, evidence, labels — works for bugs, features, and tasks with only minor tweaks, and it means any teammate can pick up the issue without asking clarifying questions.
 
 ### Decomposition patterns (novice-friendly)
 
--   Split by artifact: data ingestion, cleaning, analysis, visualization, report.
+Big tasks do not fit in small PRs, and small PRs are what review works on. The skill you want is breaking a multi-day goal into half-day issues that each produce something reviewable. Three patterns cover most situations.
 
--   Split by risk: do uncertain tasks early.
+**Split by artifact.** A data-science project naturally breaks along its pipeline stages: data ingestion, cleaning, analysis, visualization, write-up. Each stage is its own issue, its own branch, and (ideally) its own PR. This is the default, and it usually produces the clearest decomposition.
 
--   Split by reviewability: tasks that fit in a small PR.
+**Split by risk.** Do the uncertain work first. If one step of the plan depends on whether a specific library supports a specific feature, spin that out as its own early spike-issue so you know the answer before you commit to the larger plan. Risk early, execution later.
+
+**Split by reviewability.** Sometimes a natural split by artifact produces chunks that are still too big to review. In that case, split further on a purely mechanical basis: "add the function signature and a stub test" as one issue, "implement the function body" as a second, "wire it into the pipeline" as a third. Each fits in a small PR even if the underlying task is large.
 
 ## Code review fundamentals (what it is and why it works)
 
@@ -131,173 +139,235 @@ Most PRs only need one or two of those checks to be substantive — but knowing 
 
 ### Small PR discipline
 
--   One purpose per PR.
+The biggest single factor in how quickly a PR gets merged is how small it is. Reviewers have a fixed attention budget, and a PR that touches 40 files across three unrelated changes exceeds it — the reviewer will skim, rubber-stamp, or quietly procrastinate until the PR goes stale. A PR that touches five files for one clear purpose gets read carefully and merged within a day.
 
--   Avoid mixing refactors with new features.
+"Small" means **one purpose per PR**. If you have a bug fix and an unrelated refactor and a new feature, that is three PRs, not one. Do not mix refactors with new behavior: the reviewer cannot tell which changes are "just moving things around" and which ones actually change what the code does, and bugs introduced by the refactor will hide inside the new-feature diff. And when you find dead code or leftover debugging output, remove it in its own small commit or PR — not bundled into the change that brought you to that file.
 
--   Keep diffs readable: remove dead code separately.
+```bash
+# Instead of one PR with everything:
+# * fix date parser
+# * rename helper functions
+# * add leap-year tests
+# * delete old debug prints
+#
+# Open three PRs:
+git switch -c fix-date-parser     # bug fix + its regression test
+git switch -c rename-parsers      # pure refactor
+git switch -c cleanup-debug       # delete dead code
+```
 
 ### PR descriptions that help reviewers
 
--   Summary: what changed.
+Treat the PR description as the reviewer's guided tour. A good description has five ingredients: a **summary** that says what changed in one or two sentences; a **motivation** that explains why the change is needed (or links to the issue that does); a **how-to-test** section that lists the exact commands a reviewer can run to verify the fix; any **screenshots or figures** for visible changes; and **links** to related issues, background docs, or prior discussion.
 
--   Motivation: why.
+```markdown
+## Summary
+Fix `parse_date()` to correctly handle Feb 29 on leap years.
 
--   How to test: steps and expected outputs.
+## Motivation
+Row 1423 of the cleaned sales dataset was being shifted to March 1
+because the parser rolled the date forward on leap days. This broke
+the weekly rollup notebook. See #42 for the original report.
 
--   Screenshots/figures (if relevant).
+## How to test
+    pytest tests/test_parsers.py -k leap
+    jupyter execute notebooks/03-aggregate.ipynb
 
--   Links: related issues, background docs.
+Both should pass. The notebook's week-9 row should show 387 entries
+(was 386 before the fix).
+
+## Related
+Closes #42.
+```
+
+The "how to test" block is the single most valuable section. It turns a vague review into a concrete verification: the reviewer copy-pastes the commands, sees the same result you saw, and knows the claim in the summary is true.
 
 ### Pre-review self-check
 
--   Re-read your own diff.
-
--   Run a smoke test.
-
--   Confirm docs updated.
-
--   Ensure no secrets or large accidental files are included.
+Before you request a review, walk through a short self-review of your own PR. **Re-read your own diff** on the GitHub PR page, not just in your editor — the side-by-side rendering often surfaces things that looked fine locally, like a debugging `print` you meant to delete or an accidental change to an unrelated file. **Run a smoke test**: execute the code, run the relevant tests, re-run the notebook. If you cannot demonstrate that the change works, the reviewer certainly cannot. **Confirm that docs are updated** in the same PR — README, docstrings, data dictionary, whatever the change affects. And **check for accidental inclusions**: no secrets, no API keys, no large binary files, no committed `.venv/` directories. A 30-second scan of `git status` and the PR's file list catches almost all of these.
 
 ## Reviewing and commenting mechanics
 
 ### Comment taxonomy (so feedback is legible)
 
-Blocker
+Review comments do different kinds of work, and mixing them together is a recipe for confusion. A reviewer who writes six comments without marking which ones are mandatory leaves the author guessing: must I fix all of these before merging, or are some just opinions? A tiny four-word taxonomy prefix solves this.
 
-:   Must fix before merge (correctness, security, reproducibility).
+**Blocker** marks a comment that must be fixed before the PR can merge. Correctness bugs, security issues, broken reproducibility, and crashes all qualify. **Suggestion** proposes a better way to do something but explicitly does not block merge; the author can take it or leave it. **Question** asks the author to clarify intent before the reviewer can finish evaluating — "is this function supposed to handle null inputs?" The author's answer often resolves the thread without any code change. **Nit** (short for *nitpick*) flags a minor style or naming point that the reviewer noticed but would never block a PR over — comma placement, a variable name that could be clearer, an unused import. Nits are optional and the author is free to ignore them.
 
-Suggestion
-
-:   Improvement that is optional.
-
-Question
-
-:   Clarification needed to evaluate.
-
-Nit
-
-:   Minor style/detail; non-blocking.
+Using these four labels as a prefix on every comment makes reviews legible at a glance. The author can scan a PR with 15 comments and immediately see "okay, there are 2 blockers, 4 suggestions, 3 questions, and 6 nits" and plan accordingly.
 
 ### Writing effective comments
 
--   Be specific: point to a line and explain the issue.
+A good review comment has three ingredients: it points to a specific line, it explains *why*, and it proposes a concrete direction. "This is wrong" is useless — the author has no way to act on it. "This will crash if the CSV has a BOM at the start of the file; could you strip it in the reader, or open the file with `encoding='utf-8-sig'`?" is actionable, because it names the problem, explains the consequence, and gives the author a concrete choice.
 
--   Provide rationale: tie to a goal (correctness, clarity, consistency).
+Tie every comment to a goal — correctness, clarity, consistency with the rest of the codebase, reproducibility, security. When the author can see *what the reviewer is protecting*, even disagreements are productive, because both sides are arguing about the goal rather than about taste. When intent is unclear, prefer a **question** over a prescription: "what is this branch of the `if` supposed to do?" is much more useful than "this is confusing," because it gives the author a concrete prompt to explain or rewrite (see @sec-asking-questions for how to frame a well-structured technical question).
 
--   Offer a concrete suggestion when possible.
+```markdown
+**Blocker**: `src/parsers.py` line 47 — this `dropna()` removes any row
+with a null in any column, but the upstream data has known nulls in
+`notes`. You almost certainly want `dropna(subset=["customer_id"])`
+instead, which is what the data dictionary says the key column is.
 
--   Prefer questions when intent is unclear (see @sec-asking-questions for how to frame a well-structured technical question).
+**Suggestion**: the helper `_coerce_date` at line 31 duplicates the
+try/except pattern in `_coerce_time` five lines below. Consider
+factoring out a tiny `_safe_parse(parser, value)` helper — non-
+blocking, just a cleanup opportunity.
+
+**Question**: at line 62 you fall through to the empty-DataFrame
+branch silently. Is that intentional, or should the caller get an
+error when `df` is empty?
+
+**Nit**: `fname` → `filename` in the signature would read nicer.
+Non-blocking.
+```
 
 ### Tone and collaboration hygiene
 
--   Assume good intent.
-
--   Critique the code, not the person.
-
--   Use neutral language and avoid sarcasm.
-
--   Acknowledge good work and improvements.
+Code review is emotionally loaded even when nobody intends it to be, because criticism of code feels like criticism of the author. Defuse that by design. **Assume good intent** — the author had a reason for writing what they wrote, even if you cannot see it yet; ask before you conclude. **Critique the code, not the person**: say "this function could be simpler" rather than "you wrote an overcomplicated function." The difference looks small on paper and feels enormous to the recipient. **Use neutral language and skip sarcasm**: jokes that read as friendly in chat often read as sneering in written review comments. And **acknowledge good work**: a quick "nice refactor here" or "I like how you structured the tests" costs nothing and makes future reviews feel collaborative rather than adversarial.
 
 ### Thread management
 
--   One issue per thread.
-
--   Resolve threads when addressed.
-
--   Summarize decisions in the PR description or decision log when important.
+Keep **one issue per thread**: if you have two concerns about the same function, post them as two separate comments so each can be resolved independently. **Resolve threads when they are addressed**, so the PR's "unresolved conversations" count actually means something. If a thread produces a consequential decision — "we're going to keep the old behavior because of backward compatibility" — **summarize that decision in the PR description or in `DECISIONS.md`**, because threads on closed PRs are hard to find later. The PR description is the canonical summary of the PR; use it that way.
 
 ### Responding to reviews as an author
 
--   Reply to each thread: explain what you changed or why you disagree.
+When reviewers leave comments, your job as the author is to close each loop explicitly. **Reply to every thread**, even the small ones — either "Fixed in commit abc123" or "Kept as-is because..." or "Good catch, thanks." Silence on a thread makes the reviewer wonder whether you saw the comment at all.
 
--   If you disagree, propose an alternative and ask for alignment.
-
--   Avoid "drive-by" changes that introduce new behavior without explanation.
+If you **disagree** with a comment, say so with your reasoning, and propose an alternative: "I don't think we should rename this — the current name matches the upstream API. Would it help if I added a comment explaining the mapping?" Disagreement is fine; silent reversals are not. And **avoid drive-by changes** — if during the review you notice an unrelated bug and are tempted to fix it in the same branch, resist. Open a second PR. Drive-by changes confuse the reviewer ("wait, did they address the comment or add new stuff?") and slow the merge.
 
 ## Merging, ownership, and handoffs
 
 ### Definition of done (team agreement)
 
--   Review approvals obtained.
+"Done" is not a single moment; it is a checklist. A shared, explicit definition of done is what prevents the kind of half-finished work that a reviewer approves, merges, and then discovers nobody updated the docs and a test was silently skipped. Agree on the list as a team and apply it to every PR:
 
--   Tests and smoke checks pass.
+- **Review approvals obtained** — at least one reviewer (or however many your project requires) has said "approve," not just "looks good."
+- **Tests and smoke checks pass** — CI is green; if your project doesn't have CI, the author has manually run the test suite and the smoke test and can say so.
+- **Documentation updated** — README, docstrings, data dictionary, and any other affected docs reflect the new behavior.
+- **Issue linked and closed** — the PR references the issue it resolves with `Closes #42`, so merging the PR auto-closes the issue with a summary of what changed.
 
--   Documentation updated.
-
--   Issue linked and closed with a summary.
+Post the definition somewhere visible (CONTRIBUTING.md, a pinned issue, or the PR template) so every author and reviewer can see it, and treat PRs that skip any item as incomplete.
 
 ### Handoff notes
 
--   If someone else will continue the work, leave a short status note.
+Long-running work eventually gets handed off — end of a semester, a contributor goes on vacation, the person who owned the cleaning step moves on to the analysis step. Without a handoff note, the next person has to reconstruct where things are from commit messages and guesswork. That is expensive and frustrating.
 
--   Identify next steps and open questions.
+A useful handoff note is short and structured: what was done, what is in progress, what is blocked, and what the next one or two steps should be. Leave it in the relevant issue or in a pinned comment on the PR.
+
+```markdown
+**Handoff — 2025-04-10, Alice → Bob**
+
+## Status
+Cleaning pipeline is running on the 2019–2023 slice of the sales
+data. Output looks correct on a spot-check of 50 rows.
+
+## In progress
+Adding the leap-year regression test — started in PR #87 but not
+finished. The test harness needs a fixture for Feb 29 rows.
+
+## Blocked
+Waiting on the data dictionary update from the data team (issue #91)
+before I can pin the `date` column's expected format.
+
+## Next steps
+1. Finish PR #87 (test harness fixture).
+2. Re-run `make clean-data` after #91 lands.
+3. Start on the 2024 slice.
+```
+
+A two-minute handoff note at the end of a work session saves the next person an hour of archaeology.
 
 ## Collaboration practices for data science artifacts
 
 ### Notebooks and noisy diffs
 
--   Keep notebooks tidy: avoid huge outputs.
+Jupyter notebooks collaborate poorly by default. They are JSON files with cell outputs — images, tables, large printed values — embedded in them, and every time you re-run a cell the diff changes even if the code did not. On a team, that means a PR that should be "I changed one function" shows up as a 2,000-line diff because the outputs churned.
 
--   Clear unnecessary output before merging.
-
--   Prefer "notebook as narrative, code in `src/`".
+Three practices keep notebooks collaborator-friendly. **Keep outputs small** — avoid cells that print thousands of rows or dump a gigantic repr, since those go straight into the committed file. **Clear unnecessary outputs before you commit** — either manually ("Restart & Clear Outputs" in Jupyter) or automatically with `nbstripout` configured as a pre-commit hook (see @sec-automation). And follow the pattern of **notebook as narrative, code in `src/`**: notebooks should tell a story — load, clean, analyze, visualize, explain — while the actual reusable logic lives in importable Python modules. That separation keeps notebook diffs focused on the narrative and moves code review onto the `.py` files that diff cleanly.
 
 ### Data and model artifacts
 
--   Avoid committing large raw datasets unless policy says otherwise.
+Large raw datasets do not belong in Git — see @sec-git-github for the detailed argument. For collaboration purposes, the rule is: **do not commit large datasets unless your course or policy explicitly requires it**, and document the retrieval process so another collaborator can get the same data. A short `scripts/download_data.py` or a `make data` target beats a committed 500 MB CSV every time.
 
--   Document data retrieval and transformations.
-
--   Store outputs deterministically and link from reports.
+Model artifacts — trained models, computed embeddings, cached features — follow the same rule. If the artifact can be reproduced from the code, the code is what gets versioned and the artifact lives in a `models/` or `data/processed/` directory that is listed in `.gitignore`. When an artifact is expensive to reproduce (hours of training, API costs), store it in cloud storage with a documented retrieval path. And **link any output used in a report** — figures, tables, numbers — back to the specific code and data that produced it, so a reader can trace the claim in the write-up to the code that generated it.
 
 ### Reproducibility check as a collaboration contract
 
--   Another collaborator should be able to recreate the environment and rerun.
+The test of a reproducible project is simple: **a collaborator should be able to clone the repo, set up the environment, run the pipeline, and get the same outputs you got, without asking you any questions**. If that is not true, the project is not really collaborative — it is a private workspace with a shared URL.
 
--   Include a minimal "how to reproduce" section in the PR.
+Make the reproducibility check part of the PR process. Every PR that touches how the project runs should include a "How to reproduce" section in its description, listing the exact commands the reviewer needs to run to verify the change. The reviewer then runs those commands and either confirms the output matches or flags the discrepancy. That simple contract catches most of the "works on my machine" bugs before they land.
+
+```markdown
+## How to reproduce
+    git clone <repo>
+    cd <repo>
+    make env
+    conda activate housing-audit
+    make clean-data
+    jupyter execute notebooks/03-aggregate.ipynb
+
+Expected: notebook runs to completion with no errors, week-9
+row in the summary table shows 387 entries.
+```
 
 ## Cadences and rituals (lightweight, student-friendly)
 
 ### Weekly planning
 
--   Review open issues, reprioritize, assign.
+A weekly planning ritual — 20 minutes on Monday, no more — keeps a student project from drifting. The job of the meeting is to look at the open issue list, decide what actually matters this week, assign owners, and identify anything that is blocked on external input. It is not a status report (status lives in issues and PRs) and it is not a design discussion (design happens in issue threads with more context and fewer time pressures). It is triage.
 
--   Identify blockers and dependencies.
+A useful format is to walk the issue board from "in progress" to "ready" to "backlog," ask three questions for each issue — *is this still the right thing? who owns it this week? is it blocked?* — and end with a one-paragraph summary posted in the project's pinned issue or chat. That summary becomes the shared memory for the week.
 
 ### Daily/async updates
 
--   Short status: what I did, what I will do, what is blocking me.
+For small student teams, daily stand-up meetings are overkill; a three-line async update is almost as useful and costs far less. Each person posts, once a day, what they did yesterday, what they plan to do today, and what is blocking them. The "blocked" line is the most important — it is how the rest of the team knows to help.
 
--   Post updates in issues/PRs when they affect others.
+```markdown
+**Alice — 2025-04-10**
+- Yesterday: finished the leap-year fix in PR #87, opened for review.
+- Today: starting the 2024 data slice; reading through #91.
+- Blocked: waiting on schema sign-off in #91 before I can pin dates.
+```
+
+Post updates directly in the relevant issue or PR when they affect others — that keeps the information linked to the work it describes instead of scrolling off in a chat log.
 
 ### Retrospectives (optional)
 
--   What went well, what was painful, what to change next time.
+At the end of a project (or milestone, or semester), a short retrospective helps convert pain into improvement. Three questions: *what went well*, *what was painful*, *what should we change next time*. Keep it to 30 minutes, let everyone speak, and do not let the discussion become about blame — the point is the pattern, not the person.
 
--   Convert pain points into issues and documentation improvements.
+The one rule that makes retrospectives actually useful is that **every pain point becomes an issue or a documentation update**. "The environment kept breaking" turns into an issue to pin dependencies; "I never knew what was in progress" turns into a commitment to the weekly planning ritual. A retrospective with no concrete follow-ups is a gripe session. A retrospective that closes three issues and updates the README is how teams get better.
 
 ## Common failure modes and fixes
 
 ### Work hidden in private messages
 
--   Fix: move decisions into issues/PRs; link evidence.
+The most common collaboration failure on student projects is that important decisions, rationales, and designs live in private chat messages or DMs that nobody else can see. Two weeks later, nobody remembers why a column was dropped or which model was chosen, and the answer is buried in a scrolled-off chat thread.
+
+**Fix:** establish a rule that any decision with project-level consequences moves into an issue, a PR comment, or `DECISIONS.md` before the conversation is considered closed. Chat is fine for quick unblockers — "what's the path to the data?" — but as soon as a conversation produces a choice, write it down somewhere persistent and link the chat message to it. The phrase to practice is: "Let me capture this in issue #X so we don't lose it."
 
 ### Mega-PRs that no one can review
 
--   Fix: split into smaller PRs; stage refactors separately.
+A PR that touches 40 files across three unrelated changes will sit unreviewed for days, because no reviewer can find the time to work through it carefully. When the review finally happens, it will either be a rubber-stamp or an overwhelming list of comments that the author cannot triage.
+
+**Fix:** split. If you already have a mega-PR open, close it and re-open it as several smaller PRs, each with one clear purpose. If you are about to create one, stop and ask whether the refactor really belongs in the same PR as the new feature — it almost never does. Stage pure refactors separately from behavior changes so reviewers can evaluate "did anything change?" and "does the new thing work?" independently.
 
 ### Review ping-pong and stalled progress
 
--   Fix: clarify blockers vs suggestions; propose a decision; time-box debates.
+Sometimes a PR bounces between reviewer and author indefinitely — the reviewer leaves comments, the author addresses them, the reviewer leaves more comments, and after a week the PR has 40 threads and no momentum. Usually the problem is that blockers and suggestions were not separated: the reviewer made 40 comments that all felt equally mandatory, and the author is exhausted.
+
+**Fix:** label every comment as Blocker, Suggestion, Question, or Nit (see `Comment taxonomy` above). If only the blockers and questions have to be resolved before merge, a 40-comment review suddenly becomes "five blockers to fix, everything else optional," and the PR moves. When a specific debate has gone three rounds without progress, propose a decision ("let's go with option A because X; can we merge this and revisit if it causes problems?") and **time-box** the debate. A tie-breaker from the lead or instructor is better than a PR that rots for a week.
 
 ### Unclear ownership
 
--   Fix: assign issues; define a driver for each milestone.
+When nobody is explicitly assigned to an issue, everybody assumes someone else is handling it, and nothing gets done. You can see this on student teams in the form of issues tagged "urgent" that sit open for weeks because it was never clear whose job they were.
+
+**Fix:** assign every non-trivial issue to exactly one person. Milestones and features get a named **driver** — the person responsible for keeping the work moving, even if other people contribute code to it. Driver ≠ sole implementer; it means "the person whose job it is to notice when the work is stuck and do something about it."
 
 ### Documentation drift
 
--   Fix: require doc updates in PR checklist; treat missing docs as a bug.
+Documentation drifts out of sync with the code almost immediately, because changing code is mandatory (the tests force it) and changing docs is optional (nothing enforces it). After a few weeks, the README is lying to you.
+
+**Fix:** include a "docs updated" checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, **file an issue** — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.
 
 ## Worked examples (outline)
 

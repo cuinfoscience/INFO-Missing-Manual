@@ -92,167 +92,433 @@ That single cell turns "Jupyter is broken" into a clear, immediately diagnosable
 
 ### Cell types
 
-Code
+Every cell in a Jupyter notebook has a **type**, and the type determines what the cell does when you run it. There are only three, and you will use two of them almost all the time.
 
-:   Executes in the kernel.
+A **Code** cell holds Python (or whatever language the kernel speaks) and is sent to the kernel for execution when you run it. Whatever the last expression in the cell evaluates to is displayed below the cell as its *output*, alongside anything the code explicitly printed. Code cells are the only cells that actually compute anything — they are where the work happens.
 
-Markdown
+A **Markdown** cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, `code spans` become monospace, lists become lists, and equations written in LaTeX syntax (`$x^2$`) become typeset math. Markdown cells are how a notebook becomes a *document* — the paragraphs between your code cells that tell a reader what you are doing and why.
 
-:   Narrative text, headings, equations, images.
+A **Raw** cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.
 
-Raw
+```text
+[code cell]     → sent to kernel → produces output below the cell
+[markdown cell] → rendered as HTML → produces formatted text below
+[raw cell]      → passed through untouched (rarely needed)
+```
 
-:   Passed through without formatting (rare; use intentionally).
+You can change a cell's type with the dropdown in the toolbar or with the keyboard shortcuts `Y` (code) and `M` (markdown) while the cell is selected in command mode.
 
 ### Running cells
 
--   Run one cell vs run all.
+There are several ways to run a code cell, and each is appropriate in different moments. `Shift + Enter` runs the current cell and moves focus to the next one — this is the default for "I am working through the notebook top to bottom." `Ctrl + Enter` (or `Cmd + Enter` on macOS) runs the current cell *without* moving focus, which is what you want when you are iterating on a single cell, tweaking the code, and running it again. `Alt + Enter` runs the current cell and inserts a fresh empty cell below it.
 
--   Interrupt vs restart kernel.
+When you want to run more than one cell at a time, the menu offers **Run All** (the entire notebook), **Run All Above** (everything from the top down to the current cell), and **Run All Below** (the current cell and everything after). Run All is the one you should run every time you finish a meaningful chunk of work — it is your reproducibility check.
 
--   Understand the execution count as evidence of order.
+```text
+Shift + Enter  → run and advance (default)
+Ctrl + Enter   → run and stay (iteration)
+Alt + Enter    → run and insert new cell below
+
+Menu: Run → Run All Cells           (from the top)
+Menu: Run → Run All Above Selected  (up to the current cell)
+```
+
+When a cell is running too long or has gotten stuck, you have two escalation levels. **Interrupt** (the square "stop" button, or `I, I` in command mode) asks the kernel to stop the current cell — the kernel keeps running, variables stay in memory, and only the cell is cancelled. **Restart** (the circular arrow, or `0, 0` in command mode) kills the kernel entirely and starts a fresh one; all variables are gone. Interrupt first, always, and only restart if interrupt does nothing. Restart wipes every piece of state you had built up in the session, so use it deliberately, not reflexively.
+
+The most important diagnostic in the notebook UI is the little number in square brackets that appears next to each executed code cell. That is the **execution count**, and it increments by one every time any cell is run. If you look at the counts down a notebook and see `[1] [2] [3] [4]`, the notebook was run top to bottom and in order — what you see in the outputs is what the code would produce on a clean run. If you see `[3] [1] [7] [2]`, the cells were run out of order, and what you see is a collage of states that may never have existed simultaneously. Before trusting any notebook — yours or someone else's — glance down the left margin and confirm the numbers go in order.
 
 ### Moving and organizing cells
 
--   Move cells to keep the story and the computation aligned.
+A notebook is not just a sequence of cells — it is a *document*, and like any document, the order of its sections matters. When you reorganize the analysis (promote a side exploration into the main narrative, push a helper calculation out of the main flow) you should physically move the cells so that the story you are telling matches the code that is running. Cells move with the up and down arrow buttons in the toolbar, with drag-and-drop in JupyterLab, or with the keyboard shortcuts `Esc, K` (move up) and `Esc, J` (move down).
 
--   Use headings to create a navigable outline.
+As a notebook grows, the single highest-leverage organizing move is to use **markdown headings**. A cell containing `# Loading the data` or `## Cleaning decisions` becomes a heading in the rendered notebook *and* appears in the table of contents panel on the left. With even four or five headings, a hundred-cell notebook becomes navigable — you can jump from "Imports" to "Cleaning" to "Modeling" to "Results" in one click, instead of scrolling. A reader who opens your notebook and can skim the table of contents will immediately understand its structure; a reader faced with a hundred undifferentiated cells will give up.
 
--   Keep imports and configuration near the top.
+The one rule of cell order that you should treat as inviolable is: **keep imports and configuration near the top**. Every notebook should begin with a small block of imports (`import pandas as pd`, etc.), a path-and-parameter setup cell, and a smoke-test cell (see @sec-scripts-vs-notebooks), and nothing else should come before them. If an import cell is buried five pages down, anyone running the notebook from the top will hit a `NameError` before they ever get there. All the imports, all at the top, once.
 
 ### Output management
 
--   Avoid printing entire datasets.
+Every code cell's output is stored *inside* the notebook file, which has two consequences worth understanding. First, the notebook gets bigger every time a cell produces output — a cell that prints 10,000 rows of a DataFrame adds the text of 10,000 rows to the file on disk. Second, that output is what shows up in git diffs, in file previews, and in anyone's browser when they open the notebook. A notebook that prints entire datasets is slow to load, painful to scroll, and impossible to review.
 
--   Prefer summaries (shape, head, descriptive stats).
+The habit that prevents this is to **summarize instead of dump**. Do not finish a cell with `df` to see the whole table; finish it with `df.head()`, `df.sample(5)`, or `df.describe()`. Do not print a list of every filename in a folder; print `len(files)` and `files[:5]`. Do not save a 2000×2000 image inline; save it to `figures/` and reference it from a markdown cell.
 
--   Clear and re-run outputs as part of reproducibility checks.
+```python
+# Avoid: dumps the entire dataset into the notebook output
+df
+
+# Prefer: just enough to see what's there
+df.head()
+df.shape          # (rows, cols) — almost always what you want
+df.describe()     # summary statistics
+```
+
+The supporting habit is to **clear and re-run outputs** before committing a notebook to version control. In the menu, **Cell → All Output → Clear** wipes every cached output. Then **Run All** executes the notebook from scratch, producing exactly the outputs your current code would produce on a clean run. Two benefits: the notebook you commit is reproducible (what you see is what the code does), and the file is dramatically smaller because you have gotten rid of any stale outputs from older experiments.
 
 ## Running shell commands inside notebooks (responsibly)
 
 ### Why this is useful
 
--   Quick checks: list files, inspect paths, verify data presence.
+Most of the time you think of a Jupyter notebook as a place to run Python, but the kernel is also willing to hand the occasional line off to the shell. This is surprisingly handy for the small housekeeping tasks that surround every analysis: checking whether a data file arrived, listing the contents of an output folder, downloading a CSV the script needs, or running a command-line tool like `git` or `pandoc` as part of a pipeline. Being able to do these checks in-line with your analysis keeps the whole story in one place, instead of forcing you to flip between the browser and a terminal.
 
--   Lightweight automation: download a file, decompress, run a command-line tool.
+The most common reason you will want it is **quick file-system checks** — confirming that `data/raw/sales.csv` exists before trying to read it, listing the files in `data/processed/` to verify a previous step produced what it was supposed to, or seeing how big an output file turned out to be. These are exactly the kinds of checks you would otherwise run in a terminal window, but having them inside the notebook means the diagnostic is captured alongside the code that depends on it.
+
+The second reason is **lightweight automation** — downloading a file with `curl`, decompressing an archive with `unzip`, or running a command-line tool (like `pandoc` to convert a report) as part of the notebook flow. This is appropriate when the command is small, deterministic, and not destructive. For anything bigger — a multi-step pipeline, a long-running training job, a batch of runs over many inputs — a script is almost always the right answer.
 
 ### Two mechanisms: "bang" and magics
 
+Jupyter offers two ways to run a shell command inside a code cell, and they look different on purpose. The first is the **bang prefix** — a single exclamation mark at the start of a line tells Jupyter "hand this line off to the shell and show me whatever it prints." You can mix bang lines with regular Python in the same cell:
+
+```python
+# A mix of Python and shell in one cell
+import pandas as pd
+
+!ls -lh data/raw/           # shell: list the raw data folder
+df = pd.read_csv("data/raw/sales.csv")   # Python: load it
+!wc -l data/raw/sales.csv   # shell: how many lines did we just read?
+```
+
+The second mechanism is **magics** — commands prefixed with `%` (for one line) or `%%` (for a whole cell) that Jupyter itself understands. Line magics do one specific thing (`%cd` to change directory, `%env` to show environment variables); cell magics change what the entire cell does (`%%bash` makes the whole cell a shell script, `%%time` times a cell's execution). Magics are built into IPython and Jupyter, not into the shell, so they work identically on every platform — unlike a bang prefix, which passes through to whatever shell your operating system uses.
+
+```python
+%cd ~/Courses/INFO-3010/Project    # change the kernel's working directory
+%pwd                                 # print it
+%env API_URL                         # show the value of an env var
+```
+
+```bash
+%%bash
+# Whole cell runs as a bash script; no ! prefixes needed
+for f in data/raw/*.csv; do
+  echo "$f: $(wc -l < "$f") lines"
+done
+```
+
+When should you prefer a magic over a bang? For anything that involves *multiple* shell lines — loops, conditionals, pipelines spanning several commands — `%%bash` is cleaner than prefixing every line with `!`. For single ad-hoc checks, a `!` line is fine.
+
 ### Common magics for students
+
+A handful of magics cover almost everything a student will ever need, and all of them are worth knowing by name so you can recognize them when you see them in other people's notebooks.
+
+- **`%cd <path>`** changes the kernel's working directory. Use this sparingly — it is better to launch Jupyter from the project root and never `cd` at all — but it is occasionally the right tool when you cannot control how the server was launched.
+- **`%pwd`** prints the kernel's current working directory. The first thing to run when you suspect a path problem.
+- **`%ls`** lists the contents of the current directory. Equivalent to `!ls` but cross-platform.
+- **`%env VAR=value`** sets an environment variable for the kernel, and `%env VAR` prints its current value. Useful for configuring things like `DATABASE_URL` without leaving the notebook.
+- **`%time statement`** runs a single statement and prints how long it took. Great for quick "is this line the slow one?" checks.
+- **`%%time`** (two percent signs) at the top of a cell times the whole cell instead of one line. Useful for measuring a full data-loading or modeling step.
+- **`%%timeit`** runs a cell many times and reports the best time, for benchmarking small pieces of code.
+- **`%load_ext autoreload`** followed by **`%autoreload 2`** sets up automatic reloading of imported modules, so edits to `src/` are picked up without restarting the kernel (see @sec-scripts-vs-notebooks).
+- **`%matplotlib inline`** tells matplotlib to draw plots directly into the notebook instead of in a separate window. Most modern Jupyter installs do this by default, but it is occasionally needed as an explicit line at the top.
+
+```python
+# A typical top-of-notebook setup using several magics
+%load_ext autoreload
+%autoreload 2
+%matplotlib inline
+
+import pandas as pd
+from src.cleaning import clean_sales
+
+%time df = pd.read_csv("data/raw/sales.csv")
+```
 
 ### Safety rules for shell commands in notebooks
 
--   Treat shell commands as potentially destructive.
+Shell commands inside notebooks are more dangerous than they look, because the notebook hides the usual friction of the terminal (a prompt, a clear context, a full screen of history) and makes it easier to run something destructive almost accidentally. A few rules keep the category safe.
 
--   Avoid `sudo` from notebooks.
+First, **treat every shell command as potentially destructive**, and preview before you execute. `!rm` in a cell with a glob pattern is exactly as dangerous as the same command in a terminal, and has the same "run once by accident and your project is gone" failure mode. Before running any `rm`, `mv`, or redirecting `>` command in a notebook, run `!ls` or `!find` first to see exactly what will be affected.
 
--   Never embed secrets (tokens, passwords) in notebook cells.
+Second, **never use `sudo` from a notebook.** A notebook is not the place to be making system-level changes. If you find yourself wanting to `!sudo apt install something`, switch to a terminal, install the package there, then come back to the notebook. The notebook's job is data analysis, not system administration.
 
--   Record what the command does and why (markdown cell above).
+Third, **never embed secrets — API tokens, passwords, private URLs — directly in a notebook cell.** The notebook file is saved to disk with every cell's contents intact, and when you commit it to git (or accidentally share it), whatever you typed is going with it. Load secrets from environment variables or from a `.env` file that is listed in `.gitignore` (see @sec-secrets). This rule applies to both Python cells and shell cells; the file is the same.
 
--   Prefer reproducible commands over manual clicking.
+```python
+# BAD: token is now permanently recorded in the notebook file
+!curl -H "Authorization: Bearer sk-abcdef1234" https://api.example.com/data
+
+# BETTER: token stays in the environment, never written to disk
+import os
+!curl -H "Authorization: Bearer $API_TOKEN" https://api.example.com/data
+```
+
+Fourth, **document what the command does in a markdown cell above it**, especially for commands that are not obviously reversible. A one-sentence "This downloads the October data drop into `data/raw/`" is the kind of note that saves a future reader (including you) from squinting at a `curl` one-liner and wondering what it was for.
+
+Finally, **prefer reproducible commands over manual clicking whenever you can.** The whole advantage of a notebook is that the commands are there for next time. If you find yourself running the same mouse-click sequence in a file browser on every project, turn it into a shell line in a notebook cell and document it. Next semester, you will be glad you did.
 
 ## Notebook style and discipline (how to write a notebook that survives)
 
 ### Structure: a notebook template
 
--   Title + one-paragraph purpose.
+The single highest-leverage thing you can do for any non-trivial notebook is to give it a predictable structure. A reader arriving at a notebook for the first time — including you, three weeks from now — should be able to tell from the first screen what the notebook is for, what it depends on, and what it produces. The way you communicate that is by following the same skeleton every time.
 
--   Setup: imports, configuration, paths.
+```markdown
+# <Title>
 
--   Data acquisition and provenance.
+<One-paragraph purpose: what this notebook does and why it exists.>
 
--   Cleaning and validation checks.
+## Setup
 
--   Analysis/modeling.
+- Imports
+- Paths and parameters
+- Smoke test (cwd, python, key files)
 
--   Results and interpretation.
+## Data acquisition and provenance
 
--   Next steps / limitations.
+- Where the data came from (URL, date, source)
+- How it was downloaded
+
+## Cleaning and validation
+
+- Filters applied (and why)
+- Validation checks (row counts, required columns, no nulls)
+
+## Analysis
+
+- One subsection per question
+
+## Results and interpretation
+
+- Plots, summary tables
+- One paragraph interpreting each
+
+## Next steps / limitations
+
+- What you did not do
+- Caveats the reader should know
+```
+
+Each section has a purpose, and a notebook that skips sections almost always ends up confusing. The **purpose** paragraph is often the difference between a notebook a collaborator can understand and one they have to ask about. The **setup** section is where every reproducibility check lives — if the notebook is going to fail to run on someone else's machine, it will fail here, and the failure will be obvious because this section is always the first to execute. The **provenance** section answers "where did this data come from?", which is a question that has no acceptable answer later if you did not write it down at the time. The **validation** section catches the "wait, this shouldn't be 0" moments while there is still time to fix them. The **results** section is the story you are telling; without it, the notebook is just a pile of calculations.
+
+Use this skeleton even for small notebooks. Some sections will be two lines long. That is fine — the headings still orient the reader.
 
 ### Narrative: make the notebook readable
 
--   Use markdown headings and short explanatory paragraphs.
+A notebook is not a pile of code cells with gaps between them; it is a written document that happens to contain working code. The feature that makes notebooks different from scripts is the ability to interleave prose and computation, and the notebook only pays for that feature if you actually write the prose. A notebook with fifty code cells and zero markdown cells is a script with a confusing user interface.
 
--   Explain assumptions and decisions (why this filter? why this join?).
+The baseline is to use markdown **headings** to break the notebook into sections, with one heading per topic or phase. On top of that, write **short explanatory paragraphs** before any block of code that makes a decision — a filter, a join, a cutoff, a model choice. The question to answer is "why did you do it this way, not some other way?", because six months from now you will not remember, and anyone reading the notebook fresh will want to know.
 
--   Use captions on plots and tables.
+```markdown
+## Filtering out cancelled orders
+
+The raw data contains every order the system has seen, including
+cancellations (which appear as a separate row with `status == "cancelled"`).
+For revenue analysis we want to exclude cancelled orders, because they
+were refunded and no money actually changed hands. We keep them in
+`data/raw/` for completeness but drop them here.
+
+```python
+active = df[df["status"] != "cancelled"]
+```
+
+Dropping cancellations removes about 4% of rows (12,104 of 302,811).
+```
+
+The third piece is to **caption your plots and tables**. Every figure in a notebook should have at least a markdown cell above it that explains what you are about to see, and ideally another after it that points out what the reader should notice. A plot without a caption is decoration; a plot with a caption is evidence.
+
+The test for whether a notebook has enough narrative is to imagine handing it to someone who knows the topic but has never seen your data. Can they read it as a document and follow the argument? If yes, the narrative is doing its job. If they would need you to sit next to them and explain, there is more prose to write.
 
 ### Reproducibility discipline
 
--   Use a consistent top-to-bottom execution order.
+A reproducible notebook is one that produces the same outputs every time you run it from a clean kernel. That sounds obvious, but it is startlingly easy to drift away from, because the notebook UI lets you run cells out of order, delete cells whose output you still depend on, and interactively define variables that never make it into any cell. The defense is a short list of habits that, taken together, keep the notebook honest.
 
--   Periodically: **Restart kernel and Run All**.
+The first habit is to **use a consistent top-to-bottom execution order** and never run a cell that depends on something further down in the notebook. The execution counts in the cell margins should go `[1] [2] [3] [4]` straight through. If you catch yourself running cells out of order — especially to "just check something" — fix the order immediately while you remember, instead of leaving a landmine for the next run.
 
--   Avoid hidden dependencies on prior interactive state.
+The second habit is to **periodically Restart Kernel and Run All**. Not just before you hand the notebook in — during the work too, every time you finish a major change. This is your early warning system for hidden-state bugs. If the notebook works interactively but fails on a restart, something you deleted, renamed, or moved is still silently present in the kernel's memory and will disappear on the next launch. Better to find out now than later.
 
--   Prefer functions over repeated copy/paste code.
+```text
+Kernel → Restart Kernel and Run All Cells
+```
 
--   Prefer relative paths inside a project.
+The third is to **avoid hidden dependencies on prior interactive state**. If you typed a variable definition into the kernel directly (via `%debug`, `%debug` continuation, or an exploratory `df2 = df.copy()` you ran and then deleted), it will still exist in the current session but not in any future one. Every variable the notebook uses should be defined by some cell that is currently in the notebook.
+
+The fourth is to **prefer functions over repeated copy/paste code**. Every time a block appears in two cells, it is a silent invitation for the two copies to drift apart. Extract it into a helper function — either in `src/` or in a cell near the top of the notebook — and call it in both places.
+
+The fifth is to **prefer relative paths inside a project**. A notebook that reads `/Users/alex/Downloads/survey.csv` runs only on Alex's laptop; a notebook that reads `data/raw/survey.csv` runs anywhere the same project folder exists. This is the same advice you have now seen in three chapters, because it is the single biggest portability improvement you can make.
 
 ### Environment capture (student level)
 
--   Record: Python version, key package versions, and OS.
+The code in your notebook is only half of what determines its behavior; the *versions* of Python and every installed package are the other half. A notebook that uses `pandas` 2.0 behaves subtly differently from one that uses `pandas` 1.3. If you do not record which versions were in play when the notebook was written, reproducing your results six months later becomes an archaeology problem.
 
--   Store environment files (e.g., `environment.yml`) when using conda.
+The student-level habit is to record the key versions directly in the notebook, as part of the smoke-test cell:
 
--   Keep datasets and generated artifacts in well-labeled folders.
+```python
+import sys, platform
+import pandas as pd, numpy as np
+
+print("python:  ", sys.version.split()[0])
+print("platform:", platform.platform())
+print("pandas:  ", pd.__version__)
+print("numpy:   ", np.__version__)
+```
+
+The professional-level version is to maintain an environment file in the project that pins every dependency (see @sec-virtual-environments and @sec-pkg-mgmt). For a conda environment, that file is `environment.yml`; for a pip-based virtual environment, it is `requirements.txt` or a `pyproject.toml`. Whichever you use, commit it to version control alongside the notebook, and write one line in the `README.md` explaining how to recreate the environment from it. With an env file plus the code, anyone — including you on a new machine — can get back to the exact same stack and reproduce the results.
+
+Also worth doing as a matter of hygiene: **keep datasets and generated artifacts in well-labeled folders** rather than scattered around the project. `data/raw/` for inputs, `data/processed/` for derived tables, `figures/` for plots, `reports/` for finished artifacts. A notebook that writes everything to the current directory is harder to clean up and harder to audit than one whose outputs land in predictable places.
 
 ### Outputs and size control
 
--   Large outputs make notebooks slow and hard to version.
+Notebooks store their outputs inside the file itself, and if you are not careful, a notebook that prints and plots generously can balloon to tens or hundreds of megabytes. A large notebook is slow to open, painful to scroll, and nearly impossible to review in git — most code-review tools simply refuse to display diffs over a certain size.
 
--   Avoid embedding huge binary blobs.
+The first preventative habit is to **avoid embedding huge binary blobs**. A cell that plots 100,000 points with matplotlib produces a PNG that gets base64-encoded and stuffed into the `.ipynb` file. If you regenerate the plot twenty times while iterating, and you never clear the old outputs, all twenty versions accumulate in the file. The fix is to periodically **Cell → All Output → Clear**, then rerun only what you need, so the saved notebook contains one copy of each plot, not twenty.
 
--   Prefer saving outputs to files (`data/processed`, `figures/`).
+The second habit is to **save outputs to files instead of embedding them**, for anything that is going to be shared outside the notebook. A figure that matters belongs in `figures/` as a PNG or SVG, referenced from a markdown cell — not embedded in the cell output. A cleaned dataset belongs in `data/processed/` as a CSV or Parquet file, with the notebook serving as the recipe that produces it.
+
+```python
+# Avoid: 4 MB PNG stored inside the notebook file
+import matplotlib.pyplot as plt
+plt.scatter(x, y)
+plt.show()
+
+# Prefer: saved to a file, referenced from markdown
+fig, ax = plt.subplots()
+ax.scatter(x, y)
+fig.savefig("figures/scatter-by-region.png", dpi=150, bbox_inches="tight")
+plt.close(fig)    # prevents the figure from also appearing in the cell output
+```
+
+```markdown
+![Scatter by region.](../figures/scatter-by-region.png)
+```
+
+The payoff is that the notebook stays small (its job is to *produce* artifacts, not to *be* them), version control behaves sensibly, and the artifacts themselves are first-class files you can share or embed in a report.
 
 ## Notebook pitfalls and how to prevent them
 
 ### Out-of-order execution
 
--   Prevention: restart-and-run-all checks.
+The classic notebook bug is the one where everything works in the current session and nothing works anywhere else. You run cell 7, then cell 3, then cell 5, then cell 8, you get the answer you wanted, and you close the laptop. Next week the same notebook throws `NameError: x is not defined` on the first run from the top, because cell 8 referenced a variable that only existed in the kernel because you happened to have run cell 3 a minute earlier. This failure mode is called **out-of-order execution**, and it is by far the most common way a notebook "works on my machine" and nowhere else.
 
--   Signal: execution counts jump around; variables appear "from nowhere."
+The signal that out-of-order execution has happened is right there on every code cell: the execution count in square brackets. If the counts down the notebook go `[1] [2] [3] [4] [5]`, the cells were run in order. If they go `[5] [1] [7] [2] [6]`, they were not, and anything that worked under those circumstances was an accident you should not rely on.
+
+```text
+# Cell execution counts in a healthy notebook
+[1]  import pandas as pd
+[2]  df = pd.read_csv("data/raw/sales.csv")
+[3]  df = df.dropna(subset=["amount"])
+[4]  df["year"] = df["date"].dt.year
+[5]  df.groupby("year")["amount"].sum()
+
+# Cell execution counts in a notebook with a hidden-state bug
+[3]  import pandas as pd
+[1]  df = pd.read_csv("data/raw/sales.csv")
+[5]  df["year"] = df["date"].dt.year     # needed cell [2] first
+[2]  df["date"] = pd.to_datetime(df["date"])
+[4]  df.groupby("year")["amount"].sum()
+```
+
+The prevention is the ritual we have come back to several times: **Kernel → Restart Kernel and Run All Cells**, every time you finish a chunk of work. Restart wipes the kernel, run-all executes the whole notebook top to bottom, and if everything still works, your notebook is actually reproducible. If anything breaks, you have just caught a bug that would otherwise have surfaced at the worst possible moment — on a grader's machine, or the night before a deadline.
 
 ### Wrong kernel / wrong environment
 
--   Symptom: imports fail or versions differ from expectations.
+The second most common failure has a different symptom: you open a notebook you were working on yesterday, import `pandas`, and get `ModuleNotFoundError`. Or the import works, but a function that should exist is missing because the version is wrong. Or a cell you have run a hundred times suddenly produces a deprecation warning it never did before. All three are versions of the same problem: **the kernel the notebook is using is not the Python environment you think it is.**
 
--   Prevention: name kernels clearly; confirm versions in a top cell.
+Jupyter lets you have multiple Python environments registered as separate "kernels," and it is easy to accidentally pick the wrong one — especially after creating a new virtual environment, switching branches, or opening a notebook that was originally written against a different environment. The kernel name in the top-right corner of the notebook tells you which one is active; the `Kernel → Change kernel` menu lets you switch.
+
+The prevention has two parts. First, **name your kernels clearly when you register them**. When you use `python -m ipykernel install --user --name=info3010 --display-name="INFO 3010 (venv)"`, the kernel shows up as "INFO 3010 (venv)" in the menu, which is much easier to pick than "Python 3 (ipykernel)" — the default name that every environment gets by default and that tells you nothing.
+
+```bash
+# Register the project's venv as a named kernel
+$ source .venv/bin/activate
+(.venv) $ python -m ipykernel install --user \
+              --name=info3010 --display-name="INFO 3010 (venv)"
+```
+
+Second, **confirm the environment in a top-of-notebook cell** every single time. The smoke-test cell (see @sec-scripts-vs-notebooks) should print `sys.executable` and the versions of any packages the notebook cares about:
+
+```python
+import sys
+print("python:  ", sys.executable)
+import pandas as pd
+print("pandas:  ", pd.__version__)
+```
+
+If the interpreter is not the one from your project's virtual environment, the kernel is wrong, and no amount of pip-installing will help until you switch kernels.
 
 ### File not found (paths)
 
--   Symptom: `FileNotFoundError` despite file existing.
+The third common pitfall is the `FileNotFoundError` that makes no sense because the file is right there. You can see `data/raw/sales.csv` in the Jupyter file browser. You can open it in another tab. But `pd.read_csv("data/raw/sales.csv")` in a code cell produces `FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales.csv'`.
 
--   Prevention: print working directory; use project-relative paths.
+The cause is almost always that **the kernel's working directory is not where you think it is.** A relative path like `data/raw/sales.csv` is resolved from the kernel's current working directory, not from the folder the notebook file lives in. If you launched Jupyter from your home directory and the notebook happens to live three folders deep, the kernel's CWD is your home directory, not the project root, and `data/` is not there at all.
+
+The diagnostic is three lines:
+
+```python
+import os
+from pathlib import Path
+print("cwd:    ", os.getcwd())
+print("exists: ", Path("data/raw/sales.csv").exists())
+print("absolute:", Path("data/raw/sales.csv").resolve())
+```
+
+If `cwd` is not the project root, the fix is to restart Jupyter from the right folder (recommended) or to `%cd` to the project root in the first cell (okay for one-off work). If `exists` is False and `absolute` shows an unexpected path, you now know exactly where the kernel was looking and can fix either the CWD or the path.
+
+The longer-term prevention is the one from @sec-filesystem and @sec-scripts-vs-notebooks: keep a stable project root and always launch Jupyter from it, so paths never depend on where the server was started.
 
 ### Long-running or stuck cells
 
--   Learn: interrupt vs restart.
+Eventually a cell takes longer than you expected — a data load that should take ten seconds is still running after two minutes, or a training loop that should finish in five minutes is showing no sign of stopping. The first question to ask is whether the cell is *slow* (doing the work, just taking a while) or *stuck* (hung on something that will never finish).
 
--   Add progress indicators or timing.
+The first line of defense is **Interrupt** (the square "stop" button in the toolbar, or `I, I` in command mode). Interrupt asks the kernel to stop whatever the current cell is doing while keeping all the variables you have built up so far. If the cell was truly stuck — on a broken network call, a deadlock, an infinite loop — interrupt usually returns control in a second or two. If the cell was busy doing real work, interrupt may take longer to take effect because the kernel can only respond between Python operations.
 
--   Move expensive work to scripts or batch runs when appropriate.
+If interrupt does not work, the next step is **Restart** (`Kernel → Restart Kernel`, or `0, 0` in command mode). Restart kills the kernel outright and boots a fresh one — any in-progress work is discarded, and all the variables you had built up are gone. Restart is the nuclear option; use it only after interrupt has failed.
+
+The prevention is to **add visibility to any cell that might take more than a few seconds**. For loops, use `tqdm` to show a progress bar so you can tell whether it is actually making progress:
+
+```python
+from tqdm import tqdm
+
+for row in tqdm(df.itertuples(), total=len(df)):
+    process(row)
+```
+
+For a single operation whose duration you want to measure, use `%time` or `%%time` at the top of the cell:
+
+```python
+%%time
+result = expensive_function(df)
+```
+
+With a progress bar or a timer, "is it actually stuck?" becomes "how fast is it going?", which is a much more useful question to ask.
+
+The structural prevention is to **move expensive work out of notebooks and into scripts** whenever it is genuinely expensive. A model that takes four hours to train does not belong in a notebook cell where the slightest mistake costs you the whole run. Put the training in a script that writes the model to disk, then have the notebook load the saved artifact and analyze it. Notebooks are for interactive exploration; anything that takes longer than the time you are willing to sit and wait should live somewhere else.
 
 ## When to move from notebooks to scripts (and back)
 
-@sec-scripts-vs-notebooks covers the scripting workflow in full; this section explains how notebooks and scripts fit together.
+@sec-scripts-vs-notebooks covers the scripting workflow in full; this section explains how notebooks and scripts fit together and when to use which.
 
 ### Notebook strengths
 
--   Exploration, explanation, and sharing results.
+Notebooks shine when the primary goal is **exploration, explanation, or sharing results**. The mix of code, prose, and inline outputs is the whole point — it is what lets you try something, see the result immediately, write a sentence explaining what you are seeing, and try the next thing. A notebook is a *document* with live computation inside it, and no other tool quite captures that combination.
+
+Concretely, reach for a notebook when you are still figuring out what the data looks like and the question is still changing. When you are iterating rapidly between a line of code and a plot. When the final artifact is a written analysis that someone else will read — a short report, a homework submission, a stakeholder briefing with embedded figures. When the value is in the *explanation*, not the execution.
 
 ### Script strengths
 
--   Production runs, automation, CI testing, and parameterized workflows.
+Scripts shine when the primary goal is **repeatable execution**. The same code, applied to (possibly different) inputs, with no human sitting in front of the keyboard, producing reliable outputs in predictable places. Scripts are what you run in batch jobs, in cron schedules, in continuous integration pipelines, in containers, on remote servers you cannot see. They are the right shape for any work that needs to happen regularly, unattended, or over many inputs.
+
+Concretely, reach for a script when the analysis has stabilized and you need to run it again. When the work needs to happen on a schedule (every morning at 6 AM, every time new data arrives). When you want version control to produce meaningful diffs. When you need parameters (a date range, a file path, a model configuration) to change between runs without editing code. When the value is in the *execution*, not the explanation.
 
 ### A practical boundary for students
 
--   Keep exploration in notebooks.
+In real projects the right answer is almost never "notebook only" or "script only" — it is a layered combination where each tool does what it is best at. The practical boundary for most student work has three layers:
 
--   Extract stable logic into `src/` as functions.
+1.  **Keep exploration in notebooks.** This is where you poke at the data, try visualizations, write hypotheses in markdown, and discover what the analysis should actually do. Early notebooks are messy, and that is fine — they are scratch paper, not deliverables.
 
--   Keep the notebook as a narrative driver calling those functions.
+2.  **Extract stable logic into `src/` as functions.** Any block of code you find yourself copying into a second notebook, or tweaking for the fourth time to debug something, should become a function in `src/`. The notebook goes from holding ten lines of cleaning code to holding one line that calls `clean_sales(df)`, and the function can be reused in other notebooks and scripts.
+
+3.  **Keep the notebook as a narrative driver that calls those functions.** Once the logic lives in `src/`, the notebook's job is to tell the story: load the data, call the cleaning function, show the results, explain what they mean. The notebook is short, readable, and focused on interpretation; the heavy lifting happens in imported code that can be reused and unit-tested.
+
+```text
+notebooks/
+└── 01-explore.ipynb   ← narrative + plots + interpretation
+src/
+├── cleaning.py        ← pure functions, imported by both the notebook
+├── modeling.py           and the CLI script
+└── plotting.py
+scripts/
+└── run_pipeline.py    ← batch entry point, imported by nothing,
+                         runs the same src/ functions from the command line
+```
+
+The notebook and the script import the *same* functions from `src/`. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that "scales": small student projects can start with just a notebook, grow to need `src/` as they get more complex, and grow again to include `scripts/` when they need automation — without ever having to rewrite from scratch.
 
 ## Worked examples
 

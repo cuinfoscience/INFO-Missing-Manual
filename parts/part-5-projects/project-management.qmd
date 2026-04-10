@@ -69,74 +69,93 @@ That whole brief is one page and it answers most of the questions a future revie
 
 ### Decompose work into milestones
 
--   Milestone 1: data acquisition + intake note.
+Once you have a brief, break the work into a small number of **milestones** — chunks of work large enough to be meaningful but small enough to finish in a week or two. Four is usually about right for a course project; more than six starts to feel bureaucratic and less than three leaves too much ambiguity. A reasonable pattern for a data-analysis project is:
 
--   Milestone 2: cleaning + data dictionary.
+1. **Data acquisition and intake note.** Get the data, record its provenance, document what you received. The milestone is "I have the raw data on disk and I can explain where it came from."
+2. **Cleaning and data dictionary.** Turn the raw data into a clean, documented dataset. The milestone is "every column is typed correctly, missingness is explicitly handled, and a data dictionary explains what each column means."
+3. **Analysis and validation.** Do the actual analysis and check that the results are plausible. The milestone is "I have answers to the questions in the brief, and I have at least one sanity check on each result."
+4. **Outputs, narrative, and reproducibility check.** Produce the final deliverables and verify that they regenerate from a clean state. The milestone is "someone else could `git clone` this repo, run one command, and get the same outputs."
 
--   Milestone 3: analysis + validation.
-
--   Milestone 4: outputs + narrative + reproducibility check.
+Each milestone becomes the header for a small set of tasks or issues. When you close every task under a milestone, the milestone is done. This is lightweight — you do not need project-management software for it; a short list in your README is enough.
 
 ### Define decision points
 
--   What choices might change results? (filters, joins, missingness handling)
+Most projects have a handful of **decisions** that meaningfully change the results: how to handle missing values, which records to filter out, which join key to trust, which time window to include. The danger is that these decisions often feel inconsequential when you make them and turn out to be consequential later — "oh, you dropped all rows with null timestamps? That's fine; wait, what fraction of rows was that?"
 
--   Where will you record those decisions? (issues, changelog, notebook narrative)
+Before you start analysis, list the decisions you anticipate having to make and decide *where* you will record each one. The options are limited and each has a niche:
+
+- **In an issue** — the right place for decisions that require discussion or approval from a collaborator. The issue has a record of the alternatives and why one was chosen.
+- **In a `DECISIONS.md` changelog** — the right place for project-wide decisions that cross multiple files or stages. One entry per decision, each entry dated.
+- **In the notebook narrative** — the right place for decisions that are local to a specific analysis step and want to sit next to the code that implements them.
+
+Pick one and be consistent. The worst case is not having a record at all, where three months later you cannot explain why `sales_clean.csv` has 4% fewer rows than `sales_raw.csv` and cannot reconstruct whether that was deliberate.
 
 ## Reproducible project structure
 
 ### Design principles
 
--   One project folder = one project.
+A reproducible project structure is built on a handful of principles that sound obvious but that you will routinely be tempted to violate. Adopting them explicitly, so that "is this principle being broken?" is a question you can answer when you look at your own project, is what separates a maintainable project from a hairball.
 
--   Raw data are read-only.
+**One project folder equals one project.** Everything the project needs — code, data, docs, configuration, outputs — lives inside a single top-level folder. Nothing the project needs lives in your Desktop, in a random folder in your Documents, or in a shared drive outside the project folder. When you want to share the project, you share *that one folder*, and the recipient has everything.
 
--   Outputs are reproducible from code.
+**Raw data are read-only.** Whatever you downloaded, received, or extracted lives in `data/raw/` and is never, ever modified in place. If the raw data has errors, you fix them in a documented cleaning step that writes to `data/processed/`, leaving the raw file untouched. The principle exists so that anyone (including future you) can look at the raw data and know that what they are seeing is exactly what arrived, not "what arrived plus three years of manual fixes nobody remembers."
 
--   Paths are relative to the project root.
+**Outputs are reproducible from code.** Every figure, every table, every number in the report should be regenerable by running a documented command. If you hand-edit a plot in PowerPoint, the project has stopped being reproducible at that point. If you tweak numbers in a spreadsheet without saving the formula that produced them, same problem. The rule is: no magic values, no hand-edits that are not captured in code.
 
--   Clear separation: data vs code vs docs vs outputs.
+**Paths are relative to the project root.** Every file the code reads is identified by its path *relative to the project root*, not by an absolute path like `/Users/agandler/Desktop/sales/data.csv`. Relative paths are what makes the project portable — when a collaborator clones it, the paths still work without editing.
+
+**Clear separation of concerns.** Data lives in `data/`. Code lives in `src/` and `scripts/`. Notebooks live in `notebooks/`. Outputs live in `reports/` and `figures/`. Documentation lives in `docs/` or the README. When every kind of artifact has a predictable home, you never have to wonder "where did I put that script?"
 
 ### A student-friendly directory template
 
-    project/
-    README.md
-    environment.yml   (or requirements.txt)
-    data/
-    raw/
-    processed/
-    external/
-    notebooks/
-    src/
-    scripts/
-    reports/
-    figures/
-    docs/
-    tests/            (optional)
+The template below works for most course and small research projects. Copy it as a starting point; add directories only when you have a real reason.
+
+```text
+project/
+├── README.md              # how to set up, run, and interpret
+├── environment.yml        # (or requirements.txt) pinned dependencies
+├── .gitignore             # which files NOT to commit
+├── Makefile               # one-command entry points (see @sec-automation)
+│
+├── data/
+│   ├── raw/               # original, immutable source data
+│   ├── processed/         # cleaned data, ready for analysis
+│   └── external/          # reference data from outside sources
+│
+├── notebooks/             # exploratory and narrative notebooks
+├── src/                   # reusable Python modules (importable)
+├── scripts/               # command-line entry points
+│
+├── reports/               # generated reports (HTML, PDF, memos)
+│   └── figures/           # figures referenced by reports
+│
+├── docs/                  # extended project documentation
+└── tests/                 # optional: unit and smoke tests
+```
+
+This is a convention derived from the widely used "Cookiecutter Data Science" template and its many descendants. It is not the only reasonable layout, but it is a good default, and sticking to a conventional layout means that anyone who has seen one project like this can find their way around yours.
 
 ### Naming conventions and consistency
 
--   Use lowercase and hyphens/underscores (choose one).
+Consistency matters more than which convention you pick. Decide once, write it in the README, and follow it.
 
--   Date stamps for snapshots (e.g., `2026-01-08`).
-
--   Avoid spaces and ambiguous names (`final_final2.csv`).
+- **Use lowercase with either hyphens or underscores in filenames**, and do not mix. Pick `sales_q3_2026.csv` *or* `sales-q3-2026.csv` and stick with one throughout the project. Mixed-case filenames are a cross-platform trap: macOS and Windows treat `Data.csv` and `data.csv` as the same file, but Linux does not, and projects that work on one machine suddenly break on another.
+- **Use ISO date stamps** (`2026-04-10`, not `10-04-26` or `apr-10`). ISO dates sort correctly lexicographically, are unambiguous in any locale, and let you glance at a folder and instantly see chronological order.
+- **Avoid spaces and ambiguous names.** `final_final2_USE_THIS.csv` is the universal symbol of a project that lost track of itself. If you find yourself adding `final`, `v2`, or `USE_THIS` to a filename, stop and reconsider — usually the right move is version control (@sec-git-github) or dated snapshots, not increasingly desperate filenames.
 
 ### What goes where (and what does not)
 
--   `data/raw`: original sources; never edited.
+The four-line rule: **raw data is never edited, processed data is always generated, code lives in `src/` or `scripts/`, and outputs go in `reports/`**. Everything else follows from there.
 
--   `data/processed`: generated outputs from cleaning.
+- **`data/raw/`** holds original source files exactly as you received or downloaded them. If the source is a website, the downloaded file. If the source is a database export, the CSV that came out of the export. Nothing in this folder is ever edited by you or by your code.
+- **`data/processed/`** is the output of your cleaning and feature-engineering steps. Everything here is generated by code; if you delete the folder, `make run` (or whatever your equivalent command is) should regenerate it.
+- **`data/external/`** is reference data from outside sources that supplements your main dataset — a lookup table of country codes, a census crosswalk, a list of holidays. Like `data/raw/`, it is immutable.
+- **`notebooks/`** holds Jupyter notebooks that drive narrative analysis. Keep them tidy; see @sec-jupyter for habits that matter here.
+- **`src/`** holds the reusable Python modules your notebooks and scripts import. Functions live here, not in notebooks. See @sec-scripts-vs-notebooks for the notebook-to-script pipeline.
+- **`scripts/`** holds command-line entry points — the files you run with `python scripts/run_analysis.py`.
+- **`reports/`** is where the final artifacts live: an HTML report, a PDF memo, a set of figures ready for a slide deck. These are regenerated by code and committed so collaborators can see the current state without running anything.
 
--   `notebooks`: narrative drivers; keep tidy.
-
--   `src`: reusable functions and modules.
-
--   `scripts`: command-line entry points.
-
--   `reports/figures`: final artifacts for sharing.
-
--   Avoid storing secrets or credentials anywhere in the repo.
+And a short list of what should **not** be in the repo under any circumstances: **secrets, credentials, API keys, personal access tokens, private keys** (see @sec-secrets), large binary files that inflate the repository (use external storage for datasets above a few megabytes), and personally identifiable information you do not have explicit permission to share. A `.gitignore` file at the repo root is how you make sure these things never accidentally get committed — add `.env`, `*.key`, `data/raw/` (if the raw data is sensitive), and anything else you need to keep local.
 
 ## Data management hygiene
 
@@ -171,127 +190,345 @@ If the data might contain personal identifiers, treat it as sensitive from the m
 
 ## Documentation that makes a project runnable
 
-@sec-documentation covers how to find, read, and write technical documentation in depth; this section focuses on the documentation artifacts specific to a project.
+@sec-documentation covers how to find, read, and write technical documentation in depth; this section focuses on the documentation artifacts specific to a project — the ones that exist to make *this particular project* runnable and interpretable by someone who did not write it.
 
 ### README as the single source of truth
 
--   What the project does (one paragraph).
+The `README.md` at the root of your project is the first thing anyone looks at and, often, the only thing they look at. Write it as if a specific person you want to help — a future version of yourself six months from now, a TA who needs to reproduce your results, a collaborator stepping into the project for the first time — is trying to get your code working on their laptop in the next twenty minutes. Five sections cover what they will need.
 
--   What data are required and where they go.
+**What the project does (one short paragraph).** Start with a one-paragraph description of the project in plain English: what question it answers, who it's for, what the deliverables are. Not a literature review — a pitch. "This project analyzes Q3 2026 sales data to identify which product categories drove revenue growth, producing a 3-page memo and two figures for INFO-3010."
 
--   How to set up the environment.
+**What data are required and where they go.** List the datasets the project reads, where they come from (with provenance notes), and the exact path the code expects them to be at. If the data are not in the repo because they are too large or sensitive, explain how to obtain them.
 
--   One "copy/paste" command to reproduce core outputs.
+**How to set up the environment.** The exact commands to create a virtual environment and install dependencies. Not a prose description — actual commands the reader can copy and paste. See @sec-virtual-environments for the underlying patterns.
 
--   How to interpret outputs (where to find the key tables/figures).
+**One copy-paste command to reproduce the core outputs.** The single command that runs the pipeline end-to-end. Ideally a Makefile target: `make run`. The point is that the reader should not have to read the rest of the README to produce the core outputs; they should be able to see this line, run it, and get something.
+
+**How to interpret the outputs.** After `make run` finishes, what will the reader find and where? "The main figures are in `reports/figures/`; the memo is in `reports/q3-memo.pdf`; the cleaned dataset is in `data/processed/sales.parquet`." This is the map from "I ran the code" to "I understand what I'm looking at."
+
+```markdown
+# Q3 Sales Trend Analysis
+
+Analyzes Q3 2026 sales to identify which product categories drove revenue
+growth. Final deliverable is a 3-page memo with two supporting figures.
+
+## Data
+
+- `data/raw/sales-q3-2026.csv` — public release from example.org,
+  retrieved 2026-04-10. See `data/raw/provenance.md`.
+
+## Setup
+
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+
+## Run
+
+    make run              # rebuilds cleaned data and report
+    make clean run        # rebuilds everything from scratch
+
+## Outputs
+
+- `reports/q3-memo.pdf` — the memo
+- `reports/figures/revenue-by-category.png` — Figure 1
+- `reports/figures/top-10-skus.png`          — Figure 2
+- `data/processed/sales.parquet`             — cleaned data
+```
+
+A README that looks like this is short, honest, and immediately actionable. It is also easier to maintain than a long one, which matters because the README that is out of date is the README that lies to people.
 
 ### Decision log
 
--   Record consequential choices: filtering rules, outlier handling, join keys.
+Some decisions change results. "We dropped rows with null timestamps," "we used a left join on `customer_id` instead of an inner join," "we treated values above 3σ as outliers and winsorized them" — each of these is a choice that a reader of the results needs to know about in order to interpret them.
 
--   Store decisions in issues or a dedicated `DECISIONS.md`.
+Keep a **decision log** that records the consequential decisions as they are made. The format does not matter much — what matters is that the log exists and is searchable. Two workable options:
 
-### Docstrings and inline comments (just enough)
+**Option 1: record decisions in issues.** If your project uses GitHub Issues or similar, open an issue for each meaningful decision. Title it with the question ("How should we handle missing timestamps?"), describe the alternatives, and then close the issue with a summary of the choice and the reason. This is ideal when the decision requires discussion or approval from others.
 
--   Explain intent, not obvious syntax.
+**Option 2: maintain a dedicated `DECISIONS.md`.** A flat file at the project root with one section per decision, each dated, looking like this:
 
--   Document inputs, outputs, assumptions.
+```markdown
+# Decisions log
+
+## 2026-04-08 — Missing timestamps
+**Context.** 3.2% of rows in the raw data have null `transaction_timestamp`.
+**Decision.** Drop these rows during cleaning; they are concentrated in a
+single store ID that had a logging outage, and imputing them would bias
+our time-series results.
+**Impact.** Row count drops from 124,531 to 120,522.
+
+## 2026-04-09 — Category labels
+**Context.** The `category` column uses inconsistent casing ("electronics",
+"Electronics", "ELECTRONICS").
+**Decision.** Normalize to title case during cleaning.
+**Impact.** 14 category values collapse to 9.
+```
+
+Pick the option that fits how your project is run. The worst version is no log at all, where you look at a mysterious anomaly in your results six weeks later and have no idea whether it was a deliberate choice or a bug.
+
+### Docstrings and inline comments — just enough
+
+Code comments and docstrings exist to capture things that the code itself cannot express. That is a narrower role than "explain what the code does line by line." The code already says what it does; your job is to say *why*.
+
+Good docstrings tell the reader what a function is for, what its inputs and outputs look like, and what assumptions it relies on:
+
+```python
+def winsorize_outliers(series, n_sigma=3):
+    """Cap extreme values at n_sigma standard deviations from the mean.
+
+    Used to limit the influence of outliers without dropping them entirely.
+    See DECISIONS.md (2026-04-10) for why we prefer winsorizing over
+    dropping in this project.
+
+    Parameters
+    ----------
+    series : pd.Series of numeric values
+    n_sigma : float, default 3
+        Values beyond ±n_sigma * std from the mean are capped.
+
+    Returns
+    -------
+    pd.Series of the same length, with outliers capped.
+    """
+    ...
+```
+
+Good inline comments call out the non-obvious:
+
+```python
+# The dataset has duplicate rows where only the timestamp differs by <1s;
+# treat these as the same event and keep the earliest.
+df = df.drop_duplicates(subset=["customer_id", "sku"], keep="first")
+```
+
+Bad inline comments restate the code:
+
+```python
+# Loop over the rows
+for row in df.itertuples():
+    # Get the customer_id
+    customer_id = row.customer_id   # Don't do this.
+```
+
+The rule of thumb: if a comment would make sense written as "because...", it is probably worth writing. If a comment is just the code translated into English, delete it.
 
 ### Reproducibility notes
 
--   Environment file is required.
+A few project-level notes make the difference between "it runs" and "it runs on someone else's machine next year."
 
--   Note OS-specific dependencies.
+**The environment file is not optional.** Whether you use `requirements.txt`, `environment.yml`, `pyproject.toml`, or a lockfile, committed to the repo, with pinned versions. See @sec-pkg-mgmt. "Whatever was on my laptop" is not a dependency specification.
 
--   Include a small "smoke test" script or notebook cell.
+**Note any OS-specific dependencies.** If your project requires `poppler` on macOS or a specific C library on Linux, the README should say so. These are the pieces that are installed outside Python and that cannot be captured in a `requirements.txt`.
+
+**Include a small smoke test.** A smoke test is a minimal script or notebook cell that exercises the full pipeline on a tiny subset of the data and produces a known-good output. "Does `make smoke` finish in under thirty seconds and produce a file with twelve rows?" is a check you can run in under a minute, and it catches the most common breakages — missing dependencies, wrong Python version, moved input files — before they eat an hour of debugging.
 
 ## Issue tracking fundamentals (for students)
 
 ### Why issues are not just for bugs
 
--   Tasks, questions, data problems, and design decisions.
+"Issues" sounds like a word reserved for bug reports, but in practice an issue tracker is the persistent external memory of a project. Everything that needs doing, everything that needs deciding, everything someone asked about — each becomes a short written record that outlives any one conversation in chat and any one person's memory. For a team project, an issue tracker is what prevents "I thought Brian was doing that" and "wait, didn't we decide that last week?"
 
--   A shared memory and audit trail.
+A useful issue can be any of the following:
+
+- **A task.** "Write the cleaning script for the sales data." Someone will pick it up, do it, and close the issue.
+- **A bug.** "The merge in `clean.py` drops 4% of rows unexpectedly." Describes a problem and gets closed when it is fixed.
+- **A data problem.** "The raw file has an empty column where we expected prices." Might result in a code change, might result in going back to the data source.
+- **A question.** "Should we treat store 14's outage as missingness or as zero sales?" Captured so the answer does not get lost.
+- **A design decision.** "Which join key should we use between `sales` and `products`?" — discussed in the issue, decided in the issue, then linked from the code change that implements the decision.
+
+The shared thread is that an issue is a **piece of work or thinking that someone should act on, and that should be visible to the project**. Private Slack messages are not issues. Sticky notes on your desk are not issues. An issue is public to the team and permanent.
 
 ### Anatomy of a good issue
 
--   Clear title: action + object.
+A good issue is short and unambiguous. Four components cover almost every case.
 
--   Description: context, objective, definition of done.
+**A clear title: action plus object.** Not "Sales bug" but "Fix category label normalization in clean.py." Not "Data problem" but "Raw sales file is missing the `price` column for store 14." A well-titled issue can be understood from the issue list alone, without opening it.
 
--   Evidence: links, screenshots, error messages.
+**A description with context, objective, and definition of done.** The *context* is what the reader needs to understand why this matters. The *objective* is what outcome you want. The *definition of done* is how you will know it is finished. This last part is the most often skipped and the most valuable — "what specifically is true when this issue can be closed?" is the question that prevents issues from lingering for weeks.
 
--   Labels: type (bug/task/question), priority, area (data/code/docs).
+```markdown
+## Fix category label normalization in clean.py
+
+**Context.** The raw data has inconsistent casing in the `category`
+column ("electronics", "Electronics", "ELECTRONICS"). Our current
+cleaning step treats these as distinct, inflating the category count
+from 9 to 14 and breaking the group-by in analyze.py.
+
+**Objective.** Normalize category labels to title case during cleaning.
+
+**Definition of done.**
+- `clean.py` produces exactly 9 unique category values.
+- The `tests/test_clean.py::test_category_count` test passes.
+- `DECISIONS.md` has a new entry for this choice.
+```
+
+**Evidence.** When the issue is about something that went wrong, paste the actual error message, the actual line of code, a screenshot of the unexpected output. "It's broken" is a bad bug report; "Running `make clean-data` produces this traceback: ..." is a good one.
+
+**Labels.** Tags that let you filter and prioritize: **type** (`bug`, `task`, `question`, `decision`), **priority** (`p0` blocking, `p1` important, `p2` nice-to-have), **area** (`data`, `code`, `docs`, `infra`). Labels feel fussy for a small project; they become essential as the number of open issues grows past a dozen.
 
 ### Issue workflow: triage → do → review → close
 
--   Triage: clarify, label, assign, and break down.
+An issue goes through roughly four phases between "someone filed it" and "someone closed it."
 
--   Do: create a branch or working copy tied to the issue (concept).
+**Triage.** When an issue is filed, someone reads it, decides it is actually actionable, clarifies anything ambiguous, adds labels, and either assigns it to a person or leaves it in the unassigned pool. For solo projects, triage happens in your head; for teams, it is usually the first agenda item of a weekly sync.
 
--   Review: verify outputs, update docs.
+**Do.** Someone picks up the issue and starts the work. The conventional pattern is to create a branch named after the issue (`issue-42-normalize-category-labels`), make the code changes on that branch, and reference the issue in commits and pull requests. See @sec-git-github for the branching mechanics.
 
--   Close: summarize what changed and link artifacts.
+**Review.** Once the work is done, someone other than the author looks at the change, runs it, and confirms that it does what the issue said it should do. The review step is what catches "I think I fixed it" mistakes before they land on `main`. See @sec-collaboration for how code review works in practice.
+
+**Close.** The issue is closed with a short summary of what actually changed. Not just "done" — a sentence or two about what the fix was and a link to the commit or pull request that implemented it. The closed issue becomes a permanent searchable record of "when did we change how we handle category labels?" that you can still find a year later.
 
 ### Milestones and project boards (optional)
 
--   Milestones map to deliverables.
+Once a project has more than about a dozen open issues, simple lists become hard to scan, and two lightweight organizational tools start earning their keep.
 
--   Boards visualize status (To do / Doing / Done).
+**Milestones** are groups of issues that should be finished together. They map one-to-one to the project milestones from the "Decompose work into milestones" section: every issue gets assigned to the milestone whose deliverable it contributes to, and you can see at a glance how much is left in the current milestone. When every issue in a milestone is closed, the milestone is done.
 
--   Keep it lightweight: avoid over-customization early.
+**Project boards** are kanban-style views where issues move across columns as work progresses: "To do," "In progress," "In review," "Done." GitHub Projects and most competing tools offer this for free. For a small team, a three-column board (todo / doing / done) is enough and gives you a fast visual check on who is working on what.
+
+The warning that comes with both features: **keep it lightweight**. It is entirely possible to spend more time configuring project-management tools than doing project work. For a course project, start with plain issues, add milestones when you have more than ten open issues, and add a board only if the team actually looks at it. Anything fancier should be justified by a specific pain point, not by the existence of the feature.
 
 ## Quality gates: make "done" meaningful
 
+"Done" is a word that takes on meaning only when you attach specific checks to it. A project that says "I finished the analysis" without checks attached to that claim can be hiding any number of bugs. A project with explicit quality gates — tests that must pass before the project is considered releasable — has a clear, inspectable definition of "done" that survives you being tired, rushed, or overconfident.
+
 ### The reproducibility check
 
--   Fresh environment or clean restart.
+The single most valuable quality gate is: **does the whole thing run, from nothing, on a clean environment?** This is the check that separates "works on my machine" from "actually reproducible." You should run it at least once before handing in the project, and ideally once a week if the project is active.
 
--   Run the pipeline end-to-end.
+The recipe is the same on every project. Delete every derivative (the processed data, the reports, the notebook outputs). Throw away your virtual environment. Then run the setup and build commands from the README, from scratch, and confirm the outputs match what you expected.
 
--   Confirm outputs match expectations.
+```bash
+# Fresh reproducibility check
+make clean                    # delete processed data, reports, caches
+rm -rf .venv/                 # throw away the environment entirely
+
+# Start over from the README
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run the pipeline
+make run
+
+# Compare the outputs to the last committed versions
+git status                    # any unexpected changes?
+git diff reports/             # do the regenerated reports match?
+```
+
+Three things can happen. Best case: the rebuild succeeds and the outputs are byte-identical to what was committed. This is the "fully reproducible" state you are aiming for. Middle case: the rebuild succeeds but produces slightly different outputs — maybe a timestamp embedded in a report, maybe nondeterministic sorting. Investigate: either fix the nondeterminism or accept it and document why. Worst case: the rebuild fails. This is exactly the bug you wanted to catch *before* submission, and now you know about it.
+
+Do this check the day before your deadline, not an hour before. If it surfaces a problem, you want time to fix it.
 
 ### Data checks
 
--   Row/column counts.
+Every time you load a dataset, run a short set of sanity checks and make sure the results match your mental model. These are the checks that catch "the data changed upstream and I did not notice" and "my cleaning step accidentally dropped half the rows."
 
--   Missingness summary.
+```python
+import pandas as pd
 
--   Value ranges and plausibility.
+df = pd.read_parquet("data/processed/sales.parquet")
 
--   Join coverage and key uniqueness.
+# Shape: how many rows and columns?
+print(f"shape: {df.shape}")
+assert df.shape[0] > 100_000, "too few rows; upstream data changed?"
+
+# Missingness: are nulls where you expect them?
+print(df.isnull().sum())
+assert df["price"].isnull().sum() == 0, "price should never be null"
+
+# Value ranges: are numbers in plausible bounds?
+assert df["price"].between(0, 10_000).all(), "implausible price values"
+assert df["transaction_date"].min() >= pd.Timestamp("2026-07-01")
+assert df["transaction_date"].max() <= pd.Timestamp("2026-09-30")
+
+# Key uniqueness: are the keys you expect to be unique actually unique?
+assert df["transaction_id"].is_unique, "duplicate transaction IDs!"
+
+# Join coverage: after a join, did every row find a match?
+products = pd.read_parquet("data/processed/products.parquet")
+joined = df.merge(products, on="sku", how="left", indicator=True)
+assert (joined["_merge"] == "both").all(), "some sales have no matching product"
+```
+
+Each of those assertions is a tripwire. When the upstream data changes, or when your cleaning code has a subtle bug, one of them fails loudly instead of letting corrupt data flow silently into your analysis. See @sec-tabular-data for the fuller treatment of validation patterns and why they matter.
 
 ### Output checks
 
--   Figures labeled, units clear, captions present.
+Your final outputs — figures, tables, reports — have their own quality gates. These are the checks that prevent "I made the plot but the x-axis doesn't say what it's measuring" from making it into a submission.
 
--   Tables have consistent formatting and definitions.
+**Figures need to be readable on their own.** Every figure should have an informative title (not "Figure 1"), labeled axes with units, a legend if there is more than one series, and a caption that tells the reader what they are looking at and what point it is making. A figure that a reader can only understand after reading three paragraphs of surrounding text has failed the test.
 
--   Narrative explains limitations and uncertainty.
+**Tables need consistent formatting and definitions.** Every column header should be self-explanatory or have its meaning explained in the accompanying text. Numbers should use consistent precision — if revenue is reported to the nearest dollar in one place and to two decimal places in another, someone will notice and lose confidence in the whole analysis. Footnotes should explain any data sources or caveats for specific cells.
+
+**The narrative should explain limitations and uncertainty.** A good analysis does not pretend to be more certain than it is. If you dropped 3% of the data during cleaning, the report should say so and explain why. If your sample is biased in a known way, the report should name the bias. If the effect you found is small or could plausibly be noise, the report should say that too. Readers trust reports that acknowledge their limits; they distrust reports that do not.
+
+A short pre-submission checklist for outputs:
+
+```text
+For each figure:
+[ ] Title is informative (not "Figure 1")
+[ ] Axes are labeled with units
+[ ] Legend is present (if needed) and readable
+[ ] Caption explains what the reader is looking at
+[ ] The figure is regenerated by code, not hand-edited
+
+For each table:
+[ ] Column headers are self-explanatory
+[ ] Numeric precision is consistent
+[ ] Data sources and caveats are noted
+
+For the narrative:
+[ ] States what the data are and where they came from
+[ ] Names the key assumptions and decisions
+[ ] Acknowledges limitations and uncertainty
+[ ] Explicitly cites every figure and table
+```
 
 ## Common failure modes and how to prevent them
 
+Most project failures are instances of a small number of recurring patterns. Naming them explicitly — and building habits that prevent them — is cheaper than debugging each one when it happens.
+
 ### Folder chaos and lost files
 
--   Prevention: stable project root + fixed structure.
+**Symptom.** You cannot find the notebook where you did that analysis three weeks ago. You have six files with "final" in the name. Your collaborator emails you a dataset and you save it to the Desktop because you do not know where else it should go.
 
--   Recovery: search by extension/date; reconstruct from outputs.
+**Prevention.** A stable project root and a fixed directory structure, adopted on day one, before the project has a chance to sprawl. The template from earlier in this chapter is designed for exactly this. Once the structure exists, *every* new file has an obvious home: a new dataset goes in `data/raw/`, a new notebook in `notebooks/`, a new helper function in `src/`. When you find yourself about to save a file to a random location, stop and decide where it belongs in the structure first.
+
+**Recovery.** If the project is already chaotic, the salvage operation has two steps. First, create the proper structure and move files into it in small batches, updating any paths in code as you go. Second, use your file system's search to find things you have lost: search by extension (`*.csv`), by date range, or by name fragments. If you cannot find a specific artifact but you still have the script that produced it, just regenerate it. That is exactly why reproducible pipelines are valuable — they make lost outputs recoverable.
 
 ### Silent data drift
 
--   Prevention: snapshot raw data; record retrieval dates and checksums.
+**Symptom.** A pipeline that worked last week produces different answers today, with no code changes. Or worse: it produces the same *shape* of output but with wrong numbers, and you do not notice until the final report is embarrassing.
 
--   Detection: schema checks and summary stats comparisons.
+**Prevention.** Treat the raw data as a versioned artifact, not a live feed. When you download a dataset, snapshot it with a date in the filename (`sales-2026-04-10.csv`), record the retrieval date and source URL in a `provenance.md`, and note the file size or a checksum so you can detect silent changes later:
+
+```bash
+# Record a checksum at intake
+sha256sum data/raw/sales-2026-04-10.csv >> data/raw/checksums.txt
+
+# Later: verify the file is still what you think it is
+sha256sum -c data/raw/checksums.txt
+```
+
+**Detection.** Run schema and summary-stats checks as part of your pipeline, and compare them to the previous run. If the row count dropped by 30%, or a column type changed, or a value that used to be in `{0, 1}` suddenly contains `2`, fail loudly. Drift that is caught immediately is a minor annoyance; drift that rides along for three weeks becomes a trust problem.
 
 ### Undocumented assumptions
 
--   Prevention: decision log + notebook narrative.
+**Symptom.** You look at a code path six weeks later and cannot explain why it is there. "Why did we exclude store 14?" "I don't know." "Why is this threshold 0.3 and not 0.5?" "I don't remember." Every undocumented assumption is a landmine for future you.
 
--   Practice: "if this changed, results would change" gets documented.
+**Prevention.** When you are about to make a choice that would change results if it went the other way, *pause and write it down*. A sentence in the notebook narrative, a new row in `DECISIONS.md`, a comment next to the code — any of these is enough. The test is: "if I changed this to the other reasonable option, would the numbers move?" If yes, document it. If no, do not bother.
+
+**Practice.** Build a habit during code review: whenever someone sees a magic number or a filter that is not obviously correct, the reviewer's response is "please explain this in a comment or a decision log entry." The goal is not bureaucratic completeness; it is that future readers of the project can see the logic without having to guess.
 
 ### Work tracked in private channels
 
--   Prevention: issues for tasks/questions; link decisions and artifacts.
+**Symptom.** A decision was made in a Slack DM and two of the three people on the project know about it. A bug was reported in a hallway conversation and only the person who heard it remembers. Someone had a brilliant idea in a text message at 11 PM and forgot to tell anyone.
+
+**Prevention.** Make issues the single source of truth for "things that need to be done" and "decisions that have been made." If a conversation in chat produces an action item, someone immediately opens an issue with a link back to the chat and the context. If a decision is made in a meeting, someone writes it up in an issue or in `DECISIONS.md` before leaving the meeting. The rule is: **if it is not in the tracker, it does not exist**, and the team will respect that rule if one member consistently reminds the others.
+
+The reason private channels cannot be the project memory is that they are not searchable by anyone else, they expire, and they exclude anyone who was not in the channel when the decision was made. Issues solve all three problems. The cost is a small amount of friction — you have to write things down — and the benefit is that the project stops losing decisions and the team stops having the same argument twice.
 
 ## Worked examples (outline)
 
