@@ -39,89 +39,54 @@ A notebook should read like a report and execute like a program. The discipline 
 
 ## Mental models: what Jupyter is doing
 
-### Notebook vs JupyterLab
+You will encounter two flavors of Jupyter and they are sometimes confused with each other. **Jupyter Notebook** (often called "classic") is the original single-document interface — one notebook per browser tab, no built-in file browser, very simple. **JupyterLab** is the newer multi-document environment that gives you a file browser sidebar, multiple notebooks open as tabs, integrated terminals, and side-by-side panes. Most modern courses use JupyterLab. Both flavors run on the same underlying machinery, so anything you learn about kernels and execution state applies to either.
 
--   **Jupyter Notebook** (classic) is a single-document interface.
+That underlying machinery has three pieces, and you should be able to name all three when something goes wrong. The **server** is the process you start when you run `jupyter lab` from the terminal — it listens on a port (usually `localhost:8888`) and is the actual program your browser is talking to. The **browser UI** is the HTML interface where you edit cells, click Run, and see output; it is just a thin shell around the server. The **kernel** is a separate process that runs your code — for Python notebooks it is a Python interpreter, but Jupyter also supports R, Julia, Bash, and others. When you press Shift+Enter on a cell, the browser sends the code to the server, the server hands it to the kernel, the kernel runs it, and the result comes back through the same chain.
 
--   **JupyterLab** is a multi-document environment (files, terminals, notebooks, consoles).
+```text
+You type in a cell  →  browser  →  Jupyter server  →  kernel  →  result back up the chain
+```
 
--   Both run on the same concepts: a server, a browser UI, and kernels.
-
-### Server, browser, kernel
-
--   **Server:** the process you start (the thing listening on `localhost:8888`).
-
--   **Browser UI:** where you edit and run cells.
-
--   **Kernel:** the language runtime executing your code (Python, R, etc.).
-
-### State and order
-
--   Notebooks allow executing cells out of order.
-
--   The kernel remembers variables from prior cells.
-
--   "It works on my notebook" often means hidden state.
+The single most important thing to internalize about notebooks is that **the kernel keeps state across cells**. When you assign `df = pd.read_csv("data.csv")` in one cell, that variable lives in the kernel's memory until you restart it. You can run cells out of order, redefine variables, delete cells whose results are still in memory, and end up in a situation where the notebook on screen does not match the state in the kernel — a phenomenon called **hidden state**. "It works on my notebook" almost always means "it works against the specific hidden state in my kernel right now," and the only reliable way to find out whether your notebook is actually correct is to **Restart Kernel and Run All** and watch every cell execute from a clean slate. Build that habit early.
 
 ## Launching Jupyter the right way
 
-### The rule: start from your project folder
+The single rule that prevents most "Jupyter cannot find my files" frustration is: **always launch Jupyter from your project's folder**. The folder you are in when you start the server becomes Jupyter's root — the file browser shows the contents of that folder and nothing above it. If you launch from your home directory, you will see all of your home; if you launch from the wrong project, you will see the wrong project; if you launch from `Downloads`, you will see Downloads.
 
--   Open a terminal.
+The full opening sequence for a project is three commands:
 
--   **Navigate** to the folder containing your notebooks (your project root).
+```bash
+cd ~/Courses/INFO-3010/Project          # 1. go to the project root
+source .venv/bin/activate                # 2. activate the project's environment
+jupyter lab                              # 3. start the server
+```
 
--   Start Jupyter there.
+Each command matters. The `cd` puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project's interpreter and packages, not the system Python. And `jupyter lab` (or `jupyter notebook` for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — `data/`, `notebooks/`, `src/`, the README. If it shows something else, stop and try again from the correct folder.
 
-### Launch commands (conceptual)
+To verify you are in the right place once Jupyter is up, run a single cell at the top of any notebook:
 
--   `jupyter lab`
+```python
+import os
+print(os.getcwd())
+```
 
--   `jupyter notebook`
-
--   Common pattern: pass a directory path if you are not already in it.
-
-### Verifying you launched in the correct directory
-
--   In the terminal: confirm the current directory before launching.
-
--   In the UI: confirm the file browser shows your expected folder tree.
-
--   Create a small marker file (e.g., `PROJECT_ROOT.txt`) so you can tell when you are in the right place.
-
-### Launching from an environment (important for students)
-
--   Ensure you started the correct environment (conda/venv) before launching Jupyter.
-
--   Know how to confirm which Python/kernel is in use (kernel name, version cell).
+If the path it prints is your project root, you are good. If it is anything else, close the server (Ctrl+C in the terminal) and relaunch from the right place. Some people leave a `PROJECT_ROOT.txt` file in their project root specifically so they can `ls` for it from inside a notebook as a quick "am I in the right place" check.
 
 ## The common failure: "Jupyter shows no notebooks"
 
-### Symptom
+The most common Jupyter complaint is some variant of "I opened JupyterLab and my files are not there," or "my notebook cannot find `data/input.csv` even though I can clearly see it in Finder." Both are usually the same problem: the Jupyter server is running in a different folder than the one you think it is. The file browser shows whatever folder the server was launched in, and your code's relative paths resolve relative to that folder — so if the server is in the wrong place, both symptoms appear at once.
 
--   The Jupyter file browser is empty or shows a different folder than expected.
+There are three common ways to end up here. The first is launching Jupyter from your home directory or `Downloads` instead of your project folder. The second is having multiple Jupyter servers running at once on different ports — you click an old browser tab and end up looking at a different server than you just started. The third is launching from the wrong environment, so the kernel paths and packages do not match what your project expects.
 
--   Your notebook cannot find `data/` even though it exists.
+The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press `Ctrl+C` (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, `cd` into the correct project folder and confirm with `pwd`. Third, activate the correct environment and run `jupyter lab` again. Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a "where am I" check at the top of every notebook so this is always visible:
 
-### Root cause: wrong working directory / wrong server
+```python
+import os
+print("cwd:", os.getcwd())
+print("contents:", sorted(os.listdir("."))[:10])
+```
 
--   You launched Jupyter from a different folder.
-
--   You have multiple Jupyter servers running and you opened the wrong tab.
-
--   You launched from the wrong environment, so kernels and paths differ.
-
-### Fix checklist
-
-1.  Stop Jupyter (Ctrl+C in the terminal) and close the browser tab.
-
-2.  In the terminal: **navigate** to the correct folder.
-
-3.  Relaunch Jupyter.
-
-4.  If still wrong: check for other running Jupyter servers and shut them down.
-
-5.  Add a first cell in notebooks that prints the working directory.
+That single cell turns "Jupyter is broken" into a clear, immediately diagnosable state.
 
 ## Notebook mechanics: cells and execution
 
@@ -289,33 +254,55 @@ Raw
 
 -   Keep the notebook as a narrative driver calling those functions.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Launch Jupyter in the right place
+### Launching Jupyter in the right place
 
--   Navigate to a project folder.
+You have a project at `~/Courses/INFO-3010/Project` and you want to start a notebook session for it. The full sequence:
 
--   Start JupyterLab.
+```bash
+$ cd ~/Courses/INFO-3010/Project
+$ source .venv/bin/activate
+(.venv) $ jupyter lab
+[I 2026-04-10 12:34:56.789 ServerApp] http://localhost:8888/lab?token=abc...
+```
 
--   Create a notebook and verify the working directory.
+Click the URL Jupyter prints (or it will open automatically), then create a new Python 3 notebook. In the first cell, confirm you are where you think you are:
 
-### Example 2: Debug "no files" / wrong directory
+```python
+import os, sys
+print("python:", sys.executable)
+print("cwd:", os.getcwd())
+print("files:", sorted(os.listdir("."))[:5])
+```
 
--   Demonstrate launching from the wrong folder.
+Expected output (paths abbreviated for clarity):
 
--   Diagnose and fix by relaunching from the correct path.
+```text
+python: /Users/you/Courses/INFO-3010/Project/.venv/bin/python
+cwd: /Users/you/Courses/INFO-3010/Project
+files: ['README.md', 'data', 'notebooks', 'src']
+```
 
--   Add a working-directory check cell.
+If all three lines look right — the Python is from your project's venv, the cwd is the project root, and the files include what you expect — you are ready to work.
 
-### Example 3: Shell commands for file checks
+### Debugging "no files"
 
-### Example 4: Make a notebook reproducible
+You open JupyterLab and the file browser shows your home directory instead of your project. Stop the server (`Ctrl+C` in the terminal twice), then reopen the terminal:
 
--   Add headings and narrative.
+```bash
+$ pwd
+/Users/you                   # the wrong place
+$ cd Courses/INFO-3010/Project
+$ source .venv/bin/activate
+(.venv) $ jupyter lab
+```
 
--   Extract repeated code into functions.
+Now the file browser shows the project, and the working-directory check cell from the previous example confirms it. The whole fix is "go to the right folder before starting the server," which is also why the previous example put `cd` first.
 
--   Restart kernel and run all; fix hidden-state bugs.
+### Making a notebook reproducible
+
+A notebook that runs once but fails on a clean kernel is not really finished. Three habits make a notebook genuinely reproducible. The first is to give it a clear linear structure: a title in a markdown cell, a one-paragraph purpose statement, then an "imports and setup" code cell, then the analysis cells in execution order, then a "results" section. The second is to extract any logic that you might want to reuse into functions in `src/`, and import them rather than copy-pasting code between cells. The third is the discipline of **Restart Kernel and Run All** every time you finish a meaningful chunk of work — and *especially* before you commit the notebook to git or share it with anyone. If "Restart and Run All" produces an error that interactive use never did, you have just discovered a hidden-state bug, and now is the right time to fix it. Better to find it now than to ship a notebook that quietly does not reproduce.
 
 ## Templates
 

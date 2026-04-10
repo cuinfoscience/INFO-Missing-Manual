@@ -39,81 +39,39 @@ Your project should be stable because it describes what it needs. If an environm
 
 ## Mental models and vocabulary
 
-### Packages and dependencies
+A **package** is third-party code you install — `pandas`, `numpy`, `requests`. A **dependency** is another package that your package needs to function: pandas depends on numpy, and matplotlib depends on Pillow, so installing pandas pulls in numpy and installing matplotlib pulls in Pillow. Each dependency relationship can carry a **version constraint**, expressed with operators like `>=`, `<`, `==`, `!=`. A line like `numpy>=1.24,<2.0` means "any 1.x version greater than or equal to 1.24, but not 2.0 or above." When you install a package, the package manager has to find a set of versions that satisfies *every* constraint involved at once — and that is where conflicts come from.
 
--   **Package:** third-party code you install (e.g., `pandas`).
+A Python **interpreter** is the actual `python` executable that runs your code, and where it lives on disk determines where packages get installed. An **environment** is an isolated set of installed packages bound to one specific interpreter. You can have many environments on the same computer — one for each project — and they will not interfere with each other, because each one has its own copy of the interpreter and its own folder of installed packages.
 
--   **Dependency:** another package your package needs.
+```bash
+# How many environments are typical for a serious user
+~/projects/q3-analysis/.venv/        # one project's venv
+~/projects/thesis/.venv/             # another project's venv
+~/miniconda3/envs/ds101/             # a conda env for one course
+~/miniconda3/envs/research/          # another conda env
+```
 
--   **Version constraints:** rules like `>=`, `<`, `==` that restrict compatible versions.
-
-### Environments and interpreters
-
--   A Python **interpreter** runs your code (and determines where packages are installed).
-
--   An **environment** is an isolated set of installed packages tied to a specific interpreter.
-
--   You can have many environments on one computer; each project should use one.
-
-### Reproducibility artifacts
-
--   `environment.yml`: conda-style environment specification.
-
--   `requirements.txt`: pip-style install list.
-
--   **Lockfile:** a fully resolved, exact list of versions for repeatable installs.
+The way you make environments **reproducible** is by writing down what is installed in them, in a small text file you commit alongside your code. Conda's version of that file is `environment.yml`; pip's version is `requirements.txt`. Both list package names and (optionally) version constraints. A more rigorous version is a **lockfile**, which records the *exact* version of every package and every transitive dependency that was actually resolved — so that installing from the lockfile gives you a bit-for-bit identical environment, even months later. For coursework, `environment.yml` or `requirements.txt` is usually enough; lockfiles are more common in production teams.
 
 ## Choosing tools: `conda` vs `pip` vs `venv`
 
-### What conda is good at
+The Python ecosystem has two major package management traditions, and you will encounter both. **conda** comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.
 
--   Cross-language, compiled dependencies (e.g., scientific stacks, system libraries).
+**pip** is the standard installer that ships with Python itself, and it installs packages from PyPI (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
 
--   Environments that include non-Python packages.
-
--   Solving complex dependency graphs across compiled packages.
-
-### What pip is good at
-
--   Installing Python packages from PyPI.
-
--   Lightweight environments using the standard library `venv`.
-
--   Working with Python packaging metadata (`pyproject.toml`, wheels).
-
-### Practical student guidance
-
--   If your course provides a conda environment file, use conda.
-
--   If a library is only on PyPI, use pip (inside an environment).
-
--   Do not install packages globally for coursework.
+The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, **never install packages globally** for course work — every project gets its own environment, period.
 
 ## Baseline hygiene rules (non-negotiable)
 
-### Rule 1: never work in the base/root conda environment
+A small number of rules will save you from almost all of the package management pain you would otherwise inflict on yourself. They are not optional, and ignoring them is the most reliable way to spend an entire afternoon untangling an environment.
 
--   Keep base/root for conda itself.
+**Rule 1: never work in the base or root conda environment.** When you install Anaconda or Miniconda, it creates a default environment called `base`. That environment is for conda itself and a handful of utilities; it is *not* where your project packages should live. The moment you start `pip install`-ing things into `base`, you risk breaking conda's own machinery, and you have no isolation between projects. Create a fresh environment for each project and leave base alone.
 
--   Create a separate environment per project.
+**Rule 2: one project, one environment.** It is tempting to maintain one giant "everything I do" environment because creating a new one feels like overhead. Resist the temptation. Two projects with different requirements will eventually conflict, and untangling a giant shared environment is much more work than recreating two clean small ones. Give each environment a clear, project-specific name (`ds101-week3`, `housing-audit`, `thesis-cleaning`) so you can tell at a glance which one is which.
 
-### Rule 2: one project, one environment
+**Rule 3: prefer explicit specs over memory.** Whatever you install, record it in a file (`environment.yml` or `requirements.txt`) inside the project repository. If your install steps live only in your head, your project is not reproducible — not on a teammate's machine, not on a server, not even on your own laptop in three months when you have forgotten which packages mattered.
 
--   Avoid "one giant environment for everything".
-
--   Name environments clearly (e.g., `ds101-week3`, `housing-audit`).
-
-### Rule 3: prefer explicit specs over memory
-
--   Record dependencies in a file in the project repository.
-
--   Make install steps repeatable.
-
-### Rule 4: avoid mixing managers casually
-
--   If you combine conda and pip: install as much as possible with conda first.
-
--   After using pip inside a conda environment, prefer recreating the environment rather than adding more conda packages.
+**Rule 4: avoid mixing conda and pip casually.** Combining them in the same environment is officially supported but practically fragile. If you must mix, install everything you can with conda *first*, and then use pip for the few packages that conda does not have. Once you have pip-installed something into a conda environment, treat that environment as more brittle: if you need to add more conda packages later, the safer move is usually to recreate the environment from scratch with the new spec rather than to keep adding to it.
 
 ## Core workflows with conda
 
@@ -356,39 +314,84 @@ Recreate the environment
 
 -   Fix: add constraints/pins, or start from a clean environment.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Create a clean conda environment for a project
+### Creating a clean conda environment for a project
 
--   Create env, install core packages.
+You are starting a new analysis project that needs pandas, scikit-learn, and matplotlib. The full lifecycle:
 
--   Export environment spec.
+```bash
+# Create a fresh environment with a specific Python version
+conda create -n housing-audit python=3.12 pandas scikit-learn matplotlib jupyter
+conda activate housing-audit
 
--   Recreate from spec on a second machine.
+# Confirm you are using the new environment's Python, not base
+which python
+python -c "import sys; print(sys.executable)"
 
-### Example 2: Use pip inside a venv for a small script
+# Export the spec so a teammate can reproduce it
+conda env export --from-history > environment.yml
+```
 
--   Create `.venv`, install two packages.
+The `--from-history` flag matters: it tells conda to record only the packages you explicitly asked for, rather than every transitive dependency. The resulting `environment.yml` is short, portable, and works across operating systems. Commit it to git. To recreate the environment on another machine:
 
--   Freeze to `requirements.txt`.
+```bash
+conda env create -f environment.yml
+conda activate housing-audit
+```
 
--   Recreate and verify with a smoke test.
+That is the entire reproducibility loop.
 
-### Example 3: Diagnose a dependency conflict
+### Using pip inside a venv for a small script
 
--   Trigger a conflict.
+For a project with no exotic dependencies, the venv + pip workflow is even simpler:
 
--   Read the error output to find the incompatible dependency.
+```bash
+mkdir tiny-script && cd tiny-script
+python -m venv .venv
+source .venv/bin/activate     # Windows: .venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install requests beautifulsoup4
+python -m pip freeze > requirements.txt
+echo ".venv/" > .gitignore
+```
 
--   Resolve by pinning or splitting environments.
+The `requirements.txt` file is what you commit; the `.venv/` directory itself stays out of git. To verify the environment works, run a smoke test that imports your packages:
 
-### Example 4: Notebook/IDE kernel mismatch
+```bash
+python -c "import requests, bs4; print(requests.__version__, bs4.__version__)"
+```
 
--   Symptom: notebook cannot import a package that the terminal can.
+If both imports succeed and print versions, you are ready to work.
 
--   Diagnosis: wrong kernel/interpreter (see @sec-jupyter for kernel management in Jupyter).
+### Diagnosing a dependency conflict
 
--   Fix: select the correct kernel; verify versions.
+You try to install two packages and pip refuses, printing a long "ResolutionImpossible" error. The fix is not to keep retrying — it is to read the error and find the constraint that is causing the trouble.
+
+```bash
+$ pip install package-a==1.0 package-b==2.0
+ERROR: Cannot install package-a==1.0 and package-b==2.0 because these
+package versions have conflicting dependencies.
+
+The conflict is caused by:
+    package-a 1.0 depends on shared-dep>=2.0,<3.0
+    package-b 2.0 depends on shared-dep>=3.0,<4.0
+```
+
+Pip is telling you exactly what is wrong: both `package-a` and `package-b` depend on `shared-dep`, but they want incompatible versions of it. The resolutions are limited and clearly defined. You can pin one of the two packages to a different version that uses a compatible `shared-dep`. You can split the work into two separate environments, one for each package. Or you can find out whether a newer release of either package has loosened its constraint. None of those is satisfying, but all are better than retrying the same install hoping the universe changes.
+
+### Diagnosing a notebook/IDE kernel mismatch
+
+The classic confusing failure: you have pandas working perfectly in your terminal, you open a Jupyter notebook in the same directory, type `import pandas`, and Python tells you `ModuleNotFoundError: No module named 'pandas'`. The cause is almost always that the notebook is running in a different Python interpreter than the one your terminal is using.
+
+The diagnostic is one cell:
+
+```python
+import sys
+print(sys.executable)
+```
+
+If the path it prints contains your project's `.venv/bin/python`, the notebook is using the right interpreter and the bug is something else (perhaps you forgot to install pandas into this environment). If the path is something like `/usr/bin/python3` or `/opt/anaconda3/bin/python`, the notebook is running a *different* Python — usually because the Jupyter kernel was registered against the system Python before you ever created the project venv. The fix is to register your project's venv as a Jupyter kernel and switch to it; see @sec-jupyter for kernel management in detail.
 
 ## Templates
 

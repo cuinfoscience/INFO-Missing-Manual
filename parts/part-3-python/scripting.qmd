@@ -65,37 +65,49 @@ Package
 
 ## Writing scripts: the essentials
 
-### A minimal script structure
+A minimal Python script has a predictable shape: imports at the top, then constants and configuration, then the functions that do the work, then a `main()` function that orchestrates them, and finally the `if __name__ == "__main__":` block at the bottom that runs `main()` when the file is executed as a script.
 
--   Imports
+```python
+"""Clean and summarize the Q3 sales CSV."""
 
--   Constants/config
+import sys
+from pathlib import Path
+import pandas as pd
 
--   Functions
+INPUT = Path("data/raw/sales.csv")
+OUTPUT = Path("data/processed/sales_clean.csv")
 
--   `main()` function
+def clean(df):
+    df.columns = df.columns.str.strip().str.lower()
+    df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
+    return df.dropna(subset=["amount"])
 
--   `if __name__ == "__main__":` block
+def main():
+    df = pd.read_csv(INPUT)
+    cleaned = clean(df)
+    cleaned.to_csv(OUTPUT, index=False)
+    print(f"wrote {len(cleaned):,} rows to {OUTPUT}")
 
-### Why `main()` matters
+if __name__ == "__main__":
+    main()
+```
 
--   Enables clean separation between code that runs on import vs code that runs on execution.
+The reason that little `if __name__ == "__main__":` line at the bottom matters is that it lets the same file work as *both* a script and an importable module. When you run `python clean.py` from the command line, Python sets the special variable `__name__` to `"__main__"` and the body of the `if` runs — calling `main()`, doing the work. When some other file does `from clean import clean` to import just the function, Python sets `__name__` to `"clean"` and the `main()` call does *not* run. This pattern is the difference between a script that you can only run one way and a script that other people (and your future notebooks) can also import the useful pieces of.
 
--   Makes the file usable both as a script and as an importable module.
+Inside `main()`, the script's job is to take some inputs (file paths, URLs, parameters) and produce some outputs (cleaned CSVs, figures, summaries, logs). A good habit is to write outputs to predictable folders — `data/processed/` for cleaned tables, `figures/` for plots, `reports/` for finished artifacts — so your collaborators (and future you) always know where to look.
 
-### Inputs, outputs, and side effects
+For small status messages while a script is running, `print()` is fine — "loaded 42,103 rows," "starting cleaning step." For longer-lived scripts, especially anything that runs on a schedule or that you want to debug after the fact, switch to the standard library `logging` module instead. Logging gives you levels (INFO, WARNING, ERROR), timestamps, and the ability to send output to a file. The simplest possible setup is:
 
--   Inputs: file paths, URLs, parameters.
+```python
+import logging
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s %(levelname)s %(message)s")
+log = logging.getLogger(__name__)
 
--   Outputs: files (CSV, figures), printed summaries, logs.
+log.info("loaded %d rows", len(df))
+```
 
--   Prefer writing outputs to named folders (e.g., `data/processed`, `figures/`).
-
-### Print vs logging (intro level)
-
--   Use print for small, human-facing status.
-
--   Introduce logging as a structured alternative for larger scripts.
+Stick with `print` for course assignments; reach for logging when you start writing scripts that other people will depend on or that run unattended.
 
 ## Organizing reusable code: from one file to `src/`
 
@@ -177,41 +189,57 @@ Package
 
 ### Three levels of parameterization
 
-Level 1: constants
+Parameterization comes in three flavors that scale with how serious the project is. The simplest level is **constants in the script itself**: you put `INPUT = "data/q3.csv"` near the top and edit it whenever you need a different dataset. This is fast and fine for one-off work; it does not scale to running the same script against many inputs without becoming a copy-paste mess. The next level is **a config file** — a small `.yml` or `.toml` file that holds parameters and that the script reads at startup. Config files are good when several teammates need to adjust parameters without editing code. The most flexible level is **command-line arguments**, where parameters are passed when the script is invoked. CLI scripts are the right shape for automation, scheduled runs, and any workflow where the same code needs to run with different inputs.
 
-:   edit values in the script (fast, not scalable).
+### The CLI pattern
 
-Level 2: config files
+The standard way to give a Python script command-line arguments is the built-in `argparse` module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user's input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
 
-:   store parameters in a small text file (scalable for teams).
+```python
+import argparse
+from pathlib import Path
 
-Level 3: CLI arguments
+def parse_args():
+    p = argparse.ArgumentParser(description="Clean a sales CSV.")
+    p.add_argument("--input", type=Path, required=True,
+                   help="path to the raw CSV")
+    p.add_argument("--output", type=Path, required=True,
+                   help="where to write the cleaned CSV")
+    p.add_argument("--seed", type=int, default=0,
+                   help="random seed for reproducibility")
+    return p.parse_args()
+```
 
-:   pass parameters at run time (best for automation).
-
-### The CLI pattern (student baseline)
-
--   Define required positional arguments (e.g., input file).
-
--   Define optional flags (e.g., `–out`, `–seed`, `–limit`).
-
--   Provide clear help text and defaults.
+Now `python clean.py --input data/raw/q3.csv --output data/processed/q3_clean.csv` works, and `python clean.py --help` prints a friendly summary of every option.
 
 ### Validating inputs
 
--   Check that input paths exist.
+A good habit is to *fail fast* when an input is wrong, with a message that tells the user what to do. Check that input paths exist before you try to read from them. Validate that numeric parameters are in sensible ranges (a sample size cannot be negative, a percentage must be between 0 and 100). And produce clear error messages, not stack traces — `argparse.ArgumentTypeError` is the canonical way to do this:
 
--   Validate parameter ranges (e.g., nonnegative integers).
+```python
+def main():
+    args = parse_args()
+    if not args.input.exists():
+        raise SystemExit(f"input not found: {args.input}")
+    if args.seed < 0:
+        raise SystemExit(f"seed must be non-negative, got {args.seed}")
+    ...
+```
 
--   Fail fast with helpful error messages.
+The script aborts immediately with a one-line message instead of running for ten minutes and then crashing on a missing file.
 
 ### Reproducibility and auditability
 
--   Print or log the resolved parameters at start.
+Every parameterized script should print or log its resolved parameters at startup, so that anyone reading the output later can tell exactly what configuration produced it. The same goes for outputs: write them to a path that includes the relevant parameters (a date, a seed, an input filename) so you can tell two runs apart at a glance. And record the *exact command used to run the script* in a `README.md` or a metadata file alongside the output, so someone can reproduce the run six months from now without guessing.
 
--   Write outputs to a deterministic location based on parameters.
+```python
+def main():
+    args = parse_args()
+    print(f"INPUT={args.input}  OUTPUT={args.output}  SEED={args.seed}")
+    ...
+```
 
--   Record the command used to run the script in `README.md` or an output metadata file.
+Three small habits, almost no extra effort, and your work is dramatically more reproducible.
 
 ## Translating notebooks into scripts (and vice versa)
 
@@ -245,47 +273,21 @@ Level 3: CLI arguments
 
 ### Notebooks are best for
 
--   Exploration and rapid iteration.
-
--   Teaching, explanation, and narrative analysis.
-
--   Sharing a computational story with plots and commentary.
+Notebooks shine when the primary goal is exploration, learning, or communication. They are the right tool when you are still figuring out what your data looks like, when you want to iterate rapidly between code and visualization, and when the final artifact is a narrative analysis with plots and commentary that someone else will read. The mix of code, prose, and inline output is what makes a notebook a *document*, and that is what scripts cannot do well.
 
 ### Scripts are best for
 
--   Repeatable runs with parameters.
+Scripts shine when the primary goal is repeatable execution. The same code, applied to many inputs, on a schedule, possibly in CI, with predictable logs and outputs that go to predictable locations. Anything that needs to run unattended — at 3 AM as a cron job, on every push to GitHub, in a batch over a hundred files — should be a script. Scripts also produce dramatically cleaner diffs in version control than notebooks (which serialize as JSON with embedded outputs), which makes them easier to code review.
 
--   Automation (cron, schedulers, CI).
+### A common hybrid pattern
 
--   Long-running jobs and robust logging.
+In practice the right shape for a serious project is usually neither pure-notebook nor pure-script, but a layered hybrid. The reusable computational logic — cleaning functions, modeling utilities, plot helpers — lives in `src/` as plain Python modules with no notebook ceremony. CLI entry points for batch runs live in `scripts/`, importing from `src/`. And one or more notebooks in `notebooks/` orchestrate the analysis and provide the narrative, *also* importing from `src/`. The notebook is the story; the scripts are the engine; `src/` is the shared library that both depend on. With this structure, the same cleaning function gets exercised both in the interactive notebook and in the unattended pipeline, so you do not have two slightly-different copies that drift apart.
 
--   Clean version control diffs and code review.
+### When to move from a notebook to a script
 
-### Common hybrid pattern (recommended)
+There are clear smells that signal "this notebook should become (or call) a script." If you find yourself manually rerunning the same notebook with small parameter changes, you want a script with arguments. If the notebook takes long enough that you want to run it overnight, you want a script. If the work needs to happen on a schedule, in CI, or as a step in a pipeline, you want a script. And if you find yourself wishing for proper logs, retries, or consistent file outputs, that is the moment to extract the logic.
 
--   **Notebook:** narrative driver, figures, interpretation.
-
--   **src/:** reusable functions.
-
--   **scripts/:** CLI entry points for batch runs.
-
-### Smells that suggest "move to a script"
-
--   You manually rerun the same notebook with small changes.
-
--   The notebook takes a long time and you want it to run unattended.
-
--   You need command-line parameters or scheduled runs.
-
--   You need robust logs, retries, or consistent outputs.
-
-### Smells that suggest "stay in a notebook"
-
--   The primary goal is interpretation and communication.
-
--   The analysis is exploratory and changing quickly.
-
--   You are teaching or documenting reasoning.
+The complementary smells say "this should stay in a notebook": the primary goal is interpretation or communication, the analysis is still exploratory and changing quickly, or you are teaching or documenting reasoning rather than producing a deliverable. Notebooks are the wrong tool for production but the right tool for thinking; do not let "scripts are more professional" push you out of a notebook when a notebook is what you actually need.
 
 ## Best practices: making scripts and notebooks play well together
 
@@ -315,45 +317,112 @@ Level 3: CLI arguments
 
 -   Prefer paired notebook formats or conversion to scripts for review.
 
-## Worked examples (outline)
+## Worked examples
 
-### Example 1: Turn notebook code into importable functions
+### Turning notebook code into importable functions
 
--   Identify a repeated transform.
+Your notebook has the same five lines of cleaning code in three different cells: lower-case the column names, parse the date column, drop rows with no customer id. Time to extract them.
 
--   Extract into `src/cleaning.py`.
+Create `src/cleaning.py`:
 
--   Import and call from the notebook.
+```python
+# src/cleaning.py
+import pandas as pd
 
-### Example 2: Write a CLI script around your functions
+def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
+    df.columns = df.columns.str.strip().str.lower()
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    return df.dropna(subset=["customer_id", "date"])
+```
 
--   Create `scripts/run_cleaning.py`.
+In the notebook, replace those three repeated cells with a single import and call:
 
--   Parse `–input` and `–output`.
+```python
+from src.cleaning import clean_sales
+df = clean_sales(pd.read_csv("data/raw/sales.csv"))
+```
 
--   Write outputs and print a short run summary.
+Now there is exactly one place where the cleaning logic lives. Improvements to it apply everywhere automatically.
 
-### Example 3: Debug "it imports in the terminal but not in the notebook"
+### Writing a CLI script around your functions
 
--   Diagnose kernel/environment mismatch.
+Now turn the same cleaning logic into something you can run from the command line on any input file:
 
--   Diagnose project root/working directory mismatch.
+```python
+# scripts/run_cleaning.py
+import argparse
+from pathlib import Path
+import pandas as pd
+from src.cleaning import clean_sales
 
--   Fix by selecting the correct kernel and running from the project root.
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--input", type=Path, required=True)
+    p.add_argument("--output", type=Path, required=True)
+    args = p.parse_args()
 
-### Example 4: Convert a notebook to a script and refactor
+    df = pd.read_csv(args.input)
+    cleaned = clean_sales(df)
+    cleaned.to_csv(args.output, index=False)
+    print(f"wrote {len(cleaned):,} rows to {args.output}")
 
--   Convert `analysis.ipynb` to `analysis.py`.
+if __name__ == "__main__":
+    main()
+```
 
--   Clean the result: remove interactive-only cells, extract functions.
+Run it like any script:
 
--   Add a minimal `main()` and CLI args.
+```bash
+python scripts/run_cleaning.py \
+    --input data/raw/sales.csv \
+    --output data/processed/sales_clean.csv
+```
 
-### Example 5: Parameterize a notebook for repeated execution (optional)
+The cleaning function is unchanged, the notebook is unchanged, and you now have a third way to invoke the same logic. Parameter changes are command-line flags rather than code edits.
 
--   Add a parameters cell.
+### Debugging "it imports in the terminal but not in the notebook"
 
--   Execute with different parameter sets and save outputs.
+You can `from src.cleaning import clean_sales` from `python` at the terminal, but the same line in your notebook fails with `ModuleNotFoundError: No module named 'src'`. The cause is one of two things, and the diagnostic is one cell:
+
+```python
+import sys, os
+print("python:", sys.executable)
+print("cwd:   ", os.getcwd())
+print("path[0]:", sys.path[0])
+```
+
+If `python` is not your project's venv interpreter, the kernel is wrong — switch kernels or register a new one (see @sec-jupyter). If `cwd` is not the project root, you are running the notebook from a subdirectory and Python cannot find `src/` from there — move the notebook, or `cd` into the project root before launching Jupyter, or add the project root to `sys.path` explicitly. Either way, the diagnostic cell tells you which problem you have within seconds.
+
+### Converting a notebook to a script and refactoring
+
+The standard tool for this is `jupyter nbconvert`, which produces a `.py` file from a notebook in one command:
+
+```bash
+jupyter nbconvert --to script notebooks/analysis.ipynb \
+                  --output ../scripts/analysis
+```
+
+The result is rarely a clean script on its own — it has every cell concatenated, including the interactive `df.head()` calls that were just for inspection, the cells you wrote and then commented out, and any markdown cells (which become code comments). The conversion is the *starting point* of a refactor, not the finished product. From there, walk through the file and remove anything that was only there for interactive inspection, extract repeated logic into functions, and wrap the whole thing in a `main()` and `if __name__ == "__main__":` block. The end product is a real script you can run unattended; the original notebook stays for narrative use.
+
+### Parameterizing a notebook with `papermill`
+
+Sometimes you want the *notebook* to be parameterized rather than rewriting it as a script. The `papermill` tool lets you tag a cell as the "parameters" cell and then execute the notebook from the command line with different values injected. In the notebook, put a code cell at the top with the cell tag `parameters`:
+
+```python
+# parameters
+input_file = "data/raw/sales.csv"
+output_file = "data/processed/sales_clean.csv"
+```
+
+Then from the command line, execute the notebook with whatever parameters you like:
+
+```bash
+papermill notebooks/analysis.ipynb outputs/analysis_q3.ipynb \
+    -p input_file data/raw/sales_q3.csv \
+    -p output_file data/processed/sales_q3_clean.csv
+```
+
+`papermill` writes a new copy of the notebook with the executed outputs and the new parameter values baked in. This is the right tool when you want to keep the notebook narrative form but run it many times — for example, generating one report per month from the same template.
 
 ## Templates
 
