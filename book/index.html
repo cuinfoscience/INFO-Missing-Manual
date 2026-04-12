@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Brian C. Keegan">
-<meta name="author" content="Abram Handler">
 
-<title>Paratechnical Computing Handbook</title>
+<title>Missing Manual for Information Scientists</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,7 +24,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -267,26 +285,10 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Paratechnical Computing Handbook</a> 
+      <a href="./">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <div class="dropdown">
-      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
-      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
-              <i class="bi bi-twitter pe-1"></i>
-            Twitter
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
-              <i class="bi bi-linkedin pe-1"></i>
-            LinkedIn
-            </a>
-          </li>
-      </ul>
-    </div>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -599,9 +601,8 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#why-this-handbook" id="toc-why-this-handbook" class="nav-link" data-scroll-target="#why-this-handbook"><span class="header-section-number">1.1</span> Why this handbook?</a></li>
   <li><a href="#computational-thinking" id="toc-computational-thinking" class="nav-link" data-scroll-target="#computational-thinking"><span class="header-section-number">1.2</span> Computational thinking</a></li>
-  <li><a href="#defining-paratechnical-skills" id="toc-defining-paratechnical-skills" class="nav-link" data-scroll-target="#defining-paratechnical-skills"><span class="header-section-number">1.3</span> Defining paratechnical skills</a></li>
-  <li><a href="#outline" id="toc-outline" class="nav-link" data-scroll-target="#outline"><span class="header-section-number">1.4</span> Outline</a></li>
-  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements"><span class="header-section-number">1.5</span> Acknowledgements</a></li>
+  <li><a href="#outline" id="toc-outline" class="nav-link" data-scroll-target="#outline"><span class="header-section-number">1.3</span> Outline</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements"><span class="header-section-number">1.4</span> Acknowledgements</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -612,8 +613,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Paratechnical Computing Handbook</h1>
-<p class="subtitle lead">The hidden curriculum of computing for data scientists</p>
+<h1 class="title">Missing Manual for Information Scientists</h1>
+<p class="subtitle lead">The hidden curriculum of computing technologies</p>
 </div>
 
 
@@ -621,10 +622,9 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
              <p>Brian C. Keegan </p>
-             <p>Abram Handler </p>
           </div>
   </div>
     
@@ -656,14 +656,18 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>A student and a computer in mutual frustration.</figcaption>
 </figure>
 </div>
-</div><div id="fn1"><p><sup>1</sup>&nbsp;Edwards, R. (2015). <a href="https://www.tandfonline.com/doi/abs/10.1080/14681366.2014.977809">Software and the hidden curriculum in digital education</a>. <em>Pedagogy, Culture &amp; Society</em>, 23(2), 265-279.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://en.wikipedia.org/wiki/Spiral_of_silence" class="uri">https://en.wikipedia.org/wiki/Spiral_of_silence</a></p></div></div><p>You are not alone in this feeling. Computing education has been long been criticized for relying on a hidden curriculum of skills and tools that are used but not taught in classrooms.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Why are these skills not formally taught? Instructors take their own expertise for granted, believe other topics deserve a higher priority, assume that students quickly learn them on their own, and want someone else to teach these overlooked skills. The “spiral of silence”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> leaves students with the mistaken belief that they are alone in their confusion being expected to use tools that have not been introduced before. All these factors lead to unproductive and compounding frustrations between instructors, students, and computers.</p>
+</div><div id="ref-edwardsSoftwareHiddenCurriculum2015" class="csl-entry" role="listitem">
+Edwards, Richard. 2015. <span>“Software and the Hidden Curriculum in Digital Education.”</span> <em>Pedagogy, Culture &amp; Society</em> 23 (2): 265–79.
+</div></div><p>You are not alone in this feeling. Computing education has been long been criticized for relying on a hidden curriculum of skills and tools that are used but not taught in classrooms.<span class="citation" data-cites="edwardsSoftwareHiddenCurriculum2015">(<a href="#ref-edwardsSoftwareHiddenCurriculum2015" role="doc-biblioref">Edwards 2015</a>)</span> Why are these skills not formally taught? Instructors take their own expertise for granted, believe other topics deserve a higher priority, assume that students quickly learn them on their own, and want someone else to teach these overlooked skills. The “<a href="https://en.wikipedia.org/wiki/Spiral_of_silence">spiral of silence</a>” leaves students with the mistaken belief that they are alone in their confusion being expected to use tools that have not been introduced before. All these factors lead to unproductive and compounding frustrations between instructors, students, and computers.</p>
 <p>Unfortunately, it is important to learn how to cope with and work through such frustrations. A surprisingly large fraction of your time as a developer, designer, analyst, scientist, or researcher is spent <em>managing</em> software in addition to using it. This includes installing, updating, and configuring libraries; consulting technical documentation and issue tracking to help debug problems; and integrating with external resources to connect to data and collaborate with others. These are headaches for advanced users and can be particularly demoralizing as a newcomer. But there is no way to avoid these challenges in real world workplaces, so it is important to learn to manage them yourself.</p>
-<p>Some vendors promise their platform or service can take care of this complexity for you. Cloud platforms found on Google,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Amazon Web Services,<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Kaggle,<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and others do take care of some parts of the software management. But there is no such thing as a free lunch and these platforms involve compromises like compounding financial costs, lock-in to proprietary services, and other issues of accessibility, usability, and compatibility. There can be scenarios where managed and cloud-based services are appropriate, but when those “clean” virtual machines, environments, containers, and services are no longer available (or break unexpectedly), you will not be empowered to debug or develop on your own. There is simply no escaping the need to be confident managing your own technology stack.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://colab.research.google.com/" class="uri">https://colab.research.google.com/</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://docs.aws.amazon.com/sagemaker/" class="uri">https://docs.aws.amazon.com/sagemaker/</a></p></div><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://www.kaggle.com/code" class="uri">https://www.kaggle.com/code</a></p></div><div id="fn6"><p><sup>6</sup>&nbsp;<a href="https://www.practicaldatascience.org/html/setting_up_your_computer.html" class="uri">https://www.practicaldatascience.org/html/setting_up_your_computer.html</a></p></div></div></section>
-<section id="computational-thinking" class="level2" data-number="1.2">
+<p>Some vendors promise their platform or service can take care of this complexity for you. Cloud platforms like <a href="https://colab.research.google.com/">Google colab</a>, Amazon Web Services <a href="https://docs.aws.amazon.com/sagemaker/">SageMaker</a>, <a href="https://www.kaggle.com/code">Kaggle</a>, and others do take care of some parts of the software management. But there is no such thing as a free lunch and these platforms involve compromises like compounding financial costs, lock-in to proprietary services, and other issues of accessibility, usability, and compatibility. There can be scenarios where managed and cloud-based services are appropriate, but when those “clean” virtual machines, environments, containers, and services are no longer available (or break unexpectedly), you will not be empowered to debug or develop on your own. There is simply no escaping the need to be confident managing your own technology stack.</p>
+</section>
+<section id="computational-thinking" class="level2 page-columns page-full" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="computational-thinking"><span class="header-section-number">1.2</span> Computational thinking</h2>
-<p>Computational thinking is the disciplined way that computer scientists and data analysts approach problems. At its core it is <em>not</em> about memorizing syntax but about how to break a problem down and express a solution so that a computer can execute it. Novice students often hear instructors say “think like a computer,” but what does that mean? Four skills stand out:</p>
-<ul>
+<p>Computational thinking is the disciplined way that computer scientists and data analysts approach problems <span class="citation" data-cites="wingComputationalThinking2006">(<a href="#ref-wingComputationalThinking2006" role="doc-biblioref">Wing 2006</a>)</span>. At its core it is <em>not</em> about memorizing syntax but about how to break a problem down and express a solution so that a computer can execute it. Novice students often hear instructors say “think like a computer,” but what does that mean? Four skills stand out:</p>
+<div class="no-row-height column-margin column-container"><div id="ref-wingComputationalThinking2006" class="csl-entry" role="listitem">
+Wing, Jeannette M. 2006. <span>“Computational Thinking.”</span> <em>Communications of the ACM</em> 49 (3): 33–35.
+</div></div><ul>
 <li><p><strong>Decomposition.</strong> Break a large, ambiguous task into smaller pieces you can tackle one at a time. For example, downloading a dataset, cleaning it, analyzing it, and visualizing it are separate steps even if they feel like one fluid process when an instructor demonstrates them. Each step should have clear inputs and outputs.</p></li>
 <li><p><strong>Pattern recognition.</strong> Look for similarities across examples and problems. If you have cleaned one CSV file by renaming columns and dropping missing values, you can reuse that process on another dataset. Recognizing patterns helps you avoid reinventing the wheel and informs what should be turned into a function or reusable script.</p></li>
 <li><p><strong>Abstraction.</strong> Identify the essential details and ignore the distracting ones. A function that computes a mean does not need to know whether its input came from a spreadsheet or a database. Abstracting away unnecessary details makes your code more flexible and easier to test.</p></li>
@@ -671,12 +675,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Computational thinking is not just for coding assignments. It is a way to reason about problems in data science, research, and daily life. Throughout this handbook you will practice applying decomposition, pattern recognition, abstraction, and algorithmic thinking to activities like organizing files, managing environments, automating workflows, and collaborating with others.</p>
 </section>
-<section id="defining-paratechnical-skills" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="defining-paratechnical-skills"><span class="header-section-number">1.3</span> Defining paratechnical skills</h2>
-<p>We use the term “paratechnical skills” to refer to the tools, practices, and concepts used by computing professionals that exist <em>between</em> different technical components and therefore <em>beyond</em> traditional curricula and documentation.</p>
-</section>
-<section id="outline" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="outline"><span class="header-section-number">1.4</span> Outline</h2>
+<section id="outline" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="outline"><span class="header-section-number">1.3</span> Outline</h2>
 <p>This handbook is organized into four parts that gradually build up a novice’s paratechnical competence. Each part moves from foundational concepts to concrete skills and ends with small exercises and checklists so that you can assess your own mastery.</p>
 <section id="part-ipractice-of-technical-work." class="level5">
 <h5 class="anchored" data-anchor-id="part-ipractice-of-technical-work.">Part I–Practice of Technical Work.</h5>
@@ -696,38 +696,17 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="part-valgorithmic-systems." class="level5">
 <h5 class="anchored" data-anchor-id="part-valgorithmic-systems.">Part V–Algorithmic Systems.</h5>
-<p>This final part goes deeper into how modern AI systems work and how to work with them as a practitioner. Where Part&nbsp;I covers responsible AI use in a single workflow, Part&nbsp;V covers the internals and infrastructure: what tokens and context windows are, how embeddings enable semantic search, how to construct effective prompts, and what changes when you call a model via API rather than a chatbot. A second chapter covers AI agent frameworks — systems where a language model reasons across multiple steps and invokes external tools — including how to define tools, manage memory, read agent traces, and guard against the failure modes unique to agentic pipelines. A third chapter addresses evaluation and auditing: how to measure AI system quality systematically, build representative test suites, use automated evaluators, and audit for bias and drift in deployed applications.</p>
+<p>This final part goes deeper into how modern AI systems work and how to work with them as a practitioner. Where Part&nbsp;I covers responsible AI use in a single workflow, Part&nbsp;V covers the internals and infrastructure: what tokens and context windows are, how embeddings enable semantic search, how to construct effective prompts, and what changes when you call a model via API rather than a chatbot. A second chapter covers AI agent frameworks where a language model reasons across multiple steps and invokes external tools including how to define tools, manage memory, read agent traces, and guard against the failure modes unique to agentic pipelines. A third chapter addresses evaluation and auditing: how to measure AI system quality systematically, build representative test suites, use automated evaluators, and audit for bias and drift in deployed applications.</p>
 </section>
 </section>
-<section id="acknowledgements" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="acknowledgements"><span class="header-section-number">1.5</span> Acknowledgements</h2>
-<p>This guide was adapted from documentation, tutorials, and other resources listed below.</p>
-<ul>
-<li><p>Documentation</p>
-<ul>
-<li><p><a href="https://docs.conda.io/projects/conda/en/latest/user-guide/index.html">Conda</a>.</p></li>
-<li><p><a href="https://docs.anaconda.com/anaconda/">Anaconda Individual Edition</a>.</p></li>
-<li><p><a href="https://jupyter-notebook.readthedocs.io/en/stable/">Jupyter Notebook</a>.</p></li>
-<li><p><a href="https://support.apple.com/guide/terminal/welcome/mac">Terminal User Guide</a>.</p></li>
-</ul></li>
-<li><p>Tutorials</p>
-<ul>
-<li><p>Pugh, D.R. (2020). “<a href="https://towardsdatascience.com/managing-project-specific-environments-with-conda-b8b50aa8be0e">Getting Started with Conda</a>.”</p></li>
-<li><p>Galarnyk, M. (2019). “<a href="https://www.datacamp.com/community/tutorials/installing-anaconda-windows">Installing Anaconda on Windows.</a>”</p></li>
-<li><p>Willems, K. (2019). “<a href="https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook">Jupyter Notebook Tutorial</a>.”</p></li>
-<li><p>Stegner, B. (2021). “<a href="https://www.makeuseof.com/tag/a-beginners-guide-to-the-windows-command-line/">A Beginner’s Guide to the Windows Command Prompt</a>.”</p></li>
-</ul></li>
-<li><p>Courses</p>
-<ul>
-<li><p>Eubank, N. (2020). <em><a href="https://www.practicaldatascience.org/html/index.html">Practical Data Science</a></em>.</p></li>
-<li><p>Athalye, A., Ortiz, J.J.G., Gjengset, J. (2020). <em><a href="https://missing.csail.mit.edu/">Missing Semester of Your CS Education</a></em>.</p></li>
-</ul></li>
-</ul>
+<section id="acknowledgements" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="acknowledgements"><span class="header-section-number">1.4</span> Acknowledgements</h2>
+<p>This guide was adapted from conversations and materials developed by <a href="https://www.brianckeegan.com/">Brian C. Keegan</a> and <a href="https://www.abehandler.com/">Abram Handler</a> at the University of Colorado Boulder’s <a href="https://www.colorado.edu/cmdi/infoscience">Department of Information Science</a>. The material was also developed with the use of LLM tools, please read the <a href="./appendix-ai-disclosure.html">AI disclosure statement</a>. It draws on the collective wisdom of many students, colleagues, and practitioners who have shared their experiences and insights about the hidden curriculum of computing. The authors are grateful to all those who have contributed to this project through feedback, suggestions, and encouragement.</p>
+
 
 
 </section>
 </section>
-
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
