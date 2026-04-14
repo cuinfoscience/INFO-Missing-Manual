@@ -11,7 +11,7 @@
 
 ## Purpose {.unnumbered}
 
-Version control is the safety system for technical work. Git records a history of changes so you can recover, compare, and collaborate without overwriting each other. GitHub adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
+Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
 
 ## Learning objectives {.unnumbered}
 
@@ -80,7 +80,7 @@ The third reason, which matters most for coursework and research, is **audit tra
 
 ### What to version and what not to version
 
-As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and `.gitignore`, and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git's line-by-line diffing works beautifully on text, and the storage cost is negligible.
+As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and [`.gitignore`](https://git-scm.com/docs/gitignore), and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git's line-by-line diffing works beautifully on text, and the storage cost is negligible.
 
 Do **not** version a short, specific list of things. **Secrets and credentials** — API keys, database passwords, `.env` files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see @sec-secrets for why, and how to recover if it happens). **Large raw datasets** — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every `git clone` slow forever. **Generated artifacts** — compiled binaries, cached model files, HTML output, `__pycache__` directories — should be reproducible from your code, which means they do not need to be versioned; `.gitignore` is where you list them. And **environment folders** — `.venv/`, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (`requirements.txt`, `environment.yml`) is the thing that goes in Git.
 
