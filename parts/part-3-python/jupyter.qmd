@@ -90,7 +90,9 @@ The fix checklist is short. First, stop the misbehaving server: go back to the t
 When a notebook's `import pandas` fails with `ModuleNotFoundError` even though you just `pip install`-ed pandas, the kernel is almost certainly running a different Python than the one you installed into. From inside the notebook, run `import sys; print(sys.executable)` — the path should contain your project's `.venv/`. If it does not, use the kernel picker (top-right of JupyterLab) and pick the kernel whose name matches your environment.
 
 If your venv's kernel is not in the picker at all, register it explicitly: with the venv activated, run `python -m pip install ipykernel` then `python -m ipykernel install --user --name project-venv --display-name "Python (project-venv)"`. Reload JupyterLab and the new kernel will appear.
-::: Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a "where am I" check at the top of every notebook so this is always visible:
+:::
+
+Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a "where am I" check at the top of every notebook so this is always visible:
 
 ```python
 import os

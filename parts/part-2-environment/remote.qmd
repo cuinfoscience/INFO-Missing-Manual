@@ -124,7 +124,9 @@ For example, `ssh agandler@server.cs.example.edu`.
 The three common failures each point at a different layer. **"Operation timed out" or "Connection refused"** usually means the network can't reach the server — are you on the right VPN? On campus Wi-Fi? Try `ping hostname` to confirm you can route to the host at all. **"Permission denied (publickey)"** means the server accepted your connection but rejected your credentials; confirm your key is loaded with `ssh-add -l` and that the public key is installed in the server's `~/.ssh/authorized_keys`. **"Host key verification failed"** means the server's identity changed — usually after a server reinstall, occasionally because of a man-in-the-middle attack; if you trust the change, edit `~/.ssh/known_hosts` and remove the stale entry for that hostname.
 
 For any of these, `ssh -v username@hostname` turns on verbose output so you can see which stage is failing. See @sec-asking-questions if you need to escalate to your IT department.
-::: If the server is running SSH on a non-standard port (some institutions do this), you add `-p`:
+:::
+
+If the server is running SSH on a non-standard port (some institutions do this), you add `-p`:
 
 ```bash
 ssh -p 2222 username@hostname
