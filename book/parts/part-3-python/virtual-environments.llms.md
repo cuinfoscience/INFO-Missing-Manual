@@ -12,7 +12,7 @@ The single most common source of the “it worked yesterday” bug in Python dat
 
 A [virtual environment](../../appendix-glossary.llms.md#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
 
-This chapter explains what a venv is (and is not), how to create and activate one with `python -m venv`, how this compares to `conda`, how to diagnose the “which Python is running?” question on any machine, and how to make sure Jupyter and VS Code are using the environment you think they are. [sec-pkg-mgmt](#sec-pkg-mgmt) covers `conda` in depth; this chapter focuses on `venv` and on the diagnostic skills that apply to both.
+This chapter explains what a venv is (and is not), how to create and activate one with [`python -m venv`](https://docs.python.org/3/library/venv.html), how this compares to [`conda`](https://docs.conda.io/en/latest/), how to diagnose the “which Python is running?” question on any machine, and how to make sure [Jupyter](https://jupyter.org/documentation) and [VS Code](https://code.visualstudio.com/docs) are using the environment you think they are. [sec-pkg-mgmt](#sec-pkg-mgmt) covers `conda` in depth; this chapter focuses on `venv` and on the diagnostic skills that apply to both.
 
 ## Learning objectives
 
@@ -56,6 +56,14 @@ The standard Python library ships with the `venv` module. There is no install st
 python -m venv .venv
 ```
 
+> **WARNING:**
+>
+> The most common failure is **`python` is not on your PATH**, which shows up as `command not found` or as your terminal launching the wrong interpreter. On macOS and Linux, try `python3 -m venv .venv` instead — some systems ship `python3` without a plain `python`. On Windows, if `python` opens the Microsoft Store, go to Settings → Apps → Advanced app settings → App execution aliases and turn off the `python.exe` and `python3.exe` aliases, then reinstall Python from [python.org](https://www.python.org/downloads/).
+>
+> If the command runs but creates an empty folder, check that the directory is writable (`ls -la` on macOS/Linux, right-click → Properties on Windows). Venv creation silently fails on synced cloud folders where Python cannot write fast enough — move the project off OneDrive or iCloud Drive and try again.
+>
+> Still stuck? See [sec-asking-questions](#sec-asking-questions) for how to gather the evidence a helper will need.
+
 This creates a `.venv/` folder. Add `.venv/` to your `.gitignore` — you never commit a venv to git. See [sec-git-github](#sec-git-github).
 
 **Activate it** (the command differs by OS and shell):
@@ -73,10 +81,15 @@ source .venv/bin/activate
 
 After activation your shell prompt usually changes to show the env name, e.g. `(.venv) you@host:~/project$`. If you don’t see it, that is a hint something is off.
 
+![](graphics/PLACEHOLDER-venv-prompt.png)
+
+Figure 15.1: ALT: Terminal prompt before and after activating a virtual environment. The “after” prompt shows a `(.venv)` prefix at the start of the line, confirming the environment is active.
+
 **Install packages** into the active venv:
 
 ``` bash
 python -m pip install pandas numpy matplotlib
+# https://pip.pypa.io/en/stable/cli/pip_install/
 ```
 
 Using `python -m pip` (rather than just `pip`) is a small but valuable habit — it guarantees you are installing into the same Python that `python` runs. If `pip` and `python` ever get out of sync (a classic source of confusion), `python -m pip` sidesteps the problem entirely.
@@ -175,6 +188,12 @@ If it does not auto-detect, you can pick manually:
 3.  Pick the entry whose path contains your project’s `.venv`.
 
 The selected interpreter shows in the bottom-right of the VS Code status bar. Click it any time to switch.
+
+> **NOTE:**
+>
+> - [`venv` — Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official module reference and command-line usage.
+> - [Python Packaging User Guide: Virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a tutorial-style walk-through, including pip usage inside a venv.
+> - [Real Python: Python Virtual Environments — A Primer](https://realpython.com/python-virtual-environments-a-primer/) — extended discussion of venv internals, common pitfalls, and alternatives.
 
 ## 15.7 Worked examples
 

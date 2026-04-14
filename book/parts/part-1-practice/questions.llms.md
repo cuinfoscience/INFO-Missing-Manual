@@ -82,7 +82,7 @@ This loop matters because it generates valuable information: what triggers the b
 
 ### What counts as “what I tried”
 
-“What I tried” is one of the most useful fields in any technical question, but only if it contains *concrete actions paired with their outcomes*, not vague gestures at effort. A useful entry looks like “I verified the file exists with `ls data/input.csv` and it is in the correct folder,” or “I printed `df.dtypes` and confirmed that `date` is `object`, not `datetime64[ns]`,” or “I tried `pip install package==1.2.3` and the import error changed from `ModuleNotFoundError` to `ImportError: cannot import name 'foo'`.” Each of these tells the helper exactly what state the world is in and what hypotheses have already been ruled out.
+“What I tried” is one of the most useful fields in any technical question, but only if it contains *concrete actions paired with their outcomes*, not vague gestures at effort. A useful entry looks like “I verified the file exists with `ls data/input.csv` and it is in the correct folder,” or “I printed `df.dtypes` and confirmed that `date` is `object`, not `datetime64[ns]`,” or “I tried [`pip install package==1.2.3`](https://pip.pypa.io/en/stable/cli/pip_install/) and the import error changed from `ModuleNotFoundError` to `ImportError: cannot import name 'foo'`.” Each of these tells the helper exactly what state the world is in and what hypotheses have already been ruled out.
 
 The contrast is with vague statements like “I tried a bunch of things” or “I looked online but nothing worked.” Those carry no information — your helper has no idea what is still worth checking and will end up suggesting the same things you have already tried. If you cannot remember what you tried, that is a hint that you should be writing it down as you go.
 
@@ -104,7 +104,7 @@ This structure works across domains: Python errors, spreadsheet formulas, Git co
 
 ### Goal
 
-State your goal in a single sentence built around a verb and an object: “Load a CSV into pandas and parse the date column,” “Connect to the remote server via SSH and run JupyterLab,” “Merge my feature branch into `main` without losing changes.” Each of these names a concrete outcome the helper can recognize as success.
+State your goal in a single sentence built around a verb and an object: “Load a CSV into [pandas](https://pandas.pydata.org/docs/) and parse the date column,” “Connect to the remote server via [SSH](https://www.openssh.com/manual.html) and run [JupyterLab](https://jupyterlab.readthedocs.io/en/latest/),” “Merge my feature branch into `main` without losing changes.” Each of these names a concrete outcome the helper can recognize as success.
 
 This field matters more than people expect, because sometimes the most useful answer is not “fix this error” but “there is an easier way to achieve what you actually want.” If the helper only sees the symptom — say, a regex that does not match — they may help you debug the regex when the real answer is that you should not be using a regex at all (see [sec-regex](#sec-regex)). Stating the goal explicitly keeps that door open.
 
@@ -138,7 +138,7 @@ That kind of block — directory, command, output, all as text — is what makes
 
 ### Context
 
-“Context” is the set of details that affect whether a proposed solution will actually work on your machine. The fields that come up most often are your operating system (Windows, macOS, or Linux), your Python version and the environment you are using (conda, venv, system Python), the versions of the packages involved, any hardware constraints that matter (memory, GPU availability), whether you have administrator access on the machine, and whether the work is local or running on a remote server. You do not need to provide every field every time; provide enough to rule out the major classes of problem. For Python errors, the four lines below answer most of the questions a helper would otherwise have to ask:
+“Context” is the set of details that affect whether a proposed solution will actually work on your machine. The fields that come up most often are your operating system (Windows, macOS, or Linux), your [Python](https://docs.python.org/3/) version and the environment you are using ([conda](https://docs.conda.io/en/latest/), [venv](https://docs.python.org/3/library/venv.html), system Python), the versions of the packages involved, any hardware constraints that matter (memory, GPU availability), whether you have administrator access on the machine, and whether the work is local or running on a remote server. You do not need to provide every field every time; provide enough to rule out the major classes of problem. For Python errors, the four lines below answer most of the questions a helper would otherwise have to ask:
 
 ``` bash
 python --version
@@ -251,11 +251,11 @@ Teammates have the same time constraints you do. Respect that by writing a conci
 
 ### Issue trackers
 
-If your course (or your team) uses GitHub Issues or a similar tracker, treat an issue as a formal question with an audit trail. Future readers — including future you — will appreciate the structure. The first thing to get right is the title: it should be specific enough to identify the problem at a glance, like `pd.read_csv fails when sep=";" with UTF-8 BOM`, not vague enough to apply to a hundred other situations like `read_csv broken`. Issues are the right channel when the bug affects more than one person, when the answer should be preserved for later (rather than evaporating in chat), or when the resolution is going to require follow-up work that someone needs to track.
+If your course (or your team) uses [GitHub Issues](https://docs.github.com/en/issues) or a similar tracker, treat an issue as a formal question with an audit trail. Future readers — including future you — will appreciate the structure. The first thing to get right is the title: it should be specific enough to identify the problem at a glance, like `pd.read_csv fails when sep=";" with UTF-8 BOM`, not vague enough to apply to a hundred other situations like `read_csv broken`. Issues are the right channel when the bug affects more than one person, when the answer should be preserved for later (rather than evaporating in chat), or when the resolution is going to require follow-up work that someone needs to track.
 
 ### Public forums
 
-Public forums — Stack Overflow, GitHub Discussions, your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.
+Public forums — [Stack Overflow](https://stackoverflow.com/help/how-to-ask), [GitHub Discussions](https://docs.github.com/en/discussions), your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.
 
 ## 2.7 Common traps and how to avoid them
 
@@ -300,6 +300,12 @@ The worst uses of AI come from asking it to do the parts of the work you should 
 4.  Verify any AI-proposed commands in official documentation.
 
 5.  Post the question.
+
+> **NOTE:**
+>
+> - [How do I ask a good question?](https://stackoverflow.com/help/how-to-ask) — Stack Overflow’s canonical guide. Short, opinionated, and worth re-reading every year.
+> - [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs, with language-specific examples.
+> - [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) — Eric Raymond’s classic essay; the tone is dated but the substance holds up.
 
 ## 2.9 Worked examples
 

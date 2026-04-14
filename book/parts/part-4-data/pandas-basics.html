@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -652,7 +652,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/pandas-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-4-data/data-file-formats.html">Part IV — Working with Data</a></li><li class="breadcrumb-item"><a href="../../parts/part-4-data/pandas-basics.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></a></li></ol></nav>
@@ -693,7 +693,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p><code>pandas</code> is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, <code>pandas</code> is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.</p>
+<p><a href="https://pandas.pydata.org/docs/"><code>pandas</code></a> is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, <code>pandas</code> is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.</p>
 <p>This chapter is an orientation for students who have literally never used <code>pandas</code> — or who have copied notebook cells from an instructor but never sat down to understand the pieces. The goal is not to teach every method (there are thousands, and the official reference in <a href="../part-1-practice/reading-docs.html" class="quarto-xref"><span>Chapter 4</span></a> is where you look them up). The goal is to give you the vocabulary and the mental model: what a Series and a DataFrame actually are, how indexing and selection work, how the common operations compose, and how to avoid the classic novice traps.</p>
 <p>If you know SQL, several sections will feel like translation. That is a feature — once you see pandas as “SQL against an in-memory table,” a lot of it clicks. See <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a> for the SQL side.</p>
 </section>
@@ -714,10 +714,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops">Running theme: pandas rewards vectorized thinking, and punishes loops</h2>
 <p>Almost every pandas operation is a set-wise verb: “filter these rows,” “add this column to all rows,” “group by this and take the mean.” When you find yourself writing <code>for row in df.itertuples()</code>, stop and think about the vectorized equivalent. Your code will be shorter, faster, and easier to read.</p>
 </section>
-<section id="the-two-data-structures" class="level2" data-number="22.1">
+<section id="the-two-data-structures" class="level2 page-columns page-full" data-number="22.1">
 <h2 data-number="22.1" class="anchored" data-anchor-id="the-two-data-structures"><span class="header-section-number">22.1</span> The two data structures</h2>
 <p>Everything in pandas is built on two data structures.</p>
-<section id="series-a-labeled-1-d-array" class="level3">
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-dataframe-render" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-dataframe-render.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. The rendering includes the row index on the left, bold column headers along the top, and several rows of data, illustrating the tabular structure a DataFrame provides.
+</figcaption>
+</figure>
+</div>
+</div></div><section id="series-a-labeled-1-d-array" class="level3">
 <h3 class="anchored" data-anchor-id="series-a-labeled-1-d-array">Series: a labeled 1-D array</h3>
 <p>A <strong>Series</strong> is like a Python list, except every element has a label (the index). Think of it as a single column in a spreadsheet.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -906,6 +918,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>, ascending<span class="op">=</span><span class="va">False</span>)       <span class="co"># descending</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.sort_values([<span class="st">"category"</span>, <span class="st">"price"</span>])          <span class="co"># multi-column</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>df.sort_index()                                <span class="co"># sort by index (labels)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a> — conceptual explanations of indexing, merging, and reshaping.</li>
+<li><a href="https://pandas.pydata.org/docs/reference/index.html">pandas API reference</a> — every method and parameter, with examples.</li>
+<li><a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">pandas Cheat Sheet (PDF)</a> — a printable one-pager covering the most common operations.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="22.10">
 <h2 data-number="22.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.10</span> Worked examples</h2>

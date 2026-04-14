@@ -14,7 +14,7 @@ As students progress, the limiting factor is rarely “can you write code”; it
 
 By the end of this chapter, you should be able to:
 
-1.  Write a Python script that can be run from the command line and imported as a module.
+1.  Write a [Python](https://docs.python.org/3/) script that can be run from the command line and imported as a module.
 
 2.  Organize reusable code into functions and (optionally) a small `src/` module.
 
@@ -314,7 +314,7 @@ Parameterization comes in three flavors that scale with how serious the project 
 
 ### The CLI pattern
 
-The standard way to give a Python script command-line arguments is the built-in `argparse` module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user’s input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
+The standard way to give a Python script command-line arguments is the built-in [`argparse`](https://docs.python.org/3/library/argparse.html) module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user’s input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
 
 ``` python
 import argparse
@@ -554,6 +554,14 @@ Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook. Expecte
     Second, **avoid embedding large data into the notebook itself.** A cell that reads a 50 MB CSV and then does `df` on a line by itself will embed every row into the notebook's output. Either slice the output (`df.head()`, `df.sample(10)`) or print a summary (`df.shape`, `df.describe()`) instead. Raw data belongs in `data/`, not in `notebooks/`.
 
     Third, **prefer Jupytext pairing or script conversion for anything code-reviewed.** If a reviewer has to compare two versions of a notebook, they almost certainly want to see a plain-text diff, not a JSON blob. Pairing with Jupytext gives them the best of both worlds: the reviewer reads the `.py`, the analyst keeps using the `.ipynb`, and the two stay in sync automatically. For notebooks that are handed in once and never reviewed, this is overkill; for notebooks that are part of a shared project, it is almost always worth the small setup cost.
+
+    ::: {.callout-note}
+    ## 📚 Further reading
+
+    - [Python: `argparse` tutorial](https://docs.python.org/3/howto/argparse.html) — the canonical walk-through for building command-line interfaces.
+    - [Real Python: Command-Line Interfaces in Python](https://realpython.com/command-line-interfaces-python-argparse/) — a longer-form treatment with subcommands and examples.
+    - [`if __name__ == "__main__"`](https://docs.python.org/3/library/__main__.html) — the official explanation of the import vs. script entry point pattern.
+    :::
 
     ## Worked examples
 

@@ -527,6 +527,12 @@ sha256sum -c data/raw/checksums.txt
 
 The reason private channels cannot be the project memory is that they are not searchable by anyone else, they expire, and they exclude anyone who was not in the channel when the decision was made. Issues solve all three problems. The cost is a small amount of friction — you have to write things down — and the benefit is that the project stops losing decisions and the team stops having the same argument twice.
 
+> **NOTE:**
+>
+> - [The Turing Way: Guide for Reproducible Research](https://the-turing-way.netlify.app/reproducible-research/reproducible-research.html) — a community-maintained handbook covering project structure, data management, and reproducibility.
+> - [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) — an opinionated project-layout template widely adopted in the data-science community.
+> - [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) — Wilson et al.’s practical checklist for small-team reproducibility.
+
 ## 25.9 Worked examples (outline)
 
 ### Start a new course project in 20 minutes

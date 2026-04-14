@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/text-editors.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/text-editors.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Text Editors</span></a></li></ol></nav>
@@ -755,12 +755,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>What an editor actually <em>does</em> under the hood is conceptually simple. It reads bytes from disk and interprets them as characters using an <strong>encoding</strong> (usually UTF-8 in modern projects). It displays those characters on your screen with line breaks and whitespace where they belong, and it lets you change them. When you save, it writes the bytes back to disk in the same encoding. Most editor problems — strange characters, files that look fine in one tool and broken in another, mysterious “invalid syntax” errors — come from a mismatch somewhere in that pipeline: wrong encoding, wrong line endings, or invisible whitespace where the language did not expect it.</p>
 <p>A small vocabulary will save you a lot of confusion. <strong>Encoding</strong> is the rule for turning raw bytes into characters; UTF-8 is the modern default and you should not save files in anything else unless you have a specific reason. <strong>Line endings</strong> are the invisible characters that mark the end of each line; macOS and Linux use a single newline (LF, byte <code>\n</code>), while Windows uses a carriage-return-then-newline pair (CRLF, bytes <code>\r\n</code>), and projects shared between OSes can produce noisy diffs and parser errors when they get mixed. <strong>Whitespace</strong> is the catch-all term for spaces, tabs, and newlines, and it matters more in some languages than others — Python, YAML, and Makefiles in particular treat whitespace as significant and will fail on tabs-vs-spaces confusion. <strong>Syntax highlighting</strong> is when an editor colors keywords, strings, and comments differently so the structure of the code is visually obvious. <strong>Linting and formatting</strong> are automated tools that check style and normalize it (see <a href="../part-3-python/linting.html" class="quarto-xref"><span>Chapter 19</span></a>). And an <strong>IDE</strong> (“integrated development environment”) is a heavier kind of editor that bundles a build system, a debugger, and language tooling into one package — useful for some ecosystems, overkill for others.</p>
 </section>
-<section id="choosing-your-tool-three-editor-classes" class="level2" data-number="12.2">
+<section id="choosing-your-tool-three-editor-classes" class="level2 page-columns page-full" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="choosing-your-tool-three-editor-classes"><span class="header-section-number">12.2</span> Choosing your tool: three editor classes</h2>
 <p>Editors come in three rough sizes, and it is worth knowing which size fits which job.</p>
-<p>The smallest are <strong>terminal editors</strong> like <code>nano</code>, <code>vim</code>, and <code>emacs</code>. They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: <code>vim</code>’s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough <code>nano</code> to confidently open a file, change one line, and save and exit. That single skill turns “I have to fix one character on a remote server and I cannot do it” from an impasse into a thirty-second task.</p>
-<p>The middle tier is <strong>GUI code editors</strong> — VS Code is by far the most popular today, with Sublime Text and Cursor as alternatives. These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.</p>
-<p>The largest tier is <strong>IDEs</strong>: Visual Studio for C# and .NET work, IntelliJ for Java, Xcode for Swift and iOS, RStudio for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.</p>
+<p>The smallest are <strong>terminal editors</strong> like <a href="https://www.nano-editor.org/docs.php"><code>nano</code></a>, <a href="https://www.vim.org/docs.php"><code>vim</code></a>, and <a href="https://www.gnu.org/software/emacs/documentation.html"><code>emacs</code></a>. They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: <code>vim</code>’s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough <code>nano</code> to confidently open a file, change one line, and save and exit. That single skill turns “I have to fix one character on a remote server and I cannot do it” from an impasse into a thirty-second task.</p>
+<p>The middle tier is <strong>GUI code editors</strong> — <a href="https://code.visualstudio.com/docs">VS Code</a> is by far the most popular today, with <a href="https://www.sublimetext.com/docs/">Sublime Text</a> and <a href="https://docs.cursor.com/">Cursor</a> as alternatives.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-vscode-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vscode-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-vscode-overview.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-vscode-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: ALT: VS Code window with a Python file open, showing the file-explorer sidebar on the left, the editor pane in the centre with a code block and a Run button, and an integrated terminal docked at the bottom.
+</figcaption>
+</figure>
+</div>
+</div></div><p>These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.</p>
+<p>The largest tier is <strong>IDEs</strong>: <a href="https://learn.microsoft.com/en-us/visualstudio/">Visual Studio</a> for C# and .NET work, <a href="https://www.jetbrains.com/idea/">IntelliJ</a> for Java, <a href="https://developer.apple.com/documentation/xcode">Xcode</a> for Swift and iOS, <a href="https://posit.co/products/open-source/rstudio/">RStudio</a> for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.</p>
 <p>The decision rule for a typical Python data student is straightforward. For a quick edit on a remote server, use <code>nano</code> (or <code>vim</code> if you are comfortable with it). For everything else — Python scripting, notebooks, small projects — use a GUI editor with an integrated terminal, defaulting to VS Code. Reach for a full IDE only if your course or project specifically requires it.</p>
 </section>
 <section id="essential-editor-skills-transfer-across-tools" class="level2" data-number="12.3">
@@ -1031,6 +1044,23 @@ Ctrl+g               cancel current operation (if you get stuck mid-command)</co
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff                        <span class="co"># what did I actually change?</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout .                  <span class="co"># throw everything away; back to the commit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The habit to build: <strong>commit small, commit often, and commit before anything that scares you.</strong> Commits are cheap, and the safety they provide is enormous. See <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 26</span></a> for the mechanics and <a href="../part-5-projects/project-management.html" class="quarto-xref"><span>Chapter 25</span></a> for how commit hygiene fits into broader project discipline.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://code.visualstudio.com/docs">VS Code documentation</a> — the official guide, including the Python extension walk-through.</li>
+<li><a href="https://code.visualstudio.com/docs/python/python-tutorial">VS Code Python tutorial</a> — a focused introduction to running and debugging Python in VS Code.</li>
+<li><a href="https://www.nano-editor.org/dist/latest/cheatsheet.html">nano cheat sheet</a> — every keystroke you need for quick edits over SSH.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="12.10">

@@ -26,7 +26,7 @@ By the end of this chapter, you should be able to:
 
 4.  Read error messages and stack traces to locate the relevant failure point.
 
-5.  Use print statements and the `logging` module to collect useful diagnostic information.
+5.  Use print statements and the [`logging`](https://docs.python.org/3/library/logging.html) module to collect useful diagnostic information.
 
 6.  Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.
 
@@ -159,7 +159,7 @@ df = compute_features(df);              print("features:", df.shape)
 # the first stage where shape or columns surprise you is the bug site
 ```
 
-The second strategy is **binary search over history**: if the code worked yesterday and is broken today, look at what changed. Version control makes this dramatically faster — `git log --oneline` lists the recent commits, `git diff HEAD~5` shows the cumulative diff over the last five, and `git bisect` will literally do the binary search for you, asking you to mark commits as “good” or “bad” until it isolates the exact one that introduced the bug. Even without git, you can usually copy your last working version into a separate folder and diff the two.
+The second strategy is **binary search over history**: if the code worked yesterday and is broken today, look at what changed. Version control makes this dramatically faster — [`git log --oneline`](https://git-scm.com/docs/git-log) lists the recent commits, `git diff HEAD~5` shows the cumulative diff over the last five, and [`git bisect`](https://git-scm.com/docs/git-bisect) will literally do the binary search for you, asking you to mark commits as “good” or “bad” until it isolates the exact one that introduced the bug. Even without [git](https://git-scm.com/doc), you can usually copy your last working version into a separate folder and diff the two.
 
 The third strategy is to **strip to a minimal reproducible example**: take the failing code and aggressively delete anything that is not essential to triggering the bug. Each deletion that *still* fails is a piece of evidence about which code is irrelevant. The endpoint is a tiny script — usually fewer than 20 lines — that reproduces the failure with no surrounding noise. At that point, the bug is almost always obvious, and even if it is not, you have produced exactly the artifact you need to ask for help (see [sec-asking-questions](#sec-asking-questions)).
 
@@ -398,6 +398,12 @@ When you feel stuck, use this checklist as a reset:
 
 Print it and keep it near your desk.
 
+> **NOTE:**
+>
+> - [Python `logging` HOWTO](https://docs.python.org/3/howto/logging.html) — the official walk-through of loggers, handlers, and levels.
+> - [Real Python: Python Debugging with `pdb`](https://realpython.com/python-debugging-pdb/) — a clean, beginner-friendly introduction to the built-in debugger.
+> - [Software Carpentry: Python Debugging lesson](https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html) — a short lesson on systematic debugging with examples.
+
 ## 5.12 Case studies
 
 The goal of case studies is to show the loop in action.
@@ -415,7 +421,7 @@ print("data dir:", os.listdir("data") if os.path.isdir("data") else "missing")
 If `cwd` is the project root, the path is fine and the file is genuinely missing. If `cwd` is some other directory, the path is *relative* to that other directory and the bug is not in your code at all — you just ran the script from the wrong place. The hypothesis is: the script uses a relative path and you are running it from the wrong directory. The experiment is: run the script from the project root, or rewrite the path so it is computed from `__file__` and is independent of the working directory:
 
 ``` python
-from pathlib import Path
+from pathlib import Path   # https://docs.python.org/3/library/pathlib.html
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data" / "input.csv"
 assert DATA.exists(), f"Missing {DATA}"

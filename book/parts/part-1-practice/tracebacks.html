@@ -699,7 +699,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Identify the parts of a Python traceback: the error type, the error message, the stack, and each frame’s file, line number, and code snippet.</li>
 <li>Read a traceback top-down and bottom-up and explain when each direction is useful.</li>
 <li>Distinguish between an error raised in <em>your</em> code and one raised inside a third-party library like pandas or numpy.</li>
-<li>Translate the ten most common Python exception types into plain English and know where to look first when you see them.</li>
+<li>Translate the ten most common <a href="https://docs.python.org/3/library/exceptions.html">Python exception types</a> into plain English and know where to look first when you see them.</li>
 <li>Read a chained traceback (<em>“during handling of the above exception, another exception occurred”</em>) and find the root cause.</li>
 <li>Read tracebacks that appear inside Jupyter notebook cells, where the “file” is a cell index.</li>
 <li>Search for an error message online in a way that returns useful hits rather than noise.</li>
@@ -837,6 +837,23 @@ KeyError: 'date'</code></pre>
 </blockquote>
 <p>The static part plus the library is usually enough to land you on a Stack Overflow answer with your exact problem.</p>
 <p>If the exception is from a library, add the library name. If the exception is a <code>SyntaxError</code> or <code>IndentationError</code>, don’t bother searching — those are almost always typos in your own code that you will spot faster by re-reading.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.python.org/3/library/exceptions.html">Built-in Exceptions</a> — the complete hierarchy of Python exception classes.</li>
+<li><a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions (Python tutorial)</a> — the official introduction to raising and handling exceptions.</li>
+<li><a href="https://realpython.com/python-traceback/">Real Python: Understanding the Python Traceback</a> — a walk-through of every part of a traceback with worked examples.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">6.7</span> Worked examples</h2>

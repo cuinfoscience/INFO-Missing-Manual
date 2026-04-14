@@ -16,11 +16,11 @@ By the end of this chapter, you should be able to:
 
 1.  Identify tasks worth automating and write them as repeatable scripts.
 
-2.  Use a task runner / build tool (e.g., `make`) to create named, repeatable commands.
+2.  Use a task runner / build tool (e.g., [`make`](https://www.gnu.org/software/make/manual/)) to create named, repeatable commands.
 
 3.  Understand incremental rebuilds (targets and dependencies) and why they save time.
 
-4.  Schedule scripts to run automatically (cron on Unix-like systems; Task Scheduler on Windows).
+4.  Schedule scripts to run automatically ([cron](https://crontab.guru/) on Unix-like systems; [Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page) on Windows).
 
 5.  Explain what CI is and set up a basic CI workflow that runs on pushes and pull requests.
 
@@ -55,7 +55,11 @@ echo "report ready: reports/q3.html"
 
 **Level 3: schedulers.** Once a task is scripted and named, you can run it on a time-based schedule — every night at 2 AM, every hour, every Monday morning — without anyone being at the keyboard. This is the level where unattended operation becomes possible. `cron` on macOS and Linux and Task Scheduler on Windows are the basic tools.
 
-**Level 4: continuous integration (CI).** The top rung is having checks run *automatically on every push and pull request* to your repository, with the results visible to your collaborators. CI is what catches integration errors before they land on `main`, and it is what creates the “shared quality gate” that lets a team move faster than any one person could alone.
+**Level 4: continuous integration (CI).** The top rung is having checks run *automatically on every push and pull request* to your repository, with the results visible to your collaborators. CI — most commonly [GitHub Actions](https://docs.github.com/en/actions) for students — is what catches integration errors before they land on `main`, and it is what creates the “shared quality gate” that lets a team move faster than any one person could alone.
+
+![](graphics/PLACEHOLDER-github-actions-run.png)
+
+Figure 28.1: ALT: GitHub Actions tab on a repository, showing a workflow run with a green checkmark beside each step of the job (checkout, setup-python, install dependencies, run tests).
 
 The right level depends on what you are doing. Solo coursework lives happily at Level 1. A team project usually wants Level 4 for the things that matter most (tests, linting, build) and Level 1 for everything else. Climbing the ladder before you need to is busywork; refusing to climb it after a chore has bitten you is a slow form of procrastination.
 
@@ -715,6 +719,12 @@ distclean: clean
 ```
 
 The three-second pause before the `rm -rf` is not going to stop a determined mistake, but it is enough to catch the “wait, wrong terminal” moment before the damage is irreversible.
+
+> **NOTE:**
+>
+> - [GitHub Actions documentation](https://docs.github.com/en/actions) — the authoritative reference for building CI workflows on GitHub.
+> - [GNU Make manual](https://www.gnu.org/software/make/manual/) — the classic reference for `make`, targets, and incremental rebuilds.
+> - [crontab.guru](https://crontab.guru/) — an interactive explainer for cron expressions that removes most of the mystery.
 
 ## 28.11 Worked examples (outline)
 

@@ -146,7 +146,7 @@ In a chat interface, the system prompt is often hidden. In an API call, you set 
 
 ## 30.6 API versus chatbot interfaces
 
-The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like ChatGPT, Claude.ai, or Gemini) and the **API** (a programmatic interface you call from code). Understanding the difference helps you choose the right tool.
+The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like [ChatGPT](https://chatgpt.com/), [Claude.ai](https://claude.ai/), or [Gemini](https://gemini.google.com/)) and the **API** (a programmatic interface — for example, the [Anthropic API](https://docs.anthropic.com/) or the [OpenAI API](https://platform.openai.com/docs/) — you call from code). Understanding the difference helps you choose the right tool.
 
 ### What a chatbot gives you
 
@@ -178,7 +178,7 @@ Use a chatbot for exploratory, one-off tasks: getting an explanation, brainstorm
 
 A minimal Python API call looks like:
 
-    import anthropic
+    import anthropic    # https://docs.anthropic.com/en/api/getting-started
 
     client = anthropic.Anthropic()
     message = client.messages.create(
@@ -255,6 +255,12 @@ Practical responses to hallucination:
 - Prefer lower temperatures for factual tasks.
 
 - Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.
+
+> **NOTE:**
+>
+> - [Anthropic: Prompt engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — structured prompt design patterns and evaluation tips.
+> - [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including system-message best practices.
+> - [Hugging Face: Transformers documentation](https://huggingface.co/docs/transformers/index) — the reference implementation of the model architecture behind most modern chat models.
 
 ## 30.9 Worked examples
 

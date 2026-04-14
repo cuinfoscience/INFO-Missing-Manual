@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -672,7 +672,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-3-python/jupyter.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-3-python/package-management.html">Part III — Python Management</a></li><li class="breadcrumb-item"><a href="../../parts/part-3-python/jupyter.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Jupyter</span></a></li></ol></nav>
@@ -735,19 +735,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="mental-models-what-jupyter-is-doing" class="level2" data-number="16.1">
 <h2 data-number="16.1" class="anchored" data-anchor-id="mental-models-what-jupyter-is-doing"><span class="header-section-number">16.1</span> Mental models: what Jupyter is doing</h2>
-<p>You will encounter two flavors of Jupyter and they are sometimes confused with each other. <strong>Jupyter Notebook</strong> (often called “classic”) is the original single-document interface — one notebook per browser tab, no built-in file browser, very simple. <strong>JupyterLab</strong> is the newer multi-document environment that gives you a file browser sidebar, multiple notebooks open as tabs, integrated terminals, and side-by-side panes. Most modern courses use JupyterLab. Both flavors run on the same underlying machinery, so anything you learn about kernels and execution state applies to either.</p>
+<p>You will encounter two flavors of Jupyter and they are sometimes confused with each other. <a href="https://jupyter-notebook.readthedocs.io/en/latest/"><strong>Jupyter Notebook</strong></a> (often called “classic”) is the original single-document interface — one notebook per browser tab, no built-in file browser, very simple. <a href="https://jupyterlab.readthedocs.io/en/latest/"><strong>JupyterLab</strong></a> is the newer multi-document environment that gives you a file browser sidebar, multiple notebooks open as tabs, integrated terminals, and side-by-side panes. Most modern courses use JupyterLab. Both flavors run on the same underlying machinery, so anything you learn about kernels and execution state applies to either.</p>
 <p>That underlying machinery has three pieces, and you should be able to name all three when something goes wrong. The <strong>server</strong> is the process you start when you run <code>jupyter lab</code> from the terminal — it listens on a port (usually <code>localhost:8888</code>) and is the actual program your browser is talking to. The <strong>browser UI</strong> is the HTML interface where you edit cells, click Run, and see output; it is just a thin shell around the server. The <strong>kernel</strong> is a separate process that runs your code — for Python notebooks it is a Python interpreter, but Jupyter also supports R, Julia, Bash, and others. When you press Shift+Enter on a cell, the browser sends the code to the server, the server hands it to the kernel, the kernel runs it, and the result comes back through the same chain.</p>
 <pre class="text"><code>You type in a cell  →  browser  →  Jupyter server  →  kernel  →  result back up the chain</code></pre>
 <p>The single most important thing to internalize about notebooks is that <strong>the kernel keeps state across cells</strong>. When you assign <code>df = pd.read_csv("data.csv")</code> in one cell, that variable lives in the kernel’s memory until you restart it. You can run cells out of order, redefine variables, delete cells whose results are still in memory, and end up in a situation where the notebook on screen does not match the state in the kernel — a phenomenon called <strong>hidden state</strong>. “It works on my notebook” almost always means “it works against the specific hidden state in my kernel right now,” and the only reliable way to find out whether your notebook is actually correct is to <strong>Restart Kernel and Run All</strong> and watch every cell execute from a clean slate. Build that habit early.</p>
 </section>
-<section id="launching-jupyter-the-right-way" class="level2" data-number="16.2">
+<section id="launching-jupyter-the-right-way" class="level2 page-columns page-full" data-number="16.2">
 <h2 data-number="16.2" class="anchored" data-anchor-id="launching-jupyter-the-right-way"><span class="header-section-number">16.2</span> Launching Jupyter the right way</h2>
 <p>The single rule that prevents most “Jupyter cannot find my files” frustration is: <strong>always launch Jupyter from your project’s folder</strong>. The folder you are in when you start the server becomes Jupyter’s root — the file browser shows the contents of that folder and nothing above it. If you launch from your home directory, you will see all of your home; if you launch from the wrong project, you will see the wrong project; if you launch from <code>Downloads</code>, you will see Downloads.</p>
 <p>The full opening sequence for a project is three commands:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Courses/INFO-3010/Project          <span class="co"># 1. go to the project root</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate                <span class="co"># 2. activate the project's environment</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab                              <span class="co"># 3. start the server</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Each command matters. The <code>cd</code> puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project’s interpreter and packages, not the system Python. And <code>jupyter lab</code> (or <code>jupyter notebook</code> for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — <code>data/</code>, <code>notebooks/</code>, <code>src/</code>, the README. If it shows something else, stop and try again from the correct folder.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-jupyterlab-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-jupyterlab-overview.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: ALT: JupyterLab interface after launch, showing the file-browser sidebar on the left with the project’s folders (data/, notebooks/, src/), a notebook open as a tab in the centre pane, and the kernel indicator in the top-right showing the active Python environment.
+</figcaption>
+</figure>
+</div>
+</div></div><p>Each command matters. The <code>cd</code> puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project’s interpreter and packages, not the system Python. And <code>jupyter lab</code> (or <code>jupyter notebook</code> for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — <code>data/</code>, <code>notebooks/</code>, <code>src/</code>, the README. If it shows something else, stop and try again from the correct folder.</p>
 <p>To verify you are in the right place once Jupyter is up, run a single cell at the top of any notebook:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.getcwd())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -757,20 +769,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="16.3" class="anchored" data-anchor-id="the-common-failure-jupyter-shows-no-notebooks"><span class="header-section-number">16.3</span> The common failure: “Jupyter shows no notebooks”</h2>
 <p>The most common Jupyter complaint is some variant of “I opened JupyterLab and my files are not there,” or “my notebook cannot find <code>data/input.csv</code> even though I can clearly see it in Finder.” Both are usually the same problem: the Jupyter server is running in a different folder than the one you think it is. The file browser shows whatever folder the server was launched in, and your code’s relative paths resolve relative to that folder — so if the server is in the wrong place, both symptoms appear at once.</p>
 <p>There are three common ways to end up here. The first is launching Jupyter from your home directory or <code>Downloads</code> instead of your project folder. The second is having multiple Jupyter servers running at once on different ports — you click an old browser tab and end up looking at a different server than you just started. The third is launching from the wrong environment, so the kernel paths and packages do not match what your project expects.</p>
-<p>The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press <code>Ctrl+C</code> (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, <code>cd</code> into the correct project folder and confirm with <code>pwd</code>. Third, activate the correct environment and run <code>jupyter lab</code> again. Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — <code>jupyter server list</code> will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a “where am I” check at the top of every notebook so this is always visible:</p>
+<p>The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press <code>Ctrl+C</code> (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, <code>cd</code> into the correct project folder and confirm with <code>pwd</code>. Third, activate the correct environment and run <code>jupyter lab</code> again.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If Jupyter shows the wrong kernel (or none at all)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>When a notebook’s <code>import pandas</code> fails with <code>ModuleNotFoundError</code> even though you just <code>pip install</code>-ed pandas, the kernel is almost certainly running a different Python than the one you installed into. From inside the notebook, run <code>import sys; print(sys.executable)</code> — the path should contain your project’s <code>.venv/</code>. If it does not, use the kernel picker (top-right of JupyterLab) and pick the kernel whose name matches your environment.</p>
+<p>If your venv’s kernel is not in the picker at all, register it explicitly: with the venv activated, run <code>python -m pip install ipykernel</code> then <code>python -m ipykernel install --user --name project-venv --display-name "Python (project-venv)"</code>. Reload JupyterLab and the new kernel will appear.</p>
+</div>
+</div>
+</div>
+<p>Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — <code>jupyter server list</code> will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a “where am I” check at the top of every notebook so this is always visible:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"contents:"</span>, <span class="bu">sorted</span>(os.listdir(<span class="st">"."</span>))[:<span class="dv">10</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That single cell turns “Jupyter is broken” into a clear, immediately diagnosable state.</p>
 </section>
-<section id="notebook-mechanics-cells-and-execution" class="level2" data-number="16.4">
+<section id="notebook-mechanics-cells-and-execution" class="level2 page-columns page-full" data-number="16.4">
 <h2 data-number="16.4" class="anchored" data-anchor-id="notebook-mechanics-cells-and-execution"><span class="header-section-number">16.4</span> Notebook mechanics: cells and execution</h2>
-<section id="cell-types" class="level3">
+<section id="cell-types" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="cell-types">Cell types</h3>
 <p>Every cell in a Jupyter notebook has a <strong>type</strong>, and the type determines what the cell does when you run it. There are only three, and you will use two of them almost all the time.</p>
 <p>A <strong>Code</strong> cell holds Python (or whatever language the kernel speaks) and is sent to the kernel for execution when you run it. Whatever the last expression in the cell evaluates to is displayed below the cell as its <em>output</em>, alongside anything the code explicitly printed. Code cells are the only cells that actually compute anything — they are where the work happens.</p>
 <p>A <strong>Markdown</strong> cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, <code>code spans</code> become monospace, lists become lists, and equations written in LaTeX syntax (<code>$x^2$</code>) become typeset math. Markdown cells are how a notebook becomes a <em>document</em> — the paragraphs between your code cells that tell a reader what you are doing and why.</p>
-<p>A <strong>Raw</strong> cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-jupyter-cell-types" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-jupyter-cell-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-jupyter-cell-types.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-jupyter-cell-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.2: ALT: A Jupyter notebook showing side-by-side cells. The top cell is a code cell with <code>df.head()</code> and its rendered DataFrame output. The cell below it is a markdown cell whose source contains a heading and a short paragraph, and which is rendered as formatted prose.
+</figcaption>
+</figure>
+</div>
+</div></div><p>A <strong>Raw</strong> cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.</p>
 <pre class="text"><code>[code cell]     → sent to kernel → produces output below the cell
 [markdown cell] → rendered as HTML → produces formatted text below
 [raw cell]      → passed through untouched (rarely needed)</code></pre>
@@ -1083,6 +1125,23 @@ scripts/
 └── run_pipeline.py    ← batch entry point, imported by nothing,
                          runs the same src/ functions from the command line</code></pre>
 <p>The notebook and the script import the <em>same</em> functions from <code>src/</code>. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need <code>src/</code> as they get more complex, and grow again to include <code>scripts/</code> when they need automation — without ever having to rewrite from scratch.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://jupyterlab.readthedocs.io/en/latest/">JupyterLab documentation</a> — the official guide to the multi-document interface, extensions, and kernels.</li>
+<li><a href="https://jupyter-notebook.readthedocs.io/en/latest/">Jupyter Notebook documentation</a> — the classic single-document interface, still widely used in courses.</li>
+<li><a href="https://jupyterlab.readthedocs.io/en/latest/user/commands.html">Jupyter Keyboard Shortcuts reference</a> — the full list of command-palette actions and default keybindings.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="16.9">

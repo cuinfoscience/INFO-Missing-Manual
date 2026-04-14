@@ -759,9 +759,9 @@ div.csl-indent {
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
 <li><p>Identify tasks worth automating and write them as repeatable scripts.</p></li>
-<li><p>Use a task runner / build tool (e.g., <code>make</code>) to create named, repeatable commands.</p></li>
+<li><p>Use a task runner / build tool (e.g., <a href="https://www.gnu.org/software/make/manual/"><code>make</code></a>) to create named, repeatable commands.</p></li>
 <li><p>Understand incremental rebuilds (targets and dependencies) and why they save time.</p></li>
-<li><p>Schedule scripts to run automatically (cron on Unix-like systems; Task Scheduler on Windows).</p></li>
+<li><p>Schedule scripts to run automatically (<a href="https://crontab.guru/">cron</a> on Unix-like systems; <a href="https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page">Task Scheduler</a> on Windows).</p></li>
 <li><p>Explain what CI is and set up a basic CI workflow that runs on pushes and pull requests.</p></li>
 <li><p>Add common CI checks: formatting, linting, tests, and artifact collection.</p></li>
 <li><p>Manage automation hygiene: logs, exit codes, idempotence, and safe failure.</p></li>
@@ -772,7 +772,7 @@ div.csl-indent {
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-make-the-correct-path-the-easy-path">Running theme: make the correct path the easy path</h2>
 <p>If running checks and builds is one command, people will do it. If it is a long checklist, people will skip it.</p>
 </section>
-<section id="a-mental-model-the-automation-ladder" class="level2" data-number="28.1">
+<section id="a-mental-model-the-automation-ladder" class="level2 page-columns page-full" data-number="28.1">
 <h2 data-number="28.1" class="anchored" data-anchor-id="a-mental-model-the-automation-ladder"><span class="header-section-number">28.1</span> A mental model: the automation ladder</h2>
 <p>It helps to think of automation as a ladder with five rungs, each one strictly more capable than the last and each one worth climbing only when the rung below has become a real chore.</p>
 <p>The bottom rung is <strong>Level 0: manual commands.</strong> You type the same sequence by hand every time you need to do a task. This works fine when the task is rare and small, but it has the obvious failure mode: as soon as the sequence has more than two or three steps, you start forgetting them in stressful moments, and the risk of an inconsistent run grows.</p>
@@ -785,8 +785,20 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"report ready: reports/q3.html"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Level 2: task runners and rebuild tools.</strong> Once you have several scripts, you start wanting <em>named</em> tasks rather than long file paths. <code>make test</code>, <code>make report</code>, <code>make clean</code>. A task runner lets you label common workflows with short names and (in the case of build tools like <code>make</code>) lets you skip work whose inputs have not changed. This is the level where “rebuild only the parts that changed” becomes possible.</p>
 <p><strong>Level 3: schedulers.</strong> Once a task is scripted and named, you can run it on a time-based schedule — every night at 2 AM, every hour, every Monday morning — without anyone being at the keyboard. This is the level where unattended operation becomes possible. <code>cron</code> on macOS and Linux and Task Scheduler on Windows are the basic tools.</p>
-<p><strong>Level 4: continuous integration (CI).</strong> The top rung is having checks run <em>automatically on every push and pull request</em> to your repository, with the results visible to your collaborators. CI is what catches integration errors before they land on <code>main</code>, and it is what creates the “shared quality gate” that lets a team move faster than any one person could alone.</p>
-<p>The right level depends on what you are doing. Solo coursework lives happily at Level 1. A team project usually wants Level 4 for the things that matter most (tests, linting, build) and Level 1 for everything else. Climbing the ladder before you need to is busywork; refusing to climb it after a chore has bitten you is a slow form of procrastination.</p>
+<p><strong>Level 4: continuous integration (CI).</strong> The top rung is having checks run <em>automatically on every push and pull request</em> to your repository, with the results visible to your collaborators. CI — most commonly <a href="https://docs.github.com/en/actions">GitHub Actions</a> for students — is what catches integration errors before they land on <code>main</code>, and it is what creates the “shared quality gate” that lets a team move faster than any one person could alone.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-github-actions-run" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-github-actions-run-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-github-actions-run.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-github-actions-run-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;28.1: ALT: GitHub Actions tab on a repository, showing a workflow run with a green checkmark beside each step of the job (checkout, setup-python, install dependencies, run tests).
+</figcaption>
+</figure>
+</div>
+</div></div><p>The right level depends on what you are doing. Solo coursework lives happily at Level 1. A team project usually wants Level 4 for the things that matter most (tests, linting, build) and Level 1 for everything else. Climbing the ladder before you need to is busywork; refusing to climb it after a chore has bitten you is a slow form of procrastination.</p>
 </section>
 <section id="deciding-what-to-automate-student-friendly-heuristics" class="level2" data-number="28.2">
 <h2 data-number="28.2" class="anchored" data-anchor-id="deciding-what-to-automate-student-friendly-heuristics"><span class="header-section-number">28.2</span> Deciding what to automate (student-friendly heuristics)</h2>
@@ -1292,6 +1304,23 @@ distclean: clean
     @sleep 3
     rm -rf .venv/ .pytest_cache/ __pycache__/</code></pre>
 <p>The three-second pause before the <code>rm -rf</code> is not going to stop a determined mistake, but it is enough to catch the “wait, wrong terminal” moment before the damage is irreversible.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.github.com/en/actions">GitHub Actions documentation</a> — the authoritative reference for building CI workflows on GitHub.</li>
+<li><a href="https://www.gnu.org/software/make/manual/">GNU Make manual</a> — the classic reference for <code>make</code>, targets, and incremental rebuilds.</li>
+<li><a href="https://crontab.guru/">crontab.guru</a> — an interactive explainer for cron expressions that removes most of the mystery.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples-outline" class="level2" data-number="28.11">

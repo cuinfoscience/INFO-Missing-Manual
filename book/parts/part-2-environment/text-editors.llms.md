@@ -44,11 +44,17 @@ A small vocabulary will save you a lot of confusion. **Encoding** is the rule fo
 
 Editors come in three rough sizes, and it is worth knowing which size fits which job.
 
-The smallest are **terminal editors** like `nano`, `vim`, and `emacs`. They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: `vim`’s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough `nano` to confidently open a file, change one line, and save and exit. That single skill turns “I have to fix one character on a remote server and I cannot do it” from an impasse into a thirty-second task.
+The smallest are **terminal editors** like [`nano`](https://www.nano-editor.org/docs.php), [`vim`](https://www.vim.org/docs.php), and [`emacs`](https://www.gnu.org/software/emacs/documentation.html). They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: `vim`’s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough `nano` to confidently open a file, change one line, and save and exit. That single skill turns “I have to fix one character on a remote server and I cannot do it” from an impasse into a thirty-second task.
 
-The middle tier is **GUI code editors** — VS Code is by far the most popular today, with Sublime Text and Cursor as alternatives. These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.
+The middle tier is **GUI code editors** — [VS Code](https://code.visualstudio.com/docs) is by far the most popular today, with [Sublime Text](https://www.sublimetext.com/docs/) and [Cursor](https://docs.cursor.com/) as alternatives.
 
-The largest tier is **IDEs**: Visual Studio for C# and .NET work, IntelliJ for Java, Xcode for Swift and iOS, RStudio for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.
+![](graphics/PLACEHOLDER-vscode-overview.png)
+
+Figure 12.1: ALT: VS Code window with a Python file open, showing the file-explorer sidebar on the left, the editor pane in the centre with a code block and a Run button, and an integrated terminal docked at the bottom.
+
+These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.
+
+The largest tier is **IDEs**: [Visual Studio](https://learn.microsoft.com/en-us/visualstudio/) for C# and .NET work, [IntelliJ](https://www.jetbrains.com/idea/) for Java, [Xcode](https://developer.apple.com/documentation/xcode) for Swift and iOS, [RStudio](https://posit.co/products/open-source/rstudio/) for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.
 
 The decision rule for a typical Python data student is straightforward. For a quick edit on a remote server, use `nano` (or `vim` if you are comfortable with it). For everything else — Python scripting, notebooks, small projects — use a GUI editor with an integrated terminal, defaulting to VS Code. Reach for a full IDE only if your course or project specifically requires it.
 
@@ -386,6 +392,12 @@ git checkout .                  # throw everything away; back to the commit
 ```
 
 The habit to build: **commit small, commit often, and commit before anything that scares you.** Commits are cheap, and the safety they provide is enormous. See [sec-git-github](#sec-git-github) for the mechanics and [sec-project-management](#sec-project-management) for how commit hygiene fits into broader project discipline.
+
+> **NOTE:**
+>
+> - [VS Code documentation](https://code.visualstudio.com/docs) — the official guide, including the Python extension walk-through.
+> - [VS Code Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial) — a focused introduction to running and debugging Python in VS Code.
+> - [nano cheat sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html) — every keystroke you need for quick edits over SSH.
 
 ## 12.10 Worked examples
 

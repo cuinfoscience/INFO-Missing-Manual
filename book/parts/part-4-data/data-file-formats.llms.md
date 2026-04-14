@@ -8,7 +8,7 @@
 
 ## Purpose
 
-A huge fraction of your time in a first data science course is spent moving data from a file into a pandas DataFrame. On paper, this is a one-liner: `pd.read_csv("data.csv")`. In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.
+A huge fraction of your time in a first data science course is spent moving data from a file into a [pandas](https://pandas.pydata.org/docs/) DataFrame. On paper, this is a one-liner: [`pd.read_csv("data.csv")`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.
 
 This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — [CSV](../../appendix-glossary.llms.md#term-csv), TSV, [JSON](../../appendix-glossary.llms.md#term-json), Excel, and [Parquet](../../appendix-glossary.llms.md#term-parquet) — with the specific quirks of each, the `pandas` reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.
 
@@ -360,6 +360,12 @@ When you write a file yourself, always write UTF-8:
 ``` python
 df.to_csv("out.csv", index=False, encoding="utf-8")
 ```
+
+> **NOTE:**
+>
+> - [`pandas.read_csv` reference](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) — the complete parameter list, with notes on each option.
+> - [CSV format (RFC 4180)](https://www.rfc-editor.org/rfc/rfc4180) — the short but official specification for CSV.
+> - [JSON specification (json.org)](https://www.json.org/json-en.html) — the canonical explanation of JSON, with syntax diagrams.
 
 ## 20.7 Worked examples
 

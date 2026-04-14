@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using SSH and VPNs, move files, run remote jobs, and use tunneling to access remote services (including Jupyter) as if they were local.
+Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using [SSH](https://www.openssh.com/manual.html) and [VPNs](https://en.wikipedia.org/wiki/Virtual_private_network), move files, run remote jobs, and use tunneling to access remote services (including [Jupyter](https://jupyter.org/documentation)) as if they were local.
 
 ## Learning objectives
 
@@ -40,7 +40,7 @@ The vocabulary here is simpler than it sounds. Your **local machine** is the lap
 
 Most remote tools use **client/server** language. The **client** is the program you run locally to initiate the connection (an SSH client, a VPN client, your web browser). The **server** is the remote program waiting to accept connections (an SSH server, a web server). The protocol — SSH, HTTPS, whatever — is the rule for how the two halves talk to each other. Once you have that picture in mind, every tool in this chapter is a variant of “run a client locally that talks to a server somewhere else.”
 
-A few details about how connections behave matter in practice. An **SSH session** is a connection plus a shell — when you log out, the shell exits, and any program you started that depends on that shell may also stop. If you want a long-running job to survive your logout, you need a job-control tool like `tmux`, `screen`, or `nohup`. The remote computer also has its **own** filesystem, users, permissions, and installed software, which means a file on the remote machine is not the same as a file with the same path on your laptop, and “I have pandas installed” on your laptop tells you nothing about whether pandas is installed on the server.
+A few details about how connections behave matter in practice. An **SSH session** is a connection plus a shell — when you log out, the shell exits, and any program you started that depends on that shell may also stop. If you want a long-running job to survive your logout, you need a job-control tool like [`tmux`](https://github.com/tmux/tmux/wiki), [`screen`](https://www.gnu.org/software/screen/manual/screen.html), or [`nohup`](https://www.gnu.org/software/coreutils/manual/html_node/nohup-invocation.html). The remote computer also has its **own** filesystem, users, permissions, and installed software, which means a file on the remote machine is not the same as a file with the same path on your laptop, and “I have pandas installed” on your laptop tells you nothing about whether pandas is installed on the server.
 
 Given all that overhead, why use remote computing at all? Four reasons. The first is **resources**: the server has more CPU, more RAM, more disk, or a GPU your laptop does not have. The second is **shared data and licensed software**: some datasets and tools live on a server because they are too large, too sensitive, or too expensive to copy. The third is **reliability**: a server runs continuously and gets backed up, while your laptop closes its lid and dies on Wi-Fi. The fourth is **collaboration**: when several people share a remote environment, everyone runs the same code against the same data with the same library versions, which eliminates an entire category of “works on my machine” bugs.
 
@@ -75,7 +75,7 @@ Modern operating systems ship with SSH built in, but the shape of “how to find
 
 **Linux.** Same story — `ssh` and friends are installed by default on essentially every distribution. If your Linux machine is unusual and does not have them, `sudo apt install openssh-client` (Debian/Ubuntu) or the equivalent gets them.
 
-**Windows.** Modern Windows 10 and 11 ship with an OpenSSH client that you can use from PowerShell or Command Prompt. Confirm it is installed with:
+**Windows.** Modern Windows 10 and 11 ship with an [OpenSSH](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview) client that you can use from [PowerShell](https://learn.microsoft.com/en-us/powershell/) or Command Prompt. Confirm it is installed with:
 
 ``` powershell
 Get-Command ssh
@@ -84,7 +84,7 @@ Get-Command ssh
 
 If the command is not found, open Settings → Apps → Optional features, click “Add an optional feature,” search for “OpenSSH Client,” and install it. For more terminal-friendly experience, consider running your remote work from **Windows Terminal** (a tabbed terminal application, free in the Microsoft Store) or from **Windows Subsystem for Linux (WSL)**, which gives you a proper Linux environment on the same machine.
 
-Optionally, install a code editor with remote-development support. VS Code’s **Remote - SSH** extension is the most popular — it lets you open a folder on a remote server and edit it as if it were local, with full syntax highlighting, terminal, and debugger running over the SSH connection.
+Optionally, install a code editor with remote-development support. [VS Code](https://code.visualstudio.com/docs)’s [**Remote - SSH**](https://code.visualstudio.com/docs/remote/ssh) extension is the most popular — it lets you open a folder on a remote server and edit it as if it were local, with full syntax highlighting, terminal, and debugger running over the SSH connection.
 
 ### Golden safety rules
 
@@ -109,7 +109,19 @@ The most common SSH command is:
 ssh username@hostname
 ```
 
-For example, `ssh agandler@server.cs.example.edu`. If the server is running SSH on a non-standard port (some institutions do this), you add `-p`:
+For example, `ssh agandler@server.cs.example.edu`.
+
+![](graphics/PLACEHOLDER-ssh-connected.png)
+
+Figure 13.1: ALT: Terminal showing a successful SSH connection. The prompt has changed from the local hostname to the remote hostname (for example, from `you@laptop` to `agandler@server.cs.example.edu`), signalling that commands now run on the remote machine.
+
+> **WARNING:**
+>
+> The three common failures each point at a different layer. **“Operation timed out” or “Connection refused”** usually means the network can’t reach the server — are you on the right VPN? On campus Wi-Fi? Try `ping hostname` to confirm you can route to the host at all. **“Permission denied (publickey)”** means the server accepted your connection but rejected your credentials; confirm your key is loaded with `ssh-add -l` and that the public key is installed in the server’s `~/.ssh/authorized_keys`. **“Host key verification failed”** means the server’s identity changed — usually after a server reinstall, occasionally because of a man-in-the-middle attack; if you trust the change, edit `~/.ssh/known_hosts` and remove the stale entry for that hostname.
+>
+> For any of these, `ssh -v username@hostname` turns on verbose output so you can see which stage is failing. See [sec-asking-questions](#sec-asking-questions) if you need to escalate to your IT department.
+
+If the server is running SSH on a non-standard port (some institutions do this), you add `-p`:
 
 ``` bash
 ssh -p 2222 username@hostname
@@ -654,6 +666,12 @@ ssh -v agandler@server.cs.example.edu 2>&1 | grep -i "offering\|accepted\|public
 ```
 
 **Server-side access control problem.** Your key is correct but the server has not authorized it — the public key was never added to `~/.ssh/authorized_keys` on the server, the file has the wrong permissions, or your account has been disabled. If you have another way into the server (password login, console access, another working key), fix it there. If not, you need to contact whoever administers the server and ask them to install your public key.
+
+> **NOTE:**
+>
+> - [OpenSSH manual pages](https://www.openssh.com/manual.html) — the canonical reference for `ssh`, `sshd`, `scp`, `sftp`, and SSH config files.
+> - [SSH Academy](https://www.ssh.com/academy/ssh) — a tutorial-style introduction to keys, agents, tunneling, and common errors.
+> - [VS Code Remote - SSH](https://code.visualstudio.com/docs/remote/ssh) — the official guide to editing remote files as if they were local.
 
 ## 13.11 Worked examples
 

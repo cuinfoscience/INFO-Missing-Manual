@@ -680,7 +680,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
 <p>A huge fraction of the frustration novices experience with programming comes from the same moment: you are stuck, you search the error online, you land on a tutorial blog post that almost-but-not-quite matches your situation, you copy a line, and it breaks something else. After two hours of this you feel like the tools are hostile. Meanwhile, the answer was three clicks away on the official documentation — but you either did not know the docs existed, did not know how to navigate them, or tried to read them like a novel and bounced off.</p>
-<p>This chapter teaches you to read official documentation — pandas docs, Python docs, library README files, docstrings — in a way that actually answers your question. It is about the skill, not about any one library. Documentation is a reference medium: you dip into it for the answer to a specific question and then you leave. Once you learn to do that, the official docs become the fastest source of help you have, faster than Stack Overflow and much more reliable than a tutorial blog.</p>
+<p>This chapter teaches you to read official documentation — <a href="https://pandas.pydata.org/docs/">pandas</a> docs, <a href="https://docs.python.org/3/">Python</a> docs, library README files, <a href="https://peps.python.org/pep-0257/">docstrings</a> — in a way that actually answers your question. It is about the skill, not about any one library. Documentation is a reference medium: you dip into it for the answer to a specific question and then you leave. Once you learn to do that, the official docs become the fastest source of help you have, faster than Stack Overflow and much more reliable than a tutorial blog.</p>
 <p>This chapter complements <a href="documentation.html" class="quarto-xref"><span>Chapter 3</span></a>, which is about <em>writing</em> documentation. This one is about <em>reading</em> it.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
@@ -779,7 +779,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You do not have to open a browser to read documentation. Every function, method, and class has a docstring you can read inline.</p>
 <p>In the REPL or a script:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span>(pd.read_csv)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In Jupyter or IPython, append a <code>?</code>:</p>
+<p>In <a href="https://jupyter.org/documentation">Jupyter</a> or <a href="https://ipython.readthedocs.io/en/stable/">IPython</a>, append a <code>?</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pd.read_csv?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To see the <em>source</em> of the function, append <code>??</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pd.read_csv??</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -862,6 +862,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># or in Jupyter:</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>pd.read_csv?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>skipfooter</code> shows up in your version’s docstring with the same meaning the blog assumes, you are fine. If your version’s docstring is silent on it, or the description is different, trust the docs and not the blog.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.python.org/3/">Python documentation</a> — the canonical reference for the standard library and language.</li>
+<li><a href="https://pandas.pydata.org/docs/reference/">pandas API reference</a> — every DataFrame and Series method with signatures and examples.</li>
+<li><a href="https://diataxis.fr/">Diátaxis framework</a> — the model that distinguishes tutorials, how-tos, reference, and explanation.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="4.9">
 <h2 data-number="4.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">4.9</span> Worked examples</h2>
@@ -889,7 +906,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reading-a-docstring-inline-what-arguments-does-requests.get-actually-take" class="level3">
 <h3 class="anchored" data-anchor-id="reading-a-docstring-inline-what-arguments-does-requests.get-actually-take">Reading a docstring inline: what arguments does <code>requests.get</code> actually take?</h3>
 <p>From within a Jupyter cell:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests   <span class="co"># https://requests.readthedocs.io/en/latest/</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>requests.get?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You get a docstring listing every keyword argument (<code>params</code>, <code>headers</code>, <code>timeout</code>, <code>auth</code>, <code>cookies</code>, <code>allow_redirects</code>, <code>verify</code>, <code>stream</code>, <code>cert</code>) with descriptions — no browser required.</p>
 </section>

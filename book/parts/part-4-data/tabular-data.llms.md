@@ -32,7 +32,7 @@ Every dataset looks reasonable at first glance. Every dataset has problems. A te
 
 ## 21.1 Wide vs. tidy data
 
-The single most useful concept for working with tabular data is the distinction between **wide** and **tidy** (also called “long”) formats. The idea was popularized by Hadley Wickham and has since shaped every major data analysis library.
+The single most useful concept for working with tabular data is the distinction between **wide** and **tidy** (also called “long”) formats. The idea was popularized by Hadley Wickham’s [Tidy Data paper](https://vita.had.co.nz/papers/tidy-data.pdf) and has since shaped every major data analysis library.
 
 ### Wide
 
@@ -259,6 +259,12 @@ For groupby, pass `dropna=False` if you want NaN groups included.
 **Symptom:** a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as `object`. Operations are slow and error-prone.
 
 **Fix:** `pd.to_numeric(..., errors="coerce")` as in problem 2, then decide what to do with the NaNs. Do not silently `.dropna()` — that is the row you should be investigating.
+
+> **NOTE:**
+>
+> - Hadley Wickham, [*Tidy Data*](https://vita.had.co.nz/papers/tidy-data.pdf) — the canonical paper on long/wide formats.
+> - [pandas User Guide: Reshaping](https://pandas.pydata.org/docs/user_guide/reshaping.html) — the official guide to `melt`, `pivot`, `stack`, and `unstack`.
+> - [Great Expectations](https://docs.greatexpectations.io/) — a popular library for writing the validation checks this chapter advocates.
 
 ## 21.6 Worked examples
 

@@ -144,7 +144,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -717,7 +717,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/version-control.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-projects/project-management.html">Part V — Project Management</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-projects/version-control.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Version Control</span></a></li></ol></nav>
@@ -758,7 +758,7 @@ window.Quarto = {
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Version control is the safety system for technical work. Git records a history of changes so you can recover, compare, and collaborate without overwriting each other. GitHub adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.</p>
+<p>Version control is the safety system for technical work. <a href="https://git-scm.com/doc">Git</a> records a history of changes so you can recover, compare, and collaborate without overwriting each other. <a href="https://docs.github.com/en">GitHub</a> adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -779,7 +779,7 @@ window.Quarto = {
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-make-changes-small-reviewable-and-reversible">Running theme: make changes small, reviewable, and reversible</h2>
 <p>A healthy Git workflow favors small commits, small pull requests, clear messages, and frequent synchronization.</p>
 </section>
-<section id="mental-models-and-vocabulary" class="level2" data-number="26.1">
+<section id="mental-models-and-vocabulary" class="level2 page-columns page-full" data-number="26.1">
 <h2 data-number="26.1" class="anchored" data-anchor-id="mental-models-and-vocabulary"><span class="header-section-number">26.1</span> Mental models and vocabulary</h2>
 <p>A <strong>repository</strong> is your project folder plus a hidden <code>.git</code> directory inside it. Everything Git knows about your project — every commit, every branch, every author, every file at every point in time — is stored in <code>.git</code>. Delete the directory, and you have a regular folder with no version control. Keep it, and you have a complete history you can rewind to.</p>
 <p>A <strong>commit</strong> is a snapshot of every tracked file in the repository at a specific moment, plus a small bundle of metadata: the author, the time, the commit message you wrote, and a unique identifier (the SHA hash) that names this specific snapshot forever. Commits are the unit of history. They are how you say “this is the state of the project right now, save it.”</p>
@@ -787,7 +787,48 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">8b73ab1</span> Part I: convert outline bullets to narrative prose</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">185d03f</span> Part II: convert outline bullets to narrative prose</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">c127108</span> Merge pre-commit chapter into automation</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-github-repo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-github-repo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-github-repo.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-github-repo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26.1: ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.
+</figcaption>
+</figure>
+</div>
+</div></div><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If <code>git push</code> is rejected
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A rejection almost always means <strong>the remote has commits you do not have locally</strong> — someone else pushed to the same branch before you. Run <code>git fetch origin</code> to see what changed, then <code>git pull --rebase origin &lt;branch&gt;</code> to replay your commits on top of theirs. If that produces conflicts, resolve them in the marked files, <code>git add</code> the resolved files, and continue the rebase with <code>git rebase --continue</code>. Once the rebase finishes cleanly, <code>git push</code> will work.</p>
+<p>If you see “non-fast-forward” on a branch no one else should be pushing to, check that you are on the right branch (<code>git branch</code> shows the current one with an asterisk) and that you are pushing to the right remote (<code>git remote -v</code>). Never “fix” a rejection with <code>git push --force</code> unless you understand exactly which commits you are about to overwrite. See <a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a> if you need help.</p>
+</div>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-github-pr-diff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-github-pr-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-github-pr-diff.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-github-pr-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26.2: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
+</figcaption>
+</figure>
+</div>
+</div></div><p>Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.</p>
 <p>There are three zones any file moves through on its way into history. The <strong>working tree</strong> is the version of the file as it exists on disk right now — what you see when you open it in your editor. The <strong>staging area</strong> (also called the <em>index</em>) is the set of changes you have explicitly told Git you intend to include in your next commit. And the <strong>commit</strong> is the saved snapshot in history once you actually run <code>git commit</code>. Edits land in the working tree first; <code>git add</code> promotes them to staging; <code>git commit</code> turns staging into a commit.</p>
 <pre class="text"><code>edit file        →  working tree
 git add file     →  staging area
@@ -806,7 +847,7 @@ git commit       →  history</code></pre>
 </section>
 <section id="what-to-version-and-what-not-to-version" class="level3">
 <h3 class="anchored" data-anchor-id="what-to-version-and-what-not-to-version">What to version and what not to version</h3>
-<p>As a rule, version everything that is <strong>small, textual, and authored by you or your team</strong>: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like <code>requirements.txt</code> and <code>.gitignore</code>, and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git’s line-by-line diffing works beautifully on text, and the storage cost is negligible.</p>
+<p>As a rule, version everything that is <strong>small, textual, and authored by you or your team</strong>: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like <code>requirements.txt</code> and <a href="https://git-scm.com/docs/gitignore"><code>.gitignore</code></a>, and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git’s line-by-line diffing works beautifully on text, and the storage cost is negligible.</p>
 <p>Do <strong>not</strong> version a short, specific list of things. <strong>Secrets and credentials</strong> — API keys, database passwords, <code>.env</code> files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see <a href="secrets.html" class="quarto-xref"><span>Chapter 29</span></a> for why, and how to recover if it happens). <strong>Large raw datasets</strong> — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every <code>git clone</code> slow forever. <strong>Generated artifacts</strong> — compiled binaries, cached model files, HTML output, <code>__pycache__</code> directories — should be reproducible from your code, which means they do not need to be versioned; <code>.gitignore</code> is where you list them. And <strong>environment folders</strong> — <code>.venv/</code>, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (<code>requirements.txt</code>, <code>environment.yml</code>) is the thing that goes in Git.</p>
 </section>
 </section>
@@ -1089,6 +1130,23 @@ data/processed/
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v1.0-midterm <span class="at">-m</span> <span class="st">"Midterm submission, 2025-03-10"</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin v1.0-midterm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>On GitHub, you can promote a tag to a <strong>release</strong>, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference <code>v1.0-midterm</code> and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git book</a> — the free, authoritative book on Git, written by one of its maintainers.</li>
+<li><a href="https://docs.github.com/en/get-started/using-git/about-git">GitHub Docs: Getting started with Git</a> — a beginner-friendly overview of Git concepts paired with GitHub features.</li>
+<li><a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet (PDF)</a> — GitHub Education’s printable reference for everyday commands.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples-outline" class="level2" data-number="26.11">

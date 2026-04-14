@@ -56,7 +56,7 @@ Secondary sources can be valuable, especially for novices, but they are more lik
 
 ## 3.2 Documentation genres and the questions they answer
 
-A useful classification (popularized in multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.
+A useful classification (popularized by the [Diátaxis framework](https://diataxis.fr/) and multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.
 
 ### Reference documentation
 
@@ -64,14 +64,14 @@ Reference docs answer the question *“what are the exact inputs, outputs, optio
 
 ``` bash
 # Examples of reference docs you can read locally
-git help merge          # man-page-style git reference
+git help merge          # man-page-style git reference (https://git-scm.com/docs)
 ls --help               # GNU ls option reference
-python -c "help(dict)"  # Python built-in reference
+python -c "help(dict)"  # Python built-in reference (https://docs.python.org/3/)
 ```
 
 ### Tutorials
 
-Tutorials answer the question *“how do I learn this from scratch in a guided way?”* They are linear and scaffolded, and they assume you have the time to follow a sequence step by step. A good tutorial gets you to a working example quickly, even if you do not fully understand every piece on the first pass. The pandas “Getting Started” guide and the official Python tutorial are both examples of this genre.
+Tutorials answer the question *“how do I learn this from scratch in a guided way?”* They are linear and scaffolded, and they assume you have the time to follow a sequence step by step. A good tutorial gets you to a working example quickly, even if you do not fully understand every piece on the first pass. The [pandas “Getting Started” guide](https://pandas.pydata.org/docs/getting_started/index.html) and the [official Python tutorial](https://docs.python.org/3/tutorial/) are both examples of this genre.
 
 ### How-to guides
 
@@ -91,11 +91,11 @@ Finding documentation is a skill because the web contains too much material, and
 
 ### Start with “what is the object?”
 
-The first move is always to figure out what *kind* of thing you are dealing with, because the answer determines where the “official” docs live. Are you trying to understand a **language feature** (Python list slicing, generator expressions), a **library** (pandas, numpy, scikit-learn), a **tool** (Git, conda, Jupyter), a **platform** (GitHub Actions, Windows Task Scheduler), or a **file format** (CSV, JSON, Parquet)? Each of those categories has a different home: language features live in the language reference, libraries live in their own documentation sites, tools live in their man pages and project sites, platforms live in their vendor docs, and file formats live in their public specifications. Once you know the category, you almost always know the URL pattern.
+The first move is always to figure out what *kind* of thing you are dealing with, because the answer determines where the “official” docs live. Are you trying to understand a **language feature** (Python list slicing, generator expressions), a **library** ([pandas](https://pandas.pydata.org/docs/), [numpy](https://numpy.org/doc/stable/), [scikit-learn](https://scikit-learn.org/stable/)), a **tool** ([Git](https://git-scm.com/doc), [conda](https://docs.conda.io/en/latest/), [Jupyter](https://jupyter.org/documentation)), a **platform** ([GitHub Actions](https://docs.github.com/en/actions), [Windows Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page)), or a **file format** ([CSV](https://www.rfc-editor.org/rfc/rfc4180), [JSON](https://www.json.org/json-en.html), [Parquet](https://parquet.apache.org/docs/))? Each of those categories has a different home: language features live in the language reference, libraries live in their own documentation sites, tools live in their man pages and project sites, platforms live in their vendor docs, and file formats live in their public specifications. Once you know the category, you almost always know the URL pattern.
 
 ### Search queries that route you to primary sources
 
-A common novice mistake is to type *“how do I do X”* into Google and end up in a sea of secondary sources — blog posts, Stack Overflow answers, and YouTube videos of varying age and accuracy. A small change in search query routes you to primary sources directly. Instead of *“how do I write a requirements.txt”*, search for `pip documentation requirements.txt`. Instead of *“how do I use SSH ProxyJump”*, search for `ssh man page ProxyJump`. Instead of *“pandas merge tutorial”*, search for `pandas API merge`. The pattern is always the same: name the tool, name the topic, and add a word like `documentation`, `API`, or `man page` to bias the results toward authoritative sources.
+A common novice mistake is to type *“how do I do X”* into Google and end up in a sea of secondary sources — blog posts, Stack Overflow answers, and YouTube videos of varying age and accuracy. A small change in search query routes you to primary sources directly. Instead of *“how do I write a requirements.txt”*, search for [`pip documentation requirements.txt`](https://pip.pypa.io/en/stable/reference/requirements-file-format/). Instead of *“how do I use SSH ProxyJump”*, search for `ssh man page ProxyJump`. Instead of *“pandas merge tutorial”*, search for `pandas API merge`. The pattern is always the same: name the tool, name the topic, and add a word like `documentation`, `API`, or `man page` to bias the results toward authoritative sources.
 
 ``` text
 # Instead of                          search for
@@ -361,6 +361,12 @@ Use the following guardrails:
 4.  **Cite primary sources**: do not let AI replace authoritative references.
 
 A practical rule: if the AI suggests a command that could be destructive (`rm`, `sudo`, permissions changes), stop and verify in official documentation or with an instructor.
+
+> **NOTE:**
+>
+> - [The Diátaxis framework](https://diataxis.fr/) — the four-quadrant model for tutorials, how-tos, reference, and explanation. The clearest way to think about documentation genres.
+> - [Write the Docs: Beginner’s Guide](https://www.writethedocs.org/guide/) — a community-maintained introduction to writing technical documentation.
+> - [Make a README](https://www.makeareadme.com/) — a short guide with a template you can copy into any project.
 
 ## 3.10 Worked examples
 

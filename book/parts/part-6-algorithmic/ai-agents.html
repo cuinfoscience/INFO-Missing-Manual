@@ -732,12 +732,12 @@ ul.task-list li input[type="checkbox"] {
 <p>Several frameworks exist to help you build agents without implementing the loop, tool management, and memory yourself. Each makes different trade-offs.</p>
 <section id="langchain" class="level3">
 <h3 class="anchored" data-anchor-id="langchain">LangChain</h3>
-<p>LangChain is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.</p>
+<p><a href="https://python.langchain.com/docs/introduction/">LangChain</a> is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.</p>
 <p><em>Best for:</em> Teams that want a batteries-included framework with many pre-built components. Its abstraction layer is useful for rapid prototyping but can obscure what is happening underneath.</p>
 </section>
 <section id="llamaindex" class="level3">
 <h3 class="anchored" data-anchor-id="llamaindex">LlamaIndex</h3>
-<p>LlamaIndex (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.</p>
+<p><a href="https://docs.llamaindex.ai/en/stable/">LlamaIndex</a> (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.</p>
 <p><em>Best for:</em> Applications that center on querying documents, PDFs, databases, or APIs — where the primary challenge is getting the right information into context.</p>
 </section>
 <section id="claude-agent-sdk-anthropic-api" class="level3">
@@ -747,7 +747,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="crewai" class="level3">
 <h3 class="anchored" data-anchor-id="crewai">CrewAI</h3>
-<p>CrewAI provides a higher-level abstraction: you define <em>agents</em> (with roles and goals) and <em>tasks</em> (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.</p>
+<p><a href="https://docs.crewai.com/">CrewAI</a> provides a higher-level abstraction: you define <em>agents</em> (with roles and goals) and <em>tasks</em> (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.</p>
 <p><em>Best for:</em> Multi-agent workflows where different agents play different roles (researcher, writer, reviewer) and need to hand off work to each other.</p>
 </section>
 <section id="when-to-skip-a-framework" class="level3">
@@ -882,6 +882,23 @@ Answer: You are running pandas 2.2.1.</code></pre>
         if confirm.lower() != 'y':
             return {"error": "Action cancelled by user."}
     return TOOL_REGISTRY[tool_call.name](**tool_call.args)</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Anthropic: Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops.</li>
+<li><a href="https://python.langchain.com/docs/tutorials/agents/">LangChain agents documentation</a> — a framework-level walk-through of agent construction.</li>
+<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="31.9">

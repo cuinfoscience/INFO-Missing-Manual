@@ -366,6 +366,16 @@ Documentation drifts out of sync with the code almost immediately, because chang
 
 **Fix:** include a “docs updated” checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, **file an issue** — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.
 
+> **NOTE:**
+>
+> - [GitHub Docs: About pull requests](https://docs.github.com/en/pull-requests) — the canonical reference for opening, reviewing, and merging PRs.
+> - [Google engineering practices: Code review](https://google.github.io/eng-practices/review/) — Google’s public guide to what reviewers should look for and how fast they should respond.
+> - [Conventional Comments](https://conventionalcomments.org/) — a lightweight convention for labelling review comments so their intent is obvious.
+
+![](graphics/PLACEHOLDER-github-pr-review-comment.png)
+
+Figure 27.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
+
 ## 27.11 Worked examples (outline)
 
 ### Turn a chat question into a good issue

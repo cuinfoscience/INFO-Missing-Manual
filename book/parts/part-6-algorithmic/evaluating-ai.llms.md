@@ -291,6 +291,12 @@ If outputs differ systematically when only names change, the system may be ampli
 
 Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system’s handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.
 
+> **NOTE:**
+>
+> - [Hugging Face: Evaluate library](https://huggingface.co/docs/evaluate/index) — a toolkit for benchmarking models against many standard metrics.
+> - [Anthropic: Evaluating outputs](https://docs.anthropic.com/en/docs/test-and-evaluate/overview) — practical guidance on designing prompt evaluations and test sets.
+> - [OpenAI Evals framework](https://github.com/openai/evals) — an open-source framework for writing and running LLM evaluations.
+
 ## 32.9 Worked examples
 
 ### Building an evaluation suite for a summarization system

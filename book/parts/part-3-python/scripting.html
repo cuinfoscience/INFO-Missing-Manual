@@ -728,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
-<li><p>Write a Python script that can be run from the command line and imported as a module.</p></li>
+<li><p>Write a <a href="https://docs.python.org/3/">Python</a> script that can be run from the command line and imported as a module.</p></li>
 <li><p>Organize reusable code into functions and (optionally) a small <code>src/</code> module.</p></li>
 <li><p>Import custom scripts into a Jupyter notebook and reload changes during iteration.</p></li>
 <li><p>Convert notebooks to scripts (and scripts to notebooks) using standard tools.</p></li>
@@ -962,7 +962,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-cli-pattern" class="level3">
 <h3 class="anchored" data-anchor-id="the-cli-pattern">The CLI pattern</h3>
-<p>The standard way to give a Python script command-line arguments is the built-in <code>argparse</code> module. You define each argument once, with a description and (where appropriate) a default value, and <code>argparse</code> handles parsing the user’s input, generating a <code>--help</code> message, and rejecting invalid arguments before your code ever runs.</p>
+<p>The standard way to give a Python script command-line arguments is the built-in <a href="https://docs.python.org/3/library/argparse.html"><code>argparse</code></a> module. You define each argument once, with a description and (where appropriate) a default value, and <code>argparse</code> handles parsing the user’s input, generating a <code>--help</code> message, and rejecting invalid arguments before your code ever runs.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1141,6 +1141,14 @@ Notebooks are a known pain point in version control (see @sec-git-github), and a
 Second, **avoid embedding large data into the notebook itself.** A cell that reads a 50 MB CSV and then does `df` on a line by itself will embed every row into the notebook's output. Either slice the output (`df.head()`, `df.sample(10)`) or print a summary (`df.shape`, `df.describe()`) instead. Raw data belongs in `data/`, not in `notebooks/`.
 
 Third, **prefer Jupytext pairing or script conversion for anything code-reviewed.** If a reviewer has to compare two versions of a notebook, they almost certainly want to see a plain-text diff, not a JSON blob. Pairing with Jupytext gives them the best of both worlds: the reviewer reads the `.py`, the analyst keeps using the `.ipynb`, and the two stay in sync automatically. For notebooks that are handed in once and never reviewed, this is overkill; for notebooks that are part of a shared project, it is almost always worth the small setup cost.
+
+::: {.callout-note}
+## 📚 Further reading
+
+- [Python: `argparse` tutorial](https://docs.python.org/3/howto/argparse.html) — the canonical walk-through for building command-line interfaces.
+- [Real Python: Command-Line Interfaces in Python](https://realpython.com/command-line-interfaces-python-argparse/) — a longer-form treatment with subcommands and examples.
+- [`if __name__ == "__main__"`](https://docs.python.org/3/library/__main__.html) — the official explanation of the import vs. script entry point pattern.
+:::
 
 ## Worked examples
 

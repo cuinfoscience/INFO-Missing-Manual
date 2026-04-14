@@ -19,9 +19,9 @@ By the end of this chapter, you should be able to:
 1.  Explain what a regular expression is and name three situations where it is the right tool.
 2.  Read a short regex and predict what it will match.
 3.  Use literal characters, the seven core metacharacters, character classes, and anchors to write patterns.
-4.  Use `re.search`, `re.match`, `re.findall`, and `re.sub` in Python with sensible defaults.
+4.  Use [`re.search`](https://docs.python.org/3/library/re.html#re.search), `re.match`, `re.findall`, and `re.sub` in [Python’s `re` module](https://docs.python.org/3/library/re.html) with sensible defaults.
 5.  Use capture groups to extract parts of a match.
-6.  Use `pandas.Series.str.contains`, `.str.extract`, and `.str.replace` for regex on DataFrames.
+6.  Use [`pandas.Series.str.contains`](https://pandas.pydata.org/docs/reference/api/pandas.Series.str.contains.html), `.str.extract`, and `.str.replace` for regex on DataFrames.
 7.  Recognize when a regex is becoming too clever and reach for a real parser instead.
 
 ## Running theme: match shapes, not meaning
@@ -196,6 +196,12 @@ Regex is a hammer. It is not the right tool for:
 - **Anything where you need to understand structure, not match shape.** If the text has nested elements, recursion, or balanced brackets, regex will frustrate you. Reach for a real parser.
 
 A good rule of thumb: if your regex is longer than one line or contains more than three `(...)` groups, reconsider.
+
+> **NOTE:**
+>
+> - [Python `re` module reference](https://docs.python.org/3/library/re.html) — the authoritative list of pattern syntax and functions.
+> - [Python Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html) — a longer-form tutorial that builds intuition before you reach for the reference.
+> - [regex101](https://regex101.com/) — an interactive tester that explains every part of a pattern as you type.
 
 ## 18.8 Worked examples
 

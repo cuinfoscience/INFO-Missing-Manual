@@ -742,7 +742,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Produce a minimal reproducible example (MRE) that isolates a bug.</p></li>
 <li><p>Decompose a failing program into smaller units and test them independently.</p></li>
 <li><p>Read error messages and stack traces to locate the relevant failure point.</p></li>
-<li><p>Use print statements and the <code>logging</code> module to collect useful diagnostic information.</p></li>
+<li><p>Use print statements and the <a href="https://docs.python.org/3/library/logging.html"><code>logging</code></a> module to collect useful diagnostic information.</p></li>
 <li><p>Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.</p></li>
 <li><p>Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.</p></li>
 <li><p>Use AI tools to assist debugging without outsourcing verification or creating new risks.</p></li>
@@ -847,7 +847,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_columns(df)<span class="op">;</span>                 <span class="bu">print</span>(<span class="st">"cleaned:"</span>, df.shape)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> compute_features(df)<span class="op">;</span>              <span class="bu">print</span>(<span class="st">"features:"</span>, df.shape)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the first stage where shape or columns surprise you is the bug site</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The second strategy is <strong>binary search over history</strong>: if the code worked yesterday and is broken today, look at what changed. Version control makes this dramatically faster — <code>git log --oneline</code> lists the recent commits, <code>git diff HEAD~5</code> shows the cumulative diff over the last five, and <code>git bisect</code> will literally do the binary search for you, asking you to mark commits as “good” or “bad” until it isolates the exact one that introduced the bug. Even without git, you can usually copy your last working version into a separate folder and diff the two.</p>
+<p>The second strategy is <strong>binary search over history</strong>: if the code worked yesterday and is broken today, look at what changed. Version control makes this dramatically faster — <a href="https://git-scm.com/docs/git-log"><code>git log --oneline</code></a> lists the recent commits, <code>git diff HEAD~5</code> shows the cumulative diff over the last five, and <a href="https://git-scm.com/docs/git-bisect"><code>git bisect</code></a> will literally do the binary search for you, asking you to mark commits as “good” or “bad” until it isolates the exact one that introduced the bug. Even without <a href="https://git-scm.com/doc">git</a>, you can usually copy your last working version into a separate folder and diff the two.</p>
 <p>The third strategy is to <strong>strip to a minimal reproducible example</strong>: take the failing code and aggressively delete anything that is not essential to triggering the bug. Each deletion that <em>still</em> fails is a piece of evidence about which code is irrelevant. The endpoint is a tiny script — usually fewer than 20 lines — that reproduces the failure with no surrounding noise. At that point, the bug is almost always obvious, and even if it is not, you have produced exactly the artifact you need to ask for help (see <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>).</p>
 </section>
 <section id="the-minimal-reproducible-example-mre-as-a-debugging-tool" class="level3">
@@ -1038,6 +1038,23 @@ logger.info("Starting pipeline")</code></pre>
 <li><p>After the fix, what test will prevent regression?</p></li>
 </ol>
 <p>Print it and keep it near your desk.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.python.org/3/howto/logging.html">Python <code>logging</code> HOWTO</a> — the official walk-through of loggers, handlers, and levels.</li>
+<li><a href="https://realpython.com/python-debugging-pdb/">Real Python: Python Debugging with <code>pdb</code></a> — a clean, beginner-friendly introduction to the built-in debugger.</li>
+<li><a href="https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html">Software Carpentry: Python Debugging lesson</a> — a short lesson on systematic debugging with examples.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="case-studies" class="level2" data-number="5.12">
 <h2 data-number="5.12" class="anchored" data-anchor-id="case-studies"><span class="header-section-number">5.12</span> Case studies</h2>
@@ -1049,7 +1066,7 @@ logger.info("Starting pipeline")</code></pre>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"data dir:"</span>, os.listdir(<span class="st">"data"</span>) <span class="cf">if</span> os.path.isdir(<span class="st">"data"</span>) <span class="cf">else</span> <span class="st">"missing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>cwd</code> is the project root, the path is fine and the file is genuinely missing. If <code>cwd</code> is some other directory, the path is <em>relative</em> to that other directory and the bug is not in your code at all — you just ran the script from the wrong place. The hypothesis is: the script uses a relative path and you are running it from the wrong directory. The experiment is: run the script from the project root, or rewrite the path so it is computed from <code>__file__</code> and is independent of the working directory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path   <span class="co"># https://docs.python.org/3/library/pathlib.html</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>HERE <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>DATA <span class="op">=</span> HERE <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"input.csv"</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> DATA.exists(), <span class="ss">f"Missing </span><span class="sc">{</span>DATA<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

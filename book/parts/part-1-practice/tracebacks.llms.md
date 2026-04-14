@@ -21,7 +21,7 @@ By the end of this chapter, you should be able to:
 1.  Identify the parts of a Python traceback: the error type, the error message, the stack, and each frame’s file, line number, and code snippet.
 2.  Read a traceback top-down and bottom-up and explain when each direction is useful.
 3.  Distinguish between an error raised in *your* code and one raised inside a third-party library like pandas or numpy.
-4.  Translate the ten most common Python exception types into plain English and know where to look first when you see them.
+4.  Translate the ten most common [Python exception types](https://docs.python.org/3/library/exceptions.html) into plain English and know where to look first when you see them.
 5.  Read a chained traceback (*“during handling of the above exception, another exception occurred”*) and find the root cause.
 6.  Read tracebacks that appear inside Jupyter notebook cells, where the “file” is a cell index.
 7.  Search for an error message online in a way that returns useful hits rather than noise.
@@ -201,6 +201,12 @@ search instead for
 The static part plus the library is usually enough to land you on a Stack Overflow answer with your exact problem.
 
 If the exception is from a library, add the library name. If the exception is a `SyntaxError` or `IndentationError`, don’t bother searching — those are almost always typos in your own code that you will spot faster by re-reading.
+
+> **NOTE:**
+>
+> - [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — the complete hierarchy of Python exception classes.
+> - [Errors and Exceptions (Python tutorial)](https://docs.python.org/3/tutorial/errors.html) — the official introduction to raising and handling exceptions.
+> - [Real Python: Understanding the Python Traceback](https://realpython.com/python-traceback/) — a walk-through of every part of a traceback with worked examples.
 
 ## 6.7 Worked examples
 

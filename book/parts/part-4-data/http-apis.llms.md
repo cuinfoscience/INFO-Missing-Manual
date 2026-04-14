@@ -31,7 +31,7 @@ Assume every HTTP request can time out, rate-limit you, return garbage, or fail 
 
 ## 24.1 HTTP in one paragraph
 
-The web runs on HTTP (Hypertext Transfer Protocol). A client (your Python script, a browser, `curl`) sends a **request** to a server: a method (GET, POST, …), a URL (`https://api.example.com/v1/users/42`), optional headers (metadata), and optional body (data). The server replies with a **response**: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.
+The web runs on [HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) (Hypertext Transfer Protocol). A client (your Python script, a browser, [`curl`](https://curl.se/docs/manpage.html)) sends a **request** to a server: a method (GET, POST, …), a URL (`https://api.example.com/v1/users/42`), optional headers (metadata), and optional body (data). The server replies with a **response**: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.
 
 ### The four HTTP verbs
 
@@ -69,13 +69,23 @@ Memorize these five:
 
 ## 24.2 The `requests` library
 
-The `requests` library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
+The [`requests`](https://requests.readthedocs.io/en/latest/) library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
 
 ``` bash
 python -m pip install requests
 ```
 
 The simplest possible use:
+
+![](graphics/PLACEHOLDER-browser-json-response.png)
+
+Figure 24.1: ALT: Web browser showing the raw JSON response from a public API (for example, `https://jsonplaceholder.typicode.com/users/1`). The response is a formatted object with name, email, and address fields, illustrating what API data looks like before any Python parsing.
+
+> **WARNING:**
+>
+> The three most common API failures each have a distinctive signature. **The request hangs forever** — you forgot to pass a `timeout=` argument to `requests.get()`, and the default is no timeout. Add `timeout=10` to every request. **The response has status 401 or 403** — your API key is missing, wrong, or being sent in the wrong header. Check the API’s docs for the exact header name (usually `Authorization: Bearer <key>` or `X-API-Key: <key>`) and confirm the key is loaded correctly from your `.env` file (see [sec-secrets](#sec-secrets)). **The response has status 429** — the server is rate-limiting you. Slow down: add `time.sleep()` between requests, or check for a `Retry-After` header that tells you how long to wait.
+>
+> For any 4xx error, `print(response.text)` before parsing — the server almost always returns a helpful error message in the body that explains what it rejected.
 
 ``` python
 import requests
@@ -251,6 +261,12 @@ Before you write a lot of custom API code, check:
 - **Does an SDK exist?** Many big APIs ship an official Python library: `github` → `PyGithub`, `slack` → `slack_sdk`, AWS → `boto3`, Google → `google-*`. SDKs handle auth, rate limits, pagination, and error types for you. Use them when they exist.
 - **Is there a bulk download?** Many data sources also offer CSV, Parquet, or SQL dumps of the same data. If you want a snapshot, the dump is usually much faster and easier than hammering the API row by row. See [sec-data-file-formats](#sec-data-file-formats).
 - **Is this a one-off?** For a single fetch, `curl` on the command line or a browser download might be faster than a Python script. Save the result to disk and work from there.
+
+> **NOTE:**
+>
+> - [`requests` documentation](https://requests.readthedocs.io/en/latest/) — the official guide to the most common Python HTTP library.
+> - [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.
+> - [HTTP Status Codes (httpstatuses.com)](https://httpstatuses.com/) — a searchable reference for every status code you will see in the wild.
 
 ## 24.8 Worked examples
 

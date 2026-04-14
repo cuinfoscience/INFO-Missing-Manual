@@ -10,7 +10,7 @@
 
 A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `JOIN`, `ORDER BY`, `LIMIT`) cover 80% of what a novice data scientist needs.
 
-This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run SQL against a local SQLite database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).
+This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run [SQL](https://www.sqlite.org/lang.html) against a local [SQLite](https://www.sqlite.org/docs.html) database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).
 
 If you already know pandas, you will notice that SQL and pandas are almost word-for-word equivalent in their core verbs. The translation table in section 10 is a fast way to transfer skills in either direction.
 
@@ -22,7 +22,7 @@ By the end of this chapter, you should be able to:
 2.  Write `SELECT`, `WHERE`, `ORDER BY`, and `LIMIT` queries to filter and sort rows.
 3.  Use `GROUP BY` with aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) to compute summaries.
 4.  Write `INNER JOIN` and `LEFT JOIN` to combine tables on a shared key.
-5.  Run SQL from Python against a SQLite database using the `sqlite3` module and load the result into pandas.
+5.  Run SQL from Python against a SQLite database using the [`sqlite3`](https://docs.python.org/3/library/sqlite3.html) module and load the result into pandas.
 6.  Recognize the three most common novice SQL bugs: missing `GROUP BY` columns, `NULL` comparisons, and unquoted strings.
 7.  Decide when SQL is the right tool (filtering big tables, joins across tables) and when pandas is (reshaping, plotting, ad-hoc analysis).
 
@@ -346,6 +346,12 @@ A common hybrid pattern: write a SQL query that selects and joins the rows you n
 | `SELECT * FROM a JOIN b USING (k)` | `a.merge(b, on="k")` |
 | `SELECT * FROM a LEFT JOIN b USING (k)` | `a.merge(b, on="k", how="left")` |
 | `SELECT DISTINCT k FROM t` | `df["k"].unique()` |
+
+> **NOTE:**
+>
+> - [SQLite SQL language reference](https://www.sqlite.org/lang.html) — the authoritative grammar SQLite actually implements.
+> - [Mode Analytics SQL Tutorial](https://mode.com/sql-tutorial/) — a free, beginner-friendly tutorial with interactive exercises.
+> - [Python `sqlite3` module](https://docs.python.org/3/library/sqlite3.html) — the standard library’s database connector, ideal for teaching and prototyping.
 
 ## 23.11 Worked examples
 

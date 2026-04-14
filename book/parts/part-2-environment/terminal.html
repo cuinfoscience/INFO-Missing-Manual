@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/terminal.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Command Line</span></a></li></ol></nav>
@@ -750,9 +750,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="scope-note">Scope note</h2>
 <p>This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL). An appendix maps concepts to Windows PowerShell where relevant.</p>
 </section>
-<section id="a-beginner-mental-model" class="level2" data-number="11.1">
+<section id="a-beginner-mental-model" class="level2 page-columns page-full" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="a-beginner-mental-model"><span class="header-section-number">11.1</span> A beginner mental model</h2>
-<p>The first piece of vocabulary worth getting right is the difference between a <strong>terminal</strong> and a <strong>shell</strong>, because the words are often used interchangeably and the distinction matters when you read documentation. The <strong>terminal</strong> is the application window you type in — Terminal.app on macOS, Windows Terminal or PowerShell on Windows, GNOME Terminal or Konsole on Linux. The <strong>shell</strong> is the program running <em>inside</em> that window — usually <code>bash</code> or <code>zsh</code> on macOS and Linux, <code>pwsh</code> (PowerShell) or <code>cmd.exe</code> on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A <strong>command</strong> is the actual thing you ask the shell to run: a program name followed by some arguments, like <code>ls -l data/</code>.</p>
+<p>The first piece of vocabulary worth getting right is the difference between a <strong>terminal</strong> and a <strong>shell</strong>, because the words are often used interchangeably and the distinction matters when you read documentation. The <strong>terminal</strong> is the application window you type in — Terminal.app on macOS, <a href="https://learn.microsoft.com/en-us/windows/terminal/">Windows Terminal</a> or <a href="https://learn.microsoft.com/en-us/powershell/">PowerShell</a> on Windows, GNOME Terminal or Konsole on Linux. The <strong>shell</strong> is the program running <em>inside</em> that window — usually <a href="https://www.gnu.org/software/bash/manual/"><code>bash</code></a> or <a href="https://zsh.sourceforge.io/Doc/"><code>zsh</code></a> on macOS and Linux, <code>pwsh</code> (PowerShell) or <code>cmd.exe</code> on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A <strong>command</strong> is the actual thing you ask the shell to run: a program name followed by some arguments, like <code>ls -l data/</code>.</p>
 <p>When you press Enter on a command line, a small choreographed sequence happens. The shell reads the line of text you typed. It expands any shortcuts you used — globs like <code>*.csv</code>, variables like <code>$HOME</code>, command substitutions like <code>$(date)</code>. It searches a list of folders called <code>PATH</code> to find the program you named. It launches that program as a new process, hands it the arguments you provided, and shows you whatever the program prints. When the program finishes, it returns a small integer called an <strong>exit code</strong> — <code>0</code> conventionally means “everything worked,” and any nonzero value means “something went wrong.” The shell then displays a prompt and waits for your next command.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> data/             <span class="co"># 1. read the line</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                           <span class="co"># 2. expand any shortcuts (none here)</span></span>
@@ -763,6 +763,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 you staff 8421 Apr 10 12:34 input.csv</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$?</span>                  <span class="co"># check the exit code of the previous command</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-macos-terminal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-macos-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-macos-terminal-annotated.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-macos-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: ALT: macOS Terminal window at a fresh prompt, annotated to label the username, hostname, current directory, and prompt character. The window shows an <code>ls -l data/</code> command at the top and its output underneath.
+</figcaption>
+</figure>
+</div>
+</div><div class="">
+<div id="fig-windows-terminal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-windows-terminal-annotated.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to label the equivalent parts: current directory, prompt symbol, and command-line input area.
+</figcaption>
+</figure>
+</div>
+</div></div>
 <p>The reason any of this is worth learning, when GUI file managers are right there, is that the command line gives you four things the GUI cannot. It has a high <strong>action-to-keystroke ratio</strong> for repetitive work — moving fifty files into the right folders is one short command at the prompt and a fifteen-minute drag-and-drop session in the GUI. It is <strong>composable</strong>: small focused tools combined with pipes and redirection give you a flexible toolkit instead of fifty single-purpose buttons. It is <strong>automatable</strong>: anything you can type once, you can save in a script and run again on a schedule. And it is <strong>remote-friendly</strong>, which is the entire reason you can do real work on a server you have never physically seen (see <a href="remote.html" class="quarto-xref"><span>Chapter 13</span></a>). None of those properties are nice-to-haves; they are the difference between doing a job once and doing it reliably for an entire semester.</p>
 </section>
 <section id="orientation-and-safety-first" class="level2" data-number="11.2">
@@ -1181,6 +1205,23 @@ $           # empty output: no more .tmp files</code></pre>
 <span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">File</span> <span class="st">"src/clean.py"</span>, line 12, in <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
 <span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Disciplined debugging is not glamorous, but it is reliable, and it is what separates people who lose an hour to a mystery error from people who spend two minutes and keep working.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://www.gnu.org/software/bash/manual/">The Bash Reference Manual</a> — the canonical reference for bash syntax, built-ins, and scripting.</li>
+<li><a href="https://swcarpentry.github.io/shell-novice/">Software Carpentry: The Unix Shell</a> — a complete beginner tutorial with hands-on exercises.</li>
+<li><a href="https://explainshell.com/">ExplainShell</a> — paste any command and get a breakdown of every flag and argument.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="11.14">

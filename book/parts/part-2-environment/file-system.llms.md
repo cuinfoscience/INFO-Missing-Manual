@@ -199,7 +199,7 @@ The corollary is that **hard-coded, machine-specific absolute paths are a code s
 
 ### Cross-platform path handling (conceptual)
 
-If you only ever use macOS or only ever use Windows, path handling is usually invisible. The moment you share code with someone on the other platform, though, the separator character (`/` vs `\`) and the shape of the root (`/Users/...` vs `C:\Users\...`) start producing subtle bugs that are hard to track down. The safe habit is to stop writing paths as strings at all and instead use whatever path-handling utility your language provides. In Python, that utility is `pathlib`, and it is worth learning on day one:
+If you only ever use macOS or only ever use Windows, path handling is usually invisible. The moment you share code with someone on the other platform, though, the separator character (`/` vs `\`) and the shape of the root (`/Users/...` vs `C:\Users\...`) start producing subtle bugs that are hard to track down. The safe habit is to stop writing paths as strings at all and instead use whatever path-handling utility your language provides. In Python, that utility is [`pathlib`](https://docs.python.org/3/library/pathlib.html), and it is worth learning on day one:
 
 ``` python
 from pathlib import Path
@@ -217,6 +217,12 @@ df = pd.read_csv("data/raw/survey.csv")     # usually fine, but brittle
 `Path(__file__).resolve().parent` is the trick that makes a script find its own folder no matter where it is launched from: the script asks the operating system where its own source file lives, resolves any symlinks, and uses that as the anchor for all subsequent paths. Every relative path is then built by joining with the `/` operator, which `pathlib` translates into whatever separator the current operating system wants.
 
 Two small supporting habits make everything else smoother. **Keep paths short** — deep project trees hit Windows’ legacy path-length limits and make every error message harder to read — and **avoid special characters** in filenames you pass to code. Spaces, parentheses, accented letters, and curly quotes all work in the GUI and all occasionally break in the terminal or a script. Stick to letters, digits, hyphens, and underscores for anything a script will touch, and you will never need to learn which layer of which tool is responsible for the broken quoting.
+
+> **NOTE:**
+>
+> - [File Explorer in Windows](https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1) — the official walk-through of navigating Windows paths.
+> - [Finder User Guide for Mac](https://support.apple.com/guide/mac-help/finder-mchlp1103/mac) — the Apple equivalent covering tags, column view, and search.
+> - [Python `pathlib` documentation](https://docs.python.org/3/library/pathlib.html) — the cross-platform way to work with paths from code.
 
 ## 10.9 Worked examples
 

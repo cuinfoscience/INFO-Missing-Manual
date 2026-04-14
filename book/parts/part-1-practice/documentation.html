@@ -791,18 +791,18 @@ div.csl-indent {
 </section>
 <section id="documentation-genres-and-the-questions-they-answer" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="documentation-genres-and-the-questions-they-answer"><span class="header-section-number">3.2</span> Documentation genres and the questions they answer</h2>
-<p>A useful classification (popularized in multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.</p>
+<p>A useful classification (popularized by the <a href="https://diataxis.fr/">Diátaxis framework</a> and multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.</p>
 <section id="reference-documentation" class="level3">
 <h3 class="anchored" data-anchor-id="reference-documentation">Reference documentation</h3>
 <p>Reference docs answer the question <em>“what are the exact inputs, outputs, options, and behaviors?”</em> They include API references for functions, classes, and parameters; command-line help and man pages; and configuration file schemas. Reference is dense, structured, and typically not narrative — you do not read it cover to cover, you dip into it for one precise answer and then leave. When you already know what function you want and just need to confirm an argument, reference is the right genre.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examples of reference docs you can read locally</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> help merge          <span class="co"># man-page-style git reference</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> help merge          <span class="co"># man-page-style git reference (https://git-scm.com/docs)</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">--help</span>               <span class="co"># GNU ls option reference</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"help(dict)"</span>  <span class="co"># Python built-in reference</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"help(dict)"</span>  <span class="co"># Python built-in reference (https://docs.python.org/3/)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="tutorials" class="level3">
 <h3 class="anchored" data-anchor-id="tutorials">Tutorials</h3>
-<p>Tutorials answer the question <em>“how do I learn this from scratch in a guided way?”</em> They are linear and scaffolded, and they assume you have the time to follow a sequence step by step. A good tutorial gets you to a working example quickly, even if you do not fully understand every piece on the first pass. The pandas “Getting Started” guide and the official Python tutorial are both examples of this genre.</p>
+<p>Tutorials answer the question <em>“how do I learn this from scratch in a guided way?”</em> They are linear and scaffolded, and they assume you have the time to follow a sequence step by step. A good tutorial gets you to a working example quickly, even if you do not fully understand every piece on the first pass. The <a href="https://pandas.pydata.org/docs/getting_started/index.html">pandas “Getting Started” guide</a> and the <a href="https://docs.python.org/3/tutorial/">official Python tutorial</a> are both examples of this genre.</p>
 </section>
 <section id="how-to-guides" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-guides">How-to guides</h3>
@@ -822,11 +822,11 @@ div.csl-indent {
 <p>Finding documentation is a skill because the web contains too much material, and search engines optimize for popularity rather than correctness. You should develop a repeatable workflow that reliably gets you to primary sources.</p>
 <section id="start-with-what-is-the-object" class="level3">
 <h3 class="anchored" data-anchor-id="start-with-what-is-the-object">Start with “what is the object?”</h3>
-<p>The first move is always to figure out what <em>kind</em> of thing you are dealing with, because the answer determines where the “official” docs live. Are you trying to understand a <strong>language feature</strong> (Python list slicing, generator expressions), a <strong>library</strong> (pandas, numpy, scikit-learn), a <strong>tool</strong> (Git, conda, Jupyter), a <strong>platform</strong> (GitHub Actions, Windows Task Scheduler), or a <strong>file format</strong> (CSV, JSON, Parquet)? Each of those categories has a different home: language features live in the language reference, libraries live in their own documentation sites, tools live in their man pages and project sites, platforms live in their vendor docs, and file formats live in their public specifications. Once you know the category, you almost always know the URL pattern.</p>
+<p>The first move is always to figure out what <em>kind</em> of thing you are dealing with, because the answer determines where the “official” docs live. Are you trying to understand a <strong>language feature</strong> (Python list slicing, generator expressions), a <strong>library</strong> (<a href="https://pandas.pydata.org/docs/">pandas</a>, <a href="https://numpy.org/doc/stable/">numpy</a>, <a href="https://scikit-learn.org/stable/">scikit-learn</a>), a <strong>tool</strong> (<a href="https://git-scm.com/doc">Git</a>, <a href="https://docs.conda.io/en/latest/">conda</a>, <a href="https://jupyter.org/documentation">Jupyter</a>), a <strong>platform</strong> (<a href="https://docs.github.com/en/actions">GitHub Actions</a>, <a href="https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page">Windows Task Scheduler</a>), or a <strong>file format</strong> (<a href="https://www.rfc-editor.org/rfc/rfc4180">CSV</a>, <a href="https://www.json.org/json-en.html">JSON</a>, <a href="https://parquet.apache.org/docs/">Parquet</a>)? Each of those categories has a different home: language features live in the language reference, libraries live in their own documentation sites, tools live in their man pages and project sites, platforms live in their vendor docs, and file formats live in their public specifications. Once you know the category, you almost always know the URL pattern.</p>
 </section>
 <section id="search-queries-that-route-you-to-primary-sources" class="level3">
 <h3 class="anchored" data-anchor-id="search-queries-that-route-you-to-primary-sources">Search queries that route you to primary sources</h3>
-<p>A common novice mistake is to type <em>“how do I do X”</em> into Google and end up in a sea of secondary sources — blog posts, Stack Overflow answers, and YouTube videos of varying age and accuracy. A small change in search query routes you to primary sources directly. Instead of <em>“how do I write a requirements.txt”</em>, search for <code>pip documentation requirements.txt</code>. Instead of <em>“how do I use SSH ProxyJump”</em>, search for <code>ssh man page ProxyJump</code>. Instead of <em>“pandas merge tutorial”</em>, search for <code>pandas API merge</code>. The pattern is always the same: name the tool, name the topic, and add a word like <code>documentation</code>, <code>API</code>, or <code>man page</code> to bias the results toward authoritative sources.</p>
+<p>A common novice mistake is to type <em>“how do I do X”</em> into Google and end up in a sea of secondary sources — blog posts, Stack Overflow answers, and YouTube videos of varying age and accuracy. A small change in search query routes you to primary sources directly. Instead of <em>“how do I write a requirements.txt”</em>, search for <a href="https://pip.pypa.io/en/stable/reference/requirements-file-format/"><code>pip documentation requirements.txt</code></a>. Instead of <em>“how do I use SSH ProxyJump”</em>, search for <code>ssh man page ProxyJump</code>. Instead of <em>“pandas merge tutorial”</em>, search for <code>pandas API merge</code>. The pattern is always the same: name the tool, name the topic, and add a word like <code>documentation</code>, <code>API</code>, or <code>man page</code> to bias the results toward authoritative sources.</p>
 <pre class="text"><code># Instead of                          search for
 # "how to use pandas merge"    →     "pandas API merge"
 # "git rebase tutorial"         →     "git documentation rebase"
@@ -1063,6 +1063,23 @@ Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and
 <li><p><strong>Cite primary sources</strong>: do not let AI replace authoritative references.</p></li>
 </ol>
 <p>A practical rule: if the AI suggests a command that could be destructive (<code>rm</code>, <code>sudo</code>, permissions changes), stop and verify in official documentation or with an instructor.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://diataxis.fr/">The Diátaxis framework</a> — the four-quadrant model for tutorials, how-tos, reference, and explanation. The clearest way to think about documentation genres.</li>
+<li><a href="https://www.writethedocs.org/guide/">Write the Docs: Beginner’s Guide</a> — a community-maintained introduction to writing technical documentation.</li>
+<li><a href="https://www.makeareadme.com/">Make a README</a> — a short guide with a template you can copy into any project.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="3.10">

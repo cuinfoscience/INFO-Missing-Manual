@@ -784,7 +784,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-counts-as-what-i-tried" class="level3">
 <h3 class="anchored" data-anchor-id="what-counts-as-what-i-tried">What counts as “what I tried”</h3>
-<p>“What I tried” is one of the most useful fields in any technical question, but only if it contains <em>concrete actions paired with their outcomes</em>, not vague gestures at effort. A useful entry looks like “I verified the file exists with <code>ls data/input.csv</code> and it is in the correct folder,” or “I printed <code>df.dtypes</code> and confirmed that <code>date</code> is <code>object</code>, not <code>datetime64[ns]</code>,” or “I tried <code>pip install package==1.2.3</code> and the import error changed from <code>ModuleNotFoundError</code> to <code>ImportError: cannot import name 'foo'</code>.” Each of these tells the helper exactly what state the world is in and what hypotheses have already been ruled out.</p>
+<p>“What I tried” is one of the most useful fields in any technical question, but only if it contains <em>concrete actions paired with their outcomes</em>, not vague gestures at effort. A useful entry looks like “I verified the file exists with <code>ls data/input.csv</code> and it is in the correct folder,” or “I printed <code>df.dtypes</code> and confirmed that <code>date</code> is <code>object</code>, not <code>datetime64[ns]</code>,” or “I tried <a href="https://pip.pypa.io/en/stable/cli/pip_install/"><code>pip install package==1.2.3</code></a> and the import error changed from <code>ModuleNotFoundError</code> to <code>ImportError: cannot import name 'foo'</code>.” Each of these tells the helper exactly what state the world is in and what hypotheses have already been ruled out.</p>
 <p>The contrast is with vague statements like “I tried a bunch of things” or “I looked online but nothing worked.” Those carry no information — your helper has no idea what is still worth checking and will end up suggesting the same things you have already tried. If you cannot remember what you tried, that is a hint that you should be writing it down as you go.</p>
 </section>
 </section>
@@ -801,7 +801,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This structure works across domains: Python errors, spreadsheet formulas, Git conflicts, file path confusion, and even conceptual misunderstandings.</p>
 <section id="goal" class="level3">
 <h3 class="anchored" data-anchor-id="goal">Goal</h3>
-<p>State your goal in a single sentence built around a verb and an object: “Load a CSV into pandas and parse the date column,” “Connect to the remote server via SSH and run JupyterLab,” “Merge my feature branch into <code>main</code> without losing changes.” Each of these names a concrete outcome the helper can recognize as success.</p>
+<p>State your goal in a single sentence built around a verb and an object: “Load a CSV into <a href="https://pandas.pydata.org/docs/">pandas</a> and parse the date column,” “Connect to the remote server via <a href="https://www.openssh.com/manual.html">SSH</a> and run <a href="https://jupyterlab.readthedocs.io/en/latest/">JupyterLab</a>,” “Merge my feature branch into <code>main</code> without losing changes.” Each of these names a concrete outcome the helper can recognize as success.</p>
 <p>This field matters more than people expect, because sometimes the most useful answer is not “fix this error” but “there is an easier way to achieve what you actually want.” If the helper only sees the symptom — say, a regex that does not match — they may help you debug the regex when the real answer is that you should not be using a regex at all (see <a href="../part-3-python/regex.html" class="quarto-xref"><span>Chapter 18</span></a>). Stating the goal explicitly keeps that door open.</p>
 </section>
 <section id="expected-vs.-actual" class="level3">
@@ -829,7 +829,7 @@ ValueError: time data '2026/13/01' does not match format</code></pre>
 </section>
 <section id="context" class="level3">
 <h3 class="anchored" data-anchor-id="context">Context</h3>
-<p>“Context” is the set of details that affect whether a proposed solution will actually work on your machine. The fields that come up most often are your operating system (Windows, macOS, or Linux), your Python version and the environment you are using (conda, venv, system Python), the versions of the packages involved, any hardware constraints that matter (memory, GPU availability), whether you have administrator access on the machine, and whether the work is local or running on a remote server. You do not need to provide every field every time; provide enough to rule out the major classes of problem. For Python errors, the four lines below answer most of the questions a helper would otherwise have to ask:</p>
+<p>“Context” is the set of details that affect whether a proposed solution will actually work on your machine. The fields that come up most often are your operating system (Windows, macOS, or Linux), your <a href="https://docs.python.org/3/">Python</a> version and the environment you are using (<a href="https://docs.conda.io/en/latest/">conda</a>, <a href="https://docs.python.org/3/library/venv.html">venv</a>, system Python), the versions of the packages involved, any hardware constraints that matter (memory, GPU availability), whether you have administrator access on the machine, and whether the work is local or running on a remote server. You do not need to provide every field every time; provide enough to rule out the major classes of problem. For Python errors, the four lines below answer most of the questions a helper would otherwise have to ask:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> show pandas <span class="kw">|</span> <span class="fu">head</span> <span class="at">-2</span></span>
@@ -922,11 +922,11 @@ print(result)</code></pre>
 </section>
 <section id="issue-trackers" class="level3">
 <h3 class="anchored" data-anchor-id="issue-trackers">Issue trackers</h3>
-<p>If your course (or your team) uses GitHub Issues or a similar tracker, treat an issue as a formal question with an audit trail. Future readers — including future you — will appreciate the structure. The first thing to get right is the title: it should be specific enough to identify the problem at a glance, like <code>pd.read_csv fails when sep=";" with UTF-8 BOM</code>, not vague enough to apply to a hundred other situations like <code>read_csv broken</code>. Issues are the right channel when the bug affects more than one person, when the answer should be preserved for later (rather than evaporating in chat), or when the resolution is going to require follow-up work that someone needs to track.</p>
+<p>If your course (or your team) uses <a href="https://docs.github.com/en/issues">GitHub Issues</a> or a similar tracker, treat an issue as a formal question with an audit trail. Future readers — including future you — will appreciate the structure. The first thing to get right is the title: it should be specific enough to identify the problem at a glance, like <code>pd.read_csv fails when sep=";" with UTF-8 BOM</code>, not vague enough to apply to a hundred other situations like <code>read_csv broken</code>. Issues are the right channel when the bug affects more than one person, when the answer should be preserved for later (rather than evaporating in chat), or when the resolution is going to require follow-up work that someone needs to track.</p>
 </section>
 <section id="public-forums" class="level3">
 <h3 class="anchored" data-anchor-id="public-forums">Public forums</h3>
-<p>Public forums — Stack Overflow, GitHub Discussions, your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.</p>
+<p>Public forums — <a href="https://stackoverflow.com/help/how-to-ask">Stack Overflow</a>, <a href="https://docs.github.com/en/discussions">GitHub Discussions</a>, your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.</p>
 </section>
 </section>
 <section id="common-traps-and-how-to-avoid-them" class="level2" data-number="2.7">
@@ -969,6 +969,23 @@ print(result)</code></pre>
 <li><p>Verify any AI-proposed commands in official documentation.</p></li>
 <li><p>Post the question.</p></li>
 </ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://stackoverflow.com/help/how-to-ask">How do I ask a good question?</a> — Stack Overflow’s canonical guide. Short, opinionated, and worth re-reading every year.</li>
+<li><a href="https://stackoverflow.com/help/minimal-reproducible-example">How to create a Minimal, Reproducible Example</a> — the companion page on MREs, with language-specific examples.</li>
+<li><a href="http://www.catb.org/~esr/faqs/smart-questions.html">How To Ask Questions The Smart Way</a> — Eric Raymond’s classic essay; the tone is dated but the substance holds up.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="2.9">

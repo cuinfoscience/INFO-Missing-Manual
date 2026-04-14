@@ -696,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
 <p>A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>JOIN</code>, <code>ORDER BY</code>, <code>LIMIT</code>) cover 80% of what a novice data scientist needs.</p>
-<p>This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run SQL against a local SQLite database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).</p>
+<p>This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run <a href="https://www.sqlite.org/lang.html">SQL</a> against a local <a href="https://www.sqlite.org/docs.html">SQLite</a> database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).</p>
 <p>If you already know pandas, you will notice that SQL and pandas are almost word-for-word equivalent in their core verbs. The translation table in section 10 is a fast way to transfer skills in either direction.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
@@ -707,7 +707,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Write <code>SELECT</code>, <code>WHERE</code>, <code>ORDER BY</code>, and <code>LIMIT</code> queries to filter and sort rows.</li>
 <li>Use <code>GROUP BY</code> with aggregate functions (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>) to compute summaries.</li>
 <li>Write <code>INNER JOIN</code> and <code>LEFT JOIN</code> to combine tables on a shared key.</li>
-<li>Run SQL from Python against a SQLite database using the <code>sqlite3</code> module and load the result into pandas.</li>
+<li>Run SQL from Python against a SQLite database using the <a href="https://docs.python.org/3/library/sqlite3.html"><code>sqlite3</code></a> module and load the result into pandas.</li>
 <li>Recognize the three most common novice SQL bugs: missing <code>GROUP BY</code> columns, <code>NULL</code> comparisons, and unquoted strings.</li>
 <li>Decide when SQL is the right tool (filtering big tables, joins across tables) and when pandas is (reshaping, plotting, ad-hoc analysis).</li>
 </ol>
@@ -1123,6 +1123,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://www.sqlite.org/lang.html">SQLite SQL language reference</a> — the authoritative grammar SQLite actually implements.</li>
+<li><a href="https://mode.com/sql-tutorial/">Mode Analytics SQL Tutorial</a> — a free, beginner-friendly tutorial with interactive exercises.</li>
+<li><a href="https://docs.python.org/3/library/sqlite3.html">Python <code>sqlite3</code> module</a> — the standard library’s database connector, ideal for teaching and prototyping.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="23.11">
 <h2 data-number="23.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">23.11</span> Worked examples</h2>

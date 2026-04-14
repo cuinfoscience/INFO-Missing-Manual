@@ -691,9 +691,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Explain what a regular expression is and name three situations where it is the right tool.</li>
 <li>Read a short regex and predict what it will match.</li>
 <li>Use literal characters, the seven core metacharacters, character classes, and anchors to write patterns.</li>
-<li>Use <code>re.search</code>, <code>re.match</code>, <code>re.findall</code>, and <code>re.sub</code> in Python with sensible defaults.</li>
+<li>Use <a href="https://docs.python.org/3/library/re.html#re.search"><code>re.search</code></a>, <code>re.match</code>, <code>re.findall</code>, and <code>re.sub</code> in <a href="https://docs.python.org/3/library/re.html">Python’s <code>re</code> module</a> with sensible defaults.</li>
 <li>Use capture groups to extract parts of a match.</li>
-<li>Use <code>pandas.Series.str.contains</code>, <code>.str.extract</code>, and <code>.str.replace</code> for regex on DataFrames.</li>
+<li>Use <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.contains.html"><code>pandas.Series.str.contains</code></a>, <code>.str.extract</code>, and <code>.str.replace</code> for regex on DataFrames.</li>
 <li>Recognize when a regex is becoming too clever and reach for a real parser instead.</li>
 </ol>
 </section>
@@ -936,6 +936,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Anything where you need to understand structure, not match shape.</strong> If the text has nested elements, recursion, or balanced brackets, regex will frustrate you. Reach for a real parser.</li>
 </ul>
 <p>A good rule of thumb: if your regex is longer than one line or contains more than three <code>(...)</code> groups, reconsider.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.python.org/3/library/re.html">Python <code>re</code> module reference</a> — the authoritative list of pattern syntax and functions.</li>
+<li><a href="https://docs.python.org/3/howto/regex.html">Python Regular Expression HOWTO</a> — a longer-form tutorial that builds intuition before you reach for the reference.</li>
+<li><a href="https://regex101.com/">regex101</a> — an interactive tester that explains every part of a pattern as you type.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="18.8">
 <h2 data-number="18.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">18.8</span> Worked examples</h2>

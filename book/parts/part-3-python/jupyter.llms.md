@@ -36,7 +36,7 @@ A notebook should read like a report and execute like a program. The discipline 
 
 ## 16.1 Mental models: what Jupyter is doing
 
-You will encounter two flavors of Jupyter and they are sometimes confused with each other. **Jupyter Notebook** (often called “classic”) is the original single-document interface — one notebook per browser tab, no built-in file browser, very simple. **JupyterLab** is the newer multi-document environment that gives you a file browser sidebar, multiple notebooks open as tabs, integrated terminals, and side-by-side panes. Most modern courses use JupyterLab. Both flavors run on the same underlying machinery, so anything you learn about kernels and execution state applies to either.
+You will encounter two flavors of Jupyter and they are sometimes confused with each other. [**Jupyter Notebook**](https://jupyter-notebook.readthedocs.io/en/latest/) (often called “classic”) is the original single-document interface — one notebook per browser tab, no built-in file browser, very simple. [**JupyterLab**](https://jupyterlab.readthedocs.io/en/latest/) is the newer multi-document environment that gives you a file browser sidebar, multiple notebooks open as tabs, integrated terminals, and side-by-side panes. Most modern courses use JupyterLab. Both flavors run on the same underlying machinery, so anything you learn about kernels and execution state applies to either.
 
 That underlying machinery has three pieces, and you should be able to name all three when something goes wrong. The **server** is the process you start when you run `jupyter lab` from the terminal — it listens on a port (usually `localhost:8888`) and is the actual program your browser is talking to. The **browser UI** is the HTML interface where you edit cells, click Run, and see output; it is just a thin shell around the server. The **kernel** is a separate process that runs your code — for Python notebooks it is a Python interpreter, but Jupyter also supports R, Julia, Bash, and others. When you press Shift+Enter on a cell, the browser sends the code to the server, the server hands it to the kernel, the kernel runs it, and the result comes back through the same chain.
 
@@ -58,6 +58,10 @@ source .venv/bin/activate                # 2. activate the project's environment
 jupyter lab                              # 3. start the server
 ```
 
+![](graphics/PLACEHOLDER-jupyterlab-overview.png)
+
+Figure 16.1: ALT: JupyterLab interface after launch, showing the file-browser sidebar on the left with the project’s folders (data/, notebooks/, src/), a notebook open as a tab in the centre pane, and the kernel indicator in the top-right showing the active Python environment.
+
 Each command matters. The `cd` puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project’s interpreter and packages, not the system Python. And `jupyter lab` (or `jupyter notebook` for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — `data/`, `notebooks/`, `src/`, the README. If it shows something else, stop and try again from the correct folder.
 
 To verify you are in the right place once Jupyter is up, run a single cell at the top of any notebook:
@@ -75,7 +79,15 @@ The most common Jupyter complaint is some variant of “I opened JupyterLab and 
 
 There are three common ways to end up here. The first is launching Jupyter from your home directory or `Downloads` instead of your project folder. The second is having multiple Jupyter servers running at once on different ports — you click an old browser tab and end up looking at a different server than you just started. The third is launching from the wrong environment, so the kernel paths and packages do not match what your project expects.
 
-The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press `Ctrl+C` (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, `cd` into the correct project folder and confirm with `pwd`. Third, activate the correct environment and run `jupyter lab` again. Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a “where am I” check at the top of every notebook so this is always visible:
+The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press `Ctrl+C` (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, `cd` into the correct project folder and confirm with `pwd`. Third, activate the correct environment and run `jupyter lab` again.
+
+> **WARNING:**
+>
+> When a notebook’s `import pandas` fails with `ModuleNotFoundError` even though you just `pip install`-ed pandas, the kernel is almost certainly running a different Python than the one you installed into. From inside the notebook, run `import sys; print(sys.executable)` — the path should contain your project’s `.venv/`. If it does not, use the kernel picker (top-right of JupyterLab) and pick the kernel whose name matches your environment.
+>
+> If your venv’s kernel is not in the picker at all, register it explicitly: with the venv activated, run `python -m pip install ipykernel` then `python -m ipykernel install --user --name project-venv --display-name "Python (project-venv)"`. Reload JupyterLab and the new kernel will appear.
+
+Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a “where am I” check at the top of every notebook so this is always visible:
 
 ``` python
 import os
@@ -94,6 +106,10 @@ Every cell in a Jupyter notebook has a **type**, and the type determines what th
 A **Code** cell holds Python (or whatever language the kernel speaks) and is sent to the kernel for execution when you run it. Whatever the last expression in the cell evaluates to is displayed below the cell as its *output*, alongside anything the code explicitly printed. Code cells are the only cells that actually compute anything — they are where the work happens.
 
 A **Markdown** cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, `code spans` become monospace, lists become lists, and equations written in LaTeX syntax (`$x^2$`) become typeset math. Markdown cells are how a notebook becomes a *document* — the paragraphs between your code cells that tell a reader what you are doing and why.
+
+![](graphics/PLACEHOLDER-jupyter-cell-types.png)
+
+Figure 16.2: ALT: A Jupyter notebook showing side-by-side cells. The top cell is a code cell with `df.head()` and its rendered DataFrame output. The cell below it is a markdown cell whose source contains a heading and a short paragraph, and which is rendered as formatted prose.
 
 A **Raw** cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.
 
@@ -515,6 +531,12 @@ scripts/
 ```
 
 The notebook and the script import the *same* functions from `src/`. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need `src/` as they get more complex, and grow again to include `scripts/` when they need automation — without ever having to rewrite from scratch.
+
+> **NOTE:**
+>
+> - [JupyterLab documentation](https://jupyterlab.readthedocs.io/en/latest/) — the official guide to the multi-document interface, extensions, and kernels.
+> - [Jupyter Notebook documentation](https://jupyter-notebook.readthedocs.io/en/latest/) — the classic single-document interface, still widely used in courses.
+> - [Jupyter Keyboard Shortcuts reference](https://jupyterlab.readthedocs.io/en/latest/user/commands.html) — the full list of command-palette actions and default keybindings.
 
 ## 16.9 Worked examples
 

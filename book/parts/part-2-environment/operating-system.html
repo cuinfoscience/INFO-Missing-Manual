@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -684,7 +684,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/operating-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Operating System</span></a></li></ol></nav>
@@ -725,7 +725,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping Windows and macOS stable, updated, and recoverable.</p>
+<p>Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping <a href="https://support.microsoft.com/en-us/windows">Windows</a> and <a href="https://support.apple.com/guide/mac-help/welcome/mac">macOS</a> stable, updated, and recoverable.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -755,10 +755,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>On macOS, the analogous hub is <strong>System Settings</strong> (recently renamed from “System Preferences” — older guides may still use that name). The most relevant top-level sections are General, Privacy &amp; Security, and Network. Beyond System Settings there are a handful of utility apps tucked under Applications → Utilities that come up often: <strong>Disk Utility</strong> for managing storage, <strong>System Information</strong> for the comprehensive view of your hardware, and <strong>Activity Monitor</strong> for seeing what is currently using your CPU, memory, and battery.</p>
 <p>The single most useful skill on either OS is knowing that the Settings panel has a search box at the top, and that searching for a keyword usually jumps you straight to the right page. You do not need to memorize the menu hierarchy; you need to memorize a small vocabulary of keywords. Type <code>update</code>, <code>backup</code>, <code>encryption</code>, <code>privacy</code>, <code>firewall</code>, <code>storage</code>, or <code>recovery</code> into the search box, and you will land on the relevant page faster than navigating through the menus by hand.</p>
 </section>
-<section id="know-your-system-version-storage-and-constraints" class="level2" data-number="9.3">
+<section id="know-your-system-version-storage-and-constraints" class="level2 page-columns page-full" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="know-your-system-version-storage-and-constraints"><span class="header-section-number">9.3</span> Know your system: version, storage, and constraints</h2>
 <p>Before you troubleshoot anything, know three things about your machine: what version of the OS is running, how much storage is free, and where your files actually live. These are the facts every help channel will ask you for first, and most surprise failures turn out to trace back to one of them.</p>
-<section id="check-os-version-and-build" class="level3">
+<section id="check-os-version-and-build" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="check-os-version-and-build">Check OS version and build</h3>
 <p>Record your OS version as part of your baseline notes — the same way you might note your student ID or your office hours. When you search for error messages later, “macOS 14.5” or “Windows 11 23H2” is often the difference between finding a solved question in five seconds and finding nothing at all. Knowing the build number also lets you tell whether an update actually installed.</p>
 <pre class="text"><code>Windows:   Settings → System → About
@@ -768,6 +768,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 macOS:     Apple menu → About This Mac
            — look at the macOS name (e.g., Sonoma), version (14.5),
              and build number (click Version for the build)</code></pre>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-windows-about" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-windows-about-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-windows-about.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-windows-about-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: ALT: Windows Settings → System → About page, with “OS build” and “Version” fields highlighted so the reader knows exactly where to find them.
+</figcaption>
+</figure>
+</div>
+</div><div class="">
+<div id="fig-macos-about" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-macos-about-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-macos-about.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-macos-about-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: ALT: macOS “About This Mac” dialog, showing the macOS name, version, and build number.
+</figcaption>
+</figure>
+</div>
+</div></div>
 <p>It helps to understand the three categories of “version” you will see mentioned. A <strong>major version</strong> is the flagship release: Windows 11, macOS Sonoma, macOS Sequoia. These come roughly once a year. A <strong>feature release or minor update</strong> (Windows “feature update,” macOS point release like 14.5 → 14.6) adds capabilities and small changes and comes more frequently. A <strong>security or patch update</strong> is a smaller, targeted fix that shows up more or less monthly — these are the updates you should always install quickly. Keeping the three categories straight tells you how careful to be about any given update: feature and major upgrades deserve planning; security patches deserve speed.</p>
 </section>
 <section id="check-storage-health-early-and-often" class="level3">
@@ -839,12 +863,12 @@ macOS:     Apple menu → About This Mac → More Info → Storage Settings
 </section>
 <section id="encryption-awareness-and-recovery-keys" class="level3">
 <h3 class="anchored" data-anchor-id="encryption-awareness-and-recovery-keys">Encryption awareness (and recovery keys)</h3>
-<p>Disk encryption protects your data if your laptop is lost or stolen — without your password, the disk is unreadable, even to someone who removes it and plugs it into another machine. On Windows the feature is called <strong>BitLocker</strong> (or “device encryption” on consumer editions); on macOS it is called <strong>FileVault</strong>. Both are usually on by default on modern hardware, but it is worth confirming.</p>
+<p>Disk encryption protects your data if your laptop is lost or stolen — without your password, the disk is unreadable, even to someone who removes it and plugs it into another machine. On Windows the feature is called <a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/"><strong>BitLocker</strong></a> (or “device encryption” on consumer editions); on macOS it is called <a href="https://support.apple.com/guide/mac-help/protect-data-on-your-mac-with-filevault-mh11785/mac"><strong>FileVault</strong></a>. Both are usually on by default on modern hardware, but it is worth confirming.</p>
 <p>Encryption introduces exactly one new dependency you must take seriously: the <strong>recovery key</strong>. The recovery key is what unlocks the disk if you forget your password or if something corrupts your account, and it is the only way back in. Both operating systems will offer to store it — in your Microsoft account, your Apple ID, or printed/saved by you somewhere safe. Make sure you know where yours lives, and <em>write it down somewhere outside your encrypted laptop</em> before you change anything related to encryption. The cardinal rule is: never proceed with an encryption change you do not understand the recovery for, because the failure mode is “your data is now permanently inaccessible to anyone, including you.”</p>
 </section>
 <section id="software-installation-hygiene" class="level3">
 <h3 class="anchored" data-anchor-id="software-installation-hygiene">Software installation hygiene</h3>
-<p>Install software only from places you can trust: the vendor’s official website, the platform’s app store (Microsoft Store or Mac App Store), or a reputable package manager (Homebrew on macOS, winget on Windows, conda or pip in your Python environment). Random “freeware” download sites are one of the most common malware vectors, and they routinely bundle adware and toolbars with whatever you actually wanted. Keep your browser up to date, since the browser is the single program that handles the most untrusted input you encounter. And periodically uninstall software you no longer use — every installed app is a small attack surface, and removing the ones you do not need shrinks the surface for free.</p>
+<p>Install software only from places you can trust: the vendor’s official website, the platform’s app store (Microsoft Store or Mac App Store), or a reputable package manager (<a href="https://brew.sh/">Homebrew</a> on macOS, <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">winget</a> on Windows, <a href="https://docs.conda.io/en/latest/">conda</a> or <a href="https://pip.pypa.io/en/stable/">pip</a> in your Python environment). Random “freeware” download sites are one of the most common malware vectors, and they routinely bundle adware and toolbars with whatever you actually wanted. Keep your browser up to date, since the browser is the single program that handles the most untrusted input you encounter. And periodically uninstall software you no longer use — every installed app is a small attack surface, and removing the ones you do not need shrinks the surface for free.</p>
 </section>
 </section>
 <section id="backups-and-recovery-the-student-safety-net" class="level2" data-number="9.6">
@@ -865,7 +889,7 @@ macOS:     Apple menu → About This Mac → More Info → Storage Settings
 </section>
 <section id="macos-backups-with-time-machine" class="level3">
 <h3 class="anchored" data-anchor-id="macos-backups-with-time-machine">macOS backups with Time Machine</h3>
-<p>Time Machine is the simplest good backup tool on any operating system. Plug in an external drive (Time Machine will offer to format it for you; say yes if it is a dedicated backup drive), open System Settings → General → Time Machine, click “Add Backup Disk,” and select it. macOS starts an initial backup immediately and then runs incremental backups every hour the drive is connected.</p>
+<p><a href="https://support.apple.com/guide/mac-help/back-up-your-mac-with-time-machine-mh11421/mac">Time Machine</a> is the simplest good backup tool on any operating system. Plug in an external drive (Time Machine will offer to format it for you; say yes if it is a dedicated backup drive), open System Settings → General → Time Machine, click “Add Backup Disk,” and select it. macOS starts an initial backup immediately and then runs incremental backups every hour the drive is connected.</p>
 <p>The under-appreciated feature is how easy Time Machine makes <em>restoring</em>. You do not have to wait for a disaster — you can open any folder and click the Time Machine icon in the menu bar, then “Browse Time Machine Backups,” to scroll through every past version of that folder and restore any file from any point in history. This is invaluable for “I accidentally overwrote a paragraph of my thesis two days ago” situations, not just “my laptop died” situations.</p>
 <pre class="text"><code>macOS:     System Settings → General → Time Machine → Add Backup Disk
            Menu bar icon → Browse Time Machine Backups (to restore)</code></pre>
@@ -1026,6 +1050,23 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
     - the project's main script or notebook runs from a clean start
 [ ] Have a second machine or cloud backup available for emergency access</code></pre>
 <p>The last point is worth thinking about seriously. What is your plan if your laptop dies at 8 PM the night before a submission? If the answer is “I don’t know, I’d panic,” spend an hour now making a plan: pushing your code to GitHub, knowing where a library or lab computer is, having a lightweight workflow that could run on a borrowed machine. The plan does not have to be fancy — it just has to exist before you need it.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://support.microsoft.com/en-us/windows">Microsoft Support: Windows</a> — the canonical help portal for Windows updates, backups, and security.</li>
+<li><a href="https://support.apple.com/guide/mac-help/welcome/mac">Apple Support: Mac</a> — the Mac User Guide, covering Software Update, Time Machine, and FileVault.</li>
+<li><a href="https://staysafeonline.org/online-safety-privacy-basics/">StaySafeOnline: Cybersecurity Basics</a> — a plain-language primer on passwords, MFA, and account hygiene.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="9.10">

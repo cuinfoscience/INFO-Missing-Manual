@@ -10,7 +10,7 @@
 
 Sooner or later — usually the first time you use an API — you will need to put a secret in your code. An API key, a database password, an access token, a private URL. The question is *where*, and the answer is almost always “not in the source file, and definitely not in git.”
 
-This chapter teaches you the small set of habits that will keep you from committing a credential to a public repository and getting an urgent email from GitHub at 2 a.m. telling you your AWS key is being used to mine cryptocurrency. (This happens. Regularly.) You will learn what environment variables are, how `.env` files work, how to use `python-dotenv` to load them, how to keep secrets out of git, and what to do if you do accidentally leak one.
+This chapter teaches you the small set of habits that will keep you from committing a credential to a public repository and getting an urgent email from GitHub at 2 a.m. telling you your AWS key is being used to mine cryptocurrency. (This happens. Regularly.) You will learn what environment variables are, how `.env` files work, how to use [`python-dotenv`](https://pypi.org/project/python-dotenv/) to load them, how to keep secrets out of git, and what to do if you do accidentally leak one.
 
 ## Learning objectives
 
@@ -32,7 +32,7 @@ If a credential is in a file tracked by git, you should treat it as compromised 
 
 Every running process on your computer has a set of key-value pairs called its **environment**. These are inherited from the shell that started the process. Typical entries include `PATH` (where to find executables), `HOME` (your home directory), and `USER` (your login name). You can add anything else you like.
 
-Python reads environment variables through the `os` module:
+Python reads environment variables through the [`os`](https://docs.python.org/3/library/os.html) module:
 
 ``` python
 import os
@@ -43,6 +43,12 @@ api_key = os.getenv("GITHUB_TOKEN", "")      # returns default if missing
 ```
 
 Use the `os.environ[...]` form when the program *requires* the variable — the `KeyError` will tell you immediately that something is misconfigured, instead of silently passing `None` to `requests` and failing with a confusing 401.
+
+> **WARNING:**
+>
+> Three failure modes cover 90% of “my secret isn’t being read.” First, the **`.env` file is not in the working directory the program is launched from** — `load_dotenv()` looks for `.env` in the current directory, not the file’s directory. Launch from your project root, or call `load_dotenv(dotenv_path="path/to/.env")` explicitly. Second, the **variable name has a typo** — `GITHUB_TOEKN` looks fine at a glance. Print `list(os.environ.keys())` to see what actually loaded. Third, the variable is **set in a different shell session** — environment variables set with `export` only apply to the shell they were set in, so a variable set before `jupyter lab` won’t be visible in a notebook started from a different terminal.
+>
+> If you ever see the value itself in a traceback or log, **rotate the secret immediately** — assume it is compromised. Do not just remove the log line.
 
 ## 29.2 Setting environment variables in your shell
 
@@ -193,6 +199,12 @@ The right emergency response, in order:
 5.  **Think about scope.** If the key had broad access (a root AWS key, a production database URL), you may have more cleanup to do: check access logs, look for unauthorized usage, notify your team.
 
 GitHub also offers **secret scanning** for public repos — it detects known secret formats and emails you (and sometimes the issuing service) automatically. Do not rely on it as your only line of defense, but it is a useful last-ditch safety net.
+
+> **NOTE:**
+>
+> - [The Twelve-Factor App: Config](https://12factor.net/config) — the source of the “environment variables for secrets” convention.
+> - [`python-dotenv` documentation](https://pypi.org/project/python-dotenv/) — the library most projects use to load `.env` files into process environments.
+> - [GitHub: Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — the official guide to rotating and erasing leaked credentials.
 
 ## 29.8 Worked examples
 

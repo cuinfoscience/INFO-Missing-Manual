@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -698,7 +698,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/remote.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-2-environment/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../../parts/part-2-environment/remote.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Remote Computing</span></a></li></ol></nav>
@@ -739,7 +739,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using SSH and VPNs, move files, run remote jobs, and use tunneling to access remote services (including Jupyter) as if they were local.</p>
+<p>Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using <a href="https://www.openssh.com/manual.html">SSH</a> and <a href="https://en.wikipedia.org/wiki/Virtual_private_network">VPNs</a>, move files, run remote jobs, and use tunneling to access remote services (including <a href="https://jupyter.org/documentation">Jupyter</a>) as if they were local.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -763,7 +763,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="13.1" class="anchored" data-anchor-id="a-beginner-mental-model"><span class="header-section-number">13.1</span> A beginner mental model</h2>
 <p>The vocabulary here is simpler than it sounds. Your <strong>local machine</strong> is the laptop or desktop in front of you, the one whose keyboard you can touch. A <strong>remote machine</strong> is any other computer you reach over a network connection: a university server, a high-performance cluster login node, a cloud VM, a lab workstation. The <strong>network</strong> between them is whichever path actually connects them — your campus network, your home Wi-Fi, the public internet, or some combination.</p>
 <p>Most remote tools use <strong>client/server</strong> language. The <strong>client</strong> is the program you run locally to initiate the connection (an SSH client, a VPN client, your web browser). The <strong>server</strong> is the remote program waiting to accept connections (an SSH server, a web server). The protocol — SSH, HTTPS, whatever — is the rule for how the two halves talk to each other. Once you have that picture in mind, every tool in this chapter is a variant of “run a client locally that talks to a server somewhere else.”</p>
-<p>A few details about how connections behave matter in practice. An <strong>SSH session</strong> is a connection plus a shell — when you log out, the shell exits, and any program you started that depends on that shell may also stop. If you want a long-running job to survive your logout, you need a job-control tool like <code>tmux</code>, <code>screen</code>, or <code>nohup</code>. The remote computer also has its <strong>own</strong> filesystem, users, permissions, and installed software, which means a file on the remote machine is not the same as a file with the same path on your laptop, and “I have pandas installed” on your laptop tells you nothing about whether pandas is installed on the server.</p>
+<p>A few details about how connections behave matter in practice. An <strong>SSH session</strong> is a connection plus a shell — when you log out, the shell exits, and any program you started that depends on that shell may also stop. If you want a long-running job to survive your logout, you need a job-control tool like <a href="https://github.com/tmux/tmux/wiki"><code>tmux</code></a>, <a href="https://www.gnu.org/software/screen/manual/screen.html"><code>screen</code></a>, or <a href="https://www.gnu.org/software/coreutils/manual/html_node/nohup-invocation.html"><code>nohup</code></a>. The remote computer also has its <strong>own</strong> filesystem, users, permissions, and installed software, which means a file on the remote machine is not the same as a file with the same path on your laptop, and “I have pandas installed” on your laptop tells you nothing about whether pandas is installed on the server.</p>
 <p>Given all that overhead, why use remote computing at all? Four reasons. The first is <strong>resources</strong>: the server has more CPU, more RAM, more disk, or a GPU your laptop does not have. The second is <strong>shared data and licensed software</strong>: some datasets and tools live on a server because they are too large, too sensitive, or too expensive to copy. The third is <strong>reliability</strong>: a server runs continuously and gets backed up, while your laptop closes its lid and dies on Wi-Fi. The fourth is <strong>collaboration</strong>: when several people share a remote environment, everyone runs the same code against the same data with the same library versions, which eliminates an entire category of “works on my machine” bugs.</p>
 </section>
 <section id="prerequisites-and-safe-defaults" class="level2" data-number="13.2">
@@ -787,11 +787,11 @@ vpn:        required from off-campus (CiscoSecureClient → "cs.example.edu")</c
 <p>Modern operating systems ship with SSH built in, but the shape of “how to find it” differs.</p>
 <p><strong>macOS.</strong> The built-in Terminal.app has <code>ssh</code>, <code>scp</code>, and <code>sftp</code> installed by default. You do not need to install anything. Open Terminal and type <code>which ssh</code>; it should print <code>/usr/bin/ssh</code>.</p>
 <p><strong>Linux.</strong> Same story — <code>ssh</code> and friends are installed by default on essentially every distribution. If your Linux machine is unusual and does not have them, <code>sudo apt install openssh-client</code> (Debian/Ubuntu) or the equivalent gets them.</p>
-<p><strong>Windows.</strong> Modern Windows 10 and 11 ship with an OpenSSH client that you can use from PowerShell or Command Prompt. Confirm it is installed with:</p>
+<p><strong>Windows.</strong> Modern Windows 10 and 11 ship with an <a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview">OpenSSH</a> client that you can use from <a href="https://learn.microsoft.com/en-us/powershell/">PowerShell</a> or Command Prompt. Confirm it is installed with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Command</span> ssh</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Should print a path like C:\Windows\System32\OpenSSH\ssh.exe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If the command is not found, open Settings → Apps → Optional features, click “Add an optional feature,” search for “OpenSSH Client,” and install it. For more terminal-friendly experience, consider running your remote work from <strong>Windows Terminal</strong> (a tabbed terminal application, free in the Microsoft Store) or from <strong>Windows Subsystem for Linux (WSL)</strong>, which gives you a proper Linux environment on the same machine.</p>
-<p>Optionally, install a code editor with remote-development support. VS Code’s <strong>Remote - SSH</strong> extension is the most popular — it lets you open a folder on a remote server and edit it as if it were local, with full syntax highlighting, terminal, and debugger running over the SSH connection.</p>
+<p>Optionally, install a code editor with remote-development support. <a href="https://code.visualstudio.com/docs">VS Code</a>’s <a href="https://code.visualstudio.com/docs/remote/ssh"><strong>Remote - SSH</strong></a> extension is the most popular — it lets you open a folder on a remote server and edit it as if it were local, with full syntax highlighting, terminal, and debugger running over the SSH connection.</p>
 </section>
 <section id="golden-safety-rules" class="level3">
 <h3 class="anchored" data-anchor-id="golden-safety-rules">Golden safety rules</h3>
@@ -804,17 +804,47 @@ vpn:        required from off-campus (CiscoSecureClient → "cs.example.edu")</c
 </ul>
 </section>
 </section>
-<section id="ssh-fundamentals" class="level2" data-number="13.3">
+<section id="ssh-fundamentals" class="level2 page-columns page-full" data-number="13.3">
 <h2 data-number="13.3" class="anchored" data-anchor-id="ssh-fundamentals"><span class="header-section-number">13.3</span> SSH fundamentals</h2>
 <section id="what-ssh-provides" class="level3">
 <h3 class="anchored" data-anchor-id="what-ssh-provides">What SSH provides</h3>
 <p>SSH (Secure Shell) is the workhorse protocol for remote computing on Unix-like systems. It does three things, all of them encrypted: it gives you a secure remote login (a shell on a server somewhere), it lets you securely transfer files in and out of that server, and it lets you tunnel other kinds of network traffic through the same connection. The three uses are the same protocol with different command-line shapes, which is why “learn SSH” turns out to be one of the highest-leverage skills in remote work.</p>
 </section>
-<section id="the-simplest-connection" class="level3">
+<section id="the-simplest-connection" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="the-simplest-connection">The simplest connection</h3>
 <p>The most common SSH command is:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@hostname</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For example, <code>ssh agandler@server.cs.example.edu</code>. If the server is running SSH on a non-standard port (some institutions do this), you add <code>-p</code>:</p>
+<p>For example, <code>ssh agandler@server.cs.example.edu</code>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-ssh-connected" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssh-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-ssh-connected.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-ssh-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.1: ALT: Terminal showing a successful SSH connection. The prompt has changed from the local hostname to the remote hostname (for example, from <code>you@laptop</code> to <code>agandler@server.cs.example.edu</code>), signalling that commands now run on the remote machine.
+</figcaption>
+</figure>
+</div>
+</div></div><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If SSH will not connect
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The three common failures each point at a different layer. <strong>“Operation timed out” or “Connection refused”</strong> usually means the network can’t reach the server — are you on the right VPN? On campus Wi-Fi? Try <code>ping hostname</code> to confirm you can route to the host at all. <strong>“Permission denied (publickey)”</strong> means the server accepted your connection but rejected your credentials; confirm your key is loaded with <code>ssh-add -l</code> and that the public key is installed in the server’s <code>~/.ssh/authorized_keys</code>. <strong>“Host key verification failed”</strong> means the server’s identity changed — usually after a server reinstall, occasionally because of a man-in-the-middle attack; if you trust the change, edit <code>~/.ssh/known_hosts</code> and remove the stale entry for that hostname.</p>
+<p>For any of these, <code>ssh -v username@hostname</code> turns on verbose output so you can see which stage is failing. See <a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a> if you need to escalate to your IT department.</p>
+</div>
+</div>
+</div>
+<p>If the server is running SSH on a non-standard port (some institutions do this), you add <code>-p</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-p</span> 2222 username@hostname</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The first time you connect to a new server, SSH will ask whether you trust the <strong>host fingerprint</strong> — a long string of characters that uniquely identifies the server’s identity. Type <code>yes</code> to accept it (this is the moment when you should verify the fingerprint with your instructor or sysadmin if you have any doubt), and SSH will record it in a file called <code>~/.ssh/known_hosts</code>. After that, every future connection silently checks that the server still presents the same fingerprint.</p>
 </section>
@@ -1236,6 +1266,23 @@ Host *
 <p><strong>Wrong key offered or no key loaded.</strong> The SSH client offered a key the server does not recognize, or the agent holds no keys at all. <code>ssh-add -l</code> lists the keys your agent currently has; <code>ssh-add ~/.ssh/id_ed25519</code> adds one. Verify with <code>-v</code> that the client is actually offering the key you expect:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="st">"offering\|accepted\|publickey"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Server-side access control problem.</strong> Your key is correct but the server has not authorized it — the public key was never added to <code>~/.ssh/authorized_keys</code> on the server, the file has the wrong permissions, or your account has been disabled. If you have another way into the server (password login, console access, another working key), fix it there. If not, you need to contact whoever administers the server and ask them to install your public key.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://www.openssh.com/manual.html">OpenSSH manual pages</a> — the canonical reference for <code>ssh</code>, <code>sshd</code>, <code>scp</code>, <code>sftp</code>, and SSH config files.</li>
+<li><a href="https://www.ssh.com/academy/ssh">SSH Academy</a> — a tutorial-style introduction to keys, agents, tunneling, and common errors.</li>
+<li><a href="https://code.visualstudio.com/docs/remote/ssh">VS Code Remote - SSH</a> — the official guide to editing remote files as if they were local.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="13.11">

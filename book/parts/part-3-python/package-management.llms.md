@@ -16,9 +16,9 @@ By the end of this chapter, you should be able to:
 
 1.  Explain what a **package**, **dependency**, and **environment** are.
 
-2.  Choose between `conda` and `pip` for a given situation.
+2.  Choose between [`conda`](https://docs.conda.io/en/latest/) and [`pip`](https://pip.pypa.io/en/stable/) for a given situation.
 
-3.  Create, activate, and remove isolated environments (conda environments and/or `venv`).
+3.  Create, activate, and remove isolated environments (conda environments and/or [`venv`](https://docs.python.org/3/library/venv.html)).
 
 4.  Install packages with good hygiene (no ‘random global installs’’, avoid base/root env).
 
@@ -54,7 +54,7 @@ The way you make environments **reproducible** is by writing down what is instal
 
 The Python ecosystem has two major package management traditions, and you will encounter both. **conda** comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.
 
-**pip** is the standard installer that ships with Python itself, and it installs packages from PyPI (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
+**pip** is the standard installer that ships with Python itself, and it installs packages from [PyPI](https://pypi.org/) (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
 
 The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, **never install packages globally** for course work — every project gets its own environment, period.
 
@@ -209,6 +209,16 @@ python -m pip install --upgrade pip
 python -m pip install pandas scikit-learn matplotlib
 python -m pip install "requests>=2.31,<3.0"
 ```
+
+> **WARNING:**
+>
+> The two most common failures are **“permission denied”** and **“externally-managed-environment”**. Both mean the same thing: pip is trying to install into a system Python that your user account (rightly) does not own. The fix is never `sudo pip install` — the fix is to activate your virtual environment first (`source .venv/bin/activate`) and run the install from there. Confirm the venv is active by checking that `which python` points inside `.venv/`.
+>
+> If pip reports `ResolutionImpossible` with a wall of conflicting constraints, you have hit a dependency conflict. Do not try one-at-a-time manual fixes — instead, delete `.venv/`, recreate it from scratch, and install packages together so the solver sees all constraints at once. See [sec-asking-questions](#sec-asking-questions) if you need to escalate.
+
+![](graphics/PLACEHOLDER-pip-install-success.png)
+
+Figure 14.1: ALT: Terminal output from a successful `pip install pandas` command. The output shows the download progress bar, the list of dependencies being collected (numpy, python-dateutil, pytz, six), and a final “Successfully installed” line listing the installed package versions.
 
 Record what you installed in a `requirements.txt` file so a teammate (or future-you) can recreate the environment. The simplest way is `pip freeze`:
 
@@ -558,6 +568,12 @@ python -m pip install -r requirements.txt --verbose
 
 The verbose output tells you which package pip is currently wrestling with — often one package deep in the dependency graph. The fix is to **add constraints or pins** so pip has less to search. Pinning the top-level packages to specific versions (`pandas==2.2.1`) or adding a `constraints.txt` file that caps known-problematic dependencies (`numpy<2.0`) usually collapses the search space to something solvable. If pip is still backtracking after you have pinned aggressively, the fastest recovery is to delete the `.venv`, start from a clean environment, and install packages in the smallest groups that let the solver find a consistent answer.
 
+> **NOTE:**
+>
+> - [Python Packaging User Guide](https://packaging.python.org/en/latest/) — the authoritative reference on pip, virtual environments, and PyPI.
+> - [Conda User Guide: Managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) — the official walk-through for `conda create`, `activate`, and `export`.
+> - [Real Python: Managing Python Packages](https://realpython.com/installing-python/) — a beginner-friendly overview of installation and package management patterns.
+
 ## 14.12 Worked examples
 
 ### Creating a clean conda environment for a project
@@ -725,7 +741,7 @@ The steps for downloading, installing, using, and maintaining Python with `conda
 
 ![](graphics/conda_mini_ana.png)
 
-Figure 14.1: Relationships between `conda`, miniconda, and Anaconda.
+Figure 14.2: Relationships between `conda`, miniconda, and Anaconda.
 
 ## 14.17 Downloading
 

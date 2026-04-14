@@ -756,8 +756,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
 <li><p>Explain what a <strong>package</strong>, <strong>dependency</strong>, and <strong>environment</strong> are.</p></li>
-<li><p>Choose between <code>conda</code> and <code>pip</code> for a given situation.</p></li>
-<li><p>Create, activate, and remove isolated environments (conda environments and/or <code>venv</code>).</p></li>
+<li><p>Choose between <a href="https://docs.conda.io/en/latest/"><code>conda</code></a> and <a href="https://pip.pypa.io/en/stable/"><code>pip</code></a> for a given situation.</p></li>
+<li><p>Create, activate, and remove isolated environments (conda environments and/or <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a>).</p></li>
 <li><p>Install packages with good hygiene (no ‘random global installs’’, avoid base/root env).</p></li>
 <li><p>Record dependencies for reproducibility (<code>environment.yml</code>, <code>requirements.txt</code>, optional lockfiles).</p></li>
 <li><p>Diagnose ‘it worked yesterday’’ failures: wrong interpreter, wrong environment, conflicts.</p></li>
@@ -783,7 +783,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="choosing-tools-conda-vs-pip-vs-venv" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="choosing-tools-conda-vs-pip-vs-venv"><span class="header-section-number">14.2</span> Choosing tools: <code>conda</code> vs <code>pip</code> vs <code>venv</code></h2>
 <p>The Python ecosystem has two major package management traditions, and you will encounter both. <strong>conda</strong> comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.</p>
-<p><strong>pip</strong> is the standard installer that ships with Python itself, and it installs packages from PyPI (the Python Package Index). Combined with the standard-library <code>venv</code> module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.</p>
+<p><strong>pip</strong> is the standard installer that ships with Python itself, and it installs packages from <a href="https://pypi.org/">PyPI</a> (the Python Package Index). Combined with the standard-library <code>venv</code> module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.</p>
 <p>The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, <strong>never install packages globally</strong> for course work — every project gets its own environment, period.</p>
 </section>
 <section id="baseline-hygiene-rules-non-negotiable" class="level2" data-number="14.3">
@@ -862,7 +862,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Run <code>--dry-run</code> first so you know what the command is about to delete. Avoid running <code>conda clean --all</code> right before a demo or deadline — if a package needs to be reinstalled and conda has to re-fetch it, you have turned a zero-second operation into a minute of waiting. Clean when you have time to recover, not under pressure.</p>
 </section>
 </section>
-<section id="core-workflows-with-venv-pip" class="level2" data-number="14.5">
+<section id="core-workflows-with-venv-pip" class="level2 page-columns page-full" data-number="14.5">
 <h2 data-number="14.5" class="anchored" data-anchor-id="core-workflows-with-venv-pip"><span class="header-section-number">14.5</span> Core workflows with <code>venv</code> + <code>pip</code></h2>
 <section id="create-and-activate-a-venv" class="level3">
 <h3 class="anchored" data-anchor-id="create-and-activate-a-venv">Create and activate a <code>venv</code></h3>
@@ -880,13 +880,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate.bat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>After activation, your prompt should show <code>(.venv)</code> or <code>(venv)</code> at the start of the line. To leave the environment, run <code>deactivate</code> from any prompt. If you ever see <code>(.venv)</code> but <code>which python</code> points outside the <code>.venv</code> folder, something is wrong — the activation script did not actually switch your <code>PATH</code>, and you should investigate before installing anything.</p>
 </section>
-<section id="install-and-record-dependencies" class="level3">
+<section id="install-and-record-dependencies" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="install-and-record-dependencies">Install and record dependencies</h3>
 <p>Once the venv is active, upgrade pip itself (old pip versions have slower solvers and miss packages), then install what you need. Always invoke pip through <code>python -m pip</code> rather than <code>pip</code> directly — that guarantees you are using the pip belonging to the <em>active</em> Python, not some system pip that might install into the wrong place.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas scikit-learn matplotlib</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="st">"requests&gt;=2.31,&lt;3.0"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Record what you installed in a <code>requirements.txt</code> file so a teammate (or future-you) can recreate the environment. The simplest way is <code>pip freeze</code>:</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If <code>pip install</code> fails
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The two most common failures are <strong>“permission denied”</strong> and <strong>“externally-managed-environment”</strong>. Both mean the same thing: pip is trying to install into a system Python that your user account (rightly) does not own. The fix is never <code>sudo pip install</code> — the fix is to activate your virtual environment first (<code>source .venv/bin/activate</code>) and run the install from there. Confirm the venv is active by checking that <code>which python</code> points inside <code>.venv/</code>.</p>
+<p>If pip reports <code>ResolutionImpossible</code> with a wall of conflicting constraints, you have hit a dependency conflict. Do not try one-at-a-time manual fixes — instead, delete <code>.venv/</code>, recreate it from scratch, and install packages together so the solver sees all constraints at once. See <a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a> if you need to escalate.</p>
+</div>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-pip-install-success" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-pip-install-success.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: ALT: Terminal output from a successful <code>pip install pandas</code> command. The output shows the download progress bar, the list of dependencies being collected (numpy, python-dateutil, pytz, six), and a final “Successfully installed” line listing the installed package versions.
+</figcaption>
+</figure>
+</div>
+</div></div><p>Record what you installed in a <code>requirements.txt</code> file so a teammate (or future-you) can recreate the environment. The simplest way is <code>pip freeze</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That produces a file listing every installed package, including transitive dependencies, with exact pins:</p>
 <pre class="text"><code>numpy==1.26.4
@@ -1135,6 +1164,23 @@ matplotlib&gt;=3.8,&lt;4.0</code></pre>
 <p>Pip’s resolver sometimes prints <code>INFO: This is taking longer than usual</code> and then grinds on for many minutes. What is happening is <strong>backtracking</strong>: pip is trying one combination of versions, failing, trying another, and so on, searching for a consistent set. If your constraints are loose (no pins anywhere), pip can consider hundreds of possible versions of each package, and the search space explodes.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt <span class="at">--verbose</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The verbose output tells you which package pip is currently wrestling with — often one package deep in the dependency graph. The fix is to <strong>add constraints or pins</strong> so pip has less to search. Pinning the top-level packages to specific versions (<code>pandas==2.2.1</code>) or adding a <code>constraints.txt</code> file that caps known-problematic dependencies (<code>numpy&lt;2.0</code>) usually collapses the search space to something solvable. If pip is still backtracking after you have pinned aggressively, the fastest recovery is to delete the <code>.venv</code>, start from a clean environment, and install packages in the smallest groups that let the solver find a consistent answer.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a> — the authoritative reference on pip, virtual environments, and PyPI.</li>
+<li><a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Conda User Guide: Managing environments</a> — the official walk-through for <code>conda create</code>, <code>activate</code>, and <code>export</code>.</li>
+<li><a href="https://realpython.com/installing-python/">Real Python: Managing Python Packages</a> — a beginner-friendly overview of installation and package management patterns.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="14.12">
@@ -1267,7 +1313,7 @@ python -m pip install -r requirements.txt
 python -m pip freeze &gt; requirements.txt
 python -m pip check</code></pre>
 <p>The steps for downloading, installing, using, and maintaining Python with <code>conda</code> will differ based on your operating system. <code>conda</code> can be used by Macs running macOS (OS X), PCs running Windows, and PCs running Linux. <code>conda</code> cannot be installed or used on managed operating systems like ChromeOS (<em>e.g.</em>, Chromebooks) or iOS (<em>e.g.</em>, iPads). It is unlikely that you will be able to install or configure <code>conda</code> yourself on “managed” computers like those found in libraries or computer labs.</p>
-<p><code>conda</code> is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, <em>etc</em>. At this stage you can either (1) install Anaconda Individual Edition<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that includes hundreds of popular libraries and their dependencies or (2) install “miniconda”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and choose which libraries you want installed. In either case, <code>conda</code> will be the package manager that helps you install and maintain these libraries. <a href="#fig-conda-mini-ana" class="quarto-xref">Figure&nbsp;<span>14.1</span></a> captures the relationships between <code>conda</code>, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.</p>
+<p><code>conda</code> is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, <em>etc</em>. At this stage you can either (1) install Anaconda Individual Edition<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that includes hundreds of popular libraries and their dependencies or (2) install “miniconda”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and choose which libraries you want installed. In either case, <code>conda</code> will be the package manager that helps you install and maintain these libraries. <a href="#fig-conda-mini-ana" class="quarto-xref">Figure&nbsp;<span>14.2</span></a> captures the relationships between <code>conda</code>, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://www.anaconda.com/products/individual" class="uri">https://www.anaconda.com/products/individual</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://docs.conda.io/en/latest/miniconda.html" class="uri">https://docs.conda.io/en/latest/miniconda.html</a></p></div><div class="">
 <div id="fig-conda-mini-ana" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1275,7 +1321,7 @@ python -m pip check</code></pre>
 <img src="graphics/conda_mini_ana.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.1: Relationships between <code>conda</code>, miniconda, and Anaconda.
+Figure&nbsp;14.2: Relationships between <code>conda</code>, miniconda, and Anaconda.
 </figcaption>
 </figure>
 </div>

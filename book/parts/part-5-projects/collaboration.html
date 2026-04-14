@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -696,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/collaboration.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-projects/project-management.html">Part V — Project Management</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-projects/collaboration.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></a></li></ol></nav>
@@ -1022,7 +1022,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The one rule that makes retrospectives actually useful is that <strong>every pain point becomes an issue or a documentation update</strong>. “The environment kept breaking” turns into an issue to pin dependencies; “I never knew what was in progress” turns into a commitment to the weekly planning ritual. A retrospective with no concrete follow-ups is a gripe session. A retrospective that closes three issues and updates the README is how teams get better.</p>
 </section>
 </section>
-<section id="common-failure-modes-and-fixes" class="level2" data-number="27.10">
+<section id="common-failure-modes-and-fixes" class="level2 page-columns page-full" data-number="27.10">
 <h2 data-number="27.10" class="anchored" data-anchor-id="common-failure-modes-and-fixes"><span class="header-section-number">27.10</span> Common failure modes and fixes</h2>
 <section id="work-hidden-in-private-messages" class="level3">
 <h3 class="anchored" data-anchor-id="work-hidden-in-private-messages">Work hidden in private messages</h3>
@@ -1044,11 +1044,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>When nobody is explicitly assigned to an issue, everybody assumes someone else is handling it, and nothing gets done. You can see this on student teams in the form of issues tagged “urgent” that sit open for weeks because it was never clear whose job they were.</p>
 <p><strong>Fix:</strong> assign every non-trivial issue to exactly one person. Milestones and features get a named <strong>driver</strong> — the person responsible for keeping the work moving, even if other people contribute code to it. Driver ≠ sole implementer; it means “the person whose job it is to notice when the work is stuck and do something about it.”</p>
 </section>
-<section id="documentation-drift" class="level3">
+<section id="documentation-drift" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="documentation-drift">Documentation drift</h3>
 <p>Documentation drifts out of sync with the code almost immediately, because changing code is mandatory (the tests force it) and changing docs is optional (nothing enforces it). After a few weeks, the README is lying to you.</p>
 <p><strong>Fix:</strong> include a “docs updated” checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, <strong>file an issue</strong> — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.</p>
-</section>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.github.com/en/pull-requests">GitHub Docs: About pull requests</a> — the canonical reference for opening, reviewing, and merging PRs.</li>
+<li><a href="https://google.github.io/eng-practices/review/">Google engineering practices: Code review</a> — Google’s public guide to what reviewers should look for and how fast they should respond.</li>
+<li><a href="https://conventionalcomments.org/">Conventional Comments</a> — a lightweight convention for labelling review comments so their intent is obvious.</li>
+</ul>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-github-pr-review-comment" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-github-pr-review-comment.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
+</figcaption>
+</figure>
+</div>
+</div></div></section>
 </section>
 <section id="worked-examples-outline" class="level2" data-number="27.11">
 <h2 data-number="27.11" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">27.11</span> Worked examples (outline)</h2>

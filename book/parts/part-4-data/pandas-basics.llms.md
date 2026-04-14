@@ -8,7 +8,7 @@
 
 ## Purpose
 
-`pandas` is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, `pandas` is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.
+[`pandas`](https://pandas.pydata.org/docs/) is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, `pandas` is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.
 
 This chapter is an orientation for students who have literally never used `pandas` — or who have copied notebook cells from an instructor but never sat down to understand the pieces. The goal is not to teach every method (there are thousands, and the official reference in [sec-reading-docs](#sec-reading-docs) is where you look them up). The goal is to give you the vocabulary and the mental model: what a Series and a DataFrame actually are, how indexing and selection work, how the common operations compose, and how to avoid the classic novice traps.
 
@@ -33,6 +33,10 @@ Almost every pandas operation is a set-wise verb: “filter these rows,” “ad
 ## 22.1 The two data structures
 
 Everything in pandas is built on two data structures.
+
+![](graphics/PLACEHOLDER-dataframe-render.png)
+
+Figure 22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. The rendering includes the row index on the left, bold column headers along the top, and several rows of data, illustrating the tabular structure a DataFrame provides.
 
 ### Series: a labeled 1-D array
 
@@ -319,6 +323,12 @@ df.sort_values("price", ascending=False)       # descending
 df.sort_values(["category", "price"])          # multi-column
 df.sort_index()                                # sort by index (labels)
 ```
+
+> **NOTE:**
+>
+> - [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html) — conceptual explanations of indexing, merging, and reshaping.
+> - [pandas API reference](https://pandas.pydata.org/docs/reference/index.html) — every method and parameter, with examples.
+> - [pandas Cheat Sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — a printable one-pager covering the most common operations.
 
 ## 22.10 Worked examples
 

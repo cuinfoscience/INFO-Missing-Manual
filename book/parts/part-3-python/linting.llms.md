@@ -152,6 +152,10 @@ A sensible starting config for a student project: select `E`, `F`, `I`, `B`, `UP
 
 The real magic happens when your editor runs the formatter automatically on every save. Your code is never in an unformatted state for more than a split second, and you stop thinking about style entirely.
 
+![](graphics/PLACEHOLDER-vscode-ruff-squiggles.png)
+
+Figure 19.1: ALT: VS Code editor showing a Python file with Ruff squiggly underlines on three lines flagging an unused import, a shadowed built-in, and a style violation. Hovering over one of the squiggles shows the rule identifier and a one-sentence explanation.
+
 ### VS Code
 
 Install the [Black Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) or [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) extension, then add to your workspace `settings.json`:
@@ -233,6 +237,12 @@ from legacy_code import UNUSED  # noqa: F401
 ```
 
 Use `# noqa` sparingly. Every one is a small promise that a human thought about it and decided the rule did not apply. Unexplained `# noqa` comments accumulate and become dead weight.
+
+> **NOTE:**
+>
+> - [PEP 8 — Style Guide for Python Code](https://peps.python.org/pep-0008/) — the authoritative style reference most Python linters encode.
+> - [Ruff documentation](https://docs.astral.sh/ruff/) — the canonical reference for the modern all-in-one linter and formatter.
+> - [Black documentation](https://black.readthedocs.io/en/stable/) — the opinionated formatter that eliminates style arguments.
 
 ## 19.8 Worked examples
 

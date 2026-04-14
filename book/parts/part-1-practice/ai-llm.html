@@ -760,7 +760,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-an-ai-assistant-is-doing" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="what-an-ai-assistant-is-doing"><span class="header-section-number">7.1</span> What an AI assistant is doing</h2>
-<p>Most AI assistants in technical settings are built on large language models (LLMs). An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.</p>
+<p>Most AI assistants in technical settings are built on <a href="../../appendix-glossary.html#term-llm">large language models</a> (LLMs) — see <a href="../part-6-algorithmic/llm-internals.html" class="quarto-xref"><span>Chapter 30</span></a> for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.</p>
 <p>A practical interpretation is to treat AI output as a draft produced by a fast collaborator who can be wrong. Your job is to turn drafts into reliable artifacts.</p>
 <section id="what-ai-is-usually-good-at" class="level3">
 <h3 class="anchored" data-anchor-id="what-ai-is-usually-good-at">What AI is usually good at</h3>
@@ -769,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-ai-is-not-reliable-at" class="level3">
 <h3 class="anchored" data-anchor-id="what-ai-is-not-reliable-at">What AI is not reliable at</h3>
-<p>The other side of that pattern: LLMs are unreliable in exactly the ways you would expect a fluent writer with no working memory of your machine to be unreliable. The most common failure is <strong>hallucinated details</strong>, where the model produces a flag, API call, or citation that sounds plausible but does not exist. The second is <strong>version mismatch</strong>: the advice is correct for some version of pandas, scikit-learn, or git — just not the version you have installed. The third, and the one most likely to bite you, is <strong>hidden prerequisites</strong>: the assistant assumes you have already activated the right environment, changed into the right directory, or installed a system dependency, and never says so out loud. A fourth class is <strong>silent logic bugs</strong>, where the suggested code runs without error on the example in the prompt but is wrong on edge cases the prompt did not mention. A fifth is <strong>unsafe defaults</strong>, where the model proposes a solution that technically works but weakens security or increases destructive blast radius.</p>
+<p>The other side of that pattern: LLMs are unreliable in exactly the ways you would expect a fluent writer with no working memory of your machine to be unreliable. The most common failure is <strong>hallucinated details</strong>, where the model produces a flag, API call, or citation that sounds plausible but does not exist. The second is <strong>version mismatch</strong>: the advice is correct for some version of <a href="https://pandas.pydata.org/docs/">pandas</a>, <a href="https://scikit-learn.org/stable/">scikit-learn</a>, or <a href="https://git-scm.com/doc">git</a> — just not the version you have installed. The third, and the one most likely to bite you, is <strong>hidden prerequisites</strong>: the assistant assumes you have already activated the right environment, changed into the right directory, or installed a system dependency, and never says so out loud. A fourth class is <strong>silent logic bugs</strong>, where the suggested code runs without error on the example in the prompt but is wrong on edge cases the prompt did not mention. A fifth is <strong>unsafe defaults</strong>, where the model proposes a solution that technically works but weakens security or increases destructive blast radius.</p>
 <p>You should assume any of these errors are possible at any time. That assumption shapes good habits: ask for primary sources, run small tests on real inputs, and prefer minimal changes you can reason about over large changes you cannot.</p>
 </section>
 </section>
@@ -778,7 +778,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Not all tasks have the same consequences if something goes wrong. Use risk level to decide how careful you need to be.</p>
 <section id="low-risk-drafting-and-formatting" class="level3">
 <h3 class="anchored" data-anchor-id="low-risk-drafting-and-formatting">Low risk: drafting and formatting</h3>
-<p>Low-risk work is anything where an error is cheap to spot and cheap to correct: rewriting a paragraph for clarity, drafting a README skeleton, producing a checklist or a template. The cost of being wrong is reading the output, noticing the mistake, and editing it. For these tasks, your verification step is simply reading what the model produced for accuracy and completeness, and checking that it matches the assignment or project you are actually trying to deliver.</p>
+<p>Low-risk work is anything where an error is cheap to spot and cheap to correct: rewriting a paragraph for clarity, drafting a README skeleton, producing a checklist or a template. The cost of being wrong is reading the output, noticing the mistake, and editing it. For these tasks, your verification step is to read what the model produced for accuracy and completeness, and check that it matches the assignment or project you are actually trying to deliver.</p>
 </section>
 <section id="medium-risk-technical-guidance-you-can-test-quickly" class="level3">
 <h3 class="anchored" data-anchor-id="medium-risk-technical-guidance-you-can-test-quickly">Medium risk: technical guidance you can test quickly</h3>
@@ -1102,6 +1102,23 @@ dir</code></pre>
 <li><p>If still unclear, ask a human with a structured question.</p></li>
 </ol>
 <p>If the assistant cannot provide a verifiable primary source, treat its claim as tentative.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic: Prompt engineering overview</a> — Anthropic’s guide to structured, verifiable prompts.</li>
+<li><a href="https://platform.openai.com/docs/guides/prompt-engineering">OpenAI: Prompt engineering</a> — OpenAI’s parallel guide, with patterns for chat and API workflows.</li>
+<li><a href="https://ai.google.dev/gemini-api/docs/prompting-intro">Google: Generative AI prompt guide</a> — a beginner-friendly walk-through from Gemini’s documentation.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="case-studies" class="level2" data-number="7.12">

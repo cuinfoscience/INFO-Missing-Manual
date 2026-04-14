@@ -34,7 +34,7 @@ By the end of this chapter, you should be able to:
 
 ## 7.1 What an AI assistant is doing
 
-Most AI assistants in technical settings are built on large language models (LLMs). An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
+Most AI assistants in technical settings are built on [large language models](../../appendix-glossary.llms.md#term-llm) (LLMs) — see [sec-llm-internals](#sec-llm-internals) for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
 
 A practical interpretation is to treat AI output as a draft produced by a fast collaborator who can be wrong. Your job is to turn drafts into reliable artifacts.
 
@@ -46,7 +46,7 @@ The common thread is that all of these are tasks where being “approximately ri
 
 ### What AI is not reliable at
 
-The other side of that pattern: LLMs are unreliable in exactly the ways you would expect a fluent writer with no working memory of your machine to be unreliable. The most common failure is **hallucinated details**, where the model produces a flag, API call, or citation that sounds plausible but does not exist. The second is **version mismatch**: the advice is correct for some version of pandas, scikit-learn, or git — just not the version you have installed. The third, and the one most likely to bite you, is **hidden prerequisites**: the assistant assumes you have already activated the right environment, changed into the right directory, or installed a system dependency, and never says so out loud. A fourth class is **silent logic bugs**, where the suggested code runs without error on the example in the prompt but is wrong on edge cases the prompt did not mention. A fifth is **unsafe defaults**, where the model proposes a solution that technically works but weakens security or increases destructive blast radius.
+The other side of that pattern: LLMs are unreliable in exactly the ways you would expect a fluent writer with no working memory of your machine to be unreliable. The most common failure is **hallucinated details**, where the model produces a flag, API call, or citation that sounds plausible but does not exist. The second is **version mismatch**: the advice is correct for some version of [pandas](https://pandas.pydata.org/docs/), [scikit-learn](https://scikit-learn.org/stable/), or [git](https://git-scm.com/doc) — just not the version you have installed. The third, and the one most likely to bite you, is **hidden prerequisites**: the assistant assumes you have already activated the right environment, changed into the right directory, or installed a system dependency, and never says so out loud. A fourth class is **silent logic bugs**, where the suggested code runs without error on the example in the prompt but is wrong on edge cases the prompt did not mention. A fifth is **unsafe defaults**, where the model proposes a solution that technically works but weakens security or increases destructive blast radius.
 
 You should assume any of these errors are possible at any time. That assumption shapes good habits: ask for primary sources, run small tests on real inputs, and prefer minimal changes you can reason about over large changes you cannot.
 
@@ -56,7 +56,7 @@ Not all tasks have the same consequences if something goes wrong. Use risk level
 
 ### Low risk: drafting and formatting
 
-Low-risk work is anything where an error is cheap to spot and cheap to correct: rewriting a paragraph for clarity, drafting a README skeleton, producing a checklist or a template. The cost of being wrong is reading the output, noticing the mistake, and editing it. For these tasks, your verification step is simply reading what the model produced for accuracy and completeness, and checking that it matches the assignment or project you are actually trying to deliver.
+Low-risk work is anything where an error is cheap to spot and cheap to correct: rewriting a paragraph for clarity, drafting a README skeleton, producing a checklist or a template. The cost of being wrong is reading the output, noticing the mistake, and editing it. For these tasks, your verification step is to read what the model produced for accuracy and completeness, and check that it matches the assignment or project you are actually trying to deliver.
 
 ### Medium risk: technical guidance you can test quickly
 
@@ -433,6 +433,12 @@ Conflicts are common. Resolve them with evidence.
 4.  If still unclear, ask a human with a structured question.
 
 If the assistant cannot provide a verifiable primary source, treat its claim as tentative.
+
+> **NOTE:**
+>
+> - [Anthropic: Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — Anthropic’s guide to structured, verifiable prompts.
+> - [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, with patterns for chat and API workflows.
+> - [Google: Generative AI prompt guide](https://ai.google.dev/gemini-api/docs/prompting-intro) — a beginner-friendly walk-through from Gemini’s documentation.
 
 ## 7.12 Case studies
 

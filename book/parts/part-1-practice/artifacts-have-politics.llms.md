@@ -123,6 +123,12 @@ Computing does not exist outside law. Every platform, protocol, and data flow is
 
 The broader takeaway: your day-to-day engineering decisions are shaped by laws passed in specific years, for specific reasons, and could have been passed differently. When a product’s behavior does not match what you think “should” be possible — you cannot export your data, a search result disappears for EU users, you cannot scrape a public page — there is usually a specific statute responsible, and looking it up is a normal part of being a literate practitioner.
 
+> **NOTE:**
+>
+> - Langdon Winner, [*Do Artifacts Have Politics?*](https://www.jstor.org/stable/20024652) (1980) — the essay that gives this chapter its title.
+> - Safiya Umoja Noble, [*Algorithms of Oppression*](https://nyupress.org/9781479837243/algorithms-of-oppression/) — how search engines reinforce racial and gender bias.
+> - [ACM Code of Ethics and Professional Conduct](https://www.acm.org/code-of-ethics) — the computing profession’s ethical framework for the kinds of decisions this chapter describes.
+
 ## 8.8 A checklist for artifacts with politics
 
 Before you adopt, advocate for, or build a technology, ask:

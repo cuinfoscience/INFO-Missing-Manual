@@ -36,7 +36,7 @@ This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via
 
 ## 11.1 A beginner mental model
 
-The first piece of vocabulary worth getting right is the difference between a **terminal** and a **shell**, because the words are often used interchangeably and the distinction matters when you read documentation. The **terminal** is the application window you type in — Terminal.app on macOS, Windows Terminal or PowerShell on Windows, GNOME Terminal or Konsole on Linux. The **shell** is the program running *inside* that window — usually `bash` or `zsh` on macOS and Linux, `pwsh` (PowerShell) or `cmd.exe` on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A **command** is the actual thing you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
+The first piece of vocabulary worth getting right is the difference between a **terminal** and a **shell**, because the words are often used interchangeably and the distinction matters when you read documentation. The **terminal** is the application window you type in — Terminal.app on macOS, [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/) or [PowerShell](https://learn.microsoft.com/en-us/powershell/) on Windows, GNOME Terminal or Konsole on Linux. The **shell** is the program running *inside* that window — usually [`bash`](https://www.gnu.org/software/bash/manual/) or [`zsh`](https://zsh.sourceforge.io/Doc/) on macOS and Linux, `pwsh` (PowerShell) or `cmd.exe` on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A **command** is the actual thing you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
 
 When you press Enter on a command line, a small choreographed sequence happens. The shell reads the line of text you typed. It expands any shortcuts you used — globs like `*.csv`, variables like `$HOME`, command substitutions like `$(date)`. It searches a list of folders called `PATH` to find the program you named. It launches that program as a new process, hands it the arguments you provided, and shows you whatever the program prints. When the program finishes, it returns a small integer called an **exit code** — `0` conventionally means “everything worked,” and any nonzero value means “something went wrong.” The shell then displays a prompt and waits for your next command.
 
@@ -51,6 +51,14 @@ total 16
 $ echo $?                  # check the exit code of the previous command
 0
 ```
+
+![](graphics/PLACEHOLDER-macos-terminal-annotated.png)
+
+Figure 11.1: ALT: macOS Terminal window at a fresh prompt, annotated to label the username, hostname, current directory, and prompt character. The window shows an `ls -l data/` command at the top and its output underneath.
+
+![](graphics/PLACEHOLDER-windows-terminal-annotated.png)
+
+Figure 11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to label the equivalent parts: current directory, prompt symbol, and command-line input area.
 
 The reason any of this is worth learning, when GUI file managers are right there, is that the command line gives you four things the GUI cannot. It has a high **action-to-keystroke ratio** for repetitive work — moving fifty files into the right folders is one short command at the prompt and a fifteen-minute drag-and-drop session in the GUI. It is **composable**: small focused tools combined with pipes and redirection give you a flexible toolkit instead of fifty single-purpose buttons. It is **automatable**: anything you can type once, you can save in a script and run again on a schedule. And it is **remote-friendly**, which is the entire reason you can do real work on a server you have never physically seen (see [sec-remote-computing](#sec-remote-computing)). None of those properties are nice-to-haves; they are the difference between doing a job once and doing it reliably for an entire semester.
 
@@ -663,6 +671,12 @@ Traceback (most recent call last):
 ```
 
 Disciplined debugging is not glamorous, but it is reliable, and it is what separates people who lose an hour to a mystery error from people who spend two minutes and keep working.
+
+> **NOTE:**
+>
+> - [The Bash Reference Manual](https://www.gnu.org/software/bash/manual/) — the canonical reference for bash syntax, built-ins, and scripting.
+> - [Software Carpentry: The Unix Shell](https://swcarpentry.github.io/shell-novice/) — a complete beginner tutorial with hands-on exercises.
+> - [ExplainShell](https://explainshell.com/) — paste any command and get a breakdown of every flag and argument.
 
 ## 11.14 Worked examples
 

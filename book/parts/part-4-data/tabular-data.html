@@ -717,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="wide-vs.-tidy-data" class="level2" data-number="21.1">
 <h2 data-number="21.1" class="anchored" data-anchor-id="wide-vs.-tidy-data"><span class="header-section-number">21.1</span> Wide vs.&nbsp;tidy data</h2>
-<p>The single most useful concept for working with tabular data is the distinction between <strong>wide</strong> and <strong>tidy</strong> (also called “long”) formats. The idea was popularized by Hadley Wickham and has since shaped every major data analysis library.</p>
+<p>The single most useful concept for working with tabular data is the distinction between <strong>wide</strong> and <strong>tidy</strong> (also called “long”) formats. The idea was popularized by Hadley Wickham’s <a href="https://vita.had.co.nz/papers/tidy-data.pdf">Tidy Data paper</a> and has since shaped every major data analysis library.</p>
 <section id="wide" class="level3">
 <h3 class="anchored" data-anchor-id="wide">Wide</h3>
 <p>In a <strong>wide</strong> dataset, each row is an entity and each column is a measurement <em>of</em> that entity. Classrooms, spreadsheets, and government reports usually give you wide data because it is easy for humans to read.</p>
@@ -950,6 +950,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</h3>
 <p><strong>Symptom:</strong> a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as <code>object</code>. Operations are slow and error-prone.</p>
 <p><strong>Fix:</strong> <code>pd.to_numeric(..., errors="coerce")</code> as in problem 2, then decide what to do with the NaNs. Do not silently <code>.dropna()</code> — that is the row you should be investigating.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Hadley Wickham, <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><em>Tidy Data</em></a> — the canonical paper on long/wide formats.</li>
+<li><a href="https://pandas.pydata.org/docs/user_guide/reshaping.html">pandas User Guide: Reshaping</a> — the official guide to <code>melt</code>, <code>pivot</code>, <code>stack</code>, and <code>unstack</code>.</li>
+<li><a href="https://docs.greatexpectations.io/">Great Expectations</a> — a popular library for writing the validation checks this chapter advocates.</li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="worked-examples" class="level2" data-number="21.6">

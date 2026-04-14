@@ -790,7 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="api-versus-chatbot-interfaces" class="level2" data-number="30.6">
 <h2 data-number="30.6" class="anchored" data-anchor-id="api-versus-chatbot-interfaces"><span class="header-section-number">30.6</span> API versus chatbot interfaces</h2>
-<p>The two primary ways to interact with a language model are the <strong>chatbot interface</strong> (a web or app UI like ChatGPT, Claude.ai, or Gemini) and the <strong>API</strong> (a programmatic interface you call from code). Understanding the difference helps you choose the right tool.</p>
+<p>The two primary ways to interact with a language model are the <strong>chatbot interface</strong> (a web or app UI like <a href="https://chatgpt.com/">ChatGPT</a>, <a href="https://claude.ai/">Claude.ai</a>, or <a href="https://gemini.google.com/">Gemini</a>) and the <strong>API</strong> (a programmatic interface — for example, the <a href="https://docs.anthropic.com/">Anthropic API</a> or the <a href="https://platform.openai.com/docs/">OpenAI API</a> — you call from code). Understanding the difference helps you choose the right tool.</p>
 <section id="what-a-chatbot-gives-you" class="level3">
 <h3 class="anchored" data-anchor-id="what-a-chatbot-gives-you">What a chatbot gives you</h3>
 <ul>
@@ -813,7 +813,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>No session memory by default — you manage conversation history yourself</p></li>
 </ul>
 <p>A minimal Python API call looks like:</p>
-<pre><code>import anthropic
+<pre><code>import anthropic    # https://docs.anthropic.com/en/api/getting-started
 
 client = anthropic.Anthropic()
 message = client.messages.create(
@@ -875,6 +875,23 @@ print(message.content[0].text)</code></pre>
 <li><p>Prefer lower temperatures for factual tasks.</p></li>
 <li><p>Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic: Prompt engineering</a> — structured prompt design patterns and evaluation tips.</li>
+<li><a href="https://platform.openai.com/docs/guides/prompt-engineering">OpenAI: Prompt engineering</a> — OpenAI’s parallel guide, including system-message best practices.</li>
+<li><a href="https://huggingface.co/docs/transformers/index">Hugging Face: Transformers documentation</a> — the reference implementation of the model architecture behind most modern chat models.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="30.9">
 <h2 data-number="30.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">30.9</span> Worked examples</h2>

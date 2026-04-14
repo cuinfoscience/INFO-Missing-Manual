@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -651,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-4-data/data-file-formats.html">Part IV — Working with Data</a></li><li class="breadcrumb-item"><a href="../../parts/part-4-data/http-apis.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></a></li></ol></nav>
@@ -715,7 +715,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="http-in-one-paragraph" class="level2" data-number="24.1">
 <h2 data-number="24.1" class="anchored" data-anchor-id="http-in-one-paragraph"><span class="header-section-number">24.1</span> HTTP in one paragraph</h2>
-<p>The web runs on HTTP (Hypertext Transfer Protocol). A client (your Python script, a browser, <code>curl</code>) sends a <strong>request</strong> to a server: a method (GET, POST, …), a URL (<code>https://api.example.com/v1/users/42</code>), optional headers (metadata), and optional body (data). The server replies with a <strong>response</strong>: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.</p>
+<p>The web runs on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">HTTP</a> (Hypertext Transfer Protocol). A client (your Python script, a browser, <a href="https://curl.se/docs/manpage.html"><code>curl</code></a>) sends a <strong>request</strong> to a server: a method (GET, POST, …), a URL (<code>https://api.example.com/v1/users/42</code>), optional headers (metadata), and optional body (data). The server replies with a <strong>response</strong>: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.</p>
 <section id="the-four-http-verbs" class="level3">
 <h3 class="anchored" data-anchor-id="the-four-http-verbs">The four HTTP verbs</h3>
 <p>You will use these four most often:</p>
@@ -795,11 +795,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="the-requests-library" class="level2" data-number="24.2">
+<section id="the-requests-library" class="level2 page-columns page-full" data-number="24.2">
 <h2 data-number="24.2" class="anchored" data-anchor-id="the-requests-library"><span class="header-section-number">24.2</span> The <code>requests</code> library</h2>
-<p>The <code>requests</code> library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:</p>
+<p>The <a href="https://requests.readthedocs.io/en/latest/"><code>requests</code></a> library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The simplest possible use:</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-browser-json" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="graphics/PLACEHOLDER-browser-json-response.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public API (for example, <code>https://jsonplaceholder.typicode.com/users/1</code>). The response is a formatted object with name, email, and address fields, illustrating what API data looks like before any Python parsing.
+</figcaption>
+</figure>
+</div>
+</div></div><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If your request hangs, fails, or returns nothing
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The three most common API failures each have a distinctive signature. <strong>The request hangs forever</strong> — you forgot to pass a <code>timeout=</code> argument to <code>requests.get()</code>, and the default is no timeout. Add <code>timeout=10</code> to every request. <strong>The response has status 401 or 403</strong> — your API key is missing, wrong, or being sent in the wrong header. Check the API’s docs for the exact header name (usually <code>Authorization: Bearer &lt;key&gt;</code> or <code>X-API-Key: &lt;key&gt;</code>) and confirm the key is loaded correctly from your <code>.env</code> file (see <a href="../part-5-projects/secrets.html" class="quarto-xref"><span>Chapter 29</span></a>). <strong>The response has status 429</strong> — the server is rate-limiting you. Slow down: add <code>time.sleep()</code> between requests, or check for a <code>Retry-After</code> header that tells you how long to wait.</p>
+<p>For any 4xx error, <code>print(response.text)</code> before parsing — the server almost always returns a helpful error message in the body that explains what it rejected.</p>
+</div>
+</div>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(<span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>)</span>
@@ -938,6 +967,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Is there a bulk download?</strong> Many data sources also offer CSV, Parquet, or SQL dumps of the same data. If you want a snapshot, the dump is usually much faster and easier than hammering the API row by row. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</li>
 <li><strong>Is this a one-off?</strong> For a single fetch, <code>curl</code> on the command line or a browser download might be faster than a Python script. Save the result to disk and work from there.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://requests.readthedocs.io/en/latest/"><code>requests</code> documentation</a> — the official guide to the most common Python HTTP library.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">MDN: An overview of HTTP</a> — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.</li>
+<li><a href="https://httpstatuses.com/">HTTP Status Codes (httpstatuses.com)</a> — a searchable reference for every status code you will see in the wild.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="worked-examples" class="level2" data-number="24.8">
 <h2 data-number="24.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">24.8</span> Worked examples</h2>

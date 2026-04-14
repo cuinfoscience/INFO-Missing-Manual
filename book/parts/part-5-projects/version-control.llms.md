@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Version control is the safety system for technical work. Git records a history of changes so you can recover, compare, and collaborate without overwriting each other. GitHub adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
+Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
 
 ## Learning objectives
 
@@ -49,6 +49,20 @@ $ git log --oneline -3
 c127108 Merge pre-commit chapter into automation
 ```
 
+![](graphics/PLACEHOLDER-github-repo.png)
+
+Figure 26.1: ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.
+
+> **WARNING:**
+>
+> A rejection almost always means **the remote has commits you do not have locally** — someone else pushed to the same branch before you. Run `git fetch origin` to see what changed, then `git pull --rebase origin <branch>` to replay your commits on top of theirs. If that produces conflicts, resolve them in the marked files, `git add` the resolved files, and continue the rebase with `git rebase --continue`. Once the rebase finishes cleanly, `git push` will work.
+>
+> If you see “non-fast-forward” on a branch no one else should be pushing to, check that you are on the right branch (`git branch` shows the current one with an asterisk) and that you are pushing to the right remote (`git remote -v`). Never “fix” a rejection with `git push --force` unless you understand exactly which commits you are about to overwrite. See [sec-asking-questions](#sec-asking-questions) if you need help.
+
+![](graphics/PLACEHOLDER-github-pr-diff.png)
+
+Figure 26.2: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
+
 Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.
 
 There are three zones any file moves through on its way into history. The **working tree** is the version of the file as it exists on disk right now — what you see when you open it in your editor. The **staging area** (also called the *index*) is the set of changes you have explicitly told Git you intend to include in your next commit. And the **commit** is the saved snapshot in history once you actually run `git commit`. Edits land in the working tree first; `git add` promotes them to staging; `git commit` turns staging into a commit.
@@ -77,7 +91,7 @@ The third reason, which matters most for coursework and research, is **audit tra
 
 ### What to version and what not to version
 
-As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and `.gitignore`, and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git’s line-by-line diffing works beautifully on text, and the storage cost is negligible.
+As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and [`.gitignore`](https://git-scm.com/docs/gitignore), and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git’s line-by-line diffing works beautifully on text, and the storage cost is negligible.
 
 Do **not** version a short, specific list of things. **Secrets and credentials** — API keys, database passwords, `.env` files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see [sec-secrets](#sec-secrets) for why, and how to recover if it happens). **Large raw datasets** — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every `git clone` slow forever. **Generated artifacts** — compiled binaries, cached model files, HTML output, `__pycache__` directories — should be reproducible from your code, which means they do not need to be versioned; `.gitignore` is where you list them. And **environment folders** — `.venv/`, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (`requirements.txt`, `environment.yml`) is the thing that goes in Git.
 
@@ -425,6 +439,12 @@ git push origin v1.0-midterm
 ```
 
 On GitHub, you can promote a tag to a **release**, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference `v1.0-midterm` and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.
+
+> **NOTE:**
+>
+> - [Pro Git book](https://git-scm.com/book/en/v2) — the free, authoritative book on Git, written by one of its maintainers.
+> - [GitHub Docs: Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — a beginner-friendly overview of Git concepts paired with GitHub features.
+> - [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — GitHub Education’s printable reference for everyday commands.
 
 ## 26.11 Worked examples (outline)
 

@@ -93,13 +93,13 @@ Several frameworks exist to help you build agents without implementing the loop,
 
 ### LangChain
 
-LangChain is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.
+[LangChain](https://python.langchain.com/docs/introduction/) is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.
 
 *Best for:* Teams that want a batteries-included framework with many pre-built components. Its abstraction layer is useful for rapid prototyping but can obscure what is happening underneath.
 
 ### LlamaIndex
 
-LlamaIndex (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.
+[LlamaIndex](https://docs.llamaindex.ai/en/stable/) (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.
 
 *Best for:* Applications that center on querying documents, PDFs, databases, or APIs — where the primary challenge is getting the right information into context.
 
@@ -111,7 +111,7 @@ Anthropic’s Claude models support tool use natively through the Messages API. 
 
 ### CrewAI
 
-CrewAI provides a higher-level abstraction: you define *agents* (with roles and goals) and *tasks* (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.
+[CrewAI](https://docs.crewai.com/) provides a higher-level abstraction: you define *agents* (with roles and goals) and *tasks* (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.
 
 *Best for:* Multi-agent workflows where different agents play different roles (researcher, writer, reviewer) and need to hand off work to each other.
 
@@ -274,6 +274,12 @@ For any action that is hard to reverse — writing to a database, sending a mess
             if confirm.lower() != 'y':
                 return {"error": "Action cancelled by user."}
         return TOOL_REGISTRY[tool_call.name](**tool_call.args)
+
+> **NOTE:**
+>
+> - [Anthropic: Building agents with the Claude API](https://docs.anthropic.com/en/docs/agents-and-tools/overview) — patterns and examples for tool use and agentic loops.
+> - [LangChain agents documentation](https://python.langchain.com/docs/tutorials/agents/) — a framework-level walk-through of agent construction.
+> - [OpenAI: Function calling guide](https://platform.openai.com/docs/guides/function-calling) — the canonical reference for defining tools the model can invoke.
 
 ## 31.9 Worked examples
 

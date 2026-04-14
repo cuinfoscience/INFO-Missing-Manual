@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping Windows and macOS stable, updated, and recoverable.
+Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping [Windows](https://support.microsoft.com/en-us/windows) and [macOS](https://support.apple.com/guide/mac-help/welcome/mac) stable, updated, and recoverable.
 
 ## Learning objectives
 
@@ -63,6 +63,14 @@ macOS:     Apple menu → About This Mac
            — look at the macOS name (e.g., Sonoma), version (14.5),
              and build number (click Version for the build)
 ```
+
+![](graphics/PLACEHOLDER-windows-about.png)
+
+Figure 9.1: ALT: Windows Settings → System → About page, with “OS build” and “Version” fields highlighted so the reader knows exactly where to find them.
+
+![](graphics/PLACEHOLDER-macos-about.png)
+
+Figure 9.2: ALT: macOS “About This Mac” dialog, showing the macOS name, version, and build number.
 
 It helps to understand the three categories of “version” you will see mentioned. A **major version** is the flagship release: Windows 11, macOS Sonoma, macOS Sequoia. These come roughly once a year. A **feature release or minor update** (Windows “feature update,” macOS point release like 14.5 → 14.6) adds capabilities and small changes and comes more frequently. A **security or patch update** is a smaller, targeted fix that shows up more or less monthly — these are the updates you should always install quickly. Keeping the three categories straight tells you how careful to be about any given update: feature and major upgrades deserve planning; security patches deserve speed.
 
@@ -142,13 +150,13 @@ You almost certainly do not need a third-party antivirus. Both operating systems
 
 ### Encryption awareness (and recovery keys)
 
-Disk encryption protects your data if your laptop is lost or stolen — without your password, the disk is unreadable, even to someone who removes it and plugs it into another machine. On Windows the feature is called **BitLocker** (or “device encryption” on consumer editions); on macOS it is called **FileVault**. Both are usually on by default on modern hardware, but it is worth confirming.
+Disk encryption protects your data if your laptop is lost or stolen — without your password, the disk is unreadable, even to someone who removes it and plugs it into another machine. On Windows the feature is called [**BitLocker**](https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/) (or “device encryption” on consumer editions); on macOS it is called [**FileVault**](https://support.apple.com/guide/mac-help/protect-data-on-your-mac-with-filevault-mh11785/mac). Both are usually on by default on modern hardware, but it is worth confirming.
 
 Encryption introduces exactly one new dependency you must take seriously: the **recovery key**. The recovery key is what unlocks the disk if you forget your password or if something corrupts your account, and it is the only way back in. Both operating systems will offer to store it — in your Microsoft account, your Apple ID, or printed/saved by you somewhere safe. Make sure you know where yours lives, and *write it down somewhere outside your encrypted laptop* before you change anything related to encryption. The cardinal rule is: never proceed with an encryption change you do not understand the recovery for, because the failure mode is “your data is now permanently inaccessible to anyone, including you.”
 
 ### Software installation hygiene
 
-Install software only from places you can trust: the vendor’s official website, the platform’s app store (Microsoft Store or Mac App Store), or a reputable package manager (Homebrew on macOS, winget on Windows, conda or pip in your Python environment). Random “freeware” download sites are one of the most common malware vectors, and they routinely bundle adware and toolbars with whatever you actually wanted. Keep your browser up to date, since the browser is the single program that handles the most untrusted input you encounter. And periodically uninstall software you no longer use — every installed app is a small attack surface, and removing the ones you do not need shrinks the surface for free.
+Install software only from places you can trust: the vendor’s official website, the platform’s app store (Microsoft Store or Mac App Store), or a reputable package manager ([Homebrew](https://brew.sh/) on macOS, [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) on Windows, [conda](https://docs.conda.io/en/latest/) or [pip](https://pip.pypa.io/en/stable/) in your Python environment). Random “freeware” download sites are one of the most common malware vectors, and they routinely bundle adware and toolbars with whatever you actually wanted. Keep your browser up to date, since the browser is the single program that handles the most untrusted input you encounter. And periodically uninstall software you no longer use — every installed app is a small attack surface, and removing the ones you do not need shrinks the surface for free.
 
 ## 9.6 Backups and recovery: the student safety net
 
@@ -175,7 +183,7 @@ Windows:   Control Panel → File History → Select drive → Turn on
 
 ### macOS backups with Time Machine
 
-Time Machine is the simplest good backup tool on any operating system. Plug in an external drive (Time Machine will offer to format it for you; say yes if it is a dedicated backup drive), open System Settings → General → Time Machine, click “Add Backup Disk,” and select it. macOS starts an initial backup immediately and then runs incremental backups every hour the drive is connected.
+[Time Machine](https://support.apple.com/guide/mac-help/back-up-your-mac-with-time-machine-mh11421/mac) is the simplest good backup tool on any operating system. Plug in an external drive (Time Machine will offer to format it for you; say yes if it is a dedicated backup drive), open System Settings → General → Time Machine, click “Add Backup Disk,” and select it. macOS starts an initial backup immediately and then runs incremental backups every hour the drive is connected.
 
 The under-appreciated feature is how easy Time Machine makes *restoring*. You do not have to wait for a disaster — you can open any folder and click the Time Machine icon in the menu bar, then “Browse Time Machine Backups,” to scroll through every past version of that folder and restore any file from any point in history. This is invaluable for “I accidentally overwrote a paragraph of my thesis two days ago” situations, not just “my laptop died” situations.
 
@@ -377,6 +385,12 @@ Pre-deadline checklist:
 ```
 
 The last point is worth thinking about seriously. What is your plan if your laptop dies at 8 PM the night before a submission? If the answer is “I don’t know, I’d panic,” spend an hour now making a plan: pushing your code to GitHub, knowing where a library or lab computer is, having a lightweight workflow that could run on a borrowed machine. The plan does not have to be fancy — it just has to exist before you need it.
+
+> **NOTE:**
+>
+> - [Microsoft Support: Windows](https://support.microsoft.com/en-us/windows) — the canonical help portal for Windows updates, backups, and security.
+> - [Apple Support: Mac](https://support.apple.com/guide/mac-help/welcome/mac) — the Mac User Guide, covering Software Update, Time Machine, and FileVault.
+> - [StaySafeOnline: Cybersecurity Basics](https://staysafeonline.org/online-safety-privacy-basics/) — a plain-language primer on passwords, MFA, and account hygiene.
 
 ## 9.10 Worked examples
 
