@@ -83,6 +83,14 @@ The simplest possible use:
 ![ALT: Web browser showing the raw JSON response from a public API (for example, `https://jsonplaceholder.typicode.com/users/1`). The response is a formatted object with name, email, and address fields, illustrating what API data looks like before any Python parsing.](graphics/PLACEHOLDER-browser-json-response.png){#fig-browser-json}
 :::
 
+::: {.callout-warning collapse="true"}
+## If your request hangs, fails, or returns nothing
+
+The three most common API failures each have a distinctive signature. **The request hangs forever** — you forgot to pass a `timeout=` argument to `requests.get()`, and the default is no timeout. Add `timeout=10` to every request. **The response has status 401 or 403** — your API key is missing, wrong, or being sent in the wrong header. Check the API's docs for the exact header name (usually `Authorization: Bearer <key>` or `X-API-Key: <key>`) and confirm the key is loaded correctly from your `.env` file (see @sec-secrets). **The response has status 429** — the server is rate-limiting you. Slow down: add `time.sleep()` between requests, or check for a `Retry-After` header that tells you how long to wait.
+
+For any 4xx error, `print(response.text)` before parsing — the server almost always returns a helpful error message in the body that explains what it rejected.
+:::
+
 ```python
 import requests
 

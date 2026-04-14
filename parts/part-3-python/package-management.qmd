@@ -213,6 +213,14 @@ python -m pip install pandas scikit-learn matplotlib
 python -m pip install "requests>=2.31,<3.0"
 ```
 
+::: {.callout-warning collapse="true"}
+## If `pip install` fails
+
+The two most common failures are **"permission denied"** and **"externally-managed-environment"**. Both mean the same thing: pip is trying to install into a system Python that your user account (rightly) does not own. The fix is never `sudo pip install` — the fix is to activate your virtual environment first (`source .venv/bin/activate`) and run the install from there. Confirm the venv is active by checking that `which python` points inside `.venv/`.
+
+If pip reports `ResolutionImpossible` with a wall of conflicting constraints, you have hit a dependency conflict. Do not try one-at-a-time manual fixes — instead, delete `.venv/`, recreate it from scratch, and install packages together so the solver sees all constraints at once. See @sec-asking-questions if you need to escalate.
+:::
+
 ::: {.column-margin}
 ![ALT: Terminal output from a successful `pip install pandas` command. The output shows the download progress bar, the list of dependencies being collected (numpy, python-dateutil, pytz, six), and a final "Successfully installed" line listing the installed package versions.](graphics/PLACEHOLDER-pip-install-success.png){#fig-pip-install-success}
 :::

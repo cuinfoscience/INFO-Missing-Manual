@@ -56,6 +56,14 @@ c127108 Merge pre-commit chapter into automation
 ![ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.](graphics/PLACEHOLDER-github-repo.png){#fig-github-repo}
 :::
 
+::: {.callout-warning collapse="true"}
+## If `git push` is rejected
+
+A rejection almost always means **the remote has commits you do not have locally** — someone else pushed to the same branch before you. Run `git fetch origin` to see what changed, then `git pull --rebase origin <branch>` to replay your commits on top of theirs. If that produces conflicts, resolve them in the marked files, `git add` the resolved files, and continue the rebase with `git rebase --continue`. Once the rebase finishes cleanly, `git push` will work.
+
+If you see "non-fast-forward" on a branch no one else should be pushing to, check that you are on the right branch (`git branch` shows the current one with an asterisk) and that you are pushing to the right remote (`git remote -v`). Never "fix" a rejection with `git push --force` unless you understand exactly which commits you are about to overwrite. See @sec-asking-questions if you need help.
+:::
+
 ::: {.column-margin}
 ![ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.](graphics/PLACEHOLDER-github-pr-diff.png){#fig-github-pr-diff}
 :::

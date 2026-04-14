@@ -82,7 +82,15 @@ The most common Jupyter complaint is some variant of "I opened JupyterLab and my
 
 There are three common ways to end up here. The first is launching Jupyter from your home directory or `Downloads` instead of your project folder. The second is having multiple Jupyter servers running at once on different ports — you click an old browser tab and end up looking at a different server than you just started. The third is launching from the wrong environment, so the kernel paths and packages do not match what your project expects.
 
-The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press `Ctrl+C` (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, `cd` into the correct project folder and confirm with `pwd`. Third, activate the correct environment and run `jupyter lab` again. Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a "where am I" check at the top of every notebook so this is always visible:
+The fix checklist is short. First, stop the misbehaving server: go back to the terminal where you launched it and press `Ctrl+C` (twice if it asks you to confirm). Close the browser tab. Second, in the terminal, `cd` into the correct project folder and confirm with `pwd`. Third, activate the correct environment and run `jupyter lab` again.
+
+::: {.callout-warning collapse="true"}
+## If Jupyter shows the wrong kernel (or none at all)
+
+When a notebook's `import pandas` fails with `ModuleNotFoundError` even though you just `pip install`-ed pandas, the kernel is almost certainly running a different Python than the one you installed into. From inside the notebook, run `import sys; print(sys.executable)` — the path should contain your project's `.venv/`. If it does not, use the kernel picker (top-right of JupyterLab) and pick the kernel whose name matches your environment.
+
+If your venv's kernel is not in the picker at all, register it explicitly: with the venv activated, run `python -m pip install ipykernel` then `python -m ipykernel install --user --name project-venv --display-name "Python (project-venv)"`. Reload JupyterLab and the new kernel will appear.
+::: Fourth, if you still see the wrong files, you may have another Jupyter server running on a different port — `jupyter server list` will show every running server, and you can shut down any stragglers. Finally, get into the habit of putting a "where am I" check at the top of every notebook so this is always visible:
 
 ```python
 import os

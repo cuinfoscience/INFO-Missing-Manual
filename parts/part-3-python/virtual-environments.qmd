@@ -58,6 +58,16 @@ The standard Python library ships with the `venv` module. There is no install st
 python -m venv .venv
 ```
 
+::: {.callout-warning collapse="true"}
+## If this didn't work
+
+The most common failure is **`python` is not on your PATH**, which shows up as `command not found` or as your terminal launching the wrong interpreter. On macOS and Linux, try `python3 -m venv .venv` instead — some systems ship `python3` without a plain `python`. On Windows, if `python` opens the Microsoft Store, go to Settings → Apps → Advanced app settings → App execution aliases and turn off the `python.exe` and `python3.exe` aliases, then reinstall Python from [python.org](https://www.python.org/downloads/).
+
+If the command runs but creates an empty folder, check that the directory is writable (`ls -la` on macOS/Linux, right-click → Properties on Windows). Venv creation silently fails on synced cloud folders where Python cannot write fast enough — move the project off OneDrive or iCloud Drive and try again.
+
+Still stuck? See @sec-asking-questions for how to gather the evidence a helper will need.
+:::
+
 This creates a `.venv/` folder. Add `.venv/` to your `.gitignore` — you never commit a venv to git. See @sec-git-github.
 
 **Activate it** (the command differs by OS and shell):
