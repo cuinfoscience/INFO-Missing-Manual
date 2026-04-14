@@ -19,9 +19,9 @@ By the end of this chapter, you should be able to:
 
 1.  Explain what a **package**, **dependency**, and **environment** are.
 
-2.  Choose between `conda` and `pip` for a given situation.
+2.  Choose between [`conda`](https://docs.conda.io/en/latest/) and [`pip`](https://pip.pypa.io/en/stable/) for a given situation.
 
-3.  Create, activate, and remove isolated environments (conda environments and/or `venv`).
+3.  Create, activate, and remove isolated environments (conda environments and/or [`venv`](https://docs.python.org/3/library/venv.html)).
 
 4.  Install packages with good hygiene (no 'random global installs'', avoid base/root env).
 
@@ -57,7 +57,7 @@ The way you make environments **reproducible** is by writing down what is instal
 
 The Python ecosystem has two major package management traditions, and you will encounter both. **conda** comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.
 
-**pip** is the standard installer that ships with Python itself, and it installs packages from PyPI (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
+**pip** is the standard installer that ships with Python itself, and it installs packages from [PyPI](https://pypi.org/) (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
 
 The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, **never install packages globally** for course work — every project gets its own environment, period.
 

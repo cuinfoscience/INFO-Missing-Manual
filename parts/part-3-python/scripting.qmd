@@ -17,7 +17,7 @@ As students progress, the limiting factor is rarely "can you write code"; it is 
 
 By the end of this chapter, you should be able to:
 
-1.  Write a Python script that can be run from the command line and imported as a module.
+1.  Write a [Python](https://docs.python.org/3/) script that can be run from the command line and imported as a module.
 
 2.  Organize reusable code into functions and (optionally) a small `src/` module.
 
@@ -317,7 +317,7 @@ Parameterization comes in three flavors that scale with how serious the project 
 
 ### The CLI pattern
 
-The standard way to give a Python script command-line arguments is the built-in `argparse` module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user's input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
+The standard way to give a Python script command-line arguments is the built-in [`argparse`](https://docs.python.org/3/library/argparse.html) module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user's input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
 
 ```python
 import argparse
