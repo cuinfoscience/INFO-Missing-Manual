@@ -33,7 +33,7 @@ Assume every HTTP request can time out, rate-limit you, return garbage, or fail 
 
 ## HTTP in one paragraph
 
-The web runs on HTTP (Hypertext Transfer Protocol). A client (your Python script, a browser, `curl`) sends a **request** to a server: a method (GET, POST, …), a URL (`https://api.example.com/v1/users/42`), optional headers (metadata), and optional body (data). The server replies with a **response**: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.
+The web runs on [HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) (Hypertext Transfer Protocol). A client (your Python script, a browser, [`curl`](https://curl.se/docs/manpage.html)) sends a **request** to a server: a method (GET, POST, …), a URL (`https://api.example.com/v1/users/42`), optional headers (metadata), and optional body (data). The server replies with a **response**: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.
 
 ### The four HTTP verbs
 
@@ -71,7 +71,7 @@ Memorize these five:
 
 ## The `requests` library
 
-The `requests` library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
+The [`requests`](https://requests.readthedocs.io/en/latest/) library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
 
 ```bash
 python -m pip install requests
