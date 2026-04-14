@@ -149,7 +149,7 @@ In a chat interface, the system prompt is often hidden. In an API call, you set 
 
 ## API versus chatbot interfaces
 
-The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like ChatGPT, Claude.ai, or Gemini) and the **API** (a programmatic interface you call from code). Understanding the difference helps you choose the right tool.
+The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like [ChatGPT](https://chatgpt.com/), [Claude.ai](https://claude.ai/), or [Gemini](https://gemini.google.com/)) and the **API** (a programmatic interface — for example, the [Anthropic API](https://docs.anthropic.com/) or the [OpenAI API](https://platform.openai.com/docs/) — you call from code). Understanding the difference helps you choose the right tool.
 
 ### What a chatbot gives you
 
@@ -181,7 +181,7 @@ Use a chatbot for exploratory, one-off tasks: getting an explanation, brainstorm
 
 A minimal Python API call looks like:
 
-    import anthropic
+    import anthropic    # https://docs.anthropic.com/en/api/getting-started
 
     client = anthropic.Anthropic()
     message = client.messages.create(
