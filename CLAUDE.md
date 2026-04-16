@@ -65,10 +65,10 @@ ParatechnicalComputingHandbook/
 │   ├── part-1-practice/             # Part I — Practice of Technical Work
 │   │   ├── questions.qmd
 │   │   ├── documentation.qmd
+│   │   ├── common-formats.qmd
 │   │   ├── reading-docs.qmd
 │   │   ├── debugging.qmd
 │   │   ├── tracebacks.qmd
-│   │   ├── ai-llm.qmd
 │   │   └── artifacts-have-politics.qmd
 │   ├── part-2-environment/          # Part II — Computing Environment
 │   │   ├── operating-system.qmd
@@ -96,6 +96,7 @@ ParatechnicalComputingHandbook/
 │   │   ├── automation.qmd
 │   │   └── secrets.qmd
 │   └── part-6-algorithmic/          # Part VI — Algorithmic Systems
+│       ├── ai-llm.qmd
 │       ├── llm-internals.qmd
 │       ├── ai-agents.qmd
 │       └── evaluating-ai.qmd
@@ -119,10 +120,10 @@ Every chapter has an explicit H1 section ID immediately after the heading. Use t
 |---|---|
 | Asking Technical Questions | `@sec-asking-questions` |
 | Technical Documentation | `@sec-documentation` |
+| Common Text Formats | `@sec-common-formats` |
 | Reading Official Documentation | `@sec-reading-docs` |
 | Debugging | `@sec-debugging` |
 | Reading Python Tracebacks | `@sec-tracebacks` |
-| Using AI Tools | `@sec-ai-llm` |
 | Artifacts Have Politics | `@sec-artifacts-politics` |
 | Operating System | `@sec-os-management` |
 | Local File System | `@sec-filesystem` |
@@ -145,6 +146,7 @@ Every chapter has an explicit H1 section ID immediately after the heading. Use t
 | Collaboration Mechanics | `@sec-collaboration` |
 | Automation | `@sec-automation` |
 | Environment Variables and Secrets | `@sec-secrets` |
+| Using AI Tools | `@sec-ai-llm` |
 | LLM Internals | `@sec-llm-internals` |
 | AI Agents | `@sec-ai-agents` |
 | Evaluating AI | `@sec-evaluating-ai` |
@@ -320,7 +322,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ## Gap Chapter Backlog
 
-The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The following topics remain as candidates for future work.
+The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to Part VI (Algorithmic Systems), where it sits alongside the other AI chapters. The following topics remain as candidates for future work.
 
 **Lower priority (but valuable):**
 
@@ -328,7 +330,6 @@ The handbook's original gap analysis identified 16 candidate chapters. The first
 - **Shell scripting (bash `.sh`)** — expand `automation.qmd` with a section on writing `.sh` scripts with control flow, exit codes, and error handling.
 - **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd` or a new short chapter in Part III.
 - **Containers / Docker intro** — add to `automation.qmd` or a stand-alone chapter: what a container is, why it matters for reproducibility, when to reach for one.
-- **Markdown syntax as its own reference** — add to `documentation.qmd` or a short appendix.
 - **Stack Overflow hygiene** — add to `questions.qmd`.
 
 Each of the above would be a reasonable first PR for a contributor. Follow the canonical 8-section structure (see Style Guide) and add the chapter to `_quarto.yml` + the label table above.

@@ -38,15 +38,23 @@ A way of interacting with a computer by clicking on icons rather than typing tex
 
 ### JSON (JavaScript Object Notation) {#term-json}
 
-A plain-text file format for structured data that supports nested objects and arrays. It is the dominant format for data returned from web APIs. See @sec-data-file-formats.
+A plain-text file format for structured data that supports nested objects and arrays. It is the dominant format for data returned from web APIs. See @sec-data-file-formats and @sec-common-formats.
 
 ### Jupyter kernel {#term-kernel}
 
 The computational engine that executes the code in a Jupyter notebook. Each notebook is connected to a kernel; the kernel determines which Python interpreter (and therefore which environment) your code runs in. If your imports fail or the wrong version of a package shows up, check the kernel first. See @sec-jupyter.
 
+### Large language model (LLM) {#term-llm}
+
+A neural network trained on large amounts of text that generates text by predicting the next token in a sequence. LLMs power AI assistants like ChatGPT, Claude, and GitHub Copilot. See @sec-ai-llm and @sec-llm-internals.
+
 ### Library {#term-library}
 
 A set of software resources that expand the functionality of a programming language. The basic version of Python only includes a core set of functionality; libraries like `numpy`, `pandas`, and `matplotlib` add numerical computation, data manipulation, and plotting. "Library" and "package" are often used interchangeably in Python.
+
+### Markdown {#term-markdown}
+
+A lightweight markup language that uses plain-text characters (`#`, `*`, `-`, backticks) to represent formatting like headings, emphasis, lists, and code blocks. Markdown is the standard format for README files, GitHub issues, Jupyter notebook text cells, and documentation tools like Quarto. See @sec-common-formats.
 
 ### Notebook {#term-notebook}
 
@@ -107,3 +115,7 @@ An identifier (usually something like `1.2.3`) that marks a specific release of 
 ### Virtual environment {#term-virtual-environment}
 
 An isolated Python installation scoped to a single project, so packages you install for one project don't leak into others. `python -m venv .venv` creates one; `source .venv/bin/activate` turns it on. See @sec-virtual-environments.
+
+### YAML {#term-yaml}
+
+A human-readable data serialization format that uses indentation (spaces, never tabs) to represent nested structure. YAML is the standard format for configuration files in tools like Quarto, GitHub Actions, and conda. See @sec-common-formats.
