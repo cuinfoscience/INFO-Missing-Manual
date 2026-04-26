@@ -1,4 +1,4 @@
-# CLAUDE.md — Paratechnical Computing Handbook
+# CLAUDE.md — Missing Manual for Information Scientists
 
 This file guides Claude Code sessions working on this repository. Read it before making any changes.
 
@@ -6,9 +6,9 @@ This file guides Claude Code sessions working on this repository. Read it before
 
 ## Project Overview
 
-The **Paratechnical Computing Handbook** is a Quarto book for undergraduate non-CS majors — students in data science, social science, humanities, and adjacent fields who use computing as a tool but haven't learned the systematic practices that surround it. The handbook fills the "hidden curriculum" gap: the skills that fall between knowing what to type and understanding how to work professionally.
+The **Missing Manual for Information Scientists** is a Quarto book for undergraduate non-CS majors — students in data science, social science, humanities, and adjacent fields who use computing as a tool but haven't learned the systematic practices that surround it. The handbook fills the "hidden curriculum" gap: the skills that fall between knowing what to type and understanding how to work professionally.
 
-**Authors:** Brian C. Keegan & Abram Handler
+**Author:** Brian C. Keegan
 **Format:** [Quarto book](https://quarto.org/docs/books/) rendered to HTML (primary) and PDF
 **Intended use:** **Reference documentation**, not a front-to-back read. Each chapter is designed to stand on its own so a reader can drop in mid-book and still get value.
 

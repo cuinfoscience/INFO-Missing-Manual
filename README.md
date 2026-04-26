@@ -1,10 +1,10 @@
-# Paratechnical Computing Handbook
+# Missing Manual for Information Scientists
 
-[![Build book](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml/badge.svg)](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml)
+[![Render and Publish](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml/badge.svg)](https://github.com/brianckeegan/ParatechnicalComputingHandbook/actions/workflows/build-book.yml)
 
-A reference book for the skills that fall between knowing what to type and working like a professional. The *Paratechnical Computing Handbook* teaches the "hidden curriculum" of computing: the tools, practices, and mental models that most courses assume you already know.
+A reference book for the skills that fall between knowing what to type and working like a professional. The *Missing Manual for Information Scientists* teaches the "hidden curriculum" of computing: the tools, practices, and mental models that most courses assume you already know.
 
-**Authors:** Brian C. Keegan & Abram Handler
+**Author:** Brian C. Keegan
 
 ## Who this is for
 
@@ -36,7 +36,7 @@ Output lands in `book/`:
 
 - `book/index.html` — landing page for the HTML book
 - `book/llms.txt` and per-chapter `*.llms.md` — machine-readable versions designed to be ingested by LLMs (see https://quarto.org/docs/websites/website-llms.html)
-- `book/Paratechnical-Computing-Handbook.pdf` — only if you rendered `--to pdf` locally
+- `book/*.pdf` — only if you rendered `--to pdf` locally
 
 ## Project structure
 
@@ -58,7 +58,7 @@ ParatechnicalComputingHandbook/
 │   └── part-6-algorithmic/          # Part VI — Algorithmic Systems
 │
 ├── graphics/                        # images used in chapters
-└── .github/workflows/build-book.yml # CI: renders HTML book
+└── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
 ```
 
 ## Book contents
@@ -87,4 +87,34 @@ The short version:
 
 ## CI
 
-Every push to `main` and pull request against `main` triggers `.github/workflows/build-book.yml`, which renders the book in an Ubuntu runner using the latest stable Quarto release. The rendered `book/` output is uploaded as an artifact named `paratechnical-computing-handbook` and retained for 30 days. On pushes to `main`, the workflow also publishes the book to GitHub Pages via the `gh-pages` branch (using `quarto-dev/quarto-actions/publish`). PDF rendering is a local-only step — install TinyTeX and run `quarto render --to pdf` if you want one.
+Every push to `main` triggers `.github/workflows/build-book.yml`, which renders the book and publishes it to GitHub Pages via the `gh-pages` branch (`quarto-dev/quarto-actions/publish@v2`). Pull requests against `main` run a render-only job for validation but do not publish. The workflow can also be triggered manually from the Actions tab. PDF rendering is local-only — install TinyTeX and run `quarto render --to pdf` if you want one.
+
+## Rendered book
+
+The latest build is published to <https://brianckeegan.github.io/ParatechnicalComputingHandbook/>.
+
+## Citation
+
+If you use this book in teaching or research, please cite:
+
+```bibtex
+@book{keegan_2026_missing_manual,
+  author    = {Keegan, Brian C.},
+  title     = {Missing Manual for Information Scientists: The Hidden Curriculum of Computing Technologies},
+  year      = {2026},
+  publisher = {Department of Information Science, University of Colorado Boulder},
+  url       = {https://github.com/brianckeegan/ParatechnicalComputingHandbook}
+}
+```
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## AI Disclosure
+
+Portions of this book were drafted with assistance from large language model tools, including Claude. All content has been reviewed and edited by the author. See the [AI Disclosure appendix](appendix-ai-disclosure.qmd) for the full statement.
+
+## Acknowledgments
+
+This book grew out of teaching undergraduate data science and information science students at the University of Colorado Boulder. It reflects the questions, frustrations, and feedback of many cohorts who pushed back on what was missing from the standard curriculum.
