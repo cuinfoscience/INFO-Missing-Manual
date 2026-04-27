@@ -415,144 +415,144 @@
   {
     "objectID": "parts/part-1-practice/common-formats.html",
     "href": "parts/part-1-practice/common-formats.html",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "",
     "text": "Purpose\nBefore you write your first function, before you open your first dataset, you will encounter configuration files, README documents, and structured data exchanges that are written in formats you are expected to read and edit — but that nobody explicitly teaches you. A README.md is Markdown. A _quarto.yml or .github/workflows/build.yml is YAML. An API response is almost certainly JSON. If you cannot read or edit these formats confidently, you will spend time debugging invisible whitespace errors, misplaced colons, and mismatched brackets instead of doing the work you actually care about.\nThis chapter introduces the syntax of the three text formats you will encounter most often outside of code itself: Markdown, YAML, and JSON. The goal is not to make you a format expert. It is to give you enough fluency to read a config file, write a formatted document, and troubleshoot a broken file without guessing.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#learning-objectives",
     "href": "parts/part-1-practice/common-formats.html#learning-objectives",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "Learning objectives",
     "text": "Learning objectives\nBy the end of this chapter, you should be able to:\n\nWrite a Markdown document with headings, lists, links, code blocks, and emphasis.\nRead and write a YAML configuration file, including nested keys, lists, and multi-line strings.\nRead and write a JSON object, including nested structures and arrays.\nIdentify common syntax errors in each format and fix them.\nExplain when each format is typically used and why.\nValidate a YAML or JSON file using a command-line tool or online validator.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#running-theme-know-the-format-before-you-edit-the-file",
     "href": "parts/part-1-practice/common-formats.html#running-theme-know-the-format-before-you-edit-the-file",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "Running theme: know the format before you edit the file",
     "text": "Running theme: know the format before you edit the file\nEvery file has a format. If you edit it without understanding that format’s rules, you will break things in ways the error messages will not explain well. Learn to recognize which format you are looking at before you start changing things.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#markdown",
     "href": "parts/part-1-practice/common-formats.html#markdown",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.1 Markdown",
     "text": "4.1 Markdown\nMarkdown is a lightweight markup language for writing formatted text using plain characters. It was created in 2004 by John Gruber and has become the de facto standard for documentation, README files, Jupyter notebook text cells, GitHub issues, Slack messages, and many other contexts where you want some formatting without the overhead of HTML.\nThe core idea is that the formatting markers look like what they mean. A heading starts with #. A list item starts with - or 1.. Bold text is wrapped in **. The file stays readable even if you never render it.\n\nHeadings\nHeadings use one or more # characters at the start of a line:\n# Heading 1\n## Heading 2\n### Heading 3\n#### Heading 4\nUse headings hierarchically. Do not skip levels — going from ## to #### without a ### in between confuses readers and screen readers alike. Most tools render up to six levels (######), but three is usually enough.\n\n\nEmphasis and inline formatting\n*italic text* or _italic text_\n**bold text** or __bold text__\n***bold and italic***\n`inline code`\n~~strikethrough~~\nConvention in technical writing: use *single asterisks* for italic and **double asterisks** for bold. The underscore variants (_ and __) can cause problems inside words and inside filenames, so the asterisk form is safer.\nUse backticks for anything that is code, a command, a filename, a variable name, or a literal value. This is not optional decoration — it signals to the reader that the text is meant to be taken literally.\n\n\nLists\nUnordered lists use -, *, or + as bullet markers. Pick one and be consistent:\n- First item\n- Second item\n  - Nested item (indent two spaces)\n  - Another nested item\n- Third item\nOrdered lists use numbers followed by a period. The actual numbers do not matter to most renderers — they auto-number from whatever you start with:\n1. First step\n2. Second step\n3. Third step\n\n\n\n\n\n\nTip\n\n\n\nIf you always write 1. for every item, reordering the list never requires renumbering. Most renderers handle this correctly, though some strict parsers expect sequential numbers.\n\n\n\n\nLinks and images\n[link text](https://example.com)\n[link text](https://example.com \"Optional tooltip\")\n\n![Alt text for the image](path/to/image.png)\n![Alt text](path/to/image.png \"Optional caption\")\nAlways write meaningful alt text for images. “Screenshot” is not meaningful. “Error message showing ModuleNotFoundError for pandas” is.\n\n\nCode blocks\nFor inline code, use single backticks: `pd.read_csv()`.\nFor multi-line code blocks, use triple backticks (a “fenced code block”) with an optional language hint for syntax highlighting:\n```python\nimport pandas as pd\ndf = pd.read_csv(\"data.csv\")\nprint(df.head())\n```\nThe language hint (python, bash, json, yaml, etc.) is not required, but it activates syntax highlighting in most renderers and helps the reader understand what they are looking at.\n\n\nBlockquotes\nPrefix lines with &gt;:\n&gt; This is a blockquote.\n&gt; It can span multiple lines.\n&gt;\n&gt; And multiple paragraphs.\n\n\nHorizontal rules\nThree or more hyphens, asterisks, or underscores on a line by themselves:\n---\n\n\nTables\nMarkdown tables use pipes and hyphens:\n| Column A | Column B | Column C |\n|----------|----------|----------|\n| Row 1    | Data     | More     |\n| Row 2    | Data     | More     |\nThe alignment row (the |---| line) is required. You can control column alignment with colons:\n| Left   | Center  | Right  |\n|:-------|:-------:|-------:|\n| text   | text    | text   |\n\n\n\n\n\n\nNote\n\n\n\nMarkdown tables are painful for anything beyond five or six columns. If you need a serious table, consider generating it from code or using a CSV file and a rendering tool.\n\n\n\n\nCommon Markdown mistakes\n\nNo blank line before a list or heading. Most renderers require a blank line before a heading or list to recognize it. Without the blank line, the heading or list may be rendered as plain text.\nInconsistent indentation in nested lists. Use exactly two or four spaces (pick one) for each nesting level. Tabs can cause unpredictable behavior.\nForgetting the language hint on code blocks. The code will still render, but without syntax highlighting it is harder to read.\nUsing HTML when Markdown would suffice. Markdown supports inline HTML, but mixing the two makes the source harder to read and is unnecessary for most formatting.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#yaml",
     "href": "parts/part-1-practice/common-formats.html#yaml",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.2 YAML",
     "text": "4.2 YAML\nYAML (originally “Yet Another Markup Language,” now recursively “YAML Ain’t Markup Language”) is a human-readable data serialization format. You will encounter it in configuration files for tools like Quarto (_quarto.yml), GitHub Actions (.github/workflows/*.yml), conda (environment.yml), Docker Compose (docker-compose.yml), and many others.\nYAML’s design philosophy is readability. It uses indentation instead of brackets, which makes it pleasant to read but unforgiving about whitespace.\n\nKey-value pairs\nThe basic unit of YAML is a key-value pair, separated by a colon and a space:\nname: Brian Keegan\nuniversity: University of Colorado Boulder\nyear: 2026\n\n\n\n\n\n\nWarning\n\n\n\nThe space after the colon is mandatory. name:Brian is not valid YAML. name: Brian is.\n\n\n\n\nNesting (indentation)\nYAML uses indentation to represent structure. Child keys are indented under their parent:\nproject:\n  type: book\n  output-dir: _book\n  resources:\n    - graphics/**\nThe standard indentation is two spaces per level. Tabs are not allowed in YAML. If you mix tabs and spaces, you will get a parse error that says something unhelpful like found character '\\t' that cannot start any token. The fix is always: replace tabs with spaces.\n\n\nLists (sequences)\nLists are written with a leading dash and a space:\nfruits:\n  - apple\n  - banana\n  - cherry\nYou can also write short lists inline using square brackets:\nfruits: [apple, banana, cherry]\n\n\nNested structures\nYAML composes freely — you can nest maps inside lists, lists inside maps, and so on:\nchapters:\n  - part: \"Part I — Practice\"\n    chapters:\n      - questions.qmd\n      - documentation.qmd\n  - part: \"Part II — Environment\"\n    chapters:\n      - operating-system.qmd\n      - file-system.qmd\n\n\nStrings, numbers, and booleans\nYAML infers types from values:\nname: Alice          # string\ncount: 42            # integer\nratio: 3.14          # float\nactive: true         # boolean\nnothing: null        # null\nThis type inference can surprise you. The value yes is interpreted as a boolean true in YAML 1.1 (which many tools still use). The value 3.10 is interpreted as the float 3.1, not the string \"3.10\". If you need a literal string, wrap it in quotes:\npython_version: \"3.10\"    # string, not float\nanswer: \"yes\"             # string, not boolean\n\n\n\n\n\n\nWarning\n\n\n\nThe 3.10 vs 3.1 trap is one of the most common YAML bugs in Python configuration files. If you are specifying a Python version, always quote it.\n\n\n\n\nMulti-line strings\nYAML has two multi-line string operators:\n# Literal block (preserves newlines)\ndescription: |\n  This is a multi-line string.\n  Each newline is preserved exactly.\n  Indentation within the block is relative.\n\n# Folded block (joins lines with spaces)\nsummary: &gt;\n  This is a multi-line string\n  that gets folded into a single\n  paragraph when parsed.\nThe | (pipe) preserves line breaks. The &gt; (greater-than) folds them into spaces. Both are useful; pick the one that matches what the consuming tool expects.\n\n\nComments\nComments start with # and continue to the end of the line:\n# This is a full-line comment\nname: Alice  # This is an inline comment\n\n\nCommon YAML mistakes\n\nTabs instead of spaces. YAML forbids tabs for indentation. Configure your text editor to insert spaces when you press Tab (see Chapter 12).\nInconsistent indentation. If one block uses two-space indent and another uses four, the parser may reject the file or misinterpret the structure.\nMissing space after colon. key:value is invalid. key: value is correct.\nUnquoted strings that look like other types. version: 3.10 becomes 3.1. enabled: yes becomes true. When in doubt, quote it.\nForgetting that YAML is case-sensitive. True and true may behave differently depending on the parser version. Stick with lowercase true and false.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#json",
     "href": "parts/part-1-practice/common-formats.html#json",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.3 JSON",
     "text": "4.3 JSON\nJSON (JavaScript Object Notation) is a lightweight data interchange format. It is the default language of web APIs, configuration files for tools like VS Code and Jupyter, and many data pipelines. If you have ever looked at the output of a web API call, you were almost certainly looking at JSON.\nJSON is stricter than YAML and Markdown. It has a rigid syntax with no room for ambiguity, which makes it excellent for machine-to-machine communication and frustrating to write by hand.\n\nObjects (key-value pairs)\nA JSON object is a set of key-value pairs wrapped in curly braces. Keys must be double-quoted strings:\n{\n  \"name\": \"Brian Keegan\",\n  \"university\": \"University of Colorado Boulder\",\n  \"year\": 2026\n}\n\n\nArrays (lists)\nArrays are ordered lists wrapped in square brackets:\n{\n  \"fruits\": [\"apple\", \"banana\", \"cherry\"]\n}\n\n\nNesting\nJSON composes the same way YAML does — objects inside arrays, arrays inside objects:\n{\n  \"chapters\": [\n    {\n      \"part\": \"Part I — Practice\",\n      \"files\": [\"questions.qmd\", \"documentation.qmd\"]\n    },\n    {\n      \"part\": \"Part II — Environment\",\n      \"files\": [\"operating-system.qmd\", \"file-system.qmd\"]\n    }\n  ]\n}\n\n\nData types\nJSON supports six types:\n\n\n\nType\nExample\n\n\n\n\nString\n\"hello\"\n\n\nNumber\n42, 3.14\n\n\nBoolean\ntrue, false\n\n\nNull\nnull\n\n\nObject\n{\"key\": \"value\"}\n\n\nArray\n[1, 2, 3]\n\n\n\nNote: JSON strings must use double quotes. Single quotes are not valid JSON.\n\n\nNo comments\nJSON does not support comments. This is a deliberate design choice — JSON is a data interchange format, not a configuration language. Some tools (like VS Code’s settings.json) extend JSON with comment support (called “JSONC” or “JSON with Comments”), but standard JSON parsers will reject any file containing // or /* */.\nIf you need to annotate a JSON file, the conventional workaround is to add a key like \"_comment\":\n{\n  \"_comment\": \"This file configures the development server\",\n  \"port\": 8080,\n  \"debug\": true\n}\n\n\nCommon JSON mistakes\n\nTrailing commas. JSON does not allow a comma after the last item in an object or array. {\"a\": 1, \"b\": 2,} is invalid. Remove the final comma.\nSingle quotes. {'name': 'Alice'} is not valid JSON. Use double quotes: {\"name\": \"Alice\"}.\nUnquoted keys. {name: \"Alice\"} is not valid JSON. Keys must be quoted: {\"name\": \"Alice\"}.\nComments. Standard JSON does not support comments. If a parser rejects your file, check for stray // or # lines.\nMissing or extra brackets. With deeply nested structures, it is easy to lose track of closing } and ]. Use an editor with bracket matching (see Chapter 12) or a JSON validator.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#when-to-use-which-format",
     "href": "parts/part-1-practice/common-formats.html#when-to-use-which-format",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.4 When to use which format",
     "text": "4.4 When to use which format\n\n\n\n\n\n\n\n\nSituation\nFormat\nWhy\n\n\n\n\nDocumentation, README files, issue descriptions\nMarkdown\nHuman-readable, universally rendered on GitHub, GitLab, Jupyter\n\n\nConfiguration files (Quarto, GitHub Actions, conda)\nYAML\nHuman-readable, supports comments, widely adopted for config\n\n\nAPI responses and data interchange\nJSON\nStrict, unambiguous, universal parser support in every language\n\n\nSettings files (VS Code, Jupyter, npm)\nJSON\nTooling expects it; strict syntax prevents ambiguity\n\n\nData storage for analysis\nNeither — use CSV, Parquet, or a database\nSee Chapter 20\n\n\n\nThe rough heuristic: Markdown is for documents humans read. YAML is for configuration humans edit. JSON is for data machines exchange. There is overlap — some tools use JSON for config, some use YAML for data — but the heuristic holds most of the time.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#validating-files",
     "href": "parts/part-1-practice/common-formats.html#validating-files",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.5 Validating files",
     "text": "4.5 Validating files\nWhen a YAML or JSON file is broken, the error messages are often cryptic. A linter or validator can point you to the exact line.\nJSON validation from the command line:\n# Python's json module doubles as a validator\npython -m json.tool myfile.json\nIf the file is valid, this prints the pretty-printed JSON. If it is invalid, it prints an error with a line number.\nYAML validation from the command line:\n# Install yamllint (pip install yamllint)\nyamllint myfile.yml\nyamllint checks for syntax errors, indentation inconsistencies, and style issues.\nOnline validators are also available for quick checks — search for “JSON validator” or “YAML validator.” Be careful about pasting sensitive configuration (API keys, passwords) into online tools.\n\n\n\n\n\n\nTip\n\n\n\nMany text editors (VS Code, Sublime Text, JetBrains IDEs) have built-in or plugin-based validation for JSON and YAML. If you see red squiggly underlines, the editor is already telling you something is wrong.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#worked-examples",
     "href": "parts/part-1-practice/common-formats.html#worked-examples",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.6 Worked examples",
     "text": "4.6 Worked examples\n\n1. Writing a project README in Markdown\nYou have just started a class project analyzing campus dining data. Write a README that a teammate can follow:\n# Campus Dining Analysis\n\nAnalysis of CU Boulder dining hall traffic patterns for INFO 2301.\n\n## Setup\n\n1. Clone this repository.\n2. Create a virtual environment: `python -m venv .venv`\n3. Activate it: `source .venv/bin/activate`\n4. Install dependencies: `pip install -r requirements.txt`\n\n## Data\n\nThe raw data is in `data/raw/dining_traffic.csv` (not tracked in git).\nDownload it from the shared Google Drive link in the project doc.\n\n## Usage\n\n```bash\npython scripts/clean_data.py\npython scripts/analyze.py",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#team",
     "href": "parts/part-1-practice/common-formats.html#team",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.7 Team",
     "text": "4.7 Team\n\nAlice — data cleaning\nBob — visualization\nCarol — statistical analysis\n\n\n### 2. Reading a Quarto YAML config\n\nGiven this snippet from a `_quarto.yml`:\n\n```yaml\nbook:\n  title: \"My Project\"\n  author: \"Alice\"\n  chapters:\n    - index.qmd\n    - part: \"Part I\"\n      chapters:\n        - intro.qmd\n        - methods.qmd\nYou can read this as: the top-level key book contains three child keys — title, author, and chapters. The chapters key contains a list. The first item is a simple string (index.qmd). The second item is itself a map with a part key and a nested chapters list.\n\n3. Fixing a broken JSON file\nYou receive this JSON from a classmate and it will not parse:\n{\n  'name': 'dining_data',\n  \"columns\": [\"date\", \"hall\", \"count\",],\n  \"rows\": 1500\n  \"source\": \"CU Dining Services\"\n}\nThere are four errors:\n\n'name' and 'dining_data' use single quotes — change to double quotes.\n[\"date\", \"hall\", \"count\",] has a trailing comma — remove the comma after \"count\".\nThe line \"rows\": 1500 is missing a comma before the next key — add a comma at the end.\nAfter fixing all three, the corrected file is:\n\n{\n  \"name\": \"dining_data\",\n  \"columns\": [\"date\", \"hall\", \"count\"],\n  \"rows\": 1500,\n  \"source\": \"CU Dining Services\"\n}",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#exercises",
     "href": "parts/part-1-practice/common-formats.html#exercises",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.8 Exercises",
     "text": "4.8 Exercises\n\nWrite a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks correct.\nOpen a _quarto.yml or environment.yml file from one of your class projects. Identify every key-value pair, every list, and every nested structure. Draw the tree structure on paper.\nFind a public JSON API (for example, https://api.github.com/users/octocat) and examine the response. Identify the objects, arrays, strings, numbers, booleans, and nulls in the output.\nDeliberately introduce three different errors into a valid JSON file (one trailing comma, one single-quoted string, one missing comma). Use python -m json.tool to see the error messages. Note how helpful (or unhelpful) each message is.\nConvert the following YAML to equivalent JSON by hand, then validate your JSON with python -m json.tool:\nproject:\n  name: \"analysis\"\n  version: \"1.0\"\n  dependencies:\n    - pandas\n    - numpy\n    - matplotlib\n  settings:\n    debug: true\n    output_dir: results\nFind a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Identify each feature and explain what it does.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#one-page-checklist",
     "href": "parts/part-1-practice/common-formats.html#one-page-checklist",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.9 One-page checklist",
     "text": "4.9 One-page checklist\n\nMarkdown: headings with #, emphasis with * and **, code with backticks, lists with - or 1., links with [text](url), images with ![alt](path).\nYAML: key-value pairs with key: value (space after colon is mandatory), indentation with spaces only (no tabs), lists with - item, comments with #, quote strings that look like numbers or booleans.\nJSON: objects with {}, arrays with [], keys are double-quoted strings, no trailing commas, no comments, no single quotes.\nWhen in doubt, validate. Use python -m json.tool for JSON, yamllint for YAML, and a Markdown previewer for Markdown.\nKnow which format you are editing before you start typing. The file extension (.md, .yml/.yaml, .json) tells you.",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {
     "objectID": "parts/part-1-practice/common-formats.html#quick-reference-syntax-at-a-glance",
     "href": "parts/part-1-practice/common-formats.html#quick-reference-syntax-at-a-glance",
-    "title": "4  Common Text Formats: Markdown, YAML, and JSON",
+    "title": "4  Common Text Formats",
     "section": "4.10 Quick reference: syntax at a glance",
     "text": "4.10 Quick reference: syntax at a glance\n\n\n\n\n\n\n\n\n\nFeature\nMarkdown\nYAML\nJSON\n\n\n\n\nKey-value pair\nN/A (not a data format)\nkey: value\n\"key\": \"value\"\n\n\nList\n- item or 1. item\n- item\n[\"item\"]\n\n\nNesting\nHeading levels (#, ##)\nIndentation (spaces)\nCurly/square brackets\n\n\nComments\nN/A (rendered, not data)\n# comment\nNot supported\n\n\nString quoting\nNot applicable\nOptional (required for ambiguous values)\nAlways double quotes\n\n\nBoolean\nN/A\ntrue / false\ntrue / false\n\n\nCommon extension\n.md\n.yml or .yaml\n.json",
     "crumbs": [
       "Part I — Practice of Technical Work",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats: Markdown, YAML, and JSON</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Common Text Formats</span>"
     ]
   },
   {

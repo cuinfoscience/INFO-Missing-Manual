@@ -1,4 +1,4 @@
-# 4  Common Text Formats: Markdown, YAML, and JSON
+# 4  Common Text Formats
 
 > **TIP:**
 >
