@@ -52,12 +52,11 @@ After `quarto render --to html`:
 ## Repository Structure
 
 ```
-ParatechnicalComputingHandbook/
+INFO-Missing-Manual/
 │
 ├── _quarto.yml                      # book config (HTML + PDF, llms-txt: true)
 ├── index.qmd                        # landing page (Introduction)
 ├── conclusion.qmd                   # final chapter
-├── appendix-glossary.qmd            # Appendix A (glossary with term anchors)
 ├── references.bib                   # BibTeX bibliography (22 entries)
 ├── .github/workflows/build-book.yml # CI: renders HTML + PDF on push/PR
 │
@@ -101,11 +100,14 @@ ParatechnicalComputingHandbook/
 │   │   ├── collaboration.qmd
 │   │   ├── automation.qmd
 │   │   └── secrets.qmd
-│   └── part-6-algorithmic/          # Part VII — Algorithmic Systems (directory slug retained)
-│       ├── ai-llm.qmd
-│       ├── llm-internals.qmd
-│       ├── ai-agents.qmd
-│       └── evaluating-ai.qmd
+│   ├── part-6-algorithmic/          # Part VII — Algorithmic Systems (directory slug retained)
+│   │   ├── ai-llm.qmd
+│   │   ├── llm-internals.qmd
+│   │   ├── ai-agents.qmd
+│   │   └── evaluating-ai.qmd
+│   └── appendix/
+│       ├── appendix-glossary.qmd        # Appendix A (glossary with term anchors)
+│       └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
 │
 └── graphics/                        # PNGs referenced from chapters
 ```
@@ -280,7 +282,7 @@ A helpful note.
 **Glossary links:**
 
 ```markdown
-A [virtual environment](../../appendix-glossary.qmd#term-virtual-environment) is...
+A [virtual environment](../appendix/appendix-glossary.qmd#term-virtual-environment) is...
 ```
 
 Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` anchor. Use these sparingly — link only on first use in a chapter.
@@ -333,15 +335,23 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ## Gap Chapter Backlog
 
-The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. (Note: directory slugs `part-5-projects/` and `part-6-algorithmic/` retain their original names even though they now correspond to Parts VI and VII, to avoid breaking external links.) The following topics remain as candidates for future work.
+The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. (Note: directory slugs `part-5-projects/` and `part-6-algorithmic/` retain their original names even though they now correspond to Parts VI and VII, to avoid breaking external links.) The fifth round folded four standing backlog items into existing chapters rather than creating new ones: a Stack Overflow section in `questions.qmd` (search-first habits, asking norms, what gets a question closed); a `wget`/`curl` section in `http-apis.qmd` (CLI fetches before Python, when to use which); a Docker / containers section in `virtual-environments.qmd` (when venvs are not enough, minimal Dockerfile, when *not* to reach for a container); and a substantially expanded shell-scripting section in `automation.qmd` covering `set -euo pipefail`, control flow, functions, exit-code conventions, and `trap`-based cleanup, with a short pointer from `terminal.qmd`. The following topics remain as candidates for future work.
 
-**Lower priority (but valuable):**
+**Carried over from earlier rounds:**
 
 - **Data dictionary / schema docs** — new section in `project-management.qmd` covering column documentation and schema change tracking.
-- **Shell scripting (bash `.sh`)** — expand `automation.qmd` with a section on writing `.sh` scripts with control flow, exit codes, and error handling.
 - **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd` or a new short chapter in Part III.
-- **Containers / Docker intro** — add to `automation.qmd` or a stand-alone chapter: what a container is, why it matters for reproducibility, when to reach for one.
-- **Stack Overflow hygiene** — add to `questions.qmd`.
+
+**Newly identified candidates:**
+
+- **Reproducible randomness** — short section (likely in `pandas-basics.qmd` or `tabular-data.qmd`) on `np.random.default_rng(seed)`, why globals like `np.random.seed` are insufficient for parallel work, and how to thread a seed through a pipeline.
+- **Cloud notebooks (Colab, Kaggle, Codespaces)** — add to `jupyter.qmd` or `remote.qmd`: what each platform is good for, how their environments differ from a local venv, and gotchas around persistence, secrets, and GPU access.
+- **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — extension of `data-file-formats.qmd`: when to graduate from `pd.read_csv` to chunking, streaming, or a different tool entirely.
+- **Diagram literacy (Mermaid, ER, sequence)** — add to `documentation.qmd` or a new short chapter: how to read and produce ER diagrams, sequence diagrams, and architecture sketches as part of writing for technical audiences.
+- **Interactive debuggers (`pdb`, IDE breakpoints)** — extend `debugging.qmd` with a section on stepping through code interactively rather than relying solely on print statements.
+- **Editor automation (snippets, format-on-save, multi-cursor)** — extend `text-editors.qmd`: the keystrokes and configurations that turn an editor from a notepad into a tool.
+- **Second-week Git (rebase, cherry-pick, reflog)** — extend `version-control.qmd` with the operations that show up in real collaboration once the basic add/commit/push loop is fluent.
+- **Data ethics and licensing** — possible new chapter or section in `artifacts-have-politics.qmd` covering data licenses (CC-BY, ODbL, terms of use), citation of datasets, and the ethics of scraping vs. downloading from a published source.
 
 Each of the above would be a reasonable first PR for a contributor. Follow the canonical 8-section structure (see Style Guide) and add the chapter to `_quarto.yml` + the label table above.
 
@@ -349,6 +359,6 @@ Each of the above would be a reasonable first PR for a contributor. Follow the c
 
 ## CI/CD
 
-`.github/workflows/build-book.yml` renders the book on every push to `main` and on pull requests against `main`, using the latest stable Quarto release (`quarto-dev/quarto-actions/setup@v2` with `version: release`). The rendered `book/` output is uploaded as an artifact named `paratechnical-computing-handbook` and retained for 30 days. On pushes to `main`, the workflow also publishes the book to GitHub Pages by pushing `book/` to the `gh-pages` branch (`quarto-dev/quarto-actions/publish@v2`, `target: gh-pages`). PRs are render-only and do not publish.
+`.github/workflows/build-book.yml` renders the book on every push to `main` and on pull requests against `main`, using the latest stable Quarto release (`quarto-dev/quarto-actions/setup@v2`). Pull requests run a render-only validation step (`quarto-dev/quarto-actions/render@v2`) and do not publish. Pushes to `main` (and manual `workflow_dispatch` runs) render and publish the book to GitHub Pages via `quarto-dev/quarto-actions/publish@v2` with `target: gh-pages`.
 
 The minimum Quarto version is 1.9.0 (`llms-txt` requires it). If you need to pin a specific version for reproducibility, set `version:` in the workflow's `setup@v2` step.

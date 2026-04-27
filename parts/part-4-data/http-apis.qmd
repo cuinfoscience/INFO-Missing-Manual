@@ -69,6 +69,68 @@ Memorize these five:
 -   **429 Too Many Requests** — you are being rate-limited. Slow down.
 -   **500 Internal Server Error** — the server broke. Not your fault; try again later.
 
+## Quick fetches with `curl` and `wget`
+
+Before you write any Python, the fastest way to confirm that an API actually works is to call it from the command line. Two tools are universally available: [`curl`](https://curl.se/docs/manpage.html) and [`wget`](https://www.gnu.org/software/wget/manual/wget.html). They overlap but are good at different things, and a working knowledge of both pays for itself the first time you have to debug an API at 3 AM with no Python interpreter in sight.
+
+### `curl` for inspecting
+
+`curl` is a Swiss Army knife for HTTP. The bare invocation `curl <url>` sends a GET request and prints the response body to your terminal. That is enough for most quick checks:
+
+```bash
+curl https://api.github.com/repos/pandas-dev/pandas
+```
+
+The flag worth memorizing first is `-i`, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging "is the API actually responding?" or "what status code did I get?", `-i` is the answer:
+
+```bash
+$ curl -i https://api.github.com/repos/pandas-dev/pandas | head
+HTTP/2 200
+content-type: application/json; charset=utf-8
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 58
+...
+```
+
+Three more flags handle most situations. **`-H 'Header: value'`** adds a request header — use it to send your `User-Agent` or an `Authorization: Bearer <token>`. **`-X POST`** changes the HTTP method (the default is GET); pair it with **`-d '...'`** to send a body. And **`-o filename`** writes the response body to a file instead of stdout. Strung together:
+
+```bash
+curl -X POST https://api.example.com/items \
+  -H "Authorization: Bearer $API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "widget", "qty": 12}'
+```
+
+Two more flags are worth knowing for scripts. **`-s`** silences the progress meter (essential when piping `curl` into another command), and **`-f`** makes `curl` exit with a nonzero status code on any HTTP 4xx or 5xx response — without it, `curl` happily writes the server's HTML error page to your output file and reports success.
+
+For pretty-printing JSON responses while you explore, pipe `curl` into [`jq`](https://jqlang.github.io/jq/manual/), which is the de facto JSON command-line processor:
+
+```bash
+curl -s https://api.github.com/repos/pandas-dev/pandas | jq '.stargazers_count'
+```
+
+### `wget` for downloading
+
+`wget` is a download tool first and an HTTP client second. Where `curl` is built for ad-hoc API inspection, `wget` is built for "fetch this URL to a file, reliably, possibly across a flaky network." Two features make it the better choice for bulk downloads.
+
+The first is **resumable transfers**: `wget -c <url>` continues a partial download instead of restarting it from byte zero. For a multi-gigabyte dataset on a slow connection, this is the difference between "I have to babysit this all night" and "I can leave it running."
+
+The second is **recursive mirroring**: `wget -r <url>` follows every link on a page and downloads everything it finds, subject to depth and same-host limits. This is occasionally useful for archiving a small documentation site, and it is wildly inappropriate against most modern web infrastructure — see "Respect `robots.txt`" later in this chapter, and never recursively `wget` a site you do not own without checking the robots policy first.
+
+For most everyday use, the invocation is short:
+
+```bash
+wget https://example.com/dataset.csv               # save as dataset.csv
+wget -O sales.csv https://example.com/data.csv     # save under a chosen name
+wget -c https://example.com/big-file.zip           # resume if interrupted
+```
+
+### When to use which
+
+A practical rule of thumb. Use **`curl`** when you are *exploring* an API — checking what it returns, testing auth, debugging headers, prototyping a request you will eventually translate into Python. Use **`wget`** when you are *downloading a file* and want resilience features like resume and retry. Use **`requests`** (the rest of this chapter) when you are *writing code* that has to fetch data as part of a larger pipeline. The three tools are not competitors; they are different points on the spectrum from "ad-hoc inspection" to "production code."
+
+A hidden benefit of starting with `curl`: many APIs include `curl` invocations in their documentation as the canonical example. Being able to read those examples directly — instead of mentally translating them into `requests` first — speeds up your reading of API docs by a noticeable amount.
+
 ## The `requests` library
 
 The [`requests`](https://requests.readthedocs.io/en/latest/) library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
