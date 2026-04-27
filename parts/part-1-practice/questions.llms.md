@@ -4,7 +4,7 @@
 >
 > **Prerequisites:** none. This chapter stands on its own.
 >
-> **See also:** [sec-documentation](#sec-documentation), [sec-debugging](#sec-debugging), [sec-ai-llm](#sec-ai-llm).
+> **See also:** [sec-documentation](#sec-documentation), [sec-debugging](#sec-debugging), [sec-ai-llm](#sec-ai-llm), [sec-reading-scholarship](#sec-reading-scholarship), [sec-writing-manuscripts](#sec-writing-manuscripts).
 
 ## Purpose
 

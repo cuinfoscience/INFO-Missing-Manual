@@ -1,4 +1,4 @@
-# 29  Environment Variables and Secrets
+# 34  Environment Variables and Secrets
 
 > **TIP:**
 >
@@ -28,7 +28,7 @@ By the end of this chapter, you should be able to:
 
 If a credential is in a file tracked by git, you should treat it as compromised the moment you stage it. Rotate it, remove it, and put the new one in an environment variable.
 
-## 29.1 What an environment variable is
+## 34.1 What an environment variable is
 
 Every running process on your computer has a set of key-value pairs called its **environment**. These are inherited from the shell that started the process. Typical entries include `PATH` (where to find executables), `HOME` (your home directory), and `USER` (your login name). You can add anything else you like.
 
@@ -50,7 +50,7 @@ Use the `os.environ[...]` form when the program *requires* the variable — the 
 >
 > If you ever see the value itself in a traceback or log, **rotate the secret immediately** — assume it is compromised. Do not just remove the log line.
 
-## 29.2 Setting environment variables in your shell
+## 34.2 Setting environment variables in your shell
 
 You can set them on the command line before running your program:
 
@@ -77,7 +77,7 @@ These set the variable for the current shell session only. Close the terminal an
 
 For a variable you want every time you open a shell, add the `export` line to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.profile`). This is fine for truly personal, always-needed secrets. For project-scoped secrets, prefer a `.env` file so they stay with the project.
 
-## 29.3 `.env` files
+## 34.3 `.env` files
 
 A `.env` file is a plain-text file in your project directory that contains `KEY=value` lines. It is the de facto standard for project-scoped environment variables.
 
@@ -94,7 +94,7 @@ A few rules:
 - Values are strings. Do not quote them unless they contain spaces.
 - Do not put secrets in comments. (Yes, people do this.)
 
-## 29.4 `python-dotenv`: loading a `.env` file into your program
+## 34.4 `python-dotenv`: loading a `.env` file into your program
 
 The `python-dotenv` package reads a `.env` file and populates `os.environ` from it, so the rest of your code can just read environment variables as usual.
 
@@ -120,7 +120,7 @@ Conventions:
 - It is a no-op if `.env` does not exist — your program still runs, it just relies on system environment variables instead.
 - By default, `load_dotenv` does *not* overwrite variables that are already set in the environment. This is the behavior you want for CI — production overrides `.env`.
 
-## 29.5 `.gitignore`: the line that matters most in this chapter
+## 34.5 `.gitignore`: the line that matters most in this chapter
 
 **Every project that uses `.env` must have this line in `.gitignore`:**
 
@@ -154,7 +154,7 @@ This file is safe to commit and tells collaborators (and future you) which secre
 
 See [sec-git-github](#sec-git-github) for the full `.gitignore` story.
 
-## 29.6 Secrets in Jupyter notebooks
+## 34.6 Secrets in Jupyter notebooks
 
 Notebooks have a special trap: cell output gets saved with the notebook. If you `print(os.environ["API_KEY"])` in a cell, the key is now embedded in the `.ipynb` file and will be committed on your next `git add`.
 
@@ -173,7 +173,7 @@ API_KEY = os.environ["OPENWEATHER_API_KEY"]
 # Do NOT add `API_KEY` as the last expression in a cell.
 ```
 
-## 29.7 What if I already leaked a secret?
+## 34.7 What if I already leaked a secret?
 
 The bad news: if you committed and pushed a secret to a public repository, assume it is compromised. People actively scan GitHub for exposed credentials within seconds of a push.
 
@@ -206,7 +206,7 @@ GitHub also offers **secret scanning** for public repos — it detects known sec
 > - [`python-dotenv` documentation](https://pypi.org/project/python-dotenv/) — the library most projects use to load `.env` files into process environments.
 > - [GitHub: Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — the official guide to rotating and erasing leaked credentials.
 
-## 29.8 Worked examples
+## 34.8 Worked examples
 
 ### A new project from scratch
 
@@ -279,7 +279,7 @@ print(f"loaded key: length={len(api_key)}, starts with {api_key[:4]}...")
 
 Now you can tell the key loaded correctly without broadcasting it.
 
-## 29.9 Templates
+## 34.9 Templates
 
 **A minimal `.env.example`:**
 
@@ -312,7 +312,7 @@ if missing:
 
 This gives you a useful error on day one instead of a confusing 401 on day three.
 
-## 29.10 Exercises
+## 34.10 Exercises
 
 1.  Create a new project folder, initialize a git repo, and set up `.env`, `.env.example`, and `.gitignore` in the right order. Confirm with `git status` that `.env` does not appear.
 2.  Write a `check_secrets.py` that loads `.env`, reads a variable, and prints its length (not its value). Run it and confirm the length matches your key.
@@ -322,7 +322,7 @@ This gives you a useful error on day one instead of a confusing 401 on day three
 6.  Find a GitHub repo that has accidentally committed a `.env` (they exist — search for `filename:.env DB_PASSWORD`). Read the comments from other users. Note how the maintainer responded. Do not copy the credentials.
 7.  Set an environment variable in your shell profile and a conflicting one in `.env`. Run a program and observe which one wins (hint: by default, system env wins over `load_dotenv`).
 
-## 29.11 One-page checklist
+## 34.11 One-page checklist
 
 - `.env` goes in `.gitignore` **before** you add any secrets.
 - Commit a `.env.example` with variable names but no values.

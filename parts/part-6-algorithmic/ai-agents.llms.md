@@ -1,4 +1,4 @@
-# 32  Working with AI Agent Frameworks
+# 37  Working with AI Agent Frameworks
 
 > **TIP:**
 >
@@ -38,7 +38,7 @@ By the end of this chapter, you should be able to:
 
 An agent that works in a demo can fail catastrophically in production. The autonomy that makes agents useful — they keep going without you — is also what makes their failures hard to catch. Build in checkpoints, keep tools narrowly scoped, and treat agent actions as irreversible until proven otherwise.
 
-## 32.1 From chatbot to agent
+## 37.1 From chatbot to agent
 
 A chatbot is a single-turn or multi-turn conversation: you send a message, the model responds. An agent extends this with four components working together.
 
@@ -52,7 +52,7 @@ A chatbot is a single-turn or multi-turn conversation: you send a message, the m
 
 The key difference between a chatbot and an agent is *action*: an agent can change things in the world, not just describe them. That distinction matters because it changes the stakes of errors. A chatbot that hallucinates gives you bad text; an agent that hallucinates may delete a file, send a message, or make an API call you did not intend.
 
-## 32.2 The agentic loop
+## 37.2 The agentic loop
 
 The core of every agent is a loop that alternates between model reasoning and action execution. The pattern is sometimes called **observe–think–act**:
 
@@ -87,7 +87,7 @@ Several things can go wrong in this loop:
 
 Building a robust agent means designing for these failure paths, not just the happy path.
 
-## 32.3 Overview of agent frameworks
+## 37.3 Overview of agent frameworks
 
 Several frameworks exist to help you build agents without implementing the loop, tool management, and memory yourself. Each makes different trade-offs.
 
@@ -119,7 +119,7 @@ Anthropic’s Claude models support tool use natively through the Messages API. 
 
 Frameworks add complexity, dependencies, and a layer of abstraction between you and the model. For a simple two-step agent (retrieve data, summarize it), implementing the loop directly with the model’s API is often clearer and easier to debug. Start simple and add framework complexity only when you genuinely need what the framework provides.
 
-## 32.4 Defining and registering tools
+## 37.4 Defining and registering tools
 
 The quality of your tool definitions directly determines whether the model uses tools correctly. A poorly described tool will be called with wrong arguments, called at the wrong time, or ignored entirely.
 
@@ -165,7 +165,7 @@ Principles for writing tool descriptions:
 
 Restricting tool access is a safety practice, not just housekeeping. An agent that has access to a “send email” tool might use it unexpectedly. Only expose tools the agent needs for the specific workflow you are running.
 
-## 32.5 Memory types
+## 37.5 Memory types
 
 Memory determines what information is available to the model as it works. Different memory types serve different purposes.
 
@@ -189,7 +189,7 @@ Relational or key-value databases that the agent queries via a tool (like the `q
 
 Some agent frameworks support persisting a summary of past sessions to a store, then loading relevant summaries at the start of new sessions. This gives the appearance of memory across conversations. It is more complex to implement and comes with privacy considerations: be deliberate about what you store and how long you keep it.
 
-## 32.6 Multi-step reasoning patterns
+## 37.6 Multi-step reasoning patterns
 
 How the model reasons through a multi-step problem — not just that it uses tools, but how it structures its thinking — significantly affects reliability.
 
@@ -229,7 +229,7 @@ Agent frameworks typically log traces: the sequence of model calls, tool invocat
 
 - Where in the loop the failure propagated
 
-## 32.7 Orchestrating multi-agent systems
+## 37.7 Orchestrating multi-agent systems
 
 Some tasks benefit from multiple specialized agents working together rather than a single all-purpose agent.
 
@@ -247,7 +247,7 @@ In sequential multi-agent pipelines, a **handoff** is the transfer of a task and
 
 *Common problem:* Information loss at handoffs. If the first agent’s output is a long, unstructured paragraph, the second agent may miss key details. Design outputs at each stage to be explicit, structured, and complete.
 
-## 32.8 Failure modes and risk
+## 37.8 Failure modes and risk
 
 Agentic systems introduce failure modes that do not exist in single-call workflows.
 
@@ -281,7 +281,7 @@ For any action that is hard to reverse — writing to a database, sending a mess
 > - [LangChain agents documentation](https://python.langchain.com/docs/tutorials/agents/) — a framework-level walk-through of agent construction.
 > - [OpenAI: Function calling guide](https://platform.openai.com/docs/guides/function-calling) — the canonical reference for defining tools the model can invoke.
 
-## 32.9 Worked examples
+## 37.9 Worked examples
 
 ### Building a research agent with document retrieval
 
@@ -295,7 +295,7 @@ You have a notebook with five distinct stages — load data, clean it, run analy
 
 An agent ran in production and produced the wrong result. The first move is to **reproduce the failure** and capture the *full* trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the **first place where the output diverged** from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the **model’s reasoning** (the model had the right context but drew a wrong conclusion), or was it in the **tool’s execution** (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the **context it needed** at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.
 
-## 32.10 Exercises
+## 37.10 Exercises
 
 1.  Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.
 
@@ -307,7 +307,7 @@ An agent ran in production and produced the wrong result. The first move is to *
 
 5.  Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.
 
-## 32.11 One-page checklist
+## 37.11 One-page checklist
 
 - Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks
 

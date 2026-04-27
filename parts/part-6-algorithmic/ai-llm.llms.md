@@ -1,10 +1,10 @@
-# 30  Using AI Tools
+# 35  Using AI Tools
 
 > **TIP:**
 >
 > **Prerequisites (read first if unfamiliar):** [sec-asking-questions](#sec-asking-questions).
 >
-> **See also:** [sec-debugging](#sec-debugging), [sec-llm-internals](#sec-llm-internals), [sec-documentation](#sec-documentation).
+> **See also:** [sec-debugging](#sec-debugging), [sec-llm-internals](#sec-llm-internals), [sec-documentation](#sec-documentation), [sec-reading-scholarship](#sec-reading-scholarship), [sec-writing-manuscripts](#sec-writing-manuscripts), [sec-latex](#sec-latex).
 
 ## Purpose
 
@@ -32,7 +32,7 @@ By the end of this chapter, you should be able to:
 
 6.  Use AI in coursework and collaboration without undermining learning or integrity.
 
-## 30.1 What an AI assistant is doing
+## 35.1 What an AI assistant is doing
 
 Most AI assistants in technical settings are built on [large language models](../../appendix-glossary.llms.md#term-llm) (LLMs) — see [sec-llm-internals](#sec-llm-internals) for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
 
@@ -50,7 +50,7 @@ The other side of that pattern: LLMs are unreliable in exactly the ways you woul
 
 You should assume any of these errors are possible at any time. That assumption shapes good habits: ask for primary sources, run small tests on real inputs, and prefer minimal changes you can reason about over large changes you cannot.
 
-## 30.2 A risk-based verification policy
+## 35.2 A risk-based verification policy
 
 Not all tasks have the same consequences if something goes wrong. Use risk level to decide how careful you need to be.
 
@@ -88,7 +88,7 @@ Treat these as stop signs until you have confirmed paths, backups, and intent:
 
 If an assistant suggests one of these as a fix, pause. Ask: What exactly will this change? What evidence says this is the right change? How do I undo it?
 
-## 30.3 The assistive loop: a workflow that forces evidence
+## 35.3 The assistive loop: a workflow that forces evidence
 
 A reliable workflow is an assistive loop: you use AI to propose an approach, then you validate it with evidence.
 
@@ -118,7 +118,7 @@ python -c "import pandas; print(pandas.__version__)"   # which version?
 
 After the fix works, add something that will catch the same problem next time. The lightest-weight options are a unit test that exercises the previously broken behavior, an assertion that encodes the invariant you just discovered (shape, type, range), or a one-line entry in your project’s checklist or README. Each of these turns one round of debugging into a permanent improvement. Without it, the same bug will come back the next time someone touches that area of the code.
 
-## 30.4 Prompt patterns that produce usable how-to guidance
+## 35.4 Prompt patterns that produce usable how-to guidance
 
 Prompts work best when they specify output format and constraints. The goal is to be unambiguous.
 
@@ -160,7 +160,7 @@ For code changes, request a minimal diff rather than a full replacement.
     # "Here is the current function. Provide a minimal patch (diff-style) to fix
     # <specific bug>. Do not refactor unrelated code. Explain how to test the fix."
 
-## 30.5 Using AI to improve technical questions
+## 35.5 Using AI to improve technical questions
 
 Good questions produce good answers. AI can help you edit and structure questions before you ask a human.
 
@@ -172,7 +172,7 @@ A useful first move is to ask the assistant to convert your messy first descript
 
 If you do not know what context matters, ask the assistant for a checklist. The same six or seven fields come up over and over for Python data work: the operating system and version, the Python version, the path of the interpreter that is currently active, the environment manager you are using (conda, venv) and the name of the active environment, the version of the relevant packages (`pip show pandas`, `conda list scikit-learn`), and your working directory plus the paths of any files the program is trying to read or write. Fill in everything you can; for fields you genuinely do not know, write “unknown” rather than guessing — the unknowns are often where the bug is hiding.
 
-## 30.6 Using AI in debugging: hypotheses, checks, and minimal diffs
+## 35.6 Using AI in debugging: hypotheses, checks, and minimal diffs
 
 Use AI to propose hypotheses and checks. Keep control of the debugging loop.
 
@@ -258,7 +258,7 @@ A common anti-pattern is accepting a large rewrite because it makes an error dis
 
 - verify with a test or a checkpoint.
 
-## 30.7 Using AI for documentation and project hygiene
+## 35.7 Using AI for documentation and project hygiene
 
 Documentation is a strong target for AI assistance because outputs are reviewable and verifiable.
 
@@ -308,7 +308,7 @@ For recurring tasks (refreshing a dataset, rebuilding outputs), create a runbook
 
 AI can draft a runbook; you must execute it to confirm it works.
 
-## 30.8 Using AI for code: constraints, review, and tests
+## 35.8 Using AI for code: constraints, review, and tests
 
 AI-generated code is useful when you control scope and require verification.
 
@@ -360,7 +360,7 @@ Code that writes files can destroy work. When an assistant proposes code that de
 
 - confirm the code uses explicit paths, not implicit working-directory assumptions.
 
-## 30.9 Security and privacy hygiene
+## 35.9 Security and privacy hygiene
 
 Security mistakes often begin as convenience: pasting too much context.
 
@@ -382,7 +382,7 @@ When you need help with a data issue, share the *shape* of the data instead of t
 
 Commands that request elevated privileges deserve a stop-and-verify reflex. If the assistant suggests `sudo`, a recursive `chmod`, or any change to system-wide configuration, do not run it before you confirm three things in primary documentation: what exactly the command will change on disk, how broadly it will apply, and how to undo it. Whenever a least-privilege alternative exists — installing into your user environment, writing to a folder you own, using a project-local config file — prefer it. And when you are unsure whether you actually need elevated privileges, ask a human who has used the system before.
 
-## 30.10 Academic integrity and collaboration
+## 35.10 Academic integrity and collaboration
 
 Courses and teams differ in their policies. Follow the policy that governs your work.
 
@@ -418,7 +418,7 @@ In team settings, AI can accelerate drafting, but humans should review:
 
 - Generated code should be treated like any other contribution: reviewed, tested, and justified.
 
-## 30.11 When AI advice conflicts with your observations
+## 35.11 When AI advice conflicts with your observations
 
 Conflicts are common. Resolve them with evidence.
 
@@ -440,7 +440,7 @@ If the assistant cannot provide a verifiable primary source, treat its claim as 
 > - [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, with patterns for chat and API workflows.
 > - [Google: Generative AI prompt guide](https://ai.google.dev/gemini-api/docs/prompting-intro) — a beginner-friendly walk-through from Gemini’s documentation.
 
-## 30.12 Case studies
+## 35.12 Case studies
 
 These case studies illustrate how AI fits into a disciplined workflow.
 
@@ -488,7 +488,7 @@ Sometimes the assistant suggests a “fix” you should refuse. A common case: y
 
 The correct response is to step back and ask why the program cannot write where you told it to. Almost always the answer is that the path is wrong — you are trying to write into `/usr/local/share/...` instead of into a folder you own — and the right fix is to change the path, not the permissions. Prefer writing into a user-owned folder under your home directory (a project-local `outputs/` works fine). If you genuinely think you need system permissions, that is the moment to ask a TA or instructor before running anything. High-risk suggestions are exactly the situations where the assistant has the least context and the consequences of being wrong are largest.
 
-## 30.13 Exercises
+## 35.13 Exercises
 
 1.  Take a recent error. Ask an assistant for three hypotheses and two checks per hypothesis. Run the checks and record which hypotheses you eliminated.
 
@@ -500,7 +500,7 @@ The correct response is to step back and ask why the program cannot write where 
 
 5.  Create a personal “do not paste” list (credentials, tokens, private data). Keep it near your workstation.
 
-## 30.14 One-page checklist
+## 35.14 One-page checklist
 
 - I treat AI output as a proposal and require evidence.
 

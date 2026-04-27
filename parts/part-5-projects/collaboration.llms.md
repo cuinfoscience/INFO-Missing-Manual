@@ -1,4 +1,4 @@
-# 27  Collaboration Mechanics
+# 32  Collaboration Mechanics
 
 > **TIP:**
 >
@@ -30,7 +30,7 @@ By the end of this chapter, you should be able to:
 
 If teammates can understand what changed, why it changed, and how to verify it, collaboration scales.
 
-## 27.1 A beginner mental model: collaboration surfaces
+## 32.1 A beginner mental model: collaboration surfaces
 
 Effective collaboration on a software or data-science project happens across several distinct **surfaces**, and a healthy team uses each one for what it is good at. The **repository** holds the code, notebooks, and documentation — it is the canonical source of what the project actually *is*. **Issues** are where tasks, bugs, questions, and decision records live — anything that needs to be tracked over time but is not itself code. **Pull requests** are where proposed changes get reviewed and discussed before they become part of the repository. **Code review comments** are tied to specific lines of a diff and capture the back-and-forth that produced the merged version. **Project boards or milestones** show the overall status: what is in progress, what is blocked, what is done. And **chat and meetings** are the lightweight coordination layer — useful for unblocking each other quickly, but explicitly *not* the system of record. If a decision happens in chat, write it down somewhere persistent before the conversation scrolls off.
 
@@ -38,7 +38,7 @@ The **core collaboration loop** that ties these surfaces together is short and r
 
 Three roles show up in almost every collaboration. The **author** proposes a change, provides the context a reviewer needs to evaluate it, and responds to feedback. The **reviewer** protects quality, asks clarifying questions when intent is unclear, and mentors less-experienced authors through the process. The **maintainer** or **lead** sets the policies (which branches are protected, which merge strategy is used, who can approve), arbitrates decisions when reviewers disagree, and makes sure things actually get followed through to completion. On a small student project, one person may play all three roles at different times; on a larger team, they are usually different people.
 
-## 27.2 Documentation as collaboration infrastructure
+## 32.2 Documentation as collaboration infrastructure
 
 ### What documentation is for (student framing)
 
@@ -68,7 +68,7 @@ Stale documentation is worse than no documentation, because it actively misleads
 
 When documentation is missing or outdated and you do not have time to fix it in the moment, **file an issue** rather than leaving the problem invisible. A tracked issue is a promise to come back; an undocumented gap in your head is not.
 
-## 27.3 Work planning mechanics: issues and task decomposition
+## 32.3 Work planning mechanics: issues and task decomposition
 
 ### Why issues beat chat threads
 
@@ -116,7 +116,7 @@ Big tasks do not fit in small PRs, and small PRs are what review works on. The s
 
 **Split by reviewability.** Sometimes a natural split by artifact produces chunks that are still too big to review. In that case, split further on a purely mechanical basis: “add the function signature and a stub test” as one issue, “implement the function body” as a second, “wire it into the pipeline” as a third. Each fits in a small PR even if the underlying task is large.
 
-## 27.4 Code review fundamentals (what it is and why it works)
+## 32.4 Code review fundamentals (what it is and why it works)
 
 ### Goals of review
 
@@ -132,7 +132,7 @@ When you sit down to review a PR, walk through six questions in roughly this ord
 
 Most PRs only need one or two of those checks to be substantive — but knowing the full list keeps you from missing the kind of issue that is easy to spot if you remember to look.
 
-## 27.5 Authoring reviewable changes
+## 32.5 Authoring reviewable changes
 
 ### Small PR discipline
 
@@ -183,7 +183,7 @@ The “how to test” block is the single most valuable section. It turns a vagu
 
 Before you request a review, walk through a short self-review of your own PR. **Re-read your own diff** on the GitHub PR page, not just in your editor — the side-by-side rendering often surfaces things that looked fine locally, like a debugging `print` you meant to delete or an accidental change to an unrelated file. **Run a smoke test**: execute the code, run the relevant tests, re-run the notebook. If you cannot demonstrate that the change works, the reviewer certainly cannot. **Confirm that docs are updated** in the same PR — README, docstrings, data dictionary, whatever the change affects. And **check for accidental inclusions**: no secrets, no API keys, no large binary files, no committed `.venv/` directories. A 30-second scan of `git status` and the PR’s file list catches almost all of these.
 
-## 27.6 Reviewing and commenting mechanics
+## 32.6 Reviewing and commenting mechanics
 
 ### Comment taxonomy (so feedback is legible)
 
@@ -232,7 +232,7 @@ When reviewers leave comments, your job as the author is to close each loop expl
 
 If you **disagree** with a comment, say so with your reasoning, and propose an alternative: “I don’t think we should rename this — the current name matches the upstream API. Would it help if I added a comment explaining the mapping?” Disagreement is fine; silent reversals are not. And **avoid drive-by changes** — if during the review you notice an unrelated bug and are tempted to fix it in the same branch, resist. Open a second PR. Drive-by changes confuse the reviewer (“wait, did they address the comment or add new stuff?”) and slow the merge.
 
-## 27.7 Merging, ownership, and handoffs
+## 32.7 Merging, ownership, and handoffs
 
 ### Definition of done (team agreement)
 
@@ -274,7 +274,7 @@ before I can pin the `date` column's expected format.
 
 A two-minute handoff note at the end of a work session saves the next person an hour of archaeology.
 
-## 27.8 Collaboration practices for data science artifacts
+## 32.8 Collaboration practices for data science artifacts
 
 ### Notebooks and noisy diffs
 
@@ -307,7 +307,7 @@ Expected: notebook runs to completion with no errors, week-9
 row in the summary table shows 387 entries.
 ```
 
-## 27.9 Cadences and rituals (lightweight, student-friendly)
+## 32.9 Cadences and rituals (lightweight, student-friendly)
 
 ### Weekly planning
 
@@ -334,7 +334,7 @@ At the end of a project (or milestone, or semester), a short retrospective helps
 
 The one rule that makes retrospectives actually useful is that **every pain point becomes an issue or a documentation update**. “The environment kept breaking” turns into an issue to pin dependencies; “I never knew what was in progress” turns into a commitment to the weekly planning ritual. A retrospective with no concrete follow-ups is a gripe session. A retrospective that closes three issues and updates the README is how teams get better.
 
-## 27.10 Common failure modes and fixes
+## 32.10 Common failure modes and fixes
 
 ### Work hidden in private messages
 
@@ -374,9 +374,9 @@ Documentation drifts out of sync with the code almost immediately, because chang
 
 ![](graphics/PLACEHOLDER-github-pr-review-comment.png)
 
-Figure 27.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
+Figure 32.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
 
-## 27.11 Worked examples (outline)
+## 32.11 Worked examples (outline)
 
 ### Turn a chat question into a good issue
 
@@ -394,7 +394,7 @@ Figure 27.1: ALT: GitHub pull request review interface, showing an inline comme
 
 - Update docs, close issue with summary, tag next steps.
 
-## 27.12 Templates
+## 32.12 Templates
 
 ### Template A: PR checklist
 
@@ -432,7 +432,7 @@ Figure 27.1: ALT: GitHub pull request review interface, showing an inline comme
     * Style/testing expectations
     * Where to ask questions
 
-## 27.13 Exercises
+## 32.13 Exercises
 
 1.  Write a README for a small class project that a classmate can run.
 
@@ -444,7 +444,7 @@ Figure 27.1: ALT: GitHub pull request review interface, showing an inline comme
 
 5.  Close an issue by summarizing what changed, what remains, and how to reproduce.
 
-## 27.14 One-page checklist
+## 32.14 One-page checklist
 
 - Work is tracked in issues/PRs, not only chat.
 
@@ -458,7 +458,7 @@ Figure 27.1: ALT: GitHub pull request review interface, showing an inline comme
 
 - After merge, issues are closed with a clear summary and links.
 
-## 27.15 Quick reference: collaboration norms
+## 32.15 Quick reference: collaboration norms
 
 - Prefer artifacts over memory.
 

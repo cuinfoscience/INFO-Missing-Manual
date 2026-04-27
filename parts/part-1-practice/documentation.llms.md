@@ -4,7 +4,7 @@
 >
 > **Prerequisites:** none. This chapter stands on its own.
 >
-> **See also:** [sec-asking-questions](#sec-asking-questions), [sec-git-github](#sec-git-github), [sec-collaboration](#sec-collaboration).
+> **See also:** [sec-asking-questions](#sec-asking-questions), [sec-git-github](#sec-git-github), [sec-collaboration](#sec-collaboration), [sec-reading-scholarship](#sec-reading-scholarship), [sec-latex](#sec-latex).
 
 ## Purpose
 

@@ -1,10 +1,10 @@
-# 26  Version Control
+# 31  Version Control
 
 > **TIP:**
 >
 > **Prerequisites (read first if unfamiliar):** [sec-terminal](#sec-terminal).
 >
-> **See also:** [sec-collaboration](#sec-collaboration), [sec-automation](#sec-automation), [sec-project-management](#sec-project-management).
+> **See also:** [sec-collaboration](#sec-collaboration), [sec-automation](#sec-automation), [sec-project-management](#sec-project-management), [sec-writing-manuscripts](#sec-writing-manuscripts), [sec-writing-thesis](#sec-writing-thesis), [sec-latex](#sec-latex).
 
 ## Purpose
 
@@ -36,7 +36,7 @@ By the end of this chapter, you should be able to:
 
 A healthy Git workflow favors small commits, small pull requests, clear messages, and frequent synchronization.
 
-## 26.1 Mental models and vocabulary
+## 31.1 Mental models and vocabulary
 
 A **repository** is your project folder plus a hidden `.git` directory inside it. Everything Git knows about your project — every commit, every branch, every author, every file at every point in time — is stored in `.git`. Delete the directory, and you have a regular folder with no version control. Keep it, and you have a complete history you can rewind to.
 
@@ -51,7 +51,7 @@ c127108 Merge pre-commit chapter into automation
 
 ![](graphics/PLACEHOLDER-github-repo.png)
 
-Figure 26.1: ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.
+Figure 31.1: ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.
 
 > **WARNING:**
 >
@@ -61,7 +61,7 @@ Figure 26.1: ALT: GitHub repository page showing the Code tab, the list of top-
 
 ![](graphics/PLACEHOLDER-github-pr-diff.png)
 
-Figure 26.2: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
+Figure 31.2: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
 
 Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.
 
@@ -79,7 +79,7 @@ A **remote** is another copy of the repository hosted somewhere else — usually
 
 A **pull request** (PR, sometimes called a *merge request* on GitLab) is GitHub’s mechanism for proposing that one branch be merged into another. A PR is not a Git concept — it is a GitHub feature layered on top of Git — but it is where most collaborative decisions actually happen: you push a branch, open a PR, your teammates comment on the diff, you respond and revise, and eventually someone clicks Merge. PRs are how teams make changes *visible* before they land.
 
-## 26.2 Why version control matters for student data work
+## 31.2 Why version control matters for student data work
 
 ### Use cases
 
@@ -95,7 +95,7 @@ As a rule, version everything that is **small, textual, and authored by you or y
 
 Do **not** version a short, specific list of things. **Secrets and credentials** — API keys, database passwords, `.env` files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see [sec-secrets](#sec-secrets) for why, and how to recover if it happens). **Large raw datasets** — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every `git clone` slow forever. **Generated artifacts** — compiled binaries, cached model files, HTML output, `__pycache__` directories — should be reproducible from your code, which means they do not need to be versioned; `.gitignore` is where you list them. And **environment folders** — `.venv/`, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (`requirements.txt`, `environment.yml`) is the thing that goes in Git.
 
-## 26.3 Getting started: create or clone
+## 31.3 Getting started: create or clone
 
 ### Initialize a repository (local)
 
@@ -134,7 +134,7 @@ git config --global init.defaultBranch main
 
 Use the same email address you use on GitHub (or the email your course instructor expects), so commits made locally are correctly associated with your online account. The `init.defaultBranch main` line sets the name of the default branch in every new repository you create; `main` is the modern convention and matches what almost every course and open-source project uses today. These settings live in `~/.gitconfig` and only need to be run once per machine.
 
-## 26.4 Daily Git workflow (the minimum viable loop)
+## 31.4 Daily Git workflow (the minimum viable loop)
 
 The healthy daily loop is the same handful of commands repeated over and over: see what changed, stage what you want, commit it with a clear message, and sync with the remote. Once this loop is automatic, the rest of Git becomes much less intimidating.
 
@@ -170,7 +170,7 @@ git pull                # fetch and merge the remote into your branch
 
 That is the entire daily loop: status, diff, add, commit, push, pull. Master those six and you have most of what version control gives you.
 
-## 26.5 Branches and merges (collaboration without chaos)
+## 31.5 Branches and merges (collaboration without chaos)
 
 ### Why branches
 
@@ -223,7 +223,7 @@ The rule that matters most when you are undoing things is this: **prefer “make
 >
 > Never run `git push --force` on `main` or any branch your teammates share. If you genuinely need to rewrite history on your own feature branch, use `git push --force-with-lease`, which refuses to overwrite if someone else has pushed in the meantime. On a shared branch, force-pushing is how you erase a collaborator’s work.
 
-## 26.6 Remotes: fetch, pull, push
+## 31.6 Remotes: fetch, pull, push
 
 ### What these commands do conceptually
 
@@ -243,7 +243,7 @@ On a team, multiple people are pushing to `main` every day. If you branched off 
 
 The habit that prevents drift is simple: **pull before you start new work, and push small, complete units often**. Specifically, run `git pull` on `main` before every new branch, rebase or merge `main` into your long-lived feature branch at least once a day, and push your commits as soon as they are coherent. Small, frequent synchronizations mean every conflict is small. A once-a-week “catch-up” sync is where the scary merge conflicts live.
 
-## 26.7 GitHub fundamentals
+## 31.7 GitHub fundamentals
 
 ### Repository anatomy on GitHub
 
@@ -282,7 +282,7 @@ Closes #42.
 
 The magic words — `Closes #42`, `Fixes #42`, or `Resolves #42` — will cause GitHub to automatically close issue \#42 when the PR is merged. That single line is how you keep the issue tracker honest without any manual bookkeeping.
 
-## 26.8 Forking workflow (contributing without direct write access)
+## 31.8 Forking workflow (contributing without direct write access)
 
 ### Fork vs clone
 
@@ -333,7 +333,7 @@ git push origin main
 
 Once your local and forked `main` branches are current, you can branch off them with confidence. If you have a long-lived feature branch, merge the updated `main` into it the same day you see upstream has moved. Resolving a small conflict today is orders of magnitude easier than resolving a month’s worth of accumulated drift when you are trying to get a PR over the finish line.
 
-## 26.9 Merge conflicts: a disciplined resolution playbook
+## 31.9 Merge conflicts: a disciplined resolution playbook
 
 ### What a conflict is
 
@@ -375,7 +375,7 @@ Delete the conflict markers when you are done — they are not valid code and Gi
 
 - If conflicts involve data files or notebooks that are difficult to merge.
 
-## 26.10 Special considerations for data science projects
+## 31.10 Special considerations for data science projects
 
 ### `.gitignore` hygiene
 
@@ -446,7 +446,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 > - [GitHub Docs: Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — a beginner-friendly overview of Git concepts paired with GitHub features.
 > - [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — GitHub Education’s printable reference for everyday commands.
 
-## 26.11 Worked examples (outline)
+## 31.11 Worked examples (outline)
 
 ### The daily loop
 
@@ -464,7 +464,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 - Fork, clone, add upstream, sync, open PR to upstream.
 
-## 26.12 Templates
+## 31.12 Templates
 
 ### Template A: Commit message
 
@@ -505,7 +505,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
     Question: clarify intent, edge cases
     Nit: formatting, naming (non-blocking)
 
-## 26.13 Exercises
+## 31.13 Exercises
 
 1.  Initialize a repo, add a README and `.gitignore`, and make three meaningful commits.
 
@@ -517,7 +517,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 5.  Fork a repository, add an upstream remote, sync it, and open a PR from your fork.
 
-## 26.14 One-page checklist
+## 31.14 One-page checklist
 
 - I understand working tree vs staging vs commits.
 
@@ -533,7 +533,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 - I follow hygiene: `.gitignore`, no secrets, controlled notebook diffs.
 
-## 26.15 Quick reference: common commands (student set)
+## 31.15 Quick reference: common commands (student set)
 
     # create/clone
 

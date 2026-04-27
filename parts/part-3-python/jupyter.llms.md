@@ -4,7 +4,7 @@
 >
 > **Prerequisites (read first if unfamiliar):** [sec-pkg-mgmt](#sec-pkg-mgmt), [sec-virtual-environments](#sec-virtual-environments).
 >
-> **See also:** [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks), [sec-tracebacks](#sec-tracebacks).
+> **See also:** [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks), [sec-tracebacks](#sec-tracebacks), [sec-presenting](#sec-presenting).
 
 ## Purpose
 

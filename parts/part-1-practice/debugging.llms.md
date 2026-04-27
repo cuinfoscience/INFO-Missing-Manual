@@ -4,7 +4,7 @@
 >
 > **Prerequisites (read first if unfamiliar):** [sec-terminal](#sec-terminal).
 >
-> **See also:** [sec-tracebacks](#sec-tracebacks), [sec-asking-questions](#sec-asking-questions).
+> **See also:** [sec-tracebacks](#sec-tracebacks), [sec-asking-questions](#sec-asking-questions), [sec-latex](#sec-latex).
 
 ## Purpose
 

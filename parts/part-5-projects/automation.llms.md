@@ -1,4 +1,4 @@
-# 28  Automation
+# 33  Automation
 
 > **TIP:**
 >
@@ -34,7 +34,7 @@ By the end of this chapter, you should be able to:
 
 If running checks and builds is one command, people will do it. If it is a long checklist, people will skip it.
 
-## 28.1 A mental model: the automation ladder
+## 33.1 A mental model: the automation ladder
 
 It helps to think of automation as a ladder with five rungs, each one strictly more capable than the last and each one worth climbing only when the rung below has become a real chore.
 
@@ -59,11 +59,11 @@ echo "report ready: reports/q3.html"
 
 ![](graphics/PLACEHOLDER-github-actions-run.png)
 
-Figure 28.1: ALT: GitHub Actions tab on a repository, showing a workflow run with a green checkmark beside each step of the job (checkout, setup-python, install dependencies, run tests).
+Figure 33.1: ALT: GitHub Actions tab on a repository, showing a workflow run with a green checkmark beside each step of the job (checkout, setup-python, install dependencies, run tests).
 
 The right level depends on what you are doing. Solo coursework lives happily at Level 1. A team project usually wants Level 4 for the things that matter most (tests, linting, build) and Level 1 for everything else. Climbing the ladder before you need to is busywork; refusing to climb it after a chore has bitten you is a slow form of procrastination.
 
-## 28.2 Deciding what to automate (student-friendly heuristics)
+## 33.2 Deciding what to automate (student-friendly heuristics)
 
 ### Automate if
 
@@ -77,7 +77,7 @@ The opposite is also true. Automation has its own cost — writing it, debugging
 
 For most student projects, three commands cover almost everything. **One command to set up the environment** (creating a venv or conda env and installing dependencies). **One command to run a smoke test** (a small check that the code can load, the data is reachable, and nothing is wildly broken). **One command to build the core outputs** (whichever scripts produce the figures, tables, or report you care about). Once those three exist, your project is reproducible by anyone who clones it, including future you.
 
-## 28.3 Automation fundamentals: scripts that behave well
+## 33.3 Automation fundamentals: scripts that behave well
 
 A handful of properties separate scripts that automate cleanly from scripts that automate “almost.” Get into the habit of building all of them in from the start.
 
@@ -102,7 +102,7 @@ python src/run_pipeline.py >> logs/pipeline.log 2>&1
 
 The combination of clean exits, idempotence, explicit I/O, and logging is what turns “a script that works on my machine when I babysit it” into “a script my teammates can rely on.”
 
-## 28.4 Repeatable tasks with `make` (and the idea of rebuilds)
+## 33.4 Repeatable tasks with `make` (and the idea of rebuilds)
 
 ### Why use a task runner
 
@@ -225,7 +225,7 @@ Run `make all` and `make` walks the dependency chain in order. Now the magic kic
 
 The `$(CLEAN)` syntax defines a variable — it saves you from retyping the file path every time and makes the pipeline easier to read. On a small project this feels like overkill; on a mid-sized project it saves you minutes or hours per iteration and prevents the “I forgot to rerun the cleaning step after I changed the raw data” bug entirely.
 
-## 28.5 Scheduling scripts
+## 33.5 Scheduling scripts
 
 Once a task is scripted, the next capability is running it without you — every morning at 6 AM, every hour, every first-of-the-month. Both Unix and Windows ship with built-in schedulers that cover everything a student project will need.
 
@@ -339,7 +339,7 @@ touch "$LOCK"
 
 Finally, **decide what happens when the job fails.** The minimum is “write the failure to a log I actually read.” A step up is “send me an email or a Slack message” — many small utilities like `mail` or webhook-based alert services can do this from a wrapper script. The worst pattern is “the job fails silently and I notice three weeks later,” which is what happens when nobody is reading the logs.
 
-## 28.6 Rebuilds and repeatable workflows beyond `make`
+## 33.6 Rebuilds and repeatable workflows beyond `make`
 
 ### Task runners as interfaces
 
@@ -381,7 +381,7 @@ An **artifact** is an output of a run that you want to save, inspect, or share w
 
 The quick rule of thumb: **cache** the things you do not want to rebuild, **artifact** the things you want to look at. Confuse them and you will either waste space storing ephemeral build caches as long-lived artifacts or silently lose outputs that you assumed would be saved.
 
-## 28.7 Continuous Integration (CI): automation as a quality gate
+## 33.7 Continuous Integration (CI): automation as a quality gate
 
 ### What CI is, in one paragraph
 
@@ -536,7 +536,7 @@ permissions:
 
 That one line prevents a compromised action from, say, pushing commits to your repo. Tighten permissions further as you learn what your workflow actually needs.
 
-## 28.8 Local quality gates: pre-commit hooks
+## 33.8 Local quality gates: pre-commit hooks
 
 CI is the team’s safety net, but it only runs *after* you push. The local equivalent is a **git hook**: a small check that runs automatically right before every `git commit` and aborts the commit if something looks wrong. The most common tool for managing these is [`pre-commit`](https://pre-commit.com), a small framework that takes a config file and runs a pipeline of checks on the files you are about to commit ([pre-commit contributors, n.d.](#ref-precommit_framework)).
 
@@ -589,7 +589,7 @@ ruff.....................................................................Passed
 
 This “commit twice” rhythm feels weird for a day, then becomes invisible. A few practical points worth knowing. `git commit --no-verify` skips the hooks entirely — treat it as an emergency exit, not a daily convenience. The config is versioned with the code, so when a teammate clones the repo they only need to run `pre-commit install` once and they pick up all the same checks. And you can run every hook against every file at any time with `pre-commit run --all-files`, which is what you want when you first add pre-commit to an existing project. Anything beyond that — debugging individual hooks, writing your own, wiring pre-commit into CI as a redundant check — you can pick up from the official documentation at <https://pre-commit.com> when the need arises.
 
-## 28.9 Incorporating AI tools into automation (responsibly)
+## 33.9 Incorporating AI tools into automation (responsibly)
 
 Automation configuration files — Makefiles, GitHub Actions YAML, Dockerfiles, cron wrappers — are some of the highest-leverage uses of AI assistance for students. They are repetitive, their syntax is unforgiving, and small errors are tedious to debug. LLMs are surprisingly good at producing a reasonable first draft. They are also capable of producing confident nonsense, and the consequences of nonsense in a workflow file are higher than in regular application code, because a workflow file can run with write access to your repository, your cloud account, or your production environment. Use AI carefully here. See [sec-ai-llm](#sec-ai-llm) for the broader treatment.
 
@@ -644,7 +644,7 @@ Treat the AI like a capable junior teammate who has read every tutorial on the i
 
 The whole process is a few minutes longer than just having the AI write the file and merging blind. That extra time is the entire point.
 
-## 28.10 Common failure modes and fixes
+## 33.10 Common failure modes and fixes
 
 The failure modes below are the ones that bite every student project eventually. Knowing what they look like in advance makes them much cheaper to fix.
 
@@ -726,7 +726,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 > - [GNU Make manual](https://www.gnu.org/software/make/manual/) — the classic reference for `make`, targets, and incremental rebuilds.
 > - [crontab.guru](https://crontab.guru/) — an interactive explainer for cron expressions that removes most of the mystery.
 
-## 28.11 Worked examples (outline)
+## 33.11 Worked examples (outline)
 
 ### Turn a 6-step checklist into `make` targets
 
@@ -770,7 +770,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - Run locally and via PR.
 
-## 28.12 Templates
+## 33.12 Templates
 
 ### Template A: Makefile skeleton (task interface)
 
@@ -836,7 +836,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
     * Any permissions/secrets involved?
     * Links to documentation
 
-## 28.13 Exercises
+## 33.13 Exercises
 
 1.  Identify three repeated tasks in your project and turn them into `make` targets.
 
@@ -852,7 +852,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 7.  Use an AI tool to draft a workflow file, then validate it against official docs and run a test PR.
 
-## 28.14 One-page checklist
+## 33.14 One-page checklist
 
 - I can turn multi-step tasks into one-command targets.
 
@@ -868,7 +868,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - AI assistance is used to draft, not to bypass verification.
 
-## 28.15 Quick reference: common automation concepts
+## 33.15 Quick reference: common automation concepts
 
 - Targets, prerequisites, recipes (rebuild logic).
 

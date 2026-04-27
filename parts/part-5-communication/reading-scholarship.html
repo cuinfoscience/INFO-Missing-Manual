@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>37&nbsp; Working with AI Agent Frameworks – Missing Manual for Information Scientists</title>
+<title>25&nbsp; How to Read Scholarly Articles and Books – Missing Manual for Information Scientists</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,8 +68,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../parts/part-6-algorithmic/evaluating-ai.html" rel="next">
-<link href="../../parts/part-6-algorithmic/llm-internals.html" rel="prev">
+<link href="../../parts/part-5-communication/writing-manuscripts.html" rel="next">
+<link href="../../parts/part-4-data/http-apis.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -80,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -251,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -480,7 +515,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-5-communication/reading-scholarship.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/part-5-communication/reading-scholarship.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span></a>
   </div>
 </li>
@@ -574,7 +609,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
   </div>
 </li>
@@ -627,60 +662,35 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#running-theme-trust-but-verify-at-every-step" id="toc-running-theme-trust-but-verify-at-every-step" class="nav-link" data-scroll-target="#running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</a></li>
-  <li><a href="#from-chatbot-to-agent" id="toc-from-chatbot-to-agent" class="nav-link" data-scroll-target="#from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</a></li>
-  <li><a href="#the-agentic-loop" id="toc-the-agentic-loop" class="nav-link" data-scroll-target="#the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</a></li>
-  <li><a href="#overview-of-agent-frameworks" id="toc-overview-of-agent-frameworks" class="nav-link" data-scroll-target="#overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</a>
+  <li><a href="#running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" id="toc-running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" class="nav-link" data-scroll-target="#running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully">Running theme: you are not reading to finish; you are reading to decide what to read more carefully</a></li>
+  <li><a href="#why-reading-is-hard-and-why-nobody-taught-you" id="toc-why-reading-is-hard-and-why-nobody-taught-you" class="nav-link" data-scroll-target="#why-reading-is-hard-and-why-nobody-taught-you"><span class="header-section-number">25.1</span> Why reading is hard (and why nobody taught you)</a></li>
+  <li><a href="#the-three-pass-method" id="toc-the-three-pass-method" class="nav-link" data-scroll-target="#the-three-pass-method"><span class="header-section-number">25.2</span> The three-pass method</a></li>
+  <li><a href="#reading-across-disciplines" id="toc-reading-across-disciplines" class="nav-link" data-scroll-target="#reading-across-disciplines"><span class="header-section-number">25.3</span> Reading across disciplines</a></li>
+  <li><a href="#skimming-vs.-deep-reading-deciding-what-a-paper-is-for" id="toc-skimming-vs.-deep-reading-deciding-what-a-paper-is-for" class="nav-link" data-scroll-target="#skimming-vs.-deep-reading-deciding-what-a-paper-is-for"><span class="header-section-number">25.4</span> Skimming vs.&nbsp;deep reading: deciding what a paper is for</a></li>
+  <li><a href="#note-taking-systems" id="toc-note-taking-systems" class="nav-link" data-scroll-target="#note-taking-systems"><span class="header-section-number">25.5</span> Note-taking systems</a></li>
+  <li><a href="#reference-management-with-zotero" id="toc-reference-management-with-zotero" class="nav-link" data-scroll-target="#reference-management-with-zotero"><span class="header-section-number">25.6</span> Reference management with Zotero</a></li>
+  <li><a href="#synthesis-building-a-literature-map" id="toc-synthesis-building-a-literature-map" class="nav-link" data-scroll-target="#synthesis-building-a-literature-map"><span class="header-section-number">25.7</span> Synthesis: building a literature map</a></li>
+  <li><a href="#reading-with-ai-legitimate-uses-and-traps" id="toc-reading-with-ai-legitimate-uses-and-traps" class="nav-link" data-scroll-target="#reading-with-ai-legitimate-uses-and-traps"><span class="header-section-number">25.8</span> Reading with AI: legitimate uses and traps</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">25.9</span> Worked examples</a>
   <ul class="collapse">
-  <li><a href="#langchain" id="toc-langchain" class="nav-link" data-scroll-target="#langchain">LangChain</a></li>
-  <li><a href="#llamaindex" id="toc-llamaindex" class="nav-link" data-scroll-target="#llamaindex">LlamaIndex</a></li>
-  <li><a href="#claude-agent-sdk-anthropic-api" id="toc-claude-agent-sdk-anthropic-api" class="nav-link" data-scroll-target="#claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</a></li>
-  <li><a href="#crewai" id="toc-crewai" class="nav-link" data-scroll-target="#crewai">CrewAI</a></li>
-  <li><a href="#when-to-skip-a-framework" id="toc-when-to-skip-a-framework" class="nav-link" data-scroll-target="#when-to-skip-a-framework">When to skip a framework</a></li>
+  <li><a href="#first-pass-a-chi-paper-in-eight-minutes" id="toc-first-pass-a-chi-paper-in-eight-minutes" class="nav-link" data-scroll-target="#first-pass-a-chi-paper-in-eight-minutes">First-pass a CHI paper in eight minutes</a></li>
+  <li><a href="#setting-up-a-zotero-library-for-a-semester-project" id="toc-setting-up-a-zotero-library-for-a-semester-project" class="nav-link" data-scroll-target="#setting-up-a-zotero-library-for-a-semester-project">Setting up a Zotero library for a semester project</a></li>
+  <li><a href="#synthesizing-five-papers-into-a-one-page-literature-map" id="toc-synthesizing-five-papers-into-a-one-page-literature-map" class="nav-link" data-scroll-target="#synthesizing-five-papers-into-a-one-page-literature-map">Synthesizing five papers into a one-page literature map</a></li>
   </ul></li>
-  <li><a href="#defining-and-registering-tools" id="toc-defining-and-registering-tools" class="nav-link" data-scroll-target="#defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</a></li>
-  <li><a href="#memory-types" id="toc-memory-types" class="nav-link" data-scroll-target="#memory-types"><span class="header-section-number">37.5</span> Memory types</a>
-  <ul class="collapse">
-  <li><a href="#in-context-memory" id="toc-in-context-memory" class="nav-link" data-scroll-target="#in-context-memory">In-context memory</a></li>
-  <li><a href="#external-memory-vector-stores" id="toc-external-memory-vector-stores" class="nav-link" data-scroll-target="#external-memory-vector-stores">External memory: vector stores</a></li>
-  <li><a href="#external-memory-structured-databases" id="toc-external-memory-structured-databases" class="nav-link" data-scroll-target="#external-memory-structured-databases">External memory: structured databases</a></li>
-  <li><a href="#episodic-and-long-term-memory" id="toc-episodic-and-long-term-memory" class="nav-link" data-scroll-target="#episodic-and-long-term-memory">Episodic and long-term memory</a></li>
-  </ul></li>
-  <li><a href="#multi-step-reasoning-patterns" id="toc-multi-step-reasoning-patterns" class="nav-link" data-scroll-target="#multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</a>
-  <ul class="collapse">
-  <li><a href="#chain-of-thought" id="toc-chain-of-thought" class="nav-link" data-scroll-target="#chain-of-thought">Chain-of-thought</a></li>
-  <li><a href="#react-reason-act" id="toc-react-reason-act" class="nav-link" data-scroll-target="#react-reason-act">ReAct (Reason + Act)</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
-  <li><a href="#reading-agent-traces" id="toc-reading-agent-traces" class="nav-link" data-scroll-target="#reading-agent-traces">Reading agent traces</a></li>
-  </ul></li>
-  <li><a href="#orchestrating-multi-agent-systems" id="toc-orchestrating-multi-agent-systems" class="nav-link" data-scroll-target="#orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</a>
-  <ul class="collapse">
-  <li><a href="#subagents" id="toc-subagents" class="nav-link" data-scroll-target="#subagents">Subagents</a></li>
-  <li><a href="#supervisor-patterns" id="toc-supervisor-patterns" class="nav-link" data-scroll-target="#supervisor-patterns">Supervisor patterns</a></li>
-  <li><a href="#handoffs" id="toc-handoffs" class="nav-link" data-scroll-target="#handoffs">Handoffs</a></li>
-  </ul></li>
-  <li><a href="#failure-modes-and-risk" id="toc-failure-modes-and-risk" class="nav-link" data-scroll-target="#failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</a>
-  <ul class="collapse">
-  <li><a href="#human-in-the-loop-checkpoints" id="toc-human-in-the-loop-checkpoints" class="nav-link" data-scroll-target="#human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</a></li>
-  </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">37.9</span> Worked examples</a>
-  <ul class="collapse">
-  <li><a href="#building-a-research-agent-with-document-retrieval" id="toc-building-a-research-agent-with-document-retrieval" class="nav-link" data-scroll-target="#building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</a></li>
-  <li><a href="#converting-a-multi-step-notebook-workflow-into-an-agent" id="toc-converting-a-multi-step-notebook-workflow-into-an-agent" class="nav-link" data-scroll-target="#converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</a></li>
-  <li><a href="#diagnosing-a-misbehaving-agent-from-its-trace" id="toc-diagnosing-a-misbehaving-agent-from-its-trace" class="nav-link" data-scroll-target="#diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</a></li>
-  </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">37.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">25.10</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">25.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">25.12</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-matching-reading-depth-to-your-goal" id="toc-quick-reference-matching-reading-depth-to-your-goal" class="nav-link" data-scroll-target="#quick-reference-matching-reading-depth-to-your-goal"><span class="header-section-number">25.13</span> Quick reference: matching reading depth to your goal</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/reading-scholarship.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ai-agents" class="quarto-section-identifier"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></h1>
+<h1 class="title"><span id="sec-reading-scholarship" class="quarto-section-identifier"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span></h1>
 </div>
 
 
@@ -709,226 +719,92 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>, <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
-<p><strong>See also:</strong> <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a>.</p>
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a>, <a href="../part-1-practice/documentation.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+<p><strong>See also:</strong> <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>, <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>, <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 31</span></a>.</p>
 </div>
 </div>
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.</p>
-<p>Agent frameworks have become a major pattern in applied AI work. You will encounter them in research pipelines, data processing workflows, software development assistants, and automated systems. Understanding how they work — what the agentic loop is, how tools are defined and invoked, how memory is managed, and where these systems reliably fail — puts you in a position to use them deliberately rather than being surprised when something goes wrong.</p>
-<p>This chapter builds on the model internals from <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> and the responsible-use practices from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. Where those chapters focus on individual prompts and outputs, this one focuses on <em>systems</em>: sequences of model calls, tool invocations, and decision points that can touch real data, real services, and real consequences.</p>
+<p>The first time you open a research paper, it does not feel like reading. It feels like staring at a wall of jargon, equations, citation soup, and unfamiliar conventions. You read the abstract, blink, read it again, and have no idea what the paper actually claims. You scroll to the introduction, and the authors begin a polite argument with people you have never heard of about a problem you didn’t know existed. Twenty minutes later you are exhausted, and you still cannot tell a friend in one sentence what the paper is about.</p>
+<p>This chapter teaches you a small set of techniques that turn that experience into something tractable. It covers how to triage a paper before committing to read it, how to read at three different depths depending on your goal, how reading conventions differ between HCI papers, machine-learning papers, social-science papers, and humanities scholarship, and how to keep what you read in a system you can actually use months later. None of this is mysterious. It is just craft, and like all craft it improves rapidly once someone tells you what professionals actually do.</p>
+<p>Read this chapter before your first literature-heavy assignment. It will save you from a common failure mode where students “do the readings” by highlighting every other sentence and remembering nothing.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
-<li><p>Describe the four core components of an AI agent</p></li>
-<li><p>Trace the steps of an agentic loop and identify where failures typically occur</p></li>
-<li><p>Compare two or three major agent frameworks and articulate when each is appropriate</p></li>
-<li><p>Define a tool with a well-written description and input schema</p></li>
-<li><p>Explain the difference between in-context memory and external memory</p></li>
-<li><p>Read an agent trace and identify what the model decided and why</p></li>
-<li><p>Describe at least three failure modes specific to agentic systems</p></li>
-<li><p>Apply human-in-the-loop checkpoints to limit the blast radius of agent errors</p></li>
+<li><p>Apply Keshav’s three-pass method to triage and read a research paper at the depth your goal actually requires.</p></li>
+<li><p>Recognize the rhetorical conventions of HCI/CSCW papers, machine-learning and data-science papers, social-science empirical work, and humanities scholarship, and adjust your reading accordingly.</p></li>
+<li><p>Maintain a personal literature library in Zotero with the Better BibTeX add-on, so that your reading integrates seamlessly with your writing tools.</p></li>
+<li><p>Take structured notes (Cornell, Zettelkasten, or annotation-based) that you can synthesize across many sources without re-reading every paper.</p></li>
+<li><p>Build a small literature map for a research question and identify the recurring “key papers” and “key authors” in a field.</p></li>
 </ol>
 </section>
-<section id="running-theme-trust-but-verify-at-every-step" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</h2>
-<p>An agent that works in a demo can fail catastrophically in production. The autonomy that makes agents useful — they keep going without you — is also what makes their failures hard to catch. Build in checkpoints, keep tools narrowly scoped, and treat agent actions as irreversible until proven otherwise.</p>
+<section id="running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully">Running theme: you are not reading to finish; you are reading to decide what to read more carefully</h2>
+<p>Reading scholarship is fundamentally a triage problem. You will encounter far more papers than you can ever read deeply. The skill is not “reading faster” — it is reading at the right depth, for the right purpose, on the right paper, and knowing how to decide.</p>
 </section>
-<section id="from-chatbot-to-agent" class="level2" data-number="37.1">
-<h2 data-number="37.1" class="anchored" data-anchor-id="from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</h2>
-<p>A chatbot is a single-turn or multi-turn conversation: you send a message, the model responds. An agent extends this with four components working together.</p>
-<p><strong>Model.</strong> A language model is the agent’s reasoning engine. It receives context, decides what to do next, and either produces a final answer or decides to invoke a tool.</p>
-<p><strong>Tools.</strong> Functions the model can call to take actions or retrieve information. Tools might query a database, read a file, call an external API, run a shell command, or search the web. The model does not execute these directly — it generates a structured request, and your code runs the function.</p>
-<p><strong>Memory.</strong> The information available to the model across steps. This includes in-context history (what has happened so far in this run), external memory (documents or records retrieved from a store), and sometimes longer-term memory persisted across runs.</p>
-<p><strong>Planning loop.</strong> The control structure that decides when to keep going and when to stop. Some agents are simple loops: call the model, execute tool, repeat. Others have more complex planning structures with explicit goal decomposition and reflection steps.</p>
-<p>The key difference between a chatbot and an agent is <em>action</em>: an agent can change things in the world, not just describe them. That distinction matters because it changes the stakes of errors. A chatbot that hallucinates gives you bad text; an agent that hallucinates may delete a file, send a message, or make an API call you did not intend.</p>
+<section id="why-reading-is-hard-and-why-nobody-taught-you" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="why-reading-is-hard-and-why-nobody-taught-you"><span class="header-section-number">25.1</span> Why reading is hard (and why nobody taught you)</h2>
+<p>Most undergraduates arrive at their first research paper with the reading habits they built in high school: read every sentence in order, highlight things that seem important, take notes if forced. That strategy works for a textbook, where every sentence is intended for you and the author has tried to maximize clarity. It fails for a research paper, where the audience is a small community of specialists, the structure is rhetorical rather than pedagogical, and the author’s primary goal is to defend a contribution against skeptical reviewers — not to teach you.</p>
+<p>This is not your fault, and it is not the authors’ fault either. Research papers are <em>condensed correspondence between specialists</em>. They assume context you don’t have. They use jargon as shorthand because the audience already knows it. They cite earlier work in passing because the audience has already read it. When you read a CHI paper as a sophomore and feel like the words are doing something different than in a textbook, you are correct: they are. The trick is not to read harder. The trick is to read with a different protocol.</p>
+<p>Two ideas underpin everything else in this chapter. First, <strong>most papers do not deserve a full read.</strong> A paper you cite once in a literature review may need only ten minutes of your attention. A paper you build directly on may need six hours. You decide. Second, <strong>you read in passes, not in a single sweep.</strong> Each pass adds depth, and you only commit the next pass if the previous pass justified it.</p>
 </section>
-<section id="the-agentic-loop" class="level2" data-number="37.2">
-<h2 data-number="37.2" class="anchored" data-anchor-id="the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</h2>
-<p>The core of every agent is a loop that alternates between model reasoning and action execution. The pattern is sometimes called <strong>observe–think–act</strong>:</p>
-<ol type="1">
-<li><p><strong>Observe</strong>: The agent receives the current state — the user goal, any prior tool results, conversation history, and retrieved context.</p></li>
-<li><p><strong>Think</strong>: The model reasons about the current state and decides what to do next: invoke a tool, ask a clarifying question, or produce a final answer.</p></li>
-<li><p><strong>Act</strong>: If the model decides to use a tool, your code executes the tool and returns the result to the model. The result becomes part of the next observation.</p></li>
-<li><p><strong>Repeat</strong>: Steps 1–3 repeat until the model produces a final answer or a stop condition is reached.</p></li>
-</ol>
-<p>A minimal agentic loop looks like:</p>
-<pre><code>while not done:
-    response = model.call(context)
-    if response.has_tool_call():
-        result = execute_tool(response.tool_call)
-        context.append(result)
-    else:
-        final_answer = response.text
-        done = True</code></pre>
-<p>Several things can go wrong in this loop:</p>
-<ul>
-<li><p>The model loops indefinitely, calling tools repeatedly without converging.</p></li>
-<li><p>A tool call fails and the error message is not informative enough for the model to recover.</p></li>
-<li><p>The context grows with each iteration until it hits the context window limit.</p></li>
-<li><p>The model decides it is done but the task is actually incomplete.</p></li>
-</ul>
-<p>Building a robust agent means designing for these failure paths, not just the happy path.</p>
+<section id="the-three-pass-method" class="level2 page-columns page-full" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="the-three-pass-method"><span class="header-section-number">25.2</span> The three-pass method</h2>
+<p>Srinivasan Keshav’s three-page note “How to Read a Paper” (<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>) is the canonical reference. It is short — read it before your next assigned paper. The method:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf" class="uri">https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf</a></p></div></div><p><strong>Pass 1: the five-to-ten-minute skim.</strong> You are deciding whether to read this paper at all. Read the title, abstract, introduction’s first paragraph and last paragraph, and the conclusion. Look at every figure and read every figure caption. Glance at the section headings to get the structure. Skim the references for names you recognize. At the end of pass 1, you should be able to answer five questions: what is the paper’s category (empirical, theoretical, system-building, survey)? What is the broad context? Are the assumptions reasonable? What are the main contributions, in your own words? Is the paper well-written? If your one-line summary doesn’t fit, the paper either isn’t ready for you or isn’t what you thought.</p>
+<p><strong>Pass 2: the one-hour structured read.</strong> You have decided this paper is worth reading. Read it linearly, but ignore the proofs, the deepest math, and the appendices. Pay close attention to the figures, tables, and the sentences immediately surrounding them — those are usually the spine of the argument. Mark unfamiliar terms and citations to chase later. At the end of pass 2, you should be able to summarize the main thrust of the paper to someone else, with evidence — a paragraph, not a sentence. If you cannot, the paper may be poorly written, or you may be missing background. That’s a signal to read a related survey paper before coming back.</p>
+<p><strong>Pass 3: the deep read.</strong> You are going to build on this paper. Plan four to six hours, sometimes more. Read every section. Reproduce the argument from the paper’s premises. Try to re-derive the equations or re-implement the method from memory; check what you got wrong. Note the assumptions you would challenge in your own work. At the end of pass 3, you should be able to reconstruct the paper from scratch and identify its weaknesses.</p>
+<p>The cost of pass 1 is small. The cost of pass 3 is enormous. Most students invert this — they jump straight into linear reading and burn two hours on a paper that pass 1 would have told them to set aside. Don’t do that.</p>
 </section>
-<section id="overview-of-agent-frameworks" class="level2" data-number="37.3">
-<h2 data-number="37.3" class="anchored" data-anchor-id="overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</h2>
-<p>Several frameworks exist to help you build agents without implementing the loop, tool management, and memory yourself. Each makes different trade-offs.</p>
-<section id="langchain" class="level3">
-<h3 class="anchored" data-anchor-id="langchain">LangChain</h3>
-<p><a href="https://python.langchain.com/docs/introduction/">LangChain</a> is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.</p>
-<p><em>Best for:</em> Teams that want a batteries-included framework with many pre-built components. Its abstraction layer is useful for rapid prototyping but can obscure what is happening underneath.</p>
+<section id="reading-across-disciplines" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="reading-across-disciplines"><span class="header-section-number">25.3</span> Reading across disciplines</h2>
+<p>Information-science research draws from so many fields that you will read papers from at least four different rhetorical traditions in the same semester. Each genre signals “the contribution” in a different place.</p>
+<p><strong>HCI venues (CHI, CSCW, ICWSM, FAccT).</strong> These papers are usually IMRaD-shaped — Introduction, Related Work, Methods, Findings, Discussion — but with rhetorical flexibility. Qualitative and mixed-methods papers are common. The introduction earns its keep by stating the <em>gap</em> and the <em>contribution</em> clearly; if you cannot find the “in this paper, we…” sentence in the first two pages, you are probably reading a poor paper or you are reading too fast. The discussion section often contains “implications for design,” which is where the paper translates findings into something practitioners can use. In CSCW especially, the framing in the introduction does most of the rhetorical work; read it twice.</p>
+<p><strong>Data-science and machine-learning papers.</strong> These are denser, with the argument carried by figures, tables, and benchmarks. Related work is often a thicket of citations to keep up with a fast-moving field. The contribution is usually a method, an empirical result on a benchmark, or a dataset. Read the abstract, the figure showing the main result (almost always Figure 1 or Figure 2), and the experimental setup section. Skip the related work on a first pass; you can come back. If the paper claims state-of-the-art, look at how they define the baseline and what the error bars (if any) say.</p>
+<p><strong>Social-science empirical papers (JASIST, JCMC, <em>New Media &amp; Society</em>, <em>Information, Communication &amp; Society</em>).</strong> These follow theory–method–results–discussion fairly strictly. The theory section matters: it tells you what the authors think they are measuring and why. Operationalization — how an abstract construct gets turned into a measurable variable — is where most of the action is. Pay attention to the identification strategy (causal inference, descriptive, exploratory) and the limitations section, which is more substantive in social science than in many CS venues.</p>
+<p><strong>Humanities scholarship.</strong> Argument-driven. The abstract may not summarize the argument; sometimes it merely sets up the question. The structure is rhetorical, not formulaic. There is usually a thesis sentence — a single sentence that states what the author is claiming — somewhere in the first few pages, and the rest of the article is a move-by-move defense of that claim. When you read a humanities paper, hunt for the thesis sentence first, then read the article as a series of moves <em>on</em> that thesis: what is the author conceding, what are they arguing against, where are they introducing evidence?</p>
+<p>If you read across these traditions without adjusting, you will find yourself either lost (in humanities) or bored (in CS). The same paper, read with the wrong protocol, will feel either pretentious or trivial.</p>
 </section>
-<section id="llamaindex" class="level3">
-<h3 class="anchored" data-anchor-id="llamaindex">LlamaIndex</h3>
-<p><a href="https://docs.llamaindex.ai/en/stable/">LlamaIndex</a> (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.</p>
-<p><em>Best for:</em> Applications that center on querying documents, PDFs, databases, or APIs — where the primary challenge is getting the right information into context.</p>
+<section id="skimming-vs.-deep-reading-deciding-what-a-paper-is-for" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="skimming-vs.-deep-reading-deciding-what-a-paper-is-for"><span class="header-section-number">25.4</span> Skimming vs.&nbsp;deep reading: deciding what a paper is for</h2>
+<p>Before you open a paper, name your purpose. Three common ones:</p>
+<p><strong>Reading for citation.</strong> You need to know what this paper says so you can refer to it accurately in your own writing. Pass 1 is usually enough. The dangerous failure mode is citing a paper for a claim it doesn’t actually make — make sure your one-line summary actually fits the sentence you plan to write.</p>
+<p><strong>Reading for replication.</strong> You are going to build on the paper, reuse its method, or reproduce its results. Pass 3 is required. Plan accordingly.</p>
+<p><strong>Reading to teach yourself a concept.</strong> You are using the paper as a textbook substitute. Often a survey paper or a textbook chapter is a better choice; if you must read primary literature, prefer the most recent paper that cites the older work and read its related-work section as a curated tour of the field.</p>
+<p>Different purposes, different passes. Refusing to triage is the most common reason students burn out reading.</p>
 </section>
-<section id="claude-agent-sdk-anthropic-api" class="level3">
-<h3 class="anchored" data-anchor-id="claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</h3>
-<p>Anthropic’s Claude models support tool use natively through the Messages API. The <a href="https://docs.anthropic.com/en/docs/agents-and-tools/">Anthropic documentation</a> describes patterns for building agents directly using the API without a framework, giving you full control over the loop.</p>
-<p><em>Best for:</em> Teams who want to minimize abstraction and understand exactly what is being sent to the model. Also appropriate when you need to integrate tightly with existing code.</p>
+<section id="note-taking-systems" class="level2 page-columns page-full" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="note-taking-systems"><span class="header-section-number">25.5</span> Note-taking systems</h2>
+<p>A note-taking system is what turns reading into knowledge that survives. Without one, you will re-read the same paper six months later and not remember why you cared. Three approaches dominate; pick one and stick with it for a semester before judging.</p>
+<p><strong>Cornell notes.</strong> A page is divided into a narrow left column (cues), a wide right column (notes), and a strip at the bottom (summary). You take notes in the right column while reading, generate cue questions in the left column afterwards, and write a 2–3 sentence summary at the bottom. Excellent for a single dense source you need to study. Less helpful for synthesizing across sources.</p>
+<p><strong>Zettelkasten (“slip-box”) and atomic notes.</strong> A method developed by the German sociologist Niklas Luhmann, modernized in tools like Obsidian (<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) and Logseq (<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). Each note is small — one idea per note — and notes link to other notes. You write in your own words; you tag and link as you go. Over time the system becomes a graph of ideas you can navigate. The strength of Zettelkasten is synthesis: when you sit down to write a literature review, you already have the connective tissue. The weakness is overhead — if you build the system but never write, you have built a very pretty filing cabinet.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://obsidian.md/" class="uri">https://obsidian.md/</a></p></div><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://logseq.com/" class="uri">https://logseq.com/</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://web.hypothes.is/" class="uri">https://web.hypothes.is/</a></p></div></div><p><strong>Annotation-first.</strong> You highlight and comment directly on the PDF. Tools like Hypothes.is (<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>) annotate publicly on the web; Zotero’s built-in PDF reader annotates inside your library. Combine highlighting with tags and short comments, then extract the tagged passages into your notes when you write. Low overhead, good for fast triage. The risk is that highlights are not knowledge — re-read your annotations periodically to extract the ideas, or they will rot.</p>
+<p>You don’t need to choose forever. Most working researchers blend annotation-first with a Zettelkasten layer for the ideas that matter.</p>
 </section>
-<section id="crewai" class="level3">
-<h3 class="anchored" data-anchor-id="crewai">CrewAI</h3>
-<p><a href="https://docs.crewai.com/">CrewAI</a> provides a higher-level abstraction: you define <em>agents</em> (with roles and goals) and <em>tasks</em> (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.</p>
-<p><em>Best for:</em> Multi-agent workflows where different agents play different roles (researcher, writer, reviewer) and need to hand off work to each other.</p>
+<section id="reference-management-with-zotero" class="level2 page-columns page-full" data-number="25.6">
+<h2 data-number="25.6" class="anchored" data-anchor-id="reference-management-with-zotero"><span class="header-section-number">25.6</span> Reference management with Zotero</h2>
+<p>You will accumulate hundreds of papers over four years. If you do not manage them, you will lose them — to a dead Dropbox link, to a stale Mendeley export, to a bibliography that doesn’t match your <code>.tex</code> file. <strong>Use Zotero.</strong> It is free, open-source, actively maintained, and integrates with every writing tool you will use.</p>
+<p>Install Zotero (<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>) and the Zotero Connector browser extension. Create a top-level collection for each course or project — for example, “INFO 4XXX – Term Paper” — and save papers into it as you find them. The browser connector is the magic part: a single click on a Google Scholar result, a publisher’s PDF page, or an arXiv abstract saves the metadata, attaches the PDF, and files everything automatically.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://www.zotero.org/" class="uri">https://www.zotero.org/</a></p></div><div id="fn6"><p><sup>6</sup>&nbsp;<a href="https://retorque.re/zotero-better-bibtex/" class="uri">https://retorque.re/zotero-better-bibtex/</a></p></div></div><p>The single most useful add-on is <strong>Better BibTeX</strong> (<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>). It generates stable, readable citation keys (e.g., <code>keshav2007paper</code>) that don’t change when Zotero updates. Configure it once with a citation-key pattern like <code>[auth:lower][year]</code>, and your <code>.bib</code> exports will be consistent across years and machines. Better BibTeX also auto-exports your library to a <code>.bib</code> file on disk; point your LaTeX project at that file and your bibliography is always current. See <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a> for the writing-side workflow.</p>
+<p>Tag aggressively. Tags in Zotero are flat and free-form, which makes them excellent for the kind of “I’ll know it when I see it” filtering that comes up when you are writing. Tag by method, population, theory, or just <code>to-read</code> and <code>read</code>.</p>
+<p>Mendeley and Paperpile are alternatives. Mendeley’s parent company has a checkered history of changing terms in ways that hurt users; Paperpile is fine but proprietary and Google-Scholar-centric. For a portable, durable workflow, Zotero is the safe default.</p>
 </section>
-<section id="when-to-skip-a-framework" class="level3">
-<h3 class="anchored" data-anchor-id="when-to-skip-a-framework">When to skip a framework</h3>
-<p>Frameworks add complexity, dependencies, and a layer of abstraction between you and the model. For a simple two-step agent (retrieve data, summarize it), implementing the loop directly with the model’s API is often clearer and easier to debug. Start simple and add framework complexity only when you genuinely need what the framework provides.</p>
+<section id="synthesis-building-a-literature-map" class="level2 page-columns page-full" data-number="25.7">
+<h2 data-number="25.7" class="anchored" data-anchor-id="synthesis-building-a-literature-map"><span class="header-section-number">25.7</span> Synthesis: building a literature map</h2>
+<p>A literature map is the artifact you build when you are about to write a literature review or a paper’s related-work section. It is not the literature review itself — it is the organized set of notes you write <em>from</em>.</p>
+<p>The simplest format is a <strong>concept matrix</strong> (Webster &amp; Watson 2002 (<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>)). Rows are papers; columns are concepts, methods, populations, or theoretical frames. A cell holds a one-word, one-phrase, or short note about how that paper treats that concept. After you populate the matrix for ten or fifteen papers, the columns become the natural sections of your literature review, and the empty cells reveal gaps in the literature — possibly your contribution.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;<a href="https://www.jstor.org/stable/4132319" class="uri">https://www.jstor.org/stable/4132319</a></p></div><div id="fn8"><p><sup>8</sup>&nbsp;<a href="https://www.connectedpapers.com/" class="uri">https://www.connectedpapers.com/</a></p></div><div id="fn9"><p><sup>9</sup>&nbsp;<a href="https://www.litmaps.com/" class="uri">https://www.litmaps.com/</a></p></div></div><p>To find the right papers in the first place, do <strong>forward and backward citation tracing.</strong> Backward: read the references of a key paper to find the work it builds on. Forward: paste the paper’s title into Google Scholar and click “Cited by N” to find the work that builds on it. Connected Papers (<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>) and Litmaps (<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>) both visualize these networks, and either is worth ten minutes when you start a new project. Look for <strong>key authors</strong> — names that appear in multiple bibliographies — and read their most recent paper to catch up on their current direction.</p>
+<p>A good literature map is small. Fifteen well-organized papers beat fifty disorganized ones. Resist the urge to expand the matrix until every cell is filled — your time is better spent reading the next paper deeply than reading the next paper at all.</p>
 </section>
-</section>
-<section id="defining-and-registering-tools" class="level2" data-number="37.4">
-<h2 data-number="37.4" class="anchored" data-anchor-id="defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</h2>
-<p>The quality of your tool definitions directly determines whether the model uses tools correctly. A poorly described tool will be called with wrong arguments, called at the wrong time, or ignored entirely.</p>
-<p>A good tool definition has three parts:</p>
-<p><strong>Name.</strong> Short, descriptive, underscore-separated. The model will refer to this in its reasoning. <code>search_documentation</code> is better than <code>tool1</code> or <code>doTheSearch</code>.</p>
-<p><strong>Description.</strong> A clear natural-language explanation of what the tool does, when to use it, and what it returns. The model reads this description to decide whether to call the tool. Vague descriptions produce unpredictable calls.</p>
-<p><strong>Input schema.</strong> A JSON schema defining the parameters the tool accepts, with types and descriptions for each parameter. Mark required parameters explicitly.</p>
-<p>Example of a well-defined tool:</p>
-<pre><code>{
-  "name": "query_database",
-  "description": "Run a read-only SQL SELECT query against the
-    project database. Use this when you need to look up records,
-    counts, or aggregates. Do not use for INSERT, UPDATE, or DELETE.
-    Returns a list of rows as JSON objects.",
-  "input_schema": {
-    "type": "object",
-    "properties": {
-      "sql": {
-        "type": "string",
-        "description": "A valid SQL SELECT statement."
-      }
-    },
-    "required": ["sql"]
-  }
-}</code></pre>
-<p>Principles for writing tool descriptions:</p>
-<ul>
-<li><p>Say what the tool does <em>and</em> when to use it.</p></li>
-<li><p>Describe what the tool <em>does not</em> do (e.g., “read-only, no writes”).</p></li>
-<li><p>Describe the return format so the model knows how to interpret the result.</p></li>
-<li><p>Keep descriptions focused; one tool, one purpose.</p></li>
-<li><p>Expose only tools the agent actually needs for the current task.</p></li>
-</ul>
-<p>Restricting tool access is a safety practice, not just housekeeping. An agent that has access to a “send email” tool might use it unexpectedly. Only expose tools the agent needs for the specific workflow you are running.</p>
-</section>
-<section id="memory-types" class="level2" data-number="37.5">
-<h2 data-number="37.5" class="anchored" data-anchor-id="memory-types"><span class="header-section-number">37.5</span> Memory types</h2>
-<p>Memory determines what information is available to the model as it works. Different memory types serve different purposes.</p>
-<section id="in-context-memory" class="level3">
-<h3 class="anchored" data-anchor-id="in-context-memory">In-context memory</h3>
-<p>Everything currently in the context window: the user’s original request, tool call results, prior responses, system prompt. This is the only memory that directly influences the model’s next decision.</p>
-<p><em>Limitation:</em> Bounded by the context window. Long-running agents will eventually fill the context, at which point older information must be summarized or dropped.</p>
-</section>
-<section id="external-memory-vector-stores" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-vector-stores">External memory: vector stores</h3>
-<p>A vector database stores document embeddings and retrieves semantically similar documents at query time. When the agent needs background information, it embeds the query, retrieves relevant documents, and injects them into context.</p>
-<p><em>Use case:</em> Knowledge retrieval, documentation search, “chat with your documents” applications. Allows the agent to work with document collections far larger than any context window.</p>
-</section>
-<section id="external-memory-structured-databases" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-structured-databases">External memory: structured databases</h3>
-<p>Relational or key-value databases that the agent queries via a tool (like the <code>query_database</code> example above). Structured memory is better than vector search when you need exact lookups, counts, or joins rather than similarity matching.</p>
-</section>
-<section id="episodic-and-long-term-memory" class="level3">
-<h3 class="anchored" data-anchor-id="episodic-and-long-term-memory">Episodic and long-term memory</h3>
-<p>Some agent frameworks support persisting a summary of past sessions to a store, then loading relevant summaries at the start of new sessions. This gives the appearance of memory across conversations. It is more complex to implement and comes with privacy considerations: be deliberate about what you store and how long you keep it.</p>
-</section>
-</section>
-<section id="multi-step-reasoning-patterns" class="level2" data-number="37.6">
-<h2 data-number="37.6" class="anchored" data-anchor-id="multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</h2>
-<p>How the model reasons through a multi-step problem — not just that it uses tools, but how it structures its thinking — significantly affects reliability.</p>
-<section id="chain-of-thought" class="level3">
-<h3 class="anchored" data-anchor-id="chain-of-thought">Chain-of-thought</h3>
-<p>Prompting the model to “explain your reasoning step by step” before producing an answer. This does not change the model’s architecture, but it primes the model to generate intermediate reasoning steps that are more likely to be correct than jumping directly to an answer.</p>
-<p>Use chain-of-thought for: multi-step calculations, logical deductions, ambiguous categorizations, debugging.</p>
-</section>
-<section id="react-reason-act" class="level3">
-<h3 class="anchored" data-anchor-id="react-reason-act">ReAct (Reason + Act)</h3>
-<p>A prompting pattern where the model alternates between <strong>reasoning</strong> (“I need to find the latest version of this library”) and <strong>action</strong> (calling a tool to do so). The reasoning step is made explicit in the output, which makes traces easier to read and debug.</p>
-<p>A ReAct trace looks like:</p>
-<pre><code>Thought: I need to check the current pandas version.
-Action: run_shell_command({"command": "pip show pandas"})
-Observation: Name: pandas, Version: 2.2.1
-Thought: The user has pandas 2.2.1. I can now answer the question.
-Answer: You are running pandas 2.2.1.</code></pre>
-</section>
-<section id="reflection" class="level3">
-<h3 class="anchored" data-anchor-id="reflection">Reflection</h3>
-<p>After the agent produces an initial answer or plan, it reviews its own output and identifies potential errors or improvements. Reflection adds one or two additional model calls but catches mistakes that would otherwise be missed.</p>
-<p><em>When to use:</em> High-stakes decisions, structured outputs that must be valid (JSON schema, SQL), or any step where an error would be costly to detect later.</p>
-</section>
-<section id="reading-agent-traces" class="level3">
-<h3 class="anchored" data-anchor-id="reading-agent-traces">Reading agent traces</h3>
-<p>Agent frameworks typically log traces: the sequence of model calls, tool invocations, and results. Reading traces is a critical debugging skill. When an agent fails, the trace tells you:</p>
-<ul>
-<li><p>What context the model had when it made a bad decision</p></li>
-<li><p>Which tool call was wrong, and what arguments it used</p></li>
-<li><p>Whether the error was in the model’s reasoning or in the tool execution</p></li>
-<li><p>Where in the loop the failure propagated</p></li>
-</ul>
-</section>
-</section>
-<section id="orchestrating-multi-agent-systems" class="level2" data-number="37.7">
-<h2 data-number="37.7" class="anchored" data-anchor-id="orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</h2>
-<p>Some tasks benefit from multiple specialized agents working together rather than a single all-purpose agent.</p>
-<section id="subagents" class="level3">
-<h3 class="anchored" data-anchor-id="subagents">Subagents</h3>
-<p>A <strong>subagent</strong> is an agent invoked as a tool by a parent (orchestrator) agent. The orchestrator decomposes the task, delegates subtasks to subagents, and aggregates results. Subagents can run in parallel if the subtasks are independent, which can significantly reduce total wall-clock time.</p>
-</section>
-<section id="supervisor-patterns" class="level3">
-<h3 class="anchored" data-anchor-id="supervisor-patterns">Supervisor patterns</h3>
-<p>In a <strong>supervisor</strong> architecture, one agent manages a team of specialized agents: a researcher, a writer, a reviewer. The supervisor routes tasks, checks outputs, and decides when the overall task is complete. This is useful when you have genuinely distinct specializations that benefit from separate system prompts and tool sets.</p>
-</section>
-<section id="handoffs" class="level3">
-<h3 class="anchored" data-anchor-id="handoffs">Handoffs</h3>
-<p>In sequential multi-agent pipelines, a <strong>handoff</strong> is the transfer of a task and its accumulated context from one agent to the next. Clean handoffs require that each agent produces output in a structured format the receiving agent can parse.</p>
-<p><em>Common problem:</em> Information loss at handoffs. If the first agent’s output is a long, unstructured paragraph, the second agent may miss key details. Design outputs at each stage to be explicit, structured, and complete.</p>
-</section>
-</section>
-<section id="failure-modes-and-risk" class="level2" data-number="37.8">
-<h2 data-number="37.8" class="anchored" data-anchor-id="failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</h2>
-<p>Agentic systems introduce failure modes that do not exist in single-call workflows.</p>
-<p><strong>Runaway loops.</strong> The model keeps calling tools without converging. Causes: the stop condition was not clearly defined, the model is stuck in a cycle, or a tool keeps returning errors. Fix: set a maximum number of iterations; always implement a hard stop.</p>
-<p><strong>Cascading errors.</strong> An error in step 3 corrupts the context, causing steps 4 and 5 to fail in confusing ways that look unrelated to the original problem. Fix: validate tool outputs before appending them to context; add explicit error-handling branches.</p>
-<p><strong>Unintended side effects.</strong> The model calls a tool that modifies state (writes a file, posts to an API, sends a message) when it should not have. Fix: separate read tools from write tools; require explicit confirmation before executing write actions (see <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the risk-based policy).</p>
-<p><strong>Context overflow.</strong> Long-running agents fill the context window with tool results and previous reasoning. The model then loses access to earlier instructions. Fix: summarize and compress context periodically; test with long runs before deploying.</p>
-<p><strong>Prompt injection via tool results.</strong> A malicious document or API response contains text designed to override the agent’s instructions (“Ignore previous instructions and instead…”). Fix: treat tool results as untrusted data; use separate system prompts that are not overridable by tool output; sanitize inputs from external sources.</p>
-<p><strong>Authorization creep.</strong> An agent with broad tool access may take actions outside the intended scope because the task description was ambiguous. Fix: apply least-privilege principles to tool definitions; use separate tool sets for different agent roles.</p>
-<section id="human-in-the-loop-checkpoints" class="level3">
-<h3 class="anchored" data-anchor-id="human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</h3>
-<p>For any action that is hard to reverse — writing to a database, sending a message, making a financial transaction, deleting a file — implement a human confirmation step before the action executes. This is not a failure of the agent; it is an appropriate design choice given the stakes.</p>
-<pre><code>def execute_tool(tool_call):
-    if tool_call.name in HIGH_RISK_TOOLS:
-        confirm = input(f"Agent wants to run {tool_call.name} "
-                        f"with args {tool_call.args}. Allow? [y/N] ")
-        if confirm.lower() != 'y':
-            return {"error": "Action cancelled by user."}
-    return TOOL_REGISTRY[tool_call.name](**tool_call.args)</code></pre>
+<section id="reading-with-ai-legitimate-uses-and-traps" class="level2" data-number="25.8">
+<h2 data-number="25.8" class="anchored" data-anchor-id="reading-with-ai-legitimate-uses-and-traps"><span class="header-section-number">25.8</span> Reading with AI: legitimate uses and traps</h2>
+<p>Large language models change the economics of reading, in both helpful and harmful ways. See <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the full discussion of what AI tools can and cannot do; the rules in this chapter are specific to scholarly reading.</p>
+<p><strong>Legitimate uses.</strong> Asking an LLM to summarize a paper for triage (pass 1, with caveats). Asking it to define a piece of unfamiliar notation or terminology. Asking it to critique your own one-paragraph summary of a paper, to surface what you missed. Generating a list of related papers you should look up — <em>which you then verify in Zotero or Scholar</em>, because LLMs hallucinate citations confidently.</p>
+<p><strong>Traps.</strong> Using an LLM summary as a substitute for reading the paper at all. This will catch up with you the first time you cite the paper for a claim it doesn’t actually make. LLMs are confident; they do not flag what they are unsure of; and they cannot distinguish a paper’s findings from a paper’s framing of others’ findings.</p>
+<p>A useful protocol: ask the LLM for a summary, then read the paper at pass 1, then compare. Where they disagree, the paper wins. Where the LLM mentioned something the paper didn’t, treat it as suspect and check.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -940,56 +816,162 @@ Answer: You are running pandas 2.2.1.</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Anthropic: Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops.</li>
-<li><a href="https://python.langchain.com/docs/tutorials/agents/">LangChain agents documentation</a> — a framework-level walk-through of agent construction.</li>
-<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
+<li>Keshav, S. (2007). <a href="https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf">How to Read a Paper</a>. <em>ACM SIGCOMM Computer Communication Review</em>, 37(3).</li>
+<li>Webster, J. &amp; Watson, R. T. (2002). <a href="https://www.jstor.org/stable/4132319">Analyzing the Past to Prepare for the Future: Writing a Literature Review</a>. <em>MIS Quarterly</em>, 26(2).</li>
+<li>The Zotero documentation: <a href="https://www.zotero.org/support/" class="uri">https://www.zotero.org/support/</a>.</li>
+<li>Sönke Ahrens, <em>How to Take Smart Notes</em> (2017) — the modern Zettelkasten manifesto.</li>
 </ul>
 </div>
 </div>
 </section>
+<section id="worked-examples" class="level2" data-number="25.9">
+<h2 data-number="25.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">25.9</span> Worked examples</h2>
+<section id="first-pass-a-chi-paper-in-eight-minutes" class="level3">
+<h3 class="anchored" data-anchor-id="first-pass-a-chi-paper-in-eight-minutes">First-pass a CHI paper in eight minutes</h3>
+<p>Pick a recent CHI paper on a topic you care about — say, an empirical study of how data-science students use AI assistants. Set a timer for eight minutes.</p>
+<p><em>Minutes 0–1.</em> Read the title and abstract. Write one sentence in your notes: what is the paper claiming? If you cannot, re-read the abstract once.</p>
+<p><em>Minutes 1–3.</em> Read the first paragraph of the introduction (sets up the problem) and the last paragraph (states the contribution). The middle of the introduction is usually the literature gap and the framing — skim it for the names of competing approaches.</p>
+<p><em>Minutes 3–5.</em> Look at every figure. Read every caption. The figure that shows the main result is usually obvious — it is the one with the prominent comparison or the most callouts. If the paper is qualitative, the “figure” might be a participant quote in a callout box; treat it the same way.</p>
+<p><em>Minutes 5–7.</em> Read the section headings. Skim the discussion section for “implications” or “design considerations” — those are the takeaways. Glance at the related work for names you recognize.</p>
+<p><em>Minute 7–8.</em> Write three things: a one-sentence summary, the contribution in your own words, and one question you would want to ask the authors.</p>
+<p>You now have enough to decide whether to read pass 2. If you cannot fill in the three things, the paper is either poorly written or beyond your current background — either way, that is information.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="37.9">
-<h2 data-number="37.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">37.9</span> Worked examples</h2>
-<section id="building-a-research-agent-with-document-retrieval" class="level3">
-<h3 class="anchored" data-anchor-id="building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</h3>
-<p>You want an agent that can answer research questions by first searching a document corpus, then synthesizing an answer with citations. The minimum design has two tools: a <code>search_documents</code> tool that does vector search over your corpus and returns the top-k document IDs and snippets, and a <code>read_document</code> tool that fetches the full text of a document by ID. You then write a system prompt that explicitly tells the agent to <em>search first</em>, cite the sources it used, and acknowledge uncertainty when the retrieved documents do not contain the answer. Test the loop with three to five real research questions and read the trace carefully — you are watching for the agent to use retrieval in the cases where it should and to <em>not</em> invent answers when nothing is found. Once that core loop works, add a reflection step: after producing an initial answer, the agent re-reads its own answer and identifies any gaps, optionally searching again to fill them. As the conversation grows, monitor how much context each turn consumes and set a threshold at which older results get summarized rather than passed forward verbatim, so the agent does not run out of context window in the middle of a long session.</p>
-</section>
-<section id="converting-a-multi-step-notebook-workflow-into-an-agent" class="level3">
-<h3 class="anchored" data-anchor-id="converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</h3>
-<p>You have a notebook with five distinct stages — load data, clean it, run analysis, generate figures, write a report — and you want to wrap it in an agent that can run any subset on demand. Walk through the notebook and identify which steps involve <em>decisions</em> (which file to load, which analysis to run, whether to retry on failure) versus pure transformations. The decision points are where an agent helps; the pure transformations should stay as plain functions. Wrap each stage in a tool with a clear input schema (<code>load_data(path)</code>, <code>run_analysis(table)</code>, <code>generate_report(results)</code>) and write a system prompt that describes the overall goal and explains when each tool should be called. Test the agent end-to-end on a known sample dataset, and compare its outputs to the manual notebook outputs to confirm they match. Critically, add a <strong>human-in-the-loop checkpoint</strong> before any tool that touches shared output — the report generation step is the natural place — so a person reviews the analysis before it gets distributed.</p>
-</section>
-<section id="diagnosing-a-misbehaving-agent-from-its-trace" class="level3">
-<h3 class="anchored" data-anchor-id="diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</h3>
-<p>An agent ran in production and produced the wrong result. The first move is to <strong>reproduce the failure</strong> and capture the <em>full</em> trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the <strong>first place where the output diverged</strong> from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the <strong>model’s reasoning</strong> (the model had the right context but drew a wrong conclusion), or was it in the <strong>tool’s execution</strong> (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the <strong>context it needed</strong> at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.</p>
-</section>
-</section>
-<section id="exercises" class="level2" data-number="37.10">
-<h2 data-number="37.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">37.10</span> Exercises</h2>
+<section id="setting-up-a-zotero-library-for-a-semester-project" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-a-zotero-library-for-a-semester-project">Setting up a Zotero library for a semester project</h3>
+<p>You are starting a term paper for a class. Here is the setup, end to end.</p>
 <ol type="1">
-<li><p>Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.</p></li>
-<li><p>Write a tool definition (name, description, input schema) for a function that retrieves all rows from a CSV file where a specified column matches a given value. Pay attention to the description: include what the tool does, when to use it, and what it returns.</p></li>
-<li><p>Sketch (in pseudocode or plain English) a two-agent system where one agent collects information and a second agent writes a summary. What does the handoff look like? What structured format should the first agent produce so the second agent can use it reliably?</p></li>
-<li><p>Consider an agent that can read files, write files, and send emails. Classify each tool as low-risk, medium-risk, or high-risk according to the framework from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. For the high-risk tools, describe what a human-in-the-loop checkpoint would look like.</p></li>
-<li><p>Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.</p></li>
+<li>Install Zotero from <a href="https://www.zotero.org/" class="uri">https://www.zotero.org/</a> and the Zotero Connector for your browser. Create a free Zotero account so your library syncs across devices.</li>
+<li>In Zotero, right-click “My Library” → New Collection → name it “INFO 4XXX – Term Paper”.</li>
+<li>Install Better BibTeX: from inside Zotero, Tools → Add-ons → install from <code>.xpi</code> (download the latest from <a href="https://retorque.re/zotero-better-bibtex/" class="uri">https://retorque.re/zotero-better-bibtex/</a>). Restart Zotero.</li>
+<li>In Edit → Preferences → Better BibTeX, set the citation-key formula to <code>[auth:lower][year]</code>. This produces keys like <code>keshav2007</code>.</li>
+<li>Open Better BibTeX preferences → Automatic Export → set up an auto-export of your collection to <code>~/code/term-paper/references.bib</code>. Now any time you save a paper into the collection, the <code>.bib</code> file updates automatically.</li>
+<li>Find five papers via Google Scholar. On each result page, click the Zotero Connector icon. Zotero pulls the metadata, fetches the PDF where it can, and files the entry in your collection. Add tags as you go.</li>
+<li>Open <code>references.bib</code> in your text editor; you should see five BibTeX entries with stable keys.</li>
+</ol>
+<p>Total time: about twenty minutes the first time, two minutes per paper after that.</p>
+</section>
+<section id="synthesizing-five-papers-into-a-one-page-literature-map" class="level3">
+<h3 class="anchored" data-anchor-id="synthesizing-five-papers-into-a-one-page-literature-map">Synthesizing five papers into a one-page literature map</h3>
+<p>You have read five papers about how moderation policies on online platforms affect user behavior. You need a literature review section.</p>
+<p>Build a concept matrix. Rows are the five papers. Columns are: <em>platform studied</em>, <em>moderation intervention</em>, <em>outcome measure</em>, <em>method</em>, <em>primary finding</em>, <em>limitation</em>. Fill each cell with one phrase.</p>
+<p>After you populate the matrix, look at the columns. <em>Outcome measure</em> might split into “behavioral” (post counts, user departures) and “linguistic” (toxicity, civility). That split is now a section of your literature review. <em>Method</em> might split into “natural experiment” and “interview study” — another section. The empty cells — say, no one has measured behavioral outcomes after a policy change on a small platform — is a candidate gap for your own contribution.</p>
+<p>Your three-paragraph synthesis writes itself. Paragraph one: scope of the literature. Paragraph two: what is converged on (the columns most papers fill the same way). Paragraph three: where the literature disagrees or is silent (the columns with disagreement or empty cells). You have not done magic; you have just made the structure visible.</p>
+</section>
+</section>
+<section id="templates" class="level2" data-number="25.10">
+<h2 data-number="25.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">25.10</span> Templates</h2>
+<p>A reading-note template you can paste at the top of every new note:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># {Paper title}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>**Citation:** {full citation in your preferred style}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>**Zotero key:** {citation key from Better BibTeX}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>**Pass:** {1, 2, or 3}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>**Date read:** {YYYY-MM-DD}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## One-sentence summary</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>(In your own words.)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Claim</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>(What does the paper argue?)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Evidence</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>(How is the claim supported? Methods, data, key results.)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Critique / gap</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>(What did they not address? What would you challenge?)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Connections</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>See also: {[<span class="co">[</span><span class="ot">other-note</span><span class="co">]</span>] or @sec-... or paper key}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cites: {key works the paper builds on}</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cited by: {if known, key works that build on it}</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quotes worth keeping</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A literature-map concept-matrix template (paste into a new markdown file and edit):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Paper <span class="pp">|</span> Population <span class="pp">|</span> Method <span class="pp">|</span> Outcome <span class="pp">|</span> Theoretical frame <span class="pp">|</span> Finding <span class="pp">|</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|---|</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> @key1 <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> @key2 <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercises" class="level2" data-number="25.11">
+<h2 data-number="25.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">25.11</span> Exercises</h2>
+<ol type="1">
+<li>Apply Keshav’s pass 1 and pass 2 to an assigned paper. Submit a one-page summary that includes the contribution in your own words, the method, the main finding, and one limitation.</li>
+<li>Set up a Zotero library with the Better BibTeX add-on and export a <code>.bib</code> file containing at least five papers on a topic you care about.</li>
+<li>Pick an HCI paper and a data-science paper on similar topics. Write a 300-word note explaining how each genre privileges different kinds of evidence and contribution.</li>
+<li>Use Connected Papers (<a href="https://www.connectedpapers.com/" class="uri">https://www.connectedpapers.com/</a>) to find five neighbors of a paper you have read. Identify the “key author” who appears most often in the cluster, and read their most recent paper.</li>
+<li>Annotate a publicly available paper using Hypothes.is (<a href="https://web.hypothes.is/" class="uri">https://web.hypothes.is/</a>). Share the link with a classmate and discuss what you each highlighted.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="37.11">
-<h2 data-number="37.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="25.12">
+<h2 data-number="25.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">25.12</span> One-page checklist</h2>
 <ul>
-<li><p>Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks</p></li>
-<li><p>Set a maximum iteration count to prevent runaway loops</p></li>
-<li><p>Write tool descriptions that explain what the tool does, when to use it, and what it returns</p></li>
-<li><p>Expose only the tools an agent needs for its specific role; remove tools that are not needed</p></li>
-<li><p>Classify tools by risk (read-only vs.&nbsp;write vs.&nbsp;irreversible); add confirmation prompts before high-risk actions</p></li>
-<li><p>Log full traces (model calls, tool calls, results) so failures can be diagnosed</p></li>
-<li><p>Test the agentic loop with adversarial inputs and edge cases, not just the happy path</p></li>
-<li><p>Monitor context size across long runs; implement context summarization before the window fills</p></li>
-<li><p>Treat tool results from external sources as untrusted; sanitize inputs that could contain prompt injection</p></li>
-<li><p>Add human-in-the-loop checkpoints for any action that cannot be easily undone</p></li>
+<li>Did you decide <em>before</em> reading what depth this paper deserves?</li>
+<li>Did you read the abstract and conclusion before the body?</li>
+<li>Did you look at every figure and read every caption?</li>
+<li>Did you write a one-sentence summary in your own words?</li>
+<li>Did you save the paper to Zotero with the right tags and collection?</li>
+<li>Did you record the citation key before you started writing?</li>
+<li>For pass 2 papers, did you write a structured note (claim / evidence / critique / connections)?</li>
+<li>For pass 3 papers, did you re-derive or re-implement the core method?</li>
+<li>When you used an LLM, did you verify its summary against the paper?</li>
+<li>Did you tag at least one connection to another paper or note?</li>
 </ul>
+</section>
+<section id="quick-reference-matching-reading-depth-to-your-goal" class="level2" data-number="25.13">
+<h2 data-number="25.13" class="anchored" data-anchor-id="quick-reference-matching-reading-depth-to-your-goal"><span class="header-section-number">25.13</span> Quick reference: matching reading depth to your goal</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Goal</th>
+<th>Pass</th>
+<th>Time</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Decide whether to cite</td>
+<td>1</td>
+<td>5–10 min</td>
+<td>One-line yes/no</td>
+</tr>
+<tr class="even">
+<td>Summarize for a literature review</td>
+<td>1 + 2</td>
+<td>1 hour</td>
+<td>Three-sentence note</td>
+</tr>
+<tr class="odd">
+<td>Replicate or build on the work</td>
+<td>1 + 2 + 3</td>
+<td>4–6 hours</td>
+<td>Reproduction notes</td>
+</tr>
+<tr class="even">
+<td>Teach a concept to yourself</td>
+<td>1 + 2 (often a survey instead)</td>
+<td>varies</td>
+<td>Notes you can teach from</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1414,13 +1396,13 @@ Answer: You are running pandas 2.2.1.</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../parts/part-6-algorithmic/llm-internals.html" class="pagination-link" aria-label="How Language Models Work">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span>
+      <a href="../../parts/part-4-data/http-apis.html" class="pagination-link" aria-label="HTTP and Web APIs">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="pagination-link" aria-label="Evaluating and Auditing AI Outputs">
-        <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../parts/part-5-communication/writing-manuscripts.html" class="pagination-link" aria-label="How to Write Scholarly Manuscripts">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1429,4 +1411,4 @@ Answer: You are running pandas 2.2.1.</code></pre>
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/reading-scholarship.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

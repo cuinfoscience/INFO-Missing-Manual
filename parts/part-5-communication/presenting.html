@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>37&nbsp; Working with AI Agent Frameworks – Missing Manual for Information Scientists</title>
+<title>28&nbsp; How to Present – Missing Manual for Information Scientists</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,8 +68,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../parts/part-6-algorithmic/evaluating-ai.html" rel="next">
-<link href="../../parts/part-6-algorithmic/llm-internals.html" rel="prev">
+<link href="../../parts/part-5-communication/latex.html" rel="next">
+<link href="../../parts/part-5-communication/writing-thesis.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -80,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -251,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/presenting.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -498,7 +533,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-5-communication/presenting.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/part-5-communication/presenting.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></span></a>
   </div>
 </li>
@@ -574,7 +609,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
   </div>
 </li>
@@ -627,60 +662,37 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#running-theme-trust-but-verify-at-every-step" id="toc-running-theme-trust-but-verify-at-every-step" class="nav-link" data-scroll-target="#running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</a></li>
-  <li><a href="#from-chatbot-to-agent" id="toc-from-chatbot-to-agent" class="nav-link" data-scroll-target="#from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</a></li>
-  <li><a href="#the-agentic-loop" id="toc-the-agentic-loop" class="nav-link" data-scroll-target="#the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</a></li>
-  <li><a href="#overview-of-agent-frameworks" id="toc-overview-of-agent-frameworks" class="nav-link" data-scroll-target="#overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</a>
+  <li><a href="#running-theme-tell-them-what-theyll-know-at-the-end-that-they-dont-know-now-then-deliver-it-after-patrick-winston" id="toc-running-theme-tell-them-what-theyll-know-at-the-end-that-they-dont-know-now-then-deliver-it-after-patrick-winston" class="nav-link" data-scroll-target="#running-theme-tell-them-what-theyll-know-at-the-end-that-they-dont-know-now-then-deliver-it-after-patrick-winston">Running theme: tell them what they’ll know at the end that they don’t know now — then deliver it (after Patrick Winston)</a></li>
+  <li><a href="#why-talks-are-not-papers-read-aloud" id="toc-why-talks-are-not-papers-read-aloud" class="nav-link" data-scroll-target="#why-talks-are-not-papers-read-aloud"><span class="header-section-number">28.1</span> Why talks are not papers read aloud</a></li>
+  <li><a href="#genres-of-academic-talk" id="toc-genres-of-academic-talk" class="nav-link" data-scroll-target="#genres-of-academic-talk"><span class="header-section-number">28.2</span> Genres of academic talk</a></li>
+  <li><a href="#audience-analysis" id="toc-audience-analysis" class="nav-link" data-scroll-target="#audience-analysis"><span class="header-section-number">28.3</span> Audience analysis</a></li>
+  <li><a href="#slide-design" id="toc-slide-design" class="nav-link" data-scroll-target="#slide-design"><span class="header-section-number">28.4</span> Slide design</a></li>
+  <li><a href="#structuring-a-fifteen-minute-talk" id="toc-structuring-a-fifteen-minute-talk" class="nav-link" data-scroll-target="#structuring-a-fifteen-minute-talk"><span class="header-section-number">28.5</span> Structuring a fifteen-minute talk</a></li>
+  <li><a href="#practicing" id="toc-practicing" class="nav-link" data-scroll-target="#practicing"><span class="header-section-number">28.6</span> Practicing</a></li>
+  <li><a href="#handling-qa" id="toc-handling-qa" class="nav-link" data-scroll-target="#handling-qa"><span class="header-section-number">28.7</span> Handling Q&amp;A</a></li>
+  <li><a href="#nerves" id="toc-nerves" class="nav-link" data-scroll-target="#nerves"><span class="header-section-number">28.8</span> Nerves</a></li>
+  <li><a href="#virtual-and-hybrid-talks" id="toc-virtual-and-hybrid-talks" class="nav-link" data-scroll-target="#virtual-and-hybrid-talks"><span class="header-section-number">28.9</span> Virtual and hybrid talks</a></li>
+  <li><a href="#tooling" id="toc-tooling" class="nav-link" data-scroll-target="#tooling"><span class="header-section-number">28.10</span> Tooling</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">28.11</span> Worked examples</a>
   <ul class="collapse">
-  <li><a href="#langchain" id="toc-langchain" class="nav-link" data-scroll-target="#langchain">LangChain</a></li>
-  <li><a href="#llamaindex" id="toc-llamaindex" class="nav-link" data-scroll-target="#llamaindex">LlamaIndex</a></li>
-  <li><a href="#claude-agent-sdk-anthropic-api" id="toc-claude-agent-sdk-anthropic-api" class="nav-link" data-scroll-target="#claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</a></li>
-  <li><a href="#crewai" id="toc-crewai" class="nav-link" data-scroll-target="#crewai">CrewAI</a></li>
-  <li><a href="#when-to-skip-a-framework" id="toc-when-to-skip-a-framework" class="nav-link" data-scroll-target="#when-to-skip-a-framework">When to skip a framework</a></li>
+  <li><a href="#a-15-minute-conference-talk-slide-by-slide-outline" id="toc-a-15-minute-conference-talk-slide-by-slide-outline" class="nav-link" data-scroll-target="#a-15-minute-conference-talk-slide-by-slide-outline">A 15-minute conference-talk slide-by-slide outline</a></li>
+  <li><a href="#beforeafter-slide-redesign" id="toc-beforeafter-slide-redesign" class="nav-link" data-scroll-target="#beforeafter-slide-redesign">Before/after slide redesign</a></li>
+  <li><a href="#a-qa-reply-to-a-hostile-question" id="toc-a-qa-reply-to-a-hostile-question" class="nav-link" data-scroll-target="#a-qa-reply-to-a-hostile-question">A Q&amp;A reply to a hostile question</a></li>
   </ul></li>
-  <li><a href="#defining-and-registering-tools" id="toc-defining-and-registering-tools" class="nav-link" data-scroll-target="#defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</a></li>
-  <li><a href="#memory-types" id="toc-memory-types" class="nav-link" data-scroll-target="#memory-types"><span class="header-section-number">37.5</span> Memory types</a>
-  <ul class="collapse">
-  <li><a href="#in-context-memory" id="toc-in-context-memory" class="nav-link" data-scroll-target="#in-context-memory">In-context memory</a></li>
-  <li><a href="#external-memory-vector-stores" id="toc-external-memory-vector-stores" class="nav-link" data-scroll-target="#external-memory-vector-stores">External memory: vector stores</a></li>
-  <li><a href="#external-memory-structured-databases" id="toc-external-memory-structured-databases" class="nav-link" data-scroll-target="#external-memory-structured-databases">External memory: structured databases</a></li>
-  <li><a href="#episodic-and-long-term-memory" id="toc-episodic-and-long-term-memory" class="nav-link" data-scroll-target="#episodic-and-long-term-memory">Episodic and long-term memory</a></li>
-  </ul></li>
-  <li><a href="#multi-step-reasoning-patterns" id="toc-multi-step-reasoning-patterns" class="nav-link" data-scroll-target="#multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</a>
-  <ul class="collapse">
-  <li><a href="#chain-of-thought" id="toc-chain-of-thought" class="nav-link" data-scroll-target="#chain-of-thought">Chain-of-thought</a></li>
-  <li><a href="#react-reason-act" id="toc-react-reason-act" class="nav-link" data-scroll-target="#react-reason-act">ReAct (Reason + Act)</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
-  <li><a href="#reading-agent-traces" id="toc-reading-agent-traces" class="nav-link" data-scroll-target="#reading-agent-traces">Reading agent traces</a></li>
-  </ul></li>
-  <li><a href="#orchestrating-multi-agent-systems" id="toc-orchestrating-multi-agent-systems" class="nav-link" data-scroll-target="#orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</a>
-  <ul class="collapse">
-  <li><a href="#subagents" id="toc-subagents" class="nav-link" data-scroll-target="#subagents">Subagents</a></li>
-  <li><a href="#supervisor-patterns" id="toc-supervisor-patterns" class="nav-link" data-scroll-target="#supervisor-patterns">Supervisor patterns</a></li>
-  <li><a href="#handoffs" id="toc-handoffs" class="nav-link" data-scroll-target="#handoffs">Handoffs</a></li>
-  </ul></li>
-  <li><a href="#failure-modes-and-risk" id="toc-failure-modes-and-risk" class="nav-link" data-scroll-target="#failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</a>
-  <ul class="collapse">
-  <li><a href="#human-in-the-loop-checkpoints" id="toc-human-in-the-loop-checkpoints" class="nav-link" data-scroll-target="#human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</a></li>
-  </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">37.9</span> Worked examples</a>
-  <ul class="collapse">
-  <li><a href="#building-a-research-agent-with-document-retrieval" id="toc-building-a-research-agent-with-document-retrieval" class="nav-link" data-scroll-target="#building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</a></li>
-  <li><a href="#converting-a-multi-step-notebook-workflow-into-an-agent" id="toc-converting-a-multi-step-notebook-workflow-into-an-agent" class="nav-link" data-scroll-target="#converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</a></li>
-  <li><a href="#diagnosing-a-misbehaving-agent-from-its-trace" id="toc-diagnosing-a-misbehaving-agent-from-its-trace" class="nav-link" data-scroll-target="#diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</a></li>
-  </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">37.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">28.12</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">28.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">28.14</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-timing-across-formats" id="toc-quick-reference-timing-across-formats" class="nav-link" data-scroll-target="#quick-reference-timing-across-formats"><span class="header-section-number">28.15</span> Quick reference: timing across formats</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/presenting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/presenting.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ai-agents" class="quarto-section-identifier"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></h1>
+<h1 class="title"><span id="sec-presenting" class="quarto-section-identifier"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></span></h1>
 </div>
 
 
@@ -709,226 +721,127 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>, <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
-<p><strong>See also:</strong> <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a>.</p>
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>.</p>
+<p><strong>See also:</strong> <a href="writing-thesis.html" class="quarto-xref"><span>Chapter 27</span></a>, <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>, <a href="../part-3-python/jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>, <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.</p>
-<p>Agent frameworks have become a major pattern in applied AI work. You will encounter them in research pipelines, data processing workflows, software development assistants, and automated systems. Understanding how they work — what the agentic loop is, how tools are defined and invoked, how memory is managed, and where these systems reliably fail — puts you in a position to use them deliberately rather than being surprised when something goes wrong.</p>
-<p>This chapter builds on the model internals from <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> and the responsible-use practices from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. Where those chapters focus on individual prompts and outputs, this one focuses on <em>systems</em>: sequences of model calls, tool invocations, and decision points that can touch real data, real services, and real consequences.</p>
+<p>A talk is not a paper read aloud. The medium is different, the attention budget is different, and the conventions that work in print fail in front of an audience. Slides full of text put audiences to sleep. Reading from notes turns a fifteen-minute talk into the longest fifteen minutes of the room’s life. Trying to cram every result onto every slide is a recipe for an audience that remembers nothing.</p>
+<p>This chapter is a practical guide to designing, rehearsing, and delivering academic talks of the kinds you will actually have to give: a five-minute lightning talk in your first year, a fifteen-minute conference talk, a forty-five-minute job talk, a half-hour thesis-defense presentation, a poster, a lab meeting. The principles transfer across the genres; the specifics adjust. The single best free resource on this material is Patrick Winston’s MIT lecture <em>How to Speak</em> (<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> / video at <a href="https://www.youtube.com/watch?v=Unzc731iCUY" class="uri">https://www.youtube.com/watch?v=Unzc731iCUY</a>); watch it before you give your next talk.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/" class="uri">https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/</a></p></div></div><p>This chapter, like the others in <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a> and <a href="writing-thesis.html" class="quarto-xref"><span>Chapter 27</span></a>, is about communication craft. It does not assume you have given a talk before. It does assume you are willing to rehearse.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
-<li><p>Describe the four core components of an AI agent</p></li>
-<li><p>Trace the steps of an agentic loop and identify where failures typically occur</p></li>
-<li><p>Compare two or three major agent frameworks and articulate when each is appropriate</p></li>
-<li><p>Define a tool with a well-written description and input schema</p></li>
-<li><p>Explain the difference between in-context memory and external memory</p></li>
-<li><p>Read an agent trace and identify what the model decided and why</p></li>
-<li><p>Describe at least three failure modes specific to agentic systems</p></li>
-<li><p>Apply human-in-the-loop checkpoints to limit the blast radius of agent errors</p></li>
+<li><p>Identify the genre of presentation you are giving — lightning talk, conference talk, lab meeting, job talk, defense, poster — and design accordingly.</p></li>
+<li><p>Analyze your audience (technical specialist / technical generalist / general public) and pitch your talk to them.</p></li>
+<li><p>Apply slide-design principles: high signal-to-noise, large readable type, color and contrast that work for everyone in the room, figures rather than walls of text.</p></li>
+<li><p>Plan a fifteen-minute conference talk to time, including Q&amp;A.</p></li>
+<li><p>Rehearse productively, handle Q&amp;A — including hostile questions — and manage nerves.</p></li>
+<li><p>Adapt a talk for virtual or hybrid delivery.</p></li>
 </ol>
 </section>
-<section id="running-theme-trust-but-verify-at-every-step" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</h2>
-<p>An agent that works in a demo can fail catastrophically in production. The autonomy that makes agents useful — they keep going without you — is also what makes their failures hard to catch. Build in checkpoints, keep tools narrowly scoped, and treat agent actions as irreversible until proven otherwise.</p>
+<section id="running-theme-tell-them-what-theyll-know-at-the-end-that-they-dont-know-now-then-deliver-it-after-patrick-winston" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-tell-them-what-theyll-know-at-the-end-that-they-dont-know-now-then-deliver-it-after-patrick-winston">Running theme: tell them what they’ll know at the end that they don’t know now — then deliver it (after Patrick Winston)</h2>
+<p>A talk is a promise. Open with what the audience will know at the end. Spend the middle delivering on that promise. Close by naming what you delivered. Anything else is decoration.</p>
 </section>
-<section id="from-chatbot-to-agent" class="level2" data-number="37.1">
-<h2 data-number="37.1" class="anchored" data-anchor-id="from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</h2>
-<p>A chatbot is a single-turn or multi-turn conversation: you send a message, the model responds. An agent extends this with four components working together.</p>
-<p><strong>Model.</strong> A language model is the agent’s reasoning engine. It receives context, decides what to do next, and either produces a final answer or decides to invoke a tool.</p>
-<p><strong>Tools.</strong> Functions the model can call to take actions or retrieve information. Tools might query a database, read a file, call an external API, run a shell command, or search the web. The model does not execute these directly — it generates a structured request, and your code runs the function.</p>
-<p><strong>Memory.</strong> The information available to the model across steps. This includes in-context history (what has happened so far in this run), external memory (documents or records retrieved from a store), and sometimes longer-term memory persisted across runs.</p>
-<p><strong>Planning loop.</strong> The control structure that decides when to keep going and when to stop. Some agents are simple loops: call the model, execute tool, repeat. Others have more complex planning structures with explicit goal decomposition and reflection steps.</p>
-<p>The key difference between a chatbot and an agent is <em>action</em>: an agent can change things in the world, not just describe them. That distinction matters because it changes the stakes of errors. A chatbot that hallucinates gives you bad text; an agent that hallucinates may delete a file, send a message, or make an API call you did not intend.</p>
+<section id="why-talks-are-not-papers-read-aloud" class="level2" data-number="28.1">
+<h2 data-number="28.1" class="anchored" data-anchor-id="why-talks-are-not-papers-read-aloud"><span class="header-section-number">28.1</span> Why talks are not papers read aloud</h2>
+<p>A reader controls the pace; a listener does not. A reader can re-read a confusing paragraph; a listener cannot. A reader has the figure on the page next to the prose; a listener has whatever you put on the screen. These differences are large enough that the same content needs a different shape for each medium.</p>
+<p>A useful rule of thumb: an audience can absorb roughly one new idea per minute of presentation. A fifteen-minute talk has fifteen ideas in it, at most. If your paper has thirty findings, you are not presenting all thirty in fifteen minutes; you are presenting three or four, and the rest can be discussed in Q&amp;A.</p>
+<p>Patrick Winston’s <em>How to Speak</em> is required viewing because it codifies the heuristics nobody teaches explicitly. Three of his ideas to internalize before reading the rest of this chapter: the <em>empowerment promise</em> opener (in the first thirty seconds, tell the audience what they’ll be able to do or understand at the end), the importance of having a clear and memorable <em>story</em> the audience can take away, and the idea that the close of a talk should be a <em>contribution</em>, not a “thank you, any questions?”</p>
 </section>
-<section id="the-agentic-loop" class="level2" data-number="37.2">
-<h2 data-number="37.2" class="anchored" data-anchor-id="the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</h2>
-<p>The core of every agent is a loop that alternates between model reasoning and action execution. The pattern is sometimes called <strong>observe–think–act</strong>:</p>
-<ol type="1">
-<li><p><strong>Observe</strong>: The agent receives the current state — the user goal, any prior tool results, conversation history, and retrieved context.</p></li>
-<li><p><strong>Think</strong>: The model reasons about the current state and decides what to do next: invoke a tool, ask a clarifying question, or produce a final answer.</p></li>
-<li><p><strong>Act</strong>: If the model decides to use a tool, your code executes the tool and returns the result to the model. The result becomes part of the next observation.</p></li>
-<li><p><strong>Repeat</strong>: Steps 1–3 repeat until the model produces a final answer or a stop condition is reached.</p></li>
-</ol>
-<p>A minimal agentic loop looks like:</p>
-<pre><code>while not done:
-    response = model.call(context)
-    if response.has_tool_call():
-        result = execute_tool(response.tool_call)
-        context.append(result)
-    else:
-        final_answer = response.text
-        done = True</code></pre>
-<p>Several things can go wrong in this loop:</p>
+<section id="genres-of-academic-talk" class="level2" data-number="28.2">
+<h2 data-number="28.2" class="anchored" data-anchor-id="genres-of-academic-talk"><span class="header-section-number">28.2</span> Genres of academic talk</h2>
+<p>The same talk does not work in every room. The major genres:</p>
+<p><strong>Lightning / 5-minute talk.</strong> One slide per minute, one idea, one figure. The lightning talk is an ad — its job is to get someone interested enough to talk to you afterwards. Don’t try to present a paper in five minutes; pitch it.</p>
+<p><strong>Conference talk (15–20 minutes plus 5 minutes Q&amp;A).</strong> The most common academic talk. Roughly twelve to fifteen slides for a fifteen-minute talk; one minute per slide is a healthy default. The structure mirrors a paper but compressed: motivation, research question, method, results, takeaway. End on the contribution.</p>
+<p><strong>Job talk (45–60 minutes plus 30 minutes Q&amp;A).</strong> A research-narrative talk that ranges across multiple projects. The audience is mixed — some are in your subfield, most are not — and the talk is as much about you as a researcher as it is about any single project. Roughly thirty to forty-five slides. Spend more time on motivation than you would for a conference talk.</p>
+<p><strong>Lab meeting / works-in-progress.</strong> Informal. State at the start what kind of feedback you want — high-level framing, methodological critique, slide-level edits. Lab meetings are where the substantive critique happens before a paper goes to review; they are also where you find out you have been describing the project wrong all along.</p>
+<p><strong>Poster.</strong> A self-contained argument that can be read without you, but is much better with you. The poster is structured like a paper compressed onto one page: motivation, method, key result, takeaway. Big text. Few words. One or two figures that carry the argument. Spend most of your time at the poster talking to one person at a time, not standing back from it.</p>
+<p><strong>Thesis defense (30–45 minutes presentation, 60–90 minutes Q&amp;A).</strong> A defense is a conversation with your committee, who has read the document. The presentation summarizes; the Q&amp;A is the substance. Surprises are rare if your advisor has done their job.</p>
+</section>
+<section id="audience-analysis" class="level2" data-number="28.3">
+<h2 data-number="28.3" class="anchored" data-anchor-id="audience-analysis"><span class="header-section-number">28.3</span> Audience analysis</h2>
+<p>Before you draft a slide, name your audience. Three clean cases.</p>
+<p><strong>Specialists in your subfield.</strong> They share your jargon, your citations, your sense of what matters. You can move quickly through motivation; you should spend more time on novel methods and contributions. Be careful: even specialist audiences do not all share the same sub-sub-specialty. The reviewer-2 question in your audience is real.</p>
+<p><strong>Technical generalists.</strong> A CS or information-science department audience: technical, quantitative, but spanning HCI, ML, theory, systems, and more. The most common job-talk audience. Define jargon the first time you use it. Spend more time on motivation. Use figures with numbers labeled clearly. Make your contribution legible to someone who doesn’t read your venue’s papers.</p>
+<p><strong>General audiences.</strong> Undergraduates, the public, family. Drop the jargon entirely. Use analogies. The contribution has to be expressed without specialist vocabulary. This is harder than it looks, and a useful exercise even when you are not giving a public talk — if you can’t explain your work to an undergraduate, you don’t yet understand it.</p>
+</section>
+<section id="slide-design" class="level2 page-columns page-full" data-number="28.4">
+<h2 data-number="28.4" class="anchored" data-anchor-id="slide-design"><span class="header-section-number">28.4</span> Slide design</h2>
+<p>This is the longest section of the chapter because it is where the most preventable mistakes happen.</p>
+<p><strong>Signal-to-noise ratio.</strong> Every element on a slide either carries information or distracts from it. Distracting elements include: decorative clip art, busy templates, footers with the talk’s title on every slide, page numbers, and your university’s full logotype on every slide. Edward Tufte’s critique of PowerPoint (<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) is short and worth reading; the core idea is that the medium pushes you toward bullet lists at the expense of evidence.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://www.edwardtufte.com/tufte/powerpoint" class="uri">https://www.edwardtufte.com/tufte/powerpoint</a></p></div></div><p><strong>One idea per slide.</strong> A slide should be readable in five seconds and take one minute to talk through. The heading should be a full sentence that states the takeaway — not “Results” but “Civility increased by 18% in the month after the policy change.” The audience should remember the heading even if they remember nothing else.</p>
+<p><strong>Type.</strong> Minimum 24 point. Aim for 30 point or larger for body text. Sans-serif fonts project better. If you are pasting in a figure with axis labels, make sure the labels are readable from the back of the room. The single most common slide problem is type that is too small.</p>
+<p><strong>Color and accessibility.</strong> Aim for contrast ratios that work on a projector and for audience members with color vision deficiencies. WCAG-style 4.5:1 contrast is a usable target. Use colorblind-safe palettes — ColorBrewer (<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>) and Viridis are the go-to defaults. Where color encodes meaning, also use shape or pattern, so the slide remains legible if someone can’t distinguish the colors.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://colorbrewer2.org/" class="uri">https://colorbrewer2.org/</a></p></div></div><p><strong>Figures over text.</strong> The strongest slides are a figure with a sentence-long heading and one or two annotation labels. The weakest are five bullet points read aloud verbatim. If you must show text, make it parsimonious: a single sentence, a short quote, three terse bullets at most.</p>
+<p><strong>Builds and animations.</strong> Use sparingly. A single build that reveals a curve being added to a chart is good. A spinning logo is bad. Animations should serve the argument; if removing them doesn’t change what the audience understands, remove them.</p>
+<p>Two excellent books on slide craft if you want more: Garr Reynolds, <em>Presentation Zen</em> (<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>), and Nancy Duarte, <em>slide:ology</em> (<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>). Both argue for high-image, low-text slides; both have many examples.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://www.presentationzen.com/" class="uri">https://www.presentationzen.com/</a></p></div><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://www.duarte.com/books/slideology/" class="uri">https://www.duarte.com/books/slideology/</a></p></div></div></section>
+<section id="structuring-a-fifteen-minute-talk" class="level2" data-number="28.5">
+<h2 data-number="28.5" class="anchored" data-anchor-id="structuring-a-fifteen-minute-talk"><span class="header-section-number">28.5</span> Structuring a fifteen-minute talk</h2>
+<p>A workable shape for a fifteen-minute conference talk:</p>
 <ul>
-<li><p>The model loops indefinitely, calling tools repeatedly without converging.</p></li>
-<li><p>A tool call fails and the error message is not informative enough for the model to recover.</p></li>
-<li><p>The context grows with each iteration until it hits the context window limit.</p></li>
-<li><p>The model decides it is done but the task is actually incomplete.</p></li>
+<li><em>Minute 0–1: Empowerment promise.</em> What will the audience know at the end?</li>
+<li><em>Minutes 1–3: Motivation.</em> Why this question matters. One memorable example.</li>
+<li><em>Minutes 3–4: Research question.</em> The question, stated cleanly.</li>
+<li><em>Minutes 4–7: Method.</em> What you did, at a level the audience can follow.</li>
+<li><em>Minutes 7–12: Results.</em> Two or three findings. One main figure per finding.</li>
+<li><em>Minutes 12–14: Discussion / takeaway.</em> What this means for the field. Limitations briefly.</li>
+<li><em>Minutes 14–15: Contribution.</em> End on the contribution slide, not “thank you, any questions?”</li>
 </ul>
-<p>Building a robust agent means designing for these failure paths, not just the happy path.</p>
+<p>Build in two minutes of slack. You will go over otherwise.</p>
 </section>
-<section id="overview-of-agent-frameworks" class="level2" data-number="37.3">
-<h2 data-number="37.3" class="anchored" data-anchor-id="overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</h2>
-<p>Several frameworks exist to help you build agents without implementing the loop, tool management, and memory yourself. Each makes different trade-offs.</p>
-<section id="langchain" class="level3">
-<h3 class="anchored" data-anchor-id="langchain">LangChain</h3>
-<p><a href="https://python.langchain.com/docs/introduction/">LangChain</a> is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.</p>
-<p><em>Best for:</em> Teams that want a batteries-included framework with many pre-built components. Its abstraction layer is useful for rapid prototyping but can obscure what is happening underneath.</p>
-</section>
-<section id="llamaindex" class="level3">
-<h3 class="anchored" data-anchor-id="llamaindex">LlamaIndex</h3>
-<p><a href="https://docs.llamaindex.ai/en/stable/">LlamaIndex</a> (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.</p>
-<p><em>Best for:</em> Applications that center on querying documents, PDFs, databases, or APIs — where the primary challenge is getting the right information into context.</p>
-</section>
-<section id="claude-agent-sdk-anthropic-api" class="level3">
-<h3 class="anchored" data-anchor-id="claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</h3>
-<p>Anthropic’s Claude models support tool use natively through the Messages API. The <a href="https://docs.anthropic.com/en/docs/agents-and-tools/">Anthropic documentation</a> describes patterns for building agents directly using the API without a framework, giving you full control over the loop.</p>
-<p><em>Best for:</em> Teams who want to minimize abstraction and understand exactly what is being sent to the model. Also appropriate when you need to integrate tightly with existing code.</p>
-</section>
-<section id="crewai" class="level3">
-<h3 class="anchored" data-anchor-id="crewai">CrewAI</h3>
-<p><a href="https://docs.crewai.com/">CrewAI</a> provides a higher-level abstraction: you define <em>agents</em> (with roles and goals) and <em>tasks</em> (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.</p>
-<p><em>Best for:</em> Multi-agent workflows where different agents play different roles (researcher, writer, reviewer) and need to hand off work to each other.</p>
-</section>
-<section id="when-to-skip-a-framework" class="level3">
-<h3 class="anchored" data-anchor-id="when-to-skip-a-framework">When to skip a framework</h3>
-<p>Frameworks add complexity, dependencies, and a layer of abstraction between you and the model. For a simple two-step agent (retrieve data, summarize it), implementing the loop directly with the model’s API is often clearer and easier to debug. Start simple and add framework complexity only when you genuinely need what the framework provides.</p>
-</section>
-</section>
-<section id="defining-and-registering-tools" class="level2" data-number="37.4">
-<h2 data-number="37.4" class="anchored" data-anchor-id="defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</h2>
-<p>The quality of your tool definitions directly determines whether the model uses tools correctly. A poorly described tool will be called with wrong arguments, called at the wrong time, or ignored entirely.</p>
-<p>A good tool definition has three parts:</p>
-<p><strong>Name.</strong> Short, descriptive, underscore-separated. The model will refer to this in its reasoning. <code>search_documentation</code> is better than <code>tool1</code> or <code>doTheSearch</code>.</p>
-<p><strong>Description.</strong> A clear natural-language explanation of what the tool does, when to use it, and what it returns. The model reads this description to decide whether to call the tool. Vague descriptions produce unpredictable calls.</p>
-<p><strong>Input schema.</strong> A JSON schema defining the parameters the tool accepts, with types and descriptions for each parameter. Mark required parameters explicitly.</p>
-<p>Example of a well-defined tool:</p>
-<pre><code>{
-  "name": "query_database",
-  "description": "Run a read-only SQL SELECT query against the
-    project database. Use this when you need to look up records,
-    counts, or aggregates. Do not use for INSERT, UPDATE, or DELETE.
-    Returns a list of rows as JSON objects.",
-  "input_schema": {
-    "type": "object",
-    "properties": {
-      "sql": {
-        "type": "string",
-        "description": "A valid SQL SELECT statement."
-      }
-    },
-    "required": ["sql"]
-  }
-}</code></pre>
-<p>Principles for writing tool descriptions:</p>
+<section id="practicing" class="level2" data-number="28.6">
+<h2 data-number="28.6" class="anchored" data-anchor-id="practicing"><span class="header-section-number">28.6</span> Practicing</h2>
+<p>Talks improve linearly with rehearsal up to a point and quickly past it. The minimum useful rehearsal regimen:</p>
 <ul>
-<li><p>Say what the tool does <em>and</em> when to use it.</p></li>
-<li><p>Describe what the tool <em>does not</em> do (e.g., “read-only, no writes”).</p></li>
-<li><p>Describe the return format so the model knows how to interpret the result.</p></li>
-<li><p>Keep descriptions focused; one tool, one purpose.</p></li>
-<li><p>Expose only tools the agent actually needs for the current task.</p></li>
+<li>Out loud. On your feet. With your slides.</li>
+<li>Time yourself. Aim ten to twenty percent under the limit; you will go over in the room.</li>
+<li>Record yourself once and watch it. This is painful and very useful. You will discover verbal tics you didn’t know you had, and you will see whether your slides land.</li>
+<li>Practice in front of one human at least twice. Their feedback is more honest than your own self-review.</li>
+<li>Practice the <em>transitions</em> between slides; that is where most talks break down. The clean version of a transition is a single sentence — “Now that we have the method, let’s look at the results” — that primes what’s coming.</li>
 </ul>
-<p>Restricting tool access is a safety practice, not just housekeeping. An agent that has access to a “send email” tool might use it unexpectedly. Only expose tools the agent needs for the specific workflow you are running.</p>
+<p>Rehearsal stops being useful once your transitions are smooth and your timing is reliable. Beyond that, more rehearsal makes the talk stiffer, not better.</p>
 </section>
-<section id="memory-types" class="level2" data-number="37.5">
-<h2 data-number="37.5" class="anchored" data-anchor-id="memory-types"><span class="header-section-number">37.5</span> Memory types</h2>
-<p>Memory determines what information is available to the model as it works. Different memory types serve different purposes.</p>
-<section id="in-context-memory" class="level3">
-<h3 class="anchored" data-anchor-id="in-context-memory">In-context memory</h3>
-<p>Everything currently in the context window: the user’s original request, tool call results, prior responses, system prompt. This is the only memory that directly influences the model’s next decision.</p>
-<p><em>Limitation:</em> Bounded by the context window. Long-running agents will eventually fill the context, at which point older information must be summarized or dropped.</p>
+<section id="handling-qa" class="level2" data-number="28.7">
+<h2 data-number="28.7" class="anchored" data-anchor-id="handling-qa"><span class="header-section-number">28.7</span> Handling Q&amp;A</h2>
+<p>Q&amp;A is half the assessment in a talk. Three rules.</p>
+<p><strong>Repeat the question.</strong> Buys you a few seconds, ensures the audience heard it, and gives the questioner a chance to clarify if you misheard.</p>
+<p><strong>“I don’t know” is a valid answer.</strong> So is “that’s outside the scope of this work but it is a good question for future work.” Specialists prefer honest “I don’t know” to bluffing.</p>
+<p><strong>Hostile questions: assume good faith publicly.</strong> Even when the question lands harshly, respond to the strongest reasonable version of it. If the questioner was being aggressive, the audience will see that more clearly when you are calm. If the questioner had a real concern under the aggression, addressing it earns you respect.</p>
+<p>There is a fourth, less famous rule: <strong>land the plane.</strong> Some questioners do not actually have a question; they have a comment that turns into a five-minute statement. When this happens, you can interrupt politely — “Let me see if I can address what I think you’re asking” — and turn it back into a question. The chair of the session will appreciate it.</p>
 </section>
-<section id="external-memory-vector-stores" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-vector-stores">External memory: vector stores</h3>
-<p>A vector database stores document embeddings and retrieves semantically similar documents at query time. When the agent needs background information, it embeds the query, retrieves relevant documents, and injects them into context.</p>
-<p><em>Use case:</em> Knowledge retrieval, documentation search, “chat with your documents” applications. Allows the agent to work with document collections far larger than any context window.</p>
+<section id="nerves" class="level2" data-number="28.8">
+<h2 data-number="28.8" class="anchored" data-anchor-id="nerves"><span class="header-section-number">28.8</span> Nerves</h2>
+<p>Nerves are normal. They do not go away with experience; experienced presenters have learned to use the energy. Two practical tools.</p>
+<p><em>Cognitive reframing.</em> The physiological state of anxiety is the same as the physiological state of excitement — racing heart, shallow breath, attention narrowing. Telling yourself “I am excited” instead of “I am nervous” actually changes how you feel. There is psychology research on this; for our purposes, it works.</p>
+<p><em>Box breathing.</em> Before the talk, slow your breathing: four seconds in, hold four, four out, hold four. Repeat for a minute. This activates the parasympathetic nervous system and reduces the cortisol spike.</p>
+<p>The first thirty seconds are the hardest. Memorize the opening sentence cold. After the first minute, the talk usually carries you.</p>
 </section>
-<section id="external-memory-structured-databases" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-structured-databases">External memory: structured databases</h3>
-<p>Relational or key-value databases that the agent queries via a tool (like the <code>query_database</code> example above). Structured memory is better than vector search when you need exact lookups, counts, or joins rather than similarity matching.</p>
+<section id="virtual-and-hybrid-talks" class="level2" data-number="28.9">
+<h2 data-number="28.9" class="anchored" data-anchor-id="virtual-and-hybrid-talks"><span class="header-section-number">28.9</span> Virtual and hybrid talks</h2>
+<p>Virtual talks are now common enough to design for explicitly.</p>
+<p><em>Camera at eye level.</em> Stack books under your laptop if you have to. A camera looking up at you from a desk is unflattering and reads as informal.</p>
+<p><em>Look at the camera, not the participants.</em> The audience experiences eye contact when you look at the lens. This feels unnatural at first.</p>
+<p><em>Single window.</em> Close your inbox, your chat, everything. Treat the call like a stage.</p>
+<p><em>Backup slides as PDF.</em> Screen-sharing fails. Have a fallback.</p>
+<p><em>Mute everything.</em> Notification sounds during a talk are excruciating.</p>
+<p>For hybrid talks, plan for both audiences. Design slides that work on a projector <em>and</em> over Zoom — type sized for the room, contrast that survives screen compression. Ask a co-organizer to monitor remote Q&amp;A so you don’t have to split your attention.</p>
 </section>
-<section id="episodic-and-long-term-memory" class="level3">
-<h3 class="anchored" data-anchor-id="episodic-and-long-term-memory">Episodic and long-term memory</h3>
-<p>Some agent frameworks support persisting a summary of past sessions to a store, then loading relevant summaries at the start of new sessions. This gives the appearance of memory across conversations. It is more complex to implement and comes with privacy considerations: be deliberate about what you store and how long you keep it.</p>
-</section>
-</section>
-<section id="multi-step-reasoning-patterns" class="level2" data-number="37.6">
-<h2 data-number="37.6" class="anchored" data-anchor-id="multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</h2>
-<p>How the model reasons through a multi-step problem — not just that it uses tools, but how it structures its thinking — significantly affects reliability.</p>
-<section id="chain-of-thought" class="level3">
-<h3 class="anchored" data-anchor-id="chain-of-thought">Chain-of-thought</h3>
-<p>Prompting the model to “explain your reasoning step by step” before producing an answer. This does not change the model’s architecture, but it primes the model to generate intermediate reasoning steps that are more likely to be correct than jumping directly to an answer.</p>
-<p>Use chain-of-thought for: multi-step calculations, logical deductions, ambiguous categorizations, debugging.</p>
-</section>
-<section id="react-reason-act" class="level3">
-<h3 class="anchored" data-anchor-id="react-reason-act">ReAct (Reason + Act)</h3>
-<p>A prompting pattern where the model alternates between <strong>reasoning</strong> (“I need to find the latest version of this library”) and <strong>action</strong> (calling a tool to do so). The reasoning step is made explicit in the output, which makes traces easier to read and debug.</p>
-<p>A ReAct trace looks like:</p>
-<pre><code>Thought: I need to check the current pandas version.
-Action: run_shell_command({"command": "pip show pandas"})
-Observation: Name: pandas, Version: 2.2.1
-Thought: The user has pandas 2.2.1. I can now answer the question.
-Answer: You are running pandas 2.2.1.</code></pre>
-</section>
-<section id="reflection" class="level3">
-<h3 class="anchored" data-anchor-id="reflection">Reflection</h3>
-<p>After the agent produces an initial answer or plan, it reviews its own output and identifies potential errors or improvements. Reflection adds one or two additional model calls but catches mistakes that would otherwise be missed.</p>
-<p><em>When to use:</em> High-stakes decisions, structured outputs that must be valid (JSON schema, SQL), or any step where an error would be costly to detect later.</p>
-</section>
-<section id="reading-agent-traces" class="level3">
-<h3 class="anchored" data-anchor-id="reading-agent-traces">Reading agent traces</h3>
-<p>Agent frameworks typically log traces: the sequence of model calls, tool invocations, and results. Reading traces is a critical debugging skill. When an agent fails, the trace tells you:</p>
+<section id="tooling" class="level2 page-columns page-full" data-number="28.10">
+<h2 data-number="28.10" class="anchored" data-anchor-id="tooling"><span class="header-section-number">28.10</span> Tooling</h2>
+<p>The tools matter less than which one you’ll actually use; consistency across talks beats any individual tool’s features.</p>
 <ul>
-<li><p>What context the model had when it made a bad decision</p></li>
-<li><p>Which tool call was wrong, and what arguments it used</p></li>
-<li><p>Whether the error was in the model’s reasoning or in the tool execution</p></li>
-<li><p>Where in the loop the failure propagated</p></li>
+<li><strong>Beamer</strong> (LaTeX, see <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>). Strong for math-heavy talks; the <code>metropolis</code> theme produces clean modern decks.</li>
+<li><strong>Quarto Reveal.js</strong> (<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>). Excellent if you live in Quarto already and want code-and-output slides; integrates with <a href="../part-3-python/jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> and <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a> workflows.</li>
+<li><strong>Keynote / PowerPoint / Google Slides.</strong> What most non-academics use. Fine. Pick the one your collaborators use.</li>
 </ul>
-</section>
-</section>
-<section id="orchestrating-multi-agent-systems" class="level2" data-number="37.7">
-<h2 data-number="37.7" class="anchored" data-anchor-id="orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</h2>
-<p>Some tasks benefit from multiple specialized agents working together rather than a single all-purpose agent.</p>
-<section id="subagents" class="level3">
-<h3 class="anchored" data-anchor-id="subagents">Subagents</h3>
-<p>A <strong>subagent</strong> is an agent invoked as a tool by a parent (orchestrator) agent. The orchestrator decomposes the task, delegates subtasks to subagents, and aggregates results. Subagents can run in parallel if the subtasks are independent, which can significantly reduce total wall-clock time.</p>
-</section>
-<section id="supervisor-patterns" class="level3">
-<h3 class="anchored" data-anchor-id="supervisor-patterns">Supervisor patterns</h3>
-<p>In a <strong>supervisor</strong> architecture, one agent manages a team of specialized agents: a researcher, a writer, a reviewer. The supervisor routes tasks, checks outputs, and decides when the overall task is complete. This is useful when you have genuinely distinct specializations that benefit from separate system prompts and tool sets.</p>
-</section>
-<section id="handoffs" class="level3">
-<h3 class="anchored" data-anchor-id="handoffs">Handoffs</h3>
-<p>In sequential multi-agent pipelines, a <strong>handoff</strong> is the transfer of a task and its accumulated context from one agent to the next. Clean handoffs require that each agent produces output in a structured format the receiving agent can parse.</p>
-<p><em>Common problem:</em> Information loss at handoffs. If the first agent’s output is a long, unstructured paragraph, the second agent may miss key details. Design outputs at each stage to be explicit, structured, and complete.</p>
-</section>
-</section>
-<section id="failure-modes-and-risk" class="level2" data-number="37.8">
-<h2 data-number="37.8" class="anchored" data-anchor-id="failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</h2>
-<p>Agentic systems introduce failure modes that do not exist in single-call workflows.</p>
-<p><strong>Runaway loops.</strong> The model keeps calling tools without converging. Causes: the stop condition was not clearly defined, the model is stuck in a cycle, or a tool keeps returning errors. Fix: set a maximum number of iterations; always implement a hard stop.</p>
-<p><strong>Cascading errors.</strong> An error in step 3 corrupts the context, causing steps 4 and 5 to fail in confusing ways that look unrelated to the original problem. Fix: validate tool outputs before appending them to context; add explicit error-handling branches.</p>
-<p><strong>Unintended side effects.</strong> The model calls a tool that modifies state (writes a file, posts to an API, sends a message) when it should not have. Fix: separate read tools from write tools; require explicit confirmation before executing write actions (see <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the risk-based policy).</p>
-<p><strong>Context overflow.</strong> Long-running agents fill the context window with tool results and previous reasoning. The model then loses access to earlier instructions. Fix: summarize and compress context periodically; test with long runs before deploying.</p>
-<p><strong>Prompt injection via tool results.</strong> A malicious document or API response contains text designed to override the agent’s instructions (“Ignore previous instructions and instead…”). Fix: treat tool results as untrusted data; use separate system prompts that are not overridable by tool output; sanitize inputs from external sources.</p>
-<p><strong>Authorization creep.</strong> An agent with broad tool access may take actions outside the intended scope because the task description was ambiguous. Fix: apply least-privilege principles to tool definitions; use separate tool sets for different agent roles.</p>
-<section id="human-in-the-loop-checkpoints" class="level3">
-<h3 class="anchored" data-anchor-id="human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</h3>
-<p>For any action that is hard to reverse — writing to a database, sending a message, making a financial transaction, deleting a file — implement a human confirmation step before the action executes. This is not a failure of the agent; it is an appropriate design choice given the stakes.</p>
-<pre><code>def execute_tool(tool_call):
-    if tool_call.name in HIGH_RISK_TOOLS:
-        confirm = input(f"Agent wants to run {tool_call.name} "
-                        f"with args {tool_call.args}. Allow? [y/N] ")
-        if confirm.lower() != 'y':
-            return {"error": "Action cancelled by user."}
-    return TOOL_REGISTRY[tool_call.name](**tool_call.args)</code></pre>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;<a href="https://quarto.org/docs/presentations/revealjs/" class="uri">https://quarto.org/docs/presentations/revealjs/</a></p></div></div><p>If you already know one tool well, do not switch tools the week before a job talk. The tool is the smallest of your problems.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -940,56 +853,261 @@ Answer: You are running pandas 2.2.1.</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Anthropic: Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops.</li>
-<li><a href="https://python.langchain.com/docs/tutorials/agents/">LangChain agents documentation</a> — a framework-level walk-through of agent construction.</li>
-<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
+<li>Winston, P. <em>How to Speak</em> (MIT OCW). <a href="https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/" class="uri">https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/</a> · Video: <a href="https://www.youtube.com/watch?v=Unzc731iCUY" class="uri">https://www.youtube.com/watch?v=Unzc731iCUY</a></li>
+<li>Tufte, E. <em>The Cognitive Style of PowerPoint</em>. <a href="https://www.edwardtufte.com/tufte/powerpoint" class="uri">https://www.edwardtufte.com/tufte/powerpoint</a></li>
+<li>Reynolds, G. (2008). <em>Presentation Zen</em>. <a href="https://www.presentationzen.com/" class="uri">https://www.presentationzen.com/</a></li>
+<li>Duarte, N. (2008). <em>slide:ology</em>. <a href="https://www.duarte.com/books/slideology/" class="uri">https://www.duarte.com/books/slideology/</a></li>
+<li>ColorBrewer (palettes for charts and slides). <a href="https://colorbrewer2.org/" class="uri">https://colorbrewer2.org/</a></li>
 </ul>
 </div>
 </div>
 </section>
+<section id="worked-examples" class="level2" data-number="28.11">
+<h2 data-number="28.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">28.11</span> Worked examples</h2>
+<section id="a-15-minute-conference-talk-slide-by-slide-outline" class="level3">
+<h3 class="anchored" data-anchor-id="a-15-minute-conference-talk-slide-by-slide-outline">A 15-minute conference-talk slide-by-slide outline</h3>
+<p>A hypothetical CHI talk on “Civility After Moderation Policy Changes.” Twelve slides, fifteen minutes, contribution at the end.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Heading (full sentence)</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Title slide</td>
+<td>0:30</td>
+<td>Title, authors, venue, no clutter.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>When a subreddit changes its rules, what happens to civility?</td>
+<td>1:00</td>
+<td>Empowerment promise. State what we’ll know at the end.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Volunteer moderators run most of Reddit. We don’t know if their policy changes work.</td>
+<td>2:00</td>
+<td>Motivation, with one memorable example.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>We study one policy change, with a matched comparison community.</td>
+<td>1:30</td>
+<td>Research question and design at a glance.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Difference-in-differences with two civility measures.</td>
+<td>2:00</td>
+<td>Method, on one slide. One diagram.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Civility rose by 18% in the treated community over four weeks.</td>
+<td>2:00</td>
+<td>Main result. Single big chart.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>The off-the-shelf classifier missed half the change.</td>
+<td>2:00</td>
+<td>Second result. Side-by-side.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>The community-grounded annotation captured what the classifier missed.</td>
+<td>1:00</td>
+<td>Third result, brief.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Off-the-shelf classifiers underestimate community-specific norms.</td>
+<td>1:00</td>
+<td>Discussion, one takeaway.</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Limitations and one-site scope.</td>
+<td>0:30</td>
+<td>Honest, brief.</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Three contributions: measurement, method, replication-ready release.</td>
+<td>1:00</td>
+<td>Contribution slide — closer.</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>“Thanks — let’s discuss” with a memorable image.</td>
+<td>0:30</td>
+<td>Q&amp;A invitation.</td>
+</tr>
+</tbody>
+</table>
+<p>Total: ~15 minutes with two minutes of slack.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="37.9">
-<h2 data-number="37.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">37.9</span> Worked examples</h2>
-<section id="building-a-research-agent-with-document-retrieval" class="level3">
-<h3 class="anchored" data-anchor-id="building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</h3>
-<p>You want an agent that can answer research questions by first searching a document corpus, then synthesizing an answer with citations. The minimum design has two tools: a <code>search_documents</code> tool that does vector search over your corpus and returns the top-k document IDs and snippets, and a <code>read_document</code> tool that fetches the full text of a document by ID. You then write a system prompt that explicitly tells the agent to <em>search first</em>, cite the sources it used, and acknowledge uncertainty when the retrieved documents do not contain the answer. Test the loop with three to five real research questions and read the trace carefully — you are watching for the agent to use retrieval in the cases where it should and to <em>not</em> invent answers when nothing is found. Once that core loop works, add a reflection step: after producing an initial answer, the agent re-reads its own answer and identifies any gaps, optionally searching again to fill them. As the conversation grows, monitor how much context each turn consumes and set a threshold at which older results get summarized rather than passed forward verbatim, so the agent does not run out of context window in the middle of a long session.</p>
+<section id="beforeafter-slide-redesign" class="level3">
+<h3 class="anchored" data-anchor-id="beforeafter-slide-redesign">Before/after slide redesign</h3>
+<p><em>Before.</em> A slide titled “Findings” with five bullet points, each a full sentence, twelve-point font, university logo in the top-right, page number in the corner, and a faint watermark of the lab name across the background.</p>
+<p><em>After.</em> A slide whose heading reads “Civility rose by 18% in the four weeks after the policy change.” The body of the slide is a single line chart with two lines (treated, comparison), a vertical dashed line at the policy-change date, and labeled axes. No watermark, no logo, no page number. Below the chart, two short labels next to the lines.</p>
+<p>The before slide says: “here is everything I want you to remember.” The after slide says: “remember this one number.” The audience cannot remember everything. They can remember 18%.</p>
 </section>
-<section id="converting-a-multi-step-notebook-workflow-into-an-agent" class="level3">
-<h3 class="anchored" data-anchor-id="converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</h3>
-<p>You have a notebook with five distinct stages — load data, clean it, run analysis, generate figures, write a report — and you want to wrap it in an agent that can run any subset on demand. Walk through the notebook and identify which steps involve <em>decisions</em> (which file to load, which analysis to run, whether to retry on failure) versus pure transformations. The decision points are where an agent helps; the pure transformations should stay as plain functions. Wrap each stage in a tool with a clear input schema (<code>load_data(path)</code>, <code>run_analysis(table)</code>, <code>generate_report(results)</code>) and write a system prompt that describes the overall goal and explains when each tool should be called. Test the agent end-to-end on a known sample dataset, and compare its outputs to the manual notebook outputs to confirm they match. Critically, add a <strong>human-in-the-loop checkpoint</strong> before any tool that touches shared output — the report generation step is the natural place — so a person reviews the analysis before it gets distributed.</p>
-</section>
-<section id="diagnosing-a-misbehaving-agent-from-its-trace" class="level3">
-<h3 class="anchored" data-anchor-id="diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</h3>
-<p>An agent ran in production and produced the wrong result. The first move is to <strong>reproduce the failure</strong> and capture the <em>full</em> trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the <strong>first place where the output diverged</strong> from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the <strong>model’s reasoning</strong> (the model had the right context but drew a wrong conclusion), or was it in the <strong>tool’s execution</strong> (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the <strong>context it needed</strong> at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.</p>
+<section id="a-qa-reply-to-a-hostile-question" class="level3">
+<h3 class="anchored" data-anchor-id="a-qa-reply-to-a-hostile-question">A Q&amp;A reply to a hostile question</h3>
+<p><em>Question (from the audience):</em> “I’m not convinced your effect is real. Couldn’t this just be a regression to the mean? Did you do any kind of placebo test?”</p>
+<p><em>Reply:</em> “Thanks for the question. To make sure I understand: you’re asking whether the change we observed could be an artifact of the comparison community drifting on its own, rather than a real treatment effect. That’s a fair concern. We did a falsification test in the appendix — Figure A2 — where we ran the same DiD specification on a placebo intervention date six months earlier in the same community. We found no effect at the placebo date, which we take as evidence that what we’re seeing in the main analysis isn’t generic drift. Happy to walk through that figure offline.”</p>
+<p>The reply does three things. It restates the question — naming the concern (regression to the mean / drift) — so the room is on the same page. It points to the specific evidence that addresses the concern. It offers to continue the conversation offline. The audience hears the answer; the questioner does not have a runway for a follow-up that could derail the session.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="37.10">
-<h2 data-number="37.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">37.10</span> Exercises</h2>
+<section id="templates" class="level2" data-number="28.12">
+<h2 data-number="28.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">28.12</span> Templates</h2>
+<p>A conference-talk slide-deck outline (paste into your slide tool’s notes):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># {Talk title}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Audience: {specialist | generalist | general}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Length: 15 min talk + 5 min Q&amp;A</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Slide count: 12</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Title.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Empowerment promise: at the end you'll know X.</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Motivation.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Research question.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Method.</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Result 1 (main).</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Result 2.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Result 3 (brief).</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Discussion / takeaway.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>Limitations.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>Contribution.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">12. </span>Thanks.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A timing budget:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Talk</th>
+<th>Q&amp;A</th>
+<th>Slides</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lightning</td>
+<td>5 min</td>
+<td>0–2 min</td>
+<td>5–7</td>
+</tr>
+<tr class="even">
+<td>Conference</td>
+<td>15–20 min</td>
+<td>5 min</td>
+<td>12–18</td>
+</tr>
+<tr class="odd">
+<td>Job talk</td>
+<td>45–60 min</td>
+<td>30 min</td>
+<td>30–45</td>
+</tr>
+<tr class="even">
+<td>Defense</td>
+<td>30–45 min</td>
+<td>60–90 min</td>
+<td>25–35</td>
+</tr>
+</tbody>
+</table>
+<p>A pre-talk checklist:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Slides on laptop and as PDF backup on USB.</label></li>
+<li><label><input type="checkbox">Adapter for the projector (HDMI / USB-C / VGA — verify).</label></li>
+<li><label><input type="checkbox">Clicker tested.</label></li>
+<li><label><input type="checkbox">Water within reach of the lectern.</label></li>
+<li><label><input type="checkbox">Phone on silent (not vibrate — vibrate is louder than silent on a wooden lectern).</label></li>
+<li><label><input type="checkbox">Notifications off on the laptop.</label></li>
+<li><label><input type="checkbox">Speaker notes printed or on a separate device.</label></li>
+<li><label><input type="checkbox">First sentence memorized cold.</label></li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="28.13">
+<h2 data-number="28.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">28.13</span> Exercises</h2>
 <ol type="1">
-<li><p>Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.</p></li>
-<li><p>Write a tool definition (name, description, input schema) for a function that retrieves all rows from a CSV file where a specified column matches a given value. Pay attention to the description: include what the tool does, when to use it, and what it returns.</p></li>
-<li><p>Sketch (in pseudocode or plain English) a two-agent system where one agent collects information and a second agent writes a summary. What does the handoff look like? What structured format should the first agent produce so the second agent can use it reliably?</p></li>
-<li><p>Consider an agent that can read files, write files, and send emails. Classify each tool as low-risk, medium-risk, or high-risk according to the framework from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. For the high-risk tools, describe what a human-in-the-loop checkpoint would look like.</p></li>
-<li><p>Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.</p></li>
+<li>Take an existing slide deck (yours, or a public one) and rate every slide on a 0–3 signal-to-noise scale. Redesign the three worst slides.</li>
+<li>Plan and rehearse a five-minute lightning talk on a project of yours. Record yourself; watch it back; identify three concrete improvements.</li>
+<li>Workshop a peer’s slides using the principles in this chapter. Give them five specific edits.</li>
+<li>Watch the Patrick Winston <em>How to Speak</em> video and write a one-page reflection on which heuristics you will adopt for your next talk.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="37.11">
-<h2 data-number="37.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="28.14">
+<h2 data-number="28.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">28.14</span> One-page checklist</h2>
 <ul>
-<li><p>Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks</p></li>
-<li><p>Set a maximum iteration count to prevent runaway loops</p></li>
-<li><p>Write tool descriptions that explain what the tool does, when to use it, and what it returns</p></li>
-<li><p>Expose only the tools an agent needs for its specific role; remove tools that are not needed</p></li>
-<li><p>Classify tools by risk (read-only vs.&nbsp;write vs.&nbsp;irreversible); add confirmation prompts before high-risk actions</p></li>
-<li><p>Log full traces (model calls, tool calls, results) so failures can be diagnosed</p></li>
-<li><p>Test the agentic loop with adversarial inputs and edge cases, not just the happy path</p></li>
-<li><p>Monitor context size across long runs; implement context summarization before the window fills</p></li>
-<li><p>Treat tool results from external sources as untrusted; sanitize inputs that could contain prompt injection</p></li>
-<li><p>Add human-in-the-loop checkpoints for any action that cannot be easily undone</p></li>
+<li>Did you name the audience and pitch to them?</li>
+<li>Does slide one make an empowerment promise?</li>
+<li>Is every heading a full sentence with the takeaway?</li>
+<li>Is body type at least 24 points?</li>
+<li>Are colors colorblind-safe and projector-readable?</li>
+<li>Do figures carry the argument, not bullet lists?</li>
+<li>Did you rehearse out loud, on your feet, with the slides?</li>
+<li>Did you time yourself, with two minutes of slack?</li>
+<li>Do you have a backup PDF on USB?</li>
+<li>Does your closing slide name the contribution?</li>
 </ul>
+</section>
+<section id="quick-reference-timing-across-formats" class="level2" data-number="28.15">
+<h2 data-number="28.15" class="anchored" data-anchor-id="quick-reference-timing-across-formats"><span class="header-section-number">28.15</span> Quick reference: timing across formats</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Talk</th>
+<th>Q&amp;A</th>
+<th>Slides</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lightning</td>
+<td>5 min</td>
+<td>0–2 min</td>
+<td>5–7</td>
+</tr>
+<tr class="even">
+<td>Conference</td>
+<td>15–20 min</td>
+<td>5 min</td>
+<td>12–18</td>
+</tr>
+<tr class="odd">
+<td>Job talk</td>
+<td>45–60 min</td>
+<td>30 min</td>
+<td>30–45</td>
+</tr>
+<tr class="even">
+<td>Defense</td>
+<td>30–45 min</td>
+<td>60–90 min</td>
+<td>25–35</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1414,13 +1532,13 @@ Answer: You are running pandas 2.2.1.</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../parts/part-6-algorithmic/llm-internals.html" class="pagination-link" aria-label="How Language Models Work">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span>
+      <a href="../../parts/part-5-communication/writing-thesis.html" class="pagination-link" aria-label="How to Write a Thesis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="pagination-link" aria-label="Evaluating and Auditing AI Outputs">
-        <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../parts/part-5-communication/latex.html" class="pagination-link" aria-label="How to Use LaTeX">
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">How to Use LaTeX</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1429,4 +1547,4 @@ Answer: You are running pandas 2.2.1.</code></pre>
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/presenting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

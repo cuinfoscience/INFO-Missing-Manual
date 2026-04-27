@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>37&nbsp; Working with AI Agent Frameworks – Missing Manual for Information Scientists</title>
+<title>26&nbsp; How to Write Scholarly Manuscripts – Missing Manual for Information Scientists</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,8 +68,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../parts/part-6-algorithmic/evaluating-ai.html" rel="next">
-<link href="../../parts/part-6-algorithmic/llm-internals.html" rel="prev">
+<link href="../../parts/part-5-communication/writing-thesis.html" rel="next">
+<link href="../../parts/part-5-communication/reading-scholarship.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -80,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -251,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/writing-manuscripts.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -486,7 +521,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-5-communication/writing-manuscripts.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/part-5-communication/writing-manuscripts.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span></a>
   </div>
 </li>
@@ -574,7 +609,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../parts/part-6-algorithmic/ai-agents.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
   </div>
 </li>
@@ -627,60 +662,37 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#running-theme-trust-but-verify-at-every-step" id="toc-running-theme-trust-but-verify-at-every-step" class="nav-link" data-scroll-target="#running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</a></li>
-  <li><a href="#from-chatbot-to-agent" id="toc-from-chatbot-to-agent" class="nav-link" data-scroll-target="#from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</a></li>
-  <li><a href="#the-agentic-loop" id="toc-the-agentic-loop" class="nav-link" data-scroll-target="#the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</a></li>
-  <li><a href="#overview-of-agent-frameworks" id="toc-overview-of-agent-frameworks" class="nav-link" data-scroll-target="#overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</a>
+  <li><a href="#running-theme-write-for-a-tired-smart-skeptical-reader-who-has-thirty-other-papers-in-their-stack" id="toc-running-theme-write-for-a-tired-smart-skeptical-reader-who-has-thirty-other-papers-in-their-stack" class="nav-link" data-scroll-target="#running-theme-write-for-a-tired-smart-skeptical-reader-who-has-thirty-other-papers-in-their-stack">Running theme: write for a tired, smart, skeptical reader who has thirty other papers in their stack</a></li>
+  <li><a href="#what-scholarly-writing-is-for" id="toc-what-scholarly-writing-is-for" class="nav-link" data-scroll-target="#what-scholarly-writing-is-for"><span class="header-section-number">26.1</span> What scholarly writing is for</a></li>
+  <li><a href="#style-the-conventions-of-academic-prose" id="toc-style-the-conventions-of-academic-prose" class="nav-link" data-scroll-target="#style-the-conventions-of-academic-prose"><span class="header-section-number">26.2</span> Style: the conventions of academic prose</a></li>
+  <li><a href="#audience-awareness" id="toc-audience-awareness" class="nav-link" data-scroll-target="#audience-awareness"><span class="header-section-number">26.3</span> Audience awareness</a></li>
+  <li><a href="#conferences-vs.-journals-in-is-adjacent-fields" id="toc-conferences-vs.-journals-in-is-adjacent-fields" class="nav-link" data-scroll-target="#conferences-vs.-journals-in-is-adjacent-fields"><span class="header-section-number">26.4</span> Conferences vs.&nbsp;journals (in IS-adjacent fields)</a></li>
+  <li><a href="#picking-a-venue" id="toc-picking-a-venue" class="nav-link" data-scroll-target="#picking-a-venue"><span class="header-section-number">26.5</span> Picking a venue</a></li>
+  <li><a href="#drafting-and-revising" id="toc-drafting-and-revising" class="nav-link" data-scroll-target="#drafting-and-revising"><span class="header-section-number">26.6</span> Drafting and revising</a></li>
+  <li><a href="#preparing-for-double-blind-review" id="toc-preparing-for-double-blind-review" class="nav-link" data-scroll-target="#preparing-for-double-blind-review"><span class="header-section-number">26.7</span> Preparing for double-blind review</a></li>
+  <li><a href="#reading-reviews-and-responding" id="toc-reading-reviews-and-responding" class="nav-link" data-scroll-target="#reading-reviews-and-responding"><span class="header-section-number">26.8</span> Reading reviews and responding</a></li>
+  <li><a href="#rr-accept-reject-what-to-do-next" id="toc-rr-accept-reject-what-to-do-next" class="nav-link" data-scroll-target="#rr-accept-reject-what-to-do-next"><span class="header-section-number">26.9</span> R&amp;R, accept, reject: what to do next</a></li>
+  <li><a href="#writing-with-ai" id="toc-writing-with-ai" class="nav-link" data-scroll-target="#writing-with-ai"><span class="header-section-number">26.10</span> Writing with AI</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">26.11</span> Worked examples</a>
   <ul class="collapse">
-  <li><a href="#langchain" id="toc-langchain" class="nav-link" data-scroll-target="#langchain">LangChain</a></li>
-  <li><a href="#llamaindex" id="toc-llamaindex" class="nav-link" data-scroll-target="#llamaindex">LlamaIndex</a></li>
-  <li><a href="#claude-agent-sdk-anthropic-api" id="toc-claude-agent-sdk-anthropic-api" class="nav-link" data-scroll-target="#claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</a></li>
-  <li><a href="#crewai" id="toc-crewai" class="nav-link" data-scroll-target="#crewai">CrewAI</a></li>
-  <li><a href="#when-to-skip-a-framework" id="toc-when-to-skip-a-framework" class="nav-link" data-scroll-target="#when-to-skip-a-framework">When to skip a framework</a></li>
+  <li><a href="#from-outline-to-introduction" id="toc-from-outline-to-introduction" class="nav-link" data-scroll-target="#from-outline-to-introduction">From outline to introduction</a></li>
+  <li><a href="#anonymizing-a-paper-for-chi" id="toc-anonymizing-a-paper-for-chi" class="nav-link" data-scroll-target="#anonymizing-a-paper-for-chi">Anonymizing a paper for CHI</a></li>
+  <li><a href="#drafting-a-response-letter-to-a-major-revision" id="toc-drafting-a-response-letter-to-a-major-revision" class="nav-link" data-scroll-target="#drafting-a-response-letter-to-a-major-revision">Drafting a response letter to a Major Revision</a></li>
   </ul></li>
-  <li><a href="#defining-and-registering-tools" id="toc-defining-and-registering-tools" class="nav-link" data-scroll-target="#defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</a></li>
-  <li><a href="#memory-types" id="toc-memory-types" class="nav-link" data-scroll-target="#memory-types"><span class="header-section-number">37.5</span> Memory types</a>
-  <ul class="collapse">
-  <li><a href="#in-context-memory" id="toc-in-context-memory" class="nav-link" data-scroll-target="#in-context-memory">In-context memory</a></li>
-  <li><a href="#external-memory-vector-stores" id="toc-external-memory-vector-stores" class="nav-link" data-scroll-target="#external-memory-vector-stores">External memory: vector stores</a></li>
-  <li><a href="#external-memory-structured-databases" id="toc-external-memory-structured-databases" class="nav-link" data-scroll-target="#external-memory-structured-databases">External memory: structured databases</a></li>
-  <li><a href="#episodic-and-long-term-memory" id="toc-episodic-and-long-term-memory" class="nav-link" data-scroll-target="#episodic-and-long-term-memory">Episodic and long-term memory</a></li>
-  </ul></li>
-  <li><a href="#multi-step-reasoning-patterns" id="toc-multi-step-reasoning-patterns" class="nav-link" data-scroll-target="#multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</a>
-  <ul class="collapse">
-  <li><a href="#chain-of-thought" id="toc-chain-of-thought" class="nav-link" data-scroll-target="#chain-of-thought">Chain-of-thought</a></li>
-  <li><a href="#react-reason-act" id="toc-react-reason-act" class="nav-link" data-scroll-target="#react-reason-act">ReAct (Reason + Act)</a></li>
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
-  <li><a href="#reading-agent-traces" id="toc-reading-agent-traces" class="nav-link" data-scroll-target="#reading-agent-traces">Reading agent traces</a></li>
-  </ul></li>
-  <li><a href="#orchestrating-multi-agent-systems" id="toc-orchestrating-multi-agent-systems" class="nav-link" data-scroll-target="#orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</a>
-  <ul class="collapse">
-  <li><a href="#subagents" id="toc-subagents" class="nav-link" data-scroll-target="#subagents">Subagents</a></li>
-  <li><a href="#supervisor-patterns" id="toc-supervisor-patterns" class="nav-link" data-scroll-target="#supervisor-patterns">Supervisor patterns</a></li>
-  <li><a href="#handoffs" id="toc-handoffs" class="nav-link" data-scroll-target="#handoffs">Handoffs</a></li>
-  </ul></li>
-  <li><a href="#failure-modes-and-risk" id="toc-failure-modes-and-risk" class="nav-link" data-scroll-target="#failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</a>
-  <ul class="collapse">
-  <li><a href="#human-in-the-loop-checkpoints" id="toc-human-in-the-loop-checkpoints" class="nav-link" data-scroll-target="#human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</a></li>
-  </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">37.9</span> Worked examples</a>
-  <ul class="collapse">
-  <li><a href="#building-a-research-agent-with-document-retrieval" id="toc-building-a-research-agent-with-document-retrieval" class="nav-link" data-scroll-target="#building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</a></li>
-  <li><a href="#converting-a-multi-step-notebook-workflow-into-an-agent" id="toc-converting-a-multi-step-notebook-workflow-into-an-agent" class="nav-link" data-scroll-target="#converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</a></li>
-  <li><a href="#diagnosing-a-misbehaving-agent-from-its-trace" id="toc-diagnosing-a-misbehaving-agent-from-its-trace" class="nav-link" data-scroll-target="#diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</a></li>
-  </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">37.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">26.12</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">26.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">26.14</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-conference-vs.-journal-in-hciis" id="toc-quick-reference-conference-vs.-journal-in-hciis" class="nav-link" data-scroll-target="#quick-reference-conference-vs.-journal-in-hciis"><span class="header-section-number">26.15</span> Quick reference: conference vs.&nbsp;journal in HCI/IS</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/writing-manuscripts.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-5-communication/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../../parts/part-5-communication/writing-manuscripts.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ai-agents" class="quarto-section-identifier"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></h1>
+<h1 class="title"><span id="sec-writing-manuscripts" class="quarto-section-identifier"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span></h1>
 </div>
 
 
@@ -709,226 +721,99 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>, <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
-<p><strong>See also:</strong> <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a>.</p>
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a>, <a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a>.</p>
+<p><strong>See also:</strong> <a href="writing-thesis.html" class="quarto-xref"><span>Chapter 27</span></a>, <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>, <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 31</span></a>, <a href="../part-5-projects/project-management.html" class="quarto-xref"><span>Chapter 30</span></a>, <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>.</p>
 </div>
 </div>
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.</p>
-<p>Agent frameworks have become a major pattern in applied AI work. You will encounter them in research pipelines, data processing workflows, software development assistants, and automated systems. Understanding how they work — what the agentic loop is, how tools are defined and invoked, how memory is managed, and where these systems reliably fail — puts you in a position to use them deliberately rather than being surprised when something goes wrong.</p>
-<p>This chapter builds on the model internals from <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> and the responsible-use practices from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. Where those chapters focus on individual prompts and outputs, this one focuses on <em>systems</em>: sequences of model calls, tool invocations, and decision points that can touch real data, real services, and real consequences.</p>
+<p>A scholarly manuscript is a contract with a reader. You promise novelty, evidence, and clarity. They promise attention. The contract is small — five thousand words, give or take — and the reader is busy. They have thirty other papers in the stack. If your paper is two pages of throat-clearing before the contribution, they will move on. If your figures are unreadable, they will move on. If your contribution is buried in the discussion, they will move on. The reviewer is a model of a reader who has already moved on, and your job is to win them back.</p>
+<p>This chapter teaches how to write so that doesn’t happen. It covers the rhetorical conventions of academic prose, the structural conventions of empirical papers, the practical decision of <em>where</em> to send a paper, the specific work of preparing for double-blind review, and the harder skill of reading reviews and responding without losing your nerve. It is written for someone whose first manuscript is a class paper or honors thesis chapter — but the conventions scale to a CHI paper, a journal article, or a thesis chapter recast as a paper. None of this is mysterious; it is craft.</p>
+<p>Read this after <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a>. The two chapters reinforce each other: writing well is partly the inverse of reading well. Once you have read fifty papers with a triage protocol, you know what makes the next reader keep reading.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
-<li><p>Describe the four core components of an AI agent</p></li>
-<li><p>Trace the steps of an agentic loop and identify where failures typically occur</p></li>
-<li><p>Compare two or three major agent frameworks and articulate when each is appropriate</p></li>
-<li><p>Define a tool with a well-written description and input schema</p></li>
-<li><p>Explain the difference between in-context memory and external memory</p></li>
-<li><p>Read an agent trace and identify what the model decided and why</p></li>
-<li><p>Describe at least three failure modes specific to agentic systems</p></li>
-<li><p>Apply human-in-the-loop checkpoints to limit the blast radius of agent errors</p></li>
+<li><p>Identify the structure of a scholarly manuscript (IMRaD or its variants) and explain what each section is for.</p></li>
+<li><p>Write in the hedged, signposted prose style that academic readers expect, while avoiding common stylistic traps.</p></li>
+<li><p>Choose between a conference paper and a journal article for a given project, given target-venue norms in HCI, data science, computational social science, and information science.</p></li>
+<li><p>Prepare a manuscript for double-blind review — anonymization, self-citation, supplementary materials.</p></li>
+<li><p>Read peer reviews productively, draft a response letter, and execute a revise-and-resubmit cycle without losing your mind.</p></li>
+<li><p>Recover from rejection: triage reviews, decide whether to revise-and-resubmit elsewhere, and avoid common post-rejection mistakes.</p></li>
 </ol>
 </section>
-<section id="running-theme-trust-but-verify-at-every-step" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="running-theme-trust-but-verify-at-every-step">Running theme: trust but verify at every step</h2>
-<p>An agent that works in a demo can fail catastrophically in production. The autonomy that makes agents useful — they keep going without you — is also what makes their failures hard to catch. Build in checkpoints, keep tools narrowly scoped, and treat agent actions as irreversible until proven otherwise.</p>
+<section id="running-theme-write-for-a-tired-smart-skeptical-reader-who-has-thirty-other-papers-in-their-stack" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-write-for-a-tired-smart-skeptical-reader-who-has-thirty-other-papers-in-their-stack">Running theme: write for a tired, smart, skeptical reader who has thirty other papers in their stack</h2>
+<p>The reader you are writing for is competent but exhausted. They want to know your contribution in the first page; they want to be persuaded the contribution is real by the third; they want to put the paper down by the fifth knowing whether to cite it. Make their job easy.</p>
 </section>
-<section id="from-chatbot-to-agent" class="level2" data-number="37.1">
-<h2 data-number="37.1" class="anchored" data-anchor-id="from-chatbot-to-agent"><span class="header-section-number">37.1</span> From chatbot to agent</h2>
-<p>A chatbot is a single-turn or multi-turn conversation: you send a message, the model responds. An agent extends this with four components working together.</p>
-<p><strong>Model.</strong> A language model is the agent’s reasoning engine. It receives context, decides what to do next, and either produces a final answer or decides to invoke a tool.</p>
-<p><strong>Tools.</strong> Functions the model can call to take actions or retrieve information. Tools might query a database, read a file, call an external API, run a shell command, or search the web. The model does not execute these directly — it generates a structured request, and your code runs the function.</p>
-<p><strong>Memory.</strong> The information available to the model across steps. This includes in-context history (what has happened so far in this run), external memory (documents or records retrieved from a store), and sometimes longer-term memory persisted across runs.</p>
-<p><strong>Planning loop.</strong> The control structure that decides when to keep going and when to stop. Some agents are simple loops: call the model, execute tool, repeat. Others have more complex planning structures with explicit goal decomposition and reflection steps.</p>
-<p>The key difference between a chatbot and an agent is <em>action</em>: an agent can change things in the world, not just describe them. That distinction matters because it changes the stakes of errors. A chatbot that hallucinates gives you bad text; an agent that hallucinates may delete a file, send a message, or make an API call you did not intend.</p>
+<section id="what-scholarly-writing-is-for" class="level2 page-columns page-full" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="what-scholarly-writing-is-for"><span class="header-section-number">26.1</span> What scholarly writing is for</h2>
+<p>There is a distinction worth holding onto: <em>the paper as a record of what you did</em>, and <em>the paper as an argument</em>. A diary is the first. A manuscript is the second. The diary version of a paper is “here are all the things we tried, in the order we tried them, with the false starts and the dead ends.” The argument version is “here is the contribution, here is the evidence, here is what it implies.” The reader does not want the diary. They want the argument, told as cleanly as if you had known it from the beginning, even though you didn’t.</p>
+<p>Two excellent companions to this chapter: Wendy Belcher’s <em>Writing Your Journal Article in Twelve Weeks</em> (<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>) is the practical workbook every information-science PhD student should own. Pat Thomson’s blog <em>patter</em> (<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) is a long-running and warm voice on the actual experience of academic writing. Read both as you draft, not after.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html" class="uri">https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://patthomson.net/" class="uri">https://patthomson.net/</a></p></div></div></section>
+<section id="style-the-conventions-of-academic-prose" class="level2 page-columns page-full" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="style-the-conventions-of-academic-prose"><span class="header-section-number">26.2</span> Style: the conventions of academic prose</h2>
+<p>Academic writing has a recognizable style. It is not the same as good general writing. The rules that make a New Yorker piece sing — vivid metaphor, unmarked transitions, restrained signposting — will get you in trouble in a CHI paper. Academic readers expect signposting, hedging, and a particular kind of sentence-level clarity. Once you learn the conventions, they stop feeling like a cage.</p>
+<p><strong>IMRaD and its variants.</strong> Most empirical papers follow some version of Introduction → Methods → Results → Discussion. HCI papers often substitute “Related Work / Method / Findings / Discussion / Implications.” Theory papers and humanities pieces don’t follow IMRaD at all — they are rhetorical, organized by argument rather than by formula. When you read a paper, identify its structure on the first pass; when you write, mirror the structure of the venue you are targeting.</p>
+<p><strong>Signposting.</strong> Every section earns its keep by stating, in its first sentence or two, what it is doing. “In this section we describe the corpus and the cleaning pipeline.” Topic sentences carry the argument. Transitions are explicit: “Having established X, we now turn to Y.” Readers should never wonder where they are.</p>
+<p><strong>Hedging.</strong> Academic prose hedges. “Our results suggest” instead of “our results prove.” “These findings are consistent with” instead of “these findings show.” Hedging is not weakness; it is honesty. Hedge claims that are inferential and assert claims that are direct observations. The reviewer who flags “you said <em>suggest</em> — make it stronger” is rare; the reviewer who flags “you said <em>prove</em> — soften it” is on every panel.</p>
+<p><strong>Sentence-level moves.</strong> Prefer concrete subjects to abstract ones. “We collected 4,200 posts” beats “data collection yielded 4,200 posts.” Cut nominalizations — turn nouns back into verbs (“we measured” beats “we performed measurements of”). Vary sentence length. A single short sentence after three long ones reads as emphasis. Helen Sword’s <em>Stylish Academic Writing</em> and her free Writer’s Diet tool (<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>) are the most useful self-diagnostic; paste a paragraph in and see whether it reads as flabby or fit.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://writersdiet.com/test.php" class="uri">https://writersdiet.com/test.php</a></p></div></div></section>
+<section id="audience-awareness" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="audience-awareness"><span class="header-section-number">26.3</span> Audience awareness</h2>
+<p>The same finding can be a CHI paper, a JASIST paper, or a <em>Big Data &amp; Society</em> paper depending on framing. A CHI paper sells the design implications. A JASIST paper sells the contribution to information behavior theory. A <em>Big Data &amp; Society</em> paper sells the critical-theoretical stakes. Same data, three audiences, three abstracts. Before you draft, ask: who is the reader, what do they care about, and what is the contribution as <em>they</em> would describe it?</p>
+<p>This is also the question that should drive your introduction. The introduction is not “background”; it is the contract. The reader needs to know, by the end of the second page, what problem you are solving, why it is hard, what your approach is, and what the contributions are. CHI introductions often do this in four paragraphs: problem, why hard, our approach, contributions. Use that template until you can deviate from it intentionally.</p>
 </section>
-<section id="the-agentic-loop" class="level2" data-number="37.2">
-<h2 data-number="37.2" class="anchored" data-anchor-id="the-agentic-loop"><span class="header-section-number">37.2</span> The agentic loop</h2>
-<p>The core of every agent is a loop that alternates between model reasoning and action execution. The pattern is sometimes called <strong>observe–think–act</strong>:</p>
+<section id="conferences-vs.-journals-in-is-adjacent-fields" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="conferences-vs.-journals-in-is-adjacent-fields"><span class="header-section-number">26.4</span> Conferences vs.&nbsp;journals (in IS-adjacent fields)</h2>
+<p>Information-science students publish in a heterogeneous set of venues, and the conference-vs-journal distinction matters because the cycles, length conventions, and review norms differ.</p>
+<p><strong>Conference papers</strong> in HCI and information science — CHI, CSCW, ICWSM, FAccT, ASIS&amp;T, JCDL, iConference — are archival, peer-reviewed, and treated as primary research outputs. CHI is now single-column, with no fixed page limit but a working norm of around twelve thousand words. CSCW publishes in the <em>Proceedings of the ACM on Human-Computer Interaction</em> (PACM HCI) and runs a journal-style revise-and-resubmit cycle. Conference review cycles run four to eight months from submission to decision.</p>
+<p><strong>Journal articles</strong> — TOCHI, JASIST, <em>Information, Communication &amp; Society</em>, <em>New Media &amp; Society</em>, <em>Big Data &amp; Society</em>, <em>PNAS Nexus</em> for computational social science, and the disciplinary journals in your topic area — run longer (often eight to twelve thousand words, sometimes more) and slower (one to three years from submission to publication, with multiple revision rounds typical). Scope and theory expectations are usually higher.</p>
+<p><strong>A practical comparison</strong> appears as a Quick reference table at the end of this chapter.</p>
+</section>
+<section id="picking-a-venue" class="level2 page-columns page-full" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="picking-a-venue"><span class="header-section-number">26.5</span> Picking a venue</h2>
+<p>Three heuristics. <em>Where do the papers you cite most often appear?</em> If your bibliography is half CHI papers, your paper probably wants to be a CHI paper. <em>Where does your advisor publish?</em> They know the editors, the AC pool, and the review norms. <em>What are you optimizing for?</em> Speed favors a conference; depth and theoretical scope favor a journal; reach to a non-CS audience favors an open-access journal in a related field.</p>
+<p>A few practical notes. Preprints are increasingly normal. arXiv (<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>) and SocArXiv (<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>) host preprints; check your venue’s preprint policy before you post. Most major venues now permit preprints; some require that you not advertise the preprint until acceptance. Read the policy at the time of submission — these change.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://arxiv.org/" class="uri">https://arxiv.org/</a></p></div><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://osf.io/preprints/socarxiv" class="uri">https://osf.io/preprints/socarxiv</a></p></div></div><p>A common failure mode for students is to draft a paper and <em>then</em> pick a venue. Do it the other way around: pick the venue, read three recent accepted papers from it, and write the paper with their conventions in mind. The introduction, length, citation density, and rhetorical posture are venue-specific.</p>
+</section>
+<section id="drafting-and-revising" class="level2" data-number="26.6">
+<h2 data-number="26.6" class="anchored" data-anchor-id="drafting-and-revising"><span class="header-section-number">26.6</span> Drafting and revising</h2>
+<p>A first draft should be ugly. Anne Lamott’s “shitty first drafts” applies to scholarly writing; Belcher’s twelve-week schedule scales it to a coherent project. The actual workflow most working researchers use:</p>
 <ol type="1">
-<li><p><strong>Observe</strong>: The agent receives the current state — the user goal, any prior tool results, conversation history, and retrieved context.</p></li>
-<li><p><strong>Think</strong>: The model reasons about the current state and decides what to do next: invoke a tool, ask a clarifying question, or produce a final answer.</p></li>
-<li><p><strong>Act</strong>: If the model decides to use a tool, your code executes the tool and returns the result to the model. The result becomes part of the next observation.</p></li>
-<li><p><strong>Repeat</strong>: Steps 1–3 repeat until the model produces a final answer or a stop condition is reached.</p></li>
+<li><strong>Outline first.</strong> A two-page outline at section-and-paragraph granularity. Each paragraph gets a topic-sentence stub. This is the moment to decide what the paper is about; it is much easier to delete a paragraph stub than two pages of polished prose.</li>
+<li><strong>Methods first.</strong> Write the methods section before the introduction. You know what you did; that is the easiest section to draft. The introduction requires you to know what the contribution is, which is sometimes only clear after you’ve written the results.</li>
+<li><strong>Fat draft, then cut.</strong> Get the whole arc onto the page before you polish any of it. Most students reverse this — they polish the introduction for two weeks and never finish the discussion. Polishing is fast at the end and slow at the beginning.</li>
+<li><strong>Show drafts.</strong> Belcher’s framing — “writing partners” — is sound. A weekly half-hour swap of pages with one collaborator does more for your writing than ten hours alone. See <a href="../part-5-projects/collaboration.html" class="quarto-xref"><span>Chapter 32</span></a> for review etiquette.</li>
+<li><strong>Track manuscripts in git.</strong> A <code>manuscript/</code> folder with <code>main.tex</code>, <code>references.bib</code>, and the figures, all under version control. See <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 31</span></a> for the workflow; see <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a> for what to put in <code>.gitignore</code>.</li>
 </ol>
-<p>A minimal agentic loop looks like:</p>
-<pre><code>while not done:
-    response = model.call(context)
-    if response.has_tool_call():
-        result = execute_tool(response.tool_call)
-        context.append(result)
-    else:
-        final_answer = response.text
-        done = True</code></pre>
-<p>Several things can go wrong in this loop:</p>
-<ul>
-<li><p>The model loops indefinitely, calling tools repeatedly without converging.</p></li>
-<li><p>A tool call fails and the error message is not informative enough for the model to recover.</p></li>
-<li><p>The context grows with each iteration until it hits the context window limit.</p></li>
-<li><p>The model decides it is done but the task is actually incomplete.</p></li>
-</ul>
-<p>Building a robust agent means designing for these failure paths, not just the happy path.</p>
 </section>
-<section id="overview-of-agent-frameworks" class="level2" data-number="37.3">
-<h2 data-number="37.3" class="anchored" data-anchor-id="overview-of-agent-frameworks"><span class="header-section-number">37.3</span> Overview of agent frameworks</h2>
-<p>Several frameworks exist to help you build agents without implementing the loop, tool management, and memory yourself. Each makes different trade-offs.</p>
-<section id="langchain" class="level3">
-<h3 class="anchored" data-anchor-id="langchain">LangChain</h3>
-<p><a href="https://python.langchain.com/docs/introduction/">LangChain</a> is a comprehensive Python and JavaScript library for building LLM-powered applications. It provides abstractions for chains (sequential model calls), agents (loop-based reasoning), tools, memory, and retrieval. LangChain has a large ecosystem of integrations with databases, APIs, and model providers.</p>
-<p><em>Best for:</em> Teams that want a batteries-included framework with many pre-built components. Its abstraction layer is useful for rapid prototyping but can obscure what is happening underneath.</p>
+<section id="preparing-for-double-blind-review" class="level2" data-number="26.7">
+<h2 data-number="26.7" class="anchored" data-anchor-id="preparing-for-double-blind-review"><span class="header-section-number">26.7</span> Preparing for double-blind review</h2>
+<p>Most HCI venues — CHI, CSCW, FAccT — review double-blind. The norms have shifted in the last decade and continue to shift; the specifics in your venue’s current Call for Papers are what bind you, not the norms from three years ago.</p>
+<p>The mechanics: remove author names and affiliations from the title page. Remove acknowledgments. Cite your own prior work in the third person (“Prior work by [authors] showed…”) or with anonymized references — most venues accept either, but check. Be careful about identifying details: a system you have promoted on Twitter is identifying; a public GitHub repo is identifying; a uniquely named field site is identifying. Some venues let you cite a public repo with the URL anonymized; others ask you to omit it and provide it in a supplementary materials submission that the reviewers can access without learning your identity.</p>
+<p>LLM-disclosure policies have become a moving target. Most major venues now require some form of disclosure of LLM use beyond minor editing; some forbid pasting reviewer text into LLMs. Read the current Call for Papers — <em>not</em> a blog post from last year — at the time you submit. See <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the principled discussion; the venue policy is the binding constraint.</p>
 </section>
-<section id="llamaindex" class="level3">
-<h3 class="anchored" data-anchor-id="llamaindex">LlamaIndex</h3>
-<p><a href="https://docs.llamaindex.ai/en/stable/">LlamaIndex</a> (formerly GPT Index) focuses on retrieval-augmented generation: connecting language models to structured and unstructured data. It provides data loaders, index types, and query engines that make it easier to build knowledge-retrieval pipelines.</p>
-<p><em>Best for:</em> Applications that center on querying documents, PDFs, databases, or APIs — where the primary challenge is getting the right information into context.</p>
+<section id="reading-reviews-and-responding" class="level2" data-number="26.8">
+<h2 data-number="26.8" class="anchored" data-anchor-id="reading-reviews-and-responding"><span class="header-section-number">26.8</span> Reading reviews and responding</h2>
+<p>You will get reviews. Some will be helpful. Some will misread the paper. One will probably tell you to do an experiment that would be a separate paper. The first read of reviews is emotional; do not respond from that read. Wait twenty-four hours. Then do a working second read.</p>
+<p>In the second read, categorize each comment. <em>Substantive</em> comments require new analysis or new writing. <em>Clarification</em> comments mean the reader misunderstood — that’s a writing problem, not a research problem; the fix is to make the paper clearer, not to argue. <em>Stylistic</em> comments are usually small and worth doing. <em>Mistaken</em> comments — where the reviewer is factually wrong — are rare and require care; you address them respectfully in the response letter, not in a snarky footnote.</p>
+<p>Then draft a response letter. The standard format: for each reviewer, quote their comment verbatim (in bold or block-quoted), then write your response (often italicized or indented), then point to the specific section and line numbers where the change appears in the revised manuscript. The response letter is read by the editors and the reviewers; it is the artifact that decides whether the revision is accepted. A clean, point-by-point response with explicit pointers — “see §3.2, lines 145–158” — is what makes a positive decision easy.</p>
+<p>The hardest reviewer comments are not the harsh ones. The hardest are the ones where the reviewer is half-right. They are flagging a real problem but proposing a fix that doesn’t work. Your job is to acknowledge the underlying problem in the response letter, propose a <em>different</em> fix that does work, and explain why. This is a standard rhetorical move and reviewers appreciate it when done well.</p>
 </section>
-<section id="claude-agent-sdk-anthropic-api" class="level3">
-<h3 class="anchored" data-anchor-id="claude-agent-sdk-anthropic-api">Claude Agent SDK / Anthropic API</h3>
-<p>Anthropic’s Claude models support tool use natively through the Messages API. The <a href="https://docs.anthropic.com/en/docs/agents-and-tools/">Anthropic documentation</a> describes patterns for building agents directly using the API without a framework, giving you full control over the loop.</p>
-<p><em>Best for:</em> Teams who want to minimize abstraction and understand exactly what is being sent to the model. Also appropriate when you need to integrate tightly with existing code.</p>
+<section id="rr-accept-reject-what-to-do-next" class="level2" data-number="26.9">
+<h2 data-number="26.9" class="anchored" data-anchor-id="rr-accept-reject-what-to-do-next"><span class="header-section-number">26.9</span> R&amp;R, accept, reject: what to do next</h2>
+<p><strong>Major revision.</strong> Treat the resubmission as a new paper. Budget at least four weeks. Don’t add new authors mid-cycle (most venues forbid it; check the policy). Read the original reviews against your revised manuscript before submitting and check that every comment is addressed in the response letter.</p>
+<p><strong>Minor revision.</strong> Faster — usually one to two weeks. Same response-letter format, less new analysis.</p>
+<p><strong>Accept.</strong> Celebrate. Then read the camera-ready instructions twice. Most acceptances come with template requirements (the venue’s <code>\documentclass</code>), copyright forms, ORCID requirements, and supplementary materials deadlines. Miss none of them. See <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a> for the template mechanics.</p>
+<p><strong>Reject.</strong> Don’t resubmit the same draft to a different venue. Triage the reviews: which comments are about the paper, and which are about the venue fit? Address the paper-level comments. Re-target the framing for the new venue. A reject from CHI does not mean reject from JASIST; the audiences are different, and the framing should be too.</p>
 </section>
-<section id="crewai" class="level3">
-<h3 class="anchored" data-anchor-id="crewai">CrewAI</h3>
-<p><a href="https://docs.crewai.com/">CrewAI</a> provides a higher-level abstraction: you define <em>agents</em> (with roles and goals) and <em>tasks</em> (with descriptions and expected outputs), and CrewAI orchestrates the agents working together.</p>
-<p><em>Best for:</em> Multi-agent workflows where different agents play different roles (researcher, writer, reviewer) and need to hand off work to each other.</p>
-</section>
-<section id="when-to-skip-a-framework" class="level3">
-<h3 class="anchored" data-anchor-id="when-to-skip-a-framework">When to skip a framework</h3>
-<p>Frameworks add complexity, dependencies, and a layer of abstraction between you and the model. For a simple two-step agent (retrieve data, summarize it), implementing the loop directly with the model’s API is often clearer and easier to debug. Start simple and add framework complexity only when you genuinely need what the framework provides.</p>
-</section>
-</section>
-<section id="defining-and-registering-tools" class="level2" data-number="37.4">
-<h2 data-number="37.4" class="anchored" data-anchor-id="defining-and-registering-tools"><span class="header-section-number">37.4</span> Defining and registering tools</h2>
-<p>The quality of your tool definitions directly determines whether the model uses tools correctly. A poorly described tool will be called with wrong arguments, called at the wrong time, or ignored entirely.</p>
-<p>A good tool definition has three parts:</p>
-<p><strong>Name.</strong> Short, descriptive, underscore-separated. The model will refer to this in its reasoning. <code>search_documentation</code> is better than <code>tool1</code> or <code>doTheSearch</code>.</p>
-<p><strong>Description.</strong> A clear natural-language explanation of what the tool does, when to use it, and what it returns. The model reads this description to decide whether to call the tool. Vague descriptions produce unpredictable calls.</p>
-<p><strong>Input schema.</strong> A JSON schema defining the parameters the tool accepts, with types and descriptions for each parameter. Mark required parameters explicitly.</p>
-<p>Example of a well-defined tool:</p>
-<pre><code>{
-  "name": "query_database",
-  "description": "Run a read-only SQL SELECT query against the
-    project database. Use this when you need to look up records,
-    counts, or aggregates. Do not use for INSERT, UPDATE, or DELETE.
-    Returns a list of rows as JSON objects.",
-  "input_schema": {
-    "type": "object",
-    "properties": {
-      "sql": {
-        "type": "string",
-        "description": "A valid SQL SELECT statement."
-      }
-    },
-    "required": ["sql"]
-  }
-}</code></pre>
-<p>Principles for writing tool descriptions:</p>
-<ul>
-<li><p>Say what the tool does <em>and</em> when to use it.</p></li>
-<li><p>Describe what the tool <em>does not</em> do (e.g., “read-only, no writes”).</p></li>
-<li><p>Describe the return format so the model knows how to interpret the result.</p></li>
-<li><p>Keep descriptions focused; one tool, one purpose.</p></li>
-<li><p>Expose only tools the agent actually needs for the current task.</p></li>
-</ul>
-<p>Restricting tool access is a safety practice, not just housekeeping. An agent that has access to a “send email” tool might use it unexpectedly. Only expose tools the agent needs for the specific workflow you are running.</p>
-</section>
-<section id="memory-types" class="level2" data-number="37.5">
-<h2 data-number="37.5" class="anchored" data-anchor-id="memory-types"><span class="header-section-number">37.5</span> Memory types</h2>
-<p>Memory determines what information is available to the model as it works. Different memory types serve different purposes.</p>
-<section id="in-context-memory" class="level3">
-<h3 class="anchored" data-anchor-id="in-context-memory">In-context memory</h3>
-<p>Everything currently in the context window: the user’s original request, tool call results, prior responses, system prompt. This is the only memory that directly influences the model’s next decision.</p>
-<p><em>Limitation:</em> Bounded by the context window. Long-running agents will eventually fill the context, at which point older information must be summarized or dropped.</p>
-</section>
-<section id="external-memory-vector-stores" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-vector-stores">External memory: vector stores</h3>
-<p>A vector database stores document embeddings and retrieves semantically similar documents at query time. When the agent needs background information, it embeds the query, retrieves relevant documents, and injects them into context.</p>
-<p><em>Use case:</em> Knowledge retrieval, documentation search, “chat with your documents” applications. Allows the agent to work with document collections far larger than any context window.</p>
-</section>
-<section id="external-memory-structured-databases" class="level3">
-<h3 class="anchored" data-anchor-id="external-memory-structured-databases">External memory: structured databases</h3>
-<p>Relational or key-value databases that the agent queries via a tool (like the <code>query_database</code> example above). Structured memory is better than vector search when you need exact lookups, counts, or joins rather than similarity matching.</p>
-</section>
-<section id="episodic-and-long-term-memory" class="level3">
-<h3 class="anchored" data-anchor-id="episodic-and-long-term-memory">Episodic and long-term memory</h3>
-<p>Some agent frameworks support persisting a summary of past sessions to a store, then loading relevant summaries at the start of new sessions. This gives the appearance of memory across conversations. It is more complex to implement and comes with privacy considerations: be deliberate about what you store and how long you keep it.</p>
-</section>
-</section>
-<section id="multi-step-reasoning-patterns" class="level2" data-number="37.6">
-<h2 data-number="37.6" class="anchored" data-anchor-id="multi-step-reasoning-patterns"><span class="header-section-number">37.6</span> Multi-step reasoning patterns</h2>
-<p>How the model reasons through a multi-step problem — not just that it uses tools, but how it structures its thinking — significantly affects reliability.</p>
-<section id="chain-of-thought" class="level3">
-<h3 class="anchored" data-anchor-id="chain-of-thought">Chain-of-thought</h3>
-<p>Prompting the model to “explain your reasoning step by step” before producing an answer. This does not change the model’s architecture, but it primes the model to generate intermediate reasoning steps that are more likely to be correct than jumping directly to an answer.</p>
-<p>Use chain-of-thought for: multi-step calculations, logical deductions, ambiguous categorizations, debugging.</p>
-</section>
-<section id="react-reason-act" class="level3">
-<h3 class="anchored" data-anchor-id="react-reason-act">ReAct (Reason + Act)</h3>
-<p>A prompting pattern where the model alternates between <strong>reasoning</strong> (“I need to find the latest version of this library”) and <strong>action</strong> (calling a tool to do so). The reasoning step is made explicit in the output, which makes traces easier to read and debug.</p>
-<p>A ReAct trace looks like:</p>
-<pre><code>Thought: I need to check the current pandas version.
-Action: run_shell_command({"command": "pip show pandas"})
-Observation: Name: pandas, Version: 2.2.1
-Thought: The user has pandas 2.2.1. I can now answer the question.
-Answer: You are running pandas 2.2.1.</code></pre>
-</section>
-<section id="reflection" class="level3">
-<h3 class="anchored" data-anchor-id="reflection">Reflection</h3>
-<p>After the agent produces an initial answer or plan, it reviews its own output and identifies potential errors or improvements. Reflection adds one or two additional model calls but catches mistakes that would otherwise be missed.</p>
-<p><em>When to use:</em> High-stakes decisions, structured outputs that must be valid (JSON schema, SQL), or any step where an error would be costly to detect later.</p>
-</section>
-<section id="reading-agent-traces" class="level3">
-<h3 class="anchored" data-anchor-id="reading-agent-traces">Reading agent traces</h3>
-<p>Agent frameworks typically log traces: the sequence of model calls, tool invocations, and results. Reading traces is a critical debugging skill. When an agent fails, the trace tells you:</p>
-<ul>
-<li><p>What context the model had when it made a bad decision</p></li>
-<li><p>Which tool call was wrong, and what arguments it used</p></li>
-<li><p>Whether the error was in the model’s reasoning or in the tool execution</p></li>
-<li><p>Where in the loop the failure propagated</p></li>
-</ul>
-</section>
-</section>
-<section id="orchestrating-multi-agent-systems" class="level2" data-number="37.7">
-<h2 data-number="37.7" class="anchored" data-anchor-id="orchestrating-multi-agent-systems"><span class="header-section-number">37.7</span> Orchestrating multi-agent systems</h2>
-<p>Some tasks benefit from multiple specialized agents working together rather than a single all-purpose agent.</p>
-<section id="subagents" class="level3">
-<h3 class="anchored" data-anchor-id="subagents">Subagents</h3>
-<p>A <strong>subagent</strong> is an agent invoked as a tool by a parent (orchestrator) agent. The orchestrator decomposes the task, delegates subtasks to subagents, and aggregates results. Subagents can run in parallel if the subtasks are independent, which can significantly reduce total wall-clock time.</p>
-</section>
-<section id="supervisor-patterns" class="level3">
-<h3 class="anchored" data-anchor-id="supervisor-patterns">Supervisor patterns</h3>
-<p>In a <strong>supervisor</strong> architecture, one agent manages a team of specialized agents: a researcher, a writer, a reviewer. The supervisor routes tasks, checks outputs, and decides when the overall task is complete. This is useful when you have genuinely distinct specializations that benefit from separate system prompts and tool sets.</p>
-</section>
-<section id="handoffs" class="level3">
-<h3 class="anchored" data-anchor-id="handoffs">Handoffs</h3>
-<p>In sequential multi-agent pipelines, a <strong>handoff</strong> is the transfer of a task and its accumulated context from one agent to the next. Clean handoffs require that each agent produces output in a structured format the receiving agent can parse.</p>
-<p><em>Common problem:</em> Information loss at handoffs. If the first agent’s output is a long, unstructured paragraph, the second agent may miss key details. Design outputs at each stage to be explicit, structured, and complete.</p>
-</section>
-</section>
-<section id="failure-modes-and-risk" class="level2" data-number="37.8">
-<h2 data-number="37.8" class="anchored" data-anchor-id="failure-modes-and-risk"><span class="header-section-number">37.8</span> Failure modes and risk</h2>
-<p>Agentic systems introduce failure modes that do not exist in single-call workflows.</p>
-<p><strong>Runaway loops.</strong> The model keeps calling tools without converging. Causes: the stop condition was not clearly defined, the model is stuck in a cycle, or a tool keeps returning errors. Fix: set a maximum number of iterations; always implement a hard stop.</p>
-<p><strong>Cascading errors.</strong> An error in step 3 corrupts the context, causing steps 4 and 5 to fail in confusing ways that look unrelated to the original problem. Fix: validate tool outputs before appending them to context; add explicit error-handling branches.</p>
-<p><strong>Unintended side effects.</strong> The model calls a tool that modifies state (writes a file, posts to an API, sends a message) when it should not have. Fix: separate read tools from write tools; require explicit confirmation before executing write actions (see <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the risk-based policy).</p>
-<p><strong>Context overflow.</strong> Long-running agents fill the context window with tool results and previous reasoning. The model then loses access to earlier instructions. Fix: summarize and compress context periodically; test with long runs before deploying.</p>
-<p><strong>Prompt injection via tool results.</strong> A malicious document or API response contains text designed to override the agent’s instructions (“Ignore previous instructions and instead…”). Fix: treat tool results as untrusted data; use separate system prompts that are not overridable by tool output; sanitize inputs from external sources.</p>
-<p><strong>Authorization creep.</strong> An agent with broad tool access may take actions outside the intended scope because the task description was ambiguous. Fix: apply least-privilege principles to tool definitions; use separate tool sets for different agent roles.</p>
-<section id="human-in-the-loop-checkpoints" class="level3">
-<h3 class="anchored" data-anchor-id="human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</h3>
-<p>For any action that is hard to reverse — writing to a database, sending a message, making a financial transaction, deleting a file — implement a human confirmation step before the action executes. This is not a failure of the agent; it is an appropriate design choice given the stakes.</p>
-<pre><code>def execute_tool(tool_call):
-    if tool_call.name in HIGH_RISK_TOOLS:
-        confirm = input(f"Agent wants to run {tool_call.name} "
-                        f"with args {tool_call.args}. Allow? [y/N] ")
-        if confirm.lower() != 'y':
-            return {"error": "Action cancelled by user."}
-    return TOOL_REGISTRY[tool_call.name](**tool_call.args)</code></pre>
+<section id="writing-with-ai" class="level2" data-number="26.10">
+<h2 data-number="26.10" class="anchored" data-anchor-id="writing-with-ai"><span class="header-section-number">26.10</span> Writing with AI</h2>
+<p>See <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the principled discussion of LLM use. For manuscript writing specifically, the rules are: disclose what your venue requires you to disclose, and don’t paste reviewer text into a public LLM (some venues now explicitly forbid this, and it is bad practice in any case — reviews are confidential).</p>
+<p>Useful uses: LLMs are good at catching nominalizations, reducing wordiness in a paragraph you’ve already drafted, generating alternative phrasings of an awkward sentence, and turning a Markdown table into LaTeX. They are bad at the actual contribution — the argument is yours.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -940,56 +825,205 @@ Answer: You are running pandas 2.2.1.</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Anthropic: Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops.</li>
-<li><a href="https://python.langchain.com/docs/tutorials/agents/">LangChain agents documentation</a> — a framework-level walk-through of agent construction.</li>
-<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
+<li>Belcher, W. L. (2019). <em>Writing Your Journal Article in Twelve Weeks</em> (2nd ed.). University of Chicago Press. <a href="https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html" class="uri">https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html</a></li>
+<li>Thomson, P. <em>patter</em>. <a href="https://patthomson.net/" class="uri">https://patthomson.net/</a></li>
+<li>Strunk, W., &amp; White, E. B. <em>The Elements of Style</em>. <a href="https://www.bartleby.com/141/" class="uri">https://www.bartleby.com/141/</a></li>
+<li>Sword, H. <em>Stylish Academic Writing.</em> And the Writer’s Diet tool: <a href="https://writersdiet.com/test.php" class="uri">https://writersdiet.com/test.php</a></li>
+<li>ACM Master Article Template: <a href="https://www.acm.org/publications/proceedings-template" class="uri">https://www.acm.org/publications/proceedings-template</a></li>
+<li>The current Call for Papers for your target venue (read it the week you submit).</li>
 </ul>
 </div>
 </div>
 </section>
+<section id="worked-examples" class="level2" data-number="26.11">
+<h2 data-number="26.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">26.11</span> Worked examples</h2>
+<section id="from-outline-to-introduction" class="level3">
+<h3 class="anchored" data-anchor-id="from-outline-to-introduction">From outline to introduction</h3>
+<p>You are drafting a class paper that will become a CHI submission. Topic: the effects of a moderation policy change on civility on a subreddit. Here is the four-paragraph CHI introduction template, and a 400-word draft applying it.</p>
+<p><em>Paragraph 1: the problem.</em> “Online platforms increasingly use moderation interventions to shape user behavior. The relationship between policy changes and user-level outcomes — civility, retention, polarization — is not well understood, especially on platforms run by volunteer moderators rather than centralized teams.”</p>
+<p><em>Paragraph 2: why it’s hard.</em> “Measuring civility at scale is difficult. Existing toxicity classifiers vary widely in how they handle community-specific norms, and naturalistic studies of moderation are confounded by selection: communities that change moderation policy differ from those that don’t.”</p>
+<p><em>Paragraph 3: our approach.</em> “In this paper, we study a single subreddit before and after a publicly announced policy change, using a difference-in-differences design with a matched comparison community. We measure civility using both an off-the-shelf classifier and a community-grounded annotation set.”</p>
+<p><em>Paragraph 4: contributions.</em> “We make three contributions. First, we show that moderator-led policy changes have measurable effects on civility within the first month. Second, we demonstrate that off-the-shelf classifiers underestimate change because they miss community-specific norms. Third, we provide a replication-ready code and data release that enables follow-on work on volunteer-run platforms.”</p>
+<p>That is roughly the shape. The introduction does not require a literature review; that is the next section. It states the problem, the difficulty, the approach, and the contributions, in that order.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="37.9">
-<h2 data-number="37.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">37.9</span> Worked examples</h2>
-<section id="building-a-research-agent-with-document-retrieval" class="level3">
-<h3 class="anchored" data-anchor-id="building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</h3>
-<p>You want an agent that can answer research questions by first searching a document corpus, then synthesizing an answer with citations. The minimum design has two tools: a <code>search_documents</code> tool that does vector search over your corpus and returns the top-k document IDs and snippets, and a <code>read_document</code> tool that fetches the full text of a document by ID. You then write a system prompt that explicitly tells the agent to <em>search first</em>, cite the sources it used, and acknowledge uncertainty when the retrieved documents do not contain the answer. Test the loop with three to five real research questions and read the trace carefully — you are watching for the agent to use retrieval in the cases where it should and to <em>not</em> invent answers when nothing is found. Once that core loop works, add a reflection step: after producing an initial answer, the agent re-reads its own answer and identifies any gaps, optionally searching again to fill them. As the conversation grows, monitor how much context each turn consumes and set a threshold at which older results get summarized rather than passed forward verbatim, so the agent does not run out of context window in the middle of a long session.</p>
+<section id="anonymizing-a-paper-for-chi" class="level3">
+<h3 class="anchored" data-anchor-id="anonymizing-a-paper-for-chi">Anonymizing a paper for CHI</h3>
+<p>You are submitting to CHI. Below is a side-by-side of a paragraph before and after anonymization.</p>
+<p><em>Before:</em> “We deployed Civilify, a Reddit moderation assistant developed at the University of Colorado Boulder. As described in our prior work (Keegan, 2023), Civilify uses a transformer-based classifier to flag rule-breaking comments before they are posted. The system is open-source and available at <a href="https://github.com/brianckeegan/civilify" class="uri">https://github.com/brianckeegan/civilify</a>.”</p>
+<p><em>After:</em> “We deployed [Anon-System], a Reddit moderation assistant. As described in prior work by the authors [Anonymized Citation 1], [Anon-System] uses a transformer-based classifier to flag rule-breaking comments before they are posted. The system is open-source; the URL is provided in supplementary materials submitted to the program committee.”</p>
+<p>Three things changed. The system name was anonymized. The self-citation became third-person and stripped to a placeholder. The public GitHub URL — which would identify the authors via commit history — was moved to supplementary materials, which the program committee can access without learning the authors’ identities.</p>
+<p>You also need to remove your name from the author block (most venues handle this with a <code>\anonymize</code> flag in the <code>acmart</code> template), strip your affiliation, and remove the acknowledgments section for review. Restore everything for the camera-ready.</p>
 </section>
-<section id="converting-a-multi-step-notebook-workflow-into-an-agent" class="level3">
-<h3 class="anchored" data-anchor-id="converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</h3>
-<p>You have a notebook with five distinct stages — load data, clean it, run analysis, generate figures, write a report — and you want to wrap it in an agent that can run any subset on demand. Walk through the notebook and identify which steps involve <em>decisions</em> (which file to load, which analysis to run, whether to retry on failure) versus pure transformations. The decision points are where an agent helps; the pure transformations should stay as plain functions. Wrap each stage in a tool with a clear input schema (<code>load_data(path)</code>, <code>run_analysis(table)</code>, <code>generate_report(results)</code>) and write a system prompt that describes the overall goal and explains when each tool should be called. Test the agent end-to-end on a known sample dataset, and compare its outputs to the manual notebook outputs to confirm they match. Critically, add a <strong>human-in-the-loop checkpoint</strong> before any tool that touches shared output — the report generation step is the natural place — so a person reviews the analysis before it gets distributed.</p>
+<section id="drafting-a-response-letter-to-a-major-revision" class="level3">
+<h3 class="anchored" data-anchor-id="drafting-a-response-letter-to-a-major-revision">Drafting a response letter to a Major Revision</h3>
+<p>A snippet from a real-format response letter. Three reviewer comments and the responses that won the round.</p>
+<blockquote class="blockquote">
+<p><strong>R2.1: “The classifier validation in §3.2 is undersold. The agreement statistics with the human coders are reported but no confusion matrix is provided, which makes it hard to evaluate the classifier’s behavior on the minority class.”</strong></p>
+<p><em>We thank R2 for this comment. We agree that the original §3.2 underspecified the classifier’s behavior on the minority “uncivil” class. In the revised manuscript, we have added Table 2 (a full confusion matrix) and revised §3.2 to discuss precision and recall on the minority class explicitly. See §3.2, lines 287–312, and Table 2.</em></p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>R2.2: “The DiD identification assumption is not adequately defended. What is the parallel-trends evidence?”</strong></p>
+<p><em>We agree this needs strengthening. We have added a new Figure 4 showing pre-treatment trends in the outcome for the treated and matched-comparison communities, with formal placebo tests in the new Appendix B. The discussion in §4.1 (lines 410–438) now references this evidence directly.</em></p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>R3.4: “The authors should run the same analysis on a second subreddit to demonstrate generalizability.”</strong></p>
+<p><em>We appreciate the suggestion. A second-site replication is beyond the scope of this paper — selecting a comparable second site involves substantive curatorial work that would itself constitute a separate study. We have, however, expanded the limitations section (§6, lines 612–630) to discuss the single-site nature of the study explicitly and to flag a multi-site replication as the natural next step.</em></p>
+</blockquote>
+<p>The third response is the half-right comment handled well. The reviewer is correct that single-site studies have generalizability limits; they are wrong that running a second site is a quick fix. The response acknowledges the underlying concern, offers a different fix (an explicit limitations discussion), and points to a future paper. Editors read responses like this as professional and complete.</p>
 </section>
-<section id="diagnosing-a-misbehaving-agent-from-its-trace" class="level3">
-<h3 class="anchored" data-anchor-id="diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</h3>
-<p>An agent ran in production and produced the wrong result. The first move is to <strong>reproduce the failure</strong> and capture the <em>full</em> trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the <strong>first place where the output diverged</strong> from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the <strong>model’s reasoning</strong> (the model had the right context but drew a wrong conclusion), or was it in the <strong>tool’s execution</strong> (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the <strong>context it needed</strong> at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.</p>
 </section>
+<section id="templates" class="level2" data-number="26.12">
+<h2 data-number="26.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">26.12</span> Templates</h2>
+<p>A manuscript outline (paste into <code>outline.md</code> at the top of every new paper):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># {Working title}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>**Target venue:** {CHI 2027 / TOCHI / etc.}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>**Target word count:** ~{12000}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>**Target submission:** {YYYY-MM-DD}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>**Co-authors:** {names}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Contribution (one paragraph, written before any prose)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Outline</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Introduction (~1200 words)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para 1: problem</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para 2: why hard</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para 3: our approach</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para 4: contributions</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Related work (~1500 words)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Theme A</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Theme B</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gap</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Method (~1800 words)</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Findings/Results (~3500 words)</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5. Discussion (~1500 words)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6. Limitations and future work (~600 words)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A reviewer-response-letter skeleton:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Response to reviewers — {Paper title} ({Venue} submission ID #####)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary of revisions</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>{Bullet list of the major changes, with section pointers.}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reviewer 1</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">### R1.1</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; {Verbatim reviewer comment in block quote.}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>We thank the reviewer for...</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>We have addressed this in §X, lines NNN–NNN.</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">### R1.2</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reviewer 2</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A submission-day checklist:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Manuscript anonymized (names, affiliations, acknowledgments, identifying URLs).</label></li>
+<li><label><input type="checkbox">Template compliance (<code>acmart</code> <code>[anonymous,review]</code> flags set).</label></li>
+<li><label><input type="checkbox">References complete; bibliography compiles cleanly.</label></li>
+<li><label><input type="checkbox">Figures embedded at intended size; captions complete; alt text where required.</label></li>
+<li><label><input type="checkbox">Supplementary materials submitted separately if needed.</label></li>
+<li><label><input type="checkbox">LLM-use disclosure per current CFP.</label></li>
+<li><label><input type="checkbox">Final commit pushed to git; submission archived.</label></li>
+</ul>
 </section>
-<section id="exercises" class="level2" data-number="37.10">
-<h2 data-number="37.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">37.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="26.13">
+<h2 data-number="26.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">26.13</span> Exercises</h2>
 <ol type="1">
-<li><p>Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.</p></li>
-<li><p>Write a tool definition (name, description, input schema) for a function that retrieves all rows from a CSV file where a specified column matches a given value. Pay attention to the description: include what the tool does, when to use it, and what it returns.</p></li>
-<li><p>Sketch (in pseudocode or plain English) a two-agent system where one agent collects information and a second agent writes a summary. What does the handoff look like? What structured format should the first agent produce so the second agent can use it reliably?</p></li>
-<li><p>Consider an agent that can read files, write files, and send emails. Classify each tool as low-risk, medium-risk, or high-risk according to the framework from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. For the high-risk tools, describe what a human-in-the-loop checkpoint would look like.</p></li>
-<li><p>Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.</p></li>
+<li>Take a 200-word paragraph from one of your own past assignments. Rewrite it in academic prose: concrete subjects, hedging where appropriate, signposting at the start, no nominalizations. Submit before/after.</li>
+<li>Pick a published CHI paper. Write a 100-word “contribution paragraph” using only the abstract — no peeking at the rest of the paper.</li>
+<li>Compare the Calls for Papers of CHI and a journal in your area. Produce a one-page comparison table covering scope, length, review style, anonymization, and timeline.</li>
+<li>Take one of your own writing samples (a class paper, a thesis chapter) and anonymize it for double-blind review. Have a classmate try to identify you.</li>
+<li>Take a real or instructor-provided reviewer comment and draft a 150-word response that quotes the comment, addresses it, and points to a specific section of a hypothetical revision.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="37.11">
-<h2 data-number="37.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="26.14">
+<h2 data-number="26.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">26.14</span> One-page checklist</h2>
 <ul>
-<li><p>Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks</p></li>
-<li><p>Set a maximum iteration count to prevent runaway loops</p></li>
-<li><p>Write tool descriptions that explain what the tool does, when to use it, and what it returns</p></li>
-<li><p>Expose only the tools an agent needs for its specific role; remove tools that are not needed</p></li>
-<li><p>Classify tools by risk (read-only vs.&nbsp;write vs.&nbsp;irreversible); add confirmation prompts before high-risk actions</p></li>
-<li><p>Log full traces (model calls, tool calls, results) so failures can be diagnosed</p></li>
-<li><p>Test the agentic loop with adversarial inputs and edge cases, not just the happy path</p></li>
-<li><p>Monitor context size across long runs; implement context summarization before the window fills</p></li>
-<li><p>Treat tool results from external sources as untrusted; sanitize inputs that could contain prompt injection</p></li>
-<li><p>Add human-in-the-loop checkpoints for any action that cannot be easily undone</p></li>
+<li>Did you pick the venue <em>before</em> you started drafting?</li>
+<li>Does the introduction state the problem, the difficulty, the approach, and the contributions, in that order?</li>
+<li>Does every section start with a sentence that says what the section is doing?</li>
+<li>Are claims hedged where they are inferential and direct where they are observational?</li>
+<li>Did you write methods before introduction?</li>
+<li>Are figures and tables readable at print size?</li>
+<li>Did you anonymize per your venue’s current policy?</li>
+<li>Does the bibliography compile cleanly with stable citation keys (see <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a>)?</li>
+<li>Is the manuscript under version control with the <code>.bib</code> file (see <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 31</span></a>)?</li>
+<li>Did you check the LLM-disclosure policy in the current CFP?</li>
 </ul>
+</section>
+<section id="quick-reference-conference-vs.-journal-in-hciis" class="level2" data-number="26.15">
+<h2 data-number="26.15" class="anchored" data-anchor-id="quick-reference-conference-vs.-journal-in-hciis"><span class="header-section-number">26.15</span> Quick reference: conference vs.&nbsp;journal in HCI/IS</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>HCI/IS conference (CHI, CSCW, FAccT)</th>
+<th>Journal (TOCHI, JASIST, <em>NM&amp;S</em>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Length</td>
+<td>~8–12k words, single column</td>
+<td>~8–12k words, sometimes longer</td>
+</tr>
+<tr class="even">
+<td>Cycle</td>
+<td>4–8 months, often 1–2 R&amp;R rounds</td>
+<td>1–3 years, often 2–4 rounds</td>
+</tr>
+<tr class="odd">
+<td>Review</td>
+<td>Double-blind; AC + 3 reviewers</td>
+<td>Often double-blind; AE + 2–3 reviewers</td>
+</tr>
+<tr class="even">
+<td>Output</td>
+<td>Archival proceedings (PACM HCI for CSCW)</td>
+<td>Issue, often online-first</td>
+</tr>
+<tr class="odd">
+<td>Typical revisions</td>
+<td>Minor or major</td>
+<td>Major, often multiple</td>
+</tr>
+<tr class="even">
+<td>Anonymization</td>
+<td>Strict, current CFP binds</td>
+<td>Variable; check the journal</td>
+</tr>
+<tr class="odd">
+<td>Preprints</td>
+<td>Generally permitted; check CFP</td>
+<td>Generally permitted; check</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1414,13 +1448,13 @@ Answer: You are running pandas 2.2.1.</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../parts/part-6-algorithmic/llm-internals.html" class="pagination-link" aria-label="How Language Models Work">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span>
+      <a href="../../parts/part-5-communication/reading-scholarship.html" class="pagination-link" aria-label="How to Read Scholarly Articles and Books">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../parts/part-6-algorithmic/evaluating-ai.html" class="pagination-link" aria-label="Evaluating and Auditing AI Outputs">
-        <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../parts/part-5-communication/writing-thesis.html" class="pagination-link" aria-label="How to Write a Thesis">
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1429,4 +1463,4 @@ Answer: You are running pandas 2.2.1.</code></pre>
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-communication/writing-manuscripts.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

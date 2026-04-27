@@ -4,7 +4,7 @@
 >
 > **Prerequisites (read first if unfamiliar):** [sec-debugging](#sec-debugging).
 >
-> **See also:** [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks), [sec-asking-questions](#sec-asking-questions).
+> **See also:** [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks), [sec-asking-questions](#sec-asking-questions), [sec-latex](#sec-latex).
 
 ## Purpose
 

@@ -1,4 +1,4 @@
-# 31  How Language Models Work
+# 36  How Language Models Work
 
 > **TIP:**
 >
@@ -36,7 +36,7 @@ By the end of this chapter, you should be able to:
 
 Every behavior of a language model — useful and frustrating — follows from one fact: the model processes sequences of tokens and predicts likely continuations. It does not understand your intent, look things up, or reason the way a person does. The better you understand what the model actually sees, the better you can guide it toward what you actually want.
 
-## 31.1 Tokens and tokenization
+## 36.1 Tokens and tokenization
 
 When you type a message into a language model, the first thing that happens is not reading. It is tokenization: your text is split into small chunks called **tokens**, and those tokens — not characters, not words — are what the model processes.
 
@@ -54,7 +54,7 @@ Several practical implications follow from this:
 
 When diagnosing unexpected model behavior, tokenization is worth checking. If a model consistently misinterprets a technical term, it may be seeing it as two or three tokens with different meanings rather than one cohesive concept.
 
-## 31.2 Context windows
+## 36.2 Context windows
 
 A language model does not have persistent memory between conversations. Everything the model “knows” about your current task is contained in the **context window**: the full sequence of tokens that is sent to the model for a given request.
 
@@ -72,7 +72,7 @@ Practical implications:
 
 - **Context windows are not permanent storage.** If you start a new conversation, the model has no memory of previous sessions unless you explicitly provide that history.
 
-## 31.3 Sampling and temperature
+## 36.3 Sampling and temperature
 
 Language models do not produce a single deterministic answer. They produce a **probability distribution** over what token might come next, and then sample from that distribution. This is why the same prompt can produce different outputs each time you run it.
 
@@ -96,7 +96,7 @@ Related parameters you may encounter:
 
 When you need reproducible output (unit tests, data pipelines, evaluations), set temperature to 0. When you need variety (brainstorming, multiple drafts), raise it. When a model is giving you boring, repetitive answers, try increasing temperature slightly before rewriting your prompt.
 
-## 31.4 Embeddings
+## 36.4 Embeddings
 
 Embeddings are a different use of language models from text generation. An **embedding model** converts text into a list of numbers — a vector — that encodes the meaning of that text in a high-dimensional space. Similar texts produce similar vectors; dissimilar texts produce vectors that are far apart.
 
@@ -112,7 +112,7 @@ Embeddings are the foundation of several practical applications:
 
 Embeddings come from specialized embedding models (distinct from chat models) and are typically cheaper and faster to generate. If your task involves finding similar text, organizing documents by topic, or connecting a model to a large knowledge base, embeddings are usually the right tool — not just pasting everything into a chat window.
 
-## 31.5 Prompting best practices
+## 36.5 Prompting best practices
 
 A prompt is not just a question. It is structured input that shapes the model’s behavior across the entire response. Understanding the anatomy of a well-constructed prompt lets you get more reliable, predictable output.
 
@@ -144,7 +144,7 @@ In a chat interface, the system prompt is often hidden. In an API call, you set 
 
 7.  **Test prompts systematically.** Small wording changes can produce large output changes. Treat prompt development like code development: make one change at a time and evaluate the result before moving on.
 
-## 31.6 API versus chatbot interfaces
+## 36.6 API versus chatbot interfaces
 
 The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like [ChatGPT](https://chatgpt.com/), [Claude.ai](https://claude.ai/), or [Gemini](https://gemini.google.com/)) and the **API** (a programmatic interface — for example, the [Anthropic API](https://docs.anthropic.com/) or the [OpenAI API](https://platform.openai.com/docs/) — you call from code). Understanding the difference helps you choose the right tool.
 
@@ -193,7 +193,7 @@ A minimal Python API call looks like:
 
 When to use an API: any time you need to run the same prompt over multiple inputs, integrate AI into a script or pipeline, control parameters precisely, or build something reproducible.
 
-## 31.7 Tools and function calling
+## 36.7 Tools and function calling
 
 Language models on their own cannot browse the web, run code, read files, or query databases. **Function calling** (also called tool use) is the mechanism by which a model can invoke external capabilities that you define.
 
@@ -228,7 +228,7 @@ The model does not run the function. It decides whether to call it and construct
 
 Function calling is powerful for connecting language models to live data, APIs, and databases. It is also where safety considerations become important: if a tool can modify files, send emails, or execute code, you need to be deliberate about what you expose and when you actually run what the model requests (see [sec-ai-llm](#sec-ai-llm) for risk-based verification policies).
 
-## 31.8 Why models hallucinate
+## 36.8 Why models hallucinate
 
 “Hallucination” is the common term for when a language model confidently states something that is false. Understanding why this happens helps you anticipate and check for it.
 
@@ -262,7 +262,7 @@ Practical responses to hallucination:
 > - [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including system-message best practices.
 > - [Hugging Face: Transformers documentation](https://huggingface.co/docs/transformers/index) — the reference implementation of the model architecture behind most modern chat models.
 
-## 31.9 Worked examples
+## 36.9 Worked examples
 
 ### Diagnosing why a prompt produces inconsistent output
 
@@ -313,7 +313,7 @@ def search(query, k=3):
 
 Test it with a handful of real queries and compare against grep over the same documents — you will quickly see the cases where keyword search misses paraphrases that semantic search catches.
 
-## 31.10 Exercises
+## 36.10 Exercises
 
 1.  Use your model provider’s tokenizer tool to count the tokens in a 500-word essay. Then count the tokens in the same content in another language (use a translation tool if needed). How does the token count differ, and what does this imply for cost?
 
@@ -327,7 +327,7 @@ Test it with a handful of real queries and compare against grep over the same do
 
 6.  Make an API call from a Python script (using any model you have access to) that takes a string from the command line, sends it to the model with a system prompt you write, and prints the response. Confirm that the output changes when you change the system prompt.
 
-## 31.11 One-page checklist
+## 36.11 One-page checklist
 
 - Before sending a long prompt, check the token count to ensure it fits within the context window
 

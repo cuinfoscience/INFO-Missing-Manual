@@ -4,7 +4,7 @@
 >
 > **Prerequisites (read first if unfamiliar):** [sec-pkg-mgmt](#sec-pkg-mgmt), [sec-jupyter](#sec-jupyter).
 >
-> **See also:** [sec-automation](#sec-automation), [sec-git-github](#sec-git-github).
+> **See also:** [sec-automation](#sec-automation), [sec-git-github](#sec-git-github), [sec-presenting](#sec-presenting).
 
 ## Purpose
 

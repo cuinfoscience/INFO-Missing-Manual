@@ -42,27 +42,35 @@ Computational thinking is not just for coding assignments. It is a way to reason
 
 ## 1.3 Outline
 
-This handbook is organized into four parts that gradually build up a novice’s paratechnical competence. Each part moves from foundational concepts to concrete skills and ends with small exercises and checklists so that you can assess your own mastery.
+This handbook is organized into seven parts that gradually build up a novice’s paratechnical competence. Each part moves from foundational concepts to concrete skills and ends with small exercises and checklists so that you can assess your own mastery.
 
 ##### Part I–Practice of Technical Work.
 
-We begin with the human side of computing. You will learn how to ask specific, reproducible questions when you need help, how to find and write technical documentation, how to debug systematically using decomposition, testing, and logging, and how to incorporate AI/LLM tools responsibly into your workflow. These chapters establish habits for lifelong learning and communication.
+We begin with the human side of computing. You will learn how to ask specific, reproducible questions when you need help, how to find and write technical documentation, how to read and write the common text formats your tools rely on, how to read official documentation efficiently, how to debug systematically using decomposition, testing, and logging, how to read Python tracebacks, and how to think about the politics of the artifacts you build. These chapters establish habits for lifelong learning and communication.
 
 ##### Part II–Your Computing Environment.
 
-Next we explore the physical and software environment in which code runs. Chapters cover maintaining your operating system, navigating and organizing the local file system on Windows and macOS, working safely in a terminal, choosing and using text editors, adopting baseline security practices and backups, and connecting to remote machines via SSH, VPN, and cloud services. Mastery of these topics prevents many “mysterious” errors.
+Next we explore the physical and software environment in which code runs. Chapters cover maintaining your operating system, navigating and organizing the local file system on Windows and macOS, working safely in a terminal, choosing and using text editors, and connecting to remote machines via SSH, VPN, and cloud services. Mastery of these topics prevents many “mysterious” errors.
 
 ##### Part III–Python Working Context for Data Work.
 
-With a stable environment in place, we turn to managing Python itself. You will learn about package managers (`conda` and `pip`), creating and using virtual environments, launching and troubleshooting Jupyter Notebook and JupyterLab, and deciding when to use notebooks versus scripts. A chapter on scripts shows how to write importable modules, add commandline interfaces, and convert between notebooks and scripts.
+With a stable environment in place, we turn to managing Python itself. You will learn about package managers (`conda` and `pip`), creating and using virtual environments, launching and troubleshooting Jupyter Notebook and JupyterLab, deciding when to use notebooks versus scripts, working with regular expressions, and adopting consistent code style with linting and formatting tools. A chapter on scripts shows how to write importable modules, add commandline interfaces, and convert between notebooks and scripts.
 
-##### Part IV–Shipping and Sustaining Projects.
+##### Part IV–Working with Data.
 
-Finally we address how to make your work reproducible and collaborative. Chapters introduce lightweight project management (project briefs, reproducible structure, data hygiene, documentation, and issue tracking), version control with Git and GitHub (commits, branches, pull requests, forks, and merge conflict resolution), collaboration mechanics (writing and reviewing code, comment etiquette, and decision logging), and automation (scripts, task runners, scheduling, continuous integration, and responsible AI assistance). Together these skills enable you to deliver reliable work in teams.
+The next part is about the day-to-day craft of working with data. Chapters cover the common data file formats you will encounter, the principles of tabular data (wide vs. tidy, cleaning, and validation), the pandas idioms you will reach for most often, the SQL basics that translate between dataframes and databases, and how to talk to the web through HTTP and APIs.
 
-##### Part V–Algorithmic Systems.
+##### Part V–Communication.
 
-This final part goes deeper into how modern AI systems work and how to work with them as a practitioner. Where Part I covers responsible AI use in a single workflow, Part V covers the internals and infrastructure: what tokens and context windows are, how embeddings enable semantic search, how to construct effective prompts, and what changes when you call a model via API rather than a chatbot. A second chapter covers AI agent frameworks where a language model reasons across multiple steps and invokes external tools including how to define tools, manage memory, read agent traces, and guard against the failure modes unique to agentic pipelines. A third chapter addresses evaluation and auditing: how to measure AI system quality systematically, build representative test suites, use automated evaluators, and audit for bias and drift in deployed applications.
+Computing is most of what an information scientist does, but communication is what makes the work count. This part covers the genres you will be asked to produce: how to read scholarly articles and books efficiently, how to write scholarly manuscripts for conferences and journals, how to write a thesis (MS, monograph, or three-paper), how to present your work in talks of every length, and how to use LaTeX and BibTeX to produce the documents themselves. The chapters can be read independently, and they cross-reference each other and the rest of the book.
+
+##### Part VI–Shipping and Sustaining Projects.
+
+We then address how to make your work reproducible and collaborative. Chapters introduce lightweight project management (project briefs, reproducible structure, data hygiene, documentation, and issue tracking), version control with Git and GitHub (commits, branches, pull requests, forks, and merge conflict resolution), collaboration mechanics (writing and reviewing code, comment etiquette, and decision logging), automation (scripts, task runners, scheduling, continuous integration, and responsible AI assistance), and how to manage environment variables and secrets. Together these skills enable you to deliver reliable work in teams.
+
+##### Part VII–Algorithmic Systems.
+
+This final part goes deeper into how modern AI systems work and how to work with them as a practitioner. Where earlier chapters cover responsible AI use in everyday workflows, Part VII covers the internals and infrastructure: what tokens and context windows are, how embeddings enable semantic search, how to construct effective prompts, and what changes when you call a model via API rather than a chatbot. A second chapter covers AI agent frameworks where a language model reasons across multiple steps and invokes external tools including how to define tools, manage memory, read agent traces, and guard against the failure modes unique to agentic pipelines. A third chapter addresses evaluation and auditing: how to measure AI system quality systematically, build representative test suites, use automated evaluators, and audit for bias and drift in deployed applications.
 
 ## 1.4 Acknowledgements
 

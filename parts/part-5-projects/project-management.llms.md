@@ -1,10 +1,10 @@
-# 25  Project Management
+# 30  Project Management
 
 > **TIP:**
 >
 > **Prerequisites:** none. This chapter stands on its own.
 >
-> **See also:** [sec-git-github](#sec-git-github), [sec-collaboration](#sec-collaboration), [sec-documentation](#sec-documentation).
+> **See also:** [sec-git-github](#sec-git-github), [sec-collaboration](#sec-collaboration), [sec-documentation](#sec-documentation), [sec-writing-thesis](#sec-writing-thesis).
 
 ## Purpose
 
@@ -30,13 +30,13 @@ By the end of this chapter, you should be able to:
 
 A well-managed project makes its assumptions and status legible: what the data are, what changed, what remains, and how to rerun.
 
-## 25.1 Mental model: a project is a system of artifacts
+## 30.1 Mental model: a project is a system of artifacts
 
 A project is not just “the code.” It is a system of artifacts that have to be kept consistent with each other for the project to make sense. There are five categories worth managing explicitly. **Data** includes raw inputs, processed outputs, and the intermediate files in between. **Code** includes the scripts that do the work, the reusable modules that get imported, and the notebooks that drive the analysis. The **environment** is the set of dependencies and runtime assumptions that make the code actually run — Python version, package versions, OS quirks. **Documentation** captures the purpose of the project, the consequential decisions you made along the way, how to use the artifacts, and how to interpret the results. And **work tracking** is the record of tasks, bugs, questions, and priorities that lets you (and your collaborators) know what is happening and what comes next. Every artifact category needs a stable home in the project, and a project that ignores any of them eventually pays for it.
 
 The **lifecycle** of a project moves through four phases. You **plan** by deciding what success looks like — the goal, the deliverables, the constraints. You **build** by implementing the data pipelines and the analysis. You **verify** by checking quality and reproducing the outputs from a clean state. And you **deliver** by packaging the results, writing up the findings, and communicating any limitations a reader needs to know. The phases overlap and iterate, but if you skip one of them, the project tends to fall over at exactly that point — projects that skipped planning produce results nobody asked for, projects that skipped verification ship wrong numbers, projects that skipped delivery are technically done but never actually used.
 
-## 25.2 Project planning for novices (lightweight, not bureaucratic)
+## 30.2 Project planning for novices (lightweight, not bureaucratic)
 
 ### The one-page project brief
 
@@ -87,7 +87,7 @@ Before you start analysis, list the decisions you anticipate having to make and 
 
 Pick one and be consistent. The worst case is not having a record at all, where three months later you cannot explain why `sales_clean.csv` has 4% fewer rows than `sales_raw.csv` and cannot reconstruct whether that was deliberate.
 
-## 25.3 Reproducible project structure
+## 30.3 Reproducible project structure
 
 ### Design principles
 
@@ -154,7 +154,7 @@ The four-line rule: **raw data is never edited, processed data is always generat
 
 And a short list of what should **not** be in the repo under any circumstances: **secrets, credentials, API keys, personal access tokens, private keys** (see [sec-secrets](#sec-secrets)), large binary files that inflate the repository (use external storage for datasets above a few megabytes), and personally identifiable information you do not have explicit permission to share. A `.gitignore` file at the repo root is how you make sure these things never accidentally get committed — add `.env`, `*.key`, `data/raw/` (if the raw data is sensitive), and anything else you need to keep local.
 
-## 25.4 Data management hygiene
+## 30.4 Data management hygiene
 
 ### Provenance: where did this data come from?
 
@@ -185,7 +185,7 @@ When the dataset itself changes — a new monthly export, a corrected version, a
 
 If the data might contain personal identifiers, treat it as sensitive from the moment it lands. Identify which columns are identifiers (names, emails, phone numbers, addresses, student IDs). Minimize who has access — sensitive data often should not live inside the repository at all, even with `.gitignore`, since one accidental `git add -A` can leak it forever. Never commit secrets, API keys, or tokens (see [sec-secrets](#sec-secrets)). And before sharing aggregate results, double-check that you cannot accidentally re-identify individuals through small group sizes or distinctive combinations of attributes. The cost of accidentally leaking a participant’s data is large; the cost of being a little paranoid about it is small.
 
-## 25.5 Documentation that makes a project runnable
+## 30.5 Documentation that makes a project runnable
 
 [sec-documentation](#sec-documentation) covers how to find, read, and write technical documentation in depth; this section focuses on the documentation artifacts specific to a project — the ones that exist to make *this particular project* runnable and interpretable by someone who did not write it.
 
@@ -320,7 +320,7 @@ A few project-level notes make the difference between “it runs” and “it ru
 
 **Include a small smoke test.** A smoke test is a minimal script or notebook cell that exercises the full pipeline on a tiny subset of the data and produces a known-good output. “Does `make smoke` finish in under thirty seconds and produce a file with twelve rows?” is a check you can run in under a minute, and it catches the most common breakages — missing dependencies, wrong Python version, moved input files — before they eat an hour of debugging.
 
-## 25.6 Issue tracking fundamentals (for students)
+## 30.6 Issue tracking fundamentals (for students)
 
 ### Why issues are not just for bugs
 
@@ -386,7 +386,7 @@ Once a project has more than about a dozen open issues, simple lists become hard
 
 The warning that comes with both features: **keep it lightweight**. It is entirely possible to spend more time configuring project-management tools than doing project work. For a course project, start with plain issues, add milestones when you have more than ten open issues, and add a board only if the team actually looks at it. Anything fancier should be justified by a specific pain point, not by the existence of the feature.
 
-## 25.7 Quality gates: make “done” meaningful
+## 30.7 Quality gates: make “done” meaningful
 
 “Done” is a word that takes on meaning only when you attach specific checks to it. A project that says “I finished the analysis” without checks attached to that claim can be hiding any number of bugs. A project with explicit quality gates — tests that must pass before the project is considered releasable — has a clear, inspectable definition of “done” that survives you being tired, rushed, or overconfident.
 
@@ -483,7 +483,7 @@ For the narrative:
 [ ] Explicitly cites every figure and table
 ```
 
-## 25.8 Common failure modes and how to prevent them
+## 30.8 Common failure modes and how to prevent them
 
 Most project failures are instances of a small number of recurring patterns. Naming them explicitly — and building habits that prevent them — is cheaper than debugging each one when it happens.
 
@@ -533,7 +533,7 @@ The reason private channels cannot be the project memory is that they are not se
 > - [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) — an opinionated project-layout template widely adopted in the data-science community.
 > - [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) — Wilson et al.’s practical checklist for small-team reproducibility.
 
-## 25.9 Worked examples (outline)
+## 30.9 Worked examples (outline)
 
 ### Start a new course project in 20 minutes
 
@@ -565,7 +565,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 - Confirm outputs and update README.
 
-## 25.10 Templates
+## 30.10 Templates
 
 ### Template A: One-page project brief
 
@@ -618,7 +618,7 @@ The reason private channels cannot be the project memory is that they are not se
     Evidence (errors, screenshots, links):
     Definition of done:
 
-## 25.11 Exercises
+## 30.11 Exercises
 
 1.  Create a new project folder using the template and write a README that someone else could follow.
 
@@ -630,7 +630,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 5.  Perform a reproducibility check by recreating your environment and rerunning the pipeline.
 
-## 25.12 One-page checklist
+## 30.12 One-page checklist
 
 - I have a clear project goal and definition of done.
 
@@ -646,7 +646,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 - I can reproduce results from a clean environment.
 
-## 25.13 Quick reference: “minimum viable” project operations
+## 30.13 Quick reference: “minimum viable” project operations
 
 - Create structure.
 
