@@ -42,7 +42,7 @@ Output lands in `book/` (gitignored). The landing page is `book/index.html`. The
 After `quarto render --to html`:
 
 - **Zero warnings** from `quarto render --to html`.
-- `book/index.html` opens and the sidebar lists all six parts with their chapters.
+- `book/index.html` opens and the sidebar lists all seven parts with their chapters.
 - `book/llms.txt` exists and enumerates all chapters.
 - At least a handful of `@sec-*` cross-references resolve (click through in HTML).
 - Optional, local only: `quarto render --to pdf` renders without LaTeX errors (requires TinyTeX).
@@ -89,13 +89,19 @@ ParatechnicalComputingHandbook/
 │   │   ├── pandas-basics.qmd
 │   │   ├── sql-basics.qmd
 │   │   └── http-apis.qmd
-│   ├── part-5-projects/             # Part V — Project Management
+│   ├── part-5-communication/        # Part V — Communication
+│   │   ├── reading-scholarship.qmd
+│   │   ├── writing-manuscripts.qmd
+│   │   ├── writing-thesis.qmd
+│   │   ├── presenting.qmd
+│   │   └── latex.qmd
+│   ├── part-5-projects/             # Part VI — Project Management (directory slug retained)
 │   │   ├── project-management.qmd
 │   │   ├── version-control.qmd
 │   │   ├── collaboration.qmd
 │   │   ├── automation.qmd
 │   │   └── secrets.qmd
-│   └── part-6-algorithmic/          # Part VI — Algorithmic Systems
+│   └── part-6-algorithmic/          # Part VII — Algorithmic Systems (directory slug retained)
 │       ├── ai-llm.qmd
 │       ├── llm-internals.qmd
 │       ├── ai-agents.qmd
@@ -141,6 +147,11 @@ Every chapter has an explicit H1 section ID immediately after the heading. Use t
 | pandas Basics | `@sec-pandas-basics` |
 | SQL Basics | `@sec-sql-basics` |
 | HTTP and Web APIs | `@sec-http-apis` |
+| How to Read Scholarly Articles and Books | `@sec-reading-scholarship` |
+| How to Write Scholarly Manuscripts | `@sec-writing-manuscripts` |
+| How to Write a Thesis | `@sec-writing-thesis` |
+| How to Present | `@sec-presenting` |
+| How to Use LaTeX | `@sec-latex` |
 | Project Management | `@sec-project-management` |
 | Version Control | `@sec-git-github` |
 | Collaboration Mechanics | `@sec-collaboration` |
@@ -322,7 +333,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ## Gap Chapter Backlog
 
-The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to Part VI (Algorithmic Systems), where it sits alongside the other AI chapters. The following topics remain as candidates for future work.
+The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. (Note: directory slugs `part-5-projects/` and `part-6-algorithmic/` retain their original names even though they now correspond to Parts VI and VII, to avoid breaking external links.) The following topics remain as candidates for future work.
 
 **Lower priority (but valuable):**
 
