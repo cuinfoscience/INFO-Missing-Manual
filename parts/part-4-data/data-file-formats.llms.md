@@ -10,7 +10,7 @@
 
 A huge fraction of your time in a first data science course is spent moving data from a file into a [pandas](https://pandas.pydata.org/docs/) DataFrame. On paper, this is a one-liner: [`pd.read_csv("data.csv")`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.
 
-This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — [CSV](../../appendix-glossary.llms.md#term-csv), TSV, [JSON](../../appendix-glossary.llms.md#term-json), Excel, and [Parquet](../../appendix-glossary.llms.md#term-parquet) — with the specific quirks of each, the `pandas` reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.
+This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — [CSV](../../parts/appendix/appendix-glossary.llms.md#term-csv), TSV, [JSON](../../parts/appendix/appendix-glossary.llms.md#term-json), Excel, and [Parquet](../../parts/appendix/appendix-glossary.llms.md#term-parquet) — with the specific quirks of each, the `pandas` reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.
 
 ## Learning objectives
 
@@ -31,7 +31,7 @@ Always verify shape, columns, dtypes, and head/tail of a DataFrame in the cell r
 
 ## 20.1 CSV: the workhorse, and its quirks
 
-A [CSV](../../appendix-glossary.llms.md#term-csv) file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.
+A [CSV](../../parts/appendix/appendix-glossary.llms.md#term-csv) file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.
 
 It is also the most common source of data-loading bugs, for exactly the same reasons: “plain text” and “human-readable” leave a lot of room for inconsistency.
 
@@ -186,7 +186,7 @@ Everything else from the CSV section applies.
 
 ## 20.3 JSON: when the structure is nested
 
-[JSON](../../appendix-glossary.llms.md#term-json) is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.
+[JSON](../../parts/appendix/appendix-glossary.llms.md#term-json) is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.
 
 ### Flat JSON
 
@@ -299,7 +299,7 @@ Always pass `index=False` unless you explicitly want the row index as a column.
 
 ## 20.5 Parquet: the format for real data work
 
-[Parquet](../../appendix-glossary.llms.md#term-parquet) is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need `pyarrow` installed:
+[Parquet](../../parts/appendix/appendix-glossary.llms.md#term-parquet) is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need `pyarrow` installed:
 
 ``` bash
 python -m pip install pyarrow

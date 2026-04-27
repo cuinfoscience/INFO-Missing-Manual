@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -638,13 +638,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
   </div>
 </li>
@@ -668,34 +668,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-four-http-verbs" id="toc-the-four-http-verbs" class="nav-link" data-scroll-target="#the-four-http-verbs">The four HTTP verbs</a></li>
   <li><a href="#status-codes" id="toc-status-codes" class="nav-link" data-scroll-target="#status-codes">Status codes</a></li>
   </ul></li>
-  <li><a href="#the-requests-library" id="toc-the-requests-library" class="nav-link" data-scroll-target="#the-requests-library"><span class="header-section-number">24.2</span> The <code>requests</code> library</a>
+  <li><a href="#quick-fetches-with-curl-and-wget" id="toc-quick-fetches-with-curl-and-wget" class="nav-link" data-scroll-target="#quick-fetches-with-curl-and-wget"><span class="header-section-number">24.2</span> Quick fetches with <code>curl</code> and <code>wget</code></a>
+  <ul class="collapse">
+  <li><a href="#curl-for-inspecting" id="toc-curl-for-inspecting" class="nav-link" data-scroll-target="#curl-for-inspecting"><code>curl</code> for inspecting</a></li>
+  <li><a href="#wget-for-downloading" id="toc-wget-for-downloading" class="nav-link" data-scroll-target="#wget-for-downloading"><code>wget</code> for downloading</a></li>
+  <li><a href="#when-to-use-which" id="toc-when-to-use-which" class="nav-link" data-scroll-target="#when-to-use-which">When to use which</a></li>
+  </ul></li>
+  <li><a href="#the-requests-library" id="toc-the-requests-library" class="nav-link" data-scroll-target="#the-requests-library"><span class="header-section-number">24.3</span> The <code>requests</code> library</a>
   <ul class="collapse">
   <li><a href="#query-parameters" id="toc-query-parameters" class="nav-link" data-scroll-target="#query-parameters">Query parameters</a></li>
   <li><a href="#headers" id="toc-headers" class="nav-link" data-scroll-target="#headers">Headers</a></li>
   <li><a href="#post-with-a-body" id="toc-post-with-a-body" class="nav-link" data-scroll-target="#post-with-a-body">POST with a body</a></li>
   <li><a href="#timeouts-are-not-optional" id="toc-timeouts-are-not-optional" class="nav-link" data-scroll-target="#timeouts-are-not-optional">Timeouts are not optional</a></li>
   </ul></li>
-  <li><a href="#checking-the-response" id="toc-checking-the-response" class="nav-link" data-scroll-target="#checking-the-response"><span class="header-section-number">24.3</span> Checking the response</a></li>
-  <li><a href="#json-dataframe" id="toc-json-dataframe" class="nav-link" data-scroll-target="#json-dataframe"><span class="header-section-number">24.4</span> JSON → DataFrame</a></li>
-  <li><a href="#api-keys-and-secrets" id="toc-api-keys-and-secrets" class="nav-link" data-scroll-target="#api-keys-and-secrets"><span class="header-section-number">24.5</span> API keys and secrets</a></li>
-  <li><a href="#rate-limits-and-being-polite" id="toc-rate-limits-and-being-polite" class="nav-link" data-scroll-target="#rate-limits-and-being-polite"><span class="header-section-number">24.6</span> Rate limits and being polite</a>
+  <li><a href="#checking-the-response" id="toc-checking-the-response" class="nav-link" data-scroll-target="#checking-the-response"><span class="header-section-number">24.4</span> Checking the response</a></li>
+  <li><a href="#json-dataframe" id="toc-json-dataframe" class="nav-link" data-scroll-target="#json-dataframe"><span class="header-section-number">24.5</span> JSON → DataFrame</a></li>
+  <li><a href="#api-keys-and-secrets" id="toc-api-keys-and-secrets" class="nav-link" data-scroll-target="#api-keys-and-secrets"><span class="header-section-number">24.6</span> API keys and secrets</a></li>
+  <li><a href="#rate-limits-and-being-polite" id="toc-rate-limits-and-being-polite" class="nav-link" data-scroll-target="#rate-limits-and-being-polite"><span class="header-section-number">24.7</span> Rate limits and being polite</a>
   <ul class="collapse">
   <li><a href="#simple-rate-limiting" id="toc-simple-rate-limiting" class="nav-link" data-scroll-target="#simple-rate-limiting">Simple rate limiting</a></li>
   <li><a href="#retry-on-429-with-backoff" id="toc-retry-on-429-with-backoff" class="nav-link" data-scroll-target="#retry-on-429-with-backoff">Retry on 429 with backoff</a></li>
   <li><a href="#respect-robots.txt" id="toc-respect-robots.txt" class="nav-link" data-scroll-target="#respect-robots.txt">Respect <code>robots.txt</code></a></li>
   </ul></li>
-  <li><a href="#when-not-to-use-requests-directly" id="toc-when-not-to-use-requests-directly" class="nav-link" data-scroll-target="#when-not-to-use-requests-directly"><span class="header-section-number">24.7</span> When <em>not</em> to use <code>requests</code> directly</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">24.8</span> Worked examples</a>
+  <li><a href="#when-not-to-use-requests-directly" id="toc-when-not-to-use-requests-directly" class="nav-link" data-scroll-target="#when-not-to-use-requests-directly"><span class="header-section-number">24.8</span> When <em>not</em> to use <code>requests</code> directly</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">24.9</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#fetch-a-github-repos-metadata" id="toc-fetch-a-github-repos-metadata" class="nav-link" data-scroll-target="#fetch-a-github-repos-metadata">Fetch a GitHub repo’s metadata</a></li>
   <li><a href="#paginate-through-results" id="toc-paginate-through-results" class="nav-link" data-scroll-target="#paginate-through-results">Paginate through results</a></li>
   <li><a href="#handle-a-flaky-weather-api" id="toc-handle-a-flaky-weather-api" class="nav-link" data-scroll-target="#handle-a-flaky-weather-api">Handle a flaky weather API</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">24.9</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">24.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">24.10</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">24.12</span> One-page checklist</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
@@ -842,10 +848,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="the-requests-library" class="level2 page-columns page-full" data-number="24.2">
-<h2 data-number="24.2" class="anchored" data-anchor-id="the-requests-library"><span class="header-section-number">24.2</span> The <code>requests</code> library</h2>
+<section id="quick-fetches-with-curl-and-wget" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="quick-fetches-with-curl-and-wget"><span class="header-section-number">24.2</span> Quick fetches with <code>curl</code> and <code>wget</code></h2>
+<p>Before you write any Python, the fastest way to confirm that an API actually works is to call it from the command line. Two tools are universally available: <a href="https://curl.se/docs/manpage.html"><code>curl</code></a> and <a href="https://www.gnu.org/software/wget/manual/wget.html"><code>wget</code></a>. They overlap but are good at different things, and a working knowledge of both pays for itself the first time you have to debug an API at 3 AM with no Python interpreter in sight.</p>
+<section id="curl-for-inspecting" class="level3">
+<h3 class="anchored" data-anchor-id="curl-for-inspecting"><code>curl</code> for inspecting</h3>
+<p><code>curl</code> is a Swiss Army knife for HTTP. The bare invocation <code>curl &lt;url&gt;</code> sends a GET request and prints the response body to your terminal. That is enough for most quick checks:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/pandas-dev/pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The flag worth memorizing first is <code>-i</code>, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging “is the API actually responding?” or “what status code did I get?”, <code>-i</code> is the answer:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-i</span> https://api.github.com/repos/pandas-dev/pandas <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">HTTP/2</span> 200</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">content-type:</span> application/json<span class="kw">;</span> <span class="va">charset</span><span class="op">=</span>utf-8</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">x-ratelimit-limit:</span> 60</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">x-ratelimit-remaining:</span> 58</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Three more flags handle most situations. <strong><code>-H 'Header: value'</code></strong> adds a request header — use it to send your <code>User-Agent</code> or an <code>Authorization: Bearer &lt;token&gt;</code>. <strong><code>-X POST</code></strong> changes the HTTP method (the default is GET); pair it with <strong><code>-d '...'</code></strong> to send a body. And <strong><code>-o filename</code></strong> writes the response body to a file instead of stdout. Strung together:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST https://api.example.com/items <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer </span><span class="va">$API_TOKEN</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"name": "widget", "qty": 12}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two more flags are worth knowing for scripts. <strong><code>-s</code></strong> silences the progress meter (essential when piping <code>curl</code> into another command), and <strong><code>-f</code></strong> makes <code>curl</code> exit with a nonzero status code on any HTTP 4xx or 5xx response — without it, <code>curl</code> happily writes the server’s HTML error page to your output file and reports success.</p>
+<p>For pretty-printing JSON responses while you explore, pipe <code>curl</code> into <a href="https://jqlang.github.io/jq/manual/"><code>jq</code></a>, which is the de facto JSON command-line processor:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> https://api.github.com/repos/pandas-dev/pandas <span class="kw">|</span> <span class="ex">jq</span> <span class="st">'.stargazers_count'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="wget-for-downloading" class="level3">
+<h3 class="anchored" data-anchor-id="wget-for-downloading"><code>wget</code> for downloading</h3>
+<p><code>wget</code> is a download tool first and an HTTP client second. Where <code>curl</code> is built for ad-hoc API inspection, <code>wget</code> is built for “fetch this URL to a file, reliably, possibly across a flaky network.” Two features make it the better choice for bulk downloads.</p>
+<p>The first is <strong>resumable transfers</strong>: <code>wget -c &lt;url&gt;</code> continues a partial download instead of restarting it from byte zero. For a multi-gigabyte dataset on a slow connection, this is the difference between “I have to babysit this all night” and “I can leave it running.”</p>
+<p>The second is <strong>recursive mirroring</strong>: <code>wget -r &lt;url&gt;</code> follows every link on a page and downloads everything it finds, subject to depth and same-host limits. This is occasionally useful for archiving a small documentation site, and it is wildly inappropriate against most modern web infrastructure — see “Respect <code>robots.txt</code>” later in this chapter, and never recursively <code>wget</code> a site you do not own without checking the robots policy first.</p>
+<p>For most everyday use, the invocation is short:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://example.com/dataset.csv               <span class="co"># save as dataset.csv</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-O</span> sales.csv https://example.com/data.csv     <span class="co"># save under a chosen name</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-c</span> https://example.com/big-file.zip           <span class="co"># resume if interrupted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="when-to-use-which" class="level3">
+<h3 class="anchored" data-anchor-id="when-to-use-which">When to use which</h3>
+<p>A practical rule of thumb. Use <strong><code>curl</code></strong> when you are <em>exploring</em> an API — checking what it returns, testing auth, debugging headers, prototyping a request you will eventually translate into Python. Use <strong><code>wget</code></strong> when you are <em>downloading a file</em> and want resilience features like resume and retry. Use <strong><code>requests</code></strong> (the rest of this chapter) when you are <em>writing code</em> that has to fetch data as part of a larger pipeline. The three tools are not competitors; they are different points on the spectrum from “ad-hoc inspection” to “production code.”</p>
+<p>A hidden benefit of starting with <code>curl</code>: many APIs include <code>curl</code> invocations in their documentation as the canonical example. Being able to read those examples directly — instead of mentally translating them into <code>requests</code> first — speeds up your reading of API docs by a noticeable amount.</p>
+</section>
+</section>
+<section id="the-requests-library" class="level2 page-columns page-full" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="the-requests-library"><span class="header-section-number">24.3</span> The <code>requests</code> library</h2>
 <p>The <a href="https://requests.readthedocs.io/en/latest/"><code>requests</code></a> library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The simplest possible use:</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -876,129 +921,129 @@ Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public A
 </div>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(<span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.status_code)        <span class="co"># 200</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.json()[<span class="st">"stargazers_count"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(<span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.status_code)        <span class="co"># 200</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.json()[<span class="st">"stargazers_count"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>resp.json()</code> parses the JSON body into a Python dict (or list). For non-JSON responses, use <code>resp.text</code> (string) or <code>resp.content</code> (bytes).</p>
 <section id="query-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="query-parameters">Query parameters</h3>
 <p>URLs with <code>?foo=1&amp;bar=2</code> are how you pass parameters to most GET endpoints. Do not concatenate them by hand — pass a dict:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/search"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"pandas"</span>, <span class="st">"limit"</span>: <span class="dv">50</span>},</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># requests builds the final URL: ...search?q=pandas&amp;limit=50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/search"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"pandas"</span>, <span class="st">"limit"</span>: <span class="dv">50</span>},</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># requests builds the final URL: ...search?q=pandas&amp;limit=50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>requests</code> handles URL-encoding of special characters automatically, which is important for queries that contain spaces or <code>&amp;</code> or <code>=</code>.</p>
 </section>
 <section id="headers" class="level3">
 <h3 class="anchored" data-anchor-id="headers">Headers</h3>
 <p>Headers are metadata about your request. The two you will use most are <code>Authorization</code> (for API keys / tokens) and <code>User-Agent</code> (for identifying your script politely).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>headers <span class="op">=</span> {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>api_token<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"User-Agent"</span>: <span class="st">"my-term-project/0.1 (contact: alice@example.com)"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>headers <span class="op">=</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>api_token<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"User-Agent"</span>: <span class="st">"my-term-project/0.1 (contact: alice@example.com)"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Many APIs reject requests with no <code>User-Agent</code> or with a default one. Send a descriptive one so server operators can reach you if your script misbehaves.</p>
 </section>
 <section id="post-with-a-body" class="level3">
 <h3 class="anchored" data-anchor-id="post-with-a-body">POST with a body</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.post(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/users"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    json<span class="op">=</span>{<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"email"</span>: <span class="st">"alice@example.com"</span>},</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.post(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/users"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    json<span class="op">=</span>{<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"email"</span>: <span class="st">"alice@example.com"</span>},</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Using <code>json=</code> serializes the dict into JSON and sets <code>Content-Type: application/json</code> automatically. You rarely need <code>data=</code> (form-encoded) for modern APIs.</p>
 </section>
 <section id="timeouts-are-not-optional" class="level3">
 <h3 class="anchored" data-anchor-id="timeouts-are-not-optional">Timeouts are not optional</h3>
 <p>Always pass a <code>timeout</code> — otherwise a hung server can freeze your script forever.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)   <span class="co"># fail after 10 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)   <span class="co"># fail after 10 seconds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>10 seconds is reasonable for most APIs. Set it shorter for fast APIs and longer for reports or exports.</p>
 </section>
 </section>
-<section id="checking-the-response" class="level2" data-number="24.3">
-<h2 data-number="24.3" class="anchored" data-anchor-id="checking-the-response"><span class="header-section-number">24.3</span> Checking the response</h2>
+<section id="checking-the-response" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="checking-the-response"><span class="header-section-number">24.4</span> Checking the response</h2>
 <p><code>requests</code> will not raise an exception on a 404 or 500 by default — you have to check. Two common idioms:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Idiom 1: explicit status check</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> resp.status_code <span class="op">!=</span> <span class="dv">200</span>:</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"API returned </span><span class="sc">{</span>resp<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>resp<span class="sc">.</span>text[:<span class="dv">200</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Idiom 2: raise_for_status (raises on 4xx/5xx)</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Idiom 1: explicit status check</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> resp.status_code <span class="op">!=</span> <span class="dv">200</span>:</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"API returned </span><span class="sc">{</span>resp<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>resp<span class="sc">.</span>text[:<span class="dv">200</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Idiom 2: raise_for_status (raises on 4xx/5xx)</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use <code>raise_for_status()</code> when you just want to abort on any error. Use the explicit check when you want different behavior for different codes (e.g., retry on 429 but abort on 404).</p>
 </section>
-<section id="json-dataframe" class="level2" data-number="24.4">
-<h2 data-number="24.4" class="anchored" data-anchor-id="json-dataframe"><span class="header-section-number">24.4</span> JSON → DataFrame</h2>
+<section id="json-dataframe" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="json-dataframe"><span class="header-section-number">24.5</span> JSON → DataFrame</h2>
 <p>Most APIs return JSON. For tabular data the pattern is usually:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/v1/sales"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"from"</span>: <span class="st">"2024-01-01"</span>, <span class="st">"to"</span>: <span class="st">"2024-03-31"</span>},</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>payload <span class="op">=</span> resp.json()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># A flat list of records:</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(payload)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Or if the list is nested under a key:</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(payload[<span class="st">"data"</span>])</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Or for deeply nested JSON, see @sec-data-file-formats</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(payload[<span class="st">"results"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.example.com/v1/sales"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"from"</span>: <span class="st">"2024-01-01"</span>, <span class="st">"to"</span>: <span class="st">"2024-03-31"</span>},</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>payload <span class="op">=</span> resp.json()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># A flat list of records:</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(payload)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Or if the list is nested under a key:</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(payload[<span class="st">"data"</span>])</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Or for deeply nested JSON, see @sec-data-file-formats</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(payload[<span class="st">"results"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Always inspect <code>payload</code> in a REPL or notebook cell before assuming it is shaped like you expect. The first couple times you call a new API, <code>print(payload)</code> and <code>print(type(payload))</code> are cheaper than wrong code.</p>
 </section>
-<section id="api-keys-and-secrets" class="level2" data-number="24.5">
-<h2 data-number="24.5" class="anchored" data-anchor-id="api-keys-and-secrets"><span class="header-section-number">24.5</span> API keys and secrets</h2>
+<section id="api-keys-and-secrets" class="level2" data-number="24.6">
+<h2 data-number="24.6" class="anchored" data-anchor-id="api-keys-and-secrets"><span class="header-section-number">24.6</span> API keys and secrets</h2>
 <p>Most useful APIs require authentication. The key goes in a header, usually as <code>Authorization: Bearer &lt;token&gt;</code> or in a custom header like <code>X-API-Key</code>.</p>
 <p><strong>Never hardcode a key in your script.</strong> Never commit one to git. Use an environment variable instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]   <span class="co"># KeyError if missing — good</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"Boulder,US"</span>, <span class="st">"appid"</span>: api_key},</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]   <span class="co"># KeyError if missing — good</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"Boulder,US"</span>, <span class="st">"appid"</span>: api_key},</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Store the key in a <code>.env</code> file and load it with <code>python-dotenv</code>. The full workflow — why, how, and how to avoid leaking keys into git — is <a href="../part-5-projects/secrets.html" class="quarto-xref"><span>Chapter 34</span></a>. Read it before building anything serious.</p>
 </section>
-<section id="rate-limits-and-being-polite" class="level2" data-number="24.6">
-<h2 data-number="24.6" class="anchored" data-anchor-id="rate-limits-and-being-polite"><span class="header-section-number">24.6</span> Rate limits and being polite</h2>
+<section id="rate-limits-and-being-polite" class="level2" data-number="24.7">
+<h2 data-number="24.7" class="anchored" data-anchor-id="rate-limits-and-being-polite"><span class="header-section-number">24.7</span> Rate limits and being polite</h2>
 <p>Most APIs limit how fast you can call them — often “N requests per minute” or “N requests per day.” When you exceed the limit, you get a <code>429 Too Many Requests</code>. Some APIs return a <code>Retry-After</code> header telling you how many seconds to wait.</p>
 <section id="simple-rate-limiting" class="level3">
 <h3 class="anchored" data-anchor-id="simple-rate-limiting">Simple rate limiting</h3>
 <p>For a modest script, just sleep between requests:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item_id <span class="kw">in</span> ids:</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://api.example.com/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    process(resp.json())</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.2</span>)      <span class="co"># 5 requests per second</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item_id <span class="kw">in</span> ids:</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://api.example.com/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    process(resp.json())</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.2</span>)      <span class="co"># 5 requests per second</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="retry-on-429-with-backoff" class="level3">
 <h3 class="anchored" data-anchor-id="retry-on-429-with-backoff">Retry on 429 with backoff</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_with_retry(url, headers<span class="op">=</span><span class="va">None</span>, params<span class="op">=</span><span class="va">None</span>, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries):</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            wait <span class="op">=</span> <span class="bu">int</span>(resp.headers.get(<span class="st">"Retry-After"</span>, <span class="dv">2</span> <span class="op">**</span> attempt))</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Gave up after </span><span class="sc">{</span>max_retries<span class="sc">}</span><span class="ss"> attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_with_retry(url, headers<span class="op">=</span><span class="va">None</span>, params<span class="op">=</span><span class="va">None</span>, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries):</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            wait <span class="op">=</span> <span class="bu">int</span>(resp.headers.get(<span class="st">"Retry-After"</span>, <span class="dv">2</span> <span class="op">**</span> attempt))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Gave up after </span><span class="sc">{</span>max_retries<span class="sc">}</span><span class="ss"> attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>2 ** attempt</code> gives exponential backoff (1s, 2s, 4s, 8s, 16s), which is how polite clients handle overloaded servers.</p>
 </section>
 <section id="respect-robots.txt" class="level3">
@@ -1006,8 +1051,8 @@ Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public A
 <p>For web pages (not APIs), check <code>https://example.com/robots.txt</code> before scraping. It tells you which paths the site owner is OK with automated tools hitting. Ignoring it is rude and can get your IP blocked.</p>
 </section>
 </section>
-<section id="when-not-to-use-requests-directly" class="level2" data-number="24.7">
-<h2 data-number="24.7" class="anchored" data-anchor-id="when-not-to-use-requests-directly"><span class="header-section-number">24.7</span> When <em>not</em> to use <code>requests</code> directly</h2>
+<section id="when-not-to-use-requests-directly" class="level2" data-number="24.8">
+<h2 data-number="24.8" class="anchored" data-anchor-id="when-not-to-use-requests-directly"><span class="header-section-number">24.8</span> When <em>not</em> to use <code>requests</code> directly</h2>
 <p>Before you write a lot of custom API code, check:</p>
 <ul>
 <li><strong>Does an SDK exist?</strong> Many big APIs ship an official Python library: <code>github</code> → <code>PyGithub</code>, <code>slack</code> → <code>slack_sdk</code>, AWS → <code>boto3</code>, Google → <code>google-*</code>. SDKs handle auth, rate limits, pagination, and error types for you. Use them when they exist.</li>
@@ -1032,94 +1077,94 @@ Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public A
 </div>
 </div>
 </section>
-<section id="worked-examples" class="level2" data-number="24.8">
-<h2 data-number="24.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">24.8</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="24.9">
+<h2 data-number="24.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">24.9</span> Worked examples</h2>
 <section id="fetch-a-github-repos-metadata" class="level3">
 <h3 class="anchored" data-anchor-id="fetch-a-github-repos-metadata">Fetch a GitHub repo’s metadata</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1"</span>},</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>repo <span class="op">=</span> resp.json()</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>repo[<span class="st">'full_name'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>repo[<span class="st">'stargazers_count'</span>]<span class="sc">:,}</span><span class="ss"> stars"</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Last updated: </span><span class="sc">{</span>repo[<span class="st">'updated_at'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1"</span>},</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>repo <span class="op">=</span> resp.json()</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>repo[<span class="st">'full_name'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>repo[<span class="st">'stargazers_count'</span>]<span class="sc">:,}</span><span class="ss"> stars"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Last updated: </span><span class="sc">{</span>repo[<span class="st">'updated_at'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="paginate-through-results" class="level3">
 <h3 class="anchored" data-anchor-id="paginate-through-results">Paginate through results</h3>
 <p>Most list endpoints return a few dozen items per page and require you to request subsequent pages.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> list_issues(owner, repo, token):</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://api.github.com/repos/</span><span class="sc">{</span>owner<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>repo<span class="sc">}</span><span class="ss">/issues"</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>token<span class="sc">}</span><span class="ss">"</span>, <span class="st">"User-Agent"</span>: <span class="st">"tp/0.1"</span>}</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    issues <span class="op">=</span> []</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {<span class="st">"state"</span>: <span class="st">"all"</span>, <span class="st">"per_page"</span>: <span class="dv">100</span>, <span class="st">"page"</span>: <span class="dv">1</span>}</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        page <span class="op">=</span> resp.json()</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> page:</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        issues.extend(page)</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        params[<span class="st">"page"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> issues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> list_issues(owner, repo, token):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://api.github.com/repos/</span><span class="sc">{</span>owner<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>repo<span class="sc">}</span><span class="ss">/issues"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>token<span class="sc">}</span><span class="ss">"</span>, <span class="st">"User-Agent"</span>: <span class="st">"tp/0.1"</span>}</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    issues <span class="op">=</span> []</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {<span class="st">"state"</span>: <span class="st">"all"</span>, <span class="st">"per_page"</span>: <span class="dv">100</span>, <span class="st">"page"</span>: <span class="dv">1</span>}</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        page <span class="op">=</span> resp.json()</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> page:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        issues.extend(page)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        params[<span class="st">"page"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> issues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Stop when the response is an empty list. Some APIs also return a <code>Link</code> header with <code>rel="next"</code> — you can follow that instead of incrementing a page number.</p>
 </section>
 <section id="handle-a-flaky-weather-api" class="level3">
 <h3 class="anchored" data-anchor-id="handle-a-flaky-weather-api">Handle a flaky weather API</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, time, requests</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> current_weather(city):</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            resp <span class="op">=</span> requests.get(</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{<span class="st">"q"</span>: city, <span class="st">"appid"</span>: API_KEY, <span class="st">"units"</span>: <span class="st">"metric"</span>},</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> resp.json()</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                time.sleep(<span class="bu">int</span>(resp.headers.get(<span class="st">"Retry-After"</span>, <span class="dv">2</span> <span class="op">**</span> attempt)))</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            resp.raise_for_status()</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> requests.Timeout:</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">2</span> <span class="op">**</span> attempt)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Failed to fetch weather for </span><span class="sc">{</span>city<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, time, requests</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> current_weather(city):</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            resp <span class="op">=</span> requests.get(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{<span class="st">"q"</span>: city, <span class="st">"appid"</span>: API_KEY, <span class="st">"units"</span>: <span class="st">"metric"</span>},</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> resp.json()</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                time.sleep(<span class="bu">int</span>(resp.headers.get(<span class="st">"Retry-After"</span>, <span class="dv">2</span> <span class="op">**</span> attempt)))</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>            resp.raise_for_status()</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> requests.Timeout:</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">2</span> <span class="op">**</span> attempt)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Failed to fetch weather for </span><span class="sc">{</span>city<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three layers of defense: status-code checks, timeout handling, and exponential backoff.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="24.9">
-<h2 data-number="24.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">24.9</span> Templates</h2>
+<section id="templates" class="level2" data-number="24.10">
+<h2 data-number="24.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">24.10</span> Templates</h2>
 <p><strong>A defensive GET helper:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_json(url, <span class="op">*</span>, params<span class="op">=</span><span class="va">None</span>, headers<span class="op">=</span><span class="va">None</span>, timeout<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    default_headers <span class="op">=</span> {</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"my-project/0.1"</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> headers:</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        default_headers.update(headers)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(url, params<span class="op">=</span>params, headers<span class="op">=</span>default_headers, timeout<span class="op">=</span>timeout)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_json(url, <span class="op">*</span>, params<span class="op">=</span><span class="va">None</span>, headers<span class="op">=</span><span class="va">None</span>, timeout<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    default_headers <span class="op">=</span> {</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"my-project/0.1"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> headers:</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        default_headers.update(headers)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(url, params<span class="op">=</span>params, headers<span class="op">=</span>default_headers, timeout<span class="op">=</span>timeout)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Import this from every notebook instead of duplicating the boilerplate.</p>
 <p><strong>A <code>.env</code> file (paired with <a href="../part-5-projects/secrets.html" class="quarto-xref"><span>Chapter 34</span></a>):</strong></p>
 <pre><code>OPENWEATHER_API_KEY=abc123...
 GITHUB_TOKEN=ghp_...</code></pre>
 <p>Load at the top of your script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="24.10">
-<h2 data-number="24.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="24.11">
+<h2 data-number="24.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.11</span> Exercises</h2>
 <ol type="1">
 <li>Use <code>requests.get</code> to fetch <code>https://api.github.com/repos/python/cpython</code> and print the star count, license name, and default branch.</li>
 <li>Add a <code>User-Agent</code> header to the request above. Repeat the request without one (or with <code>User-Agent: ""</code>) and see if you get the same response.</li>
@@ -1130,8 +1175,8 @@ GITHUB_TOKEN=ghp_...</code></pre>
 <li>Use <code>resp = requests.get(...)</code> and inspect <code>resp.headers</code> in a notebook. Find the <code>Content-Type</code>, <code>Server</code>, and any rate-limit headers (<code>X-RateLimit-Remaining</code> is common).</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="24.11">
-<h2 data-number="24.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">24.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="24.12">
+<h2 data-number="24.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">24.12</span> One-page checklist</h2>
 <ul>
 <li>Import <code>requests</code>; install with <code>python -m pip install requests</code>.</li>
 <li>Always pass a <code>timeout=</code> to every request.</li>
@@ -1586,4 +1631,4 @@ GITHUB_TOKEN=ghp_...</code></pre>
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

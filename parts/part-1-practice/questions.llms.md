@@ -257,7 +257,47 @@ If your course (or your team) uses [GitHub Issues](https://docs.github.com/en/is
 
 Public forums — [Stack Overflow](https://stackoverflow.com/help/how-to-ask), [GitHub Discussions](https://docs.github.com/en/discussions), your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.
 
-## 2.7 Common traps and how to avoid them
+## 2.7 Searching and asking on Stack Overflow
+
+[Stack Overflow](https://stackoverflow.com/) is the largest catalog of solved technical problems on the internet, and most of the work it can do for you is reading rather than posting. The site’s culture rewards specific answers to specific reproducible questions, which is the same standard the rest of this chapter has been pushing. Two skills are worth developing on top of the general guidance above: searching effectively for an existing answer (so you do not ask a duplicate) and posting a new question that respects the norms of the site enough to actually get answered.
+
+### Searching first
+
+Most of the time the question you are about to ask has already been answered. The fastest way to find out is to search Stack Overflow with the same precision you would put into a question title. Three habits dominate.
+
+The first is **search for the literal error message, with the variable parts trimmed**. A traceback like `KeyError: 'date'` should be searched as `pandas KeyError column not found` — the literal `'date'` is specific to your data, but the rest is the universal shape of the bug. If you copy and paste the *whole* error message verbatim, you will usually get zero results because no other person has the same combination of file paths and variable names.
+
+The second is **filter by language or library tag**. Stack Overflow tags work like topic filters; adding `[pandas]` or `[python-3.x]` to your query (with the brackets) restricts results to questions tagged with that tool. This is the difference between drowning in JavaScript answers and seeing the three pandas-specific posts that actually apply.
+
+The third is **read the highest-voted answer, not always the accepted one**. The accepted answer is whatever the original asker marked as correct; that was sometimes years ago and may now be obsolete. The highest-voted answer reflects the cumulative judgment of the community, and on long-lived questions it usually has the most up-to-date solution. Look at the dates: an answer from last year that mentions a deprecation notice is more reliable than the accepted answer from 2014.
+
+A useful trick when the on-site search is noisy: search Stack Overflow through Google by prefixing your query with `site:stackoverflow.com`. Google’s ranking sometimes surfaces the right post faster than Stack Overflow’s own search.
+
+### When a search has answered your question
+
+If you find a post that matches your problem, three actions cost almost nothing and improve the commons. **Upvote** the question and the answer that helped — this is how good content rises. **Read the comments under the accepted answer** for caveats that the answer body does not mention. And if your situation is the same as the asker’s but the answer did not quite work, **add a comment** explaining what you tried and what happened, rather than posting a new question that links back to it.
+
+### When you do need to ask
+
+If the search genuinely turns up nothing — which happens less often than you think — Stack Overflow expects a question that follows the structure this chapter has been building toward. The mechanics of the site add a few specific norms on top of that structure.
+
+**Title.** A Stack Overflow title is a one-line summary of the symptom and the context, optimized for someone scanning a list of search results. `pd.read_csv silently dropping rows when sep=";" and a UTF-8 BOM` is a good title; `Pandas problem` is not. The pattern that works is `<library or tool>: <what is happening> <under what conditions>`. Save the prose for the body.
+
+**Tags.** Add three to five tags that name the tools your question is about: the language (`[python]`), the library (`[pandas]`), and possibly the version or platform if it matters (`[python-3.11]`, `[macos]`). Tags are how subject-matter experts find your question; missing or wrong tags are a common reason a perfectly good question gets no answers.
+
+**Body.** Use the five-field structure from earlier in this chapter (Goal, Expected, Actual, Reproduction, Context). Stack Overflow specifically expects an MRE — its [help page on the topic](https://stackoverflow.com/help/minimal-reproducible-example) is worth re-reading every time you post. Format code with the code-block button (or four-space indent), not as inline backticks; format error output the same way. Screenshots of code or error text will be downvoted on sight, because the rest of the community cannot copy or search them.
+
+**Edits and follow-ups.** If a commenter asks for clarification, edit the question to add it; do not bury the answer in a comment thread. If the answer you receive solves the problem, click the checkmark to accept it — this is how Stack Overflow signals “solved” to future searchers. And if you eventually figure out the answer yourself, post it as your own answer to your own question. Self-answers are not only allowed but encouraged; they turn your investigation into a public resource for the next person who hits the same wall.
+
+### What gets a question closed
+
+A small fraction of questions are closed by moderators or community members for one of a few specific reasons, and knowing them in advance prevents your question from being one of them. **“Needs more focus”** means you asked several questions in one post — split them. **“Needs debugging details”** is the duplicate of “no MRE” — provide a runnable example. **“Opinion-based”** means you asked which of several tools is “best” — Stack Overflow’s format requires answers that can be objectively verified, not preferences. **“Duplicate”** means an existing question already covers your case — which is why the search-first habit matters. A closed question stays online but cannot accept new answers, so it is a poor outcome for everyone.
+
+### Stack Overflow is a tool, not a teacher
+
+A final caveat. Stack Overflow is excellent for diagnosing a specific bug, but it is not a substitute for reading documentation or building a mental model. If you find yourself searching the same tool repeatedly, the productive next step is usually to spend an hour with the official docs (see [sec-reading-docs](#sec-reading-docs)), not to bookmark another half-dozen Stack Overflow answers. The site is a precision instrument; it works best when you arrive with a focused question that the docs have not yet answered.
+
+## 2.8 Common traps and how to avoid them
 
 ### The XY problem
 
@@ -277,7 +317,7 @@ Screenshots have their place — they are good for showing the layout of an IDE,
 
 A 200-cell notebook is one of the hardest things to debug for someone who is not you. If you are tempted to share an entire notebook, do at least three things first: identify the specific cell that fails (by index or by name), produce an MRE that reproduces the failure outside the notebook context if possible, and clear cell outputs that are not relevant to the bug — both because they bloat the file and because they sometimes contain things you did not realize were sensitive. Most of the time, the act of preparing the notebook for sharing will reveal the bug to you before you ever send it.
 
-## 2.8 Using AI tools when asking questions
+## 2.9 Using AI tools when asking questions
 
 AI tools can accelerate the process of forming a good question, but they can also produce misleading confidence. Use AI to improve *structure* and *communication*, not to outsource verification. [sec-ai-llm](#sec-ai-llm) covers disciplined AI workflows in full, including verification loops, risk categories, and prompt patterns.
 
@@ -307,7 +347,7 @@ The worst uses of AI come from asking it to do the parts of the work you should 
 > - [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs, with language-specific examples.
 > - [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) — Eric Raymond’s classic essay; the tone is dated but the substance holds up.
 
-## 2.9 Worked examples
+## 2.10 Worked examples
 
 This section illustrates how vague questions become answerable.
 
@@ -398,7 +438,7 @@ Now a helper can quickly guide you: fetch/pull first, resolve conflicts, then pu
 
 This is a model question because the reproduction uses synthetic data and demonstrates the fix.
 
-## 2.10 Closing the loop: after you get help
+## 2.11 Closing the loop: after you get help
 
 Your responsibility does not end when you receive an answer.
 
@@ -422,7 +462,7 @@ If the fix reveals a fragile step (“always activate the environment”), updat
 
 If you keep encountering the same class of errors, create a personal checklist. For example: “file not found” checklist, “import error” checklist, “git conflict” checklist.
 
-## 2.11 Templates you can reuse
+## 2.12 Templates you can reuse
 
 ### Template A: question skeleton (copy/paste)
 
@@ -457,7 +497,7 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 - Uses explicit file paths or includes the file contents.
 
-## 2.12 Exercises
+## 2.13 Exercises
 
 1.  Take three vague questions (from your own experience or provided by the instructor) and rewrite them using the five-field structure.
 
@@ -469,7 +509,7 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 5.  Swap questions with a classmate: can they reproduce your MRE without asking you follow-ups?
 
-## 2.13 One-page checklist
+## 2.14 One-page checklist
 
 - My goal is stated as a verb + object.
 

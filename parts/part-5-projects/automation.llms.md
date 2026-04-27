@@ -102,7 +102,248 @@ python src/run_pipeline.py >> logs/pipeline.log 2>&1
 
 The combination of clean exits, idempotence, explicit I/O, and logging is what turns “a script that works on my machine when I babysit it” into “a script my teammates can rely on.”
 
-## 33.4 Repeatable tasks with `make` (and the idea of rebuilds)
+## 33.4 Writing shell scripts: control flow, exit codes, and error handling
+
+Once you have decided to climb past Level 0, the choice of language for the script matters. For most tasks that are mostly “run these commands in this order with these flags,” a [bash](https://www.gnu.org/software/bash/manual/) script (`.sh`) is the right answer: it is the same language you already type at the prompt, every Unix machine ships with it, and it gets out of your way for the kinds of orchestration that automation usually needs. Save longer “I’m doing real data wrangling” logic for Python (see [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks)). The dividing line is roughly: when the script is mostly calling other commands, write bash; when it is mostly manipulating data structures, write Python.
+
+This section covers the bash patterns that turn a one-off script into something that fails safely, behaves predictably, and is debuggable when it goes wrong. The terminal chapter ([sec-terminal](#sec-terminal)) introduced shebangs and `chmod +x`; this section picks up where that left off.
+
+### The script header that prevents most bugs
+
+Every bash script worth keeping starts with the same two lines:
+
+``` bash
+#!/usr/bin/env bash
+set -euo pipefail
+```
+
+The shebang `#!/usr/bin/env bash` tells the kernel to run the script with bash — and using `env` rather than the hardcoded `/bin/bash` finds bash wherever it lives on a given machine, which matters because macOS, Linux, and BSD distributions disagree on the path. If you specifically want POSIX `sh` (which is more portable but lacks bash-specific features like arrays), use `#!/usr/bin/env sh`. For most automation, prefer bash.
+
+The `set -euo pipefail` line is the single highest-leverage change you can make to a script’s reliability. Each flag fixes a different way that bash is, by default, dangerously forgiving:
+
+- **`-e`** — exit immediately on any command failure. By default, bash plows on past errors and exits with the status of the last command. With `-e`, the first failed command stops the script.
+- **`-u`** — treat unset variables as errors. Without this, `rm -rf "$BACKUP_DIR"/*` silently expands to `rm -rf /*` if `BACKUP_DIR` was never set. With `-u`, the script aborts with a clear error message instead.
+- **`-o pipefail`** — fail on errors anywhere in a pipeline, not just the last command. By default, `command1 | command2` reports the exit status of `command2` only — so `failing_command | head` succeeds because `head` succeeded. With `pipefail`, a failure anywhere in the chain becomes the script’s failure.
+
+These three flags catch enormous categories of bugs, and they cost you nothing. Always start with them.
+
+### Variables and quoting
+
+Variable assignment in bash has no spaces around the equals sign, and reference uses a `$` prefix:
+
+``` bash
+PROJECT_DIR=/Users/agandler/projects/sales
+LOG_FILE="${PROJECT_DIR}/logs/run.log"
+
+echo "Writing to ${LOG_FILE}"
+```
+
+The braces in `${LOG_FILE}` are not always required, but they prevent the shell from getting confused about where the variable name ends — `$LOG_FILE_2` is one variable, `${LOG_FILE}_2` is the variable `LOG_FILE` followed by the literal `_2`. When in doubt, brace.
+
+The other habit that pays off forever is **quoting variables that hold paths or arbitrary strings**. The terminal chapter already covered the basic rule ([sec-terminal](#sec-terminal)); the script-specific version is to do it everywhere by default:
+
+``` bash
+# Always quote — protects against spaces, empty values, and globs
+cp "${SOURCE}" "${DEST}"
+mkdir -p "${OUTPUT_DIR}"
+```
+
+The cost is a few keystrokes; the benefit is that a path with a space in it (`/Users/Jamie Smith/Documents`) does not silently turn into two arguments and break your script.
+
+### Control flow
+
+The control-flow constructs you will use most often are `if`/`then`/`else`, `for` loops, and `case` statements.
+
+**Conditionals** test something and run different code depending on the result. The condition itself is a command, and bash uses the command’s exit code to decide truth: zero is “true,” nonzero is “false.” The `[` command (also called `test`) is what you use for file checks and string comparisons:
+
+``` bash
+if [ -f "${INPUT_FILE}" ]; then
+    echo "Input exists, processing..."
+    python src/clean.py --input "${INPUT_FILE}"
+else
+    echo "ERROR: ${INPUT_FILE} not found" >&2
+    exit 1
+fi
+```
+
+The space-padding around `[` and `]` is mandatory — `[` is literally a command, not punctuation. Common test flags: `-f` (regular file exists), `-d` (directory exists), `-z` (string is empty), `-n` (string is non-empty), `=` and `!=` (string equality).
+
+**For loops** iterate over a list of values, which can come from a variable, a glob, or a command substitution:
+
+``` bash
+for csv in data/raw/*.csv; do
+    base=$(basename "${csv}" .csv)
+    python src/clean.py --input "${csv}" --output "data/processed/${base}.parquet"
+done
+```
+
+The `basename` call strips the directory prefix and the `.csv` extension, giving you a clean stem to build the output path from. Combined with `set -e`, this loop processes every CSV in `data/raw/` and aborts on the first failure — exactly what you want for a cleaning pipeline.
+
+**Case statements** are the right tool when a script’s behavior depends on a single value with several discrete options — for example, a script that takes a subcommand:
+
+``` bash
+case "${1:-}" in
+    setup)   make setup ;;
+    run)     make run ;;
+    clean)   make clean ;;
+    "")      echo "Usage: $0 {setup|run|clean}" >&2; exit 1 ;;
+    *)       echo "Unknown command: $1" >&2; exit 1 ;;
+esac
+```
+
+The `${1:-}` syntax is “the first argument, or empty string if it is unset” — necessary because `set -u` would otherwise abort the script when no argument was passed. The `*)` branch is the catch-all default.
+
+### Functions
+
+For anything more than fifty lines, break the script into functions. A bash function is a named block of code that can take arguments and return an exit status:
+
+``` bash
+log() {
+    echo "[$(date -Iseconds)] $*"
+}
+
+require_file() {
+    local path="$1"
+    if [ ! -f "${path}" ]; then
+        echo "ERROR: required file ${path} is missing" >&2
+        return 1
+    fi
+}
+
+log "starting pipeline"
+require_file "data/raw/sales.csv"
+log "input verified, running cleaning step"
+python src/clean.py
+log "done"
+```
+
+A few conventions worth knowing. Inside a function, `$1`, `$2`, … are the function’s arguments (not the script’s). `local var=...` declares a function-scoped variable, which prevents the function from polluting the outer scope — *always* declare loop counters and helper variables as `local`. `return` exits the function with a status code; `exit` exits the whole script. And `$*` expands to all arguments joined by spaces, which is what you want for a logger.
+
+### Exit codes in depth
+
+Every command — and every script — exits with an integer status code. By long convention, **0 means success, nonzero means failure**, and the specific nonzero number can carry meaning (“file not found” is conventionally 2, “permission denied” is 13), but most scripts just use 1 for “anything went wrong” and 2 for “you called me with bad arguments.” Schedulers, task runners, CI systems, and even shell pipelines (`&&` and `||`) all read these codes to decide what to do next, so picking them deliberately is part of writing scripts other tools can build on.
+
+Three habits make exit codes work for you instead of against you.
+
+**End your script with an explicit success.** When a script finishes by running its last command, the script’s exit code is whatever that command returned — usually 0, but not always. If the last command is something like `echo`, you have an implicit `exit 0` for free; if it is something that might legitimately return nonzero in normal operation (like `grep` exiting 1 when it finds no matches), end the script with an explicit `exit 0` so you control what the world sees:
+
+``` bash
+# ... script body ...
+log "pipeline complete"
+exit 0
+```
+
+**Exit nonzero on user errors.** If your script detects a bad argument, a missing prerequisite, or a precondition violation, exit with a nonzero code so the caller knows something is wrong:
+
+``` bash
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <input-file>" >&2
+    exit 2     # 2 is conventional for "usage error"
+fi
+```
+
+**Check exit codes from commands you intentionally allow to fail.** With `set -e`, most failures abort the script automatically. When you want to *handle* a failure rather than abort, capture the exit code into `$?` and branch on it:
+
+``` bash
+if ! curl -sf "${URL}" -o data.csv; then
+    echo "ERROR: download failed (exit ${?})" >&2
+    exit 1
+fi
+```
+
+The `!` inverts the exit status so the `if` triggers on failure; `-sf` makes `curl` fail on HTTP errors instead of writing the error page to your output file.
+
+### Error handling with `trap`
+
+`set -e` aborts on errors, but it does not run any cleanup. For scripts that create temporary files, lock files, or partial outputs, you want a chance to clean up *before* the script exits — successful or not. The `trap` builtin registers a function to run on specific events:
+
+``` bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORK_DIR=$(mktemp -d)
+cleanup() {
+    echo "cleaning up ${WORK_DIR}"
+    rm -rf "${WORK_DIR}"
+}
+trap cleanup EXIT
+
+# ... do work in $WORK_DIR ...
+# the cleanup function runs whether the script succeeds or fails
+```
+
+`trap cleanup EXIT` says “run the `cleanup` function whenever the script exits, for any reason.” That covers normal completion, errors caught by `set -e`, and signals like Ctrl-C. The temp directory always gets removed; the work files do not pile up on disk after a failed run.
+
+For more granular handling, the `ERR` trap fires only on errors:
+
+``` bash
+on_error() {
+    local exit_code=$?
+    local line_no=$1
+    echo "ERROR: command on line ${line_no} exited with code ${exit_code}" >&2
+}
+trap 'on_error $LINENO' ERR
+```
+
+That gives you a custom error message including the failing line number — invaluable for debugging long scripts where the default abort message is just “exited with code 1.”
+
+### Putting it all together
+
+Here is a small script that uses every pattern from this section: shebang and safety flags, variables and quoting, conditionals, a loop, a function, explicit exit codes, and a cleanup trap.
+
+``` bash
+#!/usr/bin/env bash
+# scripts/build_report.sh — clean every raw CSV and assemble the report
+set -euo pipefail
+
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+RAW_DIR="${PROJECT_DIR}/data/raw"
+OUT_DIR="${PROJECT_DIR}/data/processed"
+LOG_FILE="${PROJECT_DIR}/logs/build.log"
+
+mkdir -p "${OUT_DIR}" "$(dirname "${LOG_FILE}")"
+
+log() {
+    local msg="[$(date -Iseconds)] $*"
+    echo "${msg}" | tee -a "${LOG_FILE}"
+}
+
+cleanup() {
+    log "build_report exiting with code $?"
+}
+trap cleanup EXIT
+
+if [ ! -d "${RAW_DIR}" ]; then
+    log "ERROR: ${RAW_DIR} does not exist"
+    exit 2
+fi
+
+log "starting build"
+for csv in "${RAW_DIR}"/*.csv; do
+    base=$(basename "${csv}" .csv)
+    log "cleaning ${base}"
+    python "${PROJECT_DIR}/src/clean.py" \
+        --input "${csv}" \
+        --output "${OUT_DIR}/${base}.parquet"
+done
+
+log "assembling report"
+python "${PROJECT_DIR}/src/report.py" \
+    --input-dir "${OUT_DIR}" \
+    --output "${PROJECT_DIR}/reports/q3.html"
+
+log "build complete"
+```
+
+Forty lines of bash that any teammate can read, that fail safely on any error, that write to a log they can audit later, and that clean up after themselves whether they succeed or fail. That is what “good shell scripting” looks like in practice — not clever one-liners, but careful plumbing that does not surprise the next person to run it.
+
+### When bash stops being the right tool
+
+A short list of signals that you have outgrown bash and should reach for Python instead. **You are doing arithmetic on more than integers.** Bash arithmetic is integer-only and the syntax (`$((a + b))`) is awkward; floating-point math means shelling out to `bc` or `awk`, at which point you might as well write Python. **You are parsing structured data.** JSON, YAML, CSV — bash has no native data types, so any non-trivial parsing turns into fragile `cut`/`awk`/`sed` chains. Use `jq` for one-off JSON inspection but Python for anything you have to maintain. **You have nested data structures.** Bash arrays exist but associative arrays are a 2010-era afterthought; nested anything is a sign you should leave. **The script is past 200 lines.** Long bash scripts are dramatically harder to test and refactor than equivalent Python; the line is fuzzy but real.
+
+The good news is that the pattern of “small bash wrapper that calls a Python script” composes well: bash handles “set the working directory, activate the venv, log to a file,” and Python handles the actual data work. That division of labor is the standard automation pattern in most data projects, and it is what every example in this chapter is implicitly arranged around.
+
+## 33.5 Repeatable tasks with `make` (and the idea of rebuilds)
 
 ### Why use a task runner
 
@@ -225,7 +466,7 @@ Run `make all` and `make` walks the dependency chain in order. Now the magic kic
 
 The `$(CLEAN)` syntax defines a variable — it saves you from retyping the file path every time and makes the pipeline easier to read. On a small project this feels like overkill; on a mid-sized project it saves you minutes or hours per iteration and prevents the “I forgot to rerun the cleaning step after I changed the raw data” bug entirely.
 
-## 33.5 Scheduling scripts
+## 33.6 Scheduling scripts
 
 Once a task is scripted, the next capability is running it without you — every morning at 6 AM, every hour, every first-of-the-month. Both Unix and Windows ship with built-in schedulers that cover everything a student project will need.
 
@@ -339,7 +580,7 @@ touch "$LOCK"
 
 Finally, **decide what happens when the job fails.** The minimum is “write the failure to a log I actually read.” A step up is “send me an email or a Slack message” — many small utilities like `mail` or webhook-based alert services can do this from a wrapper script. The worst pattern is “the job fails silently and I notice three weeks later,” which is what happens when nobody is reading the logs.
 
-## 33.6 Rebuilds and repeatable workflows beyond `make`
+## 33.7 Rebuilds and repeatable workflows beyond `make`
 
 ### Task runners as interfaces
 
@@ -381,7 +622,7 @@ An **artifact** is an output of a run that you want to save, inspect, or share w
 
 The quick rule of thumb: **cache** the things you do not want to rebuild, **artifact** the things you want to look at. Confuse them and you will either waste space storing ephemeral build caches as long-lived artifacts or silently lose outputs that you assumed would be saved.
 
-## 33.7 Continuous Integration (CI): automation as a quality gate
+## 33.8 Continuous Integration (CI): automation as a quality gate
 
 ### What CI is, in one paragraph
 
@@ -536,7 +777,7 @@ permissions:
 
 That one line prevents a compromised action from, say, pushing commits to your repo. Tighten permissions further as you learn what your workflow actually needs.
 
-## 33.8 Local quality gates: pre-commit hooks
+## 33.9 Local quality gates: pre-commit hooks
 
 CI is the team’s safety net, but it only runs *after* you push. The local equivalent is a **git hook**: a small check that runs automatically right before every `git commit` and aborts the commit if something looks wrong. The most common tool for managing these is [`pre-commit`](https://pre-commit.com), a small framework that takes a config file and runs a pipeline of checks on the files you are about to commit ([pre-commit contributors, n.d.](#ref-precommit_framework)).
 
@@ -589,7 +830,7 @@ ruff.....................................................................Passed
 
 This “commit twice” rhythm feels weird for a day, then becomes invisible. A few practical points worth knowing. `git commit --no-verify` skips the hooks entirely — treat it as an emergency exit, not a daily convenience. The config is versioned with the code, so when a teammate clones the repo they only need to run `pre-commit install` once and they pick up all the same checks. And you can run every hook against every file at any time with `pre-commit run --all-files`, which is what you want when you first add pre-commit to an existing project. Anything beyond that — debugging individual hooks, writing your own, wiring pre-commit into CI as a redundant check — you can pick up from the official documentation at <https://pre-commit.com> when the need arises.
 
-## 33.9 Incorporating AI tools into automation (responsibly)
+## 33.10 Incorporating AI tools into automation (responsibly)
 
 Automation configuration files — Makefiles, GitHub Actions YAML, Dockerfiles, cron wrappers — are some of the highest-leverage uses of AI assistance for students. They are repetitive, their syntax is unforgiving, and small errors are tedious to debug. LLMs are surprisingly good at producing a reasonable first draft. They are also capable of producing confident nonsense, and the consequences of nonsense in a workflow file are higher than in regular application code, because a workflow file can run with write access to your repository, your cloud account, or your production environment. Use AI carefully here. See [sec-ai-llm](#sec-ai-llm) for the broader treatment.
 
@@ -644,7 +885,7 @@ Treat the AI like a capable junior teammate who has read every tutorial on the i
 
 The whole process is a few minutes longer than just having the AI write the file and merging blind. That extra time is the entire point.
 
-## 33.10 Common failure modes and fixes
+## 33.11 Common failure modes and fixes
 
 The failure modes below are the ones that bite every student project eventually. Knowing what they look like in advance makes them much cheaper to fix.
 
@@ -726,7 +967,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 > - [GNU Make manual](https://www.gnu.org/software/make/manual/) — the classic reference for `make`, targets, and incremental rebuilds.
 > - [crontab.guru](https://crontab.guru/) — an interactive explainer for cron expressions that removes most of the mystery.
 
-## 33.11 Worked examples (outline)
+## 33.12 Worked examples (outline)
 
 ### Turn a 6-step checklist into `make` targets
 
@@ -770,7 +1011,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - Run locally and via PR.
 
-## 33.12 Templates
+## 33.13 Templates
 
 ### Template A: Makefile skeleton (task interface)
 
@@ -836,7 +1077,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
     * Any permissions/secrets involved?
     * Links to documentation
 
-## 33.13 Exercises
+## 33.14 Exercises
 
 1.  Identify three repeated tasks in your project and turn them into `make` targets.
 
@@ -852,7 +1093,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 7.  Use an AI tool to draft a workflow file, then validate it against official docs and run a test PR.
 
-## 33.14 One-page checklist
+## 33.15 One-page checklist
 
 - I can turn multi-step tasks into one-command targets.
 
@@ -868,7 +1109,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - AI assistance is used to draft, not to bypass verification.
 
-## 33.15 Quick reference: common automation concepts
+## 33.16 Quick reference: common automation concepts
 
 - Targets, prerequisites, recipes (rebuild logic).
 

@@ -363,7 +363,30 @@ $ command1; echo $?                        # see exit code explicitly
 
 The habit that follows from this is to always check that your commands actually succeeded, not to assume they did because the prompt came back. Pay attention to error output, look at exit codes when you are scripting, and treat any nonzero result as evidence to investigate before you move on.
 
-## 11.9 Environment basics: `PATH`, variables, and reproducibility
+## 11.9 From commands to scripts
+
+The natural next step after typing the same command sequence twice is to put it in a file you can rerun. A **shell script** is a text file containing one or more shell commands, marked at the top with a special line called a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) that tells the operating system which interpreter to use:
+
+``` bash
+#!/usr/bin/env bash
+# greet.sh — print a friendly greeting
+
+echo "Hello, $USER!"
+echo "Today is $(date +%A)."
+```
+
+Save that as `greet.sh`, mark it as executable, and run it:
+
+``` bash
+chmod +x greet.sh        # one-time: grant execute permission
+./greet.sh               # the ./ tells the shell to look in the current directory
+```
+
+The two pieces that surprise newcomers are why you need `chmod +x` and why `./` is required. The execute bit is what tells the OS this file is meant to be *run* rather than just read; without it, the kernel refuses to launch the file even though the contents are perfectly valid. The `./` prefix is needed because the current directory is not on your `$PATH` by default (this is a deliberate security choice), so a bare `greet.sh` produces `command not found`. Putting the script in a directory that *is* on your `$PATH` — `~/bin` or `~/.local/bin` are common — lets you call it by name from anywhere.
+
+This is the entire premise of shell scripting in one paragraph. The rest — control flow, error handling, exit-code conventions, and patterns for building real automation pipelines — lives in [sec-automation](#sec-automation), which treats scripts as the bottom rung of a longer ladder. Read that chapter when you are ready to write scripts that other people will run.
+
+## 11.10 Environment basics: `PATH`, variables, and reproducibility
 
 ### Environment variables
 
@@ -434,7 +457,7 @@ python clean.py         # now all relative paths resolve predictably
 
 A project whose scripts all start with this pattern is much harder to break by accident, because the code no longer depends on the CWD the user happened to be in.
 
-## 11.10 Permissions, ownership, and `sudo`
+## 11.11 Permissions, ownership, and `sudo`
 
 ### The permission model (just enough)
 
@@ -477,7 +500,7 @@ $ ls -l data/output.csv
 
 If a file in your project ends up owned by `root` (because an earlier command was run with `sudo`), the fix is to restore your ownership: `sudo chown $(whoami) data/output.csv`. If you have created a tangle of root-owned files inside a project — which is a not-uncommon way for a debugging session to go sideways — stop, do not run any more `sudo` commands, and ask for help. Untangling root-owned files is a small task when you catch it early and a much larger one if you keep adding more.
 
-## 11.11 Security hygiene for terminal users
+## 11.12 Security hygiene for terminal users
 
 ### Secrets and command history
 
@@ -524,7 +547,7 @@ $ sudo -i           # now every command is running as root
 
 If you make a habit of running as your normal user by default, the rare occasions you do need `sudo` will stand out, and you will give them the care they deserve.
 
-## 11.12 Workflow patterns for students
+## 11.13 Workflow patterns for students
 
 ### Pattern 1: “enter a project, run, exit”
 
@@ -597,7 +620,7 @@ Produces: `data/processed/cleaned.csv` (expected ~5 MB, ~18,000 rows).
 
 The four steps are: identify, archive, delete, verify. Identification uses search and preview (`ls`, `find`, `echo *glob*`) so you can see the targets as a list before anything irreversible happens. Archiving copies anything you think you might want later into a dated folder — it costs almost nothing and prevents the “oh no, I needed that” moment. Deletion runs the actual removal, ideally against the exact same list the identification step produced. Verification runs the identification step again to confirm the targets are gone and nothing extra has joined them. Follow this pattern even on “obvious” cleanups, and the worst case of a mistake is that you have to restore a file from the archive folder rather than from a backup you hope exists.
 
-## 11.13 Troubleshooting playbook
+## 11.14 Troubleshooting playbook
 
 ### Common errors and what they mean
 
@@ -678,7 +701,7 @@ Disciplined debugging is not glamorous, but it is reliable, and it is what separ
 > - [Software Carpentry: The Unix Shell](https://swcarpentry.github.io/shell-novice/) — a complete beginner tutorial with hands-on exercises.
 > - [ExplainShell](https://explainshell.com/) — paste any command and get a breakdown of every flag and argument.
 
-## 11.14 Worked examples
+## 11.15 Worked examples
 
 ### Building a course workspace from the terminal
 
@@ -775,7 +798,7 @@ $ ls ../data/ | od -c | head -3
 
 If the bytes look like the filename you expected, you are good. If they include surprises, that is the bug. With those three checks, “file not found” becomes diagnosable in under a minute.
 
-## 11.15 Templates
+## 11.16 Templates
 
 ### Template A: Safe destructive action checklist
 
@@ -803,7 +826,7 @@ If the bytes look like the filename you expected, you are good. If they include 
       Notes/assumptions:
     * ...
 
-## 11.16 Exercises
+## 11.17 Exercises
 
 1.  Navigate from your home directory to a course folder using only `cd`, `pwd`, `ls`.
 
@@ -819,7 +842,7 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 7.  Trigger a permission error intentionally (in a safe location) and explain why `sudo` is not the first fix.
 
-## 11.17 One-page checklist
+## 11.18 One-page checklist
 
 - I can explain terminal vs shell, and command + arguments.
 
@@ -837,7 +860,7 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 - I avoid leaking secrets in commands and history.
 
-## 11.18 Windows notes: PowerShell and WSL (optional)
+## 11.19 Windows notes: PowerShell and WSL (optional)
 
 ### Two common paths
 
@@ -853,11 +876,11 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 - Pipes exist in both, but objects vs text differ.
 
-## 11.19 What is a terminal?
+## 11.20 What is a terminal?
 
 A terminal is a tool for interacting with your computer by issuing commands. A terminal launches a shell (e.g. `bash` or `zsh`), so sometimes you will hear a “terminal” also described as a “shell”.
 
-## 11.20 What terminal commands should I know, as a basic foundation?
+## 11.21 What terminal commands should I know, as a basic foundation?
 
 The exact syntax of terminal commands will be slightly different on Windows and Mac. So to keep things consistent, we are only going to detail high-level descriptions of terminal commands in this guide. You can Google the exact commands for your specific system; it is good practice to learn to search for the terminal commands you will need online.
 

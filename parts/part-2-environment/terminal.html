@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -638,13 +638,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
   </div>
 </li>
@@ -682,58 +682,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#inspecting-file-metadata" id="toc-inspecting-file-metadata" class="nav-link" data-scroll-target="#inspecting-file-metadata">Inspecting file metadata</a></li>
   </ul></li>
   <li><a href="#pipes-and-redirection-building-workflows" id="toc-pipes-and-redirection-building-workflows" class="nav-link" data-scroll-target="#pipes-and-redirection-building-workflows"><span class="header-section-number">11.8</span> Pipes and redirection: building workflows</a></li>
-  <li><a href="#environment-basics-path-variables-and-reproducibility" id="toc-environment-basics-path-variables-and-reproducibility" class="nav-link" data-scroll-target="#environment-basics-path-variables-and-reproducibility"><span class="header-section-number">11.9</span> Environment basics: <code>PATH</code>, variables, and reproducibility</a>
+  <li><a href="#from-commands-to-scripts" id="toc-from-commands-to-scripts" class="nav-link" data-scroll-target="#from-commands-to-scripts"><span class="header-section-number">11.9</span> From commands to scripts</a></li>
+  <li><a href="#environment-basics-path-variables-and-reproducibility" id="toc-environment-basics-path-variables-and-reproducibility" class="nav-link" data-scroll-target="#environment-basics-path-variables-and-reproducibility"><span class="header-section-number">11.10</span> Environment basics: <code>PATH</code>, variables, and reproducibility</a>
   <ul class="collapse">
   <li><a href="#environment-variables" id="toc-environment-variables" class="nav-link" data-scroll-target="#environment-variables">Environment variables</a></li>
   <li><a href="#path-and-locating-commands" id="toc-path-and-locating-commands" class="nav-link" data-scroll-target="#path-and-locating-commands"><code>PATH</code> and locating commands</a></li>
   <li><a href="#working-directory-as-a-dependency" id="toc-working-directory-as-a-dependency" class="nav-link" data-scroll-target="#working-directory-as-a-dependency">Working directory as a dependency</a></li>
   </ul></li>
-  <li><a href="#permissions-ownership-and-sudo" id="toc-permissions-ownership-and-sudo" class="nav-link" data-scroll-target="#permissions-ownership-and-sudo"><span class="header-section-number">11.10</span> Permissions, ownership, and <code>sudo</code></a>
+  <li><a href="#permissions-ownership-and-sudo" id="toc-permissions-ownership-and-sudo" class="nav-link" data-scroll-target="#permissions-ownership-and-sudo"><span class="header-section-number">11.11</span> Permissions, ownership, and <code>sudo</code></a>
   <ul class="collapse">
   <li><a href="#the-permission-model-just-enough" id="toc-the-permission-model-just-enough" class="nav-link" data-scroll-target="#the-permission-model-just-enough">The permission model (just enough)</a></li>
   <li><a href="#when-to-use-sudo-and-when-not-to" id="toc-when-to-use-sudo-and-when-not-to" class="nav-link" data-scroll-target="#when-to-use-sudo-and-when-not-to">When to use <code>sudo</code> (and when not to)</a></li>
   <li><a href="#safe-sudo-practices" id="toc-safe-sudo-practices" class="nav-link" data-scroll-target="#safe-sudo-practices">Safe <code>sudo</code> practices</a></li>
   <li><a href="#recovering-from-permission-issues" id="toc-recovering-from-permission-issues" class="nav-link" data-scroll-target="#recovering-from-permission-issues">Recovering from permission issues</a></li>
   </ul></li>
-  <li><a href="#security-hygiene-for-terminal-users" id="toc-security-hygiene-for-terminal-users" class="nav-link" data-scroll-target="#security-hygiene-for-terminal-users"><span class="header-section-number">11.11</span> Security hygiene for terminal users</a>
+  <li><a href="#security-hygiene-for-terminal-users" id="toc-security-hygiene-for-terminal-users" class="nav-link" data-scroll-target="#security-hygiene-for-terminal-users"><span class="header-section-number">11.12</span> Security hygiene for terminal users</a>
   <ul class="collapse">
   <li><a href="#secrets-and-command-history" id="toc-secrets-and-command-history" class="nav-link" data-scroll-target="#secrets-and-command-history">Secrets and command history</a></li>
   <li><a href="#copypaste-safety" id="toc-copypaste-safety" class="nav-link" data-scroll-target="#copypaste-safety">Copy/paste safety</a></li>
   <li><a href="#least-privilege" id="toc-least-privilege" class="nav-link" data-scroll-target="#least-privilege">Least privilege</a></li>
   </ul></li>
-  <li><a href="#workflow-patterns-for-students" id="toc-workflow-patterns-for-students" class="nav-link" data-scroll-target="#workflow-patterns-for-students"><span class="header-section-number">11.12</span> Workflow patterns for students</a>
+  <li><a href="#workflow-patterns-for-students" id="toc-workflow-patterns-for-students" class="nav-link" data-scroll-target="#workflow-patterns-for-students"><span class="header-section-number">11.13</span> Workflow patterns for students</a>
   <ul class="collapse">
   <li><a href="#pattern-1-enter-a-project-run-exit" id="toc-pattern-1-enter-a-project-run-exit" class="nav-link" data-scroll-target="#pattern-1-enter-a-project-run-exit">Pattern 1: “enter a project, run, exit”</a></li>
   <li><a href="#pattern-2-creating-a-reproducible-command-log" id="toc-pattern-2-creating-a-reproducible-command-log" class="nav-link" data-scroll-target="#pattern-2-creating-a-reproducible-command-log">Pattern 2: creating a reproducible command log</a></li>
   </ul></li>
-  <li><a href="#troubleshooting-playbook" id="toc-troubleshooting-playbook" class="nav-link" data-scroll-target="#troubleshooting-playbook"><span class="header-section-number">11.13</span> Troubleshooting playbook</a>
+  <li><a href="#troubleshooting-playbook" id="toc-troubleshooting-playbook" class="nav-link" data-scroll-target="#troubleshooting-playbook"><span class="header-section-number">11.14</span> Troubleshooting playbook</a>
   <ul class="collapse">
   <li><a href="#common-errors-and-what-they-mean" id="toc-common-errors-and-what-they-mean" class="nav-link" data-scroll-target="#common-errors-and-what-they-mean">Common errors and what they mean</a></li>
   <li><a href="#a-disciplined-response" id="toc-a-disciplined-response" class="nav-link" data-scroll-target="#a-disciplined-response">A disciplined response</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">11.14</span> Worked examples</a>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">11.15</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-a-course-workspace-from-the-terminal" id="toc-building-a-course-workspace-from-the-terminal" class="nav-link" data-scroll-target="#building-a-course-workspace-from-the-terminal">Building a course workspace from the terminal</a></li>
   <li><a href="#inspecting-a-dataset-file-you-have-not-seen-before" id="toc-inspecting-a-dataset-file-you-have-not-seen-before" class="nav-link" data-scroll-target="#inspecting-a-dataset-file-you-have-not-seen-before">Inspecting a dataset file you have not seen before</a></li>
   <li><a href="#building-a-small-pipeline" id="toc-building-a-small-pipeline" class="nav-link" data-scroll-target="#building-a-small-pipeline">Building a small pipeline</a></li>
   <li><a href="#diagnosing-a-file-not-found-error" id="toc-diagnosing-a-file-not-found-error" class="nav-link" data-scroll-target="#diagnosing-a-file-not-found-error">Diagnosing a “file not found” error</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">11.15</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">11.16</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-safe-destructive-action-checklist" id="toc-template-a-safe-destructive-action-checklist" class="nav-link" data-scroll-target="#template-a-safe-destructive-action-checklist">Template A: Safe destructive action checklist</a></li>
   <li><a href="#template-b-reproducible-command-log" id="toc-template-b-reproducible-command-log" class="nav-link" data-scroll-target="#template-b-reproducible-command-log">Template B: Reproducible command log</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.16</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">11.17</span> One-page checklist</a></li>
-  <li><a href="#windows-notes-powershell-and-wsl-optional" id="toc-windows-notes-powershell-and-wsl-optional" class="nav-link" data-scroll-target="#windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.18</span> Windows notes: PowerShell and WSL (optional)</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.17</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">11.18</span> One-page checklist</a></li>
+  <li><a href="#windows-notes-powershell-and-wsl-optional" id="toc-windows-notes-powershell-and-wsl-optional" class="nav-link" data-scroll-target="#windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.19</span> Windows notes: PowerShell and WSL (optional)</a>
   <ul class="collapse">
   <li><a href="#two-common-paths" id="toc-two-common-paths" class="nav-link" data-scroll-target="#two-common-paths">Two common paths</a></li>
   <li><a href="#concept-mapping-high-level" id="toc-concept-mapping-high-level" class="nav-link" data-scroll-target="#concept-mapping-high-level">Concept mapping (high level)</a></li>
   </ul></li>
-  <li><a href="#what-is-a-terminal" id="toc-what-is-a-terminal" class="nav-link" data-scroll-target="#what-is-a-terminal"><span class="header-section-number">11.19</span> What is a terminal?</a></li>
-  <li><a href="#what-terminal-commands-should-i-know-as-a-basic-foundation" id="toc-what-terminal-commands-should-i-know-as-a-basic-foundation" class="nav-link" data-scroll-target="#what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.20</span> What terminal commands should I know, as a basic foundation?</a></li>
+  <li><a href="#what-is-a-terminal" id="toc-what-is-a-terminal" class="nav-link" data-scroll-target="#what-is-a-terminal"><span class="header-section-number">11.20</span> What is a terminal?</a></li>
+  <li><a href="#what-terminal-commands-should-i-know-as-a-basic-foundation" id="toc-what-terminal-commands-should-i-know-as-a-basic-foundation" class="nav-link" data-scroll-target="#what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.21</span> What terminal commands should I know, as a basic foundation?</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
@@ -1026,55 +1027,69 @@ Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The habit that follows from this is to always check that your commands actually succeeded, not to assume they did because the prompt came back. Pay attention to error output, look at exit codes when you are scripting, and treat any nonzero result as evidence to investigate before you move on.</p>
 </section>
-<section id="environment-basics-path-variables-and-reproducibility" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="environment-basics-path-variables-and-reproducibility"><span class="header-section-number">11.9</span> Environment basics: <code>PATH</code>, variables, and reproducibility</h2>
+<section id="from-commands-to-scripts" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="from-commands-to-scripts"><span class="header-section-number">11.9</span> From commands to scripts</h2>
+<p>The natural next step after typing the same command sequence twice is to put it in a file you can rerun. A <strong>shell script</strong> is a text file containing one or more shell commands, marked at the top with a special line called a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> that tells the operating system which interpreter to use:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># greet.sh — print a friendly greeting</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hello, </span><span class="va">$USER</span><span class="st">!"</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Today is </span><span class="va">$(</span><span class="fu">date</span> +%A<span class="va">)</span><span class="st">."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Save that as <code>greet.sh</code>, mark it as executable, and run it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x greet.sh        <span class="co"># one-time: grant execute permission</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./greet.sh</span>               <span class="co"># the ./ tells the shell to look in the current directory</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The two pieces that surprise newcomers are why you need <code>chmod +x</code> and why <code>./</code> is required. The execute bit is what tells the OS this file is meant to be <em>run</em> rather than just read; without it, the kernel refuses to launch the file even though the contents are perfectly valid. The <code>./</code> prefix is needed because the current directory is not on your <code>$PATH</code> by default (this is a deliberate security choice), so a bare <code>greet.sh</code> produces <code>command not found</code>. Putting the script in a directory that <em>is</em> on your <code>$PATH</code> — <code>~/bin</code> or <code>~/.local/bin</code> are common — lets you call it by name from anywhere.</p>
+<p>This is the entire premise of shell scripting in one paragraph. The rest — control flow, error handling, exit-code conventions, and patterns for building real automation pipelines — lives in <a href="../part-5-projects/automation.html" class="quarto-xref"><span>Chapter 33</span></a>, which treats scripts as the bottom rung of a longer ladder. Read that chapter when you are ready to write scripts that other people will run.</p>
+</section>
+<section id="environment-basics-path-variables-and-reproducibility" class="level2" data-number="11.10">
+<h2 data-number="11.10" class="anchored" data-anchor-id="environment-basics-path-variables-and-reproducibility"><span class="header-section-number">11.10</span> Environment basics: <code>PATH</code>, variables, and reproducibility</h2>
 <section id="environment-variables" class="level3">
 <h3 class="anchored" data-anchor-id="environment-variables">Environment variables</h3>
 <p>Every process on your computer — your shell, every script it launches, every program — runs with a small bag of named values attached called the <strong>environment</strong>. Each name-value pair is an <strong>environment variable</strong>, and they are how programs pick up settings that are not part of the command line: where your home directory is (<code>$HOME</code>), what your username is (<code>$USER</code>), what language to use (<code>$LANG</code>), which editor to open (<code>$EDITOR</code>), and so on. When you launch a program, it inherits the environment of the shell that launched it, and most tools read a handful of specific variables to decide how to behave.</p>
 <p>Reading the current value of a variable is straightforward — prefix the name with a <code>$</code> and ask the shell to print it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$HOME</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$USER</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="ex">you</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$SHELL</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/zsh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$HOME</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$USER</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="ex">you</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$SHELL</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/zsh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Setting a variable for the current shell is just as simple, but the <code>export</code> keyword matters: without it, the variable only exists for the shell itself; with it, the variable is exported into the environment of any program the shell launches.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> MY_VAR=hello              <span class="co"># visible in this shell only</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export MY_VAR=hello       <span class="co"># visible to any command launched from this shell</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$MY_VAR</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> MY_VAR=hello              <span class="co"># visible in this shell only</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export MY_VAR=hello       <span class="co"># visible to any command launched from this shell</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$MY_VAR</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The practical reason this matters is that many tools — databases, APIs, cloud SDKs — are configured through environment variables rather than through command-line flags. You do not type your database password on every command; you set <code>DATABASE_URL</code> once, and every tool that looks for it finds it. The discipline around secrets in environment variables (never commit them, never echo them into a shared log) lives in <a href="../part-5-projects/secrets.html" class="quarto-xref"><span>Chapter 34</span></a>.</p>
 </section>
 <section id="path-and-locating-commands" class="level3">
 <h3 class="anchored" data-anchor-id="path-and-locating-commands"><code>PATH</code> and locating commands</h3>
 <p>There is one environment variable that matters more than any other for day-to-day command-line work, and its name is <code>PATH</code>. <code>PATH</code> is a colon-separated (or semicolon-separated on Windows) list of directories that the shell searches, in order, whenever you type a command name. When you run <code>python</code>, the shell walks each directory in <code>$PATH</code> looking for an executable file called <code>python</code>, and it runs the first one it finds. Any executable that is not in one of those directories is effectively invisible — typing its name will produce <code>command not found</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$PATH</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$PATH</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To see <em>which</em> specific program the shell would actually run when you type a command, use <code>which</code> (or <code>type -a</code> for a more verbose answer that shows every match, not just the first):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> which python</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/miniconda3/bin/python</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> type <span class="at">-a</span> python</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> is /Users/you/miniconda3/bin/python</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> is /usr/bin/python3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> which python</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/miniconda3/bin/python</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> type <span class="at">-a</span> python</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> is /Users/you/miniconda3/bin/python</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> is /usr/bin/python3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The second line of that output illustrates the most common <code>PATH</code> pitfall: <strong>multiple versions of the same tool are installed, and the shell is finding a different one than you expect.</strong> A student installs a new Python, writes code that depends on it, and then gets weird errors because a different Python earlier in <code>$PATH</code> is the one actually running. When a tool is behaving strangely — wrong version, missing package, unexpected paths — the first diagnostic move is always <code>which &lt;tool&gt;</code> to confirm which binary is being run, and then <code>&lt;tool&gt; --version</code> to confirm it is the version you think it is. This is especially important for Python and conda environments (see <a href="../part-3-python/package-management.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="../part-3-python/virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>), where it is very easy to “install” a package into a Python that is not the one actually on your <code>PATH</code>.</p>
 </section>
 <section id="working-directory-as-a-dependency" class="level3">
 <h3 class="anchored" data-anchor-id="working-directory-as-a-dependency">Working directory as a dependency</h3>
 <p>Every command you run has an invisible but consequential input: the <strong>current working directory</strong>, or CWD. Any relative path in the command — <code>data/input.csv</code>, <code>./clean.sh</code>, <code>../notes.md</code> — is resolved starting from the CWD, so the same command can succeed or fail depending only on where you were standing when you ran it. This is so central to reproducibility that it is worth treating the CWD as a first-class dependency of every script.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py          <span class="co"># reads data/input.csv relative to Project/</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd src</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python clean.py              <span class="co"># BROKEN: data/input.csv is now relative to src/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py          <span class="co"># reads data/input.csv relative to Project/</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd src</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python clean.py              <span class="co"># BROKEN: data/input.csv is now relative to src/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The fix is the habit you already met in <a href="file-system.html" class="quarto-xref"><span>Chapter 10</span></a>: adopt a stable project root, always <code>cd</code> there before running your code, and write the code so that every path is either absolute (anchored at that root) or relative to a file the code can find reliably. In Python, <code>Path(__file__).resolve().parent</code> computes a script’s own folder regardless of where it was launched from; in shell scripts, the idiomatic trick is <code>cd "$(dirname "$0")"</code> at the top to change into the script’s own directory.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$0</span><span class="st">"</span><span class="va">)</span><span class="st">"</span>    <span class="co"># change into the script's own folder</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> clean.py         <span class="co"># now all relative paths resolve predictably</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$0</span><span class="st">"</span><span class="va">)</span><span class="st">"</span>    <span class="co"># change into the script's own folder</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> clean.py         <span class="co"># now all relative paths resolve predictably</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A project whose scripts all start with this pattern is much harder to break by accident, because the code no longer depends on the CWD the user happened to be in.</p>
 </section>
 </section>
-<section id="permissions-ownership-and-sudo" class="level2" data-number="11.10">
-<h2 data-number="11.10" class="anchored" data-anchor-id="permissions-ownership-and-sudo"><span class="header-section-number">11.10</span> Permissions, ownership, and <code>sudo</code></h2>
+<section id="permissions-ownership-and-sudo" class="level2" data-number="11.11">
+<h2 data-number="11.11" class="anchored" data-anchor-id="permissions-ownership-and-sudo"><span class="header-section-number">11.11</span> Permissions, ownership, and <code>sudo</code></h2>
 <section id="the-permission-model-just-enough" class="level3">
 <h3 class="anchored" data-anchor-id="the-permission-model-just-enough">The permission model (just enough)</h3>
 <ul>
@@ -1087,13 +1102,13 @@ Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to
 <h3 class="anchored" data-anchor-id="when-to-use-sudo-and-when-not-to">When to use <code>sudo</code> (and when not to)</h3>
 <p><code>sudo</code> runs a single command with elevated (root) privileges. It exists for one specific purpose: to let you make changes that affect the whole system, like installing software through a system package manager or editing a system configuration file. When you genuinely need that, <code>sudo</code> is the right tool. The trap is using <code>sudo</code> reflexively to “fix” a permission problem you do not yet understand, because the elevated command will succeed whether or not it was the right thing to do — and if it was the wrong thing, you have just made the problem harder to undo.</p>
 <p>A reliable rule of thumb: never use <code>sudo</code> on anything inside your project folder. If a script in <code>~/Courses/INFO-3010/Project/</code> is failing with a permission error, the cause is almost certainly that the file is owned by someone other than you (often root, because of an earlier accidental <code>sudo</code>), and the fix is to restore correct ownership — <em>not</em> to add another <code>sudo</code>. Adding <code>sudo</code> to “make it work” usually creates files owned by root in the middle of your project, which you will then trip over for weeks afterward.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reasonable uses of sudo (system-level changes)</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install build-essential   <span class="co"># Linux: install system packages</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart nginx                           <span class="co"># Linux: restart a service</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad uses (you should never need these)</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> python my_script.py        <span class="co"># never run your own code as root</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> ~/project/data       <span class="co"># using sudo on your own files is a code smell</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reasonable uses of sudo (system-level changes)</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install build-essential   <span class="co"># Linux: install system packages</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart nginx                           <span class="co"># Linux: restart a service</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad uses (you should never need these)</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> python my_script.py        <span class="co"># never run your own code as root</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> ~/project/data       <span class="co"># using sudo on your own files is a code smell</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="safe-sudo-practices" class="level3">
 <h3 class="anchored" data-anchor-id="safe-sudo-practices">Safe <code>sudo</code> practices</h3>
@@ -1102,25 +1117,25 @@ Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to
 <section id="recovering-from-permission-issues" class="level3">
 <h3 class="anchored" data-anchor-id="recovering-from-permission-issues">Recovering from permission issues</h3>
 <p>When you hit a permission error, the first move is <em>not</em> to add <code>sudo</code>. The first move is to figure out what the actual ownership and permissions are with <code>ls -l</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> data/output.csv</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 root  staff  1234 Apr 10 12:34 output.csv</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                  <span class="ex">^^^^</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                  <span class="ex">owned</span> by root, not you</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> data/output.csv</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 root  staff  1234 Apr 10 12:34 output.csv</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                  <span class="ex">^^^^</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                  <span class="ex">owned</span> by root, not you</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If a file in your project ends up owned by <code>root</code> (because an earlier command was run with <code>sudo</code>), the fix is to restore your ownership: <code>sudo chown $(whoami) data/output.csv</code>. If you have created a tangle of root-owned files inside a project — which is a not-uncommon way for a debugging session to go sideways — stop, do not run any more <code>sudo</code> commands, and ask for help. Untangling root-owned files is a small task when you catch it early and a much larger one if you keep adding more.</p>
 </section>
 </section>
-<section id="security-hygiene-for-terminal-users" class="level2" data-number="11.11">
-<h2 data-number="11.11" class="anchored" data-anchor-id="security-hygiene-for-terminal-users"><span class="header-section-number">11.11</span> Security hygiene for terminal users</h2>
+<section id="security-hygiene-for-terminal-users" class="level2" data-number="11.12">
+<h2 data-number="11.12" class="anchored" data-anchor-id="security-hygiene-for-terminal-users"><span class="header-section-number">11.12</span> Security hygiene for terminal users</h2>
 <section id="secrets-and-command-history" class="level3">
 <h3 class="anchored" data-anchor-id="secrets-and-command-history">Secrets and command history</h3>
 <p>Your shell keeps a running log of every command you type, usually in a file called <code>.bash_history</code> or <code>.zsh_history</code> in your home directory. That log is a convenience — it is what powers the up arrow and <code>Ctrl+R</code> — but it is also a durable record of everything that passed through your terminal. Anyone who gets access to that file, whether through a backup, a shared account, or a compromised machine, can read it. That means <strong>anything you type literally on the command line is effectively written down</strong>, and the place you never want a password or API token written down is a plaintext file with no access controls.</p>
 <p>The rule that follows is simple: <strong>never put a secret directly on the command line if you can avoid it.</strong> The obvious bad form is something like <code>curl -H "Authorization: Bearer sk-REAL-TOKEN" ...</code>, which parks the real token in your history forever and also in the process list while the command runs (where any other user on the machine can see it with <code>ps</code>). The better form is to load the secret from an environment variable that was set earlier, from a config file with strict permissions, or from a dedicated secret manager:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BAD: the token goes into your shell history</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">"Authorization: Bearer sk-1234567890abcdef"</span> https://api.example.com</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># BETTER: load the token from an environment variable</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">API_TOKEN</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> ~/.secrets/api-token<span class="va">)</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">"Authorization: Bearer </span><span class="va">$API_TOKEN</span><span class="st">"</span> https://api.example.com</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BAD: the token goes into your shell history</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">"Authorization: Bearer sk-1234567890abcdef"</span> https://api.example.com</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># BETTER: load the token from an environment variable</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">API_TOKEN</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> ~/.secrets/api-token<span class="va">)</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">"Authorization: Bearer </span><span class="va">$API_TOKEN</span><span class="st">"</span> https://api.example.com</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The even better form uses a <code>.env</code> file, a password manager, or a cloud secret store, which <a href="../part-5-projects/secrets.html" class="quarto-xref"><span>Chapter 34</span></a> covers in full. On the rare occasion you do need to type a secret interactively, use a tool that reads it without echoing it to the screen (<code>read -s PASSWORD</code>, <code>ssh-add</code> for keys) and never paste it into a command. If you ever realize you accidentally typed a secret on the command line, rotate the secret immediately and then edit your history file to remove the entry — in that order, because the rotation is the only thing that actually makes you safe.</p>
 </section>
 <section id="copypaste-safety" class="level3">
@@ -1134,45 +1149,45 @@ Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to
 <h3 class="anchored" data-anchor-id="least-privilege">Least privilege</h3>
 <p>The single habit that prevents the most catastrophic terminal mistakes is <strong>least privilege</strong>: do your real work as a normal user, inside your own home directory, and only elevate to administrator rights for specific, well-scoped tasks that genuinely require them. Every command you run without <code>sudo</code> is bounded by what your normal account is allowed to touch, which means a typo can mess up your own files but cannot destroy the operating system, delete other users’ data, or leave the machine unbootable.</p>
 <p>In practice, “least privilege” means three things. First, <strong>keep your project folders under your home directory</strong>, never in system locations. <code>~/Courses/</code> and <code>~/Projects/</code> are yours to do whatever you like with; <code>/System/</code>, <code>C:\Windows\</code>, <code>/usr/local/</code> are not. Second, <strong>resist the reflex to <code>sudo</code> a command that fails with a permission error</strong>; ninety-nine percent of the time the error is telling you to move the work somewhere you own, not to override the check. Third, <strong>when you do need <code>sudo</code>, use it for exactly the command that needs it, not as a blanket on a whole session.</strong> <code>sudo apt install &lt;package&gt;</code> is reasonable; opening a root shell with <code>sudo -i</code> and forgetting you are in it is how accidents happen.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reasonable: specific elevated task, then immediately back to normal</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install ripgrep</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rg <span class="st">"TODO"</span> .</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Risky: an entire session running as root</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo <span class="at">-i</span>           <span class="co"># now every command is running as root</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ... hours later, you forget and run something destructive</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reasonable: specific elevated task, then immediately back to normal</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo apt install ripgrep</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rg <span class="st">"TODO"</span> .</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Risky: an entire session running as root</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sudo <span class="at">-i</span>           <span class="co"># now every command is running as root</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ... hours later, you forget and run something destructive</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you make a habit of running as your normal user by default, the rare occasions you do need <code>sudo</code> will stand out, and you will give them the care they deserve.</p>
 </section>
 </section>
-<section id="workflow-patterns-for-students" class="level2" data-number="11.12">
-<h2 data-number="11.12" class="anchored" data-anchor-id="workflow-patterns-for-students"><span class="header-section-number">11.12</span> Workflow patterns for students</h2>
+<section id="workflow-patterns-for-students" class="level2" data-number="11.13">
+<h2 data-number="11.13" class="anchored" data-anchor-id="workflow-patterns-for-students"><span class="header-section-number">11.13</span> Workflow patterns for students</h2>
 <section id="pattern-1-enter-a-project-run-exit" class="level3">
 <h3 class="anchored" data-anchor-id="pattern-1-enter-a-project-run-exit">Pattern 1: “enter a project, run, exit”</h3>
 <p>Almost every command-line session on a project follows the same shape, and giving that shape a name makes it easier to do the same way every time. The pattern is <em>enter, confirm, run, save, exit</em>, and it looks like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses/INFO-3010/Project        <span class="co"># 1. enter the project</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd                                    <span class="co"># 2. confirm where you are</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls                                     <span class="co"># 3. confirm what's there</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README.md</span>   data/   notebooks/   src/</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py                    <span class="co"># 4. run the command</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls data/processed/                     <span class="co"># 5. verify the output</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned.csv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses/INFO-3010/Project        <span class="co"># 1. enter the project</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd                                    <span class="co"># 2. confirm where you are</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls                                     <span class="co"># 3. confirm what's there</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README.md</span>   data/   notebooks/   src/</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py                    <span class="co"># 4. run the command</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls data/processed/                     <span class="co"># 5. verify the output</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned.csv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Every step exists for a reason. The <code>cd</code> pins you to a stable project root so that every relative path in every script resolves the same way. The <code>pwd</code> and <code>ls</code> are a thirty-seconds-of-paranoia check that catches “wrong directory” before it turns into “file not found” or, worse, “overwrote the wrong file.” Running the command is the actual work; listing the output directory afterward confirms that the command actually produced the files it promised instead of failing silently. And exiting cleanly — closing the terminal or running <code>deactivate</code> on any active virtual environment — leaves the next session with a clean slate instead of carrying state you will forget about.</p>
 <p>The value of having a habitual pattern is that it does not depend on whether you are tired or distracted. Once the pattern is muscle memory, you do it even when you are not paying attention, and the small disasters that come from skipping steps stop happening.</p>
 </section>
 <section id="pattern-2-creating-a-reproducible-command-log" class="level3">
 <h3 class="anchored" data-anchor-id="pattern-2-creating-a-reproducible-command-log">Pattern 2: creating a reproducible command log</h3>
 <p>After you run a command successfully, write down what you ran. This sounds like overkill until the first time you try to reproduce a result three weeks later and discover that “the script I ran on Tuesday” is not the same as “the script I ran on Wednesday with a slightly different flag.” The fix is to keep a plain-text log of the commands that produced each meaningful artifact, either in the project’s <code>README.md</code> or in a dedicated <code>notes.txt</code> next to the output.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to reproduce data/processed/cleaned.csv</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Ensure the virtual environment is active:</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>   <span class="in">```bash</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>   <span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to reproduce data/processed/cleaned.csv</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Ensure the virtual environment is active:</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>   <span class="in">```bash</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>   <span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol start="2" type="1">
 <li><p>Confirm raw input exists:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/raw/survey.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/raw/survey.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Run the cleaning script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/clean.py <span class="at">--input</span> data/raw/survey.csv <span class="at">--output</span> data/processed/cleaned.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/clean.py <span class="at">--input</span> data/raw/survey.csv <span class="at">--output</span> data/processed/cleaned.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 <p>Produces: <code>data/processed/cleaned.csv</code> (expected ~5 MB, ~18,000 rows).</p>
 <pre><code>
@@ -1201,34 +1216,34 @@ $           # empty output: no more .tmp files</code></pre>
 <p>The four steps are: identify, archive, delete, verify. Identification uses search and preview (<code>ls</code>, <code>find</code>, <code>echo *glob*</code>) so you can see the targets as a list before anything irreversible happens. Archiving copies anything you think you might want later into a dated folder — it costs almost nothing and prevents the “oh no, I needed that” moment. Deletion runs the actual removal, ideally against the exact same list the identification step produced. Verification runs the identification step again to confirm the targets are gone and nothing extra has joined them. Follow this pattern even on “obvious” cleanups, and the worst case of a mistake is that you have to restore a file from the archive folder rather than from a backup you hope exists.</p>
 </section>
 </section>
-<section id="troubleshooting-playbook" class="level2" data-number="11.13">
-<h2 data-number="11.13" class="anchored" data-anchor-id="troubleshooting-playbook"><span class="header-section-number">11.13</span> Troubleshooting playbook</h2>
+<section id="troubleshooting-playbook" class="level2" data-number="11.14">
+<h2 data-number="11.14" class="anchored" data-anchor-id="troubleshooting-playbook"><span class="header-section-number">11.14</span> Troubleshooting playbook</h2>
 <section id="common-errors-and-what-they-mean" class="level3">
 <h3 class="anchored" data-anchor-id="common-errors-and-what-they-mean">Common errors and what they mean</h3>
 <p>A few error messages account for the overwhelming majority of everyday terminal problems, and once you recognize them, most of the time you can fix the issue yourself in under a minute. The key is to read the error literally — the shell is telling you exactly what went wrong — and match it to the right diagnostic move.</p>
 <p><strong><code>command not found</code></strong> means the shell searched every directory on your <code>$PATH</code> and could not find a program with the name you typed. There are three reasons this happens, roughly in order of likelihood. First, you might have a typo (<code>pthon</code> instead of <code>python</code>). Second, the program might not be installed — a fresh machine, a new virtual environment, or a tool you forgot to <code>pip install</code>. Third, the program is installed but the directory that contains it is not on your <code>PATH</code>, which is especially common after installing a new Python or a language version manager.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pthon <span class="at">--version</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">zsh:</span> command not found: pthon       <span class="co"># typo — fix the spelling</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python <span class="at">--version</span>                   <span class="co"># confirm python is actually there</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> which python                       <span class="co"># confirm where it resolves to</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pthon <span class="at">--version</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="ex">zsh:</span> command not found: pthon       <span class="co"># typo — fix the spelling</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python <span class="at">--version</span>                   <span class="co"># confirm python is actually there</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> which python                       <span class="co"># confirm where it resolves to</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong><code>No such file or directory</code></strong> means the command ran but it cannot find the file you pointed it at. The culprit is almost always one of three things: the file name is spelled wrong (case-sensitive on macOS and Linux!), you are in the wrong directory so a relative path does not resolve where you expect, or the file has a hidden extension like <code>.csv.txt</code> that the GUI was disguising.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/Clean.py</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python:</span> can<span class="st">'t open file '</span>src/Clean.py<span class="st">': [Errno 2] No such file or directory</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="st">$ ls src/                             # what'</span>s actually in src/<span class="pp">?</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="ex">clean.py</span>    __init__.py</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py                 <span class="co"># lowercase filename</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/Clean.py</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python:</span> can<span class="st">'t open file '</span>src/Clean.py<span class="st">': [Errno 2] No such file or directory</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="st">$ ls src/                             # what'</span>s actually in src/<span class="pp">?</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="ex">clean.py</span>    __init__.py</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py                 <span class="co"># lowercase filename</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong><code>Permission denied</code></strong> means the file exists and the command tried to access it, but the operating system refused. The right response is almost <em>never</em> to prepend <code>sudo</code>. The right response is to run <code>ls -l</code> on the file and figure out <em>why</em> you do not have permission. Is it owned by a different user? Then fix the ownership instead of running as root. Is it in a system directory you should not be writing to? Then move the work into your own home folder.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./deploy.sh</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="ex">zsh:</span> permission denied: ./deploy.sh</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> deploy.sh                     <span class="co"># is it marked executable?</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 you staff 1234 Apr 10 deploy.sh</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod +x deploy.sh                  <span class="co"># make it executable — no sudo needed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./deploy.sh</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">zsh:</span> permission denied: ./deploy.sh</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> deploy.sh                     <span class="co"># is it marked executable?</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 you staff 1234 Apr 10 deploy.sh</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod +x deploy.sh                  <span class="co"># make it executable — no sudo needed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong><code>Is a directory</code></strong> means the command expected a regular file but you gave it a directory. The fix is to add the filename inside the directory, or to use a flag like <code>-r</code> (for <code>cp</code> and <code>rm</code>) that tells the command to operate recursively on everything beneath the directory.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat data/                           <span class="co"># cat expects a file</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cat:</span> data/: Is a directory</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat data/survey.csv                 <span class="co"># point it at a file</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls data/                            <span class="co"># or use the right tool for a directory</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat data/                           <span class="co"># cat expects a file</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cat:</span> data/: Is a directory</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat data/survey.csv                 <span class="co"># point it at a file</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls data/                            <span class="co"># or use the right tool for a directory</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="a-disciplined-response" class="level3">
 <h3 class="anchored" data-anchor-id="a-disciplined-response">A disciplined response</h3>
@@ -1240,17 +1255,17 @@ $           # empty output: no more .tmp files</code></pre>
 <li><p><strong>Consult <code>--help</code> or <code>man</code> for the command.</strong> When you are sure the inputs are right but the command is still failing, the problem might be that you are using a flag incorrectly. <code>command --help</code> usually answers this in one screen; <code>man command</code> gives the full reference.</p></li>
 <li><p><strong>If you are still stuck, build a minimal reproduction and ask a precise question.</strong> Strip the problem down to the shortest possible command that still shows the error, capture the exact error message, and include the output of <code>pwd</code>, <code>ls</code>, and <code>&lt;tool&gt; --version</code>. A question posed that way is almost always answerable, whether you are asking a classmate, a forum, or an AI assistant — and often the act of assembling it is enough to make the answer obvious on its own. (<a href="../part-1-practice/questions.html" class="quarto-xref"><span>Chapter 2</span></a> covers this in more depth.)</p></li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A minimal reproduction template to share when asking for help</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python <span class="at">--version</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.11.8</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls src/clean.py</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="ex">src/clean.py</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Traceback</span> <span class="er">(</span><span class="ex">most</span> recent call last<span class="kw">)</span><span class="bu">:</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">File</span> <span class="st">"src/clean.py"</span>, line 12, in <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A minimal reproduction template to share when asking for help</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python <span class="at">--version</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.11.8</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls src/clean.py</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="ex">src/clean.py</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python src/clean.py</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Traceback</span> <span class="er">(</span><span class="ex">most</span> recent call last<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">File</span> <span class="st">"src/clean.py"</span>, line 12, in <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Disciplined debugging is not glamorous, but it is reliable, and it is what separates people who lose an hour to a mystery error from people who spend two minutes and keep working.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1271,70 +1286,70 @@ $           # empty output: no more .tmp files</code></pre>
 </div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="11.14">
-<h2 data-number="11.14" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">11.14</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="11.15">
+<h2 data-number="11.15" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">11.15</span> Worked examples</h2>
 <section id="building-a-course-workspace-from-the-terminal" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-course-workspace-from-the-terminal">Building a course workspace from the terminal</h3>
 <p>You are starting a new semester with three courses, and you want one stable home for everything. From the terminal, the whole setup is one command:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs</span><span class="op">,</span><span class="dt">Project}</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-4040/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Project}</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/STAT-2010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs</span><span class="op">,</span><span class="dt">Project}</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-4040/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Project}</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/STAT-2010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>{...}</code> part is shell <strong>brace expansion</strong>, which is shorthand for “create one directory for each name inside the braces.” After running it, navigate and list to confirm:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 0</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  5 you staff  160 Apr 10 12:34 INFO-3010</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  4 you staff  128 Apr 10 12:34 INFO-4040</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  4 you staff  128 Apr 10 12:34 STAT-2010</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> INFO-3010</span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 0</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Assignments</span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Labs</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 0</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  5 you staff  160 Apr 10 12:34 INFO-3010</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  4 you staff  128 Apr 10 12:34 INFO-4040</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  4 you staff  128 Apr 10 12:34 STAT-2010</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> INFO-3010</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 0</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Assignments</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Labs</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span>  2 you staff  64 Apr 10 12:34 Project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three lines of terminal input replace several minutes of clicking through a file manager.</p>
 </section>
 <section id="inspecting-a-dataset-file-you-have-not-seen-before" class="level3">
 <h3 class="anchored" data-anchor-id="inspecting-a-dataset-file-you-have-not-seen-before">Inspecting a dataset file you have not seen before</h3>
 <p>A new CSV lands in your <code>data/raw/</code> folder. Before you load it into pandas, look at it from the terminal — sometimes the answer is faster there. The first thing you want is the <em>shape</em> of the file: how big is it, how many lines, what does the first row look like?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-lh</span> data/raw/sales.csv</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 you staff  4.2M Apr 10 12:34 data/raw/sales.csv</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> data/raw/sales.csv</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">42103</span> data/raw/sales.csv</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-n</span> 3 data/raw/sales.csv</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="ex">order_id,date,customer_id,amount</span></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1001,2026-01-15,C-447,28.50</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1002,2026-01-15,C-098,140.00</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-lh</span> data/raw/sales.csv</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 you staff  4.2M Apr 10 12:34 data/raw/sales.csv</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> data/raw/sales.csv</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">42103</span> data/raw/sales.csv</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-n</span> 3 data/raw/sales.csv</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="ex">order_id,date,customer_id,amount</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1001,2026-01-15,C-447,28.50</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1002,2026-01-15,C-098,140.00</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now you know the file is 4.2 MB, has 42,103 lines (which is roughly the row count), and uses commas with a header row. To check whether a particular column name actually exists, you can search the header row directly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-n</span> 1 data/raw/sales.csv <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-o</span> <span class="st">"customer_id"</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="ex">customer_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-n</span> 1 data/raw/sales.csv <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-o</span> <span class="st">"customer_id"</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="ex">customer_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>grep</code> finds nothing, the column is not there — and you have just saved yourself a <code>KeyError</code> debugging session.</p>
 </section>
 <section id="building-a-small-pipeline" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-small-pipeline">Building a small pipeline</h3>
 <p>A small pipeline that counts how many distinct customers placed orders on a given day, using nothing but standard tools:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="st">"2026-01-15"</span> data/raw/sales.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="ex">142</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="st">"2026-01-15"</span> data/raw/sales.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="ex">142</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The pipeline reads as a sequence of small steps: <code>grep</code> filters the file to lines containing the date; <code>cut -d, -f3</code> extracts the third comma-separated field (the customer id); <code>sort -u</code> removes duplicates; and <code>wc -l</code> counts the remaining lines. That is your answer: 142 distinct customers ordered that day. The same calculation in pandas is one line, but the terminal version is faster to write when you do not yet trust the data and are still inspecting it.</p>
 <p>You can also save the result for later with redirection:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"2026-01-15"</span> data/raw/sales.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="op">&gt;</span> customers-jan15.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"2026-01-15"</span> data/raw/sales.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d,</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="op">&gt;</span> customers-jan15.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="diagnosing-a-file-not-found-error" class="level3">
 <h3 class="anchored" data-anchor-id="diagnosing-a-file-not-found-error">Diagnosing a “file not found” error</h3>
 <p>You run a Python script and it crashes with <code>FileNotFoundError: data/input.csv</code>. Walk through three checks before changing the code. First, confirm where you are:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project/notebooks</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you/Courses/INFO-3010/Project/notebooks</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>pwd</code> says you are in <code>notebooks/</code> and your script expects to find <code>data/input.csv</code> relative to the project root, then the path it is computing is <code>notebooks/data/input.csv</code> — which does not exist. Two fixes: either <code>cd ..</code> to the project root and rerun, or rewrite the path in the script to be computed from <code>__file__</code>. Second, confirm the file actually exists where you think it does:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-lh</span> ../data/</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 8.3M</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 you staff  4.2M Apr 10 12:34 input.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-lh</span> ../data/</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 8.3M</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span>  1 you staff  4.2M Apr 10 12:34 input.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>input.csv</code> does not appear in the listing, the bug is <em>not</em> in the code — the file is genuinely missing. If it appears with a different name (a trailing space, an extra <code>.txt</code> extension), fix the filename. Third, confirm there are no Unicode lookalikes or hidden characters in the name:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls ../data/ <span class="kw">|</span> <span class="fu">od</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0000000</span>   i   n   p   u   t   .   c   s   v  <span class="dt">\n</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls ../data/ <span class="kw">|</span> <span class="fu">od</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-3</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0000000</span>   i   n   p   u   t   .   c   s   v  <span class="dt">\n</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If the bytes look like the filename you expected, you are good. If they include surprises, that is the bug. With those three checks, “file not found” becomes diagnosable in under a minute.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="11.15">
-<h2 data-number="11.15" class="anchored" data-anchor-id="templates"><span class="header-section-number">11.15</span> Templates</h2>
+<section id="templates" class="level2" data-number="11.16">
+<h2 data-number="11.16" class="anchored" data-anchor-id="templates"><span class="header-section-number">11.16</span> Templates</h2>
 <section id="template-a-safe-destructive-action-checklist" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-safe-destructive-action-checklist">Template A: Safe destructive action checklist</h3>
 <pre><code>Before deleting/moving:
@@ -1362,8 +1377,8 @@ Commands:
 * ...</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="11.16">
-<h2 data-number="11.16" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.16</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="11.17">
+<h2 data-number="11.17" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.17</span> Exercises</h2>
 <ol type="1">
 <li><p>Navigate from your home directory to a course folder using only <code>cd</code>, <code>pwd</code>, <code>ls</code>.</p></li>
 <li><p>Create a project directory structure with <code>mkdir -p</code>.</p></li>
@@ -1374,8 +1389,8 @@ Commands:
 <li><p>Trigger a permission error intentionally (in a safe location) and explain why <code>sudo</code> is not the first fix.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="11.17">
-<h2 data-number="11.17" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">11.17</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="11.18">
+<h2 data-number="11.18" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">11.18</span> One-page checklist</h2>
 <ul>
 <li><p>I can explain terminal vs shell, and command + arguments.</p></li>
 <li><p>I can navigate with <code>pwd</code>, <code>ls</code>, <code>cd</code> and understand paths.</p></li>
@@ -1387,8 +1402,8 @@ Commands:
 <li><p>I avoid leaking secrets in commands and history.</p></li>
 </ul>
 </section>
-<section id="windows-notes-powershell-and-wsl-optional" class="level2" data-number="11.18">
-<h2 data-number="11.18" class="anchored" data-anchor-id="windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.18</span> Windows notes: PowerShell and WSL (optional)</h2>
+<section id="windows-notes-powershell-and-wsl-optional" class="level2" data-number="11.19">
+<h2 data-number="11.19" class="anchored" data-anchor-id="windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.19</span> Windows notes: PowerShell and WSL (optional)</h2>
 <section id="two-common-paths" class="level3">
 <h3 class="anchored" data-anchor-id="two-common-paths">Two common paths</h3>
 <ul>
@@ -1405,12 +1420,12 @@ Commands:
 </ul>
 </section>
 </section>
-<section id="what-is-a-terminal" class="level2" data-number="11.19">
-<h2 data-number="11.19" class="anchored" data-anchor-id="what-is-a-terminal"><span class="header-section-number">11.19</span> What is a terminal?</h2>
+<section id="what-is-a-terminal" class="level2" data-number="11.20">
+<h2 data-number="11.20" class="anchored" data-anchor-id="what-is-a-terminal"><span class="header-section-number">11.20</span> What is a terminal?</h2>
 <p>A terminal is a tool for interacting with your computer by issuing commands. A terminal launches a shell (e.g.&nbsp;<code>bash</code> or <code>zsh</code>), so sometimes you will hear a “terminal” also described as a “shell”.</p>
 </section>
-<section id="what-terminal-commands-should-i-know-as-a-basic-foundation" class="level2" data-number="11.20">
-<h2 data-number="11.20" class="anchored" data-anchor-id="what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.20</span> What terminal commands should I know, as a basic foundation?</h2>
+<section id="what-terminal-commands-should-i-know-as-a-basic-foundation" class="level2" data-number="11.21">
+<h2 data-number="11.21" class="anchored" data-anchor-id="what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.21</span> What terminal commands should I know, as a basic foundation?</h2>
 <p>The exact syntax of terminal commands will be slightly different on Windows and Mac. So to keep things consistent, we are only going to detail high-level descriptions of terminal commands in this guide. You can Google the exact commands for your specific system; it is good practice to learn to search for the terminal commands you will need online.</p>
 <p>To get started with the terminal for your INFO classes, you should memorize the commands for each of the following:</p>
 <ul>
@@ -1862,4 +1877,4 @@ Commands:
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

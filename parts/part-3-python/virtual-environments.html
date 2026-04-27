@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -638,13 +638,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
   </div>
 </li>
@@ -669,17 +669,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#venv-vs.-conda" id="toc-venv-vs.-conda" class="nav-link" data-scroll-target="#venv-vs.-conda"><span class="header-section-number">15.4</span> <code>venv</code> vs.&nbsp;<code>conda</code></a></li>
   <li><a href="#jupyter-and-venvs" id="toc-jupyter-and-venvs" class="nav-link" data-scroll-target="#jupyter-and-venvs"><span class="header-section-number">15.5</span> Jupyter and venvs</a></li>
   <li><a href="#vs-code-and-venvs" id="toc-vs-code-and-venvs" class="nav-link" data-scroll-target="#vs-code-and-venvs"><span class="header-section-number">15.6</span> VS Code and venvs</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">15.7</span> Worked examples</a>
+  <li><a href="#when-venvs-are-not-enough-containers" id="toc-when-venvs-are-not-enough-containers" class="nav-link" data-scroll-target="#when-venvs-are-not-enough-containers"><span class="header-section-number">15.7</span> When venvs are not enough: containers</a>
+  <ul class="collapse">
+  <li><a href="#a-minimal-dockerfile" id="toc-a-minimal-dockerfile" class="nav-link" data-scroll-target="#a-minimal-dockerfile">A minimal Dockerfile</a></li>
+  <li><a href="#docker-compose-for-multi-service-projects" id="toc-docker-compose-for-multi-service-projects" class="nav-link" data-scroll-target="#docker-compose-for-multi-service-projects">Docker Compose for multi-service projects</a></li>
+  <li><a href="#when-to-actually-reach-for-a-container" id="toc-when-to-actually-reach-for-a-container" class="nav-link" data-scroll-target="#when-to-actually-reach-for-a-container">When to actually reach for a container</a></li>
+  </ul></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">15.8</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#starting-a-new-project-from-scratch" id="toc-starting-a-new-project-from-scratch" class="nav-link" data-scroll-target="#starting-a-new-project-from-scratch">Starting a new project from scratch</a></li>
   <li><a href="#diagnosing-it-worked-yesterday" id="toc-diagnosing-it-worked-yesterday" class="nav-link" data-scroll-target="#diagnosing-it-worked-yesterday">Diagnosing “it worked yesterday”</a></li>
   <li><a href="#a-collaborator-clones-your-project" id="toc-a-collaborator-clones-your-project" class="nav-link" data-scroll-target="#a-collaborator-clones-your-project">A collaborator clones your project</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">15.8</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.9</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">15.10</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">15.9</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.10</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">15.11</span> One-page checklist</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-3-python/virtual-environments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/virtual-environments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
@@ -723,8 +729,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>The single most common source of the “it worked yesterday” bug in Python data science is a confused <a href="../../appendix-glossary.html#term-environment">environment</a>. You install a package, try to import it, and Python says “no such module.” You upgrade <code>pandas</code> for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.</p>
-<p>A <a href="../../appendix-glossary.html#term-virtual-environment">virtual environment</a> is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.</p>
+<p>The single most common source of the “it worked yesterday” bug in Python data science is a confused <a href="../../parts/appendix/appendix-glossary.html#term-environment">environment</a>. You install a package, try to import it, and Python says “no such module.” You upgrade <code>pandas</code> for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.</p>
+<p>A <a href="../../parts/appendix/appendix-glossary.html#term-virtual-environment">virtual environment</a> is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.</p>
 <p>This chapter explains what a venv is (and is not), how to create and activate one with <a href="https://docs.python.org/3/library/venv.html"><code>python -m venv</code></a>, how this compares to <a href="https://docs.conda.io/en/latest/"><code>conda</code></a>, how to diagnose the “which Python is running?” question on any machine, and how to make sure <a href="https://jupyter.org/documentation">Jupyter</a> and <a href="https://code.visualstudio.com/docs">VS Code</a> are using the environment you think they are. <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> covers <code>conda</code> in depth; this chapter focuses on <code>venv</code> and on the diagnostic skills that apply to both.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
@@ -881,7 +887,7 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 </section>
 <section id="jupyter-and-venvs" class="level2" data-number="15.5">
 <h2 data-number="15.5" class="anchored" data-anchor-id="jupyter-and-venvs"><span class="header-section-number">15.5</span> Jupyter and venvs</h2>
-<p>Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a <a href="../../appendix-glossary.html#term-kernel">kernel</a>, and by default it may be pointed at your system Python. This causes the classic bug: you <code>pip install pandas</code> in your venv, open a notebook, and <code>import pandas</code> fails.</p>
+<p>Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a <a href="../../parts/appendix/appendix-glossary.html#term-kernel">kernel</a>, and by default it may be pointed at your system Python. This causes the classic bug: you <code>pip install pandas</code> in your venv, open a notebook, and <code>import pandas</code> fails.</p>
 <p>The fix is to register your venv as a Jupyter kernel. From inside the activated venv:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install ipykernel</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> project-venv <span class="at">--display-name</span> <span class="st">"Python (project-venv)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -900,6 +906,64 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 <li>Pick the entry whose path contains your project’s <code>.venv</code>.</li>
 </ol>
 <p>The selected interpreter shows in the bottom-right of the VS Code status bar. Click it any time to switch.</p>
+</section>
+<section id="when-venvs-are-not-enough-containers" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="when-venvs-are-not-enough-containers"><span class="header-section-number">15.7</span> When venvs are not enough: containers</h2>
+<p>A venv solves one specific problem: isolating Python <em>packages</em> across projects. It does not isolate the Python interpreter version itself reliably across machines, it does not isolate non-Python system libraries, and it does not isolate services your code depends on like Postgres or Redis. For most coursework, that is fine — a <code>requirements.txt</code> plus the right Python version on every collaborator’s laptop is enough. For projects that touch native libraries, span operating systems, or need to deploy somewhere other than your own machine, you eventually need something stronger: a <a href="https://www.docker.com/resources/what-container/">container</a>.</p>
+<p>A container is a packaged operating-system environment that runs the same way everywhere. Conceptually, a venv pins your Python packages; a container pins your <em>entire</em> userspace — the OS distribution, the system libraries, the Python interpreter, the installed packages, and the project code. A container that runs on your MacBook also runs on your collaborator’s Windows laptop, on a Linux server, and on a cloud platform, byte-for-byte the same. The most common implementation you will encounter as a student is <a href="https://docs.docker.com/get-started/">Docker</a>.</p>
+<section id="a-minimal-dockerfile" class="level3">
+<h3 class="anchored" data-anchor-id="a-minimal-dockerfile">A minimal Dockerfile</h3>
+<p>A <code>Dockerfile</code> is a recipe — a text file at the project root that describes how to build the image. For a simple Python project it is short:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.11-slim</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"src/pipeline.py"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Five lines do real work: <code>FROM</code> picks a base image (Python 3.11 on a minimal Debian); <code>WORKDIR</code> sets the in-container directory; the first <code>COPY</code> and <code>RUN</code> install dependencies; the second <code>COPY</code> brings in your code; <code>CMD</code> says what to run when the container starts.</p>
+<p>Build the image and run it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-project .</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> my-project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>--rm</code> flag deletes the container after it exits, which is what you want for one-shot runs. To get a shell inside the container instead — the rough equivalent of “activating” the environment — add <code>-it</code> and override the command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> my-project bash</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two patterns matter for development. To <strong>edit code on your host and run it inside the container</strong>, mount your project directory as a volume so changes show up live: <code>docker run --rm -it -v "$PWD":/app my-project bash</code>. To <strong>expose a port</strong> (for a Jupyter server, a Flask app, a database), add <code>-p host:container</code>: <code>docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0</code>.</p>
+</section>
+<section id="docker-compose-for-multi-service-projects" class="level3">
+<h3 class="anchored" data-anchor-id="docker-compose-for-multi-service-projects">Docker Compose for multi-service projects</h3>
+<p>Most non-trivial projects need more than just Python. They need a database, maybe a message queue, sometimes a separate worker process. <a href="https://docs.docker.com/compose/">Docker Compose</a> lets you describe all of those services in one <code>docker-compose.yml</code> and start them together with <code>docker compose up</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">db</span><span class="kw">]</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DATABASE_URL</span><span class="kw">:</span><span class="at"> postgres://user:pass@db:5432/app</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres:16</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_USER</span><span class="kw">:</span><span class="at"> user</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_PASSWORD</span><span class="kw">:</span><span class="at"> pass</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_DB</span><span class="kw">:</span><span class="at"> app</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two services start, the app waits for the database, and the whole pipeline reproduces on any machine that has Docker installed. This is genuinely magical the first time it works on a teammate’s laptop with no setup other than <code>docker compose up</code>.</p>
+</section>
+<section id="when-to-actually-reach-for-a-container" class="level3">
+<h3 class="anchored" data-anchor-id="when-to-actually-reach-for-a-container">When to actually reach for a container</h3>
+<p>Containers are powerful but they are also a layer of complexity, and reaching for them too early creates more friction than it removes. A useful checklist of “yes, you actually need a container”:</p>
+<ul>
+<li><strong>You need to reproduce the exact same environment on a different operating system</strong> — venv pins Python packages but not the OS or system libraries beneath them, and some packages behave differently on macOS vs Linux.</li>
+<li><strong>Your code depends on system-level binaries</strong> that are tedious to install — PostGIS, FFmpeg, headless Chromium for scraping, specific CUDA versions for GPU work.</li>
+<li><strong>You need to run alongside a database or queue</strong> that should be reproducible on every machine.</li>
+<li><strong>You are deploying to a cloud target</strong> — every major cloud platform runs containers natively, so packaging your project as a container is the lingua franca of “ship this somewhere.”</li>
+</ul>
+<p>A useful checklist of “no, a venv is fine”:</p>
+<ul>
+<li><strong>Pure-Python coursework</strong> with a small <code>requirements.txt</code>.</li>
+<li><strong>Notebooks for analysis</strong> that read local files and produce figures.</li>
+<li><strong>Anything you only ever run on your own laptop</strong> for one semester.</li>
+</ul>
+<p>If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -914,27 +978,30 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 <li><a href="https://docs.python.org/3/library/venv.html"><code>venv</code> — Creation of virtual environments</a> — the official module reference and command-line usage.</li>
 <li><a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">Python Packaging User Guide: Virtual environments</a> — a tutorial-style walk-through, including pip usage inside a venv.</li>
 <li><a href="https://realpython.com/python-virtual-environments-a-primer/">Real Python: Python Virtual Environments — A Primer</a> — extended discussion of venv internals, common pitfalls, and alternatives.</li>
+<li><a href="https://docs.docker.com/get-started/">Docker: Get started</a> — the official walkthrough for building, running, and sharing containers.</li>
+<li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="worked-examples" class="level2" data-number="15.7">
-<h2 data-number="15.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">15.7</span> Worked examples</h2>
+</section>
+<section id="worked-examples" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">15.8</span> Worked examples</h2>
 <section id="starting-a-new-project-from-scratch" class="level3">
 <h3 class="anchored" data-anchor-id="starting-a-new-project-from-scratch">Starting a new project from scratch</h3>
 <p>You are starting a term project that will use pandas and matplotlib.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> term-project <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> term-project</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate      <span class="co"># or .venv\Scripts\Activate.ps1 on Windows</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas matplotlib jupyter ipykernel</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">".venv/"</span> <span class="op">&gt;&gt;</span> .gitignore</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="kw">&amp;&amp;</span> <span class="fu">git</span> add requirements.txt .gitignore</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial environment"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> term-project <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> term-project</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate      <span class="co"># or .venv\Scripts\Activate.ps1 on Windows</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas matplotlib jupyter ipykernel</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">".venv/"</span> <span class="op">&gt;&gt;</span> .gitignore</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="kw">&amp;&amp;</span> <span class="fu">git</span> add requirements.txt .gitignore</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial environment"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Register the kernel so Jupyter can find it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> term-project <span class="at">--display-name</span> <span class="st">"Python (term-project)"</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> term-project <span class="at">--display-name</span> <span class="st">"Python (term-project)"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In Jupyter, the new kernel appears in the launcher. Open a notebook with it and you are good to go.</p>
 </section>
 <section id="diagnosing-it-worked-yesterday" class="level3">
@@ -942,29 +1009,29 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 <p>You open your terminal the next morning, run <code>python analysis.py</code>, and get:</p>
 <pre><code>ModuleNotFoundError: No module named 'pandas'</code></pre>
 <p><strong>Step 1: check whether the venv is active.</strong> Look at your shell prompt. Does it show <code>(.venv)</code>? No? Activate it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Rerun your script. Usually this fixes it — you forgot to activate.</p>
 <p><strong>Step 2: if still failing, check which Python.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If the path does not contain <code>.venv</code>, activation silently failed (rare but happens with nested shells, tmux, or VS Code’s integrated terminal on certain configurations). Deactivate, re-activate, and recheck.</p>
 <p><strong>Step 3: confirm the package is installed in this venv.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If this says <code>WARNING: Package(s) not found: pandas</code>, reinstall:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="a-collaborator-clones-your-project" class="level3">
 <h3 class="anchored" data-anchor-id="a-collaborator-clones-your-project">A collaborator clones your project</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/you/term-project.git</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> term-project</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/you/term-project.git</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> term-project</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="15.8">
-<h2 data-number="15.8" class="anchored" data-anchor-id="templates"><span class="header-section-number">15.8</span> Templates</h2>
+<section id="templates" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">15.9</span> Templates</h2>
 <p><strong><code>.gitignore</code> entries for a venv project:</strong></p>
 <pre><code>.venv/
 __pycache__/
@@ -977,8 +1044,8 @@ numpy==1.26.4
 pandas==2.2.1</code></pre>
 <p>A version-pinned <code>requirements.txt</code> is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (<code>pandas&gt;=2.0</code>). For application projects (your course work), prefer pins.</p>
 </section>
-<section id="exercises" class="level2" data-number="15.9">
-<h2 data-number="15.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.9</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.10</span> Exercises</h2>
 <ol type="1">
 <li>Create a fresh venv in an empty directory, activate it, and install <code>pandas</code>. Run <code>python -m pip show pandas</code> and confirm the <code>Location:</code> line is inside your venv.</li>
 <li>Write down the output of <code>which python</code> (or <code>where python</code>) before and after activating a venv. Notice the path change.</li>
@@ -989,8 +1056,8 @@ pandas==2.2.1</code></pre>
 <li>Delete your <code>.venv/</code> directory and recreate it from <code>requirements.txt</code>. Confirm the project still runs. This is the key reproducibility test.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="15.10">
-<h2 data-number="15.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">15.10</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">15.11</span> One-page checklist</h2>
 <ul>
 <li>Every project gets its own venv: <code>python -m venv .venv</code> at the project root.</li>
 <li>Add <code>.venv/</code> to <code>.gitignore</code>. Never commit a venv.</li>
@@ -1444,4 +1511,4 @@ pandas==2.2.1</code></pre>
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-3-python/virtual-environments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/virtual-environments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

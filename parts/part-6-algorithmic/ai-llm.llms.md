@@ -34,7 +34,7 @@ By the end of this chapter, you should be able to:
 
 ## 35.1 What an AI assistant is doing
 
-Most AI assistants in technical settings are built on [large language models](../../appendix-glossary.llms.md#term-llm) (LLMs) — see [sec-llm-internals](#sec-llm-internals) for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
+Most AI assistants in technical settings are built on [large language models](../../parts/appendix/appendix-glossary.llms.md#term-llm) (LLMs) — see [sec-llm-internals](#sec-llm-internals) for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
 
 A practical interpretation is to treat AI output as a draft produced by a fast collaborator who can be wrong. Your job is to turn drafts into reliable artifacts.
 

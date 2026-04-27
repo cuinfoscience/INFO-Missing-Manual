@@ -100,9 +100,9 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -322,7 +322,7 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -657,13 +657,13 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
   </div>
 </li>
@@ -690,7 +690,18 @@ div.csl-indent {
   <li><a href="#the-minimum-viable-automation-set" id="toc-the-minimum-viable-automation-set" class="nav-link" data-scroll-target="#the-minimum-viable-automation-set">The “minimum viable automation” set</a></li>
   </ul></li>
   <li><a href="#automation-fundamentals-scripts-that-behave-well" id="toc-automation-fundamentals-scripts-that-behave-well" class="nav-link" data-scroll-target="#automation-fundamentals-scripts-that-behave-well"><span class="header-section-number">33.3</span> Automation fundamentals: scripts that behave well</a></li>
-  <li><a href="#repeatable-tasks-with-make-and-the-idea-of-rebuilds" id="toc-repeatable-tasks-with-make-and-the-idea-of-rebuilds" class="nav-link" data-scroll-target="#repeatable-tasks-with-make-and-the-idea-of-rebuilds"><span class="header-section-number">33.4</span> Repeatable tasks with <code>make</code> (and the idea of rebuilds)</a>
+  <li><a href="#writing-shell-scripts-control-flow-exit-codes-and-error-handling" id="toc-writing-shell-scripts-control-flow-exit-codes-and-error-handling" class="nav-link" data-scroll-target="#writing-shell-scripts-control-flow-exit-codes-and-error-handling"><span class="header-section-number">33.4</span> Writing shell scripts: control flow, exit codes, and error handling</a>
+  <ul class="collapse">
+  <li><a href="#the-script-header-that-prevents-most-bugs" id="toc-the-script-header-that-prevents-most-bugs" class="nav-link" data-scroll-target="#the-script-header-that-prevents-most-bugs">The script header that prevents most bugs</a></li>
+  <li><a href="#variables-and-quoting" id="toc-variables-and-quoting" class="nav-link" data-scroll-target="#variables-and-quoting">Variables and quoting</a></li>
+  <li><a href="#control-flow" id="toc-control-flow" class="nav-link" data-scroll-target="#control-flow">Control flow</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#exit-codes-in-depth" id="toc-exit-codes-in-depth" class="nav-link" data-scroll-target="#exit-codes-in-depth">Exit codes in depth</a></li>
+  <li><a href="#error-handling-with-trap" id="toc-error-handling-with-trap" class="nav-link" data-scroll-target="#error-handling-with-trap">Error handling with <code>trap</code></a></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a></li>
+  <li><a href="#when-bash-stops-being-the-right-tool" id="toc-when-bash-stops-being-the-right-tool" class="nav-link" data-scroll-target="#when-bash-stops-being-the-right-tool">When bash stops being the right tool</a></li>
+  </ul></li>
+  <li><a href="#repeatable-tasks-with-make-and-the-idea-of-rebuilds" id="toc-repeatable-tasks-with-make-and-the-idea-of-rebuilds" class="nav-link" data-scroll-target="#repeatable-tasks-with-make-and-the-idea-of-rebuilds"><span class="header-section-number">33.5</span> Repeatable tasks with <code>make</code> (and the idea of rebuilds)</a>
   <ul class="collapse">
   <li><a href="#why-use-a-task-runner" id="toc-why-use-a-task-runner" class="nav-link" data-scroll-target="#why-use-a-task-runner">Why use a task runner</a></li>
   <li><a href="#makefile-concepts-targets-prerequisites-recipes" id="toc-makefile-concepts-targets-prerequisites-recipes" class="nav-link" data-scroll-target="#makefile-concepts-targets-prerequisites-recipes">Makefile concepts: targets, prerequisites, recipes</a></li>
@@ -698,18 +709,18 @@ div.csl-indent {
   <li><a href="#a-recommended-student-target-set" id="toc-a-recommended-student-target-set" class="nav-link" data-scroll-target="#a-recommended-student-target-set">A recommended student target set</a></li>
   <li><a href="#incremental-builds-for-data-pipelines" id="toc-incremental-builds-for-data-pipelines" class="nav-link" data-scroll-target="#incremental-builds-for-data-pipelines">Incremental builds for data pipelines</a></li>
   </ul></li>
-  <li><a href="#scheduling-scripts" id="toc-scheduling-scripts" class="nav-link" data-scroll-target="#scheduling-scripts"><span class="header-section-number">33.5</span> Scheduling scripts</a>
+  <li><a href="#scheduling-scripts" id="toc-scheduling-scripts" class="nav-link" data-scroll-target="#scheduling-scripts"><span class="header-section-number">33.6</span> Scheduling scripts</a>
   <ul class="collapse">
   <li><a href="#scheduling-on-macos-and-linux-cron" id="toc-scheduling-on-macos-and-linux-cron" class="nav-link" data-scroll-target="#scheduling-on-macos-and-linux-cron">Scheduling on macOS and Linux: <code>cron</code></a></li>
   <li><a href="#scheduling-on-windows-task-scheduler" id="toc-scheduling-on-windows-task-scheduler" class="nav-link" data-scroll-target="#scheduling-on-windows-task-scheduler">Scheduling on Windows: Task Scheduler</a></li>
   <li><a href="#scheduling-hygiene" id="toc-scheduling-hygiene" class="nav-link" data-scroll-target="#scheduling-hygiene">Scheduling hygiene</a></li>
   </ul></li>
-  <li><a href="#rebuilds-and-repeatable-workflows-beyond-make" id="toc-rebuilds-and-repeatable-workflows-beyond-make" class="nav-link" data-scroll-target="#rebuilds-and-repeatable-workflows-beyond-make"><span class="header-section-number">33.6</span> Rebuilds and repeatable workflows beyond <code>make</code></a>
+  <li><a href="#rebuilds-and-repeatable-workflows-beyond-make" id="toc-rebuilds-and-repeatable-workflows-beyond-make" class="nav-link" data-scroll-target="#rebuilds-and-repeatable-workflows-beyond-make"><span class="header-section-number">33.7</span> Rebuilds and repeatable workflows beyond <code>make</code></a>
   <ul class="collapse">
   <li><a href="#task-runners-as-interfaces" id="toc-task-runners-as-interfaces" class="nav-link" data-scroll-target="#task-runners-as-interfaces">Task runners as interfaces</a></li>
   <li><a href="#artifacts-vs-caches" id="toc-artifacts-vs-caches" class="nav-link" data-scroll-target="#artifacts-vs-caches">Artifacts vs caches</a></li>
   </ul></li>
-  <li><a href="#continuous-integration-ci-automation-as-a-quality-gate" id="toc-continuous-integration-ci-automation-as-a-quality-gate" class="nav-link" data-scroll-target="#continuous-integration-ci-automation-as-a-quality-gate"><span class="header-section-number">33.7</span> Continuous Integration (CI): automation as a quality gate</a>
+  <li><a href="#continuous-integration-ci-automation-as-a-quality-gate" id="toc-continuous-integration-ci-automation-as-a-quality-gate" class="nav-link" data-scroll-target="#continuous-integration-ci-automation-as-a-quality-gate"><span class="header-section-number">33.8</span> Continuous Integration (CI): automation as a quality gate</a>
   <ul class="collapse">
   <li><a href="#what-ci-is-in-one-paragraph" id="toc-what-ci-is-in-one-paragraph" class="nav-link" data-scroll-target="#what-ci-is-in-one-paragraph">What CI is, in one paragraph</a></li>
   <li><a href="#ci-events-and-triggers" id="toc-ci-events-and-triggers" class="nav-link" data-scroll-target="#ci-events-and-triggers">CI events and triggers</a></li>
@@ -718,15 +729,15 @@ div.csl-indent {
   <li><a href="#ci-performance-hygiene" id="toc-ci-performance-hygiene" class="nav-link" data-scroll-target="#ci-performance-hygiene">CI performance hygiene</a></li>
   <li><a href="#ci-security-basics" id="toc-ci-security-basics" class="nav-link" data-scroll-target="#ci-security-basics">CI security basics</a></li>
   </ul></li>
-  <li><a href="#local-quality-gates-pre-commit-hooks" id="toc-local-quality-gates-pre-commit-hooks" class="nav-link" data-scroll-target="#local-quality-gates-pre-commit-hooks"><span class="header-section-number">33.8</span> Local quality gates: pre-commit hooks</a></li>
-  <li><a href="#incorporating-ai-tools-into-automation-responsibly" id="toc-incorporating-ai-tools-into-automation-responsibly" class="nav-link" data-scroll-target="#incorporating-ai-tools-into-automation-responsibly"><span class="header-section-number">33.9</span> Incorporating AI tools into automation (responsibly)</a>
+  <li><a href="#local-quality-gates-pre-commit-hooks" id="toc-local-quality-gates-pre-commit-hooks" class="nav-link" data-scroll-target="#local-quality-gates-pre-commit-hooks"><span class="header-section-number">33.9</span> Local quality gates: pre-commit hooks</a></li>
+  <li><a href="#incorporating-ai-tools-into-automation-responsibly" id="toc-incorporating-ai-tools-into-automation-responsibly" class="nav-link" data-scroll-target="#incorporating-ai-tools-into-automation-responsibly"><span class="header-section-number">33.10</span> Incorporating AI tools into automation (responsibly)</a>
   <ul class="collapse">
   <li><a href="#what-ai-is-good-for" id="toc-what-ai-is-good-for" class="nav-link" data-scroll-target="#what-ai-is-good-for">What AI is good for</a></li>
   <li><a href="#what-ai-is-not-good-for" id="toc-what-ai-is-not-good-for" class="nav-link" data-scroll-target="#what-ai-is-not-good-for">What AI is not good for</a></li>
   <li><a href="#guardrails-for-ai-assisted-automation" id="toc-guardrails-for-ai-assisted-automation" class="nav-link" data-scroll-target="#guardrails-for-ai-assisted-automation">Guardrails for AI-assisted automation</a></li>
   <li><a href="#a-practical-workflow-ai-as-a-junior-assistant" id="toc-a-practical-workflow-ai-as-a-junior-assistant" class="nav-link" data-scroll-target="#a-practical-workflow-ai-as-a-junior-assistant">A practical workflow: AI as a junior assistant</a></li>
   </ul></li>
-  <li><a href="#common-failure-modes-and-fixes" id="toc-common-failure-modes-and-fixes" class="nav-link" data-scroll-target="#common-failure-modes-and-fixes"><span class="header-section-number">33.10</span> Common failure modes and fixes</a>
+  <li><a href="#common-failure-modes-and-fixes" id="toc-common-failure-modes-and-fixes" class="nav-link" data-scroll-target="#common-failure-modes-and-fixes"><span class="header-section-number">33.11</span> Common failure modes and fixes</a>
   <ul class="collapse">
   <li><a href="#works-on-my-machine-automation" id="toc-works-on-my-machine-automation" class="nav-link" data-scroll-target="#works-on-my-machine-automation">“Works on my machine” automation</a></li>
   <li><a href="#scheduling-failures-from-wrong-path-or-wrong-working-directory" id="toc-scheduling-failures-from-wrong-path-or-wrong-working-directory" class="nav-link" data-scroll-target="#scheduling-failures-from-wrong-path-or-wrong-working-directory">Scheduling failures from wrong <code>PATH</code> or wrong working directory</a></li>
@@ -734,7 +745,7 @@ div.csl-indent {
   <li><a href="#slow-ci-that-everyone-ignores" id="toc-slow-ci-that-everyone-ignores" class="nav-link" data-scroll-target="#slow-ci-that-everyone-ignores">Slow CI that everyone ignores</a></li>
   <li><a href="#automation-that-overwrites-important-artifacts" id="toc-automation-that-overwrites-important-artifacts" class="nav-link" data-scroll-target="#automation-that-overwrites-important-artifacts">Automation that overwrites important artifacts</a></li>
   </ul></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">33.11</span> Worked examples (outline)</a>
+  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">33.12</span> Worked examples (outline)</a>
   <ul class="collapse">
   <li><a href="#turn-a-6-step-checklist-into-make-targets" id="toc-turn-a-6-step-checklist-into-make-targets" class="nav-link" data-scroll-target="#turn-a-6-step-checklist-into-make-targets">Turn a 6-step checklist into <code>make</code> targets</a></li>
   <li><a href="#schedule-a-daily-pipeline-run" id="toc-schedule-a-daily-pipeline-run" class="nav-link" data-scroll-target="#schedule-a-daily-pipeline-run">Schedule a daily pipeline run</a></li>
@@ -743,7 +754,7 @@ div.csl-indent {
   <li><a href="#add-pre-commit-hooks-ci-enforcement" id="toc-add-pre-commit-hooks-ci-enforcement" class="nav-link" data-scroll-target="#add-pre-commit-hooks-ci-enforcement">Add pre-commit hooks + CI enforcement</a></li>
   <li><a href="#use-ai-to-draft-a-workflow-then-validate" id="toc-use-ai-to-draft-a-workflow-then-validate" class="nav-link" data-scroll-target="#use-ai-to-draft-a-workflow-then-validate">Use AI to draft a workflow, then validate</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">33.12</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">33.13</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-makefile-skeleton-task-interface" id="toc-template-a-makefile-skeleton-task-interface" class="nav-link" data-scroll-target="#template-a-makefile-skeleton-task-interface">Template A: Makefile skeleton (task interface)</a></li>
   <li><a href="#template-b-cron-entry-conceptual" id="toc-template-b-cron-entry-conceptual" class="nav-link" data-scroll-target="#template-b-cron-entry-conceptual">Template B: Cron entry (conceptual)</a></li>
@@ -751,11 +762,11 @@ div.csl-indent {
   <li><a href="#template-d-github-actions-workflow-skeleton" id="toc-template-d-github-actions-workflow-skeleton" class="nav-link" data-scroll-target="#template-d-github-actions-workflow-skeleton">Template D: GitHub Actions workflow skeleton</a></li>
   <li><a href="#template-e-pr-checklist-for-automation-changes" id="toc-template-e-pr-checklist-for-automation-changes" class="nav-link" data-scroll-target="#template-e-pr-checklist-for-automation-changes">Template E: PR checklist for automation changes</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">33.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">33.14</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-automation-concepts" id="toc-quick-reference-common-automation-concepts" class="nav-link" data-scroll-target="#quick-reference-common-automation-concepts"><span class="header-section-number">33.15</span> Quick reference: common automation concepts</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">33.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">33.15</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-automation-concepts" id="toc-quick-reference-common-automation-concepts" class="nav-link" data-scroll-target="#quick-reference-common-automation-concepts"><span class="header-section-number">33.16</span> Quick reference: common automation concepts</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/automation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-5-projects/automation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
@@ -876,8 +887,187 @@ Figure&nbsp;33.1: ALT: GitHub Actions tab on a repository, showing a workflow ru
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/run_pipeline.py <span class="op">&gt;&gt;</span> logs/pipeline.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The combination of clean exits, idempotence, explicit I/O, and logging is what turns “a script that works on my machine when I babysit it” into “a script my teammates can rely on.”</p>
 </section>
-<section id="repeatable-tasks-with-make-and-the-idea-of-rebuilds" class="level2" data-number="33.4">
-<h2 data-number="33.4" class="anchored" data-anchor-id="repeatable-tasks-with-make-and-the-idea-of-rebuilds"><span class="header-section-number">33.4</span> Repeatable tasks with <code>make</code> (and the idea of rebuilds)</h2>
+<section id="writing-shell-scripts-control-flow-exit-codes-and-error-handling" class="level2" data-number="33.4">
+<h2 data-number="33.4" class="anchored" data-anchor-id="writing-shell-scripts-control-flow-exit-codes-and-error-handling"><span class="header-section-number">33.4</span> Writing shell scripts: control flow, exit codes, and error handling</h2>
+<p>Once you have decided to climb past Level 0, the choice of language for the script matters. For most tasks that are mostly “run these commands in this order with these flags,” a <a href="https://www.gnu.org/software/bash/manual/">bash</a> script (<code>.sh</code>) is the right answer: it is the same language you already type at the prompt, every Unix machine ships with it, and it gets out of your way for the kinds of orchestration that automation usually needs. Save longer “I’m doing real data wrangling” logic for Python (see <a href="../part-3-python/scripting.html" class="quarto-xref"><span>Chapter 17</span></a>). The dividing line is roughly: when the script is mostly calling other commands, write bash; when it is mostly manipulating data structures, write Python.</p>
+<p>This section covers the bash patterns that turn a one-off script into something that fails safely, behaves predictably, and is debuggable when it goes wrong. The terminal chapter (<a href="../part-2-environment/terminal.html" class="quarto-xref"><span>Chapter 11</span></a>) introduced shebangs and <code>chmod +x</code>; this section picks up where that left off.</p>
+<section id="the-script-header-that-prevents-most-bugs" class="level3">
+<h3 class="anchored" data-anchor-id="the-script-header-that-prevents-most-bugs">The script header that prevents most bugs</h3>
+<p>Every bash script worth keeping starts with the same two lines:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The shebang <code>#!/usr/bin/env bash</code> tells the kernel to run the script with bash — and using <code>env</code> rather than the hardcoded <code>/bin/bash</code> finds bash wherever it lives on a given machine, which matters because macOS, Linux, and BSD distributions disagree on the path. If you specifically want POSIX <code>sh</code> (which is more portable but lacks bash-specific features like arrays), use <code>#!/usr/bin/env sh</code>. For most automation, prefer bash.</p>
+<p>The <code>set -euo pipefail</code> line is the single highest-leverage change you can make to a script’s reliability. Each flag fixes a different way that bash is, by default, dangerously forgiving:</p>
+<ul>
+<li><strong><code>-e</code></strong> — exit immediately on any command failure. By default, bash plows on past errors and exits with the status of the last command. With <code>-e</code>, the first failed command stops the script.</li>
+<li><strong><code>-u</code></strong> — treat unset variables as errors. Without this, <code>rm -rf "$BACKUP_DIR"/*</code> silently expands to <code>rm -rf /*</code> if <code>BACKUP_DIR</code> was never set. With <code>-u</code>, the script aborts with a clear error message instead.</li>
+<li><strong><code>-o pipefail</code></strong> — fail on errors anywhere in a pipeline, not just the last command. By default, <code>command1 | command2</code> reports the exit status of <code>command2</code> only — so <code>failing_command | head</code> succeeds because <code>head</code> succeeded. With <code>pipefail</code>, a failure anywhere in the chain becomes the script’s failure.</li>
+</ul>
+<p>These three flags catch enormous categories of bugs, and they cost you nothing. Always start with them.</p>
+</section>
+<section id="variables-and-quoting" class="level3">
+<h3 class="anchored" data-anchor-id="variables-and-quoting">Variables and quoting</h3>
+<p>Variable assignment in bash has no spaces around the equals sign, and reference uses a <code>$</code> prefix:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">PROJECT_DIR</span><span class="op">=</span>/Users/agandler/projects/sales</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/logs/run.log"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Writing to </span><span class="va">${LOG_FILE}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The braces in <code>${LOG_FILE}</code> are not always required, but they prevent the shell from getting confused about where the variable name ends — <code>$LOG_FILE_2</code> is one variable, <code>${LOG_FILE}_2</code> is the variable <code>LOG_FILE</code> followed by the literal <code>_2</code>. When in doubt, brace.</p>
+<p>The other habit that pays off forever is <strong>quoting variables that hold paths or arbitrary strings</strong>. The terminal chapter already covered the basic rule (<a href="../part-2-environment/terminal.html" class="quarto-xref"><span>Chapter 11</span></a>); the script-specific version is to do it everywhere by default:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Always quote — protects against spaces, empty values, and globs</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="st">"</span><span class="va">${SOURCE}</span><span class="st">"</span> <span class="st">"</span><span class="va">${DEST}</span><span class="st">"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">${OUTPUT_DIR}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The cost is a few keystrokes; the benefit is that a path with a space in it (<code>/Users/Jamie Smith/Documents</code>) does not silently turn into two arguments and break your script.</p>
+</section>
+<section id="control-flow" class="level3">
+<h3 class="anchored" data-anchor-id="control-flow">Control flow</h3>
+<p>The control-flow constructs you will use most often are <code>if</code>/<code>then</code>/<code>else</code>, <code>for</code> loops, and <code>case</code> statements.</p>
+<p><strong>Conditionals</strong> test something and run different code depending on the result. The condition itself is a command, and bash uses the command’s exit code to decide truth: zero is “true,” nonzero is “false.” The <code>[</code> command (also called <code>test</code>) is what you use for file checks and string comparisons:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${INPUT_FILE}</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Input exists, processing..."</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python</span> src/clean.py <span class="at">--input</span> <span class="st">"</span><span class="va">${INPUT_FILE}</span><span class="st">"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"ERROR: </span><span class="va">${INPUT_FILE}</span><span class="st"> not found"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The space-padding around <code>[</code> and <code>]</code> is mandatory — <code>[</code> is literally a command, not punctuation. Common test flags: <code>-f</code> (regular file exists), <code>-d</code> (directory exists), <code>-z</code> (string is empty), <code>-n</code> (string is non-empty), <code>=</code> and <code>!=</code> (string equality).</p>
+<p><strong>For loops</strong> iterate over a list of values, which can come from a variable, a glob, or a command substitution:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> csv <span class="kw">in</span> data/raw/<span class="pp">*</span>.csv<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">base</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">${csv}</span><span class="st">"</span> .csv<span class="va">)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python</span> src/clean.py <span class="at">--input</span> <span class="st">"</span><span class="va">${csv}</span><span class="st">"</span> <span class="at">--output</span> <span class="st">"data/processed/</span><span class="va">${base}</span><span class="st">.parquet"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>basename</code> call strips the directory prefix and the <code>.csv</code> extension, giving you a clean stem to build the output path from. Combined with <code>set -e</code>, this loop processes every CSV in <code>data/raw/</code> and aborts on the first failure — exactly what you want for a cleaning pipeline.</p>
+<p><strong>Case statements</strong> are the right tool when a script’s behavior depends on a single value with several discrete options — for example, a script that takes a subcommand:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">"</span><span class="va">${1</span><span class="op">:-</span><span class="va">}</span><span class="st">"</span> <span class="kw">in</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">setup</span><span class="kw">)</span>   <span class="fu">make</span> setup <span class="cf">;;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">run</span><span class="kw">)</span>     <span class="fu">make</span> run <span class="cf">;;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">clean</span><span class="kw">)</span>   <span class="fu">make</span> clean <span class="cf">;;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">""</span><span class="kw">)</span>      <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> {setup|run|clean}"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span>       <span class="bu">echo</span> <span class="st">"Unknown command: </span><span class="va">$1</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>${1:-}</code> syntax is “the first argument, or empty string if it is unset” — necessary because <code>set -u</code> would otherwise abort the script when no argument was passed. The <code>*)</code> branch is the catch-all default.</p>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>For anything more than fifty lines, break the script into functions. A bash function is a named block of code that can take arguments and return an exit status:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log()</span> <span class="kw">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"[</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st">] </span><span class="va">$*</span><span class="st">"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">require_file()</span> <span class="kw">{</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">path</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${path}</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"ERROR: required file </span><span class="va">${path}</span><span class="st"> is missing"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"starting pipeline"</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ex">require_file</span> <span class="st">"data/raw/sales.csv"</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"input verified, running cleaning step"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/clean.py</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"done"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A few conventions worth knowing. Inside a function, <code>$1</code>, <code>$2</code>, … are the function’s arguments (not the script’s). <code>local var=...</code> declares a function-scoped variable, which prevents the function from polluting the outer scope — <em>always</em> declare loop counters and helper variables as <code>local</code>. <code>return</code> exits the function with a status code; <code>exit</code> exits the whole script. And <code>$*</code> expands to all arguments joined by spaces, which is what you want for a logger.</p>
+</section>
+<section id="exit-codes-in-depth" class="level3">
+<h3 class="anchored" data-anchor-id="exit-codes-in-depth">Exit codes in depth</h3>
+<p>Every command — and every script — exits with an integer status code. By long convention, <strong>0 means success, nonzero means failure</strong>, and the specific nonzero number can carry meaning (“file not found” is conventionally 2, “permission denied” is 13), but most scripts just use 1 for “anything went wrong” and 2 for “you called me with bad arguments.” Schedulers, task runners, CI systems, and even shell pipelines (<code>&amp;&amp;</code> and <code>||</code>) all read these codes to decide what to do next, so picking them deliberately is part of writing scripts other tools can build on.</p>
+<p>Three habits make exit codes work for you instead of against you.</p>
+<p><strong>End your script with an explicit success.</strong> When a script finishes by running its last command, the script’s exit code is whatever that command returned — usually 0, but not always. If the last command is something like <code>echo</code>, you have an implicit <code>exit 0</code> for free; if it is something that might legitimately return nonzero in normal operation (like <code>grep</code> exiting 1 when it finds no matches), end the script with an explicit <code>exit 0</code> so you control what the world sees:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ... script body ...</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"pipeline complete"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Exit nonzero on user errors.</strong> If your script detects a bad argument, a missing prerequisite, or a precondition violation, exit with a nonzero code so the caller knows something is wrong:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-lt</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> &lt;input-file&gt;"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 2     <span class="co"># 2 is conventional for "usage error"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Check exit codes from commands you intentionally allow to fail.</strong> With <code>set -e</code>, most failures abort the script automatically. When you want to <em>handle</em> a failure rather than abort, capture the exit code into <code>$?</code> and branch on it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="ex">curl</span> <span class="at">-sf</span> <span class="st">"</span><span class="va">${URL}</span><span class="st">"</span> <span class="at">-o</span> data.csv<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"ERROR: download failed (exit </span><span class="va">${?}</span><span class="st">)"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>!</code> inverts the exit status so the <code>if</code> triggers on failure; <code>-sf</code> makes <code>curl</code> fail on HTTP errors instead of writing the error page to your output file.</p>
+</section>
+<section id="error-handling-with-trap" class="level3">
+<h3 class="anchored" data-anchor-id="error-handling-with-trap">Error handling with <code>trap</code></h3>
+<p><code>set -e</code> aborts on errors, but it does not run any cleanup. For scripts that create temporary files, lock files, or partial outputs, you want a chance to clean up <em>before</em> the script exits — successful or not. The <code>trap</code> builtin registers a function to run on specific events:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="va">WORK_DIR</span><span class="op">=</span><span class="va">$(</span><span class="fu">mktemp</span> <span class="at">-d</span><span class="va">)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cleanup()</span> <span class="kw">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"cleaning up </span><span class="va">${WORK_DIR}</span><span class="st">"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-rf</span> <span class="st">"</span><span class="va">${WORK_DIR}</span><span class="st">"</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> cleanup EXIT</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ... do work in $WORK_DIR ...</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># the cleanup function runs whether the script succeeds or fails</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>trap cleanup EXIT</code> says “run the <code>cleanup</code> function whenever the script exits, for any reason.” That covers normal completion, errors caught by <code>set -e</code>, and signals like Ctrl-C. The temp directory always gets removed; the work files do not pile up on disk after a failed run.</p>
+<p>For more granular handling, the <code>ERR</code> trap fires only on errors:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on_error()</span> <span class="kw">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">exit_code</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">line_no</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"ERROR: command on line </span><span class="va">${line_no}</span><span class="st"> exited with code </span><span class="va">${exit_code}</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">'on_error $LINENO'</span> ERR</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That gives you a custom error message including the failing line number — invaluable for debugging long scripts where the default abort message is just “exited with code 1.”</p>
+</section>
+<section id="putting-it-all-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h3>
+<p>Here is a small script that uses every pattern from this section: shebang and safety flags, variables and quoting, conditionals, a loop, a function, explicit exit codes, and a cleanup trap.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># scripts/build_report.sh — clean every raw CSV and assemble the report</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="va">PROJECT_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">cd</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$0</span><span class="st">"</span><span class="va">)</span><span class="st">/.."</span> <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="va">RAW_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/data/raw"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="va">OUT_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/data/processed"</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/logs/build.log"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">${OUT_DIR}</span><span class="st">"</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">${LOG_FILE}</span><span class="st">"</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">log()</span> <span class="kw">{</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">msg</span><span class="op">=</span><span class="st">"[</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st">] </span><span class="va">$*</span><span class="st">"</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">${msg}</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tee</span> <span class="at">-a</span> <span class="st">"</span><span class="va">${LOG_FILE}</span><span class="st">"</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cleanup()</span> <span class="kw">{</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">log</span> <span class="st">"build_report exiting with code </span><span class="va">$?</span><span class="st">"</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> cleanup EXIT</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">"</span><span class="va">${RAW_DIR}</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">log</span> <span class="st">"ERROR: </span><span class="va">${RAW_DIR}</span><span class="st"> does not exist"</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 2</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"starting build"</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> csv <span class="kw">in</span> <span class="st">"</span><span class="va">${RAW_DIR}</span><span class="st">"</span>/<span class="pp">*</span>.csv<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="va">base</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">${csv}</span><span class="st">"</span> .csv<span class="va">)</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">log</span> <span class="st">"cleaning </span><span class="va">${base}</span><span class="st">"</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python</span> <span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/src/clean.py"</span> <span class="dt">\</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">--input</span> <span class="st">"</span><span class="va">${csv}</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">--output</span> <span class="st">"</span><span class="va">${OUT_DIR}</span><span class="st">/</span><span class="va">${base}</span><span class="st">.parquet"</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"assembling report"</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/src/report.py"</span> <span class="dt">\</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">--input-dir</span> <span class="st">"</span><span class="va">${OUT_DIR}</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output</span> <span class="st">"</span><span class="va">${PROJECT_DIR}</span><span class="st">/reports/q3.html"</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="ex">log</span> <span class="st">"build complete"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Forty lines of bash that any teammate can read, that fail safely on any error, that write to a log they can audit later, and that clean up after themselves whether they succeed or fail. That is what “good shell scripting” looks like in practice — not clever one-liners, but careful plumbing that does not surprise the next person to run it.</p>
+</section>
+<section id="when-bash-stops-being-the-right-tool" class="level3">
+<h3 class="anchored" data-anchor-id="when-bash-stops-being-the-right-tool">When bash stops being the right tool</h3>
+<p>A short list of signals that you have outgrown bash and should reach for Python instead. <strong>You are doing arithmetic on more than integers.</strong> Bash arithmetic is integer-only and the syntax (<code>$((a + b))</code>) is awkward; floating-point math means shelling out to <code>bc</code> or <code>awk</code>, at which point you might as well write Python. <strong>You are parsing structured data.</strong> JSON, YAML, CSV — bash has no native data types, so any non-trivial parsing turns into fragile <code>cut</code>/<code>awk</code>/<code>sed</code> chains. Use <code>jq</code> for one-off JSON inspection but Python for anything you have to maintain. <strong>You have nested data structures.</strong> Bash arrays exist but associative arrays are a 2010-era afterthought; nested anything is a sign you should leave. <strong>The script is past 200 lines.</strong> Long bash scripts are dramatically harder to test and refactor than equivalent Python; the line is fuzzy but real.</p>
+<p>The good news is that the pattern of “small bash wrapper that calls a Python script” composes well: bash handles “set the working directory, activate the venv, log to a file,” and Python handles the actual data work. That division of labor is the standard automation pattern in most data projects, and it is what every example in this chapter is implicitly arranged around.</p>
+</section>
+</section>
+<section id="repeatable-tasks-with-make-and-the-idea-of-rebuilds" class="level2" data-number="33.5">
+<h2 data-number="33.5" class="anchored" data-anchor-id="repeatable-tasks-with-make-and-the-idea-of-rebuilds"><span class="header-section-number">33.5</span> Repeatable tasks with <code>make</code> (and the idea of rebuilds)</h2>
 <section id="why-use-a-task-runner" class="level3">
 <h3 class="anchored" data-anchor-id="why-use-a-task-runner">Why use a task runner</h3>
 <p>The single-sentence pitch for <code>make</code>: it turns “remember to run these five commands in this order, from this directory, with these flags” into <code>make report</code>. That is the whole value proposition, and it is enough on its own to justify learning it for any project that runs more than two scripts.</p>
@@ -977,14 +1167,14 @@ all: $(REPORT)</code></pre>
 <p>The <code>$(CLEAN)</code> syntax defines a variable — it saves you from retyping the file path every time and makes the pipeline easier to read. On a small project this feels like overkill; on a mid-sized project it saves you minutes or hours per iteration and prevents the “I forgot to rerun the cleaning step after I changed the raw data” bug entirely.</p>
 </section>
 </section>
-<section id="scheduling-scripts" class="level2" data-number="33.5">
-<h2 data-number="33.5" class="anchored" data-anchor-id="scheduling-scripts"><span class="header-section-number">33.5</span> Scheduling scripts</h2>
+<section id="scheduling-scripts" class="level2" data-number="33.6">
+<h2 data-number="33.6" class="anchored" data-anchor-id="scheduling-scripts"><span class="header-section-number">33.6</span> Scheduling scripts</h2>
 <p>Once a task is scripted, the next capability is running it without you — every morning at 6 AM, every hour, every first-of-the-month. Both Unix and Windows ship with built-in schedulers that cover everything a student project will need.</p>
 <section id="scheduling-on-macos-and-linux-cron" class="level3">
 <h3 class="anchored" data-anchor-id="scheduling-on-macos-and-linux-cron">Scheduling on macOS and Linux: <code>cron</code></h3>
 <p><code>cron</code> is the long-running background service that reads a “crontab” (a list of scheduled jobs) and runs each job when its time fields match the current time. Every user on a Unix system has their own crontab. Edit yours with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span>      <span class="co"># opens your crontab in an editor</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-l</span>      <span class="co"># prints your current crontab</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span>      <span class="co"># opens your crontab in an editor</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-l</span>      <span class="co"># prints your current crontab</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The format of each line is five time fields followed by the command to run:</p>
 <pre class="text"><code># ┌────── minute (0 - 59)
 # │ ┌──── hour (0 - 23)
@@ -996,21 +1186,21 @@ all: $(REPORT)</code></pre>
 <p>That line runs the script every day at 6:00 AM. <code>*</code> means “any value.” <code>*/15 * * * *</code> means “every 15 minutes.” <code>0 * * * *</code> means “at the top of every hour.” There are many cheat-sheets for writing cron expressions; <a href="https://crontab.guru" class="uri">https://crontab.guru</a> will let you type an expression and explain in plain English when it will fire.</p>
 <p><strong>The single most common cron bug is environment.</strong> When <code>cron</code> runs your script, it does <em>not</em> inherit your interactive shell’s environment — it runs with a minimal <code>PATH</code>, no <code>PYTHONPATH</code>, no conda activation, no <code>LANG</code> — and a script that works perfectly when you run it by hand can fail mysteriously under <code>cron</code>. The symptom is usually “command not found” or “ModuleNotFoundError” for something that is clearly installed.</p>
 <p>The fix is to be explicit about everything the script needs. Write a wrapper script rather than calling Python directly from cron:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ~/projects/sales/run_pipeline.sh</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Be explicit about the working directory</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/agandler/projects/sales</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Be explicit about the environment</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/usr/local/bin:/usr/bin:/bin:</span><span class="va">$PATH</span><span class="st">"</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the actual job, redirecting all output to a dated log</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="va">timestamp</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%Y%m%d-%H%M%S<span class="va">)</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/pipeline.py <span class="op">&gt;&gt;</span> <span class="st">"logs/pipeline-</span><span class="va">${timestamp}</span><span class="st">.log"</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ~/projects/sales/run_pipeline.sh</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Be explicit about the working directory</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/agandler/projects/sales</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Be explicit about the environment</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/usr/local/bin:/usr/bin:/bin:</span><span class="va">$PATH</span><span class="st">"</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the actual job, redirecting all output to a dated log</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="va">timestamp</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%Y%m%d-%H%M%S<span class="va">)</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/pipeline.py <span class="op">&gt;&gt;</span> <span class="st">"logs/pipeline-</span><span class="va">${timestamp}</span><span class="st">.log"</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then the crontab entry just runs the wrapper:</p>
 <pre class="text"><code>0 6 * * *   /home/agandler/projects/sales/run_pipeline.sh</code></pre>
 <p>Three things are going right here: the wrapper <code>cd</code>s to a known directory, it activates the virtual environment so <code>python</code> finds the right packages, and it redirects both stdout and stderr to a log file you can read afterward. If the job fails at 6 AM tomorrow, the log file is what tells you why.</p>
@@ -1024,11 +1214,11 @@ all: $(REPORT)</code></pre>
 <li><strong>“Run whether user is logged on or not”</strong> and <strong>“Run with highest privileges”</strong> — these control whether the task runs in the background when you are logged out, and whether it has admin rights. For most student projects you want “Run whether user is logged on or not” (so it runs at 6 AM while you are asleep) and you do <em>not</em> want elevated privileges unless you have a specific reason.</li>
 </ul>
 <p>For scripted creation, <code>schtasks</code> on the command line does the same thing:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>schtasks <span class="op">/</span>Create `</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>TN <span class="st">"SalesPipeline"</span> `</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>TR <span class="st">"C:\Users\agandler\projects\sales\run_pipeline.bat"</span> `</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span><span class="fu">SC</span> DAILY <span class="op">/</span>ST <span class="dv">06</span><span class="op">:</span><span class="dv">00</span> `</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>SD <span class="dv">04</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">2026</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>schtasks <span class="op">/</span>Create `</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>TN <span class="st">"SalesPipeline"</span> `</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>TR <span class="st">"C:\Users\agandler\projects\sales\run_pipeline.bat"</span> `</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span><span class="fu">SC</span> DAILY <span class="op">/</span>ST <span class="dv">06</span><span class="op">:</span><span class="dv">00</span> `</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">/</span>SD <span class="dv">04</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">2026</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>.bat</code> wrapper plays the same role as the <code>.sh</code> wrapper on Unix: set the working directory, activate the environment, run the script, and redirect output to a log file.</p>
 <pre class="batch"><code>REM run_pipeline.bat
 cd /d C:\Users\agandler\projects\sales
@@ -1040,23 +1230,23 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <p>Three habits make scheduled jobs maintainable:</p>
 <p><strong>Write logs to a known folder, and rotate them.</strong> Every scheduled job should write its output somewhere you can find it later. A <code>logs/</code> directory in the project root is fine. If the job runs frequently, add a timestamp to the filename so you do not overwrite yesterday’s log, and set up some kind of cleanup so the folder does not grow without bound — either a monthly <code>find logs/ -mtime +30 -delete</code>, or use <code>logrotate</code> on Linux.</p>
 <p><strong>Add timestamps to outputs and include them in the log.</strong> Start each log line with the date and time, so that when you look at a log a week later you can correlate events:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> starting cleaning step"</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/clean.py</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> cleaning done"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> starting cleaning step"</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/clean.py</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> cleaning done"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Prevent overlapping runs with a lock file.</strong> If your script sometimes takes longer than the interval between runs — a cron that fires hourly but a slow job that takes an hour and ten minutes — you can end up with two copies running at once and corrupting each other. Use a lock file to detect and refuse the overlap:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">LOCK</span><span class="op">=</span><span class="st">"/tmp/sales-pipeline.lock"</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">"</span><span class="va">$LOCK</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> another run is in progress; exiting"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 0</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">'rm -f "$LOCK"'</span> EXIT</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">"</span><span class="va">$LOCK</span><span class="st">"</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ...run the pipeline...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="va">LOCK</span><span class="op">=</span><span class="st">"/tmp/sales-pipeline.lock"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-e</span> <span class="st">"</span><span class="va">$LOCK</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> <span class="at">-Iseconds</span><span class="va">)</span><span class="st"> another run is in progress; exiting"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 0</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">'rm -f "$LOCK"'</span> EXIT</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">"</span><span class="va">$LOCK</span><span class="st">"</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ...run the pipeline...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Finally, <strong>decide what happens when the job fails.</strong> The minimum is “write the failure to a log I actually read.” A step up is “send me an email or a Slack message” — many small utilities like <code>mail</code> or webhook-based alert services can do this from a wrapper script. The worst pattern is “the job fails silently and I notice three weeks later,” which is what happens when nobody is reading the logs.</p>
 </section>
 </section>
-<section id="rebuilds-and-repeatable-workflows-beyond-make" class="level2" data-number="33.6">
-<h2 data-number="33.6" class="anchored" data-anchor-id="rebuilds-and-repeatable-workflows-beyond-make"><span class="header-section-number">33.6</span> Rebuilds and repeatable workflows beyond <code>make</code></h2>
+<section id="rebuilds-and-repeatable-workflows-beyond-make" class="level2" data-number="33.7">
+<h2 data-number="33.7" class="anchored" data-anchor-id="rebuilds-and-repeatable-workflows-beyond-make"><span class="header-section-number">33.7</span> Rebuilds and repeatable workflows beyond <code>make</code></h2>
 <section id="task-runners-as-interfaces" class="level3">
 <h3 class="anchored" data-anchor-id="task-runners-as-interfaces">Task runners as interfaces</h3>
 <p>The most important thing <code>make</code> gives a project is not the incremental rebuild logic — it is the <strong>stable command interface</strong>. <code>make test</code>, <code>make lint</code>, and <code>make report</code> become the canonical way to run those actions, and you can put that same vocabulary everywhere: in the README, in the CI workflow, in the PR template, in your own muscle memory. Any newcomer to the project learns six short commands and becomes productive.</p>
@@ -1073,22 +1263,22 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <h3 class="anchored" data-anchor-id="artifacts-vs-caches">Artifacts vs caches</h3>
 <p>As you start using CI and more complex workflows, you will run into two related concepts that are easy to confuse: <strong>caches</strong> and <strong>artifacts</strong>.</p>
 <p>A <strong>cache</strong> is a store of intermediate files you want to reuse across runs to make things faster. The canonical example is a pip package cache: instead of downloading and installing pandas from scratch every time CI runs, you cache the installed packages keyed on <code>requirements.txt</code>, so unchanged dependencies are restored from cache in seconds. Caches are optimizations — nothing breaks if the cache is empty, it is just slower.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions example — cache the pip download directory</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/cache@v4</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> ~/.cache/pip</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> pip-${{ hashFiles('requirements.txt') }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions example — cache the pip download directory</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/cache@v4</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> ~/.cache/pip</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">key</span><span class="kw">:</span><span class="at"> pip-${{ hashFiles('requirements.txt') }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>An <strong>artifact</strong> is an output of a run that you want to save, inspect, or share with other jobs or people. A PDF report, a CSV of results, a directory of logs, a wheel file for a package — these are all artifacts. Unlike caches, artifacts are meant to be consumed: you download them after the run, attach them to a release, or feed them into a later job.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions example — upload the built report as an artifact</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v4</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> sales-report</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> reports/q3.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions example — upload the built report as an artifact</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v4</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> sales-report</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> reports/q3.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The quick rule of thumb: <strong>cache</strong> the things you do not want to rebuild, <strong>artifact</strong> the things you want to look at. Confuse them and you will either waste space storing ephemeral build caches as long-lived artifacts or silently lose outputs that you assumed would be saved.</p>
 </section>
 </section>
-<section id="continuous-integration-ci-automation-as-a-quality-gate" class="level2" data-number="33.7">
-<h2 data-number="33.7" class="anchored" data-anchor-id="continuous-integration-ci-automation-as-a-quality-gate"><span class="header-section-number">33.7</span> Continuous Integration (CI): automation as a quality gate</h2>
+<section id="continuous-integration-ci-automation-as-a-quality-gate" class="level2" data-number="33.8">
+<h2 data-number="33.8" class="anchored" data-anchor-id="continuous-integration-ci-automation-as-a-quality-gate"><span class="header-section-number">33.8</span> Continuous Integration (CI): automation as a quality gate</h2>
 <section id="what-ci-is-in-one-paragraph" class="level3">
 <h3 class="anchored" data-anchor-id="what-ci-is-in-one-paragraph">What CI is, in one paragraph</h3>
 <p><strong>Continuous integration</strong> is the practice of having every change integrated into a shared branch be automatically verified by a build-and-test run. The two parts matter equally: <em>frequent integration</em>, which means small changes that land often (not month-long branches that merge in a single giant squash), and <em>automated verification</em>, which means that every push and every pull request triggers a workflow that runs your tests, your linter, and whatever other checks you care about. The result is a shared quality gate that everyone on the team passes through before their code reaches <code>main</code>, which catches breakages while they are still easy to fix — at the moment they are introduced, in the context of one small change, by the person who wrote the code.</p>
@@ -1097,23 +1287,23 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <section id="ci-events-and-triggers" class="level3">
 <h3 class="anchored" data-anchor-id="ci-events-and-triggers">CI events and triggers</h3>
 <p>CI systems run <em>workflows</em> in response to <em>events</em>. The two events that matter for students are <strong>push</strong> (code was pushed to any branch) and <strong>pull_request</strong> (a pull request was opened or updated). Almost every project wants both: push runs catch problems on long-running branches, and pull-request runs catch problems before code merges into <code>main</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/workflows/ci.yml</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/workflows/ci.yml</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The configuration above says: “run this workflow whenever something is pushed to <code>main</code>, or whenever a pull request targets <code>main</code>.” That is the baseline every small project should start with.</p>
 <p>For larger repositories, <strong>path filters</strong> let you skip CI runs that cannot possibly affect the outcome — for example, skip Python tests when only the README changed:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">paths</span><span class="kw">:</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'src/**'</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'tests/**'</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'requirements.txt'</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'.github/workflows/ci.yml'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">paths</span><span class="kw">:</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'src/**'</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'tests/**'</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'requirements.txt'</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'.github/workflows/ci.yml'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Path filters are an optimization, not a correctness feature. Do not add them until you have a real “CI is too slow” problem.</p>
 </section>
 <section id="jobs-steps-and-runners" class="level3">
@@ -1135,48 +1325,48 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <section id="a-minimal-ci-workflow-for-students" class="level3">
 <h3 class="anchored" data-anchor-id="a-minimal-ci-workflow-for-students">A minimal CI workflow for students</h3>
 <p>Here is a complete, working GitHub Actions workflow for a small Python project. Drop it in <code>.github/workflows/ci.yml</code> and commit; the next push runs the checks automatically.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check out the code</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v5</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="st">"3.11"</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> pip</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>          python -m pip install --upgrade pip</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>          pip install -r requirements.txt</span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>          pip install ruff pytest</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Lint</span></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> ruff check src/ tests/</span></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Format check</span></span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> ruff format --check src/ tests/</span></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run tests</span></span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pytest tests/ -q</span></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Upload logs on failure</span></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> failure()</span></span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v4</span></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> logs</span></span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> logs/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">]</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check out the code</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v5</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="st">"3.11"</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> pip</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>          python -m pip install --upgrade pip</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>          pip install -r requirements.txt</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>          pip install ruff pytest</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Lint</span></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> ruff check src/ tests/</span></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Format check</span></span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> ruff format --check src/ tests/</span></span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run tests</span></span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pytest tests/ -q</span></span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Upload logs on failure</span></span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> failure()</span></span>
+<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v4</span></span>
+<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> logs</span></span>
+<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> logs/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Six real steps, each one named so that the CI results page tells you exactly which step failed. The lint, format-check, and test steps are your actual quality gate; the <code>if: failure()</code> at the end uploads your logs directory so you can download it and investigate when something breaks. That template is enough for 90% of student projects.</p>
 </section>
 <section id="ci-performance-hygiene" class="level3">
@@ -1184,9 +1374,9 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <p>A slow CI is a CI people learn to ignore, and an ignored CI is worse than no CI at all. Three habits keep it fast:</p>
 <p><strong>Cache your dependencies.</strong> The <code>cache: pip</code> line in the <code>setup-python</code> action above restores your pip cache from a previous run keyed on <code>requirements.txt</code>. An install that took 90 seconds from scratch takes 5 seconds from cache. Do the same for conda caches, node_modules, or any other dependency store — every major action has a built-in cache option or works with the generic <code>actions/cache</code>.</p>
 <p><strong>Use matrix builds sparingly.</strong> A matrix lets you run the same job across multiple versions of Python or multiple operating systems:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strategy</span><span class="kw">:</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">matrix</span><span class="kw">:</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"3.10"</span><span class="kw">,</span><span class="at"> </span><span class="st">"3.11"</span><span class="kw">,</span><span class="at"> </span><span class="st">"3.12"</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"3.10"</span><span class="kw">,</span><span class="at"> </span><span class="st">"3.11"</span><span class="kw">,</span><span class="at"> </span><span class="st">"3.12"</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is powerful for library authors who need to support many versions, but it multiplies your CI minutes. For a student project with one supported Python version, just pick that version and skip the matrix.</p>
 <p><strong>Aim for under five minutes per run.</strong> If CI takes fifteen minutes, people push a change, switch to something else, and never come back to check. If it takes three minutes, they wait for it. The exact target depends on your tolerance, but “measure it and feel bad when it grows” is the right discipline. Common interventions when CI is slow: cache more aggressively, split slow tests into a separate job that only runs on <code>main</code>, or prune tests that take too long for what they prove.</p>
 </section>
@@ -1194,46 +1384,46 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <h3 class="anchored" data-anchor-id="ci-security-basics">CI security basics</h3>
 <p>Three rules are enough for student projects:</p>
 <p><strong>Never print secrets in logs.</strong> If you read an environment variable that contains a token and <code>echo</code> it to the terminal, CI logs capture it forever — and CI logs for public repositories are readable by anyone on the internet. Tokens and API keys should be passed to programs that need them, not logged. When you suspect a secret was leaked in a log, rotate it immediately.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad:</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> echo "API key is $MY_API_KEY"</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Good:</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> python deploy.py</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">MY_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.MY_API_KEY }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad:</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> echo "API key is $MY_API_KEY"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Good:</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> python deploy.py</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">MY_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.MY_API_KEY }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Understand untrusted pull requests.</strong> When a pull request comes from a fork, GitHub runs the PR’s code inside CI — which means a malicious PR can, in principle, access anything the CI job has access to. By default, GitHub restricts this: secrets are <em>not</em> passed to workflows triggered by pull requests from forks, precisely to prevent this attack. Do not work around that restriction without understanding exactly what you are exposing.</p>
 <p><strong>Use least privilege for tokens.</strong> GitHub Actions gives each workflow run a <code>GITHUB_TOKEN</code> with permissions to read the repository. If your workflow only needs to <em>read</em> the repo, set the permissions explicitly to read-only at the top of the workflow:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">permissions</span><span class="kw">:</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> read</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">permissions</span><span class="kw">:</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> read</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That one line prevents a compromised action from, say, pushing commits to your repo. Tighten permissions further as you learn what your workflow actually needs.</p>
 </section>
 </section>
-<section id="local-quality-gates-pre-commit-hooks" class="level2 page-columns page-full" data-number="33.8">
-<h2 data-number="33.8" class="anchored" data-anchor-id="local-quality-gates-pre-commit-hooks"><span class="header-section-number">33.8</span> Local quality gates: pre-commit hooks</h2>
+<section id="local-quality-gates-pre-commit-hooks" class="level2 page-columns page-full" data-number="33.9">
+<h2 data-number="33.9" class="anchored" data-anchor-id="local-quality-gates-pre-commit-hooks"><span class="header-section-number">33.9</span> Local quality gates: pre-commit hooks</h2>
 <p>CI is the team’s safety net, but it only runs <em>after</em> you push. The local equivalent is a <strong>git hook</strong>: a small check that runs automatically right before every <code>git commit</code> and aborts the commit if something looks wrong. The most common tool for managing these is <a href="https://pre-commit.com"><code>pre-commit</code></a>, a small framework that takes a config file and runs a pipeline of checks on the files you are about to commit <span class="citation" data-cites="precommit_framework">(<a href="#ref-precommit_framework" role="doc-biblioref"><span class="nocase">pre-commit contributors</span>, n.d.</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-precommit_framework" class="csl-entry" role="listitem">
 <span class="nocase">pre-commit contributors</span>. n.d. <em>Pre-Commit: A Framework for Managing and Maintaining Multi-Language Pre-Commit Hooks</em>. Project documentation. <a href="https://pre-commit.com/">https://pre-commit.com/</a>.
 </div></div><p>You do not need pre-commit to do good work, and for solo coursework you can skip it entirely. But once you start collaborating, the same class of small mistakes will keep landing on <code>main</code>: trailing whitespace in a diff, an accidentally committed <code>.env</code> file, an unformatted Python file someone forgot to run through their linter (see <a href="../part-3-python/linting.html" class="quarto-xref"><span>Chapter 19</span></a>). A pre-commit hook is a tripwire that catches each of these at the earliest possible moment — before they ever become a commit.</p>
 <p>The setup is two commands and one file. Install the tool into your project’s environment and wire it into git:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pre-commit</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-commit</span> install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pre-commit</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-commit</span> install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then drop a <code>.pre-commit-config.yaml</code> at the repo root listing the checks you want. A reasonable starter set for a Python data-science project is just two upstream “repos”:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v4.6.0</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> trailing-whitespace</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> end-of-file-fixer</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-yaml</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-added-large-files</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> detect-private-key</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/astral-sh/ruff-pre-commit</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.5.7</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">--fix</span><span class="kw">]</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff-format</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v4.6.0</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> trailing-whitespace</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> end-of-file-fixer</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-yaml</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-added-large-files</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> detect-private-key</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/astral-sh/ruff-pre-commit</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.5.7</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">--fix</span><span class="kw">]</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff-format</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The first block catches the file-hygiene mistakes: trailing whitespace, missing final newlines, broken YAML, files larger than 500 KB, and private SSH keys that wandered into the repo. The second block runs <code>ruff</code> (your linter and formatter) on every staged Python file. Together they handle most of the small things that would otherwise show up in a code review.</p>
 <p>When you <code>git commit</code>, the hooks run. If a hook auto-fixes a file, the commit aborts so you can re-stage and re-commit:</p>
 <pre class="text"><code>$ git commit -m "Add cleaning helper"
@@ -1248,8 +1438,8 @@ ruff.....................................................................Passed
 [main a1b2c3d] Add cleaning helper</code></pre>
 <p>This “commit twice” rhythm feels weird for a day, then becomes invisible. A few practical points worth knowing. <code>git commit --no-verify</code> skips the hooks entirely — treat it as an emergency exit, not a daily convenience. The config is versioned with the code, so when a teammate clones the repo they only need to run <code>pre-commit install</code> once and they pick up all the same checks. And you can run every hook against every file at any time with <code>pre-commit run --all-files</code>, which is what you want when you first add pre-commit to an existing project. Anything beyond that — debugging individual hooks, writing your own, wiring pre-commit into CI as a redundant check — you can pick up from the official documentation at <a href="https://pre-commit.com" class="uri">https://pre-commit.com</a> when the need arises.</p>
 </section>
-<section id="incorporating-ai-tools-into-automation-responsibly" class="level2" data-number="33.9">
-<h2 data-number="33.9" class="anchored" data-anchor-id="incorporating-ai-tools-into-automation-responsibly"><span class="header-section-number">33.9</span> Incorporating AI tools into automation (responsibly)</h2>
+<section id="incorporating-ai-tools-into-automation-responsibly" class="level2" data-number="33.10">
+<h2 data-number="33.10" class="anchored" data-anchor-id="incorporating-ai-tools-into-automation-responsibly"><span class="header-section-number">33.10</span> Incorporating AI tools into automation (responsibly)</h2>
 <p>Automation configuration files — Makefiles, GitHub Actions YAML, Dockerfiles, cron wrappers — are some of the highest-leverage uses of AI assistance for students. They are repetitive, their syntax is unforgiving, and small errors are tedious to debug. LLMs are surprisingly good at producing a reasonable first draft. They are also capable of producing confident nonsense, and the consequences of nonsense in a workflow file are higher than in regular application code, because a workflow file can run with write access to your repository, your cloud account, or your production environment. Use AI carefully here. See <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the broader treatment.</p>
 <section id="what-ai-is-good-for" class="level3">
 <h3 class="anchored" data-anchor-id="what-ai-is-good-for">What AI is good for</h3>
@@ -1276,11 +1466,11 @@ ruff.....................................................................Passed
 <p><strong>Always run locally before trusting CI changes.</strong> If an AI suggests changes to a Makefile or a <code>run_pipeline.sh</code>, run them on your own machine first and verify the behavior matches what you expected. Do not commit changes whose behavior you have not observed at least once.</p>
 <p><strong>Keep diffs small.</strong> One automation change per PR. If the AI proposes a sweeping refactor, break it into multiple PRs so each change can be reviewed in isolation.</p>
 <p><strong>Require “how to test” in PR descriptions.</strong> A PR that changes automation should include a short “how I verified this works” section: the commands you ran, the output you expected, what you saw. This is useful regardless of whether AI was involved, but it becomes essential when the code was partly generated.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## How I tested this</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ran <span class="in">`make test`</span> locally; 42 tests passed.</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ran <span class="in">`make run`</span> with the small dataset; output matches <span class="in">`reports/expected_q3.html`</span>.</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pushed a draft branch; CI completed in 3:14 and green.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## How I tested this</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ran <span class="in">`make test`</span> locally; 42 tests passed.</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ran <span class="in">`make run`</span> with the small dataset; output matches <span class="in">`reports/expected_q3.html`</span>.</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pushed a draft branch; CI completed in 3:14 and green.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Treat AI output as a draft; confirm against docs.</strong> The relevant docs for a workflow change are the official GitHub Actions docs, the <code>make</code> manual, the cron documentation, and so on. When an AI suggests a specific flag or setting, search the docs for it before trusting it. If the flag does not appear in the docs, assume it is hallucinated and find the real one.</p>
 <p><strong>Never paste secrets into prompts.</strong> LLM providers log your prompts. Pasting an API key or a password into a chat window is functionally equivalent to leaking it on a public pastebin. When you need to show the AI a file that contains secrets, redact them first.</p>
 </section>
@@ -1297,20 +1487,20 @@ ruff.....................................................................Passed
 <p>The whole process is a few minutes longer than just having the AI write the file and merging blind. That extra time is the entire point.</p>
 </section>
 </section>
-<section id="common-failure-modes-and-fixes" class="level2" data-number="33.10">
-<h2 data-number="33.10" class="anchored" data-anchor-id="common-failure-modes-and-fixes"><span class="header-section-number">33.10</span> Common failure modes and fixes</h2>
+<section id="common-failure-modes-and-fixes" class="level2" data-number="33.11">
+<h2 data-number="33.11" class="anchored" data-anchor-id="common-failure-modes-and-fixes"><span class="header-section-number">33.11</span> Common failure modes and fixes</h2>
 <p>The failure modes below are the ones that bite every student project eventually. Knowing what they look like in advance makes them much cheaper to fix.</p>
 <section id="works-on-my-machine-automation" class="level3">
 <h3 class="anchored" data-anchor-id="works-on-my-machine-automation">“Works on my machine” automation</h3>
 <p><strong>Symptom.</strong> Your Makefile runs perfectly on your laptop. On a teammate’s laptop — or in CI — it fails with an import error, a missing command, or a subtly different output.</p>
 <p><strong>Root cause.</strong> Something about your local environment is different and your automation depends on it implicitly: a Python package you installed globally months ago, a tool in your <code>PATH</code> that is not on the new machine, an environment variable you set once and forgot, a data file in a location unique to your setup, even the version of <code>awk</code> being GNU vs BSD.</p>
 <p><strong>Fix.</strong> Make every assumption explicit. Pin your Python dependencies in <code>requirements.txt</code> or <code>environment.yml</code> with exact versions (see <a href="../part-3-python/package-management.html" class="quarto-xref"><span>Chapter 14</span></a>). Record any other system prerequisites in the README. And run the whole pipeline at least once in CI or a fresh container — the “clean environment” is what catches assumptions you did not know you were making.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A useful habit: rebuild from scratch periodically</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .venv/</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> setup</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># If this works, your project is reproducible. If not, you just found a bug.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A useful habit: rebuild from scratch periodically</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .venv/</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> setup</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co"># If this works, your project is reproducible. If not, you just found a bug.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="scheduling-failures-from-wrong-path-or-wrong-working-directory" class="level3">
 <h3 class="anchored" data-anchor-id="scheduling-failures-from-wrong-path-or-wrong-working-directory">Scheduling failures from wrong <code>PATH</code> or wrong working directory</h3>
@@ -1323,11 +1513,11 @@ ruff.....................................................................Passed
 <p><strong>Symptom.</strong> CI fails with “file not found” or “authentication failed” for something that works perfectly on your laptop.</p>
 <p><strong>Root cause.</strong> Your code depends on a file or secret that exists on your laptop but was never committed to the repo or made available to CI. Common culprits: a data file sitting in <code>data/raw/</code> that is gitignored, a <code>.env</code> file with an API token, a config file that was never checked in, a Python package installed manually and not listed in <code>requirements.txt</code>.</p>
 <p><strong>Fix.</strong> For files, either commit them (if they are small and non-sensitive) or write your automation so it can fetch them at runtime from a URL or a data store. For secrets, use your CI system’s secrets mechanism — in GitHub Actions, that is <code>secrets.MY_TOKEN</code> referenced from environment variables. In CI, the golden rule is: if a human can only reproduce the run by having access to something that only exists on your laptop, the automation is broken.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions: pass a secret into the environment of a step</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">run</span><span class="kw">:</span><span class="at"> python deploy.py</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">API_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.DEPLOY_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub Actions: pass a secret into the environment of a step</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">run</span><span class="kw">:</span><span class="at"> python deploy.py</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">API_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.DEPLOY_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="slow-ci-that-everyone-ignores" class="level3">
 <h3 class="anchored" data-anchor-id="slow-ci-that-everyone-ignores">Slow CI that everyone ignores</h3>
@@ -1370,8 +1560,8 @@ distclean: clean
 </div>
 </section>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="33.11">
-<h2 data-number="33.11" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">33.11</span> Worked examples (outline)</h2>
+<section id="worked-examples-outline" class="level2" data-number="33.12">
+<h2 data-number="33.12" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">33.12</span> Worked examples (outline)</h2>
 <section id="turn-a-6-step-checklist-into-make-targets" class="level3">
 <h3 class="anchored" data-anchor-id="turn-a-6-step-checklist-into-make-targets">Turn a 6-step checklist into <code>make</code> targets</h3>
 <ul>
@@ -1418,8 +1608,8 @@ distclean: clean
 </ul>
 </section>
 </section>
-<section id="templates" class="level2" data-number="33.12">
-<h2 data-number="33.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">33.12</span> Templates</h2>
+<section id="templates" class="level2" data-number="33.13">
+<h2 data-number="33.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">33.13</span> Templates</h2>
 <section id="template-a-makefile-skeleton-task-interface" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-makefile-skeleton-task-interface">Template A: Makefile skeleton (task interface)</h3>
 <pre><code>.PHONY: help format lint test run report clean
@@ -1485,8 +1675,8 @@ steps:
 * Links to documentation</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="33.13">
-<h2 data-number="33.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">33.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="33.14">
+<h2 data-number="33.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">33.14</span> Exercises</h2>
 <ol type="1">
 <li><p>Identify three repeated tasks in your project and turn them into <code>make</code> targets.</p></li>
 <li><p>Create a script that writes logs and exits nonzero on failure.</p></li>
@@ -1497,8 +1687,8 @@ steps:
 <li><p>Use an AI tool to draft a workflow file, then validate it against official docs and run a test PR.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="33.14">
-<h2 data-number="33.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">33.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="33.15">
+<h2 data-number="33.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">33.15</span> One-page checklist</h2>
 <ul>
 <li><p>I can turn multi-step tasks into one-command targets.</p></li>
 <li><p>My scripts have clear inputs/outputs and safe re-run behavior.</p></li>
@@ -1509,8 +1699,8 @@ steps:
 <li><p>AI assistance is used to draft, not to bypass verification.</p></li>
 </ul>
 </section>
-<section id="quick-reference-common-automation-concepts" class="level2" data-number="33.15">
-<h2 data-number="33.15" class="anchored" data-anchor-id="quick-reference-common-automation-concepts"><span class="header-section-number">33.15</span> Quick reference: common automation concepts</h2>
+<section id="quick-reference-common-automation-concepts" class="level2" data-number="33.16">
+<h2 data-number="33.16" class="anchored" data-anchor-id="quick-reference-common-automation-concepts"><span class="header-section-number">33.16</span> Quick reference: common automation concepts</h2>
 <ul>
 <li><p>Targets, prerequisites, recipes (rebuild logic).</p></li>
 <li><p>Schedulers: cron fields and Windows task schedules.</p></li>
@@ -1960,4 +2150,4 @@ steps:
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-5-projects/automation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-5-projects/automation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

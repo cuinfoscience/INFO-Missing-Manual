@@ -290,7 +290,7 @@ name: Alice  # This is an inline comment
 
 ## 4.3 JSON
 
-[**JSON**](../../appendix-glossary.llms.md#term-json) (JavaScript Object Notation) is a lightweight data interchange format. It is the default language of web APIs, configuration files for tools like VS Code and Jupyter, and many data pipelines. If you have ever looked at the output of a web API call, you were almost certainly looking at JSON.
+[**JSON**](../../parts/appendix/appendix-glossary.llms.md#term-json) (JavaScript Object Notation) is a lightweight data interchange format. It is the default language of web APIs, configuration files for tools like VS Code and Jupyter, and many data pipelines. If you have ever looked at the output of a web API call, you were almost certainly looking at JSON.
 
 JSON is stricter than YAML and Markdown. It has a rigid syntax with no room for ambiguity, which makes it excellent for machine-to-machine communication and frustrating to write by hand.
 

@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -638,13 +638,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-glossary.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-glossary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+  <a href="../../parts/appendix/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
   </div>
 </li>
@@ -707,7 +707,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">20.9</span> Exercises</a></li>
   <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">20.10</span> One-page checklist</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/data-file-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/data-file-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -752,7 +752,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
 <p>A huge fraction of your time in a first data science course is spent moving data from a file into a <a href="https://pandas.pydata.org/docs/">pandas</a> DataFrame. On paper, this is a one-liner: <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>pd.read_csv("data.csv")</code></a>. In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.</p>
-<p>This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — <a href="../../appendix-glossary.html#term-csv">CSV</a>, TSV, <a href="../../appendix-glossary.html#term-json">JSON</a>, Excel, and <a href="../../appendix-glossary.html#term-parquet">Parquet</a> — with the specific quirks of each, the <code>pandas</code> reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.</p>
+<p>This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — <a href="../../parts/appendix/appendix-glossary.html#term-csv">CSV</a>, TSV, <a href="../../parts/appendix/appendix-glossary.html#term-json">JSON</a>, Excel, and <a href="../../parts/appendix/appendix-glossary.html#term-parquet">Parquet</a> — with the specific quirks of each, the <code>pandas</code> reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -774,7 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="csv-the-workhorse-and-its-quirks" class="level2" data-number="20.1">
 <h2 data-number="20.1" class="anchored" data-anchor-id="csv-the-workhorse-and-its-quirks"><span class="header-section-number">20.1</span> CSV: the workhorse, and its quirks</h2>
-<p>A <a href="../../appendix-glossary.html#term-csv">CSV</a> file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.</p>
+<p>A <a href="../../parts/appendix/appendix-glossary.html#term-csv">CSV</a> file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.</p>
 <p>It is also the most common source of data-loading bugs, for exactly the same reasons: “plain text” and “human-readable” leave a lot of room for inconsistency.</p>
 <section id="the-simple-case" class="level3">
 <h3 class="anchored" data-anchor-id="the-simple-case">The simple case</h3>
@@ -870,7 +870,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="json-when-the-structure-is-nested" class="level2" data-number="20.3">
 <h2 data-number="20.3" class="anchored" data-anchor-id="json-when-the-structure-is-nested"><span class="header-section-number">20.3</span> JSON: when the structure is nested</h2>
-<p><a href="../../appendix-glossary.html#term-json">JSON</a> is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.</p>
+<p><a href="../../parts/appendix/appendix-glossary.html#term-json">JSON</a> is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.</p>
 <section id="flat-json" class="level3">
 <h3 class="anchored" data-anchor-id="flat-json">Flat JSON</h3>
 <p>If the file is a JSON array of flat objects, <code>pd.read_json</code> reads it directly:</p>
@@ -950,7 +950,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="parquet-the-format-for-real-data-work" class="level2" data-number="20.5">
 <h2 data-number="20.5" class="anchored" data-anchor-id="parquet-the-format-for-real-data-work"><span class="header-section-number">20.5</span> Parquet: the format for real data work</h2>
-<p><a href="../../appendix-glossary.html#term-parquet">Parquet</a> is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need <code>pyarrow</code> installed:</p>
+<p><a href="../../parts/appendix/appendix-glossary.html#term-parquet">Parquet</a> is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need <code>pyarrow</code> installed:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pyarrow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="reading-and-writing" class="level3">
 <h3 class="anchored" data-anchor-id="reading-and-writing">Reading and writing</h3>
@@ -1543,4 +1543,4 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/edit/main/parts/part-4-data/data-file-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/brianckeegan/ParatechnicalComputingHandbook/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/data-file-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

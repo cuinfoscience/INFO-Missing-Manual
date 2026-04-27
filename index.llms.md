@@ -74,7 +74,7 @@ This final part goes deeper into how modern AI systems work and how to work with
 
 ## 1.4 Acknowledgements
 
-This guide was adapted from conversations and materials developed by [Brian C. Keegan](https://www.brianckeegan.com/) and [Abram Handler](https://www.abehandler.com/) at the University of Colorado Boulder’s [Department of Information Science](https://www.colorado.edu/cmdi/infoscience). The material was also developed with the use of LLM tools, please read the [AI disclosure statement](appendix-ai-disclosure.llms.md). It draws on the collective wisdom of many students, colleagues, and practitioners who have shared their experiences and insights about the hidden curriculum of computing. The authors are grateful to all those who have contributed to this project through feedback, suggestions, and encouragement.
+This guide was adapted from conversations and materials developed by [Brian C. Keegan](https://www.brianckeegan.com/) and [Abram Handler](https://www.abehandler.com/) at the University of Colorado Boulder’s [Department of Information Science](https://www.colorado.edu/cmdi/infoscience). The material was also developed with the use of LLM tools, please read the [AI disclosure statement](parts/appendix/appendix-ai-disclosure.llms.md). It draws on the collective wisdom of many students, colleagues, and practitioners who have shared their experiences and insights about the hidden curriculum of computing. The authors are grateful to all those who have contributed to this project through feedback, suggestions, and encouragement.
 
 Edwards, Richard. 2015. “Software and the Hidden Curriculum in Digital Education.” *Pedagogy, Culture & Society* 23 (2): 265–79.
 

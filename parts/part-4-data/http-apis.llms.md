@@ -67,7 +67,69 @@ Memorize these five:
 - **429 Too Many Requests** — you are being rate-limited. Slow down.
 - **500 Internal Server Error** — the server broke. Not your fault; try again later.
 
-## 24.2 The `requests` library
+## 24.2 Quick fetches with `curl` and `wget`
+
+Before you write any Python, the fastest way to confirm that an API actually works is to call it from the command line. Two tools are universally available: [`curl`](https://curl.se/docs/manpage.html) and [`wget`](https://www.gnu.org/software/wget/manual/wget.html). They overlap but are good at different things, and a working knowledge of both pays for itself the first time you have to debug an API at 3 AM with no Python interpreter in sight.
+
+### `curl` for inspecting
+
+`curl` is a Swiss Army knife for HTTP. The bare invocation `curl <url>` sends a GET request and prints the response body to your terminal. That is enough for most quick checks:
+
+``` bash
+curl https://api.github.com/repos/pandas-dev/pandas
+```
+
+The flag worth memorizing first is `-i`, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging “is the API actually responding?” or “what status code did I get?”, `-i` is the answer:
+
+``` bash
+$ curl -i https://api.github.com/repos/pandas-dev/pandas | head
+HTTP/2 200
+content-type: application/json; charset=utf-8
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 58
+...
+```
+
+Three more flags handle most situations. **`-H 'Header: value'`** adds a request header — use it to send your `User-Agent` or an `Authorization: Bearer <token>`. **`-X POST`** changes the HTTP method (the default is GET); pair it with **`-d '...'`** to send a body. And **`-o filename`** writes the response body to a file instead of stdout. Strung together:
+
+``` bash
+curl -X POST https://api.example.com/items \
+  -H "Authorization: Bearer $API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "widget", "qty": 12}'
+```
+
+Two more flags are worth knowing for scripts. **`-s`** silences the progress meter (essential when piping `curl` into another command), and **`-f`** makes `curl` exit with a nonzero status code on any HTTP 4xx or 5xx response — without it, `curl` happily writes the server’s HTML error page to your output file and reports success.
+
+For pretty-printing JSON responses while you explore, pipe `curl` into [`jq`](https://jqlang.github.io/jq/manual/), which is the de facto JSON command-line processor:
+
+``` bash
+curl -s https://api.github.com/repos/pandas-dev/pandas | jq '.stargazers_count'
+```
+
+### `wget` for downloading
+
+`wget` is a download tool first and an HTTP client second. Where `curl` is built for ad-hoc API inspection, `wget` is built for “fetch this URL to a file, reliably, possibly across a flaky network.” Two features make it the better choice for bulk downloads.
+
+The first is **resumable transfers**: `wget -c <url>` continues a partial download instead of restarting it from byte zero. For a multi-gigabyte dataset on a slow connection, this is the difference between “I have to babysit this all night” and “I can leave it running.”
+
+The second is **recursive mirroring**: `wget -r <url>` follows every link on a page and downloads everything it finds, subject to depth and same-host limits. This is occasionally useful for archiving a small documentation site, and it is wildly inappropriate against most modern web infrastructure — see “Respect `robots.txt`” later in this chapter, and never recursively `wget` a site you do not own without checking the robots policy first.
+
+For most everyday use, the invocation is short:
+
+``` bash
+wget https://example.com/dataset.csv               # save as dataset.csv
+wget -O sales.csv https://example.com/data.csv     # save under a chosen name
+wget -c https://example.com/big-file.zip           # resume if interrupted
+```
+
+### When to use which
+
+A practical rule of thumb. Use **`curl`** when you are *exploring* an API — checking what it returns, testing auth, debugging headers, prototyping a request you will eventually translate into Python. Use **`wget`** when you are *downloading a file* and want resilience features like resume and retry. Use **`requests`** (the rest of this chapter) when you are *writing code* that has to fetch data as part of a larger pipeline. The three tools are not competitors; they are different points on the spectrum from “ad-hoc inspection” to “production code.”
+
+A hidden benefit of starting with `curl`: many APIs include `curl` invocations in their documentation as the canonical example. Being able to read those examples directly — instead of mentally translating them into `requests` first — speeds up your reading of API docs by a noticeable amount.
+
+## 24.3 The `requests` library
 
 The [`requests`](https://requests.readthedocs.io/en/latest/) library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
 
@@ -147,7 +209,7 @@ resp = requests.get(url, timeout=10)   # fail after 10 seconds
 
 10 seconds is reasonable for most APIs. Set it shorter for fast APIs and longer for reports or exports.
 
-## 24.3 Checking the response
+## 24.4 Checking the response
 
 `requests` will not raise an exception on a 404 or 500 by default — you have to check. Two common idioms:
 
@@ -165,7 +227,7 @@ data = resp.json()
 
 Use `raise_for_status()` when you just want to abort on any error. Use the explicit check when you want different behavior for different codes (e.g., retry on 429 but abort on 404).
 
-## 24.4 JSON → DataFrame
+## 24.5 JSON → DataFrame
 
 Most APIs return JSON. For tabular data the pattern is usually:
 
@@ -193,7 +255,7 @@ df = pd.json_normalize(payload["results"])
 
 Always inspect `payload` in a REPL or notebook cell before assuming it is shaped like you expect. The first couple times you call a new API, `print(payload)` and `print(type(payload))` are cheaper than wrong code.
 
-## 24.5 API keys and secrets
+## 24.6 API keys and secrets
 
 Most useful APIs require authentication. The key goes in a header, usually as `Authorization: Bearer <token>` or in a custom header like `X-API-Key`.
 
@@ -213,7 +275,7 @@ resp = requests.get(
 
 Store the key in a `.env` file and load it with `python-dotenv`. The full workflow — why, how, and how to avoid leaking keys into git — is [sec-secrets](#sec-secrets). Read it before building anything serious.
 
-## 24.6 Rate limits and being polite
+## 24.7 Rate limits and being polite
 
 Most APIs limit how fast you can call them — often “N requests per minute” or “N requests per day.” When you exceed the limit, you get a `429 Too Many Requests`. Some APIs return a `Retry-After` header telling you how many seconds to wait.
 
@@ -254,7 +316,7 @@ def get_with_retry(url, headers=None, params=None, max_retries=5):
 
 For web pages (not APIs), check `https://example.com/robots.txt` before scraping. It tells you which paths the site owner is OK with automated tools hitting. Ignoring it is rude and can get your IP blocked.
 
-## 24.7 When *not* to use `requests` directly
+## 24.8 When *not* to use `requests` directly
 
 Before you write a lot of custom API code, check:
 
@@ -268,7 +330,7 @@ Before you write a lot of custom API code, check:
 > - [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.
 > - [HTTP Status Codes (httpstatuses.com)](https://httpstatuses.com/) — a searchable reference for every status code you will see in the wild.
 
-## 24.8 Worked examples
+## 24.9 Worked examples
 
 ### Fetch a GitHub repo’s metadata
 
@@ -339,7 +401,7 @@ def current_weather(city):
 
 Three layers of defense: status-code checks, timeout handling, and exponential backoff.
 
-## 24.9 Templates
+## 24.10 Templates
 
 **A defensive GET helper:**
 
@@ -372,7 +434,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-## 24.10 Exercises
+## 24.11 Exercises
 
 1.  Use `requests.get` to fetch `https://api.github.com/repos/python/cpython` and print the star count, license name, and default branch.
 2.  Add a `User-Agent` header to the request above. Repeat the request without one (or with `User-Agent: ""`) and see if you get the same response.
@@ -382,7 +444,7 @@ load_dotenv()
 6.  Find a dataset that is available both as a bulk CSV download and as an API. Download both, load them into pandas, compare the row counts, and write down which was faster and why.
 7.  Use `resp = requests.get(...)` and inspect `resp.headers` in a notebook. Find the `Content-Type`, `Server`, and any rate-limit headers (`X-RateLimit-Remaining` is common).
 
-## 24.11 One-page checklist
+## 24.12 One-page checklist
 
 - Import `requests`; install with `python -m pip install requests`.
 - Always pass a `timeout=` to every request.

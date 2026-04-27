@@ -8,9 +8,9 @@
 
 ## Purpose
 
-The single most common source of the “it worked yesterday” bug in Python data science is a confused [environment](../../appendix-glossary.llms.md#term-environment). You install a package, try to import it, and Python says “no such module.” You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
+The single most common source of the “it worked yesterday” bug in Python data science is a confused [environment](../../parts/appendix/appendix-glossary.llms.md#term-environment). You install a package, try to import it, and Python says “no such module.” You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
 
-A [virtual environment](../../appendix-glossary.llms.md#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
+A [virtual environment](../../parts/appendix/appendix-glossary.llms.md#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
 
 This chapter explains what a venv is (and is not), how to create and activate one with [`python -m venv`](https://docs.python.org/3/library/venv.html), how this compares to [`conda`](https://docs.conda.io/en/latest/), how to diagnose the “which Python is running?” question on any machine, and how to make sure [Jupyter](https://jupyter.org/documentation) and [VS Code](https://code.visualstudio.com/docs) are using the environment you think they are. [sec-pkg-mgmt](#sec-pkg-mgmt) covers `conda` in depth; this chapter focuses on `venv` and on the diagnostic skills that apply to both.
 
@@ -159,7 +159,7 @@ You can have both on the same machine — they do not conflict. Just do not try 
 
 ## 15.5 Jupyter and venvs
 
-Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a [kernel](../../appendix-glossary.llms.md#term-kernel), and by default it may be pointed at your system Python. This causes the classic bug: you `pip install pandas` in your venv, open a notebook, and `import pandas` fails.
+Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a [kernel](../../parts/appendix/appendix-glossary.llms.md#term-kernel), and by default it may be pointed at your system Python. This causes the classic bug: you `pip install pandas` in your venv, open a notebook, and `import pandas` fails.
 
 The fix is to register your venv as a Jupyter kernel. From inside the activated venv:
 
@@ -189,13 +189,92 @@ If it does not auto-detect, you can pick manually:
 
 The selected interpreter shows in the bottom-right of the VS Code status bar. Click it any time to switch.
 
+## 15.7 When venvs are not enough: containers
+
+A venv solves one specific problem: isolating Python *packages* across projects. It does not isolate the Python interpreter version itself reliably across machines, it does not isolate non-Python system libraries, and it does not isolate services your code depends on like Postgres or Redis. For most coursework, that is fine — a `requirements.txt` plus the right Python version on every collaborator’s laptop is enough. For projects that touch native libraries, span operating systems, or need to deploy somewhere other than your own machine, you eventually need something stronger: a [container](https://www.docker.com/resources/what-container/).
+
+A container is a packaged operating-system environment that runs the same way everywhere. Conceptually, a venv pins your Python packages; a container pins your *entire* userspace — the OS distribution, the system libraries, the Python interpreter, the installed packages, and the project code. A container that runs on your MacBook also runs on your collaborator’s Windows laptop, on a Linux server, and on a cloud platform, byte-for-byte the same. The most common implementation you will encounter as a student is [Docker](https://docs.docker.com/get-started/).
+
+### A minimal Dockerfile
+
+A `Dockerfile` is a recipe — a text file at the project root that describes how to build the image. For a simple Python project it is short:
+
+``` dockerfile
+# Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+CMD ["python", "src/pipeline.py"]
+```
+
+Five lines do real work: `FROM` picks a base image (Python 3.11 on a minimal Debian); `WORKDIR` sets the in-container directory; the first `COPY` and `RUN` install dependencies; the second `COPY` brings in your code; `CMD` says what to run when the container starts.
+
+Build the image and run it:
+
+``` bash
+docker build -t my-project .
+docker run --rm my-project
+```
+
+The `--rm` flag deletes the container after it exits, which is what you want for one-shot runs. To get a shell inside the container instead — the rough equivalent of “activating” the environment — add `-it` and override the command:
+
+``` bash
+docker run --rm -it my-project bash
+```
+
+Two patterns matter for development. To **edit code on your host and run it inside the container**, mount your project directory as a volume so changes show up live: `docker run --rm -it -v "$PWD":/app my-project bash`. To **expose a port** (for a Jupyter server, a Flask app, a database), add `-p host:container`: `docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0`.
+
+### Docker Compose for multi-service projects
+
+Most non-trivial projects need more than just Python. They need a database, maybe a message queue, sometimes a separate worker process. [Docker Compose](https://docs.docker.com/compose/) lets you describe all of those services in one `docker-compose.yml` and start them together with `docker compose up`:
+
+``` yaml
+services:
+  app:
+    build: .
+    depends_on: [db]
+    environment:
+      DATABASE_URL: postgres://user:pass@db:5432/app
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: app
+```
+
+Two services start, the app waits for the database, and the whole pipeline reproduces on any machine that has Docker installed. This is genuinely magical the first time it works on a teammate’s laptop with no setup other than `docker compose up`.
+
+### When to actually reach for a container
+
+Containers are powerful but they are also a layer of complexity, and reaching for them too early creates more friction than it removes. A useful checklist of “yes, you actually need a container”:
+
+- **You need to reproduce the exact same environment on a different operating system** — venv pins Python packages but not the OS or system libraries beneath them, and some packages behave differently on macOS vs Linux.
+- **Your code depends on system-level binaries** that are tedious to install — PostGIS, FFmpeg, headless Chromium for scraping, specific CUDA versions for GPU work.
+- **You need to run alongside a database or queue** that should be reproducible on every machine.
+- **You are deploying to a cloud target** — every major cloud platform runs containers natively, so packaging your project as a container is the lingua franca of “ship this somewhere.”
+
+A useful checklist of “no, a venv is fine”:
+
+- **Pure-Python coursework** with a small `requirements.txt`.
+- **Notebooks for analysis** that read local files and produce figures.
+- **Anything you only ever run on your own laptop** for one semester.
+
+If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.
+
 > **NOTE:**
 >
 > - [`venv` — Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official module reference and command-line usage.
 > - [Python Packaging User Guide: Virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a tutorial-style walk-through, including pip usage inside a venv.
 > - [Real Python: Python Virtual Environments — A Primer](https://realpython.com/python-virtual-environments-a-primer/) — extended discussion of venv internals, common pitfalls, and alternatives.
+> - [Docker: Get started](https://docs.docker.com/get-started/) — the official walkthrough for building, running, and sharing containers.
+> - [Play with Docker](https://labs.play-with-docker.com/) — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.
 
-## 15.7 Worked examples
+## 15.8 Worked examples
 
 ### Starting a new project from scratch
 
@@ -269,7 +348,7 @@ python -m pip install -r requirements.txt
 
 That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.
 
-## 15.8 Templates
+## 15.9 Templates
 
 **`.gitignore` entries for a venv project:**
 
@@ -287,7 +366,7 @@ That is the whole setup. Five commands and any machine is running your project w
 
 A version-pinned `requirements.txt` is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (`pandas>=2.0`). For application projects (your course work), prefer pins.
 
-## 15.9 Exercises
+## 15.10 Exercises
 
 1.  Create a fresh venv in an empty directory, activate it, and install `pandas`. Run `python -m pip show pandas` and confirm the `Location:` line is inside your venv.
 2.  Write down the output of `which python` (or `where python`) before and after activating a venv. Notice the path change.
@@ -297,7 +376,7 @@ A version-pinned `requirements.txt` is reproducible but brittle. For libraries (
 6.  Clone a classmate’s project (or your own on another machine) and get it running from scratch using only `git clone`, `python -m venv`, `activate`, and `pip install -r requirements.txt`. Time yourself — it should take under two minutes.
 7.  Delete your `.venv/` directory and recreate it from `requirements.txt`. Confirm the project still runs. This is the key reproducibility test.
 
-## 15.10 One-page checklist
+## 15.11 One-page checklist
 
 - Every project gets its own venv: `python -m venv .venv` at the project root.
 - Add `.venv/` to `.gitignore`. Never commit a venv.
