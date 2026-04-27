@@ -367,6 +367,29 @@ $ command1; echo $?                        # see exit code explicitly
 
 The habit that follows from this is to always check that your commands actually succeeded, not to assume they did because the prompt came back. Pay attention to error output, look at exit codes when you are scripting, and treat any nonzero result as evidence to investigate before you move on.
 
+## From commands to scripts
+
+The natural next step after typing the same command sequence twice is to put it in a file you can rerun. A **shell script** is a text file containing one or more shell commands, marked at the top with a special line called a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) that tells the operating system which interpreter to use:
+
+```bash
+#!/usr/bin/env bash
+# greet.sh — print a friendly greeting
+
+echo "Hello, $USER!"
+echo "Today is $(date +%A)."
+```
+
+Save that as `greet.sh`, mark it as executable, and run it:
+
+```bash
+chmod +x greet.sh        # one-time: grant execute permission
+./greet.sh               # the ./ tells the shell to look in the current directory
+```
+
+The two pieces that surprise newcomers are why you need `chmod +x` and why `./` is required. The execute bit is what tells the OS this file is meant to be *run* rather than just read; without it, the kernel refuses to launch the file even though the contents are perfectly valid. The `./` prefix is needed because the current directory is not on your `$PATH` by default (this is a deliberate security choice), so a bare `greet.sh` produces `command not found`. Putting the script in a directory that *is* on your `$PATH` — `~/bin` or `~/.local/bin` are common — lets you call it by name from anywhere.
+
+This is the entire premise of shell scripting in one paragraph. The rest — control flow, error handling, exit-code conventions, and patterns for building real automation pipelines — lives in @sec-automation, which treats scripts as the bottom rung of a longer ladder. Read that chapter when you are ready to write scripts that other people will run.
+
 ## Environment basics: `PATH`, variables, and reproducibility
 
 ### Environment variables
