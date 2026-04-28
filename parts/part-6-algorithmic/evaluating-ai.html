@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -662,14 +662,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#structured-bias-testing" id="toc-structured-bias-testing" class="nav-link" data-scroll-target="#structured-bias-testing">Structured bias testing</a></li>
   <li><a href="#sensitivity-checks" id="toc-sensitivity-checks" class="nav-link" data-scroll-target="#sensitivity-checks">Sensitivity checks</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">38.9</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">38.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">38.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-an-evaluation-suite-for-a-summarization-system" id="toc-building-an-evaluation-suite-for-a-summarization-system" class="nav-link" data-scroll-target="#building-an-evaluation-suite-for-a-summarization-system">Building an evaluation suite for a summarization system</a></li>
   <li><a href="#auditing-a-classification-system-for-demographic-disparities" id="toc-auditing-a-classification-system-for-demographic-disparities" class="nav-link" data-scroll-target="#auditing-a-classification-system-for-demographic-disparities">Auditing a classification system for demographic disparities</a></li>
   <li><a href="#setting-up-production-monitoring-for-an-ai-application" id="toc-setting-up-production-monitoring-for-an-ai-application" class="nav-link" data-scroll-target="#setting-up-production-monitoring-for-an-ai-application">Setting up production monitoring for an AI application</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">38.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">38.11</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">38.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">38.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/evaluating-ai.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -941,27 +942,17 @@ prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
 <section id="sensitivity-checks" class="level3">
 <h3 class="anchored" data-anchor-id="sensitivity-checks">Sensitivity checks</h3>
 <p>Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system’s handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://huggingface.co/docs/evaluate/index">Hugging Face: Evaluate library</a> — a toolkit for benchmarking models against many standard metrics.</li>
-<li><a href="https://docs.anthropic.com/en/docs/test-and-evaluate/overview">Anthropic: Evaluating outputs</a> — practical guidance on designing prompt evaluations and test sets.</li>
-<li><a href="https://github.com/openai/evals">OpenAI Evals framework</a> — an open-source framework for writing and running LLM evaluations.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="38.9">
-<h2 data-number="38.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">38.9</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="38.9">
+<h2 data-number="38.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">38.9</span> Stakes and politics</h2>
+<p>Evaluation is taught here as a quality-assurance practice, and it is. It is also one of the most contested political acts in machine learning, because deciding what counts as “working well” is the same as deciding whose interests the system serves.</p>
+<p>Three things to notice. First, <em>fairness has incompatible mathematical definitions</em>. As <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> describes for the COMPAS case, common notions of fairness in classification — equal false-positive rates, equal false-negative rates, equal calibration — are mathematically incompatible whenever group base rates differ. You cannot satisfy them all simultaneously; you have to <em>choose</em> which kind of fairness you prioritize. That choice is a political decision dressed as a technical one, and the audit’s job is to make the choice visible, not to disappear it. Second, <em>audits can launder more than they expose</em>. A “we ran a bias audit” line in a deployment announcement reads as accountability and is sometimes the substance of accountability and sometimes its replacement. An audit that tests only the metrics the system was already optimized for, or only on the demographic slices the development team thought to consider, is consistent with very large remaining disparities. The presence of an audit is not the same as the audit having teeth.</p>
+<p>Third, <em>who runs the audit matters</em>. A first-party audit run by the system’s vendor is structurally different from a second-party audit run by the deploying organization, which is structurally different from a third-party audit run by an independent group with the access and incentive to find problems. Most “audits” in practice are first-party. The independent-audit ecosystem (academic researchers, civil-society organizations like AI Now and the Algorithmic Justice League, journalism in the <em>ProPublica</em>/<em>Markup</em> mold) is small and underfunded relative to the deployment scale.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> for the model-level biases your audit will be measuring, and <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a> for what changes when the system is taking autonomous actions instead of returning text. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="38.10">
+<h2 data-number="38.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">38.10</span> Worked examples</h2>
 <section id="building-an-evaluation-suite-for-a-summarization-system" class="level3">
 <h3 class="anchored" data-anchor-id="building-an-evaluation-suite-for-a-summarization-system">Building an evaluation suite for a summarization system</h3>
 <p>You want to know whether your summarization prompt is actually any good — and whether it gets better or worse when you change it. Start by collecting <strong>20 real documents</strong> from the domain your system will be summarizing. Toy examples are tempting, but they will mislead you about real performance. Then write a <strong>rubric</strong> with three concrete dimensions — say, completeness (does it include the key findings?), accuracy (no fabrications?), and conciseness (no padding?), each scored 0–2. Have <strong>two human raters</strong> independently score 10 summaries with the rubric and <strong>compute inter-rater agreement</strong>. Wherever the raters disagree, the rubric is underspecified — revise the question until the raters land on the same score. The final 10 rated examples become your <strong>calibration set</strong>, the ground truth against which you can test automated evaluators. Now build an LLM judge using the calibrated rubric, run it on the same 10 examples, and compare its scores to the human ratings. If they agree closely, you have a scalable evaluator. If not, refine the judge’s prompt or fall back to human review for the dimensions it cannot score reliably. Run the validated suite on the full set of 20 documents to establish a <strong>baseline</strong>, and rerun it after every prompt change so you can see whether you are making things better or worse.</p>
@@ -975,8 +966,8 @@ prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
 <p>You have shipped an AI feature and you want to know if it is silently degrading in the wild. The first step is <strong>instrumentation</strong>: log every input, every output, the metadata (model version, temperature, prompt version), and any user feedback signals (thumbs up, thumbs down, escalation to human). Then define <strong>key metrics</strong> that map to the dimensions you care about — format compliance rate (what percentage of outputs parse as valid JSON?), the average rubric score on sampled evaluations, the explicit error rate. Set <strong>alert thresholds</strong> that match the stakes of your application (alert if format compliance drops below 95%, alert if error rate exceeds 1%, alert if user satisfaction signals degrade by more than X%). Schedule a <strong>weekly evaluation run</strong> on a stratified sample of production traffic so you can compare current behavior to your baseline. Maintain a <strong>changelog</strong> that records every model update, every prompt change, every configuration change — this is what lets you correlate degradations with specific changes. Review alerts on a regular cadence and investigate every metric that crosses a threshold <em>before</em> you ship the next change, not after.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="38.10">
-<h2 data-number="38.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">38.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="38.11">
+<h2 data-number="38.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">38.11</span> Exercises</h2>
 <ol type="1">
 <li><p>Choose a simple AI task (classify sentiment, extract named entities, summarize a paragraph). Write a rubric with three dimensions, each scored 0–2. Write three test cases that would each score differently on at least one dimension. Explain your scoring.</p></li>
 <li><p>Write three automated test assertions for an AI system that extracts structured data from job postings (company name, location, salary range). Each assertion should test a property of the output rather than exact text match.</p></li>
@@ -985,8 +976,8 @@ prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
 <li><p>You deploy a summarization tool and after two weeks notice that user complaints have increased but your evaluation scores look the same. List three possible explanations and describe what log data you would examine to distinguish between them.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="38.11">
-<h2 data-number="38.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">38.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="38.12">
+<h2 data-number="38.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">38.12</span> One-page checklist</h2>
 <ul>
 <li><p>Define which quality dimensions matter for your specific task before building evaluation</p></li>
 <li><p>Write a rubric with specific, answerable questions rather than holistic “is this good?” judgments</p></li>
@@ -999,6 +990,27 @@ prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
 <li><p>Document evaluation results and audit findings, whether or not they indicate a problem</p></li>
 <li><p>Treat evaluation rigor as proportional to stakes: more scrutiny for higher-risk applications</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Hugging Face, <a href="https://huggingface.co/docs/evaluate/index">Evaluate library</a> — a toolkit for benchmarking models against many standard metrics; the entry point for “what metric should I use?”</li>
+<li>Anthropic, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/overview">Evaluating outputs</a> — practical guidance on designing prompt evaluations and test sets.</li>
+<li>OpenAI, <a href="https://github.com/openai/evals">Evals framework</a> — an open-source framework for writing and running LLM evaluations; pairs well with the Anthropic guide.</li>
+<li>Solon Barocas, Moritz Hardt, and Arvind Narayanan, <a href="https://fairmlbook.org/"><em>Fairness and Machine Learning: Limitations and Opportunities</em></a> — the standard textbook on the technical and political dimensions of fairness; chapters 2 and 3 cover the incompatibility result discussed in “Stakes and politics” above.</li>
+<li>Margaret Mitchell et al., <a href="https://arxiv.org/abs/1810.03677">Model Cards for Model Reporting</a> (FAT* 2019) — proposes a documentation standard for the intended use, training data, and evaluation results of every released model; lightweight to apply to your own systems.</li>
+<li>Inioluwa Deborah Raji and Joy Buolamwini, <a href="https://dl.acm.org/doi/10.1145/3306618.3314244">Actionable Auditing</a> (AIES 2019) — the <em>Gender Shades</em> follow-up showing how third-party audits drove measurable improvements in commercial face APIs; the canonical example of audits with teeth.</li>
+<li>AI Now Institute, <a href="https://ainowinstitute.org/publications">Reports</a> and Algorithmic Justice League, <a href="https://www.ajl.org/library/research">Reports</a> — ongoing independent research and advocacy on AI auditing; the third-party-audit ecosystem named in “Stakes and politics” above.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

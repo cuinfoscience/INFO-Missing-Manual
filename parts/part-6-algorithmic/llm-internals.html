@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -679,14 +679,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#tools-and-function-calling" id="toc-tools-and-function-calling" class="nav-link" data-scroll-target="#tools-and-function-calling"><span class="header-section-number">36.7</span> Tools and function calling</a></li>
   <li><a href="#why-models-hallucinate" id="toc-why-models-hallucinate" class="nav-link" data-scroll-target="#why-models-hallucinate"><span class="header-section-number">36.8</span> Why models hallucinate</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">36.9</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">36.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">36.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#diagnosing-why-a-prompt-produces-inconsistent-output" id="toc-diagnosing-why-a-prompt-produces-inconsistent-output" class="nav-link" data-scroll-target="#diagnosing-why-a-prompt-produces-inconsistent-output">Diagnosing why a prompt produces inconsistent output</a></li>
   <li><a href="#converting-a-chatbot-workflow-to-an-api-call" id="toc-converting-a-chatbot-workflow-to-an-api-call" class="nav-link" data-scroll-target="#converting-a-chatbot-workflow-to-an-api-call">Converting a chatbot workflow to an API call</a></li>
   <li><a href="#building-a-simple-semantic-search-with-embeddings" id="toc-building-a-simple-semantic-search-with-embeddings" class="nav-link" data-scroll-target="#building-a-simple-semantic-search-with-embeddings">Building a simple semantic search with embeddings</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">36.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">36.11</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">36.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">36.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/llm-internals.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -922,26 +923,17 @@ print(message.content[0].text)</code></pre>
 <li><p>Prefer lower temperatures for factual tasks.</p></li>
 <li><p>Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.</p></li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic: Prompt engineering</a> — structured prompt design patterns and evaluation tips.</li>
-<li><a href="https://platform.openai.com/docs/guides/prompt-engineering">OpenAI: Prompt engineering</a> — OpenAI’s parallel guide, including system-message best practices.</li>
-<li><a href="https://huggingface.co/docs/transformers/index">Hugging Face: Transformers documentation</a> — the reference implementation of the model architecture behind most modern chat models.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="36.9">
-<h2 data-number="36.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">36.9</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="36.9">
+<h2 data-number="36.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">36.9</span> Stakes and politics</h2>
+<p>This chapter explains how the model works mechanically — tokens, attention, sampling, embeddings. The political dimension lives one level up, in the questions of <em>what</em> is being modeled and <em>who</em> paid to build the model that does the modeling.</p>
+<p>Three things to notice. First, <em>training corpora are not the world</em>. LLMs are trained on the parts of human language that ended up on the internet, in the languages that dominate the internet, in the time period the crawl happened to cover. That corpus is overwhelmingly English (often more than 90% by token count even in “multilingual” models), drawn from contributors who are disproportionately male, US/European, and middle-class, and weighted toward formal published text rather than oral, vernacular, or domain-specific writing. The model’s “default” voice is the median voice of that corpus; languages and cultures outside it appear as edge cases at best.</p>
+<p>Second, <em>frontier-model training concentrates compute</em>. Training a modern flagship model takes tens of thousands of GPUs, hundreds of millions to billions of dollars, and energy and water on a scale that is now a measurable fraction of regional grids. Only a handful of companies — OpenAI, Anthropic, Google, Meta, a small set of well-funded Chinese labs — can do this. The community of people who decide what the next major model will be like, what data it will see, and what it will refuse to do is correspondingly small. Open-weights releases (Meta’s Llama family, Mistral, and others) partly mitigate this; they do not change the fact that the upstream training labs decide what gets released at all.</p>
+<p>Third, <em>embeddings encode the same biases</em>. The embedding spaces this chapter introduces are useful precisely because they capture statistical regularities in the corpus — including the regularities that reflect prejudice, stereotype, and uneven representation. “Distance in embedding space” is sometimes an objective measure and sometimes a measurement of who the corpus knew about.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the user-facing workflow this chapter underpins, <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a> for what happens when these models start acting, and <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a> for how these biases get surfaced (or laundered) by audits. The concrete prompt to carry forward: when a model “knows” something, ask whose corpus it learned from.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="36.10">
+<h2 data-number="36.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">36.10</span> Worked examples</h2>
 <section id="diagnosing-why-a-prompt-produces-inconsistent-output" class="level3">
 <h3 class="anchored" data-anchor-id="diagnosing-why-a-prompt-produces-inconsistent-output">Diagnosing why a prompt produces inconsistent output</h3>
 <p>You have a prompt that “usually works” but sometimes returns garbage, and you want to find out why before throwing more wording at it. The trick is to change one variable at a time. Start by writing down the current prompt and three or four sample outputs that demonstrate the inconsistency — actual text, side by side. Check the <strong>token count</strong> of your prompt with your provider’s tokenizer tool: if you are anywhere near the context window, that alone could be the cause. Then <strong>set temperature to 0 and re-run</strong> the same prompt several times. If outputs are now identical, the inconsistency was sampling variance; if they still vary, the inconsistency is in something else (maybe an external tool or retrieval step). Next, <strong>add explicit format instructions</strong> (“Return JSON with keys <code>summary</code> and <code>tags</code>”) and re-run; format failures often disappear instantly when the format is named. If the model is still wandering, <strong>add one or two few-shot examples</strong> showing exactly the output you want. After each change, compare against your original samples and note which change actually fixed the inconsistency — that is the lesson you want to keep.</p>
@@ -985,8 +977,8 @@ print(message.content[0].text)</code></pre>
 <p>Test it with a handful of real queries and compare against grep over the same documents — you will quickly see the cases where keyword search misses paraphrases that semantic search catches.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="36.10">
-<h2 data-number="36.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">36.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="36.11">
+<h2 data-number="36.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">36.11</span> Exercises</h2>
 <ol type="1">
 <li><p>Use your model provider’s tokenizer tool to count the tokens in a 500-word essay. Then count the tokens in the same content in another language (use a translation tool if needed). How does the token count differ, and what does this imply for cost?</p></li>
 <li><p>Write the same request (e.g., “Explain what a p-value is”) as both a vague prompt and a structured prompt with role, format instructions, and audience specification. Compare the outputs and describe what changed.</p></li>
@@ -996,8 +988,8 @@ print(message.content[0].text)</code></pre>
 <li><p>Make an API call from a Python script (using any model you have access to) that takes a string from the command line, sends it to the model with a system prompt you write, and prints the response. Confirm that the output changes when you change the system prompt.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="36.11">
-<h2 data-number="36.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">36.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="36.12">
+<h2 data-number="36.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">36.12</span> One-page checklist</h2>
 <ul>
 <li><p>Before sending a long prompt, check the token count to ensure it fits within the context window</p></li>
 <li><p>Set temperature to 0 for tasks requiring consistency; raise it only when variation is desirable</p></li>
@@ -1010,6 +1002,28 @@ print(message.content[0].text)</code></pre>
 <li><p>When exposing tools to a model, define them with precise descriptions and only expose what is necessary</p></li>
 <li><p>When outputs are inconsistent, diagnose whether the cause is sampling variance, prompt ambiguity, or context length before changing the prompt</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Anthropic, <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Prompt engineering</a> — structured prompt design patterns and evaluation tips.</li>
+<li>OpenAI, <a href="https://platform.openai.com/docs/guides/prompt-engineering">Prompt engineering</a> — OpenAI’s parallel guide, including system-message best practices.</li>
+<li>Hugging Face, <a href="https://huggingface.co/docs/transformers/index">Transformers documentation</a> — the reference implementation of the model architecture behind most modern chat models.</li>
+<li>Vaswani et al., <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> (NeurIPS 2017) — the original transformer paper; short, technical, and worth reading once the conceptual picture in this chapter is clear.</li>
+<li>Jay Alammar, <a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a> — the canonical visual explanation of attention; 30 minutes of reading that demystifies most of what is happening inside the model.</li>
+<li>Andrej Karpathy, <a href="https://www.youtube.com/watch?v=kCc8FmEb1nY">Let’s build GPT from scratch in code, spelled out</a> — a two-hour video that walks through implementing a small transformer end-to-end; the deepest practical understanding most non-specialists will get.</li>
+<li>Anthropic, <a href="https://www.anthropic.com/news/mapping-mind-language-model">Mapping the Mind of a Large Language Model</a> — public-facing summary of mechanistic interpretability research; useful context for “what is the model actually representing.”</li>
+<li>Emily M. Bender et al., <a href="https://dl.acm.org/doi/10.1145/3442188.3445922">On the Dangers of Stochastic Parrots</a> (FAccT, 2021) — required reading for the “Stakes and politics” framing above; pairs with the labor and corpus-bias points.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

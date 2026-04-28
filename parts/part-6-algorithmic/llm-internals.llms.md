@@ -256,13 +256,19 @@ Practical responses to hallucination:
 
 - Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.
 
-> **NOTE:**
->
-> - [Anthropic: Prompt engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — structured prompt design patterns and evaluation tips.
-> - [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including system-message best practices.
-> - [Hugging Face: Transformers documentation](https://huggingface.co/docs/transformers/index) — the reference implementation of the model architecture behind most modern chat models.
+## 36.9 Stakes and politics
 
-## 36.9 Worked examples
+This chapter explains how the model works mechanically — tokens, attention, sampling, embeddings. The political dimension lives one level up, in the questions of *what* is being modeled and *who* paid to build the model that does the modeling.
+
+Three things to notice. First, *training corpora are not the world*. LLMs are trained on the parts of human language that ended up on the internet, in the languages that dominate the internet, in the time period the crawl happened to cover. That corpus is overwhelmingly English (often more than 90% by token count even in “multilingual” models), drawn from contributors who are disproportionately male, US/European, and middle-class, and weighted toward formal published text rather than oral, vernacular, or domain-specific writing. The model’s “default” voice is the median voice of that corpus; languages and cultures outside it appear as edge cases at best.
+
+Second, *frontier-model training concentrates compute*. Training a modern flagship model takes tens of thousands of GPUs, hundreds of millions to billions of dollars, and energy and water on a scale that is now a measurable fraction of regional grids. Only a handful of companies — OpenAI, Anthropic, Google, Meta, a small set of well-funded Chinese labs — can do this. The community of people who decide what the next major model will be like, what data it will see, and what it will refuse to do is correspondingly small. Open-weights releases (Meta’s Llama family, Mistral, and others) partly mitigate this; they do not change the fact that the upstream training labs decide what gets released at all.
+
+Third, *embeddings encode the same biases*. The embedding spaces this chapter introduces are useful precisely because they capture statistical regularities in the corpus — including the regularities that reflect prejudice, stereotype, and uneven representation. “Distance in embedding space” is sometimes an objective measure and sometimes a measurement of who the corpus knew about.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, [sec-ai-llm](#sec-ai-llm) for the user-facing workflow this chapter underpins, [sec-ai-agents](#sec-ai-agents) for what happens when these models start acting, and [sec-evaluating-ai](#sec-evaluating-ai) for how these biases get surfaced (or laundered) by audits. The concrete prompt to carry forward: when a model “knows” something, ask whose corpus it learned from.
+
+## 36.10 Worked examples
 
 ### Diagnosing why a prompt produces inconsistent output
 
@@ -313,7 +319,7 @@ def search(query, k=3):
 
 Test it with a handful of real queries and compare against grep over the same documents — you will quickly see the cases where keyword search misses paraphrases that semantic search catches.
 
-## 36.10 Exercises
+## 36.11 Exercises
 
 1.  Use your model provider’s tokenizer tool to count the tokens in a 500-word essay. Then count the tokens in the same content in another language (use a translation tool if needed). How does the token count differ, and what does this imply for cost?
 
@@ -327,7 +333,7 @@ Test it with a handful of real queries and compare against grep over the same do
 
 6.  Make an API call from a Python script (using any model you have access to) that takes a string from the command line, sends it to the model with a system prompt you write, and prints the response. Confirm that the output changes when you change the system prompt.
 
-## 36.11 One-page checklist
+## 36.12 One-page checklist
 
 - Before sending a long prompt, check the token count to ensure it fits within the context window
 
@@ -348,3 +354,14 @@ Test it with a handful of real queries and compare against grep over the same do
 - When exposing tools to a model, define them with precise descriptions and only expose what is necessary
 
 - When outputs are inconsistent, diagnose whether the cause is sampling variance, prompt ambiguity, or context length before changing the prompt
+
+> **NOTE:**
+>
+> - Anthropic, [Prompt engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — structured prompt design patterns and evaluation tips.
+> - OpenAI, [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including system-message best practices.
+> - Hugging Face, [Transformers documentation](https://huggingface.co/docs/transformers/index) — the reference implementation of the model architecture behind most modern chat models.
+> - Vaswani et al., [Attention Is All You Need](https://arxiv.org/abs/1706.03762) (NeurIPS 2017) — the original transformer paper; short, technical, and worth reading once the conceptual picture in this chapter is clear.
+> - Jay Alammar, [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) — the canonical visual explanation of attention; 30 minutes of reading that demystifies most of what is happening inside the model.
+> - Andrej Karpathy, [Let’s build GPT from scratch in code, spelled out](https://www.youtube.com/watch?v=kCc8FmEb1nY) — a two-hour video that walks through implementing a small transformer end-to-end; the deepest practical understanding most non-specialists will get.
+> - Anthropic, [Mapping the Mind of a Large Language Model](https://www.anthropic.com/news/mapping-mind-language-model) — public-facing summary of mechanistic interpretability research; useful context for “what is the model actually representing.”
+> - Emily M. Bender et al., [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — required reading for the “Stakes and politics” framing above; pairs with the labor and corpus-bias points.

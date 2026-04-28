@@ -275,13 +275,17 @@ For any action that is hard to reverse — writing to a database, sending a mess
                 return {"error": "Action cancelled by user."}
         return TOOL_REGISTRY[tool_call.name](**tool_call.args)
 
-> **NOTE:**
->
-> - [Anthropic: Building agents with the Claude API](https://docs.anthropic.com/en/docs/agents-and-tools/overview) — patterns and examples for tool use and agentic loops.
-> - [LangChain agents documentation](https://python.langchain.com/docs/tutorials/agents/) — a framework-level walk-through of agent construction.
-> - [OpenAI: Function calling guide](https://platform.openai.com/docs/guides/function-calling) — the canonical reference for defining tools the model can invoke.
+## 37.9 Stakes and politics
 
-## 37.9 Worked examples
+An AI agent is a language model with hands — it can call tools, read and write files, send network requests, and execute code, all in pursuit of a goal someone gave it. The political dimension of that capability is steeper than for chat alone, because the consequences of an agent’s actions persist after the conversation ends.
+
+Three things to notice. First, *agents act on behalf of someone, but rarely the person they affect*. An agent that books appointments, approves transactions, or sends messages is acting in the name of its operator. The people receiving those appointments, transactions, and messages are interacting with a non-human system that may not be obvious as such, and that is held accountable through whatever legal and reputational machinery surrounds the operator. As agents move from research demos into production deployments — customer service, hiring, content moderation, healthcare triage — that asymmetry grows. Second, *autonomy concentrates with capital*. Building, deploying, and supervising agents at scale is expensive: long-running compute, monitoring infrastructure, observability tooling, the team that watches for misbehavior. Individuals can build small agents on their laptops; operating them on the scale that makes business sense requires a budget that filters out everyone except established companies and well-funded startups. The promise that “anyone can have an agent” is real for hobby projects and false for the deployments that affect millions of people.
+
+Third, *the alignment problem is a labor problem too*. Aligning an agent to behave well — refusing dangerous tool calls, escalating to humans, respecting the user’s intent — requires the same RLHF and red-teaming labor that aligning chat models does (see [sec-ai-llm](#sec-ai-llm)). The “human in the loop” the framework documentation cheerfully assumes is, at scale, a contracted reviewer with a quota and a queue.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, [sec-ai-llm](#sec-ai-llm) for the user-side workflow, [sec-llm-internals](#sec-llm-internals) for the model under the hood, and [sec-evaluating-ai](#sec-evaluating-ai) for how we test whether an agent is actually doing what we asked. The concrete prompt to carry forward: when you build or deploy an agent, ask whose goals it is optimizing for and whose interests it might harm without telling them.
+
+## 37.10 Worked examples
 
 ### Building a research agent with document retrieval
 
@@ -295,7 +299,7 @@ You have a notebook with five distinct stages — load data, clean it, run analy
 
 An agent ran in production and produced the wrong result. The first move is to **reproduce the failure** and capture the *full* trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the **first place where the output diverged** from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the **model’s reasoning** (the model had the right context but drew a wrong conclusion), or was it in the **tool’s execution** (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the **context it needed** at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.
 
-## 37.10 Exercises
+## 37.11 Exercises
 
 1.  Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.
 
@@ -307,7 +311,7 @@ An agent ran in production and produced the wrong result. The first move is to *
 
 5.  Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.
 
-## 37.11 One-page checklist
+## 37.12 One-page checklist
 
 - Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks
 
@@ -328,3 +332,13 @@ An agent ran in production and produced the wrong result. The first move is to *
 - Treat tool results from external sources as untrusted; sanitize inputs that could contain prompt injection
 
 - Add human-in-the-loop checkpoints for any action that cannot be easily undone
+
+> **NOTE:**
+>
+> - Anthropic, [Building agents with the Claude API](https://docs.anthropic.com/en/docs/agents-and-tools/overview) — patterns and examples for tool use and agentic loops; includes the “human in the loop” pattern this chapter recommends.
+> - Anthropic, [Building effective agents](https://www.anthropic.com/research/building-effective-agents) — a research-blog post on minimal, robust agent designs; a useful counterweight to over-engineered framework abstractions.
+> - LangChain, [Agents documentation](https://python.langchain.com/docs/tutorials/agents/) — a framework-level walk-through of agent construction.
+> - OpenAI, [Function calling guide](https://platform.openai.com/docs/guides/function-calling) — the canonical reference for defining tools the model can invoke.
+> - Shunyu Yao et al., [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) (ICLR 2023) — the paper that named the “reason then act” loop most agent frameworks now implement.
+> - Sayash Kapoor and Arvind Narayanan, [AI Agents That Matter](https://www.aisnakeoil.com/p/ai-agents-that-matter) — practitioner critique of agent benchmarks; useful counterweight to demo-driven hype.
+> - LangSmith, [Tracing and observability documentation](https://docs.smith.langchain.com/) — the most widely used commercial observability layer for agent runs; the “log full traces” advice in this chapter is best operationalized with a tool like this.

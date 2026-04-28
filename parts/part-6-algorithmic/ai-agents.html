@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -663,14 +663,15 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#human-in-the-loop-checkpoints" id="toc-human-in-the-loop-checkpoints" class="nav-link" data-scroll-target="#human-in-the-loop-checkpoints">Human-in-the-loop checkpoints</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">37.9</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">37.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">37.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-a-research-agent-with-document-retrieval" id="toc-building-a-research-agent-with-document-retrieval" class="nav-link" data-scroll-target="#building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</a></li>
   <li><a href="#converting-a-multi-step-notebook-workflow-into-an-agent" id="toc-converting-a-multi-step-notebook-workflow-into-an-agent" class="nav-link" data-scroll-target="#converting-a-multi-step-notebook-workflow-into-an-agent">Converting a multi-step notebook workflow into an agent</a></li>
   <li><a href="#diagnosing-a-misbehaving-agent-from-its-trace" id="toc-diagnosing-a-misbehaving-agent-from-its-trace" class="nav-link" data-scroll-target="#diagnosing-a-misbehaving-agent-from-its-trace">Diagnosing a misbehaving agent from its trace</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">37.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">37.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">37.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -929,27 +930,17 @@ Answer: You are running pandas 2.2.1.</code></pre>
         if confirm.lower() != 'y':
             return {"error": "Action cancelled by user."}
     return TOOL_REGISTRY[tool_call.name](**tool_call.args)</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Anthropic: Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops.</li>
-<li><a href="https://python.langchain.com/docs/tutorials/agents/">LangChain agents documentation</a> — a framework-level walk-through of agent construction.</li>
-<li><a href="https://platform.openai.com/docs/guides/function-calling">OpenAI: Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="37.9">
-<h2 data-number="37.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">37.9</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="37.9">
+<h2 data-number="37.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">37.9</span> Stakes and politics</h2>
+<p>An AI agent is a language model with hands — it can call tools, read and write files, send network requests, and execute code, all in pursuit of a goal someone gave it. The political dimension of that capability is steeper than for chat alone, because the consequences of an agent’s actions persist after the conversation ends.</p>
+<p>Three things to notice. First, <em>agents act on behalf of someone, but rarely the person they affect</em>. An agent that books appointments, approves transactions, or sends messages is acting in the name of its operator. The people receiving those appointments, transactions, and messages are interacting with a non-human system that may not be obvious as such, and that is held accountable through whatever legal and reputational machinery surrounds the operator. As agents move from research demos into production deployments — customer service, hiring, content moderation, healthcare triage — that asymmetry grows. Second, <em>autonomy concentrates with capital</em>. Building, deploying, and supervising agents at scale is expensive: long-running compute, monitoring infrastructure, observability tooling, the team that watches for misbehavior. Individuals can build small agents on their laptops; operating them on the scale that makes business sense requires a budget that filters out everyone except established companies and well-funded startups. The promise that “anyone can have an agent” is real for hobby projects and false for the deployments that affect millions of people.</p>
+<p>Third, <em>the alignment problem is a labor problem too</em>. Aligning an agent to behave well — refusing dangerous tool calls, escalating to humans, respecting the user’s intent — requires the same RLHF and red-teaming labor that aligning chat models does (see <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>). The “human in the loop” the framework documentation cheerfully assumes is, at scale, a contracted reviewer with a quota and a queue.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the user-side workflow, <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> for the model under the hood, and <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a> for how we test whether an agent is actually doing what we asked. The concrete prompt to carry forward: when you build or deploy an agent, ask whose goals it is optimizing for and whose interests it might harm without telling them.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="37.10">
+<h2 data-number="37.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">37.10</span> Worked examples</h2>
 <section id="building-a-research-agent-with-document-retrieval" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-research-agent-with-document-retrieval">Building a research agent with document retrieval</h3>
 <p>You want an agent that can answer research questions by first searching a document corpus, then synthesizing an answer with citations. The minimum design has two tools: a <code>search_documents</code> tool that does vector search over your corpus and returns the top-k document IDs and snippets, and a <code>read_document</code> tool that fetches the full text of a document by ID. You then write a system prompt that explicitly tells the agent to <em>search first</em>, cite the sources it used, and acknowledge uncertainty when the retrieved documents do not contain the answer. Test the loop with three to five real research questions and read the trace carefully — you are watching for the agent to use retrieval in the cases where it should and to <em>not</em> invent answers when nothing is found. Once that core loop works, add a reflection step: after producing an initial answer, the agent re-reads its own answer and identifies any gaps, optionally searching again to fill them. As the conversation grows, monitor how much context each turn consumes and set a threshold at which older results get summarized rather than passed forward verbatim, so the agent does not run out of context window in the middle of a long session.</p>
@@ -963,8 +954,8 @@ Answer: You are running pandas 2.2.1.</code></pre>
 <p>An agent ran in production and produced the wrong result. The first move is to <strong>reproduce the failure</strong> and capture the <em>full</em> trace: every model call, every tool call, every result, every token in context at every step. Then walk the trace from the beginning until you find the <strong>first place where the output diverged</strong> from the expected behavior. That step is your suspect. From there, ask two questions. Was the failure in the <strong>model’s reasoning</strong> (the model had the right context but drew a wrong conclusion), or was it in the <strong>tool’s execution</strong> (the tool returned a confusing or incorrect result that fed bad data into the model)? And did the model have the <strong>context it needed</strong> at the moment of the bad decision, or had something earlier been pushed out of the window or never included? Once you have a hypothesis, isolate the failing prompt — copy the exact context the model saw at that step into a standalone API call — and verify that you can reproduce the bad output deterministically. Then fix the cause: tighten the tool’s return format, expand the system prompt, add a validation step that catches the bad output before it propagates, or shrink the context. Add a regression test that exercises the same scenario, and your future self will thank you.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="37.10">
-<h2 data-number="37.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">37.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="37.11">
+<h2 data-number="37.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">37.11</span> Exercises</h2>
 <ol type="1">
 <li><p>Find documentation or a blog post for one of the frameworks mentioned in this chapter (LangChain, LlamaIndex, CrewAI, or a direct API approach). Summarize in one paragraph: what problem it is designed for, what its main abstractions are, and one trade-off compared to building an agent directly with the API.</p></li>
 <li><p>Write a tool definition (name, description, input schema) for a function that retrieves all rows from a CSV file where a specified column matches a given value. Pay attention to the description: include what the tool does, when to use it, and what it returns.</p></li>
@@ -973,8 +964,8 @@ Answer: You are running pandas 2.2.1.</code></pre>
 <li><p>Read an example agent trace from any framework’s documentation. Identify: (a) where the model decides to call a tool, (b) what information the tool returned, (c) whether the model’s decision was correct given what it knew. Describe one thing you would change about the tool definition or system prompt to improve the agent’s behavior.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="37.11">
-<h2 data-number="37.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">37.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="37.12">
+<h2 data-number="37.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">37.12</span> One-page checklist</h2>
 <ul>
 <li><p>Confirm the task genuinely requires multiple steps before building an agent; use a direct API call for single-step tasks</p></li>
 <li><p>Set a maximum iteration count to prevent runaway loops</p></li>
@@ -987,6 +978,27 @@ Answer: You are running pandas 2.2.1.</code></pre>
 <li><p>Treat tool results from external sources as untrusted; sanitize inputs that could contain prompt injection</p></li>
 <li><p>Add human-in-the-loop checkpoints for any action that cannot be easily undone</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Anthropic, <a href="https://docs.anthropic.com/en/docs/agents-and-tools/overview">Building agents with the Claude API</a> — patterns and examples for tool use and agentic loops; includes the “human in the loop” pattern this chapter recommends.</li>
+<li>Anthropic, <a href="https://www.anthropic.com/research/building-effective-agents">Building effective agents</a> — a research-blog post on minimal, robust agent designs; a useful counterweight to over-engineered framework abstractions.</li>
+<li>LangChain, <a href="https://python.langchain.com/docs/tutorials/agents/">Agents documentation</a> — a framework-level walk-through of agent construction.</li>
+<li>OpenAI, <a href="https://platform.openai.com/docs/guides/function-calling">Function calling guide</a> — the canonical reference for defining tools the model can invoke.</li>
+<li>Shunyu Yao et al., <a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a> (ICLR 2023) — the paper that named the “reason then act” loop most agent frameworks now implement.</li>
+<li>Sayash Kapoor and Arvind Narayanan, <a href="https://www.aisnakeoil.com/p/ai-agents-that-matter">AI Agents That Matter</a> — practitioner critique of agent benchmarks; useful counterweight to demo-driven hype.</li>
+<li>LangSmith, <a href="https://docs.smith.langchain.com/">Tracing and observability documentation</a> — the most widely used commercial observability layer for agent runs; the “log full traces” advice in this chapter is best operationalized with a tool like this.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

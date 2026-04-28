@@ -291,13 +291,17 @@ If outputs differ systematically when only names change, the system may be ampli
 
 Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system’s handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.
 
-> **NOTE:**
->
-> - [Hugging Face: Evaluate library](https://huggingface.co/docs/evaluate/index) — a toolkit for benchmarking models against many standard metrics.
-> - [Anthropic: Evaluating outputs](https://docs.anthropic.com/en/docs/test-and-evaluate/overview) — practical guidance on designing prompt evaluations and test sets.
-> - [OpenAI Evals framework](https://github.com/openai/evals) — an open-source framework for writing and running LLM evaluations.
+## 38.9 Stakes and politics
 
-## 38.9 Worked examples
+Evaluation is taught here as a quality-assurance practice, and it is. It is also one of the most contested political acts in machine learning, because deciding what counts as “working well” is the same as deciding whose interests the system serves.
+
+Three things to notice. First, *fairness has incompatible mathematical definitions*. As [sec-artifacts-politics](#sec-artifacts-politics) describes for the COMPAS case, common notions of fairness in classification — equal false-positive rates, equal false-negative rates, equal calibration — are mathematically incompatible whenever group base rates differ. You cannot satisfy them all simultaneously; you have to *choose* which kind of fairness you prioritize. That choice is a political decision dressed as a technical one, and the audit’s job is to make the choice visible, not to disappear it. Second, *audits can launder more than they expose*. A “we ran a bias audit” line in a deployment announcement reads as accountability and is sometimes the substance of accountability and sometimes its replacement. An audit that tests only the metrics the system was already optimized for, or only on the demographic slices the development team thought to consider, is consistent with very large remaining disparities. The presence of an audit is not the same as the audit having teeth.
+
+Third, *who runs the audit matters*. A first-party audit run by the system’s vendor is structurally different from a second-party audit run by the deploying organization, which is structurally different from a third-party audit run by an independent group with the access and incentive to find problems. Most “audits” in practice are first-party. The independent-audit ecosystem (academic researchers, civil-society organizations like AI Now and the Algorithmic Justice League, journalism in the *ProPublica*/*Markup* mold) is small and underfunded relative to the deployment scale.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, [sec-llm-internals](#sec-llm-internals) for the model-level biases your audit will be measuring, and [sec-ai-agents](#sec-ai-agents) for what changes when the system is taking autonomous actions instead of returning text. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.
+
+## 38.10 Worked examples
 
 ### Building an evaluation suite for a summarization system
 
@@ -311,7 +315,7 @@ You suspect your classification system might treat different groups inconsistent
 
 You have shipped an AI feature and you want to know if it is silently degrading in the wild. The first step is **instrumentation**: log every input, every output, the metadata (model version, temperature, prompt version), and any user feedback signals (thumbs up, thumbs down, escalation to human). Then define **key metrics** that map to the dimensions you care about — format compliance rate (what percentage of outputs parse as valid JSON?), the average rubric score on sampled evaluations, the explicit error rate. Set **alert thresholds** that match the stakes of your application (alert if format compliance drops below 95%, alert if error rate exceeds 1%, alert if user satisfaction signals degrade by more than X%). Schedule a **weekly evaluation run** on a stratified sample of production traffic so you can compare current behavior to your baseline. Maintain a **changelog** that records every model update, every prompt change, every configuration change — this is what lets you correlate degradations with specific changes. Review alerts on a regular cadence and investigate every metric that crosses a threshold *before* you ship the next change, not after.
 
-## 38.10 Exercises
+## 38.11 Exercises
 
 1.  Choose a simple AI task (classify sentiment, extract named entities, summarize a paragraph). Write a rubric with three dimensions, each scored 0–2. Write three test cases that would each score differently on at least one dimension. Explain your scoring.
 
@@ -323,7 +327,7 @@ You have shipped an AI feature and you want to know if it is silently degrading 
 
 5.  You deploy a summarization tool and after two weeks notice that user complaints have increased but your evaluation scores look the same. List three possible explanations and describe what log data you would examine to distinguish between them.
 
-## 38.11 One-page checklist
+## 38.12 One-page checklist
 
 - Define which quality dimensions matter for your specific task before building evaluation
 
@@ -344,3 +348,13 @@ You have shipped an AI feature and you want to know if it is silently degrading 
 - Document evaluation results and audit findings, whether or not they indicate a problem
 
 - Treat evaluation rigor as proportional to stakes: more scrutiny for higher-risk applications
+
+> **NOTE:**
+>
+> - Hugging Face, [Evaluate library](https://huggingface.co/docs/evaluate/index) — a toolkit for benchmarking models against many standard metrics; the entry point for “what metric should I use?”
+> - Anthropic, [Evaluating outputs](https://docs.anthropic.com/en/docs/test-and-evaluate/overview) — practical guidance on designing prompt evaluations and test sets.
+> - OpenAI, [Evals framework](https://github.com/openai/evals) — an open-source framework for writing and running LLM evaluations; pairs well with the Anthropic guide.
+> - Solon Barocas, Moritz Hardt, and Arvind Narayanan, [*Fairness and Machine Learning: Limitations and Opportunities*](https://fairmlbook.org/) — the standard textbook on the technical and political dimensions of fairness; chapters 2 and 3 cover the incompatibility result discussed in “Stakes and politics” above.
+> - Margaret Mitchell et al., [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03677) (FAT\* 2019) — proposes a documentation standard for the intended use, training data, and evaluation results of every released model; lightweight to apply to your own systems.
+> - Inioluwa Deborah Raji and Joy Buolamwini, [Actionable Auditing](https://dl.acm.org/doi/10.1145/3306618.3314244) (AIES 2019) — the *Gender Shades* follow-up showing how third-party audits drove measurable improvements in commercial face APIs; the canonical example of audits with teeth.
+> - AI Now Institute, [Reports](https://ainowinstitute.org/publications) and Algorithmic Justice League, [Reports](https://www.ajl.org/library/research) — ongoing independent research and advocacy on AI auditing; the third-party-audit ecosystem named in “Stakes and politics” above.

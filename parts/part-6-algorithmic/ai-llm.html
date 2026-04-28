@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a25b3de300c20737cb6272080ec48c0d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-a3151d6d85e304d3455b2fdfcad3d98a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b4aad20727e2c594d51e57eaac0bc94c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8045f42d5a5e96ab48e4ca9e459ddf9b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -662,6 +662,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-ai-can-propose-you-must-verify" id="toc-running-theme-ai-can-propose-you-must-verify" class="nav-link" data-scroll-target="#running-theme-ai-can-propose-you-must-verify">Running theme: AI can propose; you must verify</a></li>
   <li><a href="#what-an-ai-assistant-is-doing" id="toc-what-an-ai-assistant-is-doing" class="nav-link" data-scroll-target="#what-an-ai-assistant-is-doing"><span class="header-section-number">35.1</span> What an AI assistant is doing</a>
   <ul class="collapse">
   <li><a href="#what-ai-is-usually-good-at" id="toc-what-ai-is-usually-good-at" class="nav-link" data-scroll-target="#what-ai-is-usually-good-at">What AI is usually good at</a></li>
@@ -732,15 +733,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#resolution-protocol" id="toc-resolution-protocol" class="nav-link" data-scroll-target="#resolution-protocol">Resolution protocol</a></li>
   </ul></li>
-  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies"><span class="header-section-number">35.12</span> Case studies</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">35.12</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">35.13</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#a-notebook-kernel-mismatch" id="toc-a-notebook-kernel-mismatch" class="nav-link" data-scroll-target="#a-notebook-kernel-mismatch">A notebook kernel mismatch</a></li>
   <li><a href="#a-csv-that-loads-into-one-column" id="toc-a-csv-that-loads-into-one-column" class="nav-link" data-scroll-target="#a-csv-that-loads-into-one-column">A CSV that loads into one column</a></li>
   <li><a href="#a-merge-conflict-in-a-notebook" id="toc-a-merge-conflict-in-a-notebook" class="nav-link" data-scroll-target="#a-merge-conflict-in-a-notebook">A merge conflict in a notebook</a></li>
   <li><a href="#a-high-risk-fix-you-should-not-run" id="toc-a-high-risk-fix-you-should-not-run" class="nav-link" data-scroll-target="#a-high-risk-fix-you-should-not-run">A high-risk fix you should not run</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">35.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">35.14</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">35.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">35.15</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/ai-llm.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -804,6 +806,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Avoid privacy and security mistakes when sharing context.</p></li>
 <li><p>Use AI in coursework and collaboration without undermining learning or integrity.</p></li>
 </ol>
+</section>
+<section id="running-theme-ai-can-propose-you-must-verify" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-ai-can-propose-you-must-verify">Running theme: AI can propose; you must verify</h2>
+<p>A large language model produces plausible text that fits patterns in its training data and your prompt. That makes it useful for drafting and transformation, but it does not guarantee correctness. Verification — primary documentation, small experiments, tests — remains your responsibility no matter how confident the assistant sounds.</p>
 </section>
 <section id="what-an-ai-assistant-is-doing" class="level2" data-number="35.1">
 <h2 data-number="35.1" class="anchored" data-anchor-id="what-an-ai-assistant-is-doing"><span class="header-section-number">35.1</span> What an AI assistant is doing</h2>
@@ -1149,28 +1155,18 @@ dir</code></pre>
 <li><p>If still unclear, ask a human with a structured question.</p></li>
 </ol>
 <p>If the assistant cannot provide a verifiable primary source, treat its claim as tentative.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic: Prompt engineering overview</a> — Anthropic’s guide to structured, verifiable prompts.</li>
-<li><a href="https://platform.openai.com/docs/guides/prompt-engineering">OpenAI: Prompt engineering</a> — OpenAI’s parallel guide, with patterns for chat and API workflows.</li>
-<li><a href="https://ai.google.dev/gemini-api/docs/prompting-intro">Google: Generative AI prompt guide</a> — a beginner-friendly walk-through from Gemini’s documentation.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="case-studies" class="level2" data-number="35.12">
-<h2 data-number="35.12" class="anchored" data-anchor-id="case-studies"><span class="header-section-number">35.12</span> Case studies</h2>
-<p>These case studies illustrate how AI fits into a disciplined workflow.</p>
+<section id="stakes-and-politics" class="level2" data-number="35.12">
+<h2 data-number="35.12" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">35.12</span> Stakes and politics</h2>
+<p>The advice in this chapter — use AI tools as drafting aids, verify their outputs, do not paste secrets — is good practical guidance. It is also a workflow built on top of an industry whose costs and externalities are largely paid by people other than the user.</p>
+<p>Three things to notice. First, <em>training data and consent</em>. Modern LLMs are trained on text and code scraped from the open web, much of it without explicit permission from the authors. Books, blog posts, GitHub repositories under restrictive licenses, news articles, Stack Overflow answers — all of it has been ingested, with the legal questions still being litigated. When you use an AI tool, the value it delivers to you is partly the labor of millions of writers and developers who were not asked. Second, <em>labeling labor</em>. The reinforcement-learning-from-human-feedback that makes modern chat assistants usable is performed by underpaid contract workers, often in Kenya, the Philippines, Venezuela, and India, reviewing prompts and outputs that are sometimes traumatic. Mary Gray and Siddharth Suri’s <em>Ghost Work</em> (cited in <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a>) documents the broader pattern; the AI version is its current peak.</p>
+<p>Third, <em>the verification responsibility is yours, not theirs</em>. The framing this chapter teaches — “AI can propose, you must verify” — is correct, and it is also a quiet transfer of liability. When an AI assistant suggests an unsafe command, a hallucinated citation, or a security-weakening pattern, the consequences fall on the person who ran the command, not on the company that built the model. That is a defensible workflow for individual users. It is also a remarkable arrangement at the level of an industry: an unprecedented tool is shipped to billions of people with the legal and practical responsibility for its failures pushed onto each of those people individually.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, and <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> for what the model is actually doing under the hood. The concrete prompt to carry forward: when you accept an AI suggestion, ask whose labor produced it and who pays when it is wrong.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="35.13">
+<h2 data-number="35.13" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">35.13</span> Worked examples</h2>
+<p>These worked examples illustrate how AI fits into a disciplined workflow.</p>
 <section id="a-notebook-kernel-mismatch" class="level3">
 <h3 class="anchored" data-anchor-id="a-notebook-kernel-mismatch">A notebook kernel mismatch</h3>
 <p>Suppose you can <code>import pandas</code> from the terminal, but the same import fails in your Jupyter notebook with <code>ModuleNotFoundError: No module named 'pandas'</code>. The assistant’s job is to propose hypotheses; yours is to gather evidence.</p>
@@ -1202,8 +1198,8 @@ dir</code></pre>
 <p>The correct response is to step back and ask why the program cannot write where you told it to. Almost always the answer is that the path is wrong — you are trying to write into <code>/usr/local/share/...</code> instead of into a folder you own — and the right fix is to change the path, not the permissions. Prefer writing into a user-owned folder under your home directory (a project-local <code>outputs/</code> works fine). If you genuinely think you need system permissions, that is the moment to ask a TA or instructor before running anything. High-risk suggestions are exactly the situations where the assistant has the least context and the consequences of being wrong are largest.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="35.13">
-<h2 data-number="35.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">35.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="35.14">
+<h2 data-number="35.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">35.14</span> Exercises</h2>
 <ol type="1">
 <li><p>Take a recent error. Ask an assistant for three hypotheses and two checks per hypothesis. Run the checks and record which hypotheses you eliminated.</p></li>
 <li><p>Draft a structured help request (Goal/Expected/Actual/Repro/Context/What I tried). Ask the assistant to improve clarity without changing facts. Audit the result and then post it.</p></li>
@@ -1212,8 +1208,8 @@ dir</code></pre>
 <li><p>Create a personal “do not paste” list (credentials, tokens, private data). Keep it near your workstation.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="35.14">
-<h2 data-number="35.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">35.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="35.15">
+<h2 data-number="35.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">35.15</span> One-page checklist</h2>
 <ul>
 <li><p>I treat AI output as a proposal and require evidence.</p></li>
 <li><p>I scale verification to risk.</p></li>
@@ -1224,6 +1220,28 @@ dir</code></pre>
 <li><p>I do not paste secrets or sensitive data.</p></li>
 <li><p>I disclose AI assistance when required and keep it specific.</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Anthropic, <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Prompt engineering overview</a> — Anthropic’s guide to structured, verifiable prompts.</li>
+<li>OpenAI, <a href="https://platform.openai.com/docs/guides/prompt-engineering">Prompt engineering</a> — OpenAI’s parallel guide, with patterns for chat and API workflows.</li>
+<li>Google, <a href="https://ai.google.dev/gemini-api/docs/prompting-intro">Generative AI prompt guide</a> — a beginner-friendly walk-through from Gemini’s documentation.</li>
+<li>Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell, <a href="https://dl.acm.org/doi/10.1145/3442188.3445922">On the Dangers of Stochastic Parrots</a> (FAccT, 2021) — the canonical critical paper on large language models; required reading for the “Stakes and politics” framing above.</li>
+<li>Arvind Narayanan and Sayash Kapoor, <a href="https://www.aisnakeoil.com/"><em>AI Snake Oil</em></a> — a calm, evidence-driven book on what AI can and cannot do; an excellent counterweight to both hype and panic.</li>
+<li>Mary L. Gray and Siddharth Suri, <a href="https://ghostwork.info/"><em>Ghost Work</em></a> — the foundational book on the hidden human labor behind “automated” systems; the AI labeling industry is its current peak.</li>
+<li><a href="https://www.dair-institute.org/">Distributed AI Research Institute (DAIR)</a> — Timnit Gebru’s research institute; a current and ongoing source on AI labor, bias, and accountability.</li>
+<li>Karen Hao, <a href="https://karenhao.com/empire-of-ai/"><em>Empire of AI</em></a> — long-form journalism on the labor and resource flows behind modern AI; pairs with the labeling-labor framing above.</li>
+</ul>
+</div>
+</div>
 
 
 </section>
