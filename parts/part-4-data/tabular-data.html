@@ -687,15 +687,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#implicit-dropping-of-nan-rows" id="toc-implicit-dropping-of-nan-rows" class="nav-link" data-scroll-target="#implicit-dropping-of-nan-rows">6. Implicit dropping of NaN rows</a></li>
   <li><a href="#mixed-types-in-a-numeric-column" id="toc-mixed-types-in-a-numeric-column" class="nav-link" data-scroll-target="#mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">21.6</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">21.6</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">21.7</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#turning-wide-survey-data-into-tidy" id="toc-turning-wide-survey-data-into-tidy" class="nav-link" data-scroll-target="#turning-wide-survey-data-into-tidy">Turning wide survey data into tidy</a></li>
   <li><a href="#a-full-cleaning-pipeline" id="toc-a-full-cleaning-pipeline" class="nav-link" data-scroll-target="#a-full-cleaning-pipeline">A full cleaning pipeline</a></li>
   <li><a href="#catching-a-bad-merge" id="toc-catching-a-bad-merge" class="nav-link" data-scroll-target="#catching-a-bad-merge">Catching a bad merge</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">21.7</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.8</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">21.9</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">21.8</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.9</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">21.10</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/tabular-data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -997,27 +998,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</h3>
 <p><strong>Symptom:</strong> a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as <code>object</code>. Operations are slow and error-prone.</p>
 <p><strong>Fix:</strong> <code>pd.to_numeric(..., errors="coerce")</code> as in problem 2, then decide what to do with the NaNs. Do not silently <code>.dropna()</code> — that is the row you should be investigating.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Hadley Wickham, <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><em>Tidy Data</em></a> — the canonical paper on long/wide formats.</li>
-<li><a href="https://pandas.pydata.org/docs/user_guide/reshaping.html">pandas User Guide: Reshaping</a> — the official guide to <code>melt</code>, <code>pivot</code>, <code>stack</code>, and <code>unstack</code>.</li>
-<li><a href="https://docs.greatexpectations.io/">Great Expectations</a> — a popular library for writing the validation checks this chapter advocates.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="21.6">
-<h2 data-number="21.6" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">21.6</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">21.6</span> Stakes and politics</h2>
+<p>This chapter teaches a workflow built around <em>cleaning</em> data — handling missing values, fixing dtypes, deduplicating, validating shape and ranges. Each of those moves looks technical, and each one is also a political choice that anyone reading your conclusions will read your data through.</p>
+<p>Three things to notice. First, <em>what counts as missing</em>. A <code>NaN</code> in a survey response can mean “the respondent declined,” “the question did not apply,” “the survey software failed,” or “this row is from before the question existed.” Treating all four the same — most often by a quiet <code>.dropna()</code> — silently encodes the assumption that the missing rows are exchangeable with the present ones, which is rarely true. Missingness in real datasets is often <em>informative</em>: the people who did not answer the income question are not a random sample of respondents, they are a particular subset whose absence is itself a finding.</p>
+<p>Second, <em>what counts as an outlier</em>. A flagged outlier is a row that differs from the others. In a dataset of incomes, that might be a billionaire whose presence skews the mean — or it might be a household in deep poverty whose presence is exactly the population the analysis is supposed to inform. “Removing outliers” sometimes means cleaning data and sometimes means erasing the most policy-relevant cases. Third, <em>what counts as a duplicate</em>. Two rows with the same key are duplicates only if you decide the key is enough to identify them. The same person can appear twice for legitimate reasons (two visits, two purchases, two enrollments); collapsing them silently rewrites the underlying social facts.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: every cleaning step is a claim that the rows you removed do not matter. Write down which rows you removed and <em>why</em> — that note is part of your analysis, not separate from it.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">21.7</span> Worked examples</h2>
 <section id="turning-wide-survey-data-into-tidy" class="level3">
 <h3 class="anchored" data-anchor-id="turning-wide-survey-data-into-tidy">Turning wide survey data into tidy</h3>
 <p>You have a survey export in wide format:</p>
@@ -1104,8 +1095,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Five extra characters (<code>validate="many_to_one"</code>) catches the bug that would otherwise silently double every revenue figure in your final report.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="21.7">
-<h2 data-number="21.7" class="anchored" data-anchor-id="templates"><span class="header-section-number">21.7</span> Templates</h2>
+<section id="templates" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="templates"><span class="header-section-number">21.8</span> Templates</h2>
 <p><strong>A “load, clean, validate” skeleton to paste into every cleaning script:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1135,8 +1126,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[KEY_COLUMN].is_unique</span>
 <span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add dataset-specific checks below</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="21.8">
-<h2 data-number="21.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.8</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.9</span> Exercises</h2>
 <ol type="1">
 <li>Take a wide dataset from your own work (a survey, a grade book, a classroom export) and write a one-line <code>melt</code> that converts it to tidy. Verify by counting rows.</li>
 <li>Write the reverse: take a tidy dataset and <code>pivot</code> it back to wide. Confirm the two are equivalent after reshaping.</li>
@@ -1147,8 +1138,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Find a dataset with missing-value sentinels. Load it twice — once with default options, once with <code>na_values=</code>. Compare <code>.describe()</code>. How many of your statistics changed?</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="21.9">
-<h2 data-number="21.9" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">21.9</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">21.10</span> One-page checklist</h2>
 <ul>
 <li><strong>Never modify raw data.</strong> Keep it in <code>data/raw/</code>, read-only.</li>
 <li><strong>Cleaning is a script, not a notebook.</strong> Reproducible and rerunnable, top to bottom.</li>
@@ -1161,6 +1152,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Paste a <code>assert</code> validation block at the top of every analysis.</strong></li>
 <li><strong>If row counts change silently, stop and investigate.</strong> It is almost always a bug.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Hadley Wickham, <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><em>Tidy Data</em></a> — the canonical paper on long/wide formats; under 25 pages and shapes how the rest of the field thinks about table shape.</li>
+<li>pandas, <a href="https://pandas.pydata.org/docs/user_guide/reshaping.html">User Guide: Reshaping</a> — the official guide to <code>melt</code>, <code>pivot</code>, <code>stack</code>, and <code>unstack</code>.</li>
+<li>Catherine D’Ignazio and Lauren F. Klein, <a href="https://data-feminism.mitpress.mit.edu/"><em>Data Feminism</em></a> — the standard book-length treatment of who gets counted, who counts, and how the technical decisions of data work encode power; pairs directly with the “Stakes and politics” framing above.</li>
+<li>Great Expectations, <a href="https://docs.greatexpectations.io/">Documentation</a> — a popular library for writing the validation checks this chapter advocates; treats data quality assertions as first-class artifacts.</li>
+<li>Pandera, <a href="https://pandera.readthedocs.io/">Documentation</a> — a lighter-weight schema and validation library for pandas DataFrames; useful when Great Expectations feels too heavy.</li>
+<li>The Turing Way, <a href="https://book.the-turing-way.org/reproducible-research/open/open-data">Reproducible Research: Open Data</a> — community-maintained chapter on documenting datasets, including data dictionaries and provenance notes.</li>
+<li>Timnit Gebru et al., <a href="https://arxiv.org/abs/1803.09010"><em>Datasheets for Datasets</em></a> — proposes a documentation standard answering “who collected this, why, and what is missing” for any dataset; lightweight to apply to your own work.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

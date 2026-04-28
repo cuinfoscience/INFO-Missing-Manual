@@ -347,13 +347,15 @@ A common hybrid pattern: write a SQL query that selects and joins the rows you n
 | `SELECT * FROM a LEFT JOIN b USING (k)` | `a.merge(b, on="k", how="left")` |
 | `SELECT DISTINCT k FROM t` | `df["k"].unique()` |
 
-> **NOTE:**
->
-> - [SQLite SQL language reference](https://www.sqlite.org/lang.html) — the authoritative grammar SQLite actually implements.
-> - [Mode Analytics SQL Tutorial](https://mode.com/sql-tutorial/) — a free, beginner-friendly tutorial with interactive exercises.
-> - [Python `sqlite3` module](https://docs.python.org/3/library/sqlite3.html) — the standard library’s database connector, ideal for teaching and prototyping.
+## 23.11 Stakes and politics
 
-## 23.11 Worked examples
+A SQL schema is a frozen ontology. The columns you create — `customer_id`, `first_name`, `last_name`, `gender`, `country`, `address_line_1` — are claims about which categories matter, what shape each value takes, and how the world is supposed to fit. Once a schema is in production it tends to stay, because applications, dashboards, reports, and downstream pipelines all encode its assumptions. The cost of changing a column is much higher than the cost of choosing one.
+
+Two consequences worth naming. First, *whose categories the schema serves cleanly*. A `gender` column that allows two values silently records anyone outside that pair as “missing.” A `name` column split into `first` and `last` works for some Western naming conventions and breaks for cultures where the family name comes first, where mononyms are common, or where patronymics shift between contexts. A `country` column with a fixed list of ISO codes makes some political claims (Taiwan? Western Sahara? Palestine?) before any application does. None of these problems are unsolvable; all of them require recognizing that the schema is a political artifact and that the cost of disagreeing with it falls on whoever does not fit. Second, *which queries become easy*. A schema makes the questions it was designed for cheap and the questions it was not designed for expensive — and “expensive” often means “won’t be asked.” Schemas decide what gets measured by deciding what is convenient to measure.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you read a schema, ask whose categories it embeds and what kinds of people, places, or events would not fit its columns cleanly.
+
+## 23.12 Worked examples
 
 ### Top customers by revenue
 
@@ -407,7 +409,7 @@ plt.show()
 
 The database does the aggregation over potentially millions of rows; pandas and matplotlib handle the plot. Both tools do what they are best at.
 
-## 23.12 Templates
+## 23.13 Templates
 
 **A parameterized query function:**
 
@@ -443,7 +445,7 @@ SELECT * FROM orders LIMIT 5;
 
 Every database has its own variant of these metadata queries. Learn them for whichever one you use.
 
-## 23.13 Exercises
+## 23.14 Exercises
 
 1.  Download the sample [Chinook SQLite database](https://github.com/lerocha/chinook-database) (or any other small public dataset). Write a `SELECT` that lists the top 10 tracks by length.
 2.  Using the same database, write a query that counts the number of tracks per genre and orders them descending.
@@ -453,7 +455,7 @@ Every database has its own variant of these metadata queries. Learn them for whi
 6.  Load the result of a SQL query directly into a pandas DataFrame and run `.describe()` on one of the numeric columns. Compare with running the same aggregate purely in SQL using `AVG`/`MIN`/`MAX`.
 7.  Take a pandas pipeline you already wrote and translate it line-for-line into SQL. Run both; confirm the row count and numeric totals agree.
 
-## 23.14 One-page checklist
+## 23.15 One-page checklist
 
 - Identifiers are lowercase; keywords are UPPERCASE; strings in single quotes.
 - End every statement with a semicolon.
@@ -464,3 +466,13 @@ Every database has its own variant of these metadata queries. Learn them for whi
 - From Python, use parameterized queries — never string-format user input.
 - Load query results into pandas with `pd.read_sql_query` for analysis, plotting, and further shaping.
 - For anything beyond this chapter, the official docs of your specific database (SQLite, PostgreSQL, MySQL) are the authoritative reference. See [sec-reading-docs](#sec-reading-docs).
+
+> **NOTE:**
+>
+> - SQLite, [SQL language reference](https://www.sqlite.org/lang.html) — the authoritative grammar SQLite actually implements; small enough to read end-to-end.
+> - PostgreSQL Global Development Group, [PostgreSQL documentation](https://www.postgresql.org/docs/current/) — the canonical free SQL database; the docs are the standard for what serious SQL engines should support.
+> - Mode, [SQL Tutorial](https://mode.com/sql-tutorial/) — a free, beginner-friendly tutorial with interactive exercises against a real dataset.
+> - Python docs, [`sqlite3` module](https://docs.python.org/3/library/sqlite3.html) — the standard library’s database connector; the right tool for teaching, prototyping, and most analytic work that fits on one machine.
+> - Markus Winand, [Use The Index, Luke!](https://use-the-index-luke.com/) — a free book on SQL indexing and query performance; useful once your queries get slow.
+> - Patrick McKenzie, [Falsehoods Programmers Believe About Names](https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/) — the canonical short essay on why “first name / last name” schemas fail; required reading before designing any user table.
+> - DuckDB, [Documentation](https://duckdb.org/docs/) — an analytics-focused SQL engine that runs in your Python process and reads Parquet, CSV, and pandas DataFrames directly; the right next step after `sqlite3` for analytic work.

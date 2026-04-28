@@ -324,13 +324,15 @@ df.sort_values(["category", "price"])          # multi-column
 df.sort_index()                                # sort by index (labels)
 ```
 
-> **NOTE:**
->
-> - [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html) — conceptual explanations of indexing, merging, and reshaping.
-> - [pandas API reference](https://pandas.pydata.org/docs/reference/index.html) — every method and parameter, with examples.
-> - [pandas Cheat Sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — a printable one-pager covering the most common operations.
+## 22.10 Stakes and politics
 
-## 22.10 Worked examples
+pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.
+
+Three things to notice. First, *the dtype defaults assume Western numeric and date conventions*. Numbers are read as IEEE 754 floats; dates parse as month-day-year unless told otherwise (a common silent bug in non-US data); missing values silently coerce integer columns to floats because the original NumPy `int64` cannot hold `NaN`. None of these are bugs — they are documented choices — but they work cleanly for the data their authors most often handled, and less cleanly for everyone else’s. Second, *merge and groupby defaults preferentially keep the populous side*. `merge(how="inner")` is the default, which silently discards rows that do not match — a behavior that is fine when you are joining a transactions table against a complete customer list, and quietly disastrous when you are joining unequal demographic groups whose representation in your matching key is itself unequal. Third, *the maintainers and contributors are not the user base*. pandas is overwhelmingly maintained by a small number of contributors, paid by a small number of US and European institutions, working in English. The bug reports that get prioritized are the ones that surface in their workflows; the rough edges that affect non-English text, right-to-left scripts, non-Gregorian calendars, and informal-economy data shapes get fixed when someone with the time and English fluency files a careful issue.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, and [sec-tabular-data](#sec-tabular-data) for the cleaning-decision politics that ride on top of these defaults. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.
+
+## 22.11 Worked examples
 
 ### A one-minute exploration of a new dataset
 
@@ -386,7 +388,7 @@ assert len(merged) == len(orders), "Merge changed row count"
 
 The `validate` + assert pattern prevents the silent-duplication class of bugs.
 
-## 22.11 Templates
+## 22.12 Templates
 
 **A “first look” block for any new DataFrame:**
 
@@ -417,7 +419,7 @@ result = (
 )
 ```
 
-## 22.12 Exercises
+## 22.13 Exercises
 
 1.  Load a CSV from an open-data source into a DataFrame. Run the six inspection commands from section 3. Write one sentence for each about what you learned.
 2.  From the same DataFrame, select a single column as a Series and a list of two columns as a DataFrame. Confirm the types with `type()`.
@@ -427,7 +429,7 @@ result = (
 6.  Perform a `merge` and then `validate="one_to_one"`. Intentionally break it by duplicating a row in the right-hand DataFrame and confirm pandas raises.
 7.  Take a notebook cell you wrote as a for-loop over `iterrows` and rewrite it as a vectorized operation. Time both. Write down the speedup.
 
-## 22.13 One-page checklist
+## 22.14 One-page checklist
 
 - Every new DataFrame: run shape / dtypes / head / describe / isna before anything else.
 - Use `.loc` for label-based selection, `.iloc` for integer-based, and boolean masks for filters.
@@ -438,3 +440,13 @@ result = (
 - Merge with `validate="..."` every time.
 - For reshaping and validation, read [sec-tabular-data](#sec-tabular-data) first.
 - For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see [sec-reading-docs](#sec-reading-docs).
+
+> **NOTE:**
+>
+> - pandas, [User Guide](https://pandas.pydata.org/docs/user_guide/index.html) — conceptual explanations of indexing, merging, and reshaping; treat this as the textbook.
+> - pandas, [API reference](https://pandas.pydata.org/docs/reference/index.html) — every method and parameter, with examples; treat this as the dictionary.
+> - pandas, [Cheat Sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — a printable one-pager covering the most common operations; useful taped above your desk.
+> - Wes McKinney, [*Python for Data Analysis*, 3rd edition](https://wesmckinney.com/book/) — the book by pandas’s original author; the second half is dense reference, the first half is a clean introduction.
+> - Wes McKinney, [Apache Arrow and the “10 Things I Hate About pandas”](https://wesmckinney.com/blog/apache-arrow-pandas-internals/) — the design retrospective from pandas’s creator; useful context for the “Stakes and politics” framing above.
+> - Polars, [User Guide](https://docs.pola.rs/user-guide/) — a fast, Rust-based DataFrame library with a different (lazy, expression-based) API; worth knowing exists when pandas runs out of room.
+> - DuckDB, [Python API](https://duckdb.org/docs/api/python/overview) — an in-process analytic database that reads and writes pandas DataFrames directly; the right tool when SQL is the better fit for the question.

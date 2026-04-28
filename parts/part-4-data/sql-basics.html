@@ -688,15 +688,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#sql-vs.-pandas" id="toc-sql-vs.-pandas" class="nav-link" data-scroll-target="#sql-vs.-pandas"><span class="header-section-number">23.9</span> SQL vs.&nbsp;pandas</a></li>
   <li><a href="#sql-pandas-translation-table" id="toc-sql-pandas-translation-table" class="nav-link" data-scroll-target="#sql-pandas-translation-table"><span class="header-section-number">23.10</span> SQL ↔︎ pandas translation table</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">23.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">23.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">23.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#top-customers-by-revenue" id="toc-top-customers-by-revenue" class="nav-link" data-scroll-target="#top-customers-by-revenue">Top customers by revenue</a></li>
   <li><a href="#customers-with-no-orders-left-join-is-null" id="toc-customers-with-no-orders-left-join-is-null" class="nav-link" data-scroll-target="#customers-with-no-orders-left-join-is-null">Customers with no orders (<code>LEFT JOIN</code> + <code>IS NULL</code>)</a></li>
   <li><a href="#run-a-sql-query-and-chart-the-result" id="toc-run-a-sql-query-and-chart-the-result" class="nav-link" data-scroll-target="#run-a-sql-query-and-chart-the-result">Run a SQL query and chart the result</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">23.12</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">23.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">23.14</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">23.13</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">23.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">23.15</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/sql-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1170,26 +1171,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://www.sqlite.org/lang.html">SQLite SQL language reference</a> — the authoritative grammar SQLite actually implements.</li>
-<li><a href="https://mode.com/sql-tutorial/">Mode Analytics SQL Tutorial</a> — a free, beginner-friendly tutorial with interactive exercises.</li>
-<li><a href="https://docs.python.org/3/library/sqlite3.html">Python <code>sqlite3</code> module</a> — the standard library’s database connector, ideal for teaching and prototyping.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="23.11">
-<h2 data-number="23.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">23.11</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="23.11">
+<h2 data-number="23.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">23.11</span> Stakes and politics</h2>
+<p>A SQL schema is a frozen ontology. The columns you create — <code>customer_id</code>, <code>first_name</code>, <code>last_name</code>, <code>gender</code>, <code>country</code>, <code>address_line_1</code> — are claims about which categories matter, what shape each value takes, and how the world is supposed to fit. Once a schema is in production it tends to stay, because applications, dashboards, reports, and downstream pipelines all encode its assumptions. The cost of changing a column is much higher than the cost of choosing one.</p>
+<p>Two consequences worth naming. First, <em>whose categories the schema serves cleanly</em>. A <code>gender</code> column that allows two values silently records anyone outside that pair as “missing.” A <code>name</code> column split into <code>first</code> and <code>last</code> works for some Western naming conventions and breaks for cultures where the family name comes first, where mononyms are common, or where patronymics shift between contexts. A <code>country</code> column with a fixed list of ISO codes makes some political claims (Taiwan? Western Sahara? Palestine?) before any application does. None of these problems are unsolvable; all of them require recognizing that the schema is a political artifact and that the cost of disagreeing with it falls on whoever does not fit. Second, <em>which queries become easy</em>. A schema makes the questions it was designed for cheap and the questions it was not designed for expensive — and “expensive” often means “won’t be asked.” Schemas decide what gets measured by deciding what is convenient to measure.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you read a schema, ask whose categories it embeds and what kinds of people, places, or events would not fit its columns cleanly.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="23.12">
+<h2 data-number="23.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">23.12</span> Worked examples</h2>
 <section id="top-customers-by-revenue" class="level3">
 <h3 class="anchored" data-anchor-id="top-customers-by-revenue">Top customers by revenue</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.name, <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> total</span>
@@ -1234,8 +1224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The database does the aggregation over potentially millions of rows; pandas and matplotlib handle the plot. Both tools do what they are best at.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="23.12">
-<h2 data-number="23.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">23.12</span> Templates</h2>
+<section id="templates" class="level2" data-number="23.13">
+<h2 data-number="23.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">23.13</span> Templates</h2>
 <p><strong>A parameterized query function:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -1262,8 +1252,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> orders <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Every database has its own variant of these metadata queries. Learn them for whichever one you use.</p>
 </section>
-<section id="exercises" class="level2" data-number="23.13">
-<h2 data-number="23.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">23.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="23.14">
+<h2 data-number="23.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">23.14</span> Exercises</h2>
 <ol type="1">
 <li>Download the sample <a href="https://github.com/lerocha/chinook-database">Chinook SQLite database</a> (or any other small public dataset). Write a <code>SELECT</code> that lists the top 10 tracks by length.</li>
 <li>Using the same database, write a query that counts the number of tracks per genre and orders them descending.</li>
@@ -1274,8 +1264,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Take a pandas pipeline you already wrote and translate it line-for-line into SQL. Run both; confirm the row count and numeric totals agree.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="23.14">
-<h2 data-number="23.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">23.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="23.15">
+<h2 data-number="23.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">23.15</span> One-page checklist</h2>
 <ul>
 <li>Identifiers are lowercase; keywords are UPPERCASE; strings in single quotes.</li>
 <li>End every statement with a semicolon.</li>
@@ -1287,6 +1277,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Load query results into pandas with <code>pd.read_sql_query</code> for analysis, plotting, and further shaping.</li>
 <li>For anything beyond this chapter, the official docs of your specific database (SQLite, PostgreSQL, MySQL) are the authoritative reference. See <a href="../part-1-practice/reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>SQLite, <a href="https://www.sqlite.org/lang.html">SQL language reference</a> — the authoritative grammar SQLite actually implements; small enough to read end-to-end.</li>
+<li>PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/">PostgreSQL documentation</a> — the canonical free SQL database; the docs are the standard for what serious SQL engines should support.</li>
+<li>Mode, <a href="https://mode.com/sql-tutorial/">SQL Tutorial</a> — a free, beginner-friendly tutorial with interactive exercises against a real dataset.</li>
+<li>Python docs, <a href="https://docs.python.org/3/library/sqlite3.html"><code>sqlite3</code> module</a> — the standard library’s database connector; the right tool for teaching, prototyping, and most analytic work that fits on one machine.</li>
+<li>Markus Winand, <a href="https://use-the-index-luke.com/">Use The Index, Luke!</a> — a free book on SQL indexing and query performance; useful once your queries get slow.</li>
+<li>Patrick McKenzie, <a href="https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/">Falsehoods Programmers Believe About Names</a> — the canonical short essay on why “first name / last name” schemas fail; required reading before designing any user table.</li>
+<li>DuckDB, <a href="https://duckdb.org/docs/">Documentation</a> — an analytics-focused SQL engine that runs in your Python process and reads Parquet, CSV, and pandas DataFrames directly; the right next step after <code>sqlite3</code> for analytic work.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

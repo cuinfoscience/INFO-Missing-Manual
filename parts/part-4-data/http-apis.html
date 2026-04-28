@@ -691,15 +691,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#respect-robots.txt" id="toc-respect-robots.txt" class="nav-link" data-scroll-target="#respect-robots.txt">Respect <code>robots.txt</code></a></li>
   </ul></li>
   <li><a href="#when-not-to-use-requests-directly" id="toc-when-not-to-use-requests-directly" class="nav-link" data-scroll-target="#when-not-to-use-requests-directly"><span class="header-section-number">24.8</span> When <em>not</em> to use <code>requests</code> directly</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">24.9</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">24.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">24.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#fetch-a-github-repos-metadata" id="toc-fetch-a-github-repos-metadata" class="nav-link" data-scroll-target="#fetch-a-github-repos-metadata">Fetch a GitHub repo’s metadata</a></li>
   <li><a href="#paginate-through-results" id="toc-paginate-through-results" class="nav-link" data-scroll-target="#paginate-through-results">Paginate through results</a></li>
   <li><a href="#handle-a-flaky-weather-api" id="toc-handle-a-flaky-weather-api" class="nav-link" data-scroll-target="#handle-a-flaky-weather-api">Handle a flaky weather API</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">24.10</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">24.12</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">24.11</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">24.13</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/http-apis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1059,26 +1060,15 @@ Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public A
 <li><strong>Is there a bulk download?</strong> Many data sources also offer CSV, Parquet, or SQL dumps of the same data. If you want a snapshot, the dump is usually much faster and easier than hammering the API row by row. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</li>
 <li><strong>Is this a one-off?</strong> For a single fetch, <code>curl</code> on the command line or a browser download might be faster than a Python script. Save the result to disk and work from there.</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://requests.readthedocs.io/en/latest/"><code>requests</code> documentation</a> — the official guide to the most common Python HTTP library.</li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">MDN: An overview of HTTP</a> — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.</li>
-<li><a href="https://httpstatuses.com/">HTTP Status Codes (httpstatuses.com)</a> — a searchable reference for every status code you will see in the wild.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="24.9">
-<h2 data-number="24.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">24.9</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="24.9">
+<h2 data-number="24.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">24.9</span> Stakes and politics</h2>
+<p>A web API is a controlled door into someone else’s data. The mechanics in this chapter — keys, rate limits, authentication, retries — are the door’s hardware, and noticing them as hardware is most of the political move.</p>
+<p>Three things to notice. First, <em>the data provider sets the terms</em>. They choose which fields the API exposes, which historical records remain accessible, what counts as “fair use,” and how often they will deprecate endpoints. When Twitter became X and revoked academic API access in 2023, dozens of long-running research projects collapsed overnight; when Reddit moved to paid API access later that year, third-party clients shut down and the moderation tools many subreddits relied on stopped working. Endpoints are not infrastructure; they are corporate decisions held in place until they are not. Second, <em>rate limits and pricing tiers concentrate access</em>. A free tier that allows 60 requests per hour is enough for a class assignment and useless for any analysis at scale. Paid tiers exist precisely to filter who can ask which questions, and the price is set by the provider’s business model, not by the cost of serving the bytes. Third, <em>the legal gradient between API and scrape is real</em>. APIs come with terms of service that explicitly authorize the access you are doing; web scraping the same data may or may not be lawful depending on the CFAA, the DMCA, the site’s terms, and which jurisdiction you sit in. The technical bar to scraping is low; the legal bar can be unexpectedly high — Aaron Swartz’s case is the cautionary one.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, including the CFAA and DMCA history. The concrete prompt to carry forward: when you build a project on someone else’s API, ask what happens when the provider changes the rules — because they will.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="24.10">
+<h2 data-number="24.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">24.10</span> Worked examples</h2>
 <section id="fetch-a-github-repos-metadata" class="level3">
 <h3 class="anchored" data-anchor-id="fetch-a-github-repos-metadata">Fetch a GitHub repo’s metadata</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -1140,8 +1130,8 @@ Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public A
 <p>Three layers of defense: status-code checks, timeout handling, and exponential backoff.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="24.10">
-<h2 data-number="24.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">24.10</span> Templates</h2>
+<section id="templates" class="level2" data-number="24.11">
+<h2 data-number="24.11" class="anchored" data-anchor-id="templates"><span class="header-section-number">24.11</span> Templates</h2>
 <p><strong>A defensive GET helper:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1163,8 +1153,8 @@ GITHUB_TOKEN=ghp_...</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="24.11">
-<h2 data-number="24.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="24.12">
+<h2 data-number="24.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.12</span> Exercises</h2>
 <ol type="1">
 <li>Use <code>requests.get</code> to fetch <code>https://api.github.com/repos/python/cpython</code> and print the star count, license name, and default branch.</li>
 <li>Add a <code>User-Agent</code> header to the request above. Repeat the request without one (or with <code>User-Agent: ""</code>) and see if you get the same response.</li>
@@ -1175,8 +1165,8 @@ GITHUB_TOKEN=ghp_...</code></pre>
 <li>Use <code>resp = requests.get(...)</code> and inspect <code>resp.headers</code> in a notebook. Find the <code>Content-Type</code>, <code>Server</code>, and any rate-limit headers (<code>X-RateLimit-Remaining</code> is common).</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="24.12">
-<h2 data-number="24.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">24.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="24.13">
+<h2 data-number="24.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">24.13</span> One-page checklist</h2>
 <ul>
 <li>Import <code>requests</code>; install with <code>python -m pip install requests</code>.</li>
 <li>Always pass a <code>timeout=</code> to every request.</li>
@@ -1189,6 +1179,28 @@ GITHUB_TOKEN=ghp_...</code></pre>
 <li>Prefer a bulk download when you need a snapshot of the whole dataset.</li>
 <li>Inspect <code>resp.json()</code> in a notebook before assuming its shape.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python Software Foundation, <a href="https://requests.readthedocs.io/en/latest/"><code>requests</code> documentation</a> — the official guide to the most widely used Python HTTP library.</li>
+<li>Encode, <a href="https://www.python-httpx.org/"><code>httpx</code> documentation</a> — a modern alternative to <code>requests</code> with the same shape but native async support; the right choice when you need concurrency.</li>
+<li>MDN, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">An overview of HTTP</a> — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.</li>
+<li><a href="https://httpstatuses.com/">HTTP Status Codes (httpstatuses.com)</a> — a searchable reference for every status code you will see in the wild, with explanations.</li>
+<li><a href="https://httpie.io/cli">HTTPie</a> — a friendly command-line HTTP client; great for poking at an API before you wrap it in Python.</li>
+<li>IETF, <a href="https://datatracker.ietf.org/doc/html/rfc6749">RFC 6749: The OAuth 2.0 Authorization Framework</a> — the canonical authentication flow most modern APIs use; useful when “use the SDK” stops being an option.</li>
+<li>IETF, <a href="https://datatracker.ietf.org/doc/html/rfc9309">RFC 9309: Robots Exclusion Protocol</a> — the formal <code>robots.txt</code> standard; relevant when the API runs out and you are deciding whether scraping is appropriate.</li>
+<li>Electronic Frontier Foundation, <a href="https://www.eff.org/issues/coders">Coders’ Rights Project</a> — ongoing legal explainers on the CFAA, DMCA, and security research; useful context for the “Stakes and politics” framing above.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

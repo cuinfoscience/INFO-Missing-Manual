@@ -361,13 +361,15 @@ When you write a file yourself, always write UTF-8:
 df.to_csv("out.csv", index=False, encoding="utf-8")
 ```
 
-> **NOTE:**
->
-> - [`pandas.read_csv` reference](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) — the complete parameter list, with notes on each option.
-> - [CSV format (RFC 4180)](https://www.rfc-editor.org/rfc/rfc4180) — the short but official specification for CSV.
-> - [JSON specification (json.org)](https://www.json.org/json-en.html) — the canonical explanation of JSON, with syntax diagrams.
+## 20.7 Stakes and politics
 
-## 20.7 Worked examples
+Data file formats look like neutral containers, but each one encodes a worldview about what data is and who it is for. Three things to notice. First, *what counts as “tabular.”* CSV, Excel, and Parquet all assume your data fits naturally into rows and columns of fixed width — the worldview of accountants, statisticians, and relational databases. JSON and XML allow nesting and so admit shapes (trees, graphs, ragged records) the tabular formats cannot represent without flattening. Whichever format you pick, you are pre-committing to a shape, and information that does not fit gets lost or distorted in the conversion.
+
+Second, *whose languages and characters were the spec written for*. CSV’s RFC 4180 says nothing about encoding; in practice “CSV” still means CP1252 on many Windows machines, Latin-1 on some legacy Unix systems, and UTF-8 on the rest, and a name with a `ñ` or a `ü` round-trips correctly only when every step in the chain agrees. The 2010s convergence on UTF-8 is real progress — but a non-trivial amount of public-sector and corporate data still ships in encodings designed for English and Western European text, with predictable consequences for everyone else’s names. Third, *who can read each format without paying*. Excel’s `.xlsx` is a documented Open XML standard, but the most reliable readers are Microsoft’s; Parquet is open but mostly written and read by tools tied to Hadoop/Spark/cloud-warehouse pipelines that smaller teams cannot afford to run.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data shapes it serves cleanly and whose it forces you to mangle.
+
+## 20.8 Worked examples
 
 ### A “normal” CSV that is not normal
 
@@ -439,7 +441,7 @@ df = pd.read_excel(
 )
 ```
 
-## 20.8 Templates
+## 20.9 Templates
 
 **A defensive `read_csv` that handles most of the common quirks:**
 
@@ -465,7 +467,7 @@ print("nulls per column:")
 print(df.isna().sum())
 ```
 
-## 20.9 Exercises
+## 20.10 Exercises
 
 1.  Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor, note the delimiter, the header row, and any obviously-missing-value sentinels. Then load it with `pd.read_csv`, passing the correct parameters the first time.
 2.  Deliberately save a CSV with `encoding="latin-1"` (e.g., a file with accented characters). Try to read it with the default UTF-8 and observe the `UnicodeDecodeError`. Then read it correctly.
@@ -475,7 +477,7 @@ print(df.isna().sum())
 6.  Convert a CSV you use often into Parquet. Compare file sizes and load times (`%time df = pd.read_csv(...)` vs `%time df = pd.read_parquet(...)`).
 7.  Write the “validate after load” snippet from section 8 as a reusable function `validate(df)` that prints the report. Put it in a module you can import from any notebook.
 
-## 20.10 One-page checklist
+## 20.11 One-page checklist
 
 - Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.
 - Default to UTF-8 encoding; fall back to Latin-1 / cp1252 only when needed.
@@ -486,3 +488,13 @@ print(df.isna().sum())
 - Use Parquet for intermediate files and anything over ~100 MB.
 - Always pass `index=False` when writing a CSV or Excel file unless you want the row index as a column.
 - When in doubt, `df.head()` and `df.tail()` and trust your eyes over your assumptions.
+
+> **NOTE:**
+>
+> - pandas, [`read_csv` reference](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) — the complete parameter list with notes on each option; the `na_values`, `parse_dates`, `dtype`, and `encoding` arguments alone reward a careful read.
+> - IETF, [RFC 4180: Common Format and MIME Type for CSV Files](https://www.rfc-editor.org/rfc/rfc4180) — the short, official CSV specification; useful for settling arguments about quoting and line endings.
+> - [JSON specification (json.org)](https://www.json.org/json-en.html) — the canonical explanation of JSON with syntax diagrams.
+> - Apache, [Parquet documentation](https://parquet.apache.org/docs/) — the columnar format used for any dataset large enough that CSV becomes painful; the file-format spec is short and worth skimming.
+> - Joel Spolsky, [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/) — a 2003 essay that is still the best 30-minute introduction to encodings; required reading after your first `UnicodeDecodeError`.
+> - ECMA International, [Office Open XML File Formats (`.xlsx`)](https://ecma-international.org/publications-and-standards/standards/ecma-376/) — the standard underneath Excel files; useful when you want to know what is actually in a `.xlsx` file (a zip of XML).
+> - Tom Augspurger and others, [Modern Pandas: Tidy Data and File I/O](https://tomaugspurger.net/posts/modern-1-intro/) — practitioner-focused notes on reading messy real-world tabular data; pairs well with the `read_csv` reference.

@@ -696,16 +696,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#when-not-to-use-parquet" id="toc-when-not-to-use-parquet" class="nav-link" data-scroll-target="#when-not-to-use-parquet">When not to use Parquet</a></li>
   </ul></li>
   <li><a href="#text-encoding-in-general" id="toc-text-encoding-in-general" class="nav-link" data-scroll-target="#text-encoding-in-general"><span class="header-section-number">20.6</span> Text encoding in general</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">20.7</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">20.7</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">20.8</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#a-normal-csv-that-is-not-normal" id="toc-a-normal-csv-that-is-not-normal" class="nav-link" data-scroll-target="#a-normal-csv-that-is-not-normal">A “normal” CSV that is not normal</a></li>
   <li><a href="#silent-missing-value-corruption" id="toc-silent-missing-value-corruption" class="nav-link" data-scroll-target="#silent-missing-value-corruption">Silent missing-value corruption</a></li>
   <li><a href="#nested-json-from-a-web-api" id="toc-nested-json-from-a-web-api" class="nav-link" data-scroll-target="#nested-json-from-a-web-api">Nested JSON from a web API</a></li>
   <li><a href="#excel-with-a-four-row-banner" id="toc-excel-with-a-four-row-banner" class="nav-link" data-scroll-target="#excel-with-a-four-row-banner">Excel with a four-row banner</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">20.8</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">20.9</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">20.10</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">20.9</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">20.10</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">20.11</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/data-file-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -993,26 +994,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Unusual bytes like <code>\xe9</code> (é in Latin-1, invalid in UTF-8) are the telltale of a non-UTF-8 file.</p>
 <p>When you write a file yourself, always write UTF-8:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"out.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>pandas.read_csv</code> reference</a> — the complete parameter list, with notes on each option.</li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc4180">CSV format (RFC 4180)</a> — the short but official specification for CSV.</li>
-<li><a href="https://www.json.org/json-en.html">JSON specification (json.org)</a> — the canonical explanation of JSON, with syntax diagrams.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="20.7">
-<h2 data-number="20.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">20.7</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="20.7">
+<h2 data-number="20.7" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">20.7</span> Stakes and politics</h2>
+<p>Data file formats look like neutral containers, but each one encodes a worldview about what data is and who it is for. Three things to notice. First, <em>what counts as “tabular.”</em> CSV, Excel, and Parquet all assume your data fits naturally into rows and columns of fixed width — the worldview of accountants, statisticians, and relational databases. JSON and XML allow nesting and so admit shapes (trees, graphs, ragged records) the tabular formats cannot represent without flattening. Whichever format you pick, you are pre-committing to a shape, and information that does not fit gets lost or distorted in the conversion.</p>
+<p>Second, <em>whose languages and characters were the spec written for</em>. CSV’s RFC 4180 says nothing about encoding; in practice “CSV” still means CP1252 on many Windows machines, Latin-1 on some legacy Unix systems, and UTF-8 on the rest, and a name with a <code>ñ</code> or a <code>ü</code> round-trips correctly only when every step in the chain agrees. The 2010s convergence on UTF-8 is real progress — but a non-trivial amount of public-sector and corporate data still ships in encodings designed for English and Western European text, with predictable consequences for everyone else’s names. Third, <em>who can read each format without paying</em>. Excel’s <code>.xlsx</code> is a documented Open XML standard, but the most reliable readers are Microsoft’s; Parquet is open but mostly written and read by tools tied to Hadoop/Spark/cloud-warehouse pipelines that smaller teams cannot afford to run.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data shapes it serves cleanly and whose it forces you to mangle.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="20.8">
+<h2 data-number="20.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">20.8</span> Worked examples</h2>
 <section id="a-normal-csv-that-is-not-normal" class="level3">
 <h3 class="anchored" data-anchor-id="a-normal-csv-that-is-not-normal">A “normal” CSV that is not normal</h3>
 <p>You run:</p>
@@ -1057,8 +1047,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="templates" class="level2" data-number="20.8">
-<h2 data-number="20.8" class="anchored" data-anchor-id="templates"><span class="header-section-number">20.8</span> Templates</h2>
+<section id="templates" class="level2" data-number="20.9">
+<h2 data-number="20.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">20.9</span> Templates</h2>
 <p><strong>A defensive <code>read_csv</code> that handles most of the common quirks:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data.csv"</span>,</span>
@@ -1076,8 +1066,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"nulls per column:"</span>)</span>
 <span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="20.9">
-<h2 data-number="20.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">20.9</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="20.10">
+<h2 data-number="20.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">20.10</span> Exercises</h2>
 <ol type="1">
 <li>Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor, note the delimiter, the header row, and any obviously-missing-value sentinels. Then load it with <code>pd.read_csv</code>, passing the correct parameters the first time.</li>
 <li>Deliberately save a CSV with <code>encoding="latin-1"</code> (e.g., a file with accented characters). Try to read it with the default UTF-8 and observe the <code>UnicodeDecodeError</code>. Then read it correctly.</li>
@@ -1088,8 +1078,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Write the “validate after load” snippet from section 8 as a reusable function <code>validate(df)</code> that prints the report. Put it in a module you can import from any notebook.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="20.10">
-<h2 data-number="20.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">20.10</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="20.11">
+<h2 data-number="20.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">20.11</span> One-page checklist</h2>
 <ul>
 <li>Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.</li>
 <li>Default to UTF-8 encoding; fall back to Latin-1 / cp1252 only when needed.</li>
@@ -1101,6 +1091,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Always pass <code>index=False</code> when writing a CSV or Excel file unless you want the row index as a column.</li>
 <li>When in doubt, <code>df.head()</code> and <code>df.tail()</code> and trust your eyes over your assumptions.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>pandas, <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>read_csv</code> reference</a> — the complete parameter list with notes on each option; the <code>na_values</code>, <code>parse_dates</code>, <code>dtype</code>, and <code>encoding</code> arguments alone reward a careful read.</li>
+<li>IETF, <a href="https://www.rfc-editor.org/rfc/rfc4180">RFC 4180: Common Format and MIME Type for CSV Files</a> — the short, official CSV specification; useful for settling arguments about quoting and line endings.</li>
+<li><a href="https://www.json.org/json-en.html">JSON specification (json.org)</a> — the canonical explanation of JSON with syntax diagrams.</li>
+<li>Apache, <a href="https://parquet.apache.org/docs/">Parquet documentation</a> — the columnar format used for any dataset large enough that CSV becomes painful; the file-format spec is short and worth skimming.</li>
+<li>Joel Spolsky, <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets</a> — a 2003 essay that is still the best 30-minute introduction to encodings; required reading after your first <code>UnicodeDecodeError</code>.</li>
+<li>ECMA International, <a href="https://ecma-international.org/publications-and-standards/standards/ecma-376/">Office Open XML File Formats (<code>.xlsx</code>)</a> — the standard underneath Excel files; useful when you want to know what is actually in a <code>.xlsx</code> file (a zip of XML).</li>
+<li>Tom Augspurger and others, <a href="https://tomaugspurger.net/posts/modern-1-intro/">Modern Pandas: Tidy Data and File I/O</a> — practitioner-focused notes on reading messy real-world tabular data; pairs well with the <code>read_csv</code> reference.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

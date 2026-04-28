@@ -686,15 +686,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#aggregation-and-group-by" id="toc-aggregation-and-group-by" class="nav-link" data-scroll-target="#aggregation-and-group-by"><span class="header-section-number">22.7</span> Aggregation and group-by</a></li>
   <li><a href="#merging-joining-dataframes" id="toc-merging-joining-dataframes" class="nav-link" data-scroll-target="#merging-joining-dataframes"><span class="header-section-number">22.8</span> Merging (joining) DataFrames</a></li>
   <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting"><span class="header-section-number">22.9</span> Sorting</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">22.10</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">22.10</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">22.11</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#a-one-minute-exploration-of-a-new-dataset" id="toc-a-one-minute-exploration-of-a-new-dataset" class="nav-link" data-scroll-target="#a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</a></li>
   <li><a href="#filter-sort-derive-aggregate" id="toc-filter-sort-derive-aggregate" class="nav-link" data-scroll-target="#filter-sort-derive-aggregate">Filter, sort, derive, aggregate</a></li>
   <li><a href="#a-join-with-validation" id="toc-a-join-with-validation" class="nav-link" data-scroll-target="#a-join-with-validation">A join with validation</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">22.11</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">22.12</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">22.13</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">22.12</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">22.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">22.14</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/pandas-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -965,26 +966,15 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>, ascending<span class="op">=</span><span class="va">False</span>)       <span class="co"># descending</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.sort_values([<span class="st">"category"</span>, <span class="st">"price"</span>])          <span class="co"># multi-column</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>df.sort_index()                                <span class="co"># sort by index (labels)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://pandas.pydata.org/docs/user_guide/index.html">pandas User Guide</a> — conceptual explanations of indexing, merging, and reshaping.</li>
-<li><a href="https://pandas.pydata.org/docs/reference/index.html">pandas API reference</a> — every method and parameter, with examples.</li>
-<li><a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">pandas Cheat Sheet (PDF)</a> — a printable one-pager covering the most common operations.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="22.10">
-<h2 data-number="22.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.10</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="22.10">
+<h2 data-number="22.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">22.10</span> Stakes and politics</h2>
+<p>pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.</p>
+<p>Three things to notice. First, <em>the dtype defaults assume Western numeric and date conventions</em>. Numbers are read as IEEE 754 floats; dates parse as month-day-year unless told otherwise (a common silent bug in non-US data); missing values silently coerce integer columns to floats because the original NumPy <code>int64</code> cannot hold <code>NaN</code>. None of these are bugs — they are documented choices — but they work cleanly for the data their authors most often handled, and less cleanly for everyone else’s. Second, <em>merge and groupby defaults preferentially keep the populous side</em>. <code>merge(how="inner")</code> is the default, which silently discards rows that do not match — a behavior that is fine when you are joining a transactions table against a complete customer list, and quietly disastrous when you are joining unequal demographic groups whose representation in your matching key is itself unequal. Third, <em>the maintainers and contributors are not the user base</em>. pandas is overwhelmingly maintained by a small number of contributors, paid by a small number of US and European institutions, working in English. The bug reports that get prioritized are the ones that surface in their workflows; the rough edges that affect non-English text, right-to-left scripts, non-Gregorian calendars, and informal-economy data shapes get fixed when someone with the time and English fluency files a careful issue.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, and <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> for the cleaning-decision politics that ride on top of these defaults. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="22.11">
+<h2 data-number="22.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.11</span> Worked examples</h2>
 <section id="a-one-minute-exploration-of-a-new-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -1032,8 +1022,8 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <p>The <code>validate</code> + assert pattern prevents the silent-duplication class of bugs.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="22.11">
-<h2 data-number="22.11" class="anchored" data-anchor-id="templates"><span class="header-section-number">22.11</span> Templates</h2>
+<section id="templates" class="level2" data-number="22.12">
+<h2 data-number="22.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">22.12</span> Templates</h2>
 <p><strong>A “first look” block for any new DataFrame:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
@@ -1056,8 +1046,8 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="22.12">
-<h2 data-number="22.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">22.12</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="22.13">
+<h2 data-number="22.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">22.13</span> Exercises</h2>
 <ol type="1">
 <li>Load a CSV from an open-data source into a DataFrame. Run the six inspection commands from section 3. Write one sentence for each about what you learned.</li>
 <li>From the same DataFrame, select a single column as a Series and a list of two columns as a DataFrame. Confirm the types with <code>type()</code>.</li>
@@ -1068,8 +1058,8 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <li>Take a notebook cell you wrote as a for-loop over <code>iterrows</code> and rewrite it as a vectorized operation. Time both. Write down the speedup.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="22.13">
-<h2 data-number="22.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">22.13</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="22.14">
+<h2 data-number="22.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">22.14</span> One-page checklist</h2>
 <ul>
 <li>Every new DataFrame: run shape / dtypes / head / describe / isna before anything else.</li>
 <li>Use <code>.loc</code> for label-based selection, <code>.iloc</code> for integer-based, and boolean masks for filters.</li>
@@ -1081,6 +1071,27 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <li>For reshaping and validation, read <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> first.</li>
 <li>For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see <a href="../part-1-practice/reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>pandas, <a href="https://pandas.pydata.org/docs/user_guide/index.html">User Guide</a> — conceptual explanations of indexing, merging, and reshaping; treat this as the textbook.</li>
+<li>pandas, <a href="https://pandas.pydata.org/docs/reference/index.html">API reference</a> — every method and parameter, with examples; treat this as the dictionary.</li>
+<li>pandas, <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">Cheat Sheet (PDF)</a> — a printable one-pager covering the most common operations; useful taped above your desk.</li>
+<li>Wes McKinney, <a href="https://wesmckinney.com/book/"><em>Python for Data Analysis</em>, 3rd edition</a> — the book by pandas’s original author; the second half is dense reference, the first half is a clean introduction.</li>
+<li>Wes McKinney, <a href="https://wesmckinney.com/blog/apache-arrow-pandas-internals/">Apache Arrow and the “10 Things I Hate About pandas”</a> — the design retrospective from pandas’s creator; useful context for the “Stakes and politics” framing above.</li>
+<li>Polars, <a href="https://docs.pola.rs/user-guide/">User Guide</a> — a fast, Rust-based DataFrame library with a different (lazy, expression-based) API; worth knowing exists when pandas runs out of room.</li>
+<li>DuckDB, <a href="https://duckdb.org/docs/api/python/overview">Python API</a> — an in-process analytic database that reads and writes pandas DataFrames directly; the right tool when SQL is the better fit for the question.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

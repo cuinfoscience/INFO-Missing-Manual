@@ -260,13 +260,17 @@ For groupby, pass `dropna=False` if you want NaN groups included.
 
 **Fix:** `pd.to_numeric(..., errors="coerce")` as in problem 2, then decide what to do with the NaNs. Do not silently `.dropna()` — that is the row you should be investigating.
 
-> **NOTE:**
->
-> - Hadley Wickham, [*Tidy Data*](https://vita.had.co.nz/papers/tidy-data.pdf) — the canonical paper on long/wide formats.
-> - [pandas User Guide: Reshaping](https://pandas.pydata.org/docs/user_guide/reshaping.html) — the official guide to `melt`, `pivot`, `stack`, and `unstack`.
-> - [Great Expectations](https://docs.greatexpectations.io/) — a popular library for writing the validation checks this chapter advocates.
+## 21.6 Stakes and politics
 
-## 21.6 Worked examples
+This chapter teaches a workflow built around *cleaning* data — handling missing values, fixing dtypes, deduplicating, validating shape and ranges. Each of those moves looks technical, and each one is also a political choice that anyone reading your conclusions will read your data through.
+
+Three things to notice. First, *what counts as missing*. A `NaN` in a survey response can mean “the respondent declined,” “the question did not apply,” “the survey software failed,” or “this row is from before the question existed.” Treating all four the same — most often by a quiet `.dropna()` — silently encodes the assumption that the missing rows are exchangeable with the present ones, which is rarely true. Missingness in real datasets is often *informative*: the people who did not answer the income question are not a random sample of respondents, they are a particular subset whose absence is itself a finding.
+
+Second, *what counts as an outlier*. A flagged outlier is a row that differs from the others. In a dataset of incomes, that might be a billionaire whose presence skews the mean — or it might be a household in deep poverty whose presence is exactly the population the analysis is supposed to inform. “Removing outliers” sometimes means cleaning data and sometimes means erasing the most policy-relevant cases. Third, *what counts as a duplicate*. Two rows with the same key are duplicates only if you decide the key is enough to identify them. The same person can appear twice for legitimate reasons (two visits, two purchases, two enrollments); collapsing them silently rewrites the underlying social facts.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: every cleaning step is a claim that the rows you removed do not matter. Write down which rows you removed and *why* — that note is part of your analysis, not separate from it.
+
+## 21.7 Worked examples
 
 ### Turning wide survey data into tidy
 
@@ -350,7 +354,7 @@ merged = orders.merge(customers, on="customer_id", validate="many_to_one")
 
 Five extra characters (`validate="many_to_one"`) catches the bug that would otherwise silently double every revenue figure in your final report.
 
-## 21.7 Templates
+## 21.8 Templates
 
 **A “load, clean, validate” skeleton to paste into every cleaning script:**
 
@@ -384,7 +388,7 @@ def validate(df: pd.DataFrame) -> None:
     # Add dataset-specific checks below
 ```
 
-## 21.8 Exercises
+## 21.9 Exercises
 
 1.  Take a wide dataset from your own work (a survey, a grade book, a classroom export) and write a one-line `melt` that converts it to tidy. Verify by counting rows.
 2.  Write the reverse: take a tidy dataset and `pivot` it back to wide. Confirm the two are equivalent after reshaping.
@@ -394,7 +398,7 @@ def validate(df: pd.DataFrame) -> None:
 6.  Write a `pandas` merge that you *expect* to be `one_to_one`, then add `validate="one_to_one"`. Now introduce a duplicate into the right-hand DataFrame and confirm pandas raises.
 7.  Find a dataset with missing-value sentinels. Load it twice — once with default options, once with `na_values=`. Compare `.describe()`. How many of your statistics changed?
 
-## 21.9 One-page checklist
+## 21.10 One-page checklist
 
 - **Never modify raw data.** Keep it in `data/raw/`, read-only.
 - **Cleaning is a script, not a notebook.** Reproducible and rerunnable, top to bottom.
@@ -406,3 +410,13 @@ def validate(df: pd.DataFrame) -> None:
 - **Parse dates explicitly.** Do not rely on inference for load-bearing columns.
 - **Paste a `assert` validation block at the top of every analysis.**
 - **If row counts change silently, stop and investigate.** It is almost always a bug.
+
+> **NOTE:**
+>
+> - Hadley Wickham, [*Tidy Data*](https://vita.had.co.nz/papers/tidy-data.pdf) — the canonical paper on long/wide formats; under 25 pages and shapes how the rest of the field thinks about table shape.
+> - pandas, [User Guide: Reshaping](https://pandas.pydata.org/docs/user_guide/reshaping.html) — the official guide to `melt`, `pivot`, `stack`, and `unstack`.
+> - Catherine D’Ignazio and Lauren F. Klein, [*Data Feminism*](https://data-feminism.mitpress.mit.edu/) — the standard book-length treatment of who gets counted, who counts, and how the technical decisions of data work encode power; pairs directly with the “Stakes and politics” framing above.
+> - Great Expectations, [Documentation](https://docs.greatexpectations.io/) — a popular library for writing the validation checks this chapter advocates; treats data quality assertions as first-class artifacts.
+> - Pandera, [Documentation](https://pandera.readthedocs.io/) — a lighter-weight schema and validation library for pandas DataFrames; useful when Great Expectations feels too heavy.
+> - The Turing Way, [Reproducible Research: Open Data](https://book.the-turing-way.org/reproducible-research/open/open-data) — community-maintained chapter on documenting datasets, including data dictionaries and provenance notes.
+> - Timnit Gebru et al., [*Datasheets for Datasets*](https://arxiv.org/abs/1803.09010) — proposes a documentation standard answering “who collected this, why, and what is missing” for any dataset; lightweight to apply to your own work.

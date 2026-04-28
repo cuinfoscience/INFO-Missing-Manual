@@ -324,13 +324,15 @@ Before you write a lot of custom API code, check:
 - **Is there a bulk download?** Many data sources also offer CSV, Parquet, or SQL dumps of the same data. If you want a snapshot, the dump is usually much faster and easier than hammering the API row by row. See [sec-data-file-formats](#sec-data-file-formats).
 - **Is this a one-off?** For a single fetch, `curl` on the command line or a browser download might be faster than a Python script. Save the result to disk and work from there.
 
-> **NOTE:**
->
-> - [`requests` documentation](https://requests.readthedocs.io/en/latest/) — the official guide to the most common Python HTTP library.
-> - [MDN: An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.
-> - [HTTP Status Codes (httpstatuses.com)](https://httpstatuses.com/) — a searchable reference for every status code you will see in the wild.
+## 24.9 Stakes and politics
 
-## 24.9 Worked examples
+A web API is a controlled door into someone else’s data. The mechanics in this chapter — keys, rate limits, authentication, retries — are the door’s hardware, and noticing them as hardware is most of the political move.
+
+Three things to notice. First, *the data provider sets the terms*. They choose which fields the API exposes, which historical records remain accessible, what counts as “fair use,” and how often they will deprecate endpoints. When Twitter became X and revoked academic API access in 2023, dozens of long-running research projects collapsed overnight; when Reddit moved to paid API access later that year, third-party clients shut down and the moderation tools many subreddits relied on stopped working. Endpoints are not infrastructure; they are corporate decisions held in place until they are not. Second, *rate limits and pricing tiers concentrate access*. A free tier that allows 60 requests per hour is enough for a class assignment and useless for any analysis at scale. Paid tiers exist precisely to filter who can ask which questions, and the price is set by the provider’s business model, not by the cost of serving the bytes. Third, *the legal gradient between API and scrape is real*. APIs come with terms of service that explicitly authorize the access you are doing; web scraping the same data may or may not be lawful depending on the CFAA, the DMCA, the site’s terms, and which jurisdiction you sit in. The technical bar to scraping is low; the legal bar can be unexpectedly high — Aaron Swartz’s case is the cautionary one.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, including the CFAA and DMCA history. The concrete prompt to carry forward: when you build a project on someone else’s API, ask what happens when the provider changes the rules — because they will.
+
+## 24.10 Worked examples
 
 ### Fetch a GitHub repo’s metadata
 
@@ -401,7 +403,7 @@ def current_weather(city):
 
 Three layers of defense: status-code checks, timeout handling, and exponential backoff.
 
-## 24.10 Templates
+## 24.11 Templates
 
 **A defensive GET helper:**
 
@@ -434,7 +436,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-## 24.11 Exercises
+## 24.12 Exercises
 
 1.  Use `requests.get` to fetch `https://api.github.com/repos/python/cpython` and print the star count, license name, and default branch.
 2.  Add a `User-Agent` header to the request above. Repeat the request without one (or with `User-Agent: ""`) and see if you get the same response.
@@ -444,7 +446,7 @@ load_dotenv()
 6.  Find a dataset that is available both as a bulk CSV download and as an API. Download both, load them into pandas, compare the row counts, and write down which was faster and why.
 7.  Use `resp = requests.get(...)` and inspect `resp.headers` in a notebook. Find the `Content-Type`, `Server`, and any rate-limit headers (`X-RateLimit-Remaining` is common).
 
-## 24.12 One-page checklist
+## 24.13 One-page checklist
 
 - Import `requests`; install with `python -m pip install requests`.
 - Always pass a `timeout=` to every request.
@@ -456,3 +458,14 @@ load_dotenv()
 - Prefer an official SDK when one exists.
 - Prefer a bulk download when you need a snapshot of the whole dataset.
 - Inspect `resp.json()` in a notebook before assuming its shape.
+
+> **NOTE:**
+>
+> - Python Software Foundation, [`requests` documentation](https://requests.readthedocs.io/en/latest/) — the official guide to the most widely used Python HTTP library.
+> - Encode, [`httpx` documentation](https://www.python-httpx.org/) — a modern alternative to `requests` with the same shape but native async support; the right choice when you need concurrency.
+> - MDN, [An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.
+> - [HTTP Status Codes (httpstatuses.com)](https://httpstatuses.com/) — a searchable reference for every status code you will see in the wild, with explanations.
+> - [HTTPie](https://httpie.io/cli) — a friendly command-line HTTP client; great for poking at an API before you wrap it in Python.
+> - IETF, [RFC 6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749) — the canonical authentication flow most modern APIs use; useful when “use the SDK” stops being an option.
+> - IETF, [RFC 9309: Robots Exclusion Protocol](https://datatracker.ietf.org/doc/html/rfc9309) — the formal `robots.txt` standard; relevant when the API runs out and you are deciding whether scraping is appropriate.
+> - Electronic Frontier Foundation, [Coders’ Rights Project](https://www.eff.org/issues/coders) — ongoing legal explainers on the CFAA, DMCA, and security research; useful context for the “Stakes and politics” framing above.
