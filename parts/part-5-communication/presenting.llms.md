@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You practiced. You timed it at 18 minutes. You stand up at the podium, adrenaline kicks in, and you finish in nine.](../../graphics/memes/presenting.png)
+
 A talk is not a paper read aloud. The medium is different, the attention budget is different, and the conventions that work in print fail in front of an audience. Slides full of text put audiences to sleep. Reading from notes turns a fifteen-minute talk into the longest fifteen minutes of the room’s life. Trying to cram every result onto every slide is a recipe for an audience that remembers nothing.
 
 This chapter is a practical guide to designing, rehearsing, and delivering academic talks of the kinds you will actually have to give: a five-minute lightning talk in your first year, a fifteen-minute conference talk, a forty-five-minute job talk, a half-hour thesis-defense presentation, a poster, a lab meeting. The principles transfer across the genres; the specifics adjust. The single best free resource on this material is Patrick Winston’s MIT lecture *How to Speak* ([^1] / video at <https://www.youtube.com/watch?v=Unzc731iCUY>); watch it before you give your next talk.

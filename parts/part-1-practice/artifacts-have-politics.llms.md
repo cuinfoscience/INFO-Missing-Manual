@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You came for the technical content and now there’s a Langdon Winner reading. You signed up for pandas, not Heidegger.](../../graphics/memes/artifacts-have-politics.png)
+
 The rest of this handbook is a *how-to*. This chapter asks a different kind of question: *whose* trade is computing, *whose* values are baked into its tools, and *whose* problems have shaped them? Every piece of software you use was built by specific people, funded by specific institutions, and constrained by specific laws. Knowing the history of those choices is part of being a competent practitioner — not so that you become cynical, but so that you recognize your position as a participant in a long, contested, still-unfolding story.
 
 ## Learning objectives

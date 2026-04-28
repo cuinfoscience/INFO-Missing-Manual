@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![Every tutorial assumes macOS. You have a Windows laptop. The instructions don’t say which OS they’re for, and the fixes for yours are buried four Stack Overflow answers deep.](../../graphics/memes/operating-system.png)
+
 Your operating system (OS) is the platform that runs everything else: browsers, spreadsheets, programming tools, and file storage. Small OS maintenance mistakes—missed updates, broken permissions, full disks, weak account security, or missing backups—can derail assignments and corrupt data. This chapter gives novice students a practical, low-stress routine for keeping [Windows](https://support.microsoft.com/en-us/windows) and [macOS](https://support.apple.com/guide/mac-help/welcome/mac) stable, updated, and recoverable.
 
 ## Learning objectives

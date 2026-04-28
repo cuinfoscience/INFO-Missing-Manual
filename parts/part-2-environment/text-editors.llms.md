@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You opened vim by accident. You can type. You cannot save. You cannot quit. The internet has been laughing about this for thirty years.](../../graphics/memes/text-editors.png)
+
 Text editors are the primary tool for writing code, configuring tools, inspecting logs, and fixing small problems quickly. For beginners, the main challenge is not typing—it is developing reliable workflows: opening the right file, editing safely, finding and replacing correctly, and understanding the trade-offs between terminal editors, GUI editors, and full IDEs.
 
 ## Learning objectives

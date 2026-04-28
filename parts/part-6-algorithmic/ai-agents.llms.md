@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You set the agent loose on a small task. Eight hours later, it has spent \$200, made fourteen unrelated edits, and confidently deleted a file you wanted to keep.](../../graphics/memes/ai-agents.png)
+
 A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.
 
 Agent frameworks have become a major pattern in applied AI work. You will encounter them in research pipelines, data processing workflows, software development assistants, and automated systems. Understanding how they work — what the agentic loop is, how tools are defined and invoked, how memory is managed, and where these systems reliably fail — puts you in a position to use them deliberately rather than being surprised when something goes wrong.

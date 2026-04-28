@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You ran cells out of order, deleted one, ran another, and now df is something you don’t recognize. The kernel is judging you.](../../graphics/memes/jupyter.png)
+
 Jupyter notebooks are an effective medium for exploratory analysis because they combine code, results, and narrative. The same flexibility can also create confusion: wrong working directories, out-of-order execution, hidden state, and notebooks that cannot be reproduced. This chapter teaches novices how to launch Jupyter correctly, navigate files, use cells effectively, run shell commands safely, and adopt notebook discipline so work remains interpretable and reproducible.
 
 ## Learning objectives

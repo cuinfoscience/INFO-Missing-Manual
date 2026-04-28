@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![The abstract has fourteen citations and three undefined terms. You are forty pages from the contribution. The PDF was scanned from a 1998 photocopy.](../../graphics/memes/reading-scholarship.png)
+
 The first time you open a research paper, it does not feel like reading. It feels like staring at a wall of jargon, equations, citation soup, and unfamiliar conventions. You read the abstract, blink, read it again, and have no idea what the paper actually claims. You scroll to the introduction, and the authors begin a polite argument with people you have never heard of about a problem you didn’t know existed. Twenty minutes later you are exhausted, and you still cannot tell a friend in one sentence what the paper is about.
 
 This chapter teaches you a small set of techniques that turn that experience into something tractable. It covers how to triage a paper before committing to read it, how to read at three different depths depending on your goal, how reading conventions differ between HCI papers, machine-learning papers, social-science papers, and humanities scholarship, and how to keep what you read in a system you can actually use months later. None of this is mysterious. It is just craft, and like all craft it improves rapidly once someone tells you what professionals actually do.

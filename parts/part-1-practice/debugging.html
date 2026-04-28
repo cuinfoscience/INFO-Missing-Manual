@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -737,7 +737,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-1-practice/debugging.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-1-practice/questions.html">Part I — Practice of Technical Work</a></li><li class="breadcrumb-item"><a href="../../parts/part-1-practice/debugging.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Debugging</span></a></li></ol></nav>
@@ -776,9 +776,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../../graphics/memes/debugging.png" class="img-fluid" alt="It worked yesterday. You changed nothing. Now nothing works. There are seventeen print(x) calls in your code and the bug is still hiding."></p>
+</div></div><p>When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.</p>
 <p>In computing courses, beginners sometimes treat debugging as a chaotic activity: rerun the same cell, change random lines, search the error message, and hope it works. Professionals do something different. They treat debugging as a structured investigation. They narrow the search space, form hypotheses, run controlled experiments, collect evidence (including logs), and confirm the fix with tests.</p>
 <p>This chapter gives you a repeatable debugging workflow you can use in Python scripts, Jupyter notebooks, spreadsheets, and command-line tools. The emphasis is not on fancy tools. The emphasis is on disciplined thinking: decomposition, minimal reproduction, instrumentation, and verification.</p>
 </section>

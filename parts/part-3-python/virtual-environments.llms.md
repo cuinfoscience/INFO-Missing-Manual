@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You installed a package globally with sudo. Then you broke a system tool. Then you tried venv. Then conda. Now you’re considering reinstalling Python entirely. It’s 2 a.m.](../../graphics/memes/virtual-environments.png)
+
 The single most common source of the “it worked yesterday” bug in Python data science is a confused [environment](../../parts/appendix/appendix-glossary.llms.md#term-environment). You install a package, try to import it, and Python says “no such module.” You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
 
 A [virtual environment](../../parts/appendix/appendix-glossary.llms.md#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.

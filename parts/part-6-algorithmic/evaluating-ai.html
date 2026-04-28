@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -675,7 +675,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/evaluating-ai.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/evaluating-ai.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></a></li></ol></nav>
@@ -714,9 +714,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../../graphics/memes/evaluating-ai.png" class="img-fluid" alt="Every model claims state-of-the-art. The benchmark numbers are rising. Your actual application is silently getting worse and you have no way to prove it."></p>
+</div></div><p>Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.</p>
 <p>Evaluation is the practice of measuring AI system behavior in a principled way. Auditing is the practice of looking critically for failures you did not anticipate: biases, edge cases, safety violations, and inconsistencies. Together they give you the evidence to know whether a system is working, in what ways it is failing, and whether a change made things better or worse.</p>
 <p>This chapter builds on the verification practices introduced in <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> and applies them at scale: not just “check this output before you use it” but “design an evaluation system that tells you the truth about your AI application.”</p>
 </section>

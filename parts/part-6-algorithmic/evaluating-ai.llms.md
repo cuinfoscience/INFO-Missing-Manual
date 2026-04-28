@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![Every model claims state-of-the-art. The benchmark numbers are rising. Your actual application is silently getting worse and you have no way to prove it.](../../graphics/memes/evaluating-ai.png)
+
 Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.
 
 Evaluation is the practice of measuring AI system behavior in a principled way. Auditing is the practice of looking critically for failures you did not anticipate: biases, edge cases, safety violations, and inconsistencies. Together they give you the evidence to know whether a system is working, in what ways it is failing, and whether a change made things better or worse.

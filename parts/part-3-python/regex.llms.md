@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You wrote a regex. It worked. You can no longer read it. Two weeks from now you will have to modify it and you will lose an afternoon.](../../graphics/memes/regex.png)
+
 Sooner or later you will need to extract phone numbers from free-text notes, find every file name that matches a pattern, strip junk out of a column, or validate that a user-entered email address at least *looks* like one. These are all jobs for regular expressions — a small pattern language that matches shapes in text.
 
 Regex has a reputation for being write-once, read-never code. That reputation is earned when people try to express overly clever patterns. For the 90% case you will actually use in data work — finding specific words, extracting substrings, matching digits, cleaning whitespace — regex is a modest, learnable tool. This chapter teaches you enough to use it confidently in pandas, Python scripts, text editors, and the terminal without reaching for a cheat sheet every time.

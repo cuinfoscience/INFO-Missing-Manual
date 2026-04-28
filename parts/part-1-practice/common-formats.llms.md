@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![The instructor said “open the CSV” but the file is semicolon-separated, the encoding is mystery-meat, and there’s a byte-order mark you’ve never heard of.](../../graphics/memes/common-formats.png)
+
 Before you write your first function, before you open your first dataset, you will encounter configuration files, README documents, and structured data exchanges that are written in formats you are expected to read and edit — but that nobody explicitly teaches you. A `README.md` is Markdown. A `_quarto.yml` or `.github/workflows/build.yml` is YAML. An API response is almost certainly JSON. If you cannot read or edit these formats confidently, you will spend time debugging invisible whitespace errors, misplaced colons, and mismatched brackets instead of doing the work you actually care about.
 
 This chapter introduces the syntax of the three text formats you will encounter most often outside of code itself: **Markdown**, **YAML**, and **JSON**. The goal is not to make you a format expert. It is to give you enough fluency to read a config file, write a formatted document, and troubleshoot a broken file without guessing.

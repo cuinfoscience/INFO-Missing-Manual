@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You committed .env to a public repo. GitHub emails you in twelve seconds. AWS emails you in two hours. The bill is \$4,000 and counting.](../../graphics/memes/secrets.png)
+
 Sooner or later — usually the first time you use an API — you will need to put a secret in your code. An API key, a database password, an access token, a private URL. The question is *where*, and the answer is almost always “not in the source file, and definitely not in git.”
 
 This chapter teaches you the small set of habits that will keep you from committing a credential to a public repository and getting an urgent email from GitHub at 2 a.m. telling you your AWS key is being used to mine cryptocurrency. (This happens. Regularly.) You will learn what environment variables are, how `.env` files work, how to use [`python-dotenv`](https://pypi.org/project/python-dotenv/) to load them, how to keep secrets out of git, and what to do if you do accidentally leak one.

@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![A wall of red text. The line numbers point into a library you didn’t write. Somewhere in there is the one line that’s actually yours.](../../graphics/memes/tracebacks.png)
+
 When your Python code crashes, Python prints a wall of red text ending with something like `KeyError: 'date'` or `ValueError: could not convert string to float: 'N/A'`. Many novices glance at this wall, feel a jolt of dread, and scroll past to the error message at the bottom — losing most of the information the interpreter is trying to give them for free.
 
 That wall of text is a [traceback](../../parts/appendix/appendix-glossary.llms.md#term-traceback), and it is the single most useful piece of evidence you will get when something breaks. A traceback tells you exactly which file, which line, which function call, and which value caused the crash. Learning to parse one quickly turns most bug-hunting sessions from “I have no idea what is wrong” into “I know which line to look at and roughly why.” This chapter teaches you how.

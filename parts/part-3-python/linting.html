@@ -734,9 +734,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Code style is one of those skills people assume you will absorb by osmosis. You will not. Without being taught, most novices write code that is technically correct but visually noisy — inconsistent indentation, trailing whitespace, unused imports, variable names that start with a lowercase letter here and an uppercase letter there. In solo work, this is a cosmetic problem. In collaborative work, it becomes a real one: code review time is wasted on style nitpicks, diffs are noisy, and merge conflicts multiply.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../../graphics/memes/linting.png" class="img-fluid" alt="The IDE has decorated your file with green squiggles. Your code runs. The linter is, technically, just expressing an opinion."></p>
+</div></div><p>Code style is one of those skills people assume you will absorb by osmosis. You will not. Without being taught, most novices write code that is technically correct but visually noisy — inconsistent indentation, trailing whitespace, unused imports, variable names that start with a lowercase letter here and an uppercase letter there. In solo work, this is a cosmetic problem. In collaborative work, it becomes a real one: code review time is wasted on style nitpicks, diffs are noisy, and merge conflicts multiply.</p>
 <p>The fix is simple and has two parts:</p>
 <ol type="1">
 <li><strong>A formatter</strong> rewrites your code to a canonical style automatically. You stop making style decisions.</li>

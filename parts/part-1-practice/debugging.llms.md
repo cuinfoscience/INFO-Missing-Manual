@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![It worked yesterday. You changed nothing. Now nothing works. There are seventeen print(x) calls in your code and the bug is still hiding.](../../graphics/memes/debugging.png)
+
 When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.
 
 In computing courses, beginners sometimes treat debugging as a chaotic activity: rerun the same cell, change random lines, search the error message, and hope it works. Professionals do something different. They treat debugging as a structured investigation. They narrow the search space, form hypotheses, run controlled experiments, collect evidence (including logs), and confirm the fix with tests.

@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![Your .tex file has 47 errors. The first one is on line 3 of a 1500-line document. The rest are ‘consequences’ of the first. Your advisor wants the PDF tomorrow.](../../graphics/memes/latex.png)
+
 LaTeX is the typesetting system that produces most of the scholarly papers you have read. It is the default in computer science, math, statistics, physics, much of engineering, and increasingly in HCI and information science. It produces typographically careful PDFs, handles math and bibliographies natively, and decouples the content of your document from its appearance. It is also notorious for its compile errors, its byzantine packaging system, and its capacity to make smart people feel dumb.
 
 This chapter is a friendly on-ramp. The thesis it argues is simple: **start on Overleaf, and you can be productive on day one.** Overleaf is a browser-based LaTeX editor that compiles your document for you, handles package installation invisibly, and makes the first hour of LaTeX feel like writing in a slightly fussy Markdown editor. Local installations are powerful but optional; you can do an entire master’s thesis without one.

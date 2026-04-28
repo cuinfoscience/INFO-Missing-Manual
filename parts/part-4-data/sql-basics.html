@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -702,7 +702,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-4-data/sql-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-4-data/data-file-formats.html">Part IV — Working with Data</a></li><li class="breadcrumb-item"><a href="../../parts/part-4-data/sql-basics.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></a></li></ol></nav>
@@ -741,9 +741,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>JOIN</code>, <code>ORDER BY</code>, <code>LIMIT</code>) cover 80% of what a novice data scientist needs.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../../graphics/memes/sql-basics.png" class="img-fluid" alt="SQL was designed in 1974. It still runs the world. The syntax feels like time travel and a JOIN takes three tries even when you know what you’re doing."></p>
+</div></div><p>A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>JOIN</code>, <code>ORDER BY</code>, <code>LIMIT</code>) cover 80% of what a novice data scientist needs.</p>
 <p>This chapter teaches you just those keywords. You will not leave a DBA, but you will be able to read and write the queries that return the data you actually need. You will also learn how to run <a href="https://www.sqlite.org/lang.html">SQL</a> against a local <a href="https://www.sqlite.org/docs.html">SQLite</a> database from Python, how to load the result into a pandas DataFrame, and when SQL is a better tool than pandas (often) and when it is a worse one (rarely, but sometimes).</p>
 <p>If you already know pandas, you will notice that SQL and pandas are almost word-for-word equivalent in their core verbs. The translation table in section 10 is a fast way to transfer skills in either direction.</p>
 </section>

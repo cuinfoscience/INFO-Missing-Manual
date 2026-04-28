@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You wrote a draft. Your advisor said it was great. Your advisor then asked for a complete restructure. Reviewer 2 has not yet weighed in.](../../graphics/memes/writing-manuscripts.png)
+
 A scholarly manuscript is a contract with a reader. You promise novelty, evidence, and clarity. They promise attention. The contract is small — five thousand words, give or take — and the reader is busy. They have thirty other papers in the stack. If your paper is two pages of throat-clearing before the contribution, they will move on. If your figures are unreadable, they will move on. If your contribution is buried in the discussion, they will move on. The reviewer is a model of a reader who has already moved on, and your job is to win them back.
 
 This chapter teaches how to write so that doesn’t happen. It covers the rhetorical conventions of academic prose, the structural conventions of empirical papers, the practical decision of *where* to send a paper, the specific work of preparing for double-blind review, and the harder skill of reading reviews and responding without losing your nerve. It is written for someone whose first manuscript is a class paper or honors thesis chapter — but the conventions scale to a CHI paper, a journal article, or a thesis chapter recast as a paper. None of this is mysterious; it is craft.

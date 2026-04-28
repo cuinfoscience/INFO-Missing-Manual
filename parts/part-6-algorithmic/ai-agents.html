@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -676,7 +676,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-6-algorithmic/ai-agents.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-llm.html">Part VII — Algorithmic Systems</a></li><li class="breadcrumb-item"><a href="../../parts/part-6-algorithmic/ai-agents.html"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></a></li></ol></nav>
@@ -715,9 +715,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered">
+<section id="purpose" class="level2 unnumbered page-columns page-full">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-<p>A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../../graphics/memes/ai-agents.png" class="img-fluid" alt="You set the agent loose on a small task. Eight hours later, it has spent $200, made fourteen unrelated edits, and confidently deleted a file you wanted to keep."></p>
+</div></div><p>A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.</p>
 <p>Agent frameworks have become a major pattern in applied AI work. You will encounter them in research pipelines, data processing workflows, software development assistants, and automated systems. Understanding how they work — what the agentic loop is, how tools are defined and invoked, how memory is managed, and where these systems reliably fail — puts you in a position to use them deliberately rather than being surprised when something goes wrong.</p>
 <p>This chapter builds on the model internals from <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> and the responsible-use practices from <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>. Where those chapters focus on individual prompts and outputs, this one focuses on <em>systems</em>: sequences of model calls, tool invocations, and decision points that can touch real data, real services, and real consequences.</p>
 </section>

@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You opened the NumPy reference and every paragraph assumes something you don’t yet know. The tutorial was friendly. The reference is a wall.](../../graphics/memes/reading-docs.png)
+
 A huge fraction of the frustration novices experience with programming comes from the same moment: you are stuck, you search the error online, you land on a tutorial blog post that almost-but-not-quite matches your situation, you copy a line, and it breaks something else. After two hours of this you feel like the tools are hostile. Meanwhile, the answer was three clicks away on the official documentation — but you either did not know the docs existed, did not know how to navigate them, or tried to read them like a novel and bounced off.
 
 This chapter teaches you to read official documentation — [pandas](https://pandas.pydata.org/docs/) docs, [Python](https://docs.python.org/3/) docs, library README files, [docstrings](https://peps.python.org/pep-0257/) — in a way that actually answers your question. It is about the skill, not about any one library. Documentation is a reference medium: you dip into it for the answer to a specific question and then you leave. Once you learn to do that, the official docs become the fastest source of help you have, faster than Stack Overflow and much more reliable than a tutorial blog.

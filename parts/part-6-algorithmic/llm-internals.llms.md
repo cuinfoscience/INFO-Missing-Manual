@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![Tokenization. Embeddings. Attention. KV cache. Each concept is fine on its own. Together they are a wall of math your linear-algebra class did not prepare you for.](../../graphics/memes/llm-internals.png)
+
 You have probably used a chatbot, had AI help you write code, or asked a language model to explain a confusing error message. These tools are now embedded in text editors, search engines, notebooks, and APIs. But most people use them with little understanding of what is actually happening under the hood — and that gap causes real problems: you paste in a prompt, get a confident-sounding answer, and have no way to judge whether it is trustworthy, or why it failed when it did.
 
 This chapter gives you the conceptual vocabulary you need to use language models more deliberately. You do not need to know how to train a model. You do not need to understand the mathematics of transformers. What you need is a working mental model: how text becomes input, how context shapes output, how temperature controls variation, how embeddings enable search, and what the difference is between typing into a chatbot and calling an API. With that mental model in place, you can write better prompts, diagnose failures faster, and build more reliable workflows around AI tools.

@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![A black rectangle with a blinking cursor. No menus, no buttons, no undo. Every keystroke feels load-bearing.](../../graphics/memes/terminal.png)
+
 The terminal (command line) is a fast, precise interface for navigating files, running programs, and automating repetitive work. For novices, it can also be intimidating and risky because small mistakes can delete or overwrite work. This chapter builds confident, safe habits for everyday command-line use.
 
 ## Learning objectives

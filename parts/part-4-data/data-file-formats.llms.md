@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You wanted CSV. The collaborator sent you a .parquet. The next collaborator sent you a .feather. The third sent a .RDS. You are an information scientist, not an archaeologist.](../../graphics/memes/data-file-formats.png)
+
 A huge fraction of your time in a first data science course is spent moving data from a file into a [pandas](https://pandas.pydata.org/docs/) DataFrame. On paper, this is a one-liner: [`pd.read_csv("data.csv")`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.
 
 This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — [CSV](../../parts/appendix/appendix-glossary.llms.md#term-csv), TSV, [JSON](../../parts/appendix/appendix-glossary.llms.md#term-json), Excel, and [Parquet](../../parts/appendix/appendix-glossary.llms.md#term-parquet) — with the specific quirks of each, the `pandas` reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.

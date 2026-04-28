@@ -8,6 +8,8 @@
 
 ## Purpose
 
+![You finally got the auth working. Three calls in, you hit the rate limit. The error response is in JSON, deeply nested, and the documentation page 404s.](../../graphics/memes/http-apis.png)
+
 A surprising amount of real data science starts with fetching data from a URL. Weather records, stock prices, GitHub issues, Wikipedia edits, census statistics, and a long tail of research datasets live behind HTTP APIs — you send a request, the server sends back JSON or CSV, and you parse it into a DataFrame. Knowing how to do this cleanly is the difference between “I could only use the datasets my instructor handed me” and “I can get data for any project I care about.”
 
 This chapter covers the minimum you need to fetch data over HTTP responsibly and reliably: what an HTTP request is, how to use the `requests` library, how to deal with JSON responses, how to handle errors and rate limits, how to carry an API key without leaking it, and how to be a good citizen on someone else’s server. You will not leave this chapter a backend engineer — that is a whole different discipline — but you will leave able to fetch data from 90% of the APIs you encounter as a student.
