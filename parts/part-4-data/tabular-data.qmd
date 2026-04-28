@@ -264,13 +264,15 @@ For groupby, pass `dropna=False` if you want NaN groups included.
 
 **Fix:** `pd.to_numeric(..., errors="coerce")` as in problem 2, then decide what to do with the NaNs. Do not silently `.dropna()` — that is the row you should be investigating.
 
-::: {.callout-note}
-## 📚 Further reading
+## Stakes and politics
 
-- Hadley Wickham, [*Tidy Data*](https://vita.had.co.nz/papers/tidy-data.pdf) — the canonical paper on long/wide formats.
-- [pandas User Guide: Reshaping](https://pandas.pydata.org/docs/user_guide/reshaping.html) — the official guide to `melt`, `pivot`, `stack`, and `unstack`.
-- [Great Expectations](https://docs.greatexpectations.io/) — a popular library for writing the validation checks this chapter advocates.
-:::
+This chapter teaches a workflow built around *cleaning* data — handling missing values, fixing dtypes, deduplicating, validating shape and ranges. Each of those moves looks technical, and each one is also a political choice that anyone reading your conclusions will read your data through.
+
+Three things to notice. First, *what counts as missing*. A `NaN` in a survey response can mean "the respondent declined," "the question did not apply," "the survey software failed," or "this row is from before the question existed." Treating all four the same — most often by a quiet `.dropna()` — silently encodes the assumption that the missing rows are exchangeable with the present ones, which is rarely true. Missingness in real datasets is often *informative*: the people who did not answer the income question are not a random sample of respondents, they are a particular subset whose absence is itself a finding.
+
+Second, *what counts as an outlier*. A flagged outlier is a row that differs from the others. In a dataset of incomes, that might be a billionaire whose presence skews the mean — or it might be a household in deep poverty whose presence is exactly the population the analysis is supposed to inform. "Removing outliers" sometimes means cleaning data and sometimes means erasing the most policy-relevant cases. Third, *what counts as a duplicate*. Two rows with the same key are duplicates only if you decide the key is enough to identify them. The same person can appear twice for legitimate reasons (two visits, two purchases, two enrollments); collapsing them silently rewrites the underlying social facts.
+
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: every cleaning step is a claim that the rows you removed do not matter. Write down which rows you removed and *why* — that note is part of your analysis, not separate from it.
 
 ## Worked examples
 
@@ -412,3 +414,15 @@ def validate(df: pd.DataFrame) -> None:
 -   **Parse dates explicitly.** Do not rely on inference for load-bearing columns.
 -   **Paste a `assert` validation block at the top of every analysis.**
 -   **If row counts change silently, stop and investigate.** It is almost always a bug.
+
+::: {.callout-note}
+## 📚 Further reading
+
+- Hadley Wickham, [*Tidy Data*](https://vita.had.co.nz/papers/tidy-data.pdf) — the canonical paper on long/wide formats; under 25 pages and shapes how the rest of the field thinks about table shape.
+- pandas, [User Guide: Reshaping](https://pandas.pydata.org/docs/user_guide/reshaping.html) — the official guide to `melt`, `pivot`, `stack`, and `unstack`.
+- Catherine D'Ignazio and Lauren F. Klein, [*Data Feminism*](https://data-feminism.mitpress.mit.edu/) — the standard book-length treatment of who gets counted, who counts, and how the technical decisions of data work encode power; pairs directly with the "Stakes and politics" framing above.
+- Great Expectations, [Documentation](https://docs.greatexpectations.io/) — a popular library for writing the validation checks this chapter advocates; treats data quality assertions as first-class artifacts.
+- Pandera, [Documentation](https://pandera.readthedocs.io/) — a lighter-weight schema and validation library for pandas DataFrames; useful when Great Expectations feels too heavy.
+- The Turing Way, [Reproducible Research: Open Data](https://book.the-turing-way.org/reproducible-research/open/open-data) — community-maintained chapter on documenting datasets, including data dictionaries and provenance notes.
+- Timnit Gebru et al., [*Datasheets for Datasets*](https://arxiv.org/abs/1803.09010) — proposes a documentation standard answering "who collected this, why, and what is missing" for any dataset; lightweight to apply to your own work.
+:::
