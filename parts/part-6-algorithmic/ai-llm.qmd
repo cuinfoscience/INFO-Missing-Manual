@@ -35,6 +35,10 @@ By the end of this chapter, you should be able to:
 
 6.  Use AI in coursework and collaboration without undermining learning or integrity.
 
+## Running theme: AI can propose; you must verify {.unnumbered}
+
+A large language model produces plausible text that fits patterns in its training data and your prompt. That makes it useful for drafting and transformation, but it does not guarantee correctness. Verification — primary documentation, small experiments, tests — remains your responsibility no matter how confident the assistant sounds.
+
 ## What an AI assistant is doing
 
 Most AI assistants in technical settings are built on [large language models](../appendix/appendix-glossary.qmd#term-llm) (LLMs) — see @sec-llm-internals for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
@@ -453,17 +457,19 @@ Conflicts are common. Resolve them with evidence.
 
 If the assistant cannot provide a verifiable primary source, treat its claim as tentative.
 
-::: {.callout-note}
-## 📚 Further reading
+## Stakes and politics
 
-- [Anthropic: Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — Anthropic's guide to structured, verifiable prompts.
-- [OpenAI: Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI's parallel guide, with patterns for chat and API workflows.
-- [Google: Generative AI prompt guide](https://ai.google.dev/gemini-api/docs/prompting-intro) — a beginner-friendly walk-through from Gemini's documentation.
-:::
+The advice in this chapter — use AI tools as drafting aids, verify their outputs, do not paste secrets — is good practical guidance. It is also a workflow built on top of an industry whose costs and externalities are largely paid by people other than the user.
 
-## Case studies
+Three things to notice. First, *training data and consent*. Modern LLMs are trained on text and code scraped from the open web, much of it without explicit permission from the authors. Books, blog posts, GitHub repositories under restrictive licenses, news articles, Stack Overflow answers — all of it has been ingested, with the legal questions still being litigated. When you use an AI tool, the value it delivers to you is partly the labor of millions of writers and developers who were not asked. Second, *labeling labor*. The reinforcement-learning-from-human-feedback that makes modern chat assistants usable is performed by underpaid contract workers, often in Kenya, the Philippines, Venezuela, and India, reviewing prompts and outputs that are sometimes traumatic. Mary Gray and Siddharth Suri's *Ghost Work* (cited in @sec-artifacts-politics) documents the broader pattern; the AI version is its current peak.
 
-These case studies illustrate how AI fits into a disciplined workflow.
+Third, *the verification responsibility is yours, not theirs*. The framing this chapter teaches — "AI can propose, you must verify" — is correct, and it is also a quiet transfer of liability. When an AI assistant suggests an unsafe command, a hallucinated citation, or a security-weakening pattern, the consequences fall on the person who ran the command, not on the company that built the model. That is a defensible workflow for individual users. It is also a remarkable arrangement at the level of an industry: an unprecedented tool is shipped to billions of people with the legal and practical responsibility for its failures pushed onto each of those people individually.
+
+See @sec-artifacts-politics for the broader framework, and @sec-llm-internals for what the model is actually doing under the hood. The concrete prompt to carry forward: when you accept an AI suggestion, ask whose labor produced it and who pays when it is wrong.
+
+## Worked examples
+
+These worked examples illustrate how AI fits into a disciplined workflow.
 
 ### A notebook kernel mismatch
 
@@ -538,3 +544,16 @@ The correct response is to step back and ask why the program cannot write where 
 -   I do not paste secrets or sensitive data.
 
 -   I disclose AI assistance when required and keep it specific.
+
+::: {.callout-note}
+## 📚 Further reading
+
+- Anthropic, [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — Anthropic's guide to structured, verifiable prompts.
+- OpenAI, [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI's parallel guide, with patterns for chat and API workflows.
+- Google, [Generative AI prompt guide](https://ai.google.dev/gemini-api/docs/prompting-intro) — a beginner-friendly walk-through from Gemini's documentation.
+- Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell, [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — the canonical critical paper on large language models; required reading for the "Stakes and politics" framing above.
+- Arvind Narayanan and Sayash Kapoor, [*AI Snake Oil*](https://www.aisnakeoil.com/) — a calm, evidence-driven book on what AI can and cannot do; an excellent counterweight to both hype and panic.
+- Mary L. Gray and Siddharth Suri, [*Ghost Work*](https://ghostwork.info/) — the foundational book on the hidden human labor behind "automated" systems; the AI labeling industry is its current peak.
+- [Distributed AI Research Institute (DAIR)](https://www.dair-institute.org/) — Timnit Gebru's research institute; a current and ongoing source on AI labor, bias, and accountability.
+- Karen Hao, [*Empire of AI*](https://karenhao.com/empire-of-ai/) — long-form journalism on the labor and resource flows behind modern AI; pairs with the labeling-labor framing above.
+:::
