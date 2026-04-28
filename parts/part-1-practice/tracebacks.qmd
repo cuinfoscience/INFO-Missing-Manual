@@ -204,13 +204,11 @@ The static part plus the library is usually enough to land you on a Stack Overfl
 
 If the exception is from a library, add the library name. If the exception is a `SyntaxError` or `IndentationError`, don't bother searching — those are almost always typos in your own code that you will spot faster by re-reading.
 
-::: {.callout-note}
-## 📚 Further reading
+## Stakes and politics
 
-- [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — the complete hierarchy of Python exception classes.
-- [Errors and Exceptions (Python tutorial)](https://docs.python.org/3/tutorial/errors.html) — the official introduction to raising and handling exceptions.
-- [Real Python: Understanding the Python Traceback](https://realpython.com/python-traceback/) — a walk-through of every part of a traceback with worked examples.
-:::
+Reading a traceback is a narrow technical skill, but the artifact itself has politics. Two concrete things to notice. First, *the traceback speaks one language*. Python's exception messages, library error strings, and the conventions for naming exceptions (`KeyError`, `ValueError`, `IndexError`) are all English, and so are the Stack Overflow answers, GitHub issues, and AI explanations you will reach for next. Non-English speakers debug Python by translating an English error message back to the underlying concept and then forward to their own working language. The barrier is small for any single bug, but it accumulates across a career and is one of the reasons that beginning to program in English is itself a form of cultural capital. Second, *tracebacks leak context*. The full file paths Python prints often include your user name, your project name, the layout of your home directory, and the versions of every library on your `PYTHONPATH`; pasting a raw traceback into a public forum or AI chat is sharing that information whether you meant to or not.
+
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: before you paste a traceback for help, glance at what else it tells the reader about your machine, and redact the parts that are not part of the bug.
 
 ## Worked examples
 
@@ -316,3 +314,14 @@ RuntimeError: failed to load user profile
 | `IndexError` | off-by-one, empty list |
 | `AttributeError: 'NoneType'` | a function returned `None` earlier |
 | `FileNotFoundError` | current working directory mismatch |
+
+::: {.callout-note}
+## 📚 Further reading
+
+- Python docs, [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — the complete hierarchy of Python exception classes; worth scanning end-to-end once so the names start triggering associations.
+- Python docs, [Errors and Exceptions (tutorial)](https://docs.python.org/3/tutorial/errors.html) — the official introduction to raising and handling exceptions.
+- Python docs, [`traceback` module](https://docs.python.org/3/library/traceback.html) — the standard-library tools for capturing, formatting, and inspecting tracebacks programmatically; useful when logging.
+- [PEP 657 — Include Fine Grained Error Locations in Tracebacks](https://peps.python.org/pep-0657/) — explains the `^^^^^` underline markers introduced in Python 3.11; once you know what you're looking at, they accelerate diagnosis significantly.
+- Real Python, [Understanding the Python Traceback](https://realpython.com/python-traceback/) — a walk-through of every part of a traceback with worked examples.
+- André Roberge, [`friendly_traceback`](https://aroberge.github.io/friendly-traceback-docs/docs/html/) — a third-party library that rewrites tracebacks in plain English (and several other languages); useful as both a learning aid and a glimpse at what less-Anglocentric error messages could look like.
+:::
