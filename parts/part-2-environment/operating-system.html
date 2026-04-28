@@ -714,15 +714,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#monthly-deep-check-about-2030-minutes" id="toc-monthly-deep-check-about-2030-minutes" class="nav-link" data-scroll-target="#monthly-deep-check-about-2030-minutes">Monthly deep check (about 20–30 minutes)</a></li>
   <li><a href="#before-major-milestones-projects-finals-deadlines" id="toc-before-major-milestones-projects-finals-deadlines" class="nav-link" data-scroll-target="#before-major-milestones-projects-finals-deadlines">Before major milestones (projects, finals, deadlines)</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">9.10</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">9.10</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">9.11</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#setting-up-a-safe-update-routine" id="toc-setting-up-a-safe-update-routine" class="nav-link" data-scroll-target="#setting-up-a-safe-update-routine">Setting up a safe update routine</a></li>
   <li><a href="#configuring-backups-and-testing-a-restore" id="toc-configuring-backups-and-testing-a-restore" class="nav-link" data-scroll-target="#configuring-backups-and-testing-a-restore">Configuring backups and testing a restore</a></li>
   <li><a href="#recovering-from-a-broken-update" id="toc-recovering-from-a-broken-update" class="nav-link" data-scroll-target="#recovering-from-a-broken-update">Recovering from a broken update</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">9.12</span> One-page checklist</a></li>
-  <li><a href="#quick-map-where-common-settings-live" id="toc-quick-map-where-common-settings-live" class="nav-link" data-scroll-target="#quick-map-where-common-settings-live"><span class="header-section-number">9.13</span> Quick map: where common settings live</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">9.13</span> One-page checklist</a></li>
+  <li><a href="#quick-map-where-common-settings-live" id="toc-quick-map-where-common-settings-live" class="nav-link" data-scroll-target="#quick-map-where-common-settings-live"><span class="header-section-number">9.14</span> Quick map: where common settings live</a>
   <ul class="collapse">
   <li><a href="#windows-typical" id="toc-windows-typical" class="nav-link" data-scroll-target="#windows-typical">Windows (typical)</a></li>
   <li><a href="#macos-typical" id="toc-macos-typical" class="nav-link" data-scroll-target="#macos-typical">macOS (typical)</a></li>
@@ -1097,27 +1098,15 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
     - the project's main script or notebook runs from a clean start
 [ ] Have a second machine or cloud backup available for emergency access</code></pre>
 <p>The last point is worth thinking about seriously. What is your plan if your laptop dies at 8 PM the night before a submission? If the answer is “I don’t know, I’d panic,” spend an hour now making a plan: pushing your code to GitHub, knowing where a library or lab computer is, having a lightweight workflow that could run on a borrowed machine. The plan does not have to be fancy — it just has to exist before you need it.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://support.microsoft.com/en-us/windows">Microsoft Support: Windows</a> — the canonical help portal for Windows updates, backups, and security.</li>
-<li><a href="https://support.apple.com/guide/mac-help/welcome/mac">Apple Support: Mac</a> — the Mac User Guide, covering Software Update, Time Machine, and FileVault.</li>
-<li><a href="https://staysafeonline.org/online-safety-privacy-basics/">StaySafeOnline: Cybersecurity Basics</a> — a plain-language primer on passwords, MFA, and account hygiene.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="9.10">
-<h2 data-number="9.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">9.10</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="9.10">
+<h2 data-number="9.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">9.10</span> Stakes and politics</h2>
+<p>The operating system is an artifact whose politics are unusually visible. It is the layer that decides what you are allowed to install, what you are allowed to modify, and what your machine reports back to its maker about how you use it. Three concrete things to notice. First, <em>who controls the update cadence</em>. On Windows and macOS, Microsoft and Apple set the calendar: they decide when a feature ships, when an old version stops getting security patches, and when your hardware becomes “unsupported” and is no longer eligible for the current OS at all. That last decision is a recurring source of e-waste — a five-year-old laptop that runs perfectly well in hardware terms is rendered insecure to use online because its vendor stopped patching it. Second, <em>who has administrator rights</em>. On a personal laptop, that is you. On a university-managed laptop, a work-issued device, or many K–12 machines, it is the institution, and that asymmetry shapes which courses, software, and workflows you can actually use. Third, <em>what the OS tells its maker</em>. Telemetry, crash reports, advertising IDs, and sync defaults all decide which of your activities flow back to the vendor. On both Windows and macOS these are configurable, but they are on by default.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: the OS is not a neutral substrate. When a tool you want to use will not run, or asks for permissions you cannot grant, or stops being supported on your hardware, it is worth asking <em>who decided</em>.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="9.11">
+<h2 data-number="9.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">9.11</span> Worked examples</h2>
 <section id="setting-up-a-safe-update-routine" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-a-safe-update-routine">Setting up a safe update routine</h3>
 <p>You want to make sure your operating system stays patched without having an update interrupt you in the middle of an exam. The setup is the same shape on both operating systems. On Windows, open Settings → Windows Update, confirm that “Check for updates” finds nothing pending, and click “Advanced options” to set your <strong>active hours</strong> — the window each day during which Windows will not restart you. Pick something that covers your normal class and study time. On macOS, open System Settings → General → Software Update, click the small (i) next to “Automatic updates,” and turn on “Check for updates,” “Download new updates when available,” and “Install macOS updates.” The actual restart is still up to you, but you no longer have to remember to check.</p>
@@ -1135,8 +1124,8 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
 <p>If you need to roll the update back, both OSes provide that. Windows lets you uninstall recent updates from the same Update history page. macOS does not allow you to roll back an OS update directly, but Time Machine can restore the entire system from a backup made before the update — which is the reason you set up backups in the first place. As a last resort, both systems have a recovery mode (Shift+Restart on Windows, Command+R at boot on Macs with Intel chips, or hold the power button on Apple Silicon) that boots into a small repair environment where you can reset, restore, or reinstall the operating system. Treat reinstallation as a real but final option — it works, but it is hours of effort, and it requires a backup that you have already verified.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="9.11">
-<h2 data-number="9.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="9.12">
+<h2 data-number="9.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.12</span> Exercises</h2>
 <ol type="1">
 <li><p>Record your OS version/build and device model in a troubleshooting note.</p></li>
 <li><p>Find the update settings page and take a screenshot of where you would check for updates.</p></li>
@@ -1146,8 +1135,8 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
 <li><p>Simulate a recovery: restore one older version of a document from backup.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="9.12">
-<h2 data-number="9.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">9.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="9.13">
+<h2 data-number="9.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">9.13</span> One-page checklist</h2>
 <ul>
 <li><p>I can find key settings (updates, backups, security, storage).</p></li>
 <li><p>I know my OS version/build and can report it.</p></li>
@@ -1160,8 +1149,8 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
 <li><p>I can follow a basic troubleshooting playbook and gather evidence.</p></li>
 </ul>
 </section>
-<section id="quick-map-where-common-settings-live" class="level2" data-number="9.13">
-<h2 data-number="9.13" class="anchored" data-anchor-id="quick-map-where-common-settings-live"><span class="header-section-number">9.13</span> Quick map: where common settings live</h2>
+<section id="quick-map-where-common-settings-live" class="level2" data-number="9.14">
+<h2 data-number="9.14" class="anchored" data-anchor-id="quick-map-where-common-settings-live"><span class="header-section-number">9.14</span> Quick map: where common settings live</h2>
 <section id="windows-typical" class="level3">
 <h3 class="anchored" data-anchor-id="windows-typical">Windows (typical)</h3>
 <ul>
@@ -1181,6 +1170,27 @@ Windows:                Hold Shift while clicking Restart → Troubleshoot →
 </ul>
 <p>An operating system manages all of the resources that you interact with while using a computer. For instance, it manages input from the keyboard, what is displayed on a screen, and how you open and close programs. When you interact with your computer, you are interacting with the operating system. For instance, Windows is an operating system.</p>
 <p>Keeping your operating system up-to-date ensures that you have the latest features, security, and bug fixes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://support.microsoft.com/en-us/windows">Microsoft Support: Windows</a> — the canonical help portal for Windows updates, backups, and security.</li>
+<li><a href="https://support.apple.com/guide/mac-help/welcome/mac">Apple Support: Mac User Guide</a> — the Mac User Guide, covering Software Update, Time Machine, and FileVault.</li>
+<li><a href="https://ssd.eff.org/">Electronic Frontier Foundation, Surveillance Self-Defense</a> — a calm, practical guide to threat modeling, account hardening, and platform choices; goes well beyond “use a password manager.”</li>
+<li>StaySafeOnline, <a href="https://staysafeonline.org/online-safety-privacy-basics/">Online Safety Privacy Basics</a> — a plain-language primer on passwords, MFA, and account hygiene.</li>
+<li><a href="https://www.ifixit.com/laptop-repairability">iFixit Repairability Scores</a> — laptop-by-laptop teardown ratings; a useful counterweight to vendor marketing when you are deciding which machine to buy or repair.</li>
+<li>Ubuntu, <a href="https://ubuntu.com/desktop">Get Ubuntu</a> — if you ever want to try a non-proprietary OS on a spare laptop, Ubuntu is the gentlest entry point and the closest analog to a “default” Linux desktop.</li>
+<li>Microsoft, <a href="https://learn.microsoft.com/en-us/windows/release-health/">Windows release health</a> and Apple, <a href="https://support.apple.com/en-us/100100">Apple security releases</a> — the official lists of which OS versions are still receiving security patches; useful when you are deciding whether to keep an older machine online.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

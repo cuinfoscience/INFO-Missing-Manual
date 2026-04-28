@@ -34,6 +34,10 @@ By the end of this chapter, you should be able to:
 
 This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL). An appendix maps concepts to Windows PowerShell where relevant.
 
+## Running theme: see before you act
+
+The shell trades safety for speed: a single command can move, overwrite, or delete more work than an afternoon of clicking. Almost every command-line disaster is one keystroke away from being prevented by a `pwd`, an `ls`, or a dry-run preview before the destructive command runs.
+
 ## 11.1 A beginner mental model
 
 The first piece of vocabulary worth getting right is the difference between a **terminal** and a **shell**, because the words are often used interchangeably and the distinction matters when you read documentation. The **terminal** is the application window you type in — Terminal.app on macOS, [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/) or [PowerShell](https://learn.microsoft.com/en-us/powershell/) on Windows, GNOME Terminal or Konsole on Linux. The **shell** is the program running *inside* that window — usually [`bash`](https://www.gnu.org/software/bash/manual/) or [`zsh`](https://zsh.sourceforge.io/Doc/) on macOS and Linux, `pwsh` (PowerShell) or `cmd.exe` on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A **command** is the actual thing you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
@@ -695,13 +699,15 @@ Traceback (most recent call last):
 
 Disciplined debugging is not glamorous, but it is reliable, and it is what separates people who lose an hour to a mystery error from people who spend two minutes and keep working.
 
-> **NOTE:**
->
-> - [The Bash Reference Manual](https://www.gnu.org/software/bash/manual/) — the canonical reference for bash syntax, built-ins, and scripting.
-> - [Software Carpentry: The Unix Shell](https://swcarpentry.github.io/shell-novice/) — a complete beginner tutorial with hands-on exercises.
-> - [ExplainShell](https://explainshell.com/) — paste any command and get a breakdown of every flag and argument.
+## 11.15 Stakes and politics
 
-## 11.15 Worked examples
+The command line is the most overtly cultural artifact in this entire handbook. Two things to notice. First, *who is “supposed” to use it*. A culture has grown up around the terminal — descended from Unix at Bell Labs in the 1970s and hardened in academic CS departments through the 1980s and 1990s — that treats command-line fluency as the marker of real technical competence and graphical interfaces as scaffolding for people who do not know any better. That hierarchy has consequences: hiring funnels, open-source contribution norms, and the implicit “if you have to ask, you do not belong” tone of many tutorials all use terminal fluency as a gate. The skills are genuinely valuable — that is why this chapter exists — but the gatekeeping is a separate phenomenon worth naming.
+
+Second, *which terminal is normal*. Almost every tutorial, including this one, assumes a Unix-like shell (`bash` or `zsh`), which means Windows users without WSL and Chromebook users with restricted shells either translate every example into PowerShell or get told to “just use a real OS.” That assumption is a deliberate choice, made by a community whose members already had the right hardware and operating systems for it. People learning on locked-down school laptops, on phones, on cheap Chromebooks, or on shared library terminals carry the cost of that choice.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: the terminal is a powerful tool *and* a status marker; you can learn it well without pretending the gatekeeping around it is not real.
+
+## 11.16 Worked examples
 
 ### Building a course workspace from the terminal
 
@@ -798,7 +804,7 @@ $ ls ../data/ | od -c | head -3
 
 If the bytes look like the filename you expected, you are good. If they include surprises, that is the bug. With those three checks, “file not found” becomes diagnosable in under a minute.
 
-## 11.16 Templates
+## 11.17 Templates
 
 ### Template A: Safe destructive action checklist
 
@@ -826,7 +832,7 @@ If the bytes look like the filename you expected, you are good. If they include 
       Notes/assumptions:
     * ...
 
-## 11.17 Exercises
+## 11.18 Exercises
 
 1.  Navigate from your home directory to a course folder using only `cd`, `pwd`, `ls`.
 
@@ -842,7 +848,7 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 7.  Trigger a permission error intentionally (in a safe location) and explain why `sudo` is not the first fix.
 
-## 11.18 One-page checklist
+## 11.19 One-page checklist
 
 - I can explain terminal vs shell, and command + arguments.
 
@@ -860,7 +866,7 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 - I avoid leaking secrets in commands and history.
 
-## 11.19 Windows notes: PowerShell and WSL (optional)
+## 11.20 Windows notes: PowerShell and WSL (optional)
 
 ### Two common paths
 
@@ -876,11 +882,11 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 - Pipes exist in both, but objects vs text differ.
 
-## 11.20 What is a terminal?
+## 11.21 What is a terminal?
 
 A terminal is a tool for interacting with your computer by issuing commands. A terminal launches a shell (e.g. `bash` or `zsh`), so sometimes you will hear a “terminal” also described as a “shell”.
 
-## 11.21 What terminal commands should I know, as a basic foundation?
+## 11.22 What terminal commands should I know, as a basic foundation?
 
 The exact syntax of terminal commands will be slightly different on Windows and Mac. So to keep things consistent, we are only going to detail high-level descriptions of terminal commands in this guide. You can Google the exact commands for your specific system; it is good practice to learn to search for the terminal commands you will need online.
 
@@ -895,3 +901,13 @@ To get started with the terminal for your INFO classes, you should memorize the 
 - Inspect the location of a program to the terminal (e.g. `which Python`)
 
 - Print your working directory
+
+> **NOTE:**
+>
+> - GNU, [The Bash Reference Manual](https://www.gnu.org/software/bash/manual/) — the canonical reference for bash syntax, built-ins, and scripting.
+> - Software Carpentry, [The Unix Shell](https://swcarpentry.github.io/shell-novice/) — a complete beginner tutorial with hands-on exercises and small datasets.
+> - William Shotts, [*The Linux Command Line*](https://linuxcommand.org/tlcl.php) — a 500-page free PDF that is the best single book for going from “I can `cd` and `ls`” to “I can write a real shell script.”
+> - Michael Kerrisk, [`man7.org` Linux man pages](https://man7.org/linux/man-pages/) — searchable, current copies of every standard man page; faster to read in a browser than `man` in some terminals.
+> - Julia Evans, [Bite Size Command Line](https://wizardzines.com/zines/bite-size-command-line/) — a short illustrated zine on the everyday commands and the mental moves around them.
+> - [ExplainShell](https://explainshell.com/) — paste any command and get a breakdown of every flag and argument; great for understanding a one-liner you copied from a tutorial.
+> - [ShellCheck](https://www.shellcheck.net/) — a linter for shell scripts that catches the quoting and globbing mistakes nobody catches by eye; run it on every shell script you write.

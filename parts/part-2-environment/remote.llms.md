@@ -667,13 +667,15 @@ ssh -v agandler@server.cs.example.edu 2>&1 | grep -i "offering\|accepted\|public
 
 **Server-side access control problem.** Your key is correct but the server has not authorized it — the public key was never added to `~/.ssh/authorized_keys` on the server, the file has the wrong permissions, or your account has been disabled. If you have another way into the server (password login, console access, another working key), fix it there. If not, you need to contact whoever administers the server and ask them to install your public key.
 
-> **NOTE:**
->
-> - [OpenSSH manual pages](https://www.openssh.com/manual.html) — the canonical reference for `ssh`, `sshd`, `scp`, `sftp`, and SSH config files.
-> - [SSH Academy](https://www.ssh.com/academy/ssh) — a tutorial-style introduction to keys, agents, tunneling, and common errors.
-> - [VS Code Remote - SSH](https://code.visualstudio.com/docs/remote/ssh) — the official guide to editing remote files as if they were local.
+## 13.11 Stakes and politics
 
-## 13.11 Worked examples
+Remote computing — SSH into a server, push to a cluster, run a job in the cloud — is the workflow that turns a personal laptop into a professional research instrument. It is also, more sharply than almost anything else in this handbook, a workflow shaped by infrastructure privilege. Three things to notice. First, *what kind of network you have*. The defaults assume broadband: low-latency, unmetered, reliable. SSH over a 200 ms satellite link with intermittent disconnection is technically possible but exhausting; running a Jupyter notebook over a port-forwarded tunnel from a coffee-shop hotspot uses real, paid-for data, and on a small monthly plan it adds up fast.
+
+Second, *who can access shared compute*. University HPC clusters gatekeep by institution and account. Major commercial cloud providers (AWS, GCP, Azure) gatekeep by credit card and, in some cases, by passport — students from sanctioned countries are formally barred from creating accounts. The “free tier” most tutorials assume requires a card on file. Third, *whose machines run your code*. Cloud workloads run on servers in specific physical locations under specific national jurisdictions; data placed there inherits those jurisdictions’ surveillance, subpoena, and disclosure regimes. For most coursework this does not matter. For some research, especially with sensitive or regulated data, it matters a lot.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when a tutorial says “spin up a server in the cloud,” ask whose card pays the bill, whose laws govern the disk it lands on, and whose network needs to be fast enough to make the workflow usable.
+
+## 13.12 Worked examples
 
 ### Your first SSH login
 
@@ -765,7 +767,7 @@ ssh -i ~/.ssh/id_ed25519 ubuntu@203.0.113.42
 
 Run your job. When you are done — and this is the part students forget — go back to the cloud console and **terminate** (not just stop) the instance, so that you stop paying for storage too. Confirm in the billing dashboard that no resources are still running. Cloud bills can compound quickly if you forget about a forgotten VM, and the failure mode of “I left it running for a month” is a real and expensive mistake.
 
-## 13.12 Exercises
+## 13.13 Exercises
 
 1.  Generate an SSH key pair with a passphrase and identify where keys are stored.
 
@@ -779,7 +781,7 @@ Run your job. When you are done — and this is the part students forget — go 
 
 6.  Cloud practice (if allowed): launch a VM, SSH in, then shut it down and confirm termination.
 
-## 13.13 One-page checklist
+## 13.14 One-page checklist
 
 - I know whether I need a VPN before SSH.
 
@@ -797,7 +799,7 @@ Run your job. When you are done — and this is the part students forget — go 
 
 - I log out and terminate cloud resources when finished.
 
-## 13.14 Quick reference: common SSH commands
+## 13.15 Quick reference: common SSH commands
 
     ssh username@hostname
     ssh -p 2222 username@hostname
@@ -806,7 +808,7 @@ Run your job. When you are done — and this is the part students forget — go 
     scp localfile username@hostname:/remote/path/
     sftp username@hostname
 
-## 13.15 Quick reference: vocabulary
+## 13.16 Quick reference: vocabulary
 
 SSH  
 Secure Shell protocol for encrypted remote access.
@@ -828,3 +830,13 @@ Server identity fingerprint stored in `known_hosts`.
 
 Security group/firewall  
 Rules controlling allowed inbound/outbound network traffic.
+
+> **NOTE:**
+>
+> - OpenBSD, [OpenSSH manual pages](https://www.openssh.com/manual.html) — the canonical reference for `ssh`, `sshd`, `scp`, `sftp`, and SSH config files.
+> - SSH.COM, [SSH Academy](https://www.ssh.com/academy/ssh) — a tutorial-style introduction to keys, agents, tunneling, and common errors.
+> - Microsoft, [VS Code Remote - SSH](https://code.visualstudio.com/docs/remote/ssh) — the official guide to editing remote files as if they were local; one of the highest-leverage workflows for student remote work.
+> - Michael W. Lucas, [*SSH Mastery*](https://mwl.io/nonfiction/networking#ssh) — a short, practitioner-focused book on SSH keys, agents, jump hosts, and tunneling; covers the corners the official docs leave out.
+> - [Mosh: the mobile shell](https://mosh.org/) — an alternative to SSH that survives flaky networks, sleep/wake, and IP changes; the right tool when you are working from anywhere with intermittent connectivity.
+> - DigitalOcean, [Community tutorials on SSH and Linux administration](https://www.digitalocean.com/community/tutorials) — well-edited how-tos on cloud and server topics; useful as a second source when official docs assume too much.
+> - DEFCON / EFF, [Surveillance Self-Defense: Choosing the VPN that’s right for you](https://ssd.eff.org/module/choosing-vpn-thats-right-you) — a calm, threat-model-driven walk-through of what VPNs do and do not protect you from.

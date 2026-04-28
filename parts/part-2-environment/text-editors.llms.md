@@ -393,13 +393,15 @@ git checkout .                  # throw everything away; back to the commit
 
 The habit to build: **commit small, commit often, and commit before anything that scares you.** Commits are cheap, and the safety they provide is enormous. See [sec-git-github](#sec-git-github) for the mechanics and [sec-project-management](#sec-project-management) for how commit hygiene fits into broader project discipline.
 
-> **NOTE:**
->
-> - [VS Code documentation](https://code.visualstudio.com/docs) — the official guide, including the Python extension walk-through.
-> - [VS Code Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial) — a focused introduction to running and debugging Python in VS Code.
-> - [nano cheat sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html) — every keystroke you need for quick edits over SSH.
+## 12.10 Stakes and politics
 
-## 12.10 Worked examples
+Editors look like the most neutral tool in the kit, but the editor industry has consolidated dramatically in the last decade and the consequences are worth seeing. Visual Studio Code, the dominant editor for new programmers, is a Microsoft product; it ships with telemetry enabled by default, its Python extension is published by Microsoft, and the same company owns GitHub and a substantial stake in OpenAI. None of that makes VS Code a bad editor — it is, by most measures, an excellent one — but the situation in which the default editor, the default code host, and the default AI coding assistant are all owned by a single company is new, and it concentrates an unusual amount of influence over how programming gets taught and learned. The community fork VSCodium exists precisely because some users want the editor without the telemetry and proprietary marketplace.
+
+A second, sharper concern: editor extensions are code that runs with full access to your filesystem and your network. Installing a popular-looking extension from an unfamiliar publisher is the same shape of decision as installing a random binary from the internet, and the major extension marketplaces have repeatedly hosted malicious or compromised packages.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose an editor and its extensions, ask whose code is now running every time you open a file, and what defaults you have inherited without choosing.
+
+## 12.11 Worked examples
 
 ### Writing and running a tiny script
 
@@ -465,7 +467,7 @@ exit
 
 The whole interaction is under a minute if you know the basic `nano` keystrokes. The reason the chapter recommended learning `nano` for emergencies is exactly this scenario: you want a tool that is already installed on every Unix box you might log into and that you can drive without a tutorial open in front of you.
 
-## 12.11 Templates
+## 12.12 Templates
 
 ### Template A: Editor setup checklist (first week)
 
@@ -489,7 +491,7 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
     5. Run tests or rerun script
     6. Commit with a message describing the change
 
-## 12.12 Exercises
+## 12.13 Exercises
 
 1.  Configure your editor to show line numbers and visible whitespace; explain what you changed.
 
@@ -503,7 +505,7 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 6.  Optional: learn a minimal vim workflow (insert, save, quit, search).
 
-## 12.13 One-page checklist
+## 12.14 One-page checklist
 
 - I can open, save, and locate files reliably.
 
@@ -519,7 +521,7 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 - I have a fallback editor skill for remote/emergency use.
 
-## 12.14 Quick reference: terminal editor survival commands (optional handout)
+## 12.15 Quick reference: terminal editor survival commands (optional handout)
 
 ### nano
 
@@ -533,10 +535,20 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 ### vim
 
-## 12.15 Quick reference: GUI/IDE search
+## 12.16 Quick reference: GUI/IDE search
 
 - Find in file, replace in file
 
 - Find in workspace, replace in workspace
 
 - Go to line, go to file, go to definition
+
+> **NOTE:**
+>
+> - Microsoft, [VS Code documentation](https://code.visualstudio.com/docs) — the official guide, including the Python extension walk-through.
+> - Microsoft, [VS Code Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial) — a focused introduction to running and debugging Python in VS Code.
+> - [VSCodium](https://vscodium.com/) — the community-maintained build of VS Code without Microsoft’s telemetry and proprietary marketplace; useful when you want the editor and the freedoms separately.
+> - Drew Neil, [*Practical Vim*](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) — the standard book for learning Vim well; pairs nicely with the built-in `vimtutor` for hands-on practice.
+> - GNU, [Emacs Tutorial](https://www.gnu.org/software/emacs/tour/) — an interactive tour of Emacs, the other long-lived editor tradition; worth a half-hour even if you never adopt it, just to see the alternative model.
+> - nano, [Cheat sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html) — every keystroke you need for quick edits over SSH.
+> - JetBrains, [PyCharm documentation](https://www.jetbrains.com/help/pycharm/) — if you outgrow VS Code’s built-in Python features, PyCharm is the canonical Python IDE; its educational edition is free for students.

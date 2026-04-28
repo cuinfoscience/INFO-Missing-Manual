@@ -4,7 +4,7 @@
 >
 > **Prerequisites (read first if unfamiliar):** [sec-os-management](#sec-os-management).
 >
-> **See also:** [sec-terminal](#sec-terminal), [sec-project-management](#sec-project-management).
+> **See also:** [sec-terminal](#sec-terminal), [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks), [sec-git-github](#sec-git-github), [sec-project-management](#sec-project-management).
 
 ## Purpose
 
@@ -214,17 +214,19 @@ df = pd.read_csv("data\\raw\\survey.csv")   # Windows-only
 df = pd.read_csv("data/raw/survey.csv")     # usually fine, but brittle
 ```
 
-`Path(__file__).resolve().parent` is the trick that makes a script find its own folder no matter where it is launched from: the script asks the operating system where its own source file lives, resolves any symlinks, and uses that as the anchor for all subsequent paths. Every relative path is then built by joining with the `/` operator, which `pathlib` translates into whatever separator the current operating system wants.
+`Path(__file__).resolve().parent` is the trick that makes a script find its own folder no matter where it is launched from: the script asks the operating system where its own source file lives, resolves any symlinks, and uses that as the anchor for all subsequent paths. Every relative path is then built by joining with the `/` operator, which `pathlib` translates into whatever separator the current operating system wants. (See [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks) for when to bring this discipline from notebooks into reusable scripts, and [sec-git-github](#sec-git-github) for how the project layout interacts with version control — `data/raw/` typically belongs in `.gitignore`, while `src/` and `notebooks/` do not.)
 
 Two small supporting habits make everything else smoother. **Keep paths short** — deep project trees hit Windows’ legacy path-length limits and make every error message harder to read — and **avoid special characters** in filenames you pass to code. Spaces, parentheses, accented letters, and curly quotes all work in the GUI and all occasionally break in the terminal or a script. Stick to letters, digits, hyphens, and underscores for anything a script will touch, and you will never need to learn which layer of which tool is responsible for the broken quoting.
 
-> **NOTE:**
->
-> - [File Explorer in Windows](https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1) — the official walk-through of navigating Windows paths.
-> - [Finder User Guide for Mac](https://support.apple.com/guide/mac-help/finder-mchlp1103/mac) — the Apple equivalent covering tags, column view, and search.
-> - [Python `pathlib` documentation](https://docs.python.org/3/library/pathlib.html) — the cross-platform way to work with paths from code.
+## 10.9 Stakes and politics
 
-## 10.9 Worked examples
+A “local” file system is less local than it used to be. The biggest political shift in personal computing over the last fifteen years has been the migration of student work from the laptop’s own disk into corporate cloud sync — OneDrive, iCloud Drive, Google Drive, Dropbox. The migration is sometimes a deliberate choice and sometimes a default: a Windows laptop signs in to a Microsoft account and your `Documents` folder is silently rewired to OneDrive, with placeholder files where bytes used to be.
+
+Two consequences worth naming. First, *who controls the bytes*. Files in cloud-synced folders live on the vendor’s storage, governed by their terms of service; deletion, recovery, account suspension, and law-enforcement requests are now the vendor’s decisions to make, not yours. Second, *who pays for sync’s failures*. When a sync conflict produces “myfile (alex’s MacBook Pro).docx” or a network blip leaves a placeholder where a script needed real bytes, the cost of debugging the mismatch between what the GUI shows and what the disk holds falls on the user — almost always a non-specialist who is being asked to reason about a layered system they did not choose.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you decide where a project lives, ask whose rules the storage runs under and what happens when the network is gone.
+
+## 10.10 Worked examples
 
 ### Building a course workspace from scratch
 
@@ -273,7 +275,7 @@ A relative path like `data/input.csv` is interpreted relative to whatever direct
 
 The third check, only if the first two pass, is whether the file is sync-stranded: you can see a placeholder for it but the bytes are still in the cloud. On macOS you can confirm with `Command + I` in Finder; on Windows the sync icon next to the file tells you. Force a local copy and try again. Most “file not found” errors will be solved by one of these three checks; only after all three should you start looking at code.
 
-## 10.10 Exercises
+## 10.11 Exercises
 
 1.  Create a project folder structure and explain (in one paragraph) why each folder exists.
 
@@ -285,7 +287,7 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 5.  Break and fix: move a folder referenced by a notebook/script; then repair it using relative paths.
 
-## 10.11 One-page checklist
+## 10.12 One-page checklist
 
 - I know where my project root is.
 
@@ -303,7 +305,7 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 - I avoid working in system directories and respect permissions.
 
-## 10.12 Quick reference: key locations
+## 10.13 Quick reference: key locations
 
 ### Windows (typical)
 
@@ -363,7 +365,7 @@ A “file path” is an address that describes where a folder or file lives on y
 
 **Note on drives and separators.** Windows may assign other drive letters (`D:`, `E:`, etc.) if you have multiple hard drives or partitions. Replace `C:\` with the correct letter when constructing paths. Also remember that Windows uses backslashes (`\`) to separate path components, whereas macOS and Linux use forward slashes (`/`). This difference matters when typing paths in the terminal or code.
 
-## 10.13 Why can’t I find a file I downloaded from Canvas? Where did it go?
+## 10.14 Why can’t I find a file I downloaded from Canvas? Where did it go?
 
 Building on the ideas about your computer’s file system from the previous section, it is important to know where to find the files we download using our web browser. Depending on the defaults and other preferences of your web browser, downloaded folders might go to your Desktop, a Downloads folder, or some other place. The steps below will make sure that your browser is downloading the folders to a consistent location: your Downloads folder. Instructions for changing the download location of the most popular web browsers (Chrome, Safari, Firefox, and Edge) are listed below with links to their official documentation or other tutorials.
 
@@ -403,7 +405,7 @@ Note that some file types like PDFs may open by default in your web browser rath
 
 Figure 10.4: Changing the Edge download location.
 
-## 10.14 What does it mean to unzip a file? How do I do that?
+## 10.15 What does it mean to unzip a file? How do I do that?
 
 Compressed zip files are archives that bundle one or more files into a single package and reduce their size. Before you can work with the contents, you need to *unzip* (extract) the archive. Both Windows and macOS provide built‑in tools to handle zip files, and many third‑party tools exist. The basic workflow is the same:
 
@@ -418,6 +420,15 @@ Double‑click the `.zip` file in Finder or select it and choose `File`→`Open`
 ##### Safety tips.
 
 Never run executables from a zip file you downloaded unless you trust the source. Always choose a destination folder you can locate easily (for example, your “Downloads” folder or a course project folder), and avoid unzipping directly into system folders. Keep raw zipped archives if you need to preserve the original state for provenance, but otherwise deleting them saves space.
+
+> **NOTE:**
+>
+> - Microsoft, [File Explorer in Windows](https://support.microsoft.com/en-us/windows/file-explorer-in-windows-ef370130-1cca-9dc5-e0df-2f7416fe1cb1) — the official walk-through of navigating Windows paths.
+> - Apple, [Finder User Guide for Mac](https://support.apple.com/guide/mac-help/finder-mchlp1103/mac) — covers tags, column view, and search.
+> - Python docs, [`pathlib`](https://docs.python.org/3/library/pathlib.html) — the cross-platform way to work with paths from code; learn it on day one and never touch a backslash again.
+> - Hadley Wickham and Jenny Bryan, [What They Forgot to Teach You About R: project-oriented workflow](https://rstats.wtf/projects) — the canonical short essay on `setwd()` antipatterns and project-relative paths; the lessons translate directly to Python.
+> - The Turing Way, [Project structure](https://book.the-turing-way.org/project-design/project-repo/project-repo-folders) — community-maintained guide to reproducible project layouts in research contexts.
+> - Cookiecutter Data Science, [Directory structure](https://drivendata.github.io/cookiecutter-data-science/) — a widely adopted template for `data/`, `src/`, `notebooks/`, and `reports/` layouts; useful as a reference even if you do not use the generator.
 
 [^1]: <https://support.apple.com/en-us/HT201732>
 

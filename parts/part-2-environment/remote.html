@@ -730,17 +730,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#timeouts-and-unstable-connections" id="toc-timeouts-and-unstable-connections" class="nav-link" data-scroll-target="#timeouts-and-unstable-connections">Timeouts and unstable connections</a></li>
   <li><a href="#permission-denied-the-three-root-causes" id="toc-permission-denied-the-three-root-causes" class="nav-link" data-scroll-target="#permission-denied-the-three-root-causes">“Permission denied” — the three root causes</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">13.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">13.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">13.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#your-first-ssh-login" id="toc-your-first-ssh-login" class="nav-link" data-scroll-target="#your-first-ssh-login">Your first SSH login</a></li>
   <li><a href="#moving-a-dataset-to-a-server" id="toc-moving-a-dataset-to-a-server" class="nav-link" data-scroll-target="#moving-a-dataset-to-a-server">Moving a dataset to a server</a></li>
   <li><a href="#running-remote-jupyter-via-an-ssh-tunnel" id="toc-running-remote-jupyter-via-an-ssh-tunnel" class="nav-link" data-scroll-target="#running-remote-jupyter-via-an-ssh-tunnel">Running remote Jupyter via an SSH tunnel</a></li>
   <li><a href="#launching-and-securing-a-small-cloud-vm" id="toc-launching-and-securing-a-small-cloud-vm" class="nav-link" data-scroll-target="#launching-and-securing-a-small-cloud-vm">Launching and securing a small cloud VM</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.12</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">13.13</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-ssh-commands" id="toc-quick-reference-common-ssh-commands" class="nav-link" data-scroll-target="#quick-reference-common-ssh-commands"><span class="header-section-number">13.14</span> Quick reference: common SSH commands</a></li>
-  <li><a href="#quick-reference-vocabulary" id="toc-quick-reference-vocabulary" class="nav-link" data-scroll-target="#quick-reference-vocabulary"><span class="header-section-number">13.15</span> Quick reference: vocabulary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">13.14</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-ssh-commands" id="toc-quick-reference-common-ssh-commands" class="nav-link" data-scroll-target="#quick-reference-common-ssh-commands"><span class="header-section-number">13.15</span> Quick reference: common SSH commands</a></li>
+  <li><a href="#quick-reference-vocabulary" id="toc-quick-reference-vocabulary" class="nav-link" data-scroll-target="#quick-reference-vocabulary"><span class="header-section-number">13.16</span> Quick reference: vocabulary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-2-environment/remote.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1313,27 +1314,16 @@ Host *
 <p><strong>Wrong key offered or no key loaded.</strong> The SSH client offered a key the server does not recognize, or the agent holds no keys at all. <code>ssh-add -l</code> lists the keys your agent currently has; <code>ssh-add ~/.ssh/id_ed25519</code> adds one. Verify with <code>-v</code> that the client is actually offering the key you expect:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="st">"offering\|accepted\|publickey"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Server-side access control problem.</strong> Your key is correct but the server has not authorized it — the public key was never added to <code>~/.ssh/authorized_keys</code> on the server, the file has the wrong permissions, or your account has been disabled. If you have another way into the server (password login, console access, another working key), fix it there. If not, you need to contact whoever administers the server and ask them to install your public key.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://www.openssh.com/manual.html">OpenSSH manual pages</a> — the canonical reference for <code>ssh</code>, <code>sshd</code>, <code>scp</code>, <code>sftp</code>, and SSH config files.</li>
-<li><a href="https://www.ssh.com/academy/ssh">SSH Academy</a> — a tutorial-style introduction to keys, agents, tunneling, and common errors.</li>
-<li><a href="https://code.visualstudio.com/docs/remote/ssh">VS Code Remote - SSH</a> — the official guide to editing remote files as if they were local.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="13.11">
-<h2 data-number="13.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">13.11</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="13.11">
+<h2 data-number="13.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">13.11</span> Stakes and politics</h2>
+<p>Remote computing — SSH into a server, push to a cluster, run a job in the cloud — is the workflow that turns a personal laptop into a professional research instrument. It is also, more sharply than almost anything else in this handbook, a workflow shaped by infrastructure privilege. Three things to notice. First, <em>what kind of network you have</em>. The defaults assume broadband: low-latency, unmetered, reliable. SSH over a 200 ms satellite link with intermittent disconnection is technically possible but exhausting; running a Jupyter notebook over a port-forwarded tunnel from a coffee-shop hotspot uses real, paid-for data, and on a small monthly plan it adds up fast.</p>
+<p>Second, <em>who can access shared compute</em>. University HPC clusters gatekeep by institution and account. Major commercial cloud providers (AWS, GCP, Azure) gatekeep by credit card and, in some cases, by passport — students from sanctioned countries are formally barred from creating accounts. The “free tier” most tutorials assume requires a card on file. Third, <em>whose machines run your code</em>. Cloud workloads run on servers in specific physical locations under specific national jurisdictions; data placed there inherits those jurisdictions’ surveillance, subpoena, and disclosure regimes. For most coursework this does not matter. For some research, especially with sensitive or regulated data, it matters a lot.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “spin up a server in the cloud,” ask whose card pays the bill, whose laws govern the disk it lands on, and whose network needs to be fast enough to make the workflow usable.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="13.12">
+<h2 data-number="13.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">13.12</span> Worked examples</h2>
 <section id="your-first-ssh-login" class="level3">
 <h3 class="anchored" data-anchor-id="your-first-ssh-login">Your first SSH login</h3>
 <p>You have an account on a department server and you have never logged in before. Three things to confirm: you know your <strong>username</strong>, the <strong>hostname</strong> of the server, and whether your institution requires a <strong>VPN</strong> connection before you can reach it. If a VPN is required, connect to it first. Then SSH in:</p>
@@ -1389,8 +1379,8 @@ Host *
 <p>Run your job. When you are done — and this is the part students forget — go back to the cloud console and <strong>terminate</strong> (not just stop) the instance, so that you stop paying for storage too. Confirm in the billing dashboard that no resources are still running. Cloud bills can compound quickly if you forget about a forgotten VM, and the failure mode of “I left it running for a month” is a real and expensive mistake.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="13.12">
-<h2 data-number="13.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.12</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="13.13">
+<h2 data-number="13.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.13</span> Exercises</h2>
 <ol type="1">
 <li><p>Generate an SSH key pair with a passphrase and identify where keys are stored.</p></li>
 <li><p>Create an <code>&nbsp;/.ssh/config</code> entry for a host and connect using the alias.</p></li>
@@ -1400,8 +1390,8 @@ Host *
 <li><p>Cloud practice (if allowed): launch a VM, SSH in, then shut it down and confirm termination.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="13.13">
-<h2 data-number="13.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">13.13</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="13.14">
+<h2 data-number="13.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">13.14</span> One-page checklist</h2>
 <ul>
 <li><p>I know whether I need a VPN before SSH.</p></li>
 <li><p>I can state: username, hostname, and authentication method.</p></li>
@@ -1413,8 +1403,8 @@ Host *
 <li><p>I log out and terminate cloud resources when finished.</p></li>
 </ul>
 </section>
-<section id="quick-reference-common-ssh-commands" class="level2" data-number="13.14">
-<h2 data-number="13.14" class="anchored" data-anchor-id="quick-reference-common-ssh-commands"><span class="header-section-number">13.14</span> Quick reference: common SSH commands</h2>
+<section id="quick-reference-common-ssh-commands" class="level2" data-number="13.15">
+<h2 data-number="13.15" class="anchored" data-anchor-id="quick-reference-common-ssh-commands"><span class="header-section-number">13.15</span> Quick reference: common SSH commands</h2>
 <pre><code>ssh username@hostname
 ssh -p 2222 username@hostname
 ssh -i ~/.ssh/my_key username@hostname
@@ -1422,8 +1412,8 @@ ssh -L 8888:localhost:8888 username@hostname
 scp localfile username@hostname:/remote/path/
 sftp username@hostname</code></pre>
 </section>
-<section id="quick-reference-vocabulary" class="level2" data-number="13.15">
-<h2 data-number="13.15" class="anchored" data-anchor-id="quick-reference-vocabulary"><span class="header-section-number">13.15</span> Quick reference: vocabulary</h2>
+<section id="quick-reference-vocabulary" class="level2" data-number="13.16">
+<h2 data-number="13.16" class="anchored" data-anchor-id="quick-reference-vocabulary"><span class="header-section-number">13.16</span> Quick reference: vocabulary</h2>
 <dl>
 <dt>SSH</dt>
 <dd>
@@ -1454,6 +1444,27 @@ sftp username@hostname</code></pre>
 <p>Rules controlling allowed inbound/outbound network traffic.</p>
 </dd>
 </dl>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>OpenBSD, <a href="https://www.openssh.com/manual.html">OpenSSH manual pages</a> — the canonical reference for <code>ssh</code>, <code>sshd</code>, <code>scp</code>, <code>sftp</code>, and SSH config files.</li>
+<li>SSH.COM, <a href="https://www.ssh.com/academy/ssh">SSH Academy</a> — a tutorial-style introduction to keys, agents, tunneling, and common errors.</li>
+<li>Microsoft, <a href="https://code.visualstudio.com/docs/remote/ssh">VS Code Remote - SSH</a> — the official guide to editing remote files as if they were local; one of the highest-leverage workflows for student remote work.</li>
+<li>Michael W. Lucas, <a href="https://mwl.io/nonfiction/networking#ssh"><em>SSH Mastery</em></a> — a short, practitioner-focused book on SSH keys, agents, jump hosts, and tunneling; covers the corners the official docs leave out.</li>
+<li><a href="https://mosh.org/">Mosh: the mobile shell</a> — an alternative to SSH that survives flaky networks, sleep/wake, and IP changes; the right tool when you are working from anywhere with intermittent connectivity.</li>
+<li>DigitalOcean, <a href="https://www.digitalocean.com/community/tutorials">Community tutorials on SSH and Linux administration</a> — well-edited how-tos on cloud and server topics; useful as a second source when official docs assume too much.</li>
+<li>DEFCON / EFF, <a href="https://ssd.eff.org/module/choosing-vpn-thats-right-you">Surveillance Self-Defense: Choosing the VPN that’s right for you</a> — a calm, threat-model-driven walk-through of what VPNs do and do not protect you from.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

@@ -386,13 +386,13 @@ Pre-deadline checklist:
 
 The last point is worth thinking about seriously. What is your plan if your laptop dies at 8 PM the night before a submission? If the answer is “I don’t know, I’d panic,” spend an hour now making a plan: pushing your code to GitHub, knowing where a library or lab computer is, having a lightweight workflow that could run on a borrowed machine. The plan does not have to be fancy — it just has to exist before you need it.
 
-> **NOTE:**
->
-> - [Microsoft Support: Windows](https://support.microsoft.com/en-us/windows) — the canonical help portal for Windows updates, backups, and security.
-> - [Apple Support: Mac](https://support.apple.com/guide/mac-help/welcome/mac) — the Mac User Guide, covering Software Update, Time Machine, and FileVault.
-> - [StaySafeOnline: Cybersecurity Basics](https://staysafeonline.org/online-safety-privacy-basics/) — a plain-language primer on passwords, MFA, and account hygiene.
+## 9.10 Stakes and politics
 
-## 9.10 Worked examples
+The operating system is an artifact whose politics are unusually visible. It is the layer that decides what you are allowed to install, what you are allowed to modify, and what your machine reports back to its maker about how you use it. Three concrete things to notice. First, *who controls the update cadence*. On Windows and macOS, Microsoft and Apple set the calendar: they decide when a feature ships, when an old version stops getting security patches, and when your hardware becomes “unsupported” and is no longer eligible for the current OS at all. That last decision is a recurring source of e-waste — a five-year-old laptop that runs perfectly well in hardware terms is rendered insecure to use online because its vendor stopped patching it. Second, *who has administrator rights*. On a personal laptop, that is you. On a university-managed laptop, a work-issued device, or many K–12 machines, it is the institution, and that asymmetry shapes which courses, software, and workflows you can actually use. Third, *what the OS tells its maker*. Telemetry, crash reports, advertising IDs, and sync defaults all decide which of your activities flow back to the vendor. On both Windows and macOS these are configurable, but they are on by default.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: the OS is not a neutral substrate. When a tool you want to use will not run, or asks for permissions you cannot grant, or stops being supported on your hardware, it is worth asking *who decided*.
+
+## 9.11 Worked examples
 
 ### Setting up a safe update routine
 
@@ -414,7 +414,7 @@ The first step is to figure out what changed. On Windows, Settings → Windows U
 
 If you need to roll the update back, both OSes provide that. Windows lets you uninstall recent updates from the same Update history page. macOS does not allow you to roll back an OS update directly, but Time Machine can restore the entire system from a backup made before the update — which is the reason you set up backups in the first place. As a last resort, both systems have a recovery mode (Shift+Restart on Windows, Command+R at boot on Macs with Intel chips, or hold the power button on Apple Silicon) that boots into a small repair environment where you can reset, restore, or reinstall the operating system. Treat reinstallation as a real but final option — it works, but it is hours of effort, and it requires a backup that you have already verified.
 
-## 9.11 Exercises
+## 9.12 Exercises
 
 1.  Record your OS version/build and device model in a troubleshooting note.
 
@@ -428,7 +428,7 @@ If you need to roll the update back, both OSes provide that. Windows lets you un
 
 6.  Simulate a recovery: restore one older version of a document from backup.
 
-## 9.12 One-page checklist
+## 9.13 One-page checklist
 
 - I can find key settings (updates, backups, security, storage).
 
@@ -448,7 +448,7 @@ If you need to roll the update back, both OSes provide that. Windows lets you un
 
 - I can follow a basic troubleshooting playbook and gather evidence.
 
-## 9.13 Quick map: where common settings live
+## 9.14 Quick map: where common settings live
 
 ### Windows (typical)
 
@@ -473,3 +473,13 @@ If you need to roll the update back, both OSes provide that. Windows lets you un
 An operating system manages all of the resources that you interact with while using a computer. For instance, it manages input from the keyboard, what is displayed on a screen, and how you open and close programs. When you interact with your computer, you are interacting with the operating system. For instance, Windows is an operating system.
 
 Keeping your operating system up-to-date ensures that you have the latest features, security, and bug fixes.
+
+> **NOTE:**
+>
+> - [Microsoft Support: Windows](https://support.microsoft.com/en-us/windows) — the canonical help portal for Windows updates, backups, and security.
+> - [Apple Support: Mac User Guide](https://support.apple.com/guide/mac-help/welcome/mac) — the Mac User Guide, covering Software Update, Time Machine, and FileVault.
+> - [Electronic Frontier Foundation, Surveillance Self-Defense](https://ssd.eff.org/) — a calm, practical guide to threat modeling, account hardening, and platform choices; goes well beyond “use a password manager.”
+> - StaySafeOnline, [Online Safety Privacy Basics](https://staysafeonline.org/online-safety-privacy-basics/) — a plain-language primer on passwords, MFA, and account hygiene.
+> - [iFixit Repairability Scores](https://www.ifixit.com/laptop-repairability) — laptop-by-laptop teardown ratings; a useful counterweight to vendor marketing when you are deciding which machine to buy or repair.
+> - Ubuntu, [Get Ubuntu](https://ubuntu.com/desktop) — if you ever want to try a non-proprietary OS on a spare laptop, Ubuntu is the gentlest entry point and the closest analog to a “default” Linux desktop.
+> - Microsoft, [Windows release health](https://learn.microsoft.com/en-us/windows/release-health/) and Apple, [Apple security releases](https://support.apple.com/en-us/100100) — the official lists of which OS versions are still receiving security patches; useful when you are deciding whether to keep an older machine online.
