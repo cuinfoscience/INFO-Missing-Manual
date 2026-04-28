@@ -63,8 +63,8 @@ INFO-Missing-Manual/
 ├── graphics/                        # images used in chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
 ├── scripts/
-│   ├── generate_chapter_meme.py     # thin wrapper around memeplotlib
-│   └── requirements.txt             # Python deps for the meme generator
+│   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
+│   └── requirements.txt             # (currently empty — generator uses stdlib only)
 ├── _extensions/cuinfo/chapter-meme/ # Quarto shortcode that drives the generator
 └── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
 ```
@@ -81,7 +81,8 @@ meme:
     - "MY CODE IS ON FIRE BUT THIS IS FINE"
   alt: "Short caption for screen readers."
   rationale: "humor — optional source-only note explaining the choice"
-  # fontsize: 192            # optional override; default 192 (≈2.7× memeplotlib's default of 72)
+  # width: 1000              # optional override; default 1000 (output width in pixels)
+  # font: "impact"           # optional override; default "impact"
 ```
 
 The chapter then invokes the shortcode at the desired location (conventionally just below the `## Purpose` heading):
@@ -90,9 +91,9 @@ The chapter then invokes the shortcode at the desired location (conventionally j
 {{< chapter-meme >}}
 ```
 
-A Lua shortcode in `_extensions/cuinfo/chapter-meme/` reads the frontmatter, calls `scripts/generate_chapter_meme.py`, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator is a thin wrapper around the [memeplotlib](https://github.com/brianckeegan/memeplotlib) library (≥0.2.0); install Python deps via `pip install -r scripts/requirements.txt`. The cache key includes the template id, the `fontsize`, and the lines, so editing any of the three invalidates the cached PNG on the next render.
+A Lua shortcode in `_extensions/cuinfo/chapter-meme/` reads the frontmatter, calls `scripts/generate_chapter_meme.py`, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator hits the public [memegen.link](https://memegen.link) API; no Python dependencies are required beyond the stdlib. The cache key includes the template id, the `width`, the `font`, and the lines, so editing any of the four invalidates the cached PNG on the next render.
 
-To force a regeneration of every meme (e.g. after changing the default font size):
+To force a regeneration of every meme (e.g. after changing the default width or font):
 
 ```bash
 rm graphics/memes/*.png graphics/memes/*.spec
