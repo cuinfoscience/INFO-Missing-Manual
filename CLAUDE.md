@@ -370,6 +370,14 @@ rm graphics/memes/*.png graphics/memes/*.spec
 quarto render --to html
 ```
 
+**Pushing meme changes.** A full regeneration replaces all 37 PNGs (~23 MB total). git's default HTTP post buffer (1 MB) is too small for that payload and the push will fail with `RPC failed; HTTP 400 curl 22`. Use a larger buffer for the push:
+
+```bash
+git -c http.postBuffer=524288000 push
+```
+
+The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not need to be configured globally. Smaller meme changes (one or two PNGs) push fine with the default buffer.
+
 **Why `_extensions/cuinfo/chapter-meme/` is not under `scripts/`.** It would be tidier, but Quarto resolves shortcode contributions strictly relative to the extension directory under `_extensions/`. Moving the folder requires converting the shortcode to a Lua filter, which means editing every chapter that invokes `{{< chapter-meme >}}` and risks regressing the column-margin alignment. Don't relocate it without a dedicated PR.
 
 **Dependency.** The generator uses Python's standard library only (`urllib.request`); there is no `pip install` step. The build host needs outbound HTTPS to `api.memegen.link` on the first render after a meme's frontmatter changes; subsequent renders read the cached PNG and run offline. CI's GitHub Actions runners have outbound HTTPS by default, so no workflow changes are needed. See [memegen.link](https://github.com/jacebrowning/memegen) for template ids and font choices.
