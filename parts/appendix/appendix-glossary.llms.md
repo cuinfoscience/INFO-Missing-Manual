@@ -4,6 +4,10 @@ This alphabetized glossary defines important terms from across the handbook so y
 
 The “technology stack” is the collection of hardware and software systems that enables an application to run. On contemporary personal computers it includes the following components. If you know the name of the component that is confusing you, you will have more success finding help online or from your instructors and peers.
 
+### Algorithmic audit
+
+A structured evaluation of an AI or algorithmic system, usually focused on whether the system meets some standard of fairness, safety, or accuracy across the populations it affects. Audits can be **first-party** (run by the vendor that built the system), **second-party** (run by the organization deploying it), or **third-party** (run by an independent group with the access and incentive to find problems). The presence of an audit is not the same as the audit having teeth — see [sec-evaluating-ai](#sec-evaluating-ai) and [sec-artifacts-politics](#sec-artifacts-politics).
+
 ### Application
 
 A self-contained program that allows a user to perform specific tasks. Applications are built differently depending on the operating system and typically need permission to access the file system to store and retrieve data. Microsoft Word and Excel, Google Chrome, and Apple Mail are all applications.
@@ -56,9 +60,17 @@ A set of software resources that expand the functionality of a programming langu
 
 A lightweight markup language that uses plain-text characters (`#`, `*`, `-`, backticks) to represent formatting like headings, emphasis, lists, and code blocks. Markdown is the standard format for README files, GitHub issues, Jupyter notebook text cells, and documentation tools like Quarto. See [sec-common-formats](#sec-common-formats).
 
+### Matilda effect
+
+The systematic under-citation and under-attribution of women’s contributions to research, named by historian Margaret Rossiter as a counterpart to the “Matthew effect” (where established scholars accumulate disproportionate credit). The pattern extends beyond gender to scholars of color, scholars from non-English-speaking institutions, and scholars from the Global South. See [sec-writing-manuscripts](#sec-writing-manuscripts).
+
 ### Notebook
 
 An interactive document that mixes executable code, prose, and output. In Python, the Jupyter notebook format (`.ipynb`) is the dominant choice. A notebook runs in a particular environment; see [sec-jupyter](#sec-jupyter).
+
+### Open access (OA)
+
+Scholarly publishing models in which articles are freely readable on the open web rather than behind a subscription paywall. *Gold OA* journals are open by default (often funded by article-processing charges paid by the author or their institution); *green OA* refers to author-deposited versions in institutional or subject repositories like arXiv. See [sec-reading-scholarship](#sec-reading-scholarship) and the [Directory of Open Access Journals](https://doaj.org/).
 
 ### Operating system
 
@@ -91,6 +103,14 @@ A structured language that a computer can execute. Python, Java, Ruby, C++, and 
 ### REPL (Read–Eval–Print Loop)
 
 An interactive prompt that reads code, evaluates it, prints the result, and loops. Typing `python` with no arguments drops you into Python’s REPL. Jupyter notebooks are a graphical form of REPL.
+
+### RLHF (Reinforcement Learning from Human Feedback)
+
+The post-training technique that teaches a base language model to follow instructions, refuse harmful requests, and produce useful responses. Human raters compare model outputs and rank them; those rankings train a reward model; the language model is then fine-tuned to maximize that reward. The labeling labor is typically performed by underpaid contract workers and is one of the hidden costs the AI industry externalizes. See [sec-ai-llm](#sec-ai-llm) and [sec-llm-internals](#sec-llm-internals).
+
+### Schema
+
+The set of columns, types, and constraints that define the shape of a table or document store. A schema is also a frozen ontology — once a `gender` column allows two values or a `country` column uses a fixed list of ISO codes, those choices become claims the application makes before any user gets to disagree with them. See [sec-sql-basics](#sec-sql-basics) and [sec-artifacts-politics](#sec-artifacts-politics).
 
 ### Script
 
