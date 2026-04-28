@@ -202,13 +202,13 @@ The static part plus the library is usually enough to land you on a Stack Overfl
 
 If the exception is from a library, add the library name. If the exception is a `SyntaxError` or `IndentationError`, don’t bother searching — those are almost always typos in your own code that you will spot faster by re-reading.
 
-> **NOTE:**
->
-> - [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — the complete hierarchy of Python exception classes.
-> - [Errors and Exceptions (Python tutorial)](https://docs.python.org/3/tutorial/errors.html) — the official introduction to raising and handling exceptions.
-> - [Real Python: Understanding the Python Traceback](https://realpython.com/python-traceback/) — a walk-through of every part of a traceback with worked examples.
+## 7.7 Stakes and politics
 
-## 7.7 Worked examples
+Reading a traceback is a narrow technical skill, but the artifact itself has politics. Two concrete things to notice. First, *the traceback speaks one language*. Python’s exception messages, library error strings, and the conventions for naming exceptions (`KeyError`, `ValueError`, `IndexError`) are all English, and so are the Stack Overflow answers, GitHub issues, and AI explanations you will reach for next. Non-English speakers debug Python by translating an English error message back to the underlying concept and then forward to their own working language. The barrier is small for any single bug, but it accumulates across a career and is one of the reasons that beginning to program in English is itself a form of cultural capital. Second, *tracebacks leak context*. The full file paths Python prints often include your user name, your project name, the layout of your home directory, and the versions of every library on your `PYTHONPATH`; pasting a raw traceback into a public forum or AI chat is sharing that information whether you meant to or not.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before you paste a traceback for help, glance at what else it tells the reader about your machine, and redact the parts that are not part of the bug.
+
+## 7.8 Worked examples
 
 ### A `KeyError` in pandas
 
@@ -274,7 +274,7 @@ See [sec-data-file-formats](#sec-data-file-formats) for the full list of ways mi
 
 **Next step:** print `resp.status_code` and `resp.text[:200]` before the `json.loads` call. You will probably find an HTML error page or an empty response.
 
-## 7.8 Exercises
+## 7.9 Exercises
 
 1.  Take a working Python script of your own and deliberately break it in four ways: misspell a variable name, delete an `import`, index past the end of a list, and call a method on `None`. Read each traceback and write down, in a single sentence, what the “what” and “where” are.
 2.  Find a traceback in your own recent course work (a screenshot or a notebook cell output). Without re-running the code, write down your best guess at the root cause based only on the traceback. Then re-run to confirm.
@@ -282,7 +282,7 @@ See [sec-data-file-formats](#sec-data-file-formats) for the full list of ways mi
 4.  In a Jupyter notebook, run cells in a deliberately-wrong order so that a variable is `None` when the next cell uses it. Read the resulting traceback and practice reading the `Cell In[N]` header.
 5.  Pick the most confusing error message you encountered in the last week, strip out the machine-specific parts, paste the static part into a search engine, and write down the first Stack Overflow answer you found. Was it helpful? If not, what made the message hard to search for?
 
-## 7.9 One-page checklist
+## 7.10 One-page checklist
 
 - Look at the **last line** first: exception type and message = *what*.
 - Look at the **bottommost frame** inside *your* code: file and line = *where*.
@@ -292,7 +292,7 @@ See [sec-data-file-formats](#sec-data-file-formats) for the full list of ways mi
 - Before asking for help, paste the traceback in full — never just the error message. The stack is half the information. See [sec-asking-questions](#sec-asking-questions).
 - When searching online, include the exception type and the static part of the message; strip file paths, values, and line numbers.
 
-## 7.10 Quick reference: common exceptions → first suspect
+## 7.11 Quick reference: common exceptions → first suspect
 
 | Exception                    | First suspect                              |
 |------------------------------|--------------------------------------------|
@@ -306,3 +306,12 @@ See [sec-data-file-formats](#sec-data-file-formats) for the full list of ways mi
 | `IndexError`                 | off-by-one, empty list                     |
 | `AttributeError: 'NoneType'` | a function returned `None` earlier         |
 | `FileNotFoundError`          | current working directory mismatch         |
+
+> **NOTE:**
+>
+> - Python docs, [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) — the complete hierarchy of Python exception classes; worth scanning end-to-end once so the names start triggering associations.
+> - Python docs, [Errors and Exceptions (tutorial)](https://docs.python.org/3/tutorial/errors.html) — the official introduction to raising and handling exceptions.
+> - Python docs, [`traceback` module](https://docs.python.org/3/library/traceback.html) — the standard-library tools for capturing, formatting, and inspecting tracebacks programmatically; useful when logging.
+> - [PEP 657 — Include Fine Grained Error Locations in Tracebacks](https://peps.python.org/pep-0657/) — explains the `^^^^^` underline markers introduced in Python 3.11; once you know what you’re looking at, they accelerate diagnosis significantly.
+> - Real Python, [Understanding the Python Traceback](https://realpython.com/python-traceback/) — a walk-through of every part of a traceback with worked examples.
+> - André Roberge, [`friendly_traceback`](https://aroberge.github.io/friendly-traceback-docs/docs/html/) — a third-party library that rewrites tracebacks in plain English (and several other languages); useful as both a learning aid and a glimpse at what less-Anglocentric error messages could look like.

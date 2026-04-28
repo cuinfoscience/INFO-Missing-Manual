@@ -218,13 +218,15 @@ pd.read_csv?
 
 If `skipfooter` shows up in your version’s docstring with the same meaning the blog assumes, you are fine. If your version’s docstring is silent on it, or the description is different, trust the docs and not the blog.
 
-> **NOTE:**
->
-> - [Python documentation](https://docs.python.org/3/) — the canonical reference for the standard library and language.
-> - [pandas API reference](https://pandas.pydata.org/docs/reference/) — every DataFrame and Series method with signatures and examples.
-> - [Diátaxis framework](https://diataxis.fr/) — the model that distinguishes tutorials, how-tos, reference, and explanation.
+## 5.9 Stakes and politics
 
-## 5.9 Worked examples
+The instruction “read the official documentation” assumes there *is* official documentation worth reading. That assumption holds for a small number of well-funded projects — pandas, NumPy, the Python standard library, the major cloud SDKs — and breaks for almost everything else. Open-source maintenance is overwhelmingly unpaid, English-language, and concentrated in wealthy countries; the gap between tier-one docs and the rest is roughly the gap between projects that have a paid technical writer and projects that do not. When a tutorial is missing, when a reference page lists half the parameters, when no language other than English is supported, the cost of figuring it out anyway falls on the reader, and that cost is not evenly distributed.
+
+Two decisions to notice. First, *who funds the docs you rely on*: pandas documentation is partly funded by NumFOCUS donations and corporate sponsorship, and many of its contributors are paid by large companies to work on it; smaller libraries usually depend on a single maintainer with a day job. Second, *whose conventions count as “professional”*: the Diátaxis framework, the Sphinx/reStructuredText pipeline, and the dominant docstring styles are themselves artifacts with histories — produced by particular communities at particular times — and reading docs fluently means learning those communities’ assumptions about what a good explanation looks like.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when the docs you need are bad, ask why they are bad before you blame yourself for not understanding them.
+
+## 5.10 Worked examples
 
 ### Looking up a parameter: what does `how='outer'` do in `pd.merge`?
 
@@ -266,7 +268,7 @@ If you find yourself wondering “does Python’s `in` operator work on a dict?�
 
 The language reference is dense — it is for people who want precise answers to precise questions. You will not read it cover to cover, but you will increasingly rely on it as you get comfortable.
 
-## 5.10 Templates
+## 5.11 Templates
 
 **A “read the docs before asking for help” pre-flight checklist:**
 
@@ -279,7 +281,7 @@ The language reference is dense — it is for people who want precise answers to
 
 If yes to all five, then it is time to ask a question (see [sec-asking-questions](#sec-asking-questions)).
 
-## 5.11 Exercises
+## 5.12 Exercises
 
 1.  Using `help()` in a Python REPL, read the docstring for `sorted`. What does the `key` parameter do? What does `reverse=True` do?
 2.  In a Jupyter notebook, type `pd.read_csv?` and scroll through every parameter. Pick three you have never used and read their descriptions.
@@ -289,7 +291,7 @@ If yes to all five, then it is time to ask a question (see [sec-asking-questions
 6.  For a library you use often but have not read the docs of (e.g., `matplotlib`, `scikit-learn`), find the entry page for the four Diátaxis genres: tutorial, how-to, reference, explanation. Bookmark each.
 7.  The next time you hit a confusing error message, before searching online, open the docs for the function that raised the error. Read the Parameters and Examples sections. Time how long it took to find the answer.
 
-## 5.12 One-page checklist
+## 5.13 One-page checklist
 
 - **Docs first, blog posts second.** Official documentation is almost always faster and more reliable.
 - Know the four genres: tutorials (learn), how-tos (do), references (look up), explanations (understand).
@@ -300,3 +302,12 @@ If yes to all five, then it is time to ask a question (see [sec-asking-questions
 - Check the “What’s new” / changelog for release-to-release behavior changes.
 - Docs are reference, not novels — dip in and out, don’t try to read top to bottom.
 - Bookmark the four main entry points of your favorite libraries for future speed.
+
+> **NOTE:**
+>
+> - [Python documentation](https://docs.python.org/3/) — the canonical reference for the standard library and language; learn its tutorial, library reference, language reference, and HOWTOs as four different entry points.
+> - [pandas API reference](https://pandas.pydata.org/docs/reference/) — every DataFrame and Series method with signatures and examples; the model for what excellent reference docs look like.
+> - Daniele Procida, [Diátaxis framework](https://diataxis.fr/) — the model that distinguishes tutorials, how-tos, reference, and explanation; the single most useful mental tool for navigating any documentation site.
+> - [numpydoc style guide](https://numpydoc.readthedocs.io/en/latest/format.html) — the docstring conventions used across the scientific Python stack; learning them speeds up every `?` lookup you will ever do.
+> - [Read the Docs](https://about.readthedocs.com/) — the hosting platform for most open-source Python documentation; understanding how it builds and versions docs explains a lot of the navigation patterns you will encounter.
+> - Stripe, [API reference](https://docs.stripe.com/api) — a widely cited example of commercial-grade reference documentation with side-by-side request/response panels; useful as a benchmark for what funded docs can look like.

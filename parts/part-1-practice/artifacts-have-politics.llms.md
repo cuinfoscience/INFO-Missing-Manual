@@ -125,9 +125,13 @@ The broader takeaway: your day-to-day engineering decisions are shaped by laws p
 
 > **NOTE:**
 >
-> - Langdon Winner, [*Do Artifacts Have Politics?*](https://www.jstor.org/stable/20024652) (1980) — the essay that gives this chapter its title.
-> - Safiya Umoja Noble, [*Algorithms of Oppression*](https://nyupress.org/9781479837243/algorithms-of-oppression/) — how search engines reinforce racial and gender bias.
-> - [ACM Code of Ethics and Professional Conduct](https://www.acm.org/code-of-ethics) — the computing profession’s ethical framework for the kinds of decisions this chapter describes.
+> - Langdon Winner, [*Do Artifacts Have Politics?*](https://www.jstor.org/stable/20024652) (1980) — the essay that gives this chapter its title; short, durable, and the single most-cited starting point for thinking about technology and values.
+> - Safiya Umoja Noble, [*Algorithms of Oppression*](https://nyupress.org/9781479837243/algorithms-of-oppression/) — how commercial search reinforces racial and gender bias; a book-length companion to the COMPAS / Sweeney material in this chapter.
+> - Cathy O’Neil, [*Weapons of Math Destruction*](https://weaponsofmathdestructionbook.com/) — readable, case-study-driven survey of opaque algorithms in hiring, credit, education, and policing; a good first book for students new to the field.
+> - Carissa Véliz, [*Privacy is Power*](https://www.carissaveliz.com/books) — argues for privacy as a collective good, not just a personal preference; a useful counterweight to “I have nothing to hide” framings.
+> - [ACM Code of Ethics and Professional Conduct](https://www.acm.org/code-of-ethics) — the computing profession’s ethical framework for the kinds of decisions this chapter describes; worth re-reading once a year.
+> - [Distributed AI Research Institute (DAIR)](https://www.dair-institute.org/) — Timnit Gebru’s research organization; a current and ongoing source on AI labor, bias, and accountability.
+> - [Data & Society](https://datasociety.net/) — independent research institute publishing on the social implications of data-centric technologies; their reports are short, current, and well-suited to course discussion.
 
 ## 8.8 A checklist for artifacts with politics
 

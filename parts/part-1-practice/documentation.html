@@ -739,20 +739,21 @@ div.csl-indent {
   <li><a href="#high-value-uses" id="toc-high-value-uses" class="nav-link" data-scroll-target="#high-value-uses">High-value uses</a></li>
   <li><a href="#guardrails" id="toc-guardrails" class="nav-link" data-scroll-target="#guardrails">Guardrails</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">3.10</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">3.10</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">3.11</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#turning-a-notebook-into-a-runnable-project" id="toc-turning-a-notebook-into-a-runnable-project" class="nav-link" data-scroll-target="#turning-a-notebook-into-a-runnable-project">Turning a notebook into a runnable project</a></li>
   <li><a href="#documenting-a-data-intake-pipeline" id="toc-documenting-a-data-intake-pipeline" class="nav-link" data-scroll-target="#documenting-a-data-intake-pipeline">Documenting a data intake pipeline</a></li>
   <li><a href="#writing-troubleshooting-notes" id="toc-writing-troubleshooting-notes" class="nav-link" data-scroll-target="#writing-troubleshooting-notes">Writing troubleshooting notes</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">3.11</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">3.12</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-how-to-guide" id="toc-template-a-how-to-guide" class="nav-link" data-scroll-target="#template-a-how-to-guide">Template A: How-to guide</a></li>
   <li><a href="#template-b-readme-skeleton-student-project" id="toc-template-b-readme-skeleton-student-project" class="nav-link" data-scroll-target="#template-b-readme-skeleton-student-project">Template B: README skeleton (student project)</a></li>
   <li><a href="#template-c-decision-log-entry" id="toc-template-c-decision-log-entry" class="nav-link" data-scroll-target="#template-c-decision-log-entry">Template C: Decision log entry</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.12</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">3.13</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">3.14</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-1-practice/documentation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1110,27 +1111,16 @@ Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and
 <li><p><strong>Cite primary sources</strong>: do not let AI replace authoritative references.</p></li>
 </ol>
 <p>A practical rule: if the AI suggests a command that could be destructive (<code>rm</code>, <code>sudo</code>, permissions changes), stop and verify in official documentation or with an instructor.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://diataxis.fr/">The Diátaxis framework</a> — the four-quadrant model for tutorials, how-tos, reference, and explanation. The clearest way to think about documentation genres.</li>
-<li><a href="https://www.writethedocs.org/guide/">Write the Docs: Beginner’s Guide</a> — a community-maintained introduction to writing technical documentation.</li>
-<li><a href="https://www.makeareadme.com/">Make a README</a> — a short guide with a template you can copy into any project.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="3.10">
-<h2 data-number="3.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">3.10</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">3.10</span> Stakes and politics</h2>
+<p>Documentation decides who can use a tool. Every “just run <code>pip install</code>” or “open a terminal” smuggles in assumptions: that you have administrator access on your machine, that your network does not block PyPI, that English is not a barrier, that your screen reader can navigate the docs site, and that you have unbroken time to follow a multi-step setup. When those assumptions are wrong, the tool is effectively unavailable — not because the technology cannot serve the reader, but because the documentation drew a boundary they could not cross. The professional shorthand “RTFM” treats this as the reader’s problem; the design habit you should be building treats it as the writer’s problem.</p>
+<p>Two decisions to notice. First, <em>whose problems the docs anticipate</em>: the example commands, the operating system shown, the network connection assumed, the device on which screenshots were taken. These choices encode an imagined user — usually English-speaking, on a recent laptop, with broadband — and a reader who does not match the imagined user pays the difference in time and frustration. Second, <em>whose labor maintains the docs</em>: most large open-source projects rely on a small group of unpaid contributors to keep documentation current, with predictable consequences for translations, accessibility features, and the edge cases that fall outside the contributors’ own situations. The docs are as inclusive as the people who write them have time and motivation to make them.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward when you write a README or a how-to: name your imagined reader explicitly, then add one sentence for the reader you assumed away.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">3.11</span> Worked examples</h2>
 <p>This section demonstrates how documentation practices appear in typical novice workflows.</p>
 <section id="turning-a-notebook-into-a-runnable-project" class="level3">
 <h3 class="anchored" data-anchor-id="turning-a-notebook-into-a-runnable-project">Turning a notebook into a runnable project</h3>
@@ -1177,8 +1167,8 @@ Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and
 </section>
 </section>
 </section>
-<section id="templates" class="level2" data-number="3.11">
-<h2 data-number="3.11" class="anchored" data-anchor-id="templates"><span class="header-section-number">3.11</span> Templates</h2>
+<section id="templates" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">3.12</span> Templates</h2>
 <section id="template-a-how-to-guide" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-how-to-guide">Template A: How-to guide</h3>
 <pre><code># Title: How to &lt;do a specific task&gt;
@@ -1243,8 +1233,8 @@ Rationale:
 Consequences / follow-ups:</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.12</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.13</span> Exercises</h2>
 <ol type="1">
 <li><p>Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.</p></li>
 <li><p>Write a one-page README for a class assignment repository. Swap with a classmate and attempt to run each other’s project using only the README. Record what was missing and revise.</p></li>
@@ -1253,8 +1243,8 @@ Consequences / follow-ups:</code></pre>
 <li><p>Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="3.13">
-<h2 data-number="3.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">3.13</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">3.14</span> One-page checklist</h2>
 <ul>
 <li><p>I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.</p></li>
 <li><p>I can route from secondary sources to primary sources.</p></li>
@@ -1265,6 +1255,26 @@ Consequences / follow-ups:</code></pre>
 <li><p>I keep a short decision log for consequential choices.</p></li>
 <li><p>If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Daniele Procida, <a href="https://diataxis.fr/">The Diátaxis framework</a> — the four-quadrant model for tutorials, how-tos, reference, and explanation; the clearest way to think about documentation genres.</li>
+<li>Write the Docs, <a href="https://www.writethedocs.org/guide/">Beginner’s guide to writing documentation</a> — a community-maintained introduction to technical writing for software projects.</li>
+<li><a href="https://www.makeareadme.com/">Make a README</a> — a short guide with a template you can copy into any project today.</li>
+<li>The Good Docs Project, <a href="https://www.thegooddocsproject.dev/template">Templates</a> — community-developed, open-licensed templates for the most common documentation genres (how-tos, references, release notes, tutorials).</li>
+<li>Microsoft, <a href="https://learn.microsoft.com/en-us/style-guide/bias-free-communication">Writing Style Guide: Bias-free communication</a> — a working reference for inclusive language in technical writing.</li>
+<li>Mike Pope, <a href="https://www.mkpope.com/post/five-principles-for-writing-good-technical-documentation/">Five principles for writing good technical documentation</a> — practitioner-focused, durable advice on audience, tone, and maintenance.</li>
+</ul>
+</div>
+</div>
 
 
 

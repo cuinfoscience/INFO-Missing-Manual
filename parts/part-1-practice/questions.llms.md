@@ -341,13 +341,15 @@ The worst uses of AI come from asking it to do the parts of the work you should 
 
 5.  Post the question.
 
-> **NOTE:**
->
-> - [How do I ask a good question?](https://stackoverflow.com/help/how-to-ask) — Stack Overflow’s canonical guide. Short, opinionated, and worth re-reading every year.
-> - [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs, with language-specific examples.
-> - [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) — Eric Raymond’s classic essay; the tone is dated but the substance holds up.
+## 2.10 Stakes and politics
 
-## 2.10 Worked examples
+The five-field template in this chapter is, like every other technique in this handbook, an artifact with politics. It encodes a specific cultural norm: that the burden of investigation falls on the asker, that effort must be visible in the right idiom, and that questions which fail those tests can be closed or ignored. That norm is largely good — it has built communities like Stack Overflow that contain decades of useful answers — but it also creates a steep gradient. People who already speak the dialect of “minimal reproducible example, exact error text, environment versions” get answered quickly; people who are still learning what those phrases mean get told to come back when they have done more homework. The result is a feedback loop where help flows most easily to those who already look like insiders.
+
+Two decisions to notice. First, *whose investigation counts as real*: the gold-standard MRE assumes you have a stable laptop, a working environment, and unbroken time to iterate. A student debugging on a borrowed Chromebook between shifts has done real investigation that is harder to package this way. Second, *which channel you can afford*: paid mentorship, a well-staffed TA queue, or a senior colleague on Slack are all forms of help that bypass the public-forum gauntlet, and access to them is unevenly distributed. When you write a question — and especially when you answer or moderate one — you are participating in this distribution.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before closing, downvoting, or dismissing a “low-effort” question, ask whether the asker had access to the resources the template silently assumes.
+
+## 2.11 Worked examples
 
 This section illustrates how vague questions become answerable.
 
@@ -438,7 +440,7 @@ Now a helper can quickly guide you: fetch/pull first, resolve conflicts, then pu
 
 This is a model question because the reproduction uses synthetic data and demonstrates the fix.
 
-## 2.11 Closing the loop: after you get help
+## 2.12 Closing the loop: after you get help
 
 Your responsibility does not end when you receive an answer.
 
@@ -462,7 +464,7 @@ If the fix reveals a fragile step (“always activate the environment”), updat
 
 If you keep encountering the same class of errors, create a personal checklist. For example: “file not found” checklist, “import error” checklist, “git conflict” checklist.
 
-## 2.12 Templates you can reuse
+## 2.13 Templates you can reuse
 
 ### Template A: question skeleton (copy/paste)
 
@@ -497,7 +499,7 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 - Uses explicit file paths or includes the file contents.
 
-## 2.13 Exercises
+## 2.14 Exercises
 
 1.  Take three vague questions (from your own experience or provided by the instructor) and rewrite them using the five-field structure.
 
@@ -509,7 +511,7 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 5.  Swap questions with a classmate: can they reproduce your MRE without asking you follow-ups?
 
-## 2.14 One-page checklist
+## 2.15 One-page checklist
 
 - My goal is stated as a verb + object.
 
@@ -526,3 +528,12 @@ If you keep encountering the same class of errors, create a personal checklist. 
 - I chose the right channel and followed its norms.
 
 - I closed the loop with a summary and documentation update.
+
+> **NOTE:**
+>
+> - Stack Overflow, [How do I ask a good question?](https://stackoverflow.com/help/how-to-ask) — the site’s canonical guide; short, opinionated, and worth re-reading every year.
+> - Stack Overflow, [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs with language-specific examples.
+> - Eric S. Raymond, [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) — the classic essay; the tone is dated and at times unwelcoming, but the structural advice holds up.
+> - Julia Evans, [How to ask good questions](https://jvns.ca/blog/good-questions/) — a kinder, more inclusive complement to Raymond, focused on small concrete moves that work for newcomers.
+> - Jon Skeet, [Writing the perfect question](https://codeblog.jonskeet.uk/2010/08/29/writing-the-perfect-question/) — practitioner advice from one of Stack Overflow’s highest-reputation users; especially good on titles and tags.
+> - The Recurse Center, [Social rules](https://www.recurse.com/social-rules) — a short, explicit set of norms (“no feigning surprise”, “no well-actually’s”) that improve the climate around technical questions and answers.

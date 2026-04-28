@@ -715,23 +715,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#command-line-and-os-level-bugs" id="toc-command-line-and-os-level-bugs" class="nav-link" data-scroll-target="#command-line-and-os-level-bugs">Command-line and OS-level bugs</a></li>
   </ul></li>
   <li><a href="#a-practical-debugging-checklist" id="toc-a-practical-debugging-checklist" class="nav-link" data-scroll-target="#a-practical-debugging-checklist"><span class="header-section-number">6.11</span> A practical debugging checklist</a></li>
-  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies"><span class="header-section-number">6.12</span> Case studies</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">6.12</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">6.13</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#file-not-found-that-is-really-wrong-folder" id="toc-file-not-found-that-is-really-wrong-folder" class="nav-link" data-scroll-target="#file-not-found-that-is-really-wrong-folder">“File not found” that is really “wrong folder”</a></li>
   <li><a href="#it-runs-but-the-results-are-wrong" id="toc-it-runs-but-the-results-are-wrong" class="nav-link" data-scroll-target="#it-runs-but-the-results-are-wrong">“It runs but the results are wrong”</a></li>
   </ul></li>
-  <li><a href="#using-ai-tools-in-debugging" id="toc-using-ai-tools-in-debugging" class="nav-link" data-scroll-target="#using-ai-tools-in-debugging"><span class="header-section-number">6.13</span> Using AI tools in debugging</a>
+  <li><a href="#using-ai-tools-in-debugging" id="toc-using-ai-tools-in-debugging" class="nav-link" data-scroll-target="#using-ai-tools-in-debugging"><span class="header-section-number">6.14</span> Using AI tools in debugging</a>
   <ul class="collapse">
   <li><a href="#good-uses-of-ai" id="toc-good-uses-of-ai" class="nav-link" data-scroll-target="#good-uses-of-ai">Good uses of AI</a></li>
   <li><a href="#guardrails" id="toc-guardrails" class="nav-link" data-scroll-target="#guardrails">Guardrails</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">6.14</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">6.15</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-debugging-journal-entry" id="toc-template-a-debugging-journal-entry" class="nav-link" data-scroll-target="#template-a-debugging-journal-entry">Template A: debugging journal entry</a></li>
   <li><a href="#template-b-minimal-test-checklist" id="toc-template-b-minimal-test-checklist" class="nav-link" data-scroll-target="#template-b-minimal-test-checklist">Template B: minimal test checklist</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.15</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">6.16</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.16</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">6.17</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-1-practice/debugging.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1085,27 +1086,15 @@ logger.info("Starting pipeline")</code></pre>
 <li><p>After the fix, what test will prevent regression?</p></li>
 </ol>
 <p>Print it and keep it near your desk.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.python.org/3/howto/logging.html">Python <code>logging</code> HOWTO</a> — the official walk-through of loggers, handlers, and levels.</li>
-<li><a href="https://realpython.com/python-debugging-pdb/">Real Python: Python Debugging with <code>pdb</code></a> — a clean, beginner-friendly introduction to the built-in debugger.</li>
-<li><a href="https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html">Software Carpentry: Python Debugging lesson</a> — a short lesson on systematic debugging with examples.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="case-studies" class="level2" data-number="6.12">
-<h2 data-number="6.12" class="anchored" data-anchor-id="case-studies"><span class="header-section-number">6.12</span> Case studies</h2>
-<p>The goal of case studies is to show the loop in action.</p>
+<section id="stakes-and-politics" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">6.12</span> Stakes and politics</h2>
+<p>Debugging treats a bug as an objective discrepancy between expected and observed behavior, and most of the time it is. The political dimension shows up at the edges, in the question of <em>which discrepancies count as bugs worth fixing</em>. “Works on my machine” is a famous developer joke, but it has a serious version — bug reports that fail to reproduce in the maintainer’s environment routinely get closed as “cannot reproduce,” and the reporters who see the bug most often are the ones whose environments differ most from the developers’. Users on right-to-left scripts, on assistive technology, on low-bandwidth connections, on older hardware, and on non-English locales all encounter classes of bug that the dominant developer profile rarely sees, and those classes get fixed last (if at all).</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you cannot reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug is not real.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">6.13</span> Worked examples</h2>
+<p>The goal of these worked examples is to show the loop in action.</p>
 <section id="file-not-found-that-is-really-wrong-folder" class="level3">
 <h3 class="anchored" data-anchor-id="file-not-found-that-is-really-wrong-folder">“File not found” that is really “wrong folder”</h3>
 <p>You run a script and Python tells you <code>FileNotFoundError: data/input.csv</code>. Rather than editing the path at random, you stop and gather evidence about where the script thinks it is. Two commands settle it:</p>
@@ -1128,8 +1117,8 @@ logger.info("Starting pipeline")</code></pre>
 <p>In this case the column is <code>object</code>, the head shows <code>'35'</code>, <code>'42'</code>, <code>'unknown'</code>, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the <code>'unknown'</code> sentinel, so <code>pd.to_numeric</code> produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (<code>na_values=['unknown']</code>) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.</p>
 </section>
 </section>
-<section id="using-ai-tools-in-debugging" class="level2" data-number="6.13">
-<h2 data-number="6.13" class="anchored" data-anchor-id="using-ai-tools-in-debugging"><span class="header-section-number">6.13</span> Using AI tools in debugging</h2>
+<section id="using-ai-tools-in-debugging" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="using-ai-tools-in-debugging"><span class="header-section-number">6.14</span> Using AI tools in debugging</h2>
 <p>AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.</p>
 <section id="good-uses-of-ai" class="level3">
 <h3 class="anchored" data-anchor-id="good-uses-of-ai">Good uses of AI</h3>
@@ -1151,8 +1140,8 @@ logger.info("Starting pipeline")</code></pre>
 <p>A practical motto: AI can suggest hypotheses; you supply the evidence.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="6.14">
-<h2 data-number="6.14" class="anchored" data-anchor-id="templates"><span class="header-section-number">6.14</span> Templates</h2>
+<section id="templates" class="level2" data-number="6.15">
+<h2 data-number="6.15" class="anchored" data-anchor-id="templates"><span class="header-section-number">6.15</span> Templates</h2>
 <section id="template-a-debugging-journal-entry" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-debugging-journal-entry">Template A: debugging journal entry</h3>
 <p>When debugging takes more than a few minutes, keep a short journal:</p>
@@ -1176,8 +1165,8 @@ Test added:</code></pre>
 </ul>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="6.15">
-<h2 data-number="6.15" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.15</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="6.16">
+<h2 data-number="6.16" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.16</span> Exercises</h2>
 <ol type="1">
 <li><p>Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).</p></li>
 <li><p>Create an MRE that reproduces the error in fewer than 20 lines.</p></li>
@@ -1187,8 +1176,8 @@ Test added:</code></pre>
 <li><p>In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="6.16">
-<h2 data-number="6.16" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">6.16</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="6.17">
+<h2 data-number="6.17" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">6.17</span> One-page checklist</h2>
 <ul>
 <li><p>I can state the symptom clearly (expected vs actual).</p></li>
 <li><p>I can reproduce the bug and capture the evidence.</p></li>
@@ -1199,6 +1188,26 @@ Test added:</code></pre>
 <li><p>In notebooks, I manage hidden state (restart + run all).</p></li>
 <li><p>If I use AI tools, I treat outputs as drafts and verify with tests.</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.python.org/3/howto/logging.html">Python <code>logging</code> HOWTO</a> — the official walk-through of loggers, handlers, and levels.</li>
+<li><a href="https://realpython.com/python-debugging-pdb/">Real Python: Python Debugging with <code>pdb</code></a> — a clean, beginner-friendly introduction to Python’s built-in interactive debugger.</li>
+<li><a href="https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html">Software Carpentry: Python Debugging lesson</a> — a short, scaffolded lesson on systematic debugging with worked examples.</li>
+<li>John Regehr, <a href="https://blog.regehr.org/archives/199">How to Debug</a> — a compact, opinionated essay from a systems researcher on hypothesis-driven debugging that translates well to scientific Python.</li>
+<li>Julia Evans, <a href="https://wizardzines.com/zines/debugging/">Bite Size Debugging</a> — a short illustrated zine covering print debugging, strace, gdb, and the mental moves that work across languages.</li>
+<li>Andreas Zeller, <a href="https://www.debuggingbook.org/"><em>The Debugging Book</em></a> — a free interactive textbook covering tracing, deltas, fuzzing, and automatic debugging; useful when you want to go beyond print statements.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

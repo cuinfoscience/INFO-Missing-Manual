@@ -697,17 +697,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#when-to-use-which-format" id="toc-when-to-use-which-format" class="nav-link" data-scroll-target="#when-to-use-which-format"><span class="header-section-number">4.4</span> When to use which format</a></li>
   <li><a href="#validating-files" id="toc-validating-files" class="nav-link" data-scroll-target="#validating-files"><span class="header-section-number">4.5</span> Validating files</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">4.6</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">4.6</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">4.7</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#writing-a-project-readme-in-markdown" id="toc-writing-a-project-readme-in-markdown" class="nav-link" data-scroll-target="#writing-a-project-readme-in-markdown">1. Writing a project README in Markdown</a></li>
   </ul></li>
-  <li><a href="#team" id="toc-team" class="nav-link" data-scroll-target="#team"><span class="header-section-number">4.7</span> Team</a>
+  <li><a href="#team" id="toc-team" class="nav-link" data-scroll-target="#team"><span class="header-section-number">4.8</span> Team</a>
   <ul class="collapse">
   <li><a href="#fixing-a-broken-json-file" id="toc-fixing-a-broken-json-file" class="nav-link" data-scroll-target="#fixing-a-broken-json-file">3. Fixing a broken JSON file</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.8</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">4.9</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-syntax-at-a-glance" id="toc-quick-reference-syntax-at-a-glance" class="nav-link" data-scroll-target="#quick-reference-syntax-at-a-glance"><span class="header-section-number">4.10</span> Quick reference: syntax at a glance</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.9</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">4.10</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-syntax-at-a-glance" id="toc-quick-reference-syntax-at-a-glance" class="nav-link" data-scroll-target="#quick-reference-syntax-at-a-glance"><span class="header-section-number">4.11</span> Quick reference: syntax at a glance</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-1-practice/common-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1171,8 +1172,13 @@ Tip
 </div>
 </div>
 </section>
-<section id="worked-examples" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">4.6</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">4.6</span> Stakes and politics</h2>
+<p>Markdown, YAML, and JSON look like neutral plumbing — and most of the time they are. The political dimension shows up in two specific places. First, <em>who maintains the spec</em>. Markdown was designed by a single individual in 2004 and only acquired a community-driven standard (CommonMark) a decade later; until then, “Markdown” meant whatever the dominant renderers — overwhelmingly run by US tech companies — happened to do, which is why two correct-looking documents can render differently on GitHub and in a Jupyter notebook. YAML and JSON have governance bodies, but the popular subsets and edge cases are still adjudicated by whoever ships the most-used parser. Second, <em>which character sets and reading directions count</em>. JSON requires Unicode, but tooling built on top of it routinely assumes ASCII filenames, English-language keys, and left-to-right rendering; right-to-left scripts and combining marks still trip layouts and search indexes in 2026. None of this prevents you from using these formats. It does mean that “the file format” is rarely as universal as the spec suggests.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt: when you choose a format for a config file or data interchange, ask whose tools were assumed when the spec was written, and whether your reader’s tools share that assumption.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">4.7</span> Worked examples</h2>
 <section id="writing-a-project-readme-in-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="writing-a-project-readme-in-markdown">1. Writing a project README in Markdown</h3>
 <p>You have just started a class project analyzing campus dining data. Write a README that a teammate can follow:</p>
@@ -1199,8 +1205,8 @@ Tip
 <span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/analyze.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="team" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="team"><span class="header-section-number">4.7</span> Team</h2>
+<section id="team" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="team"><span class="header-section-number">4.8</span> Team</h2>
 <ul>
 <li><strong>Alice</strong> — data cleaning</li>
 <li><strong>Bob</strong> — visualization</li>
@@ -1246,8 +1252,8 @@ book:
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.8</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.9</span> Exercises</h2>
 <ol type="1">
 <li><p>Write a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks correct.</p></li>
 <li><p>Open a <code>_quarto.yml</code> or <code>environment.yml</code> file from one of your class projects. Identify every key-value pair, every list, and every nested structure. Draw the tree structure on paper.</p></li>
@@ -1267,8 +1273,8 @@ book:
 <li><p>Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Identify each feature and explain what it does.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">4.9</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">4.10</span> One-page checklist</h2>
 <ul>
 <li><strong>Markdown:</strong> headings with <code>#</code>, emphasis with <code>*</code> and <code>**</code>, code with backticks, lists with <code>-</code> or <code>1.</code>, links with <code>[text](url)</code>, images with <code>![alt](path)</code>.</li>
 <li><strong>YAML:</strong> key-value pairs with <code>key: value</code> (space after colon is mandatory), indentation with spaces only (no tabs), lists with <code>- item</code>, comments with <code>#</code>, quote strings that look like numbers or booleans.</li>
@@ -1277,8 +1283,8 @@ book:
 <li><strong>Know which format you are editing</strong> before you start typing. The file extension (<code>.md</code>, <code>.yml</code>/<code>.yaml</code>, <code>.json</code>) tells you.</li>
 </ul>
 </section>
-<section id="quick-reference-syntax-at-a-glance" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="quick-reference-syntax-at-a-glance"><span class="header-section-number">4.10</span> Quick reference: syntax at a glance</h2>
+<section id="quick-reference-syntax-at-a-glance" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="quick-reference-syntax-at-a-glance"><span class="header-section-number">4.11</span> Quick reference: syntax at a glance</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 29%">
@@ -1339,6 +1345,26 @@ book:
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://spec.commonmark.org/">CommonMark Spec</a> — the community-maintained Markdown standard. The reference for what “Markdown” should mean across renderers.</li>
+<li><a href="https://github.github.com/gfm/">GitHub Flavored Markdown spec</a> — extensions GitHub adds on top of CommonMark (tables, task lists, autolinks); the dialect most readers will see your docs in.</li>
+<li><a href="https://yaml.org/spec/1.2.2/">YAML 1.2 specification</a> — the official YAML spec; dense, but the place to settle arguments about quoting and indentation.</li>
+<li>IETF, <a href="https://datatracker.ietf.org/doc/html/rfc8259">RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format</a> — the canonical JSON spec; short and surprisingly readable.</li>
+<li>Tom Preston-Werner, <a href="https://toml.io/en/">TOML specification</a> — a fourth format you will encounter in Python packaging (<code>pyproject.toml</code>) and Rust tooling; useful to know exists when YAML feels too loose and JSON too strict.</li>
+<li><a href="https://json-schema.org/">JSON Schema</a> — a vocabulary for declaring the shape of JSON documents and validating them; the practical follow-up once “is this JSON valid?” becomes “does this JSON match the schema my tool expects?”</li>
+</ul>
+</div>
+</div>
 
 
 </section>

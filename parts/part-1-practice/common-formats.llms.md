@@ -412,7 +412,13 @@ yamllint myfile.yml
 >
 > Many text editors (VS Code, Sublime Text, JetBrains IDEs) have built-in or plugin-based validation for JSON and YAML. If you see red squiggly underlines, the editor is already telling you something is wrong.
 
-## 4.6 Worked examples
+## 4.6 Stakes and politics
+
+Markdown, YAML, and JSON look like neutral plumbing — and most of the time they are. The political dimension shows up in two specific places. First, *who maintains the spec*. Markdown was designed by a single individual in 2004 and only acquired a community-driven standard (CommonMark) a decade later; until then, “Markdown” meant whatever the dominant renderers — overwhelmingly run by US tech companies — happened to do, which is why two correct-looking documents can render differently on GitHub and in a Jupyter notebook. YAML and JSON have governance bodies, but the popular subsets and edge cases are still adjudicated by whoever ships the most-used parser. Second, *which character sets and reading directions count*. JSON requires Unicode, but tooling built on top of it routinely assumes ASCII filenames, English-language keys, and left-to-right rendering; right-to-left scripts and combining marks still trip layouts and search indexes in 2026. None of this prevents you from using these formats. It does mean that “the file format” is rarely as universal as the spec suggests.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt: when you choose a format for a config file or data interchange, ask whose tools were assumed when the spec was written, and whether your reader’s tools share that assumption.
+
+## 4.7 Worked examples
 
 ### 1. Writing a project README in Markdown
 
@@ -442,7 +448,7 @@ python scripts/clean_data.py
 python scripts/analyze.py
 ```
 
-## 4.7 Team
+## 4.8 Team
 
 - **Alice** — data cleaning
 - **Bob** — visualization
@@ -497,7 +503,7 @@ There are four errors:
 }
 ```
 
-## 4.8 Exercises
+## 4.9 Exercises
 
 1.  Write a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks correct.
 
@@ -524,7 +530,7 @@ There are four errors:
 
 6.  Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Identify each feature and explain what it does.
 
-## 4.9 One-page checklist
+## 4.10 One-page checklist
 
 - **Markdown:** headings with `#`, emphasis with `*` and `**`, code with backticks, lists with `-` or `1.`, links with `[text](url)`, images with `![alt](path)`.
 - **YAML:** key-value pairs with `key: value` (space after colon is mandatory), indentation with spaces only (no tabs), lists with `- item`, comments with `#`, quote strings that look like numbers or booleans.
@@ -532,7 +538,7 @@ There are four errors:
 - **When in doubt, validate.** Use `python -m json.tool` for JSON, `yamllint` for YAML, and a Markdown previewer for Markdown.
 - **Know which format you are editing** before you start typing. The file extension (`.md`, `.yml`/`.yaml`, `.json`) tells you.
 
-## 4.10 Quick reference: syntax at a glance
+## 4.11 Quick reference: syntax at a glance
 
 | Feature | Markdown | YAML | JSON |
 |----|----|----|----|
@@ -543,3 +549,12 @@ There are four errors:
 | String quoting | Not applicable | Optional (required for ambiguous values) | Always double quotes |
 | Boolean | N/A | `true` / `false` | `true` / `false` |
 | Common extension | `.md` | `.yml` or `.yaml` | `.json` |
+
+> **NOTE:**
+>
+> - [CommonMark Spec](https://spec.commonmark.org/) — the community-maintained Markdown standard. The reference for what “Markdown” should mean across renderers.
+> - [GitHub Flavored Markdown spec](https://github.github.com/gfm/) — extensions GitHub adds on top of CommonMark (tables, task lists, autolinks); the dialect most readers will see your docs in.
+> - [YAML 1.2 specification](https://yaml.org/spec/1.2.2/) — the official YAML spec; dense, but the place to settle arguments about quoting and indentation.
+> - IETF, [RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format](https://datatracker.ietf.org/doc/html/rfc8259) — the canonical JSON spec; short and surprisingly readable.
+> - Tom Preston-Werner, [TOML specification](https://toml.io/en/) — a fourth format you will encounter in Python packaging (`pyproject.toml`) and Rust tooling; useful to know exists when YAML feels too loose and JSON too strict.
+> - [JSON Schema](https://json-schema.org/) — a vocabulary for declaring the shape of JSON documents and validating them; the practical follow-up once “is this JSON valid?” becomes “does this JSON match the schema my tool expects?”

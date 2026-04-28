@@ -362,13 +362,15 @@ Use the following guardrails:
 
 A practical rule: if the AI suggests a command that could be destructive (`rm`, `sudo`, permissions changes), stop and verify in official documentation or with an instructor.
 
-> **NOTE:**
->
-> - [The Diátaxis framework](https://diataxis.fr/) — the four-quadrant model for tutorials, how-tos, reference, and explanation. The clearest way to think about documentation genres.
-> - [Write the Docs: Beginner’s Guide](https://www.writethedocs.org/guide/) — a community-maintained introduction to writing technical documentation.
-> - [Make a README](https://www.makeareadme.com/) — a short guide with a template you can copy into any project.
+## 3.10 Stakes and politics
 
-## 3.10 Worked examples
+Documentation decides who can use a tool. Every “just run `pip install`” or “open a terminal” smuggles in assumptions: that you have administrator access on your machine, that your network does not block PyPI, that English is not a barrier, that your screen reader can navigate the docs site, and that you have unbroken time to follow a multi-step setup. When those assumptions are wrong, the tool is effectively unavailable — not because the technology cannot serve the reader, but because the documentation drew a boundary they could not cross. The professional shorthand “RTFM” treats this as the reader’s problem; the design habit you should be building treats it as the writer’s problem.
+
+Two decisions to notice. First, *whose problems the docs anticipate*: the example commands, the operating system shown, the network connection assumed, the device on which screenshots were taken. These choices encode an imagined user — usually English-speaking, on a recent laptop, with broadband — and a reader who does not match the imagined user pays the difference in time and frustration. Second, *whose labor maintains the docs*: most large open-source projects rely on a small group of unpaid contributors to keep documentation current, with predictable consequences for translations, accessibility features, and the edge cases that fall outside the contributors’ own situations. The docs are as inclusive as the people who write them have time and motivation to make them.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward when you write a README or a how-to: name your imagined reader explicitly, then add one sentence for the reader you assumed away.
+
+## 3.11 Worked examples
 
 This section demonstrates how documentation practices appear in typical novice workflows.
 
@@ -428,7 +430,7 @@ Troubleshooting notes become valuable when they are specific. Compare:
 
 The “better” version specifies symptoms, a hypothesis, and a verification step.
 
-## 3.11 Templates
+## 3.12 Templates
 
 ### Template A: How-to guide
 
@@ -493,7 +495,7 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
     Rationale:
     Consequences / follow-ups:
 
-## 3.12 Exercises
+## 3.13 Exercises
 
 1.  Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.
 
@@ -505,7 +507,7 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
 
 5.  Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.
 
-## 3.13 One-page checklist
+## 3.14 One-page checklist
 
 - I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.
 
@@ -522,6 +524,15 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
 - I keep a short decision log for consequential choices.
 
 - If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.
+
+> **NOTE:**
+>
+> - Daniele Procida, [The Diátaxis framework](https://diataxis.fr/) — the four-quadrant model for tutorials, how-tos, reference, and explanation; the clearest way to think about documentation genres.
+> - Write the Docs, [Beginner’s guide to writing documentation](https://www.writethedocs.org/guide/) — a community-maintained introduction to technical writing for software projects.
+> - [Make a README](https://www.makeareadme.com/) — a short guide with a template you can copy into any project today.
+> - The Good Docs Project, [Templates](https://www.thegooddocsproject.dev/template) — community-developed, open-licensed templates for the most common documentation genres (how-tos, references, release notes, tutorials).
+> - Microsoft, [Writing Style Guide: Bias-free communication](https://learn.microsoft.com/en-us/style-guide/bias-free-communication) — a working reference for inclusive language in technical writing.
+> - Mike Pope, [Five principles for writing good technical documentation](https://www.mkpope.com/post/five-principles-for-writing-good-technical-documentation/) — practitioner-focused, durable advice on audience, tone, and maintenance.
 
 Chacon, Scott, and Ben Straub. 2014. *Pro Git*. 2nd ed. Apress. <https://doi.org/10.1007/978-1-4842-0076-6>.
 

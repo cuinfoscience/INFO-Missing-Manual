@@ -681,15 +681,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#chained-tracebacks-during-handling-of-the-above-exception" id="toc-chained-tracebacks-during-handling-of-the-above-exception" class="nav-link" data-scroll-target="#chained-tracebacks-during-handling-of-the-above-exception"><span class="header-section-number">7.4</span> Chained tracebacks: “during handling of the above exception”</a></li>
   <li><a href="#tracebacks-in-jupyter-notebooks" id="toc-tracebacks-in-jupyter-notebooks" class="nav-link" data-scroll-target="#tracebacks-in-jupyter-notebooks"><span class="header-section-number">7.5</span> Tracebacks in Jupyter notebooks</a></li>
   <li><a href="#searching-for-errors-online" id="toc-searching-for-errors-online" class="nav-link" data-scroll-target="#searching-for-errors-online"><span class="header-section-number">7.6</span> Searching for errors online</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">7.7</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">7.7</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">7.8</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#a-keyerror-in-pandas" id="toc-a-keyerror-in-pandas" class="nav-link" data-scroll-target="#a-keyerror-in-pandas">A <code>KeyError</code> in pandas</a></li>
   <li><a href="#a-valueerror-from-a-numeric-column" id="toc-a-valueerror-from-a-numeric-column" class="nav-link" data-scroll-target="#a-valueerror-from-a-numeric-column">A <code>ValueError</code> from a “numeric” column</a></li>
   <li><a href="#a-chained-traceback-from-a-flaky-web-request" id="toc-a-chained-traceback-from-a-flaky-web-request" class="nav-link" data-scroll-target="#a-chained-traceback-from-a-flaky-web-request">A chained traceback from a flaky web request</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.8</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">7.9</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-exceptions-first-suspect" id="toc-quick-reference-common-exceptions-first-suspect" class="nav-link" data-scroll-target="#quick-reference-common-exceptions-first-suspect"><span class="header-section-number">7.10</span> Quick reference: common exceptions → first suspect</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.9</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">7.10</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-exceptions-first-suspect" id="toc-quick-reference-common-exceptions-first-suspect" class="nav-link" data-scroll-target="#quick-reference-common-exceptions-first-suspect"><span class="header-section-number">7.11</span> Quick reference: common exceptions → first suspect</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-1-practice/tracebacks.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -884,26 +885,14 @@ KeyError: 'date'</code></pre>
 </blockquote>
 <p>The static part plus the library is usually enough to land you on a Stack Overflow answer with your exact problem.</p>
 <p>If the exception is from a library, add the library name. If the exception is a <code>SyntaxError</code> or <code>IndentationError</code>, don’t bother searching — those are almost always typos in your own code that you will spot faster by re-reading.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.python.org/3/library/exceptions.html">Built-in Exceptions</a> — the complete hierarchy of Python exception classes.</li>
-<li><a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions (Python tutorial)</a> — the official introduction to raising and handling exceptions.</li>
-<li><a href="https://realpython.com/python-traceback/">Real Python: Understanding the Python Traceback</a> — a walk-through of every part of a traceback with worked examples.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">7.7</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">7.7</span> Stakes and politics</h2>
+<p>Reading a traceback is a narrow technical skill, but the artifact itself has politics. Two concrete things to notice. First, <em>the traceback speaks one language</em>. Python’s exception messages, library error strings, and the conventions for naming exceptions (<code>KeyError</code>, <code>ValueError</code>, <code>IndexError</code>) are all English, and so are the Stack Overflow answers, GitHub issues, and AI explanations you will reach for next. Non-English speakers debug Python by translating an English error message back to the underlying concept and then forward to their own working language. The barrier is small for any single bug, but it accumulates across a career and is one of the reasons that beginning to program in English is itself a form of cultural capital. Second, <em>tracebacks leak context</em>. The full file paths Python prints often include your user name, your project name, the layout of your home directory, and the versions of every library on your <code>PYTHONPATH</code>; pasting a raw traceback into a public forum or AI chat is sharing that information whether you meant to or not.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you paste a traceback for help, glance at what else it tells the reader about your machine, and redact the parts that are not part of the bug.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">7.8</span> Worked examples</h2>
 <section id="a-keyerror-in-pandas" class="level3">
 <h3 class="anchored" data-anchor-id="a-keyerror-in-pandas">A <code>KeyError</code> in pandas</h3>
 <p>You run:</p>
@@ -949,8 +938,8 @@ RuntimeError: failed to load user profile</code></pre>
 <p><strong>Next step:</strong> print <code>resp.status_code</code> and <code>resp.text[:200]</code> before the <code>json.loads</code> call. You will probably find an HTML error page or an empty response.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.8</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.9</span> Exercises</h2>
 <ol type="1">
 <li>Take a working Python script of your own and deliberately break it in four ways: misspell a variable name, delete an <code>import</code>, index past the end of a list, and call a method on <code>None</code>. Read each traceback and write down, in a single sentence, what the “what” and “where” are.</li>
 <li>Find a traceback in your own recent course work (a screenshot or a notebook cell output). Without re-running the code, write down your best guess at the root cause based only on the traceback. Then re-run to confirm.</li>
@@ -959,8 +948,8 @@ RuntimeError: failed to load user profile</code></pre>
 <li>Pick the most confusing error message you encountered in the last week, strip out the machine-specific parts, paste the static part into a search engine, and write down the first Stack Overflow answer you found. Was it helpful? If not, what made the message hard to search for?</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">7.9</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">7.10</span> One-page checklist</h2>
 <ul>
 <li>Look at the <strong>last line</strong> first: exception type and message = <em>what</em>.</li>
 <li>Look at the <strong>bottommost frame</strong> inside <em>your</em> code: file and line = <em>where</em>.</li>
@@ -971,8 +960,8 @@ RuntimeError: failed to load user profile</code></pre>
 <li>When searching online, include the exception type and the static part of the message; strip file paths, values, and line numbers.</li>
 </ul>
 </section>
-<section id="quick-reference-common-exceptions-first-suspect" class="level2" data-number="7.10">
-<h2 data-number="7.10" class="anchored" data-anchor-id="quick-reference-common-exceptions-first-suspect"><span class="header-section-number">7.10</span> Quick reference: common exceptions → first suspect</h2>
+<section id="quick-reference-common-exceptions-first-suspect" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="quick-reference-common-exceptions-first-suspect"><span class="header-section-number">7.11</span> Quick reference: common exceptions → first suspect</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1023,6 +1012,26 @@ RuntimeError: failed to load user profile</code></pre>
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python docs, <a href="https://docs.python.org/3/library/exceptions.html">Built-in Exceptions</a> — the complete hierarchy of Python exception classes; worth scanning end-to-end once so the names start triggering associations.</li>
+<li>Python docs, <a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions (tutorial)</a> — the official introduction to raising and handling exceptions.</li>
+<li>Python docs, <a href="https://docs.python.org/3/library/traceback.html"><code>traceback</code> module</a> — the standard-library tools for capturing, formatting, and inspecting tracebacks programmatically; useful when logging.</li>
+<li><a href="https://peps.python.org/pep-0657/">PEP 657 — Include Fine Grained Error Locations in Tracebacks</a> — explains the <code>^^^^^</code> underline markers introduced in Python 3.11; once you know what you’re looking at, they accelerate diagnosis significantly.</li>
+<li>Real Python, <a href="https://realpython.com/python-traceback/">Understanding the Python Traceback</a> — a walk-through of every part of a traceback with worked examples.</li>
+<li>André Roberge, <a href="https://aroberge.github.io/friendly-traceback-docs/docs/html/"><code>friendly_traceback</code></a> — a third-party library that rewrites tracebacks in plain English (and several other languages); useful as both a learning aid and a glimpse at what less-Anglocentric error messages could look like.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

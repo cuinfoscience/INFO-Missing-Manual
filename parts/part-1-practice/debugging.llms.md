@@ -398,15 +398,15 @@ When you feel stuck, use this checklist as a reset:
 
 Print it and keep it near your desk.
 
-> **NOTE:**
->
-> - [Python `logging` HOWTO](https://docs.python.org/3/howto/logging.html) — the official walk-through of loggers, handlers, and levels.
-> - [Real Python: Python Debugging with `pdb`](https://realpython.com/python-debugging-pdb/) — a clean, beginner-friendly introduction to the built-in debugger.
-> - [Software Carpentry: Python Debugging lesson](https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html) — a short lesson on systematic debugging with examples.
+## 6.12 Stakes and politics
 
-## 6.12 Case studies
+Debugging treats a bug as an objective discrepancy between expected and observed behavior, and most of the time it is. The political dimension shows up at the edges, in the question of *which discrepancies count as bugs worth fixing*. “Works on my machine” is a famous developer joke, but it has a serious version — bug reports that fail to reproduce in the maintainer’s environment routinely get closed as “cannot reproduce,” and the reporters who see the bug most often are the ones whose environments differ most from the developers’. Users on right-to-left scripts, on assistive technology, on low-bandwidth connections, on older hardware, and on non-English locales all encounter classes of bug that the dominant developer profile rarely sees, and those classes get fixed last (if at all).
 
-The goal of case studies is to show the loop in action.
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you cannot reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug is not real.
+
+## 6.13 Worked examples
+
+The goal of these worked examples is to show the loop in action.
 
 ### “File not found” that is really “wrong folder”
 
@@ -441,7 +441,7 @@ print(df["age"].isna().mean())       # how many are NaN?
 
 In this case the column is `object`, the head shows `'35'`, `'42'`, `'unknown'`, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the `'unknown'` sentinel, so `pd.to_numeric` produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (`na_values=['unknown']`) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.
 
-## 6.13 Using AI tools in debugging
+## 6.14 Using AI tools in debugging
 
 AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.
 
@@ -467,7 +467,7 @@ AI tools can help you debug, but they can also increase confusion if you treat t
 
 A practical motto: AI can suggest hypotheses; you supply the evidence.
 
-## 6.14 Templates
+## 6.15 Templates
 
 ### Template A: debugging journal entry
 
@@ -494,7 +494,7 @@ When debugging takes more than a few minutes, keep a short journal:
 
 - Test fails on the buggy version.
 
-## 6.15 Exercises
+## 6.16 Exercises
 
 1.  Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).
 
@@ -508,7 +508,7 @@ When debugging takes more than a few minutes, keep a short journal:
 
 6.  In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.
 
-## 6.16 One-page checklist
+## 6.17 One-page checklist
 
 - I can state the symptom clearly (expected vs actual).
 
@@ -525,3 +525,12 @@ When debugging takes more than a few minutes, keep a short journal:
 - In notebooks, I manage hidden state (restart + run all).
 
 - If I use AI tools, I treat outputs as drafts and verify with tests.
+
+> **NOTE:**
+>
+> - [Python `logging` HOWTO](https://docs.python.org/3/howto/logging.html) — the official walk-through of loggers, handlers, and levels.
+> - [Real Python: Python Debugging with `pdb`](https://realpython.com/python-debugging-pdb/) — a clean, beginner-friendly introduction to Python’s built-in interactive debugger.
+> - [Software Carpentry: Python Debugging lesson](https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html) — a short, scaffolded lesson on systematic debugging with worked examples.
+> - John Regehr, [How to Debug](https://blog.regehr.org/archives/199) — a compact, opinionated essay from a systems researcher on hypothesis-driven debugging that translates well to scientific Python.
+> - Julia Evans, [Bite Size Debugging](https://wizardzines.com/zines/debugging/) — a short illustrated zine covering print debugging, strace, gdb, and the mental moves that work across languages.
+> - Andreas Zeller, [*The Debugging Book*](https://www.debuggingbook.org/) — a free interactive textbook covering tracing, deltas, fuzzing, and automatic debugging; useful when you want to go beyond print statements.
