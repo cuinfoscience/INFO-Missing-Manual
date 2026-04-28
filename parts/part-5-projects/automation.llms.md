@@ -961,13 +961,15 @@ distclean: clean
 
 The three-second pause before the `rm -rf` is not going to stop a determined mistake, but it is enough to catch the “wait, wrong terminal” moment before the damage is irreversible.
 
-> **NOTE:**
->
-> - [GitHub Actions documentation](https://docs.github.com/en/actions) — the authoritative reference for building CI workflows on GitHub.
-> - [GNU Make manual](https://www.gnu.org/software/make/manual/) — the classic reference for `make`, targets, and incremental rebuilds.
-> - [crontab.guru](https://crontab.guru/) — an interactive explainer for cron expressions that removes most of the mystery.
+## 33.12 Stakes and politics
 
-## 33.12 Worked examples (outline)
+Automation is a labor-shifting move dressed as a productivity move, and seeing it as both is the political work of this chapter. Three things to notice. First, *who pays for the setup*. The first fifteen minutes a `make` target or a CI workflow saves you, every time, are subsidized by the hour somebody spent writing it well — handling exit codes, dealing with edge cases, debugging the failure that shows up only on the runner and never locally. The benefits accrue to whoever runs the automation; the cost accrues to whoever wrote it. In a team, those are usually different people, and the asymmetry compounds when the writer is junior and the runner is senior, or when the writer is volunteering and the runner is paid.
+
+Second, *automation infrastructure is no longer free*. GitHub Actions, GitLab CI, AWS Lambda, Cloudflare Workers — the mechanisms most tutorials reach for ride on commercial cloud platforms, gated by free-tier limits that are generous for student projects and useless above that scale. The platform sets the price; the workflow is portable in principle and locked-in in practice. Self-hosted runners exist, and they are also a real maintenance commitment most teams correctly decide they cannot afford. Third, *“making the correct path the easy path” can become “removing the option to do it differently”*. A pre-commit hook that always rewrites your code, a CI gate that refuses to merge without a passing test, a scheduled job that runs whether anyone is watching — these are good defaults *and* they are constraints on the people who come after. When you automate, you are also legislating; deciding how strictly is part of the job.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, including the “hidden labor” framing. The concrete prompt to carry forward: every automation has an author, an operator, and a reader-of-the-logs, and those are often three different people.
+
+## 33.13 Worked examples (outline)
 
 ### Turn a 6-step checklist into `make` targets
 
@@ -1011,7 +1013,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - Run locally and via PR.
 
-## 33.13 Templates
+## 33.14 Templates
 
 ### Template A: Makefile skeleton (task interface)
 
@@ -1077,7 +1079,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
     * Any permissions/secrets involved?
     * Links to documentation
 
-## 33.14 Exercises
+## 33.15 Exercises
 
 1.  Identify three repeated tasks in your project and turn them into `make` targets.
 
@@ -1093,7 +1095,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 7.  Use an AI tool to draft a workflow file, then validate it against official docs and run a test PR.
 
-## 33.15 One-page checklist
+## 33.16 One-page checklist
 
 - I can turn multi-step tasks into one-command targets.
 
@@ -1109,7 +1111,7 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 
 - AI assistance is used to draft, not to bypass verification.
 
-## 33.16 Quick reference: common automation concepts
+## 33.17 Quick reference: common automation concepts
 
 - Targets, prerequisites, recipes (rebuild logic).
 
@@ -1118,5 +1120,15 @@ The three-second pause before the `rm -rf` is not going to stop a determined mis
 - CI: triggers, runners, jobs, artifacts, caches.
 
 - Hygiene: idempotence, exit codes, logs, secrets.
+
+> **NOTE:**
+>
+> - GitHub, [Actions documentation](https://docs.github.com/en/actions) — the authoritative reference for building CI workflows on GitHub; the workflow syntax page is short and worth bookmarking.
+> - GNU, [Make manual](https://www.gnu.org/software/make/manual/) — the classic reference for `make`, targets, and incremental rebuilds; the introduction (chapter 2) is enough for most projects.
+> - [crontab.guru](https://crontab.guru/) — an interactive explainer for cron expressions that removes most of the mystery from `0 */6 * * *`.
+> - [pre-commit](https://pre-commit.com/) — the framework most projects use to run linters and formatters automatically before each commit; pairs naturally with [sec-linting](#sec-linting).
+> - Greg Wilson and Aleksey Shipilëv, [`set -euo pipefail` and the Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) — the canonical short essay on safer shell scripts; required reading before you write any automation in bash.
+> - Vincent Driessen, [A Successful Git Branching Model](https://nvie.com/posts/a-successful-git-branching-model/) and [Trunk-Based Development](https://trunkbaseddevelopment.com/) — two contrasting branching philosophies; useful context when designing what your CI gates should enforce.
+> - Paul Edwards, [*The Closed World*](https://mitpress.mit.edu/9780262550284/the-closed-world/) — the historical account of Cold War automation that the handbook cites in [sec-artifacts-politics](#sec-artifacts-politics); useful context for “automation as labor displacement and concentration.”
 
 pre-commit contributors. n.d. *Pre-Commit: A Framework for Managing and Maintaining Multi-Language Pre-Commit Hooks*. Project documentation. <https://pre-commit.com/>.

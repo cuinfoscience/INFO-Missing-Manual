@@ -527,13 +527,17 @@ sha256sum -c data/raw/checksums.txt
 
 The reason private channels cannot be the project memory is that they are not searchable by anyone else, they expire, and they exclude anyone who was not in the channel when the decision was made. Issues solve all three problems. The cost is a small amount of friction — you have to write things down — and the benefit is that the project stops losing decisions and the team stops having the same argument twice.
 
-> **NOTE:**
->
-> - [The Turing Way: Guide for Reproducible Research](https://the-turing-way.netlify.app/reproducible-research/reproducible-research.html) — a community-maintained handbook covering project structure, data management, and reproducibility.
-> - [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) — an opinionated project-layout template widely adopted in the data-science community.
-> - [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) — Wilson et al.’s practical checklist for small-team reproducibility.
+## 30.9 Stakes and politics
 
-## 30.9 Worked examples (outline)
+The project-management practices in this chapter — issues, sprints, definition-of-done, status updates — are abbreviations of a broader management culture that grew up in a specific context and travels less well than it appears to.
+
+Two things to notice. First, *Agile and its variants assume a particular kind of worker*. The two-week sprint, the daily standup, the retrospective, and the velocity metric all presuppose a full-time team in roughly synchronous time zones, with a product owner who can prioritize, a scrum master who can run meetings, and an organization that has bought into the cadence. They map awkwardly onto part-time graduate work, distributed open-source projects, community-engaged research with non-academic partners, and any context where progress is measured in semesters rather than sprints. The move “we should adopt Agile” is rarely neutral; it is a claim about what kind of work counts.
+
+Second, *visibility is uneven*. The practices this chapter teaches — making issues, writing definition-of-done lines, posting status updates — make some labor visible and other labor invisible. Care work, mentoring, building trust with collaborators, the slow read of someone else’s draft: none of these fit neatly into a Kanban column, and pipelines that reward only what is visible end up rewarding only the visible workers. Project management hygiene is a real good; it is also a values choice about what gets seen.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you adopt a project-management practice, ask whose work it makes legible and whose work it lets disappear.
+
+## 30.10 Worked examples (outline)
 
 ### Start a new course project in 20 minutes
 
@@ -565,7 +569,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 - Confirm outputs and update README.
 
-## 30.10 Templates
+## 30.11 Templates
 
 ### Template A: One-page project brief
 
@@ -618,7 +622,7 @@ The reason private channels cannot be the project memory is that they are not se
     Evidence (errors, screenshots, links):
     Definition of done:
 
-## 30.11 Exercises
+## 30.12 Exercises
 
 1.  Create a new project folder using the template and write a README that someone else could follow.
 
@@ -630,7 +634,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 5.  Perform a reproducibility check by recreating your environment and rerunning the pipeline.
 
-## 30.12 One-page checklist
+## 30.13 One-page checklist
 
 - I have a clear project goal and definition of done.
 
@@ -646,7 +650,7 @@ The reason private channels cannot be the project memory is that they are not se
 
 - I can reproduce results from a clean environment.
 
-## 30.13 Quick reference: “minimum viable” project operations
+## 30.14 Quick reference: “minimum viable” project operations
 
 - Create structure.
 
@@ -659,3 +663,13 @@ The reason private channels cannot be the project memory is that they are not se
 - Track work in issues.
 
 - Reproduce end-to-end before delivery.
+
+> **NOTE:**
+>
+> - The Turing Way, [Guide for Reproducible Research](https://the-turing-way.netlify.app/reproducible-research/reproducible-research.html) — a community-maintained handbook covering project structure, data management, and reproducibility; the closest thing to a full-length companion to this chapter.
+> - DrivenData, [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) — an opinionated project-layout template widely adopted in the data-science community; useful as a reference even if you do not use the generator.
+> - Greg Wilson et al., [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) — Wilson and colleagues’ practical checklist for small-team reproducibility; the textbook chapter for the “minimum viable” framing here.
+> - Kieran Healy, [The Plain Person’s Guide to Plain Text Social Science](https://plain-text.co/) — a free book on running social-science projects in plain-text tools; particularly good on integrating writing, data, and version control.
+> - atlassian, [Agile coach](https://www.atlassian.com/agile) — the canonical reference for Scrum, Kanban, and the rest of the Agile vocabulary; useful for translating between the language of this chapter and the language teams use in industry.
+> - [Manifesto for Agile Software Development](https://agilemanifesto.org/) — the original 17-author 2001 manifesto; short, durable, and useful context for the “Stakes and politics” framing above.
+> - Cal Newport, [*Slow Productivity*](https://calnewport.com/slow-productivity/) — a counterweight to sprint-velocity culture; useful when project-management orthodoxy starts pressuring slow, careful work out.

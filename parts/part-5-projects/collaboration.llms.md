@@ -366,17 +366,19 @@ Documentation drifts out of sync with the code almost immediately, because chang
 
 **Fix:** include a “docs updated” checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, **file an issue** — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.
 
-> **NOTE:**
->
-> - [GitHub Docs: About pull requests](https://docs.github.com/en/pull-requests) — the canonical reference for opening, reviewing, and merging PRs.
-> - [Google engineering practices: Code review](https://google.github.io/eng-practices/review/) — Google’s public guide to what reviewers should look for and how fast they should respond.
-> - [Conventional Comments](https://conventionalcomments.org/) — a lightweight convention for labelling review comments so their intent is obvious.
+## 32.11 Stakes and politics
+
+Code review is one of the most concentrated cultural moments in software collaboration: a senior person reads a junior person’s work and decides whether it is acceptable, and the language of that decision shapes how the junior person feels about their work for the rest of the week. The mechanics in this chapter — small PRs, focused comments, asynchronous review — are good practices, and they are also not the whole story.
+
+Two things to notice. First, *review style is cultural*. Comments that seem direct to one reviewer (“this is wrong”; “why would you do it that way?”) read as hostile to another, especially across language fluency, age, and seniority gaps. The literature on psychological safety and the experience of women, people of color, and non-native English speakers in code-review systems all converge on the same finding: the same comment, with the same content, is read very differently depending on who wrote it and who received it. Conventions like Conventional Comments exist precisely to make intent legible — to compensate for the fact that text strips out the cues a face-to-face conversation would carry. Second, *who can approve a merge is power*. The “code owner” who has to sign off, the senior engineer whose word ends a thread, the maintainer who can `LGTM` a PR into main — these are real authority relationships dressed up as technical machinery. When you contribute to an open-source project, you are entering somebody else’s review hierarchy; when you build one, you are deciding whose voices count.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.
 
 ![](graphics/PLACEHOLDER-github-pr-review-comment.png)
 
 Figure 32.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
 
-## 32.11 Worked examples (outline)
+## 32.12 Worked examples (outline)
 
 ### Turn a chat question into a good issue
 
@@ -394,7 +396,7 @@ Figure 32.1: ALT: GitHub pull request review interface, showing an inline comme
 
 - Update docs, close issue with summary, tag next steps.
 
-## 32.12 Templates
+## 32.13 Templates
 
 ### Template A: PR checklist
 
@@ -432,7 +434,7 @@ Figure 32.1: ALT: GitHub pull request review interface, showing an inline comme
     * Style/testing expectations
     * Where to ask questions
 
-## 32.13 Exercises
+## 32.14 Exercises
 
 1.  Write a README for a small class project that a classmate can run.
 
@@ -444,7 +446,7 @@ Figure 32.1: ALT: GitHub pull request review interface, showing an inline comme
 
 5.  Close an issue by summarizing what changed, what remains, and how to reproduce.
 
-## 32.14 One-page checklist
+## 32.15 One-page checklist
 
 - Work is tracked in issues/PRs, not only chat.
 
@@ -458,7 +460,7 @@ Figure 32.1: ALT: GitHub pull request review interface, showing an inline comme
 
 - After merge, issues are closed with a clear summary and links.
 
-## 32.15 Quick reference: collaboration norms
+## 32.16 Quick reference: collaboration norms
 
 - Prefer artifacts over memory.
 
@@ -467,3 +469,13 @@ Figure 32.1: ALT: GitHub pull request review interface, showing an inline comme
 - Prefer small, reversible changes.
 
 - Ask questions early; document decisions.
+
+> **NOTE:**
+>
+> - GitHub, [About pull requests](https://docs.github.com/en/pull-requests) — the canonical reference for opening, reviewing, and merging PRs.
+> - Google, [Engineering Practices: Code Review](https://google.github.io/eng-practices/review/) — Google’s public guide to what reviewers should look for and how fast they should respond; the closest thing to a textbook for code review.
+> - [Conventional Comments](https://conventionalcomments.org/) — a lightweight convention for labelling review comments (e.g., `praise:`, `nitpick:`, `suggestion:`) so their intent is obvious.
+> - Amy Edmondson, [The Fearless Organization](https://fearlessorganization.com/) — the standard book on psychological safety; the empirical backbone for the “review style is cultural” framing in “Stakes and politics” above.
+> - The Recurse Center, [Social rules](https://www.recurse.com/social-rules) — short, explicit conversational norms (“no feigning surprise,” “no well-actually’s”) that improve the climate around technical collaboration.
+> - Camille Fournier, [*The Manager’s Path*](https://www.oreilly.com/library/view/the-managers-path/9781491973882/) — a durable book on engineering management; especially good on how senior engineers build healthy review and mentorship cultures.
+> - David A. Wheeler, [Why Open Source Software](https://dwheeler.com/oss_fs_why.html) and Karl Fogel, [*Producing Open Source Software*](https://producingoss.com/) — two free, durable references on running open-source projects, including the maintainer/contributor relationship.

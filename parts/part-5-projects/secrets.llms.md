@@ -200,13 +200,15 @@ The right emergency response, in order:
 
 GitHub also offers **secret scanning** for public repos — it detects known secret formats and emails you (and sometimes the issuing service) automatically. Do not rely on it as your only line of defense, but it is a useful last-ditch safety net.
 
-> **NOTE:**
->
-> - [The Twelve-Factor App: Config](https://12factor.net/config) — the source of the “environment variables for secrets” convention.
-> - [`python-dotenv` documentation](https://pypi.org/project/python-dotenv/) — the library most projects use to load `.env` files into process environments.
-> - [GitHub: Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — the official guide to rotating and erasing leaked credentials.
+## 34.8 Stakes and politics
 
-## 34.8 Worked examples
+Secrets management is taught as a hygiene topic, but the stakes are very different depending on what the secret protects. Two things to notice. First, *whose data leaks when a credential is exposed*. A leaked AWS access key on a personal side project is mostly the developer’s problem — surprise charges, a compromised account, an embarrassing afternoon. A leaked API key into a healthcare system, a learning-management platform, a municipal records database, or a research dataset of human-subjects data is somebody else’s problem: the patients, the students, the residents, or the research participants whose information was protected by that key. The cost of carelessness scales with the sensitivity of the data, and that cost is very rarely paid by the person who was careless.
+
+Second, *the burden of doing this right is unevenly distributed*. Regulated industries have compliance teams, dedicated secret stores (HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager), formal rotation schedules, and audit trails. Indie developers, students, small open-source projects, and academic labs typically have none of those things and are expected to invent the equivalent for themselves with `.env` files and good intentions. The same accident that produces an internal incident report at a regulated company is a public Twitter screenshot for an indie developer. Knowing which threat model you are operating in is part of operating safely; pretending the differences do not exist is how most leaks happen.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you handle a secret, ask whose data it actually protects — and let the answer set how careful you are.
+
+## 34.9 Worked examples
 
 ### A new project from scratch
 
@@ -279,7 +281,7 @@ print(f"loaded key: length={len(api_key)}, starts with {api_key[:4]}...")
 
 Now you can tell the key loaded correctly without broadcasting it.
 
-## 34.9 Templates
+## 34.10 Templates
 
 **A minimal `.env.example`:**
 
@@ -312,7 +314,7 @@ if missing:
 
 This gives you a useful error on day one instead of a confusing 401 on day three.
 
-## 34.10 Exercises
+## 34.11 Exercises
 
 1.  Create a new project folder, initialize a git repo, and set up `.env`, `.env.example`, and `.gitignore` in the right order. Confirm with `git status` that `.env` does not appear.
 2.  Write a `check_secrets.py` that loads `.env`, reads a variable, and prints its length (not its value). Run it and confirm the length matches your key.
@@ -322,7 +324,7 @@ This gives you a useful error on day one instead of a confusing 401 on day three
 6.  Find a GitHub repo that has accidentally committed a `.env` (they exist — search for `filename:.env DB_PASSWORD`). Read the comments from other users. Note how the maintainer responded. Do not copy the credentials.
 7.  Set an environment variable in your shell profile and a conflicting one in `.env`. Run a program and observe which one wins (hint: by default, system env wins over `load_dotenv`).
 
-## 34.11 One-page checklist
+## 34.12 One-page checklist
 
 - `.env` goes in `.gitignore` **before** you add any secrets.
 - Commit a `.env.example` with variable names but no values.
@@ -333,3 +335,13 @@ This gives you a useful error on day one instead of a confusing 401 on day three
 - For shared team secrets, use a password manager or a dedicated secret store, not a shared `.env` in chat.
 - Keep separate `.env` files per project; do not reuse one across projects.
 - When in doubt, `grep -ri "password\|token\|key" .` before every `git add`.
+
+> **NOTE:**
+>
+> - Adam Wiggins, [The Twelve-Factor App: Config](https://12factor.net/config) — the source of the “environment variables for secrets” convention; the whole 12-factor manifesto is worth a half-hour of reading even if you only build one factor’s worth of apps.
+> - Saurabh Hooda, [`python-dotenv` documentation](https://pypi.org/project/python-dotenv/) — the library most projects use to load `.env` files into process environments.
+> - GitHub, [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) — the official guide to rotating and erasing leaked credentials.
+> - HashiCorp, [Vault documentation](https://developer.hashicorp.com/vault/docs) — the canonical free, self-hostable secret store; useful to know exists when `.env` files stop being adequate.
+> - AWS, [Secrets Manager](https://docs.aws.amazon.com/secretsmanager/) and Google Cloud, [Secret Manager](https://cloud.google.com/secret-manager/docs) — the hosted options most cloud-native teams use; the right tier of tool when secrets need rotation, audit logs, and IAM-based access control.
+> - OWASP, [Cheat Sheet: Secrets Management](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html) — practitioner consensus on threat-model-driven secrets handling; useful when you graduate from “do not commit secrets” to “design a rotation policy.”
+> - Troy Hunt, [Have I Been Pwned](https://haveibeenpwned.com/) — search-by-email service for credential leaks; not a secrets-management tool but useful context for the scale of the underlying problem.

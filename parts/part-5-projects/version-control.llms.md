@@ -440,13 +440,17 @@ git push origin v1.0-midterm
 
 On GitHub, you can promote a tag to a **release**, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference `v1.0-midterm` and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.
 
-> **NOTE:**
->
-> - [Pro Git book](https://git-scm.com/book/en/v2) — the free, authoritative book on Git, written by one of its maintainers.
-> - [GitHub Docs: Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — a beginner-friendly overview of Git concepts paired with GitHub features.
-> - [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — GitHub Education’s printable reference for everyday commands.
+## 31.11 Stakes and politics
 
-## 31.11 Worked examples (outline)
+Git and GitHub look like neutral plumbing for tracking changes, but they carry two distinct political dimensions worth seeing clearly. Three things to notice. First, *Git’s mental model is its own gatekeeper*. The distributed, branching, hash-tagged commit graph rewards a particular kind of mental model and punishes everything else: the rich literature of horror stories about students “ruining their repository” with a force-push or a misunderstood rebase reflects a real cognitive load that more visual tools (Google Docs’s revision history, Word’s track changes) impose far less. Fluency with Git is not nothing — it is one of the higher-leverage technical skills in this handbook — but it is also a credentialing mechanism.
+
+Second, *GitHub is not Git*. Git is open and decentralized; GitHub is a single private platform now owned by Microsoft, which also owns the dominant editor (VS Code), substantial chunks of the LLM ecosystem (Copilot, OpenAI partnership), and the messaging tool many teams use for code review (Teams). The sentence “if it’s not on GitHub, it doesn’t exist” is true in many job markets and false in important ones, and the migration of open-source projects to a single corporate host concentrates a kind of infrastructural power that is uncomfortable to depend on. GitLab, Codeberg, and self-hosted Gitea exist precisely so that Git the protocol does not collapse into one company’s product.
+
+Third, *“if it’s not in Git, it didn’t happen”* is a useful slogan that quietly excludes work that does not fit Git’s model: dataset curation, oral knowledge, design conversations, mentoring labor. As with project management, the visible kind of work gets credit; the rest does not.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when a tutorial says “host it on GitHub,” ask what changes if the platform does — and which work is still real even when Git cannot represent it.
+
+## 31.12 Worked examples (outline)
 
 ### The daily loop
 
@@ -464,7 +468,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 - Fork, clone, add upstream, sync, open PR to upstream.
 
-## 31.12 Templates
+## 31.13 Templates
 
 ### Template A: Commit message
 
@@ -505,7 +509,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
     Question: clarify intent, edge cases
     Nit: formatting, naming (non-blocking)
 
-## 31.13 Exercises
+## 31.14 Exercises
 
 1.  Initialize a repo, add a README and `.gitignore`, and make three meaningful commits.
 
@@ -517,7 +521,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 5.  Fork a repository, add an upstream remote, sync it, and open a PR from your fork.
 
-## 31.14 One-page checklist
+## 31.15 One-page checklist
 
 - I understand working tree vs staging vs commits.
 
@@ -533,7 +537,7 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
 - I follow hygiene: `.gitignore`, no secrets, controlled notebook diffs.
 
-## 31.15 Quick reference: common commands (student set)
+## 31.16 Quick reference: common commands (student set)
 
     # create/clone
 
@@ -569,3 +573,13 @@ On GitHub, you can promote a tag to a **release**, which adds release notes and 
 
     git merge <branch>
     git merge --abort
+
+> **NOTE:**
+>
+> - Scott Chacon and Ben Straub, [*Pro Git*](https://git-scm.com/book/en/v2) — the free, authoritative book on Git, written by one of its maintainers; chapters 1–3 cover the daily loop, chapters 4–7 cover collaboration and internals.
+> - GitHub, [Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — beginner-friendly overview of Git concepts paired with GitHub features.
+> - GitHub Education, [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — printable reference for everyday commands.
+> - Julia Evans, [Oh shit, git!?!](https://ohshitgit.com/) — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.
+> - [Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) — the chapter that demystifies the object database; the moment Git stops feeling like magic.
+> - [GitLab](https://about.gitlab.com/) and [Codeberg](https://codeberg.org/) — open-core and non-profit alternatives to GitHub; useful to know exist when the “Stakes and politics” point about platform concentration above lands.
+> - Software Carpentry, [Version Control with Git](https://swcarpentry.github.io/git-novice/) — a complete beginner workshop with exercises; pairs well with this chapter as a hands-on follow-up.
