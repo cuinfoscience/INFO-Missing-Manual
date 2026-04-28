@@ -1,5 +1,14 @@
-# How Language Models Work {#sec-llm-internals}
+---
+meme:
+  template: "tenguy"
+  lines:
+    - "WHAT IF EVERY WORD"
+    - "IS JUST A POINT IN A 4096-DIMENSIONAL SPACE"
+  alt: "Tokenization. Embeddings. Attention. KV cache. Each concept is fine on its own. Together they are a wall of math your linear-algebra class did not prepare you for."
+  rationale: "humor -- 10 Guy stoner-realization works perfectly for 'words are just numbers'"
+---
 
+# How Language Models Work {#sec-llm-internals}
 
 ::: {.callout-tip collapse="true"}
 ## Prerequisites and see-also
@@ -10,6 +19,8 @@
 :::
 
 ## Purpose {.unnumbered}
+
+{{< chapter-meme >}}
 
 You have probably used a chatbot, had AI help you write code, or asked a language model to explain a confusing error message. These tools are now embedded in text editors, search engines, notebooks, and APIs. But most people use them with little understanding of what is actually happening under the hood --- and that gap causes real problems: you paste in a prompt, get a confident-sounding answer, and have no way to judge whether it is trustworthy, or why it failed when it did.
 

@@ -1,5 +1,14 @@
-# Package Management {#sec-pkg-mgmt}
+---
+meme:
+  template: "pooh"
+  lines:
+    - "`PIP INSTALL`"
+    - "`UV PIP INSTALL`"
+  alt: "`pip` and `conda` solve overlapping problems in mutually incompatible ways. `uv` is the new shiny thing, ten times faster, allegedly. Your terminal has three Pythons on the PATH and at least one of them is lying."
+  rationale: "humor -- Bourgeois Pooh is the perfect format for the endless 'fancier package manager' upgrade arc"
+---
 
+# Package Management {#sec-pkg-mgmt}
 
 ::: {.callout-tip collapse="true"}
 ## Prerequisites and see-also
@@ -10,6 +19,8 @@
 :::
 
 ## Purpose {.unnumbered}
+
+{{< chapter-meme >}}
 
 Package management is the discipline of installing and updating third-party software (libraries) in a way that is consistent, reproducible, and unlikely to break your work. For novices, the most common failure mode is mixing global installs, different Python interpreters, and ad-hoc updates until nothing imports. This chapter teaches a stable workflow using project-level environments, clear dependency records, and a conflict-resolution playbook.
 
@@ -685,7 +696,6 @@ If the path it prints contains your project's `.venv/bin/python`, the notebook i
     python -m pip check
 
 ### Template C: Project dependency policy (student-friendly)
-
 
     * Every project has an environment file.
     * No installs in base/root.

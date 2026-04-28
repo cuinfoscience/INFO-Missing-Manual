@@ -79,26 +79,36 @@ return {
       )
     end
 
-    local png_rel = "graphics/memes/" .. slug .. ".png"
-    local spec_rel = "graphics/memes/" .. slug .. ".spec"
+    -- Quarto runs each render with cwd set to the chapter's directory, so
+    -- shell-outs and file checks need absolute paths anchored at the project
+    -- root. quarto.project.directory is the standard API; the gsub fallback
+    -- assumes parts/<part>/<chapter>.qmd.
+    local project_root = (quarto.project and quarto.project.directory) or ""
+    if project_root == "" then
+      project_root = input:gsub("/parts/[^/]+/[^/]+%.qmd$", "")
+    end
+
+    local png_abs = project_root .. "/graphics/memes/" .. slug .. ".png"
+    local spec_abs = project_root .. "/graphics/memes/" .. slug .. ".spec"
+    local script_abs = project_root .. "/scripts/generate_chapter_meme.py"
 
     local spec_payload = template .. "\n" .. table.concat(lines, "\n")
     local hash = hash_hex(spec_payload)
-    local existing_hash = file_exists(spec_rel) and read_text(spec_rel) or ""
+    local existing_hash = file_exists(spec_abs) and read_text(spec_abs) or ""
 
-    if (not file_exists(png_rel)) or existing_hash ~= hash then
-      local cmd = "python scripts/generate_chapter_meme.py "
+    if (not file_exists(png_abs)) or existing_hash ~= hash then
+      local cmd = "python " .. shell_escape(script_abs) .. " "
         .. "--template " .. shell_escape(template) .. " "
       for _, line in ipairs(lines) do
         cmd = cmd .. "--line " .. shell_escape(line) .. " "
       end
-      cmd = cmd .. "--out " .. shell_escape(png_rel) .. " 1>&2"
+      cmd = cmd .. "--out " .. shell_escape(png_abs) .. " 1>&2"
       local ok = os.execute(cmd)
-      if ok and file_exists(png_rel) then
-        write_text(spec_rel, hash)
+      if ok and file_exists(png_abs) then
+        write_text(spec_abs, hash)
       else
         io.stderr:write(
-          "chapter-meme: failed to generate " .. png_rel .. "\n"
+          "chapter-meme: failed to generate " .. png_abs .. "\n"
         )
         return pandoc.RawBlock(
           "html",
@@ -107,11 +117,17 @@ return {
       end
     end
 
-    local md = string.format(
-      "::: {.column-margin}\n![](../../%s){fig-alt=\"%s\"}\n:::",
-      png_rel,
-      (alt:gsub('"', '\\"'))
+    -- Build the Pandoc AST directly. The image path stays relative to the
+    -- source file: every chapter lives at parts/<part>/<chapter>.qmd, so
+    -- ../../ is the right prefix back to graphics/. Returning a constructed
+    -- Div lets Quarto wire up the column-margin layout and HTML alt text.
+    local img = pandoc.Image(
+      {pandoc.Str("")},
+      "../../graphics/memes/" .. slug .. ".png",
+      ""
     )
-    return pandoc.RawBlock("markdown", md)
+    img.attributes["fig-alt"] = alt
+    local para = pandoc.Para({img})
+    return pandoc.Div({para}, pandoc.Attr("", {"column-margin"}, {}))
   end,
 }

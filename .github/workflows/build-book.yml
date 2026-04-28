@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install meme generator deps
+        run: pip install -r scripts/requirements.txt
+
       - name: Render (PR validation)
         if: github.event_name == 'pull_request'
         uses: quarto-dev/quarto-actions/render@v2
@@ -37,3 +40,16 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit regenerated meme artifacts (push to main only)
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add graphics/memes/
+          if git diff --staged --quiet; then
+            echo "No meme artifact changes."
+            exit 0
+          fi
+          git commit -m "chore(memes): regenerate chapter meme artifacts [skip ci]"
+          git push
