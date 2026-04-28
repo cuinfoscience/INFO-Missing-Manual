@@ -31,8 +31,22 @@ def main() -> None:
     parser.add_argument(
         "--out", required=True, help="output PNG path"
     )
+    parser.add_argument(
+        "--fontsize",
+        type=float,
+        default=192.0,
+        help="caption font size in points; overrides memeplotlib's auto-fit "
+        "so each caption line spans the full image width "
+        "(default 192.0, ~2.7x memeplotlib's 72.0)",
+    )
     args = parser.parse_args()
-    memes.meme(args.template, *args.line, savefig=args.out, show=False)
+    memes.meme(
+        args.template,
+        *args.line,
+        fontsize=args.fontsize,
+        savefig=args.out,
+        show=False,
+    )
 
 
 if __name__ == "__main__":

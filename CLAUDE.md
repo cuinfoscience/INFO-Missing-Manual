@@ -109,7 +109,14 @@ INFO-Missing-Manual/
 │       ├── appendix-glossary.qmd        # Appendix A (glossary with term anchors)
 │       └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
 │
-└── graphics/                        # PNGs referenced from chapters
+├── graphics/                        # PNGs referenced from chapters
+│   └── memes/                       # generated chapter memes (PNG + .spec hash)
+├── scripts/
+│   ├── generate_chapter_meme.py     # thin wrapper around memeplotlib
+│   └── requirements.txt             # Python deps for the meme generator
+└── _extensions/cuinfo/chapter-meme/ # Quarto shortcode wiring frontmatter -> generator
+    ├── _extension.yml
+    └── chapter-meme.lua
 ```
 
 **Naming rules:**
@@ -327,6 +334,44 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 - `_quarto.yml` top-level structure without a reason. In particular, do not remove the sibling `website: { llms-txt: true }` block; Quarto 1.9 has a bug where `llms-txt` under `book:` does not activate llms.txt generation, but under `website:` it does. See @sec-automation analog in the issue tracker if you want to upstream this.
 - Section ID prefixes. They are baked into cross-references across the book.
+
+---
+
+## Chapter memes
+
+Each chapter declares an optional meme in YAML frontmatter; the rendered PNG appears in the column-margin next to the `## Purpose` section.
+
+**Frontmatter contract** (`parts/part-N-<topic>/<chapter>.qmd`):
+
+```yaml
+meme:
+  template: "fine"           # memegen template id
+  lines:                     # positional, one per text region in the template
+    - ""
+    - "MY CODE IS ON FIRE BUT THIS IS FINE"
+  alt: "Short caption for screen readers."   # required for accessibility
+  rationale: "humor — short source-only note explaining the choice"  # optional
+  # fontsize: 192            # optional override; default 192
+```
+
+Inside the chapter body — conventionally just below the `## Purpose {.unnumbered}` heading — invoke the shortcode:
+
+```markdown
+{{< chapter-meme >}}
+```
+
+**Pipeline.** The Lua shortcode at `_extensions/cuinfo/chapter-meme/chapter-meme.lua` reads the frontmatter, hashes `template + fontsize + lines` into a `.spec` sidecar, and invokes `scripts/generate_chapter_meme.py` if the cached PNG is missing or the hash changed. The Python script is a ~40-line wrapper around `memeplotlib.meme(template, *lines, fontsize=..., savefig=..., show=False)`. Generated assets land in `graphics/memes/<slug>.png` (and a sidecar `<slug>.spec` holding the hash). All three components are checked in and the PNGs are committed to the repo so CI doesn't need a Python install to render the book — but the `meme:` frontmatter is the source of truth, and editing it on a chapter triggers regeneration on next `quarto render`.
+
+**Font size knob.** The default `--fontsize` is `192` points (≈2.7× memeplotlib's library default of 72), chosen so each caption line spans the full image width on the chapter pages. A chapter can override with `meme.fontsize: 240` or similar; the override is part of the spec hash, so changes invalidate the cache cleanly. To retune the default for every chapter, edit the constant in [scripts/generate_chapter_meme.py](scripts/generate_chapter_meme.py) **and** the `or "192"` fallback in [_extensions/cuinfo/chapter-meme/chapter-meme.lua](_extensions/cuinfo/chapter-meme/chapter-meme.lua) — keep them in sync. Then force a full regeneration:
+
+```bash
+rm graphics/memes/*.png graphics/memes/*.spec
+quarto render --to html
+```
+
+**Why `_extensions/cuinfo/chapter-meme/` is not under `scripts/`.** It would be tidier, but Quarto resolves shortcode contributions strictly relative to the extension directory under `_extensions/`. Moving the folder requires converting the shortcode to a Lua filter, which means editing every chapter that invokes `{{< chapter-meme >}}` and risks regressing the column-margin alignment. Don't relocate it without a dedicated PR.
+
+**Dependency.** The generator depends on [memeplotlib](https://github.com/brianckeegan/memeplotlib) ≥ 0.2.0 (pinned in [scripts/requirements.txt](scripts/requirements.txt)). The 0.2.0 release added the explicit `fontsize` kwarg used here; older 0.1.0 only had auto-fit-to-template-box, which is why captions used to render too small. Install with `pip install -r scripts/requirements.txt`.
 
 ---
 
