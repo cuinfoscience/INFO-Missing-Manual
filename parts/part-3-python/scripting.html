@@ -1189,13 +1189,13 @@ Second, **avoid embedding large data into the notebook itself.** A cell that rea
 
 Third, **prefer Jupytext pairing or script conversion for anything code-reviewed.** If a reviewer has to compare two versions of a notebook, they almost certainly want to see a plain-text diff, not a JSON blob. Pairing with Jupytext gives them the best of both worlds: the reviewer reads the `.py`, the analyst keeps using the `.ipynb`, and the two stay in sync automatically. For notebooks that are handed in once and never reviewed, this is overkill; for notebooks that are part of a shared project, it is almost always worth the small setup cost.
 
-::: {.callout-note}
-## 📚 Further reading
+## Stakes and politics
 
-- [Python: `argparse` tutorial](https://docs.python.org/3/howto/argparse.html) — the canonical walk-through for building command-line interfaces.
-- [Real Python: Command-Line Interfaces in Python](https://realpython.com/command-line-interfaces-python-argparse/) — a longer-form treatment with subcommands and examples.
-- [`if __name__ == "__main__"`](https://docs.python.org/3/library/__main__.html) — the official explanation of the import vs. script entry point pattern.
-:::
+The choice between a notebook and a script is presented in this chapter as a technical trade-off, and it is. It is also a cultural one. Notebooks are the dominant idiom in academic data science, scientific computing, and teaching; scripts are the dominant idiom in software engineering, production systems, and any code that runs without a human watching. Two consequences worth naming.
+
+First, *what counts as "professional" code*. Hiring panels for data-engineer or ML-engineer roles often treat notebook-only portfolios as a yellow flag, even when the analytical work is excellent — the implicit norm is that "real" code is `.py` files in a Git repo with tests and a `main()`. The norm is not arbitrary (scripts are easier to review, schedule, and reuse), but it does mean that the same skill applied in two formats reads as two different levels of seriousness. Second, *which community gets to claim a piece of work*. A study published as a clean notebook with figures inline reads as a research artifact; the same code restructured into `src/` with command-line flags reads as software. Funders, reviewers, and tenure committees treat the two differently, and the conversion has costs — time, learning curve, infrastructure access — that fall unequally on early-career researchers, students, and people without a software-engineering mentor.
+
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you choose between a notebook and a script, name who the audience is and what they will read your code as — and when you review someone else's, do the same.
 
 ## Worked examples
 
@@ -1355,6 +1355,27 @@ main()</code></pre>
 <li><p>Paired notebook formats for better diffs.</p></li>
 <li><p>Parameterized execution of notebooks for batch runs.</p></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python docs, <a href="https://docs.python.org/3/howto/argparse.html"><code>argparse</code> tutorial</a> — the canonical walk-through for building command-line interfaces in the standard library.</li>
+<li>Python docs, <a href="https://docs.python.org/3/library/__main__.html"><code>if __name__ == "__main__"</code></a> — the official explanation of the import-vs-script entry point pattern.</li>
+<li>Pallets, <a href="https://click.palletsprojects.com/">Click documentation</a> — the most widely used third-party CLI framework; useful when <code>argparse</code> starts to feel verbose.</li>
+<li>Sebastián Ramírez, <a href="https://typer.tiangolo.com/">Typer documentation</a> — a modern alternative to Click built on Python type hints; the lowest-friction way to add a CLI to an existing function.</li>
+<li>Real Python, <a href="https://realpython.com/command-line-interfaces-python-argparse/">Command-Line Interfaces in Python</a> — a longer-form treatment with subcommands, validation, and worked examples.</li>
+<li><a href="https://jupytext.readthedocs.io/en/latest/">Jupytext documentation</a> — the canonical tool for keeping a <code>.ipynb</code> and a <code>.py</code> in sync, which makes notebooks reviewable in plain text.</li>
+<li>Python Packaging Authority, <a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/">Packaging Python projects: src vs flat layout</a> — the standard discussion of how to organize a project once <code>src/</code> enters the picture.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

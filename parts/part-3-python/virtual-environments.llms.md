@@ -266,15 +266,15 @@ A useful checklist of “no, a venv is fine”:
 
 If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.
 
-> **NOTE:**
->
-> - [`venv` — Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official module reference and command-line usage.
-> - [Python Packaging User Guide: Virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a tutorial-style walk-through, including pip usage inside a venv.
-> - [Real Python: Python Virtual Environments — A Primer](https://realpython.com/python-virtual-environments-a-primer/) — extended discussion of venv internals, common pitfalls, and alternatives.
-> - [Docker: Get started](https://docs.docker.com/get-started/) — the official walkthrough for building, running, and sharing containers.
-> - [Play with Docker](https://labs.play-with-docker.com/) — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.
+## 15.8 Stakes and politics
 
-## 15.8 Worked examples
+Virtual environments solve a real and unavoidable problem: different projects need different versions of the same package, and “the system Python” cannot serve them all at once. The political dimension is what the alternatives — and the absence of alternatives — look like for different students.
+
+Two things to notice. First, *what venvs assume about your machine*. Creating, activating, and populating a venv from a `requirements.txt` requires an unmetered internet connection (the first install can be hundreds of megabytes), an editor that can be pointed at a custom interpreter, and a working `python` command on a system where you have write access to your home folder. Students using shared lab workstations, Chromebooks locked down by a school district, or capped mobile data plans hit different walls at different points in that workflow. Second, *what containers concentrate*. Docker, the dominant container runtime, is now owned by Docker, Inc. and gated by Docker Desktop’s commercial terms for larger organizations; the underlying open standards (OCI) exist, but the convenient tooling is increasingly behind a corporate license. Adopting containers as the default isolation layer trades “skill that runs on your laptop” for “infrastructure dependency on a third party.”
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when a tutorial says “just create a venv” or “just run it in a container,” ask which prerequisites — bandwidth, disk, admin rights, paid licenses — that *just* is hiding.
+
+## 15.9 Worked examples
 
 ### Starting a new project from scratch
 
@@ -348,7 +348,7 @@ python -m pip install -r requirements.txt
 
 That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.
 
-## 15.9 Templates
+## 15.10 Templates
 
 **`.gitignore` entries for a venv project:**
 
@@ -366,7 +366,7 @@ That is the whole setup. Five commands and any machine is running your project w
 
 A version-pinned `requirements.txt` is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (`pandas>=2.0`). For application projects (your course work), prefer pins.
 
-## 15.10 Exercises
+## 15.11 Exercises
 
 1.  Create a fresh venv in an empty directory, activate it, and install `pandas`. Run `python -m pip show pandas` and confirm the `Location:` line is inside your venv.
 2.  Write down the output of `which python` (or `where python`) before and after activating a venv. Notice the path change.
@@ -376,7 +376,7 @@ A version-pinned `requirements.txt` is reproducible but brittle. For libraries (
 6.  Clone a classmate’s project (or your own on another machine) and get it running from scratch using only `git clone`, `python -m venv`, `activate`, and `pip install -r requirements.txt`. Time yourself — it should take under two minutes.
 7.  Delete your `.venv/` directory and recreate it from `requirements.txt`. Confirm the project still runs. This is the key reproducibility test.
 
-## 15.11 One-page checklist
+## 15.12 One-page checklist
 
 - Every project gets its own venv: `python -m venv .venv` at the project root.
 - Add `.venv/` to `.gitignore`. Never commit a venv.
@@ -387,3 +387,13 @@ A version-pinned `requirements.txt` is reproducible but brittle. For libraries (
 - Register the venv as a Jupyter kernel if you will use notebooks.
 - Point your editor (VS Code, PyCharm, etc.) at the venv interpreter.
 - If something is weird, the first diagnostic is *always* “which Python is running?”
+
+> **NOTE:**
+>
+> - Python docs, [`venv` — Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official module reference and command-line usage.
+> - Python Packaging Authority, [Installing packages using pip and virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a tutorial-style walk-through, including pip usage inside a venv.
+> - pyenv, [Simple Python Version Management](https://github.com/pyenv/pyenv) — the standard tool for managing multiple Python interpreters on one machine; pairs naturally with venv when you need both isolation and a non-default Python version.
+> - [Real Python: Python Virtual Environments — A Primer](https://realpython.com/python-virtual-environments-a-primer/) — extended discussion of venv internals, common pitfalls, and alternatives.
+> - Docker, Inc., [Get started](https://docs.docker.com/get-started/) — the official walkthrough for building, running, and sharing containers.
+> - [Open Container Initiative](https://opencontainers.org/) — the vendor-neutral standard underneath Docker; useful to know exists when you wonder whether containerization requires Docker specifically (it does not).
+> - [Play with Docker](https://labs.play-with-docker.com/) — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.

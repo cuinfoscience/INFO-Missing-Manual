@@ -532,13 +532,15 @@ scripts/
 
 The notebook and the script import the *same* functions from `src/`. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need `src/` as they get more complex, and grow again to include `scripts/` when they need automation — without ever having to rewrite from scratch.
 
-> **NOTE:**
->
-> - [JupyterLab documentation](https://jupyterlab.readthedocs.io/en/latest/) — the official guide to the multi-document interface, extensions, and kernels.
-> - [Jupyter Notebook documentation](https://jupyter-notebook.readthedocs.io/en/latest/) — the classic single-document interface, still widely used in courses.
-> - [Jupyter Keyboard Shortcuts reference](https://jupyterlab.readthedocs.io/en/latest/user/commands.html) — the full list of command-palette actions and default keybindings.
+## 16.9 Stakes and politics
 
-## 16.9 Worked examples
+Notebooks are unusual in that they look like the most transparent computing artifact possible — code and output side by side, ready to read — but they have political dimensions that the appearance hides. Two things to notice. First, *the reproducibility theatre*. A notebook that displays a clean run from top to bottom can have been produced by any sequence of cell executions, with any history of variables in memory, against any version of any package. The very feature that makes notebooks teachable — you can see the answer right there — also makes them easy to share in a state nobody can rerun. “Reproducible” notebooks require explicit work that is not visible in the notebook itself: pinned environments, raw-data provenance, “Restart kernel and run all” before every save. Without that work, the notebook is closer to a screenshot than a program.
+
+Second, *the data leak that comes free with `df.head()`*. Notebook cells routinely display real rows of real datasets — names, identifiers, free-text comments — directly inside the file. When a notebook is committed to a public GitHub repo or pasted into a forum for help, those rows go with it. The convenience of inline output is a privacy hazard the format does not warn you about.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before you share a notebook, ask whether someone could rerun it from scratch, and whether anything in its output should not have left your laptop.
+
+## 16.10 Worked examples
 
 ### Launching Jupyter in the right place
 
@@ -588,7 +590,7 @@ Now the file browser shows the project, and the working-directory check cell fro
 
 A notebook that runs once but fails on a clean kernel is not really finished. Three habits make a notebook genuinely reproducible. The first is to give it a clear linear structure: a title in a markdown cell, a one-paragraph purpose statement, then an “imports and setup” code cell, then the analysis cells in execution order, then a “results” section. The second is to extract any logic that you might want to reuse into functions in `src/`, and import them rather than copy-pasting code between cells. The third is the discipline of **Restart Kernel and Run All** every time you finish a meaningful chunk of work — and *especially* before you commit the notebook to git or share it with anyone. If “Restart and Run All” produces an error that interactive use never did, you have just discovered a hidden-state bug, and now is the right time to fix it. Better to find it now than to ship a notebook that quietly does not reproduce.
 
-## 16.10 Templates
+## 16.11 Templates
 
 ### Template A: Notebook header block
 
@@ -618,9 +620,9 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
     # 4) run a small smoke test
 
-## 16.11 Exercises
+## 16.12 Exercises
 
-## 16.12 One-page checklist
+## 16.13 One-page checklist
 
 - I launch Jupyter from the correct project folder (or pass the correct directory).
 
@@ -638,7 +640,7 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 - I keep outputs controlled and store large artifacts outside the notebook.
 
-## 16.13 Quick reference: common launch and debugging moves
+## 16.14 Quick reference: common launch and debugging moves
 
 - Confirm working directory before launching.
 
@@ -648,4 +650,14 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 - If execution hangs: interrupt; then restart if needed.
 
-## 16.14 Quick reference: IPython conveniences
+## 16.15 Quick reference: IPython conveniences
+
+> **NOTE:**
+>
+> - Project Jupyter, [JupyterLab documentation](https://jupyterlab.readthedocs.io/en/latest/) — the official guide to the multi-document interface, extensions, and kernels.
+> - Project Jupyter, [Jupyter Notebook documentation](https://jupyter-notebook.readthedocs.io/en/latest/) — the classic single-document interface, still widely used in courses.
+> - IPython, [IPython documentation](https://ipython.readthedocs.io/en/stable/) — the kernel underneath every Python notebook; learn its `?`, `??`, `%timeit`, and `%debug` magics and you will spend less time reaching for separate tools.
+> - Joel Grus, [I Don’t Like Notebooks (JupyterCon 2018)](https://docs.google.com/presentation/d/1n2RlMdmv1p25Xy5thJUhkKGvjtV-dkAIsUXP-AL4ffI/edit) — a sharp, well-known critique of notebook workflows; worth knowing the arguments even if you keep using notebooks.
+> - Mahmoud Hashemi, [`nbstripout`](https://github.com/kynan/nbstripout) — a tool that strips notebook output before commit; the simplest defense against leaking inline data into a Git history.
+> - nteract, [Papermill](https://papermill.readthedocs.io/en/latest/) — a tool for parameterizing and executing notebooks from the command line; turns a notebook into something closer to a reproducible pipeline.
+> - Project Jupyter, [Jupyter Governance](https://jupyter.org/governance/) — the project’s governance documents; useful context when you wonder who actually decides where the platform goes next.

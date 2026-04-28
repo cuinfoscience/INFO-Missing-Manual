@@ -675,15 +675,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#docker-compose-for-multi-service-projects" id="toc-docker-compose-for-multi-service-projects" class="nav-link" data-scroll-target="#docker-compose-for-multi-service-projects">Docker Compose for multi-service projects</a></li>
   <li><a href="#when-to-actually-reach-for-a-container" id="toc-when-to-actually-reach-for-a-container" class="nav-link" data-scroll-target="#when-to-actually-reach-for-a-container">When to actually reach for a container</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">15.8</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">15.8</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">15.9</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#starting-a-new-project-from-scratch" id="toc-starting-a-new-project-from-scratch" class="nav-link" data-scroll-target="#starting-a-new-project-from-scratch">Starting a new project from scratch</a></li>
   <li><a href="#diagnosing-it-worked-yesterday" id="toc-diagnosing-it-worked-yesterday" class="nav-link" data-scroll-target="#diagnosing-it-worked-yesterday">Diagnosing “it worked yesterday”</a></li>
   <li><a href="#a-collaborator-clones-your-project" id="toc-a-collaborator-clones-your-project" class="nav-link" data-scroll-target="#a-collaborator-clones-your-project">A collaborator clones your project</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">15.9</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">15.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">15.10</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">15.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/virtual-environments.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -964,29 +965,16 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 <li><strong>Anything you only ever run on your own laptop</strong> for one semester.</li>
 </ul>
 <p>If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.python.org/3/library/venv.html"><code>venv</code> — Creation of virtual environments</a> — the official module reference and command-line usage.</li>
-<li><a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">Python Packaging User Guide: Virtual environments</a> — a tutorial-style walk-through, including pip usage inside a venv.</li>
-<li><a href="https://realpython.com/python-virtual-environments-a-primer/">Real Python: Python Virtual Environments — A Primer</a> — extended discussion of venv internals, common pitfalls, and alternatives.</li>
-<li><a href="https://docs.docker.com/get-started/">Docker: Get started</a> — the official walkthrough for building, running, and sharing containers.</li>
-<li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="15.8">
-<h2 data-number="15.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">15.8</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">15.8</span> Stakes and politics</h2>
+<p>Virtual environments solve a real and unavoidable problem: different projects need different versions of the same package, and “the system Python” cannot serve them all at once. The political dimension is what the alternatives — and the absence of alternatives — look like for different students.</p>
+<p>Two things to notice. First, <em>what venvs assume about your machine</em>. Creating, activating, and populating a venv from a <code>requirements.txt</code> requires an unmetered internet connection (the first install can be hundreds of megabytes), an editor that can be pointed at a custom interpreter, and a working <code>python</code> command on a system where you have write access to your home folder. Students using shared lab workstations, Chromebooks locked down by a school district, or capped mobile data plans hit different walls at different points in that workflow. Second, <em>what containers concentrate</em>. Docker, the dominant container runtime, is now owned by Docker, Inc.&nbsp;and gated by Docker Desktop’s commercial terms for larger organizations; the underlying open standards (OCI) exist, but the convenient tooling is increasingly behind a corporate license. Adopting containers as the default isolation layer trades “skill that runs on your laptop” for “infrastructure dependency on a third party.”</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “just create a venv” or “just run it in a container,” ask which prerequisites — bandwidth, disk, admin rights, paid licenses — that <em>just</em> is hiding.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">15.9</span> Worked examples</h2>
 <section id="starting-a-new-project-from-scratch" class="level3">
 <h3 class="anchored" data-anchor-id="starting-a-new-project-from-scratch">Starting a new project from scratch</h3>
 <p>You are starting a term project that will use pandas and matplotlib.</p>
@@ -1030,8 +1018,8 @@ Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual env
 <p>That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="15.9">
-<h2 data-number="15.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">15.9</span> Templates</h2>
+<section id="templates" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">15.10</span> Templates</h2>
 <p><strong><code>.gitignore</code> entries for a venv project:</strong></p>
 <pre><code>.venv/
 __pycache__/
@@ -1044,8 +1032,8 @@ numpy==1.26.4
 pandas==2.2.1</code></pre>
 <p>A version-pinned <code>requirements.txt</code> is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (<code>pandas&gt;=2.0</code>). For application projects (your course work), prefer pins.</p>
 </section>
-<section id="exercises" class="level2" data-number="15.10">
-<h2 data-number="15.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.11</span> Exercises</h2>
 <ol type="1">
 <li>Create a fresh venv in an empty directory, activate it, and install <code>pandas</code>. Run <code>python -m pip show pandas</code> and confirm the <code>Location:</code> line is inside your venv.</li>
 <li>Write down the output of <code>which python</code> (or <code>where python</code>) before and after activating a venv. Notice the path change.</li>
@@ -1056,8 +1044,8 @@ pandas==2.2.1</code></pre>
 <li>Delete your <code>.venv/</code> directory and recreate it from <code>requirements.txt</code>. Confirm the project still runs. This is the key reproducibility test.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="15.11">
-<h2 data-number="15.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">15.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">15.12</span> One-page checklist</h2>
 <ul>
 <li>Every project gets its own venv: <code>python -m venv .venv</code> at the project root.</li>
 <li>Add <code>.venv/</code> to <code>.gitignore</code>. Never commit a venv.</li>
@@ -1069,6 +1057,27 @@ pandas==2.2.1</code></pre>
 <li>Point your editor (VS Code, PyCharm, etc.) at the venv interpreter.</li>
 <li>If something is weird, the first diagnostic is <em>always</em> “which Python is running?”</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python docs, <a href="https://docs.python.org/3/library/venv.html"><code>venv</code> — Creation of virtual environments</a> — the official module reference and command-line usage.</li>
+<li>Python Packaging Authority, <a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">Installing packages using pip and virtual environments</a> — a tutorial-style walk-through, including pip usage inside a venv.</li>
+<li>pyenv, <a href="https://github.com/pyenv/pyenv">Simple Python Version Management</a> — the standard tool for managing multiple Python interpreters on one machine; pairs naturally with venv when you need both isolation and a non-default Python version.</li>
+<li><a href="https://realpython.com/python-virtual-environments-a-primer/">Real Python: Python Virtual Environments — A Primer</a> — extended discussion of venv internals, common pitfalls, and alternatives.</li>
+<li>Docker, Inc., <a href="https://docs.docker.com/get-started/">Get started</a> — the official walkthrough for building, running, and sharing containers.</li>
+<li><a href="https://opencontainers.org/">Open Container Initiative</a> — the vendor-neutral standard underneath Docker; useful to know exists when you wonder whether containerization requires Docker specifically (it does not).</li>
+<li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

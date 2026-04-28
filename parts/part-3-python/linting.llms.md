@@ -238,13 +238,15 @@ from legacy_code import UNUSED  # noqa: F401
 
 Use `# noqa` sparingly. Every one is a small promise that a human thought about it and decided the rule did not apply. Unexplained `# noqa` comments accumulate and become dead weight.
 
-> **NOTE:**
->
-> - [PEP 8 — Style Guide for Python Code](https://peps.python.org/pep-0008/) — the authoritative style reference most Python linters encode.
-> - [Ruff documentation](https://docs.astral.sh/ruff/) — the canonical reference for the modern all-in-one linter and formatter.
-> - [Black documentation](https://black.readthedocs.io/en/stable/) — the opinionated formatter that eliminates style arguments.
+## 19.8 Stakes and politics
 
-## 19.8 Worked examples
+Linters and formatters are unusually political tools because their job is to enforce a *single* answer to questions that have many reasonable answers. PEP 8, the style guide most Python linters encode, was written by Guido van Rossum and the Python core team in 2001 — a small group with strong opinions, working in a particular community at a particular moment. The choices that froze in PEP 8 (4-space indentation, `snake_case` for functions, 79-character line length) became “Pythonic” by social rather than technical means; they could have been different and the language would still work fine.
+
+Two consequences worth naming. First, *what counts as readable code*. A formatter like Black ends arguments by enforcing one style across every project that uses it. That is genuinely useful — it removes the cost of stylistic bikeshedding and makes diffs cleaner — but it also flattens the legitimate variation that different communities and individuals develop, and it bakes the preferences of the formatter’s authors into every file. Second, *who maintains the tools*. Ruff, the fastest-growing linter in the ecosystem, is built and primarily maintained by Astral, a venture-backed company; Black is run by a small volunteer group. The choices about which rules ship as defaults are influenced by who gets to make them, and the trajectory has been toward more centralization, not less.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you adopt a linter or formatter, you are adopting someone else’s idea of what code should look like. That trade is usually worth it, but it is a trade — and it is worth knowing whose preferences you have inherited.
+
+## 19.9 Worked examples
 
 ### Setting up a new project
 
@@ -328,7 +330,7 @@ def greet(name, greetings=None):
 
 This is a real bug. You would find it in production, not in your head. A linter finds it in 20 milliseconds.
 
-## 19.9 Templates
+## 19.10 Templates
 
 **A minimal `pyproject.toml` for a student project:**
 
@@ -362,7 +364,7 @@ indent-style = "space"
 
 Wire this into the same CI workflow you use for any other automated checks and every push gets automatic style enforcement.
 
-## 19.10 Exercises
+## 19.11 Exercises
 
 1.  Install `ruff` in a venv, pick one of your own Python files, and run `ruff check` on it. How many issues does it report? Skim the output and pick two you do not understand.
 2.  Run `ruff check --fix` on the same file. Read the diff. Did anything you cared about change?
@@ -372,7 +374,7 @@ Wire this into the same CI workflow you use for any other automated checks and e
 6.  Deliberately introduce a mutable default argument (like the example in section 8) and confirm that `ruff check` reports it.
 7.  Add `ruff check` to your CI workflow. Intentionally break formatting in a commit and confirm CI fails.
 
-## 19.11 One-page checklist
+## 19.12 One-page checklist
 
 - Install `ruff` in every Python venv.
 - Commit a `pyproject.toml` with `[tool.ruff]` configuration.
@@ -383,3 +385,13 @@ Wire this into the same CI workflow you use for any other automated checks and e
 - Use `# noqa: RULE` sparingly and always with the rule code.
 - Wire `ruff check --format --check` into CI so style drift cannot land on main.
 - Do not debate style with collaborators. Configure the formatter, run it, move on.
+
+> **NOTE:**
+>
+> - Python, [PEP 8 — Style Guide for Python Code](https://peps.python.org/pep-0008/) — the authoritative style reference most Python linters encode; worth reading once end-to-end so you know what your tools are enforcing.
+> - Astral, [Ruff documentation](https://docs.astral.sh/ruff/) — the canonical reference for the modern all-in-one linter and formatter; the rules pages are organized by category and worth scanning when you adopt new rule sets.
+> - [Black documentation](https://black.readthedocs.io/en/stable/) — the opinionated formatter that eliminates style arguments by being unconfigurable; the philosophy notes (“Why Black?”) explain the trade-off cleanly.
+> - mypy, [Documentation](https://mypy.readthedocs.io/en/stable/) — Python’s standard static type checker; pairs with linters once you start adding type hints.
+> - [pre-commit](https://pre-commit.com/) — the framework most projects use to run linters and formatters automatically before each commit; covered in [sec-automation](#sec-automation).
+> - [EditorConfig](https://editorconfig.org/) — a small cross-language standard for indent, line ending, and charset settings that every modern editor reads; useful when you collaborate across editors.
+> - Google, [Python Style Guide](https://google.github.io/styleguide/pyguide.html) — Google’s company-internal Python style; a useful comparison point for “what if a different group had written PEP 8?”

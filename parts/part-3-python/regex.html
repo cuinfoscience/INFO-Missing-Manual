@@ -673,16 +673,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#capture-groups-extracting-parts-of-a-match" id="toc-capture-groups-extracting-parts-of-a-match" class="nav-link" data-scroll-target="#capture-groups-extracting-parts-of-a-match"><span class="header-section-number">18.5</span> Capture groups: extracting parts of a match</a></li>
   <li><a href="#regex-in-pandas" id="toc-regex-in-pandas" class="nav-link" data-scroll-target="#regex-in-pandas"><span class="header-section-number">18.6</span> Regex in pandas</a></li>
   <li><a href="#when-not-to-use-regex" id="toc-when-not-to-use-regex" class="nav-link" data-scroll-target="#when-not-to-use-regex"><span class="header-section-number">18.7</span> When not to use regex</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">18.8</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">18.8</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">18.9</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#extracting-order-ids-from-free-text-notes" id="toc-extracting-order-ids-from-free-text-notes" class="nav-link" data-scroll-target="#extracting-order-ids-from-free-text-notes">Extracting order IDs from free-text notes</a></li>
   <li><a href="#normalizing-phone-numbers" id="toc-normalizing-phone-numbers" class="nav-link" data-scroll-target="#normalizing-phone-numbers">Normalizing phone numbers</a></li>
   <li><a href="#simple-validation-with-re.fullmatch" id="toc-simple-validation-with-re.fullmatch" class="nav-link" data-scroll-target="#simple-validation-with-re.fullmatch">Simple validation with <code>re.fullmatch</code></a></li>
   <li><a href="#grep-from-the-terminal" id="toc-grep-from-the-terminal" class="nav-link" data-scroll-target="#grep-from-the-terminal">Grep from the terminal</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">18.9</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">18.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">18.10</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">18.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -983,26 +984,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Anything where you need to understand structure, not match shape.</strong> If the text has nested elements, recursion, or balanced brackets, regex will frustrate you. Reach for a real parser.</li>
 </ul>
 <p>A good rule of thumb: if your regex is longer than one line or contains more than three <code>(...)</code> groups, reconsider.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://docs.python.org/3/library/re.html">Python <code>re</code> module reference</a> — the authoritative list of pattern syntax and functions.</li>
-<li><a href="https://docs.python.org/3/howto/regex.html">Python Regular Expression HOWTO</a> — a longer-form tutorial that builds intuition before you reach for the reference.</li>
-<li><a href="https://regex101.com/">regex101</a> — an interactive tester that explains every part of a pattern as you type.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="18.8">
-<h2 data-number="18.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">18.8</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="18.8">
+<h2 data-number="18.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">18.8</span> Stakes and politics</h2>
+<p>Regular expressions are syntactic plumbing, but the plumbing has a cultural assumption baked in: matching is <em>about ASCII</em>. The character classes most tutorials introduce — <code>\w</code> for “word character,” <code>\d</code> for “digit,” <code>[A-Za-z]</code> for “letter” — were defined for an English-letter, Arabic-numeral world, and they quietly do the wrong thing in any other one. <code>\d</code> matches <code>0</code>–<code>9</code> but not Arabic-Indic or Devanagari digits unless you opt into Unicode mode; <code>\w</code> matches <code>[A-Za-z0-9_]</code> and excludes accented letters, Cyrillic, Han characters, and combining marks. A “validate this name” regex written in the default English-centric way silently rejects names containing characters that two-thirds of the world’s people use.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you write a regex over real text, ask whose alphabets it implicitly assumes — and decide deliberately whether that assumption is right for your data, or whether you should pass <code>re.UNICODE</code> (or, in pandas, work with <code>.str</code> methods that handle Unicode by default).</p>
+</section>
+<section id="worked-examples" class="level2" data-number="18.9">
+<h2 data-number="18.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">18.9</span> Worked examples</h2>
 <section id="extracting-order-ids-from-free-text-notes" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-order-ids-from-free-text-notes">Extracting order IDs from free-text notes</h3>
 <p>You have a column of customer service notes and you need the order ID mentioned in each one.</p>
@@ -1052,8 +1041,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Your regex skill transfers directly.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="18.9">
-<h2 data-number="18.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">18.9</span> Templates</h2>
+<section id="templates" class="level2" data-number="18.10">
+<h2 data-number="18.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">18.10</span> Templates</h2>
 <p><strong>A cheat-sheet for the patterns you will reuse most often:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d+"</span>              <span class="co"># one or more digits</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{3}-</span><span class="er">\</span><span class="co">d{4}"</span>      <span class="co"># 3 digits, dash, 4 digits</span></span>
@@ -1066,8 +1055,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">r"@</span><span class="er">\</span><span class="co">w+"</span>             <span class="co"># mention / username</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{4}-</span><span class="er">\</span><span class="co">d{2}-</span><span class="er">\</span><span class="co">d{2}"# ISO-ish date (shape only, not validation)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="18.10">
-<h2 data-number="18.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="18.11">
+<h2 data-number="18.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.11</span> Exercises</h2>
 <ol type="1">
 <li>Write a regex that matches a US phone number written as <code>(xxx) xxx-xxxx</code>, <code>xxx-xxx-xxxx</code>, or <code>xxx.xxx.xxxx</code>. Test it on five variations.</li>
 <li>You have a log file with lines like <code>2024-03-15 14:22:03 ERROR Failed to connect</code>. Write a regex with capture groups that extracts the date, time, level, and message.</li>
@@ -1078,8 +1067,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Take a regex you find confusing and rewrite it on paper, breaking it into pieces and explaining each. If you cannot, it is probably too clever and a simpler approach exists.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="18.11">
-<h2 data-number="18.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">18.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="18.12">
+<h2 data-number="18.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">18.12</span> One-page checklist</h2>
 <ul>
 <li>Use raw strings (<code>r"..."</code>) for every Python regex.</li>
 <li>Start with the simplest thing that matches what you want; only add complexity when it fails.</li>
@@ -1091,6 +1080,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Reach for a parser (BeautifulSoup, json, etc.) when the text has structure.</li>
 <li>If your regex is over one line or has lots of groups, consider rewriting in Python code.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python docs, <a href="https://docs.python.org/3/library/re.html"><code>re</code> module reference</a> — the authoritative list of pattern syntax and functions in Python’s regex engine.</li>
+<li>Python docs, <a href="https://docs.python.org/3/howto/regex.html">Regular Expression HOWTO</a> — a longer-form tutorial that builds intuition before you reach for the reference.</li>
+<li><a href="https://regex101.com/">regex101</a> — an interactive tester that explains every part of a pattern as you type; switch the flavor to “Python” and your local results match what <code>re</code> will do.</li>
+<li>Jeffrey Friedl, <a href="https://www.oreilly.com/library/view/mastering-regular-expressions/0596528124/"><em>Mastering Regular Expressions</em></a> — the standard book on regex internals across languages; worth knowing exists when a complex pattern is fighting you.</li>
+<li>Unicode Consortium, <a href="https://www.unicode.org/reports/tr18/">UTS #18: Unicode Regular Expressions</a> — the technical standard for what “regex over Unicode” should mean; useful context for the ASCII-bias issue raised in “Stakes and politics” above.</li>
+<li>Steven Levithan and Jan Goyvaerts, <a href="https://www.regular-expressions.info/">Regular-Expressions.info</a> — a deep, language-agnostic reference for regex syntax and engine behaviors.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

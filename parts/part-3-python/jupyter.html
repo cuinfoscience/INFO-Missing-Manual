@@ -700,21 +700,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#script-strengths" id="toc-script-strengths" class="nav-link" data-scroll-target="#script-strengths">Script strengths</a></li>
   <li><a href="#a-practical-boundary-for-students" id="toc-a-practical-boundary-for-students" class="nav-link" data-scroll-target="#a-practical-boundary-for-students">A practical boundary for students</a></li>
   </ul></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">16.9</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">16.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">16.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#launching-jupyter-in-the-right-place" id="toc-launching-jupyter-in-the-right-place" class="nav-link" data-scroll-target="#launching-jupyter-in-the-right-place">Launching Jupyter in the right place</a></li>
   <li><a href="#debugging-no-files" id="toc-debugging-no-files" class="nav-link" data-scroll-target="#debugging-no-files">Debugging “no files”</a></li>
   <li><a href="#making-a-notebook-reproducible" id="toc-making-a-notebook-reproducible" class="nav-link" data-scroll-target="#making-a-notebook-reproducible">Making a notebook reproducible</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">16.10</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">16.11</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-notebook-header-block" id="toc-template-a-notebook-header-block" class="nav-link" data-scroll-target="#template-a-notebook-header-block">Template A: Notebook header block</a></li>
   <li><a href="#template-b-reproducibility-checklist-cell" id="toc-template-b-reproducibility-checklist-cell" class="nav-link" data-scroll-target="#template-b-reproducibility-checklist-cell">Template B: Reproducibility checklist cell</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">16.12</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-launch-and-debugging-moves" id="toc-quick-reference-common-launch-and-debugging-moves" class="nav-link" data-scroll-target="#quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.13</span> Quick reference: common launch and debugging moves</a></li>
-  <li><a href="#quick-reference-ipython-conveniences" id="toc-quick-reference-ipython-conveniences" class="nav-link" data-scroll-target="#quick-reference-ipython-conveniences"><span class="header-section-number">16.14</span> Quick reference: IPython conveniences</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">16.13</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-launch-and-debugging-moves" id="toc-quick-reference-common-launch-and-debugging-moves" class="nav-link" data-scroll-target="#quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.14</span> Quick reference: common launch and debugging moves</a></li>
+  <li><a href="#quick-reference-ipython-conveniences" id="toc-quick-reference-ipython-conveniences" class="nav-link" data-scroll-target="#quick-reference-ipython-conveniences"><span class="header-section-number">16.15</span> Quick reference: IPython conveniences</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/jupyter.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1172,27 +1173,16 @@ scripts/
 └── run_pipeline.py    ← batch entry point, imported by nothing,
                          runs the same src/ functions from the command line</code></pre>
 <p>The notebook and the script import the <em>same</em> functions from <code>src/</code>. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need <code>src/</code> as they get more complex, and grow again to include <code>scripts/</code> when they need automation — without ever having to rewrite from scratch.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://jupyterlab.readthedocs.io/en/latest/">JupyterLab documentation</a> — the official guide to the multi-document interface, extensions, and kernels.</li>
-<li><a href="https://jupyter-notebook.readthedocs.io/en/latest/">Jupyter Notebook documentation</a> — the classic single-document interface, still widely used in courses.</li>
-<li><a href="https://jupyterlab.readthedocs.io/en/latest/user/commands.html">Jupyter Keyboard Shortcuts reference</a> — the full list of command-palette actions and default keybindings.</li>
-</ul>
-</div>
-</div>
 </section>
 </section>
-<section id="worked-examples" class="level2" data-number="16.9">
-<h2 data-number="16.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">16.9</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">16.9</span> Stakes and politics</h2>
+<p>Notebooks are unusual in that they look like the most transparent computing artifact possible — code and output side by side, ready to read — but they have political dimensions that the appearance hides. Two things to notice. First, <em>the reproducibility theatre</em>. A notebook that displays a clean run from top to bottom can have been produced by any sequence of cell executions, with any history of variables in memory, against any version of any package. The very feature that makes notebooks teachable — you can see the answer right there — also makes them easy to share in a state nobody can rerun. “Reproducible” notebooks require explicit work that is not visible in the notebook itself: pinned environments, raw-data provenance, “Restart kernel and run all” before every save. Without that work, the notebook is closer to a screenshot than a program.</p>
+<p>Second, <em>the data leak that comes free with <code>df.head()</code></em>. Notebook cells routinely display real rows of real datasets — names, identifiers, free-text comments — directly inside the file. When a notebook is committed to a public GitHub repo or pasted into a forum for help, those rows go with it. The convenience of inline output is a privacy hazard the format does not warn you about.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you share a notebook, ask whether someone could rerun it from scratch, and whether anything in its output should not have left your laptop.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">16.10</span> Worked examples</h2>
 <section id="launching-jupyter-in-the-right-place" class="level3">
 <h3 class="anchored" data-anchor-id="launching-jupyter-in-the-right-place">Launching Jupyter in the right place</h3>
 <p>You have a project at <code>~/Courses/INFO-3010/Project</code> and you want to start a notebook session for it. The full sequence:</p>
@@ -1226,8 +1216,8 @@ files: ['README.md', 'data', 'notebooks', 'src']</code></pre>
 <p>A notebook that runs once but fails on a clean kernel is not really finished. Three habits make a notebook genuinely reproducible. The first is to give it a clear linear structure: a title in a markdown cell, a one-paragraph purpose statement, then an “imports and setup” code cell, then the analysis cells in execution order, then a “results” section. The second is to extract any logic that you might want to reuse into functions in <code>src/</code>, and import them rather than copy-pasting code between cells. The third is the discipline of <strong>Restart Kernel and Run All</strong> every time you finish a meaningful chunk of work — and <em>especially</em> before you commit the notebook to git or share it with anyone. If “Restart and Run All” produces an error that interactive use never did, you have just discovered a hidden-state bug, and now is the right time to fix it. Better to find it now than to ship a notebook that quietly does not reproduce.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="16.10">
-<h2 data-number="16.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">16.10</span> Templates</h2>
+<section id="templates" class="level2" data-number="16.11">
+<h2 data-number="16.11" class="anchored" data-anchor-id="templates"><span class="header-section-number">16.11</span> Templates</h2>
 <section id="template-a-notebook-header-block" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-notebook-header-block">Template A: Notebook header block</h3>
 <pre><code>Title:
@@ -1257,11 +1247,11 @@ Environment:
 # 4) run a small smoke test</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="16.11">
-<h2 data-number="16.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="16.12">
+<h2 data-number="16.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.12</span> Exercises</h2>
 </section>
-<section id="one-page-checklist" class="level2" data-number="16.12">
-<h2 data-number="16.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">16.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="16.13">
+<h2 data-number="16.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">16.13</span> One-page checklist</h2>
 <ul>
 <li><p>I launch Jupyter from the correct project folder (or pass the correct directory).</p></li>
 <li><p>I can diagnose “no files” as a working-directory/server mix-up.</p></li>
@@ -1273,8 +1263,8 @@ Environment:
 <li><p>I keep outputs controlled and store large artifacts outside the notebook.</p></li>
 </ul>
 </section>
-<section id="quick-reference-common-launch-and-debugging-moves" class="level2" data-number="16.13">
-<h2 data-number="16.13" class="anchored" data-anchor-id="quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.13</span> Quick reference: common launch and debugging moves</h2>
+<section id="quick-reference-common-launch-and-debugging-moves" class="level2" data-number="16.14">
+<h2 data-number="16.14" class="anchored" data-anchor-id="quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.14</span> Quick reference: common launch and debugging moves</h2>
 <ul>
 <li><p>Confirm working directory before launching.</p></li>
 <li><p>If you see the wrong files: stop server, relaunch in correct directory.</p></li>
@@ -1282,8 +1272,29 @@ Environment:
 <li><p>If execution hangs: interrupt; then restart if needed.</p></li>
 </ul>
 </section>
-<section id="quick-reference-ipython-conveniences" class="level2" data-number="16.14">
-<h2 data-number="16.14" class="anchored" data-anchor-id="quick-reference-ipython-conveniences"><span class="header-section-number">16.14</span> Quick reference: IPython conveniences</h2>
+<section id="quick-reference-ipython-conveniences" class="level2" data-number="16.15">
+<h2 data-number="16.15" class="anchored" data-anchor-id="quick-reference-ipython-conveniences"><span class="header-section-number">16.15</span> Quick reference: IPython conveniences</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Project Jupyter, <a href="https://jupyterlab.readthedocs.io/en/latest/">JupyterLab documentation</a> — the official guide to the multi-document interface, extensions, and kernels.</li>
+<li>Project Jupyter, <a href="https://jupyter-notebook.readthedocs.io/en/latest/">Jupyter Notebook documentation</a> — the classic single-document interface, still widely used in courses.</li>
+<li>IPython, <a href="https://ipython.readthedocs.io/en/stable/">IPython documentation</a> — the kernel underneath every Python notebook; learn its <code>?</code>, <code>??</code>, <code>%timeit</code>, and <code>%debug</code> magics and you will spend less time reaching for separate tools.</li>
+<li>Joel Grus, <a href="https://docs.google.com/presentation/d/1n2RlMdmv1p25Xy5thJUhkKGvjtV-dkAIsUXP-AL4ffI/edit">I Don’t Like Notebooks (JupyterCon 2018)</a> — a sharp, well-known critique of notebook workflows; worth knowing the arguments even if you keep using notebooks.</li>
+<li>Mahmoud Hashemi, <a href="https://github.com/kynan/nbstripout"><code>nbstripout</code></a> — a tool that strips notebook output before commit; the simplest defense against leaking inline data into a Git history.</li>
+<li>nteract, <a href="https://papermill.readthedocs.io/en/latest/">Papermill</a> — a tool for parameterizing and executing notebooks from the command line; turns a notebook into something closer to a reproducible pipeline.</li>
+<li>Project Jupyter, <a href="https://jupyter.org/governance/">Jupyter Governance</a> — the project’s governance documents; useful context when you wonder who actually decides where the platform goes next.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

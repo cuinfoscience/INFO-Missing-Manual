@@ -197,13 +197,13 @@ Regex is a hammer. It is not the right tool for:
 
 A good rule of thumb: if your regex is longer than one line or contains more than three `(...)` groups, reconsider.
 
-> **NOTE:**
->
-> - [Python `re` module reference](https://docs.python.org/3/library/re.html) — the authoritative list of pattern syntax and functions.
-> - [Python Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html) — a longer-form tutorial that builds intuition before you reach for the reference.
-> - [regex101](https://regex101.com/) — an interactive tester that explains every part of a pattern as you type.
+## 18.8 Stakes and politics
 
-## 18.8 Worked examples
+Regular expressions are syntactic plumbing, but the plumbing has a cultural assumption baked in: matching is *about ASCII*. The character classes most tutorials introduce — `\w` for “word character,” `\d` for “digit,” `[A-Za-z]` for “letter” — were defined for an English-letter, Arabic-numeral world, and they quietly do the wrong thing in any other one. `\d` matches `0`–`9` but not Arabic-Indic or Devanagari digits unless you opt into Unicode mode; `\w` matches `[A-Za-z0-9_]` and excludes accented letters, Cyrillic, Han characters, and combining marks. A “validate this name” regex written in the default English-centric way silently rejects names containing characters that two-thirds of the world’s people use.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a regex over real text, ask whose alphabets it implicitly assumes — and decide deliberately whether that assumption is right for your data, or whether you should pass `re.UNICODE` (or, in pandas, work with `.str` methods that handle Unicode by default).
+
+## 18.9 Worked examples
 
 ### Extracting order IDs from free-text notes
 
@@ -269,7 +269,7 @@ grep -vE '^\s*#' config.cfg          # strip comment lines
 
 Your regex skill transfers directly.
 
-## 18.9 Templates
+## 18.10 Templates
 
 **A cheat-sheet for the patterns you will reuse most often:**
 
@@ -286,7 +286,7 @@ r"@\w+"             # mention / username
 r"\d{4}-\d{2}-\d{2}"# ISO-ish date (shape only, not validation)
 ```
 
-## 18.10 Exercises
+## 18.11 Exercises
 
 1.  Write a regex that matches a US phone number written as `(xxx) xxx-xxxx`, `xxx-xxx-xxxx`, or `xxx.xxx.xxxx`. Test it on five variations.
 2.  You have a log file with lines like `2024-03-15 14:22:03 ERROR Failed to connect`. Write a regex with capture groups that extracts the date, time, level, and message.
@@ -296,7 +296,7 @@ r"\d{4}-\d{2}-\d{2}"# ISO-ish date (shape only, not validation)
 6.  Using the terminal, run `grep -E` with a regex to find every line in your Python source files that starts with `def` or `class` — a quick index of your API.
 7.  Take a regex you find confusing and rewrite it on paper, breaking it into pieces and explaining each. If you cannot, it is probably too clever and a simpler approach exists.
 
-## 18.11 One-page checklist
+## 18.12 One-page checklist
 
 - Use raw strings (`r"..."`) for every Python regex.
 - Start with the simplest thing that matches what you want; only add complexity when it fails.
@@ -307,3 +307,12 @@ r"\d{4}-\d{2}-\d{2}"# ISO-ish date (shape only, not validation)
 - Test your regex on at least one “expected” and one “unexpected” input before trusting it.
 - Reach for a parser (BeautifulSoup, json, etc.) when the text has structure.
 - If your regex is over one line or has lots of groups, consider rewriting in Python code.
+
+> **NOTE:**
+>
+> - Python docs, [`re` module reference](https://docs.python.org/3/library/re.html) — the authoritative list of pattern syntax and functions in Python’s regex engine.
+> - Python docs, [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html) — a longer-form tutorial that builds intuition before you reach for the reference.
+> - [regex101](https://regex101.com/) — an interactive tester that explains every part of a pattern as you type; switch the flavor to “Python” and your local results match what `re` will do.
+> - Jeffrey Friedl, [*Mastering Regular Expressions*](https://www.oreilly.com/library/view/mastering-regular-expressions/0596528124/) — the standard book on regex internals across languages; worth knowing exists when a complex pattern is fighting you.
+> - Unicode Consortium, [UTS \#18: Unicode Regular Expressions](https://www.unicode.org/reports/tr18/) — the technical standard for what “regex over Unicode” should mean; useful context for the ASCII-bias issue raised in “Stakes and politics” above.
+> - Steven Levithan and Jan Goyvaerts, [Regular-Expressions.info](https://www.regular-expressions.info/) — a deep, language-agnostic reference for regex syntax and engine behaviors.

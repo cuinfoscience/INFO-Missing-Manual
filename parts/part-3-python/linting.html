@@ -681,15 +681,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#rule-sets-what-do-e-f-i-b-up-mean" id="toc-rule-sets-what-do-e-f-i-b-up-mean" class="nav-link" data-scroll-target="#rule-sets-what-do-e-f-i-b-up-mean"><span class="header-section-number">19.6</span> Rule sets: what do E, F, I, B, UP mean?</a></li>
   <li><a href="#when-to-override-a-rule" id="toc-when-to-override-a-rule" class="nav-link" data-scroll-target="#when-to-override-a-rule"><span class="header-section-number">19.7</span> When to override a rule</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">19.8</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">19.8</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">19.9</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#setting-up-a-new-project" id="toc-setting-up-a-new-project" class="nav-link" data-scroll-target="#setting-up-a-new-project">Setting up a new project</a></li>
   <li><a href="#fixing-an-unused-import" id="toc-fixing-an-unused-import" class="nav-link" data-scroll-target="#fixing-an-unused-import">Fixing an unused import</a></li>
   <li><a href="#catching-a-real-bug" id="toc-catching-a-real-bug" class="nav-link" data-scroll-target="#catching-a-real-bug">Catching a real bug</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">19.9</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">19.10</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">19.11</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">19.10</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">19.11</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">19.12</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-3-python/linting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -945,26 +946,15 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <p><strong>Per-line, with a <code># noqa</code> comment:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> legacy_code <span class="im">import</span> UNUSED  <span class="co"># noqa: F401</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use <code># noqa</code> sparingly. Every one is a small promise that a human thought about it and decided the rule did not apply. Unexplained <code># noqa</code> comments accumulate and become dead weight.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><a href="https://peps.python.org/pep-0008/">PEP 8 — Style Guide for Python Code</a> — the authoritative style reference most Python linters encode.</li>
-<li><a href="https://docs.astral.sh/ruff/">Ruff documentation</a> — the canonical reference for the modern all-in-one linter and formatter.</li>
-<li><a href="https://black.readthedocs.io/en/stable/">Black documentation</a> — the opinionated formatter that eliminates style arguments.</li>
-</ul>
-</div>
-</div>
 </section>
-<section id="worked-examples" class="level2" data-number="19.8">
-<h2 data-number="19.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">19.8</span> Worked examples</h2>
+<section id="stakes-and-politics" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">19.8</span> Stakes and politics</h2>
+<p>Linters and formatters are unusually political tools because their job is to enforce a <em>single</em> answer to questions that have many reasonable answers. PEP 8, the style guide most Python linters encode, was written by Guido van Rossum and the Python core team in 2001 — a small group with strong opinions, working in a particular community at a particular moment. The choices that froze in PEP 8 (4-space indentation, <code>snake_case</code> for functions, 79-character line length) became “Pythonic” by social rather than technical means; they could have been different and the language would still work fine.</p>
+<p>Two consequences worth naming. First, <em>what counts as readable code</em>. A formatter like Black ends arguments by enforcing one style across every project that uses it. That is genuinely useful — it removes the cost of stylistic bikeshedding and makes diffs cleaner — but it also flattens the legitimate variation that different communities and individuals develop, and it bakes the preferences of the formatter’s authors into every file. Second, <em>who maintains the tools</em>. Ruff, the fastest-growing linter in the ecosystem, is built and primarily maintained by Astral, a venture-backed company; Black is run by a small volunteer group. The choices about which rules ship as defaults are influenced by who gets to make them, and the trajectory has been toward more centralization, not less.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you adopt a linter or formatter, you are adopting someone else’s idea of what code should look like. That trade is usually worth it, but it is a trade — and it is worth knowing whose preferences you have inherited.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="19.9">
+<h2 data-number="19.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">19.9</span> Worked examples</h2>
 <section id="setting-up-a-new-project" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-a-new-project">Setting up a new project</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
@@ -1028,8 +1018,8 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <p>This is a real bug. You would find it in production, not in your head. A linter finds it in 20 milliseconds.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="19.9">
-<h2 data-number="19.9" class="anchored" data-anchor-id="templates"><span class="header-section-number">19.9</span> Templates</h2>
+<section id="templates" class="level2" data-number="19.10">
+<h2 data-number="19.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">19.10</span> Templates</h2>
 <p><strong>A minimal <code>pyproject.toml</code> for a student project:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.ruff]</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="dt">line-length</span> <span class="op">=</span> <span class="dv">100</span></span>
@@ -1054,8 +1044,8 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    ruff format --check .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Wire this into the same CI workflow you use for any other automated checks and every push gets automatic style enforcement.</p>
 </section>
-<section id="exercises" class="level2" data-number="19.10">
-<h2 data-number="19.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">19.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="19.11">
+<h2 data-number="19.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">19.11</span> Exercises</h2>
 <ol type="1">
 <li>Install <code>ruff</code> in a venv, pick one of your own Python files, and run <code>ruff check</code> on it. How many issues does it report? Skim the output and pick two you do not understand.</li>
 <li>Run <code>ruff check --fix</code> on the same file. Read the diff. Did anything you cared about change?</li>
@@ -1066,8 +1056,8 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <li>Add <code>ruff check</code> to your CI workflow. Intentionally break formatting in a commit and confirm CI fails.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="19.11">
-<h2 data-number="19.11" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">19.11</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="19.12">
+<h2 data-number="19.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">19.12</span> One-page checklist</h2>
 <ul>
 <li>Install <code>ruff</code> in every Python venv.</li>
 <li>Commit a <code>pyproject.toml</code> with <code>[tool.ruff]</code> configuration.</li>
@@ -1079,6 +1069,27 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <li>Wire <code>ruff check --format --check</code> into CI so style drift cannot land on main.</li>
 <li>Do not debate style with collaborators. Configure the formatter, run it, move on.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Python, <a href="https://peps.python.org/pep-0008/">PEP 8 — Style Guide for Python Code</a> — the authoritative style reference most Python linters encode; worth reading once end-to-end so you know what your tools are enforcing.</li>
+<li>Astral, <a href="https://docs.astral.sh/ruff/">Ruff documentation</a> — the canonical reference for the modern all-in-one linter and formatter; the rules pages are organized by category and worth scanning when you adopt new rule sets.</li>
+<li><a href="https://black.readthedocs.io/en/stable/">Black documentation</a> — the opinionated formatter that eliminates style arguments by being unconfigurable; the philosophy notes (“Why Black?”) explain the trade-off cleanly.</li>
+<li>mypy, <a href="https://mypy.readthedocs.io/en/stable/">Documentation</a> — Python’s standard static type checker; pairs with linters once you start adding type hints.</li>
+<li><a href="https://pre-commit.com/">pre-commit</a> — the framework most projects use to run linters and formatters automatically before each commit; covered in <a href="../part-5-projects/automation.html" class="quarto-xref"><span>Chapter 33</span></a>.</li>
+<li><a href="https://editorconfig.org/">EditorConfig</a> — a small cross-language standard for indent, line ending, and charset settings that every modern editor reads; useful when you collaborate across editors.</li>
+<li>Google, <a href="https://google.github.io/styleguide/pyguide.html">Python Style Guide</a> — Google’s company-internal Python style; a useful comparison point for “what if a different group had written PEP 8?”</li>
+</ul>
+</div>
+</div>
 
 
 </section>

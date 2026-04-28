@@ -568,13 +568,15 @@ python -m pip install -r requirements.txt --verbose
 
 The verbose output tells you which package pip is currently wrestling with — often one package deep in the dependency graph. The fix is to **add constraints or pins** so pip has less to search. Pinning the top-level packages to specific versions (`pandas==2.2.1`) or adding a `constraints.txt` file that caps known-problematic dependencies (`numpy<2.0`) usually collapses the search space to something solvable. If pip is still backtracking after you have pinned aggressively, the fastest recovery is to delete the `.venv`, start from a clean environment, and install packages in the smallest groups that let the solver find a consistent answer.
 
-> **NOTE:**
->
-> - [Python Packaging User Guide](https://packaging.python.org/en/latest/) — the authoritative reference on pip, virtual environments, and PyPI.
-> - [Conda User Guide: Managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) — the official walk-through for `conda create`, `activate`, and `export`.
-> - [Real Python: Managing Python Packages](https://realpython.com/installing-python/) — a beginner-friendly overview of installation and package management patterns.
+## 14.12 Stakes and politics
 
-## 14.12 Worked examples
+Package management looks like infrastructure plumbing, but the plumbing has owners. Three things to notice. First, *who maintains the packages you depend on*. The Python scientific stack — pandas, NumPy, scikit-learn, matplotlib — is overwhelmingly maintained by a small number of contributors, many of them volunteers and many of them concentrated in a few well-funded universities and US or European tech companies. When a maintainer burns out, takes a job that does not pay them to work on the project, or moves on, the package’s release cadence and security responsiveness drop in ways that affect everyone downstream. The 2024 backdoor in `xz-utils` was the most visible recent case of what happens when a single tired volunteer is the sole defense around critical infrastructure.
+
+Second, *who profits from the registry*. Anaconda, Inc.’s default `conda` channels are free for individual use but paid for many institutions above a certain employee count — a fact most students are unaware of when they run `conda install` for the first time. PyPI and conda-forge are community-run, but the major cloud providers mirror them through proprietary services they do charge for at scale. Third, *which packages exist at all*. PyPI is overwhelmingly English-language and dominated by tools that solve Global North problems; whole categories of work (low-resource language NLP, intermittent-connectivity workflows, accessibility) get less attention because the contributor base is not the user base.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you `pip install`, you are downloading code that someone wrote, that someone hosts, and that someone audits. None of those someones are required to keep doing it for free.
+
+## 14.13 Worked examples
 
 ### Creating a clean conda environment for a project
 
@@ -653,7 +655,7 @@ print(sys.executable)
 
 If the path it prints contains your project’s `.venv/bin/python`, the notebook is using the right interpreter and the bug is something else (perhaps you forgot to install pandas into this environment). If the path is something like `/usr/bin/python3` or `/opt/anaconda3/bin/python`, the notebook is running a *different* Python — usually because the Jupyter kernel was registered against the system Python before you ever created the project venv. The fix is to register your project’s venv as a Jupyter kernel and switch to it; see [sec-jupyter](#sec-jupyter) for kernel management in detail.
 
-## 14.13 Templates
+## 14.14 Templates
 
 ### Template A: Minimal `environment.yml` (conceptual)
 
@@ -685,7 +687,7 @@ If the path it prints contains your project’s `.venv/bin/python`, the notebook
     * If the environment breaks, recreate it.
     * Before submission, restart kernel/run all notebooks to confirm the env works.
 
-## 14.14 Exercises
+## 14.15 Exercises
 
 1.  Create a new conda environment, install two packages, and export an environment spec.
 
@@ -699,7 +701,7 @@ If the path it prints contains your project’s `.venv/bin/python`, the notebook
 
 6.  Write a one-page “environment README”: how to create, activate, and verify the environment.
 
-## 14.15 One-page checklist
+## 14.16 One-page checklist
 
 - I do not install packages globally for projects.
 
@@ -717,7 +719,7 @@ If the path it prints contains your project’s `.venv/bin/python`, the notebook
 
 - I verify environments with a small smoke test before important work.
 
-## 14.16 Quick reference: commands students use most
+## 14.17 Quick reference: commands students use most
 
 ### conda
 
@@ -743,9 +745,9 @@ The steps for downloading, installing, using, and maintaining Python with `conda
 
 Figure 14.2: Relationships between `conda`, miniconda, and Anaconda.
 
-## 14.17 Downloading
+## 14.18 Downloading
 
-## 14.18 Installation
+## 14.19 Installation
 
 ### Testing
 
@@ -753,15 +755,25 @@ Figure 14.2: Relationships between `conda`, miniconda, and Anaconda.
 
 ### Common problems
 
-## 14.19 Installing libraries
+## 14.20 Installing libraries
 
 like `numpy`, `matplotlib`, `pandas`, `scikit-learn`, and `networkx`
 
-## 14.20 Maintaining libraries
+## 14.21 Maintaining libraries
 
-## 14.21 Removing libraries
+## 14.22 Removing libraries
 
-## 14.22 Environments
+## 14.23 Environments
+
+> **NOTE:**
+>
+> - Python Packaging Authority, [Python Packaging User Guide](https://packaging.python.org/en/latest/) — the authoritative reference on pip, virtual environments, and PyPI; treat it as the single source of truth when blog posts disagree.
+> - Anaconda, [Conda User Guide: Managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) — the official walk-through for `conda create`, `activate`, and `export`.
+> - conda-forge, [Documentation](https://conda-forge.org/docs/) — the community-run package channel that is, in practice, where most scientific Python packages are maintained for `conda` users.
+> - Astral, [`uv` documentation](https://docs.astral.sh/uv/) — the fast, Rust-based package and project manager that is rapidly becoming a default; useful to know exists even if you stick with pip or conda.
+> - Python, [PEP 668 — Externally Managed Environments](https://peps.python.org/pep-0668/) — explains the “externally-managed-environment” error you will eventually see when running `pip install` on a system Python; the solution is always a virtual environment.
+> - [Real Python: Managing Python Packages](https://realpython.com/installing-python/) — a beginner-friendly overview of installation and package management patterns.
+> - Sustain, [Sustainable open source](https://sustainoss.org/) — community discussions and reports on the funding and labor models behind the packages you install; useful context for the “Stakes and politics” framing above.
 
 [^1]: <https://www.anaconda.com/products/individual>
 
