@@ -62,6 +62,10 @@ return {
 
     local template = pandoc.utils.stringify(m.template)
     local alt = pandoc.utils.stringify(m.alt or "Chapter meme")
+    -- Default to 192pt; matches the generator script's default. Folding the
+    -- value into the spec hash below means changing the default here (or
+    -- overriding per-chapter via `meme.fontsize:`) invalidates the cached PNG.
+    local fontsize = m.fontsize and pandoc.utils.stringify(m.fontsize) or "192"
     local lines = {}
     for _, v in ipairs(m.lines) do
       table.insert(lines, pandoc.utils.stringify(v))
@@ -92,13 +96,14 @@ return {
     local spec_abs = project_root .. "/graphics/memes/" .. slug .. ".spec"
     local script_abs = project_root .. "/scripts/generate_chapter_meme.py"
 
-    local spec_payload = template .. "\n" .. table.concat(lines, "\n")
+    local spec_payload = template .. "\n" .. fontsize .. "\n" .. table.concat(lines, "\n")
     local hash = hash_hex(spec_payload)
     local existing_hash = file_exists(spec_abs) and read_text(spec_abs) or ""
 
     if (not file_exists(png_abs)) or existing_hash ~= hash then
       local cmd = "python " .. shell_escape(script_abs) .. " "
         .. "--template " .. shell_escape(template) .. " "
+        .. "--fontsize " .. shell_escape(fontsize) .. " "
       for _, line in ipairs(lines) do
         cmd = cmd .. "--line " .. shell_escape(line) .. " "
       end

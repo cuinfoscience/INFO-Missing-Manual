@@ -61,7 +61,42 @@ INFO-Missing-Manual/
 │       └── appendix-ai-disclosure.qmd   # Appendix B — AI Disclosure
 │
 ├── graphics/                        # images used in chapters
+│   └── memes/                       # generated chapter memes (PNG + .spec hash)
+├── scripts/
+│   ├── generate_chapter_meme.py     # thin wrapper around memeplotlib
+│   └── requirements.txt             # Python deps for the meme generator
+├── _extensions/cuinfo/chapter-meme/ # Quarto shortcode that drives the generator
 └── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
+```
+
+### Chapter memes
+
+Each chapter declares an optional meme in its YAML frontmatter:
+
+```yaml
+meme:
+  template: "fine"           # memegen template id
+  lines:
+    - ""
+    - "MY CODE IS ON FIRE BUT THIS IS FINE"
+  alt: "Short caption for screen readers."
+  rationale: "humor — optional source-only note explaining the choice"
+  # fontsize: 192            # optional override; default 192 (≈2.7× memeplotlib's default of 72)
+```
+
+The chapter then invokes the shortcode at the desired location (conventionally just below the `## Purpose` heading):
+
+```markdown
+{{< chapter-meme >}}
+```
+
+A Lua shortcode in `_extensions/cuinfo/chapter-meme/` reads the frontmatter, calls `scripts/generate_chapter_meme.py`, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator is a thin wrapper around the [memeplotlib](https://github.com/brianckeegan/memeplotlib) library (≥0.2.0); install Python deps via `pip install -r scripts/requirements.txt`. The cache key includes the template id, the `fontsize`, and the lines, so editing any of the three invalidates the cached PNG on the next render.
+
+To force a regeneration of every meme (e.g. after changing the default font size):
+
+```bash
+rm graphics/memes/*.png graphics/memes/*.spec
+quarto render --to html
 ```
 
 ## Book contents
