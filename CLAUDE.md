@@ -112,8 +112,8 @@ INFO-Missing-Manual/
 ├── graphics/                        # PNGs referenced from chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
 ├── scripts/
-│   ├── generate_chapter_meme.py     # thin wrapper around memeplotlib
-│   └── requirements.txt             # Python deps for the meme generator
+│   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
+│   └── requirements.txt             # (currently empty — generator uses stdlib only)
 └── _extensions/cuinfo/chapter-meme/ # Quarto shortcode wiring frontmatter -> generator
     ├── _extension.yml
     └── chapter-meme.lua
@@ -351,7 +351,8 @@ meme:
     - "MY CODE IS ON FIRE BUT THIS IS FINE"
   alt: "Short caption for screen readers."   # required for accessibility
   rationale: "humor — short source-only note explaining the choice"  # optional
-  # fontsize: 192            # optional override; default 192
+  # width: 1000              # optional override; default 1000 (output width in pixels)
+  # font: "impact"           # optional override; default "impact"
 ```
 
 Inside the chapter body — conventionally just below the `## Purpose {.unnumbered}` heading — invoke the shortcode:
@@ -360,9 +361,9 @@ Inside the chapter body — conventionally just below the `## Purpose {.unnumber
 {{< chapter-meme >}}
 ```
 
-**Pipeline.** The Lua shortcode at `_extensions/cuinfo/chapter-meme/chapter-meme.lua` reads the frontmatter, hashes `template + fontsize + lines` into a `.spec` sidecar, and invokes `scripts/generate_chapter_meme.py` if the cached PNG is missing or the hash changed. The Python script is a ~40-line wrapper around `memeplotlib.meme(template, *lines, fontsize=..., savefig=..., show=False)`. Generated assets land in `graphics/memes/<slug>.png` (and a sidecar `<slug>.spec` holding the hash). All three components are checked in and the PNGs are committed to the repo so CI doesn't need a Python install to render the book — but the `meme:` frontmatter is the source of truth, and editing it on a chapter triggers regeneration on next `quarto render`.
+**Pipeline.** The Lua shortcode at `_extensions/cuinfo/chapter-meme/chapter-meme.lua` reads the frontmatter, hashes `template + width + font + lines` into a `.spec` sidecar, and invokes `scripts/generate_chapter_meme.py` if the cached PNG is missing or the hash changed. The Python script is a thin wrapper that builds a memegen URL of the form `https://api.memegen.link/images/<template>.png?text[]=line1&text[]=line2&width=1000&font=impact` and writes the response bytes to disk. Generated assets land in `graphics/memes/<slug>.png` (and a sidecar `<slug>.spec` holding the hash). All three components are checked in and the PNGs are committed to the repo so CI doesn't need to hit memegen on every build — but the `meme:` frontmatter is the source of truth, and editing it on a chapter triggers regeneration on next `quarto render`.
 
-**Font size knob.** The default `--fontsize` is `192` points (≈2.7× memeplotlib's library default of 72), chosen so each caption line spans the full image width on the chapter pages. A chapter can override with `meme.fontsize: 240` or similar; the override is part of the spec hash, so changes invalidate the cache cleanly. To retune the default for every chapter, edit the constant in [scripts/generate_chapter_meme.py](scripts/generate_chapter_meme.py) **and** the `or "192"` fallback in [_extensions/cuinfo/chapter-meme/chapter-meme.lua](_extensions/cuinfo/chapter-meme/chapter-meme.lua) — keep them in sync. Then force a full regeneration:
+**Width and font knobs.** memegen sizes captions to each template's authored text-box geometry, so there is no `fontsize` setting; the analogous knobs are `width` (output resolution in pixels, default `1000`) and `font` (memegen font id, default `impact`). A chapter can override with `meme.width: 1200` or `meme.font: notosans`; both are part of the spec hash, so changes invalidate the cache cleanly. To retune the defaults for every chapter, edit the constants in [scripts/generate_chapter_meme.py](scripts/generate_chapter_meme.py) **and** the `or "1000"` / `or "impact"` fallbacks in [_extensions/cuinfo/chapter-meme/chapter-meme.lua](_extensions/cuinfo/chapter-meme/chapter-meme.lua) — keep them in sync. Then force a full regeneration:
 
 ```bash
 rm graphics/memes/*.png graphics/memes/*.spec
@@ -371,7 +372,7 @@ quarto render --to html
 
 **Why `_extensions/cuinfo/chapter-meme/` is not under `scripts/`.** It would be tidier, but Quarto resolves shortcode contributions strictly relative to the extension directory under `_extensions/`. Moving the folder requires converting the shortcode to a Lua filter, which means editing every chapter that invokes `{{< chapter-meme >}}` and risks regressing the column-margin alignment. Don't relocate it without a dedicated PR.
 
-**Dependency.** The generator depends on [memeplotlib](https://github.com/brianckeegan/memeplotlib) ≥ 0.2.0 (pinned in [scripts/requirements.txt](scripts/requirements.txt)). The 0.2.0 release added the explicit `fontsize` kwarg used here; older 0.1.0 only had auto-fit-to-template-box, which is why captions used to render too small. Install with `pip install -r scripts/requirements.txt`.
+**Dependency.** The generator uses Python's standard library only (`urllib.request`); there is no `pip install` step. The build host needs outbound HTTPS to `api.memegen.link` on the first render after a meme's frontmatter changes; subsequent renders read the cached PNG and run offline. CI's GitHub Actions runners have outbound HTTPS by default, so no workflow changes are needed. See [memegen.link](https://github.com/jacebrowning/memegen) for template ids and font choices.
 
 ---
 
