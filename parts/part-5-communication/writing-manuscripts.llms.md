@@ -120,16 +120,15 @@ See [sec-ai-llm](#sec-ai-llm) for the principled discussion of LLM use. For manu
 
 Useful uses: LLMs are good at catching nominalizations, reducing wordiness in a paragraph you’ve already drafted, generating alternative phrasings of an awkward sentence, and turning a Markdown table into LaTeX. They are bad at the actual contribution — the argument is yours.
 
-> **NOTE:**
->
-> - Belcher, W. L. (2019). *Writing Your Journal Article in Twelve Weeks* (2nd ed.). University of Chicago Press. <https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html>
-> - Thomson, P. *patter*. <https://patthomson.net/>
-> - Strunk, W., & White, E. B. *The Elements of Style*. <https://www.bartleby.com/141/>
-> - Sword, H. *Stylish Academic Writing.* And the Writer’s Diet tool: <https://writersdiet.com/test.php>
-> - ACM Master Article Template: <https://www.acm.org/publications/proceedings-template>
-> - The current Call for Papers for your target venue (read it the week you submit).
+## 26.11 Stakes and politics
 
-## 26.11 Worked examples
+Scholarly publishing is one of the most overtly political artifacts in academic work, and the conventions taught in this chapter ride on top of it. Three things to notice. First, *the genre itself is gatekeeping*. IMRaD, the literature-review-as-funnel, the move to position your contribution against three or four “lines of work” — these are conventions of a specific community at a specific moment, and fluency in them is unevenly distributed. Scholars from non-Anglophone backgrounds, from disciplines that prize different rhetorical structures, and from communities whose knowledge does not fit easily into “novel finding plus quantitative evidence” have to translate before they can even start writing. The translation cost is real and falls unequally.
+
+Second, *authorship and credit*. Author order, corresponding authorship, and how contributions get described in acknowledgements are not just etiquette — they are how labor gets attributed and how careers compound. The conventions vary by field (alphabetical in some economics traditions, contribution-ordered in HCI, last-author-is-PI in lab sciences) and by power (the senior author’s name on a paper drafted entirely by a graduate student is a recurring source of disputes). Citation practices add another layer: “Matilda effects” — under-citation of women, scholars of color, and scholars from outside dominant networks — are well documented and persistent. Third, *what gets published at all*. Reviewers and editors gatekeep through their own training, their own networks, and the venue’s institutional incentives; null results, replications, and work that contradicts a high-status finding face systematically tougher review. None of this means you should not write papers. It means knowing what kind of social system you are submitting to.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose what to cite, who to credit, and what to call a “contribution,” you are participating in a status system. Be deliberate about how.
+
+## 26.12 Worked examples
 
 ### From outline to introduction
 
@@ -175,7 +174,7 @@ A snippet from a real-format response letter. Three reviewer comments and the re
 
 The third response is the half-right comment handled well. The reviewer is correct that single-site studies have generalizability limits; they are wrong that running a second site is a quick fix. The response acknowledges the underlying concern, offers a different fix (an explicit limitations discussion), and points to a future paper. Editors read responses like this as professional and complete.
 
-## 26.12 Templates
+## 26.13 Templates
 
 A manuscript outline (paste into `outline.md` at the top of every new paper):
 
@@ -258,7 +257,7 @@ LLM-use disclosure per current CFP.
 
 Final commit pushed to git; submission archived.
 
-## 26.13 Exercises
+## 26.14 Exercises
 
 1.  Take a 200-word paragraph from one of your own past assignments. Rewrite it in academic prose: concrete subjects, hedging where appropriate, signposting at the start, no nominalizations. Submit before/after.
 2.  Pick a published CHI paper. Write a 100-word “contribution paragraph” using only the abstract — no peeking at the rest of the paper.
@@ -266,7 +265,7 @@ Final commit pushed to git; submission archived.
 4.  Take one of your own writing samples (a class paper, a thesis chapter) and anonymize it for double-blind review. Have a classmate try to identify you.
 5.  Take a real or instructor-provided reviewer comment and draft a 150-word response that quotes the comment, addresses it, and points to a specific section of a hypothetical revision.
 
-## 26.14 One-page checklist
+## 26.15 One-page checklist
 
 - Did you pick the venue *before* you started drafting?
 - Does the introduction state the problem, the difficulty, the approach, and the contributions, in that order?
@@ -279,7 +278,7 @@ Final commit pushed to git; submission archived.
 - Is the manuscript under version control with the `.bib` file (see [sec-git-github](#sec-git-github))?
 - Did you check the LLM-disclosure policy in the current CFP?
 
-## 26.15 Quick reference: conference vs. journal in HCI/IS
+## 26.16 Quick reference: conference vs. journal in HCI/IS
 
 | Dimension | HCI/IS conference (CHI, CSCW, FAccT) | Journal (TOCHI, JASIST, *NM&S*) |
 |----|----|----|
@@ -290,6 +289,17 @@ Final commit pushed to git; submission archived.
 | Typical revisions | Minor or major | Major, often multiple |
 | Anonymization | Strict, current CFP binds | Variable; check the journal |
 | Preprints | Generally permitted; check CFP | Generally permitted; check |
+
+> **NOTE:**
+>
+> - Wendy Laura Belcher, [*Writing Your Journal Article in Twelve Weeks*](https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html) (University of Chicago Press, 2019, 2nd ed.) — the standard structured workbook for taking a draft from idea to submission; especially good for graduate students.
+> - William Strunk and E. B. White, [*The Elements of Style*](https://www.bartleby.com/141/) — the classic American style guide; brief, opinionated, and worth re-reading every year.
+> - Helen Sword, [*Stylish Academic Writing*](https://www.hup.harvard.edu/file/feeds/PDF/9780674064485_sample.pdf) and the [Writer’s Diet test](https://writersdiet.com/test.php) — research-grounded advice on cutting bloat from academic prose; the diet test is a quick automated check you can paste any draft into.
+> - Pat Thomson, [*patter*](https://patthomson.net/) — long-running blog of practical writing advice for academics; especially good on revision and reviewer responses.
+> - ACM, [Master Article Template](https://www.acm.org/publications/proceedings-template) — the canonical LaTeX/Word templates for ACM venues; pairs with [sec-latex](#sec-latex).
+> - Committee on Publication Ethics, [Authorship and contributorship](https://publicationethics.org/authorship) — the standard guidance on who should be named as an author and how contributions should be reported; useful when navigating co-authorship disputes.
+> - Mariana Cancian-Sotelo and Cassidy Sugimoto, [The Matilda Effect in science communication](https://www.science.org/doi/10.1126/sciadv.aao0099) and follow-on work — empirical studies of citation and attribution gaps that the “Stakes and politics” framing above gestures at.
+> - The current Call for Papers for your target venue (read it the week you submit; the genre conventions live there).
 
 [^1]: <https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html>
 

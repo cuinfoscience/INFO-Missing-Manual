@@ -702,16 +702,17 @@ window.Quarto = {
   <li><a href="#local-installation-optional" id="toc-local-installation-optional" class="nav-link" data-scroll-target="#local-installation-optional"><span class="header-section-number">29.8</span> Local installation (optional)</a></li>
   <li><a href="#common-pitfalls-and-how-to-fix-them" id="toc-common-pitfalls-and-how-to-fix-them" class="nav-link" data-scroll-target="#common-pitfalls-and-how-to-fix-them"><span class="header-section-number">29.9</span> Common pitfalls and how to fix them</a></li>
   <li><a href="#ai-assistance-with-latex" id="toc-ai-assistance-with-latex" class="nav-link" data-scroll-target="#ai-assistance-with-latex"><span class="header-section-number">29.10</span> AI assistance with LaTeX</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">29.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">29.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">29.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#from-word-outline-to-a-compiled-latex-article-on-overleaf" id="toc-from-word-outline-to-a-compiled-latex-article-on-overleaf" class="nav-link" data-scroll-target="#from-word-outline-to-a-compiled-latex-article-on-overleaf">From Word outline to a compiled LaTeX article on Overleaf</a></li>
   <li><a href="#adding-chi-style-citations-to-a-paper" id="toc-adding-chi-style-citations-to-a-paper" class="nav-link" data-scroll-target="#adding-chi-style-citations-to-a-paper">Adding CHI-style citations to a paper</a></li>
   <li><a href="#a-10-slide-beamermetropolis-lab-meeting-deck" id="toc-a-10-slide-beamermetropolis-lab-meeting-deck" class="nav-link" data-scroll-target="#a-10-slide-beamermetropolis-lab-meeting-deck">A 10-slide Beamer/metropolis lab-meeting deck</a></li>
   </ul></li>
-  <li><a href="#templates-1" id="toc-templates-1" class="nav-link" data-scroll-target="#templates-1"><span class="header-section-number">29.12</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">29.14</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-the-latex-commands-youll-use-most" id="toc-quick-reference-the-latex-commands-youll-use-most" class="nav-link" data-scroll-target="#quick-reference-the-latex-commands-youll-use-most"><span class="header-section-number">29.15</span> Quick reference: the LaTeX commands you’ll use most</a></li>
+  <li><a href="#templates-1" id="toc-templates-1" class="nav-link" data-scroll-target="#templates-1"><span class="header-section-number">29.13</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">29.15</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-the-latex-commands-youll-use-most" id="toc-quick-reference-the-latex-commands-youll-use-most" class="nav-link" data-scroll-target="#quick-reference-the-latex-commands-youll-use-most"><span class="header-section-number">29.16</span> Quick reference: the LaTeX commands you’ll use most</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-5-communication/latex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -978,29 +979,15 @@ window.Quarto = {
 <p>LLMs are excellent at LaTeX (see <a href="../part-6-algorithmic/ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the principled discussion). They can convert a Markdown table into a <code>tabular</code> environment, debug an error message that has stumped you for ten minutes, generate a <code>sed</code> regex to clean stray characters out of a <code>.bib</code> file, and write a <code>latexmkrc</code> that does what you want.</p>
 <p>They are bad at <em>math correctness</em>. An LLM will happily produce LaTeX for an equation that is subtly wrong. Read what it produces; do not paste a long derivation without checking each step.</p>
 <p>A useful protocol: describe the problem precisely, paste the error message verbatim, paste the relevant source, and ask. Vague questions get vague answers. The CU-ITSS Intro-to-LaTeX repository (<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>) is a strong follow-on resource if you want a sequenced course.</p>
-<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<a href="https://github.com/CU-ITSS/Intro-to-LaTeX" class="uri">https://github.com/CU-ITSS/Intro-to-LaTeX</a></p></div></div><div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📚 Further reading
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Overleaf Learn: <a href="https://www.overleaf.com/learn" class="uri">https://www.overleaf.com/learn</a></li>
-<li>learnlatex.org: <a href="https://www.learnlatex.org/" class="uri">https://www.learnlatex.org/</a></li>
-<li>The LaTeX Wikibook: <a href="https://en.wikibooks.org/wiki/LaTeX" class="uri">https://en.wikibooks.org/wiki/LaTeX</a></li>
-<li>TeX StackExchange: <a href="https://tex.stackexchange.com/" class="uri">https://tex.stackexchange.com/</a> (the community Q&amp;A; it is excellent)</li>
-<li>Detexify (draw a symbol → get the command): <a href="https://detexify.kirelabs.org/" class="uri">https://detexify.kirelabs.org/</a></li>
-<li>CU-ITSS Intro-to-LaTeX: <a href="https://github.com/CU-ITSS/Intro-to-LaTeX" class="uri">https://github.com/CU-ITSS/Intro-to-LaTeX</a></li>
-</ul>
-</div>
-</div>
+<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<a href="https://github.com/CU-ITSS/Intro-to-LaTeX" class="uri">https://github.com/CU-ITSS/Intro-to-LaTeX</a></p></div></div></section>
+<section id="stakes-and-politics" class="level2" data-number="29.11">
+<h2 data-number="29.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">29.11</span> Stakes and politics</h2>
+<p>LaTeX looks like a typesetter and is also a disciplinary marker. In math, physics, theoretical CS, and statistics, a paper not in LaTeX reads as unfinished; in much of the humanities and social sciences, a paper <em>in</em> LaTeX can read as unnecessary effort or status performance. Two things to notice. First, <em>the “professional” appearance LaTeX gives a paper is a status signal</em>. Reviewers and reading committees notice typesetting quality, and absent either the technical skill to use LaTeX well or the time to develop it, a draft that is otherwise as substantive as another can read as less serious. The labor cost of typesetting is unevenly distributed across disciplines, advisors, and access to mentorship.</p>
+<p>Second, <em>LaTeX-typeset PDFs are routinely inaccessible to screen readers</em>. The default output is image-of-text plus broken tagging, and only with deliberate effort — <code>\usepackage{accessibility}</code>, <code>tagpdf</code>, careful figure alt text, structured <code>\section</code>s — does the resulting PDF become navigable by assistive technology. The convenience that LaTeX gives sighted authors is partly subsidized by a usability tax it imposes on disabled readers.</p>
+<p>See <a href="../part-1-practice/artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you submit a LaTeX-typeset document, ask whether the people who need to read it actually can.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="29.11">
-<h2 data-number="29.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">29.11</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="29.12">
+<h2 data-number="29.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">29.12</span> Worked examples</h2>
 <section id="from-word-outline-to-a-compiled-latex-article-on-overleaf" class="level3">
 <h3 class="anchored" data-anchor-id="from-word-outline-to-a-compiled-latex-article-on-overleaf">From Word outline to a compiled LaTeX article on Overleaf</h3>
 <p>You have a five-paragraph Word outline with two citations and one equation. You want to convert it into a compiled LaTeX PDF on Overleaf.</p>
@@ -1140,8 +1127,8 @@ window.Quarto = {
 <p>Compile this on Overleaf with the <code>metropolis</code> theme and you have a clean ten-slide deck.</p>
 </section>
 </section>
-<section id="templates-1" class="level2" data-number="29.12">
-<h2 data-number="29.12" class="anchored" data-anchor-id="templates-1"><span class="header-section-number">29.12</span> Templates</h2>
+<section id="templates-1" class="level2" data-number="29.13">
+<h2 data-number="29.13" class="anchored" data-anchor-id="templates-1"><span class="header-section-number">29.13</span> Templates</h2>
 <p>A minimal <code>article</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[11pt]{<span class="ex">article</span>}</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsmath, graphicx, hyperref, booktabs, microtype, cleveref</span>}</span>
@@ -1203,8 +1190,8 @@ window.Quarto = {
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">$bibtex_use</span> = <span class="dv">2</span>;</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">@default_files</span> = (<span class="ot">'</span><span class="ss">main.tex</span><span class="ot">'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="29.13">
-<h2 data-number="29.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="29.14">
+<h2 data-number="29.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.14</span> Exercises</h2>
 <ol type="1">
 <li>Compile your first Overleaf document. Share the read-only link with a classmate.</li>
 <li>Take a Markdown document with two citations and convert it into a LaTeX article with a <code>.bib</code> file generated from Zotero.</li>
@@ -1213,8 +1200,8 @@ window.Quarto = {
 <li>Diagnose three deliberately broken <code>.tex</code> files (provided as exercises, or generated by deleting one <code>\usepackage{}</code> line at a time from a working document) and submit the fixes. Note the error message you used to find each problem.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="29.14">
-<h2 data-number="29.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">29.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="29.15">
+<h2 data-number="29.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">29.15</span> One-page checklist</h2>
 <ul>
 <li>Did you start a new project from a venue-appropriate template?</li>
 <li>Is your <code>.bib</code> file generated from Zotero with stable Better BibTeX keys?</li>
@@ -1227,8 +1214,8 @@ window.Quarto = {
 <li>Did you load <code>hyperref</code> after most other packages and <code>cleveref</code> after <code>hyperref</code>?</li>
 </ul>
 </section>
-<section id="quick-reference-the-latex-commands-youll-use-most" class="level2" data-number="29.15">
-<h2 data-number="29.15" class="anchored" data-anchor-id="quick-reference-the-latex-commands-youll-use-most"><span class="header-section-number">29.15</span> Quick reference: the LaTeX commands you’ll use most</h2>
+<section id="quick-reference-the-latex-commands-youll-use-most" class="level2" data-number="29.16">
+<h2 data-number="29.16" class="anchored" data-anchor-id="quick-reference-the-latex-commands-youll-use-most"><span class="header-section-number">29.16</span> Quick reference: the LaTeX commands you’ll use most</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1303,6 +1290,27 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Overleaf, <a href="https://www.overleaf.com/learn">Learn LaTeX</a> — the most accessible online LaTeX reference; the entry point for most students.</li>
+<li><a href="https://www.learnlatex.org/">learnlatex.org</a> — a community-built lesson series; complements Overleaf’s reference with a hands-on track.</li>
+<li><a href="https://en.wikibooks.org/wiki/LaTeX">The LaTeX Wikibook</a> — open, comprehensive, and surprisingly current; useful for “how do I do X in LaTeX” questions.</li>
+<li><a href="https://tex.stackexchange.com/">TeX StackExchange</a> — the community Q&amp;A; one of the highest-quality Stack Exchange sites, and the right destination for any specific error you cannot solve in 15 minutes.</li>
+<li><a href="https://detexify.kirelabs.org/">Detexify</a> — draw a symbol with your mouse, get the LaTeX command; saves untold hours of “what is the command for <code>\Updownarrow</code> again?”</li>
+<li><a href="https://github.com/CU-ITSS/Intro-to-LaTeX">CU-ITSS Intro-to-LaTeX</a> — a sequenced course repository; strong follow-on after Overleaf Learn.</li>
+<li>LaTeX Project, <a href="https://www.latex-project.org/news/2024/05/29/tagged-pdf-LaTeX-Live-2024/"><code>tagpdf</code> and accessibility tooling</a> and Ulrike Fischer et al., <a href="https://github.com/latex3/tagging-project">Tagged PDF in LaTeX</a> — current state of the work to make LaTeX-typeset PDFs screen-reader-accessible; useful when accessibility is non-negotiable.</li>
+</ul>
+</div>
+</div>
 
 
 </section>

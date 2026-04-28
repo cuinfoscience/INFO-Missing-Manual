@@ -130,15 +130,15 @@ After the defense, the committee deliberates briefly and tells you the outcome. 
 
 Practical end-game logistics: institutional formatting requirements (margins, font, table of contents conventions); ProQuest deposit ([^4]) for PhD dissertations; embargo decisions; institutional repository deposit. None of this is intellectual work. All of it has deadlines. Read your program’s formatting guide twice.
 
-> **NOTE:**
->
-> - Bolker, J. (1998). *Writing Your Dissertation in Fifteen Minutes a Day*. Henry Holt. <https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/>
-> - Thomson, P. *patter*, thesis category. <https://patthomson.net/category/thesis/>
-> - *The Thesis Whisperer* blog. <https://thesiswhisperer.com/>
-> - Belcher, W. L. (2019). *Writing Your Journal Article in Twelve Weeks* (2nd ed.). University of Chicago Press.
-> - Single, P. B. (2009). *Demystifying Dissertation Writing*. Stylus.
+## 27.11 Stakes and politics
 
-## 27.11 Worked examples
+A thesis is a multi-year commitment to a single sustained argument, and the conditions under which someone can sustain it are not equally distributed.
+
+Three things to notice. First, *who can afford the time*. A funded PhD with a teaching or research assistantship is a part-time wage in exchange for full-time scholarly labor, and the wage is set by the institution, not by the cost of living in its city. Students with caregiving obligations, debt, undocumented status, or chronic health conditions face a different calculation than students without those constraints, and “just take an extra year” is not a neutral piece of advice. The visible attrition statistics in PhD programs are downstream of an invisible filtering at admission, in advising, and in funding renewal. Second, *advising is a power relationship*. The advisor signs off on every milestone, writes every recommendation letter, and shapes the network the student will leave the program with. When the relationship works, the student flourishes; when it does not — through neglect, mismatch, or in the worst cases, harassment — the student often has no recourse short of starting over. Mental-health literature on graduate school documents elevated rates of depression and anxiety relative to comparable non-academic populations. Third, *citation, attribution, and “the field” apply to theses too*. Whose work you build on, whose names you canonize as the conversation, and whose contributions you credit in your acknowledgements all encode a position. See [sec-writing-manuscripts](#sec-writing-manuscripts) for the related framing on authorship and citation.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you plan a thesis, plan also for the conditions that make finishing possible — financial, relational, and emotional — and recognize that those conditions are unevenly distributed.
+
+## 27.12 Worked examples
 
 ### A three-paper dissertation outline
 
@@ -184,7 +184,7 @@ You disagree — the focus on women moderators is intentional and theoretically 
 
 The point of the log is not to win the argument; it is to make the decision visible, defensible, and reviewable. When the committee or a reviewer raises the same question later, you have the answer ready.
 
-## 27.12 Templates
+## 27.13 Templates
 
 A proposal outline:
 
@@ -245,14 +245,14 @@ A committee-feedback tracker:
 | ... | ... | ... | ... | ... |
 ```
 
-## 27.13 Exercises
+## 27.14 Exercises
 
 1.  Write a 250-word “contribution statement” for a hypothetical thesis project of your own. State the question, the approach, and the expected contribution.
 2.  Find a recent PhD dissertation in your university’s institutional repository (in your subfield). Reverse-engineer its outline at chapter and section level. What kind of dissertation is it (MS, monograph, three-paper)? How does the introduction frame the chapters?
 3.  Draft a committee-invitation email to a faculty member you would want on your committee. The email is short — one paragraph on the project, one paragraph on why you are asking them.
 4.  Build a 12-month proposal-to-defense timeline for your own (real or hypothetical) thesis. Mark the dates of the proposal defense, the data-collection windows, and the final defense.
 
-## 27.14 One-page checklist
+## 27.15 One-page checklist
 
 - Did you choose the dissertation genre (MS / monograph / three-paper) intentionally and with your advisor?
 - Is your research question stated in one sentence somewhere in the proposal?
@@ -264,13 +264,23 @@ A committee-feedback tracker:
 - Did you read your program’s formatting guide *before* the final-week scramble?
 - Have you read about the emotional realities of finishing (Thesis Whisperer)?
 
-## 27.15 Quick reference: thesis genres at a glance
+## 27.16 Quick reference: thesis genres at a glance
 
 | Genre | Length | Form | Strength | Risk |
 |----|----|----|----|----|
 | MS thesis | 50–100 pages | Single project | Stepping stone | Compressed scope |
 | Monograph PhD | 150–300 pages | Single sustained argument | Depth | Chapters never publish |
 | Three-paper PhD | 150–250 pages | Three papers + framing | Publishing throughput | Coherence |
+
+> **NOTE:**
+>
+> - Joan Bolker, [*Writing Your Dissertation in Fifteen Minutes a Day*](https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/) (Henry Holt, 1998) — short, durable advice on building a daily writing habit; the title is the method.
+> - Peg Boyle Single, [*Demystifying Dissertation Writing*](https://styluspub.presswarehouse.com/browse/book/9781579222932/Demystifying-Dissertation-Writing) (Stylus, 2009) — a research-backed protocol for outlining, drafting, and revising at thesis scale.
+> - Pat Thomson, [*patter* — thesis category](https://patthomson.net/category/thesis/) — long-running blog of practical advice from a PhD supervisor; especially good on revision and committee management.
+> - [The Thesis Whisperer](https://thesiswhisperer.com/) — Inger Mewburn’s blog and the most candid public voice on the emotional reality of finishing.
+> - Wendy Laura Belcher, [*Writing Your Journal Article in Twelve Weeks*](https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html) (2nd ed., 2019) — a paired resource for the three-paper-dissertation route, since each paper goes through the same workbook.
+> - Karen Kelsky, [The Professor Is In](https://theprofessorisin.com/) — practical advice on the academic job market, advising relationships, and finishing strategy; especially useful when “what comes after the thesis?” needs to be planned.
+> - Teresa Evans et al., [*Evidence for a mental health crisis in graduate education*](https://www.nature.com/articles/nbt.4089) (*Nature Biotechnology*, 2018) — the empirical backbone for the “Stakes and politics” framing above.
 
 [^1]: <https://patthomson.net/category/thesis/>
 

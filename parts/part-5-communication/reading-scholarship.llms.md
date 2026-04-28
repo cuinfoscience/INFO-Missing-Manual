@@ -122,14 +122,17 @@ Large language models change the economics of reading, in both helpful and harmf
 
 A useful protocol: ask the LLM for a summary, then read the paper at pass 1, then compare. Where they disagree, the paper wins. Where the LLM mentioned something the paper didn’t, treat it as suspect and check.
 
-> **NOTE:**
->
-> - Keshav, S. (2007). [How to Read a Paper](https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf). *ACM SIGCOMM Computer Communication Review*, 37(3).
-> - Webster, J. & Watson, R. T. (2002). [Analyzing the Past to Prepare for the Future: Writing a Literature Review](https://www.jstor.org/stable/4132319). *MIS Quarterly*, 26(2).
-> - The Zotero documentation: <https://www.zotero.org/support/>.
-> - Sönke Ahrens, *How to Take Smart Notes* (2017) — the modern Zettelkasten manifesto.
+## 25.9 Stakes and politics
 
-## 25.9 Worked examples
+The skill of reading scholarship efficiently is genuinely useful. It is also entangled with a system that decides who gets to read at all. Three things to notice. First, *paywalls and access*. The major academic publishers (Elsevier, Springer Nature, Wiley, Taylor & Francis) charge institutional subscription fees that are routinely in the millions of dollars per year, with predictable consequences: faculty at well-funded universities have frictionless access, faculty at smaller institutions and the entire Global South do not, and members of the public — including the taxpayers who funded most of the research — get a paywall by default. Sci-Hub and the broader open-access movement exist precisely because this gradient is so steep.
+
+Second, *citation networks encode status*. Whose papers get read, cited, and assigned in courses depends partly on the work’s quality and partly on the social and institutional networks the authors are inside. Citation patterns systematically under-cite women, scholars of color, scholars from non-English-speaking institutions, and scholars from the Global South, even when the underlying work is comparable. Whose ideas you read becomes whose ideas you cite, and whose ideas you cite becomes whose work the next reader sees.
+
+Third, *what publication shape counts*. The journals and proceedings most rewarded by hiring and tenure committees are overwhelmingly Anglophone, run by editorial boards from a small number of countries, and require fluency in genre conventions (IMRaD, theory-method-results) that have a specific provenance. Work that does not fit these conventions — community-engaged research, indigenous knowledge traditions, applied/practitioner work — is harder to publish and harder to find when you are reading.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you build a literature map, ask whose work was easy to find and whose work the system you searched in routinely buries.
+
+## 25.10 Worked examples
 
 ### First-pass a CHI paper in eight minutes
 
@@ -171,7 +174,7 @@ After you populate the matrix, look at the columns. *Outcome measure* might spli
 
 Your three-paragraph synthesis writes itself. Paragraph one: scope of the literature. Paragraph two: what is converged on (the columns most papers fill the same way). Paragraph three: where the literature disagrees or is silent (the columns with disagreement or empty cells). You have not done magic; you have just made the structure visible.
 
-## 25.10 Templates
+## 25.11 Templates
 
 A reading-note template you can paste at the top of every new note:
 
@@ -219,7 +222,7 @@ A literature-map concept-matrix template (paste into a new markdown file and edi
 | @key2 | ... | ... | ... | ... | ... |
 ```
 
-## 25.11 Exercises
+## 25.12 Exercises
 
 1.  Apply Keshav’s pass 1 and pass 2 to an assigned paper. Submit a one-page summary that includes the contribution in your own words, the method, the main finding, and one limitation.
 2.  Set up a Zotero library with the Better BibTeX add-on and export a `.bib` file containing at least five papers on a topic you care about.
@@ -227,7 +230,7 @@ A literature-map concept-matrix template (paste into a new markdown file and edi
 4.  Use Connected Papers (<https://www.connectedpapers.com/>) to find five neighbors of a paper you have read. Identify the “key author” who appears most often in the cluster, and read their most recent paper.
 5.  Annotate a publicly available paper using Hypothes.is (<https://web.hypothes.is/>). Share the link with a classmate and discuss what you each highlighted.
 
-## 25.12 One-page checklist
+## 25.13 One-page checklist
 
 - Did you decide *before* reading what depth this paper deserves?
 - Did you read the abstract and conclusion before the body?
@@ -240,7 +243,7 @@ A literature-map concept-matrix template (paste into a new markdown file and edi
 - When you used an LLM, did you verify its summary against the paper?
 - Did you tag at least one connection to another paper or note?
 
-## 25.13 Quick reference: matching reading depth to your goal
+## 25.14 Quick reference: matching reading depth to your goal
 
 | Goal | Pass | Time | Output |
 |----|----|----|----|
@@ -248,6 +251,16 @@ A literature-map concept-matrix template (paste into a new markdown file and edi
 | Summarize for a literature review | 1 + 2 | 1 hour | Three-sentence note |
 | Replicate or build on the work | 1 + 2 + 3 | 4–6 hours | Reproduction notes |
 | Teach a concept to yourself | 1 + 2 (often a survey instead) | varies | Notes you can teach from |
+
+> **NOTE:**
+>
+> - S. Keshav, [How to Read a Paper](https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf) (*ACM SIGCOMM CCR*, 2007) — the canonical 4-page essay on the three-pass method; worth re-reading before every literature search.
+> - Jane Webster and Richard T. Watson, [Analyzing the Past to Prepare for the Future: Writing a Literature Review](https://www.jstor.org/stable/4132319) (*MIS Quarterly*, 2002) — the standard reference for concept-driven literature reviews in IS-adjacent fields.
+> - Sönke Ahrens, [*How to Take Smart Notes*](https://www.soenkeahrens.de/en/takesmartnotes) (2017) — the modern Zettelkasten manifesto; a useful pairing with Zotero for serious reading habits.
+> - Zotero, [Documentation](https://www.zotero.org/support/) — the free, open-source reference manager most academics now use; the entry point for Better BibTeX, browser connectors, and group libraries.
+> - Jenny Bryan, [Naming things](https://speakerdeck.com/jennybc/how-to-name-files) — the slides on file-naming conventions; applies directly to PDF and notes files in a reading workflow.
+> - DOAJ, [Directory of Open Access Journals](https://doaj.org/) — the canonical index for venue-level open access; useful when you want to filter your searches to OA-by-default journals.
+> - ACM, [Open Access Initiatives](https://www.acm.org/publications/openaccess) and arXiv, [About arXiv](https://info.arxiv.org/about/index.html) — two of the largest discipline-relevant open-access channels for IS-adjacent work; pairs with the “Stakes and politics” framing above.
 
 [^1]: <https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf>
 
