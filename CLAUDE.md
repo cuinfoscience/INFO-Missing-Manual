@@ -196,11 +196,47 @@ Every content chapter follows this structure:
 4.  `## Learning objectives {.unnumbered}` — numbered list; intro is always *"By the end of this chapter, you should be able to:"*
 5.  `## Running theme: <short phrase> {.unnumbered}` — one-sentence principle for the chapter
 6.  Numbered `## Section` blocks — main content
-7.  `## Worked examples` — numbered subsections
-8.  `## Templates` — reusable snippets (optional, varies by chapter)
-9.  `## Exercises` — numbered list
-10. `## One-page checklist` — bullet list for quick reference
-11. `## Quick reference: ...` — tables and one-liners (optional)
+7.  `## Stakes and politics` — chapter-specific public-interest framing, immediately before Worked examples (see "Stakes and politics section" below)
+8.  `## Worked examples` — numbered subsections
+9.  `## Templates` — reusable snippets (optional, varies by chapter)
+10. `## Exercises` — numbered list
+11. `## One-page checklist` — bullet list for quick reference
+12. `## Quick reference: ...` — tables and one-liners (optional)
+13. **Further reading callout** — `::: {.callout-note}` with a `## 📚 Further reading` heading; 3–7 curated annotated items at the very end of the chapter (see "Further reading section" below)
+
+The cornerstone chapter `parts/part-1-practice/artifacts-have-politics.qmd` is the documented exception: it is intentionally a reflective essay and does not include Worked examples, Exercises, or a One-page checklist.
+
+### Stakes and politics section
+
+Every content chapter (except the cornerstone) ends — just before Worked examples — with a numbered `## Stakes and politics` section that names the public-interest dimension of the chapter's topic. The section is roughly 150–300 words, anchored on 2–3 concrete decisions specific to the chapter, and always cross-references the cornerstone with `@sec-artifacts-politics`. The section closes with one sentence pointing to the cornerstone and a concrete prompt the reader can carry forward.
+
+```markdown
+## Stakes and politics
+
+<2–4 sentences making the chapter-specific stakes concrete: who benefits when this works as designed, who pays when it fails, what choices look technical but are political. Do not re-litigate the artifacts-have-politics chapter; specialize to this topic.>
+
+<1–2 sentences naming the specific Winner-style move: which defaults are the politics, which costs are externalized, which gatekeeping is hidden in the workflow.>
+
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: <one sentence the reader can apply when they next encounter this chapter's topic>.
+```
+
+Tier-3 chapters (narrowly technical topics where the politics angle is hardest to make load-bearing — for example `regex`, `tracebacks`, `latex`, `common-formats`, `debugging`, `file-system`) get shorter sections (~150–200 words) anchored on a single concrete question rather than a forced full-checklist application.
+
+### Further reading callout
+
+Every chapter ends with a Further reading callout using the cornerstone's pattern: a `callout-note` block with a `## 📚 Further reading` heading and 3–7 annotated bullet items.
+
+```markdown
+::: {.callout-note}
+## 📚 Further reading
+
+- **<Author/Source>**, [<Title>](<url-or-DOI>) — <one sentence: why this is on the list>.
+- **<Official docs>**, [<Title>](<url>) — <one sentence>.
+- **<Community resource>**, [<Title>](<url>) — <one sentence>.
+:::
+```
+
+Curation rules: 3–7 items per chapter, mix of books/articles, official docs, and community resources, one sentence of annotation each. Prefer durable sources (books, official docs, well-maintained community sites) over blog posts that will rot. Do not duplicate items already linked from the chapter body. New external resources go here as plain links rather than as new `references.bib` entries — the book uses `[@key]` citations sparingly (currently only `documentation.qmd`, `automation.qmd`, and `artifacts-have-politics.qmd`) to preserve the reference-handbook feel.
 
 ### Prerequisites and see-also callout (chapter independence)
 
