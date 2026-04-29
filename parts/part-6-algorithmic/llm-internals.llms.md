@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Tokenization. Embeddings. Attention. KV cache. Each concept is fine on its own. Together they are a wall of math your linear-algebra class did not prepare you for.](../../graphics/memes/llm-internals.png)
+![Ten Guy Meme: What if every word is just a point in a 4096-dimensional space?](../../graphics/memes/llm-internals.png)
 
 You have probably used a chatbot, had AI help you write code, or asked a language model to explain a confusing error message. These tools are now embedded in text editors, search engines, notebooks, and APIs. But most people use them with little understanding of what is actually happening under the hood — and that gap causes real problems: you paste in a prompt, get a confident-sounding answer, and have no way to judge whether it is trustworthy, or why it failed when it did.
 

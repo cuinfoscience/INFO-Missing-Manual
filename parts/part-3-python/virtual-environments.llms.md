@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You installed a package globally with sudo. Then you broke a system tool. Then you tried venv. Then conda. Now you’re considering reinstalling Python entirely. It’s 2 a.m.](../../graphics/memes/virtual-environments.png)
+![Galaxy Brain Meme: Install Packages with sudo pip, Use a venv, Use conda, Install Python from Scratch.](../../graphics/memes/virtual-environments.png)
 
 The single most common source of the “it worked yesterday” bug in Python data science is a confused [environment](../../parts/appendix/appendix-glossary.llms.md#term-environment). You install a package, try to import it, and Python says “no such module.” You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
 

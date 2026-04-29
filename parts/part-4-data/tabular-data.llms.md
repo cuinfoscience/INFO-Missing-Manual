@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Your collaborator’s spreadsheet has merged cells, color-coded rows, headers in row 4, and a chart embedded in column G. They called it “the data.”](../../graphics/memes/tabular-data.png)
+![What’s in the box meme: What’s in the file?](../../graphics/memes/tabular-data.png)
 
 Before you can analyze a dataset, you have to shape it, clean it, and convince yourself it is what you think it is. Novices skip this step constantly — load a CSV, call `.describe()`, and start plotting. The results look fine. A week later, a subtle bug reveals that half the rows were duplicated by a bad merge, or a date column was parsed as strings, or a “total” column is the sum of all the other columns plus itself. The analysis is wrong and the rewrites are painful.
 

@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You wrote a draft. Your advisor said it was great. Your advisor then asked for a complete restructure. Reviewer 2 has not yet weighed in.](../../graphics/memes/writing-manuscripts.png)
+![Panik-Kalm-Panik Meme: Drafted the introduction, Advisor likes it, Advisor wants it restructured.](../../graphics/memes/writing-manuscripts.png)
 
 A scholarly manuscript is a contract with a reader. You promise novelty, evidence, and clarity. They promise attention. The contract is small — five thousand words, give or take — and the reader is busy. They have thirty other papers in the stack. If your paper is two pages of throat-clearing before the contribution, they will move on. If your figures are unreadable, they will move on. If your contribution is buried in the discussion, they will move on. The reviewer is a model of a reader who has already moved on, and your job is to win them back.
 

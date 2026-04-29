@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You set the agent loose on a small task. Eight hours later, it has spent \$200, made fourteen unrelated edits, and confidently deleted a file you wanted to keep.](../../graphics/memes/ai-agents.png)
+![Confession Bear Meme: I let my agent run overnight, it deleted all my files.](../../graphics/memes/ai-agents.png)
 
 A chatbot answers one question at a time. An AI agent is different: it uses a language model as a reasoning engine, equips it with tools, and lets it take a sequence of actions — calling APIs, reading files, searching the web, running code — to complete a goal that may take many steps.
 

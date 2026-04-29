@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You committed .env to a public repo. GitHub emails you in twelve seconds. AWS emails you in two hours. The bill is \$4,000 and counting.](../../graphics/memes/secrets.png)
+![Gone meme: I’ll just commit this file, …and now everyone can use my account.](../../graphics/memes/secrets.png)
 
 Sooner or later — usually the first time you use an API — you will need to put a secret in your code. An API key, a database password, an access token, a private URL. The question is *where*, and the answer is almost always “not in the source file, and definitely not in git.”
 

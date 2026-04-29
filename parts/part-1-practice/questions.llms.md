@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You finally worked up the nerve to ask for help – on Slack, on Stack Overflow, in office hours. The reply is a request for a minimal reproducible example, which feels like another homework assignment on top of the homework.](../../graphics/memes/questions.png)
+![Awesome-Awkward Penguin Meme: Work Up The Nerve To Ask For Help, Question Closed For Lack Of A MRE.](../../graphics/memes/questions.png)
 
 Computing education often assumes that students will “figure it out” when something breaks: how to describe an error, how to ask for help, and how to turn a confusing symptom into an answerable question. In practice, asking good technical questions is a core professional skill. It determines how quickly you can diagnose problems, how effectively you can use documentation, and how well you can collaborate with classmates, teaching assistants, colleagues, and online communities.
 

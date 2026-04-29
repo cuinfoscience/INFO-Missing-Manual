@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Your workflow file has been red for six commits. Each commit is one tab/space change. You have not yet run the actual job; the YAML parser keeps refusing.](../../graphics/memes/automation.png)
+![Winter is Coming Meme: YAML indentation errors are coming.](../../graphics/memes/automation.png)
 
 Automation is how you turn ‘I can do this once’’ into ‘we can do this reliably.’’ In data science and computing projects, automation reduces errors, makes work reproducible, and enables collaboration by ensuring that the same steps run the same way on every machine. This chapter introduces a practical automation ladder: (1) scripts, (2) task runners and rebuild tools, (3) scheduling, and (4) continuous integration (CI). It also shows how to incorporate AI tools responsibly to speed up routine work without weakening verification.
 

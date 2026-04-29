@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Every model claims state-of-the-art. The benchmark numbers are rising. Your actual application is silently getting worse and you have no way to prove it.](../../graphics/memes/evaluating-ai.png)
+![Ants Meme: Do you want hallucinations? Because that’s how you get hallucinations.](../../graphics/memes/evaluating-ai.png)
 
 Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.
 

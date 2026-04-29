@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Your code works. Writing docstrings and READMEs feels like extra work for an audience you’re not sure exists – until six months later, when that audience turns out to be you.](../../graphics/memes/documentation.png)
+![Put It Somewhere Else Patrick Meme: Why don’t we take everything we know and write it down somewhere?](../../graphics/memes/documentation.png)
 
 Computing courses often teach you *what* to type, but they do not always teach you how to learn what to type next. In real projects, the fastest path forward is rarely a memorized recipe. It is the ability to locate authoritative documentation, interpret it, test it against your situation, and—when needed—write documentation that helps other people reproduce, maintain, and extend your work.
 

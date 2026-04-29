@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You said it would take a year. It is month thirteen. There are five chapters left, your advisor is on sabbatical, and the literature has moved on without you.](../../graphics/memes/writing-thesis.png)
+![Worst Meme: This is the hardest writing I’ve ever done, This is the hardest writing so far.](../../graphics/memes/writing-thesis.png)
 
 A thesis is the longest single argument most people will ever write. An MS thesis is a hundred pages. A PhD dissertation is two to three hundred. Either way, it is a different kind of object from a paper — it is sustained, it is yours alone in a way a co-authored paper isn’t, and it has to be coherent across more text than you have ever produced before. The writing problems are different too. In a paper, you can keep the whole argument in your head. In a thesis, you cannot, and the project becomes about how to manage scale: how to outline at three levels, how to revise without losing the thread, how to integrate published or under-review papers into a unified narrative, how to work with a committee, and how to finish.
 

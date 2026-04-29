@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You saved a file and now you can’t find it. macOS hid the Library folder, Windows hid the file extension, and ~ is either your home directory or a typo.](../../graphics/memes/file-system.png)
+![No Idea Dog Meme: Where Did I Save That File?](../../graphics/memes/file-system.png)
 
 Most beginner frustration in computing is not “coding’’—it is losing track of files, confusing locations, and breaking workflows by moving or renaming things. This chapter builds durable habits for accessing, navigating, organizing, and managing files and folders on **Windows** (File Explorer) and **macOS** (Finder).
 

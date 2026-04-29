@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![It worked yesterday. You changed nothing. Now nothing works. There are seventeen print(x) calls in your code and the bug is still hiding.](../../graphics/memes/debugging.png)
+![Crying Floor Meme: a person is lying on the floor crying, saying ‘It worked yesterday’ and ‘Now nothing works.’](../../graphics/memes/debugging.png)
 
 When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.
 

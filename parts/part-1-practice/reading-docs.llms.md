@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You opened the NumPy reference and every paragraph assumes something you don’t yet know. The tutorial was friendly. The reference is a wall.](../../graphics/memes/reading-docs.png)
+![Success Kid Meme: Need To Learn About A New Function, The Docs Have A Perfect Example.](../../graphics/memes/reading-docs.png)
 
 A huge fraction of the frustration novices experience with programming comes from the same moment: you are stuck, you search the error online, you land on a tutorial blog post that almost-but-not-quite matches your situation, you copy a line, and it breaks something else. After two hours of this you feel like the tools are hostile. Meanwhile, the answer was three clicks away on the official documentation — but you either did not know the docs existed, did not know how to navigate them, or tried to read them like a novel and bounced off.
 

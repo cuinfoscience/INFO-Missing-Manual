@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![It can write a sonnet, refactor your code, and confidently fabricate a citation that doesn’t exist. The hype cycle has given you whiplash. Your advisor wants you to “have a take.”](../../graphics/memes/ai-llm.png)
+![Astronaut Meme: Wait, it’s just autocomplete? Always has been. Me. Every ML paper since 2017.](../../graphics/memes/ai-llm.png)
 
 AI assistants can reduce friction in programming and data science. They can draft documentation, summarize error messages, propose alternative implementations, and generate boilerplate. They can also produce plausible but incorrect guidance. This chapter treats AI assistance as one input to a disciplined workflow. The goal is not to get answers faster. The goal is to produce correct, reproducible, and safe work with less unnecessary effort.
 

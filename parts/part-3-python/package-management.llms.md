@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![pip and conda solve overlapping problems in mutually incompatible ways. uv is the new shiny thing, ten times faster, allegedly. Your terminal has three Pythons on the PATH and at least one of them is lying.](../../graphics/memes/package-management.png)
+![Pooh Meme: pip install, uv pip install.](../../graphics/memes/package-management.png)
 
 Package management is the discipline of installing and updating third-party software (libraries) in a way that is consistent, reproducible, and unlikely to break your work. For novices, the most common failure mode is mixing global installs, different Python interpreters, and ad-hoc updates until nothing imports. This chapter teaches a stable workflow using project-level environments, clear dependency records, and a conflict-resolution playbook.
 

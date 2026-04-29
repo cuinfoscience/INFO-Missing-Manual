@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![The IDE has decorated your file with green squiggles. Your code runs. The linter is, technically, just expressing an opinion.](../../graphics/memes/linting.png)
+![Scumbag Steve Meme: Your Code Works, But No One Else Can Read It.](../../graphics/memes/linting.png)
 
 Code style is one of those skills people assume you will absorb by osmosis. You will not. Without being taught, most novices write code that is technically correct but visually noisy — inconsistent indentation, trailing whitespace, unused imports, variable names that start with a lowercase letter here and an uppercase letter there. In solo work, this is a cosmetic problem. In collaborative work, it becomes a real one: code review time is wasted on style nitpicks, diffs are noisy, and merge conflicts multiply.
 

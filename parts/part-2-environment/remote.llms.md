@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Permission denied (publickey). No further explanation. Somewhere on disk is a key you generated nine months ago and have already forgotten the passphrase to.](../../graphics/memes/remote.png)
+![Ski Instructor Meme: If You Only Have One Computer, You’re Gonna Have A Bad Time.](../../graphics/memes/remote.png)
 
 Remote computing lets you use resources that are not physically on your laptop: university servers, high-performance clusters, lab machines, and cloud instances. This chapter teaches novices how to connect safely and reliably using [SSH](https://www.openssh.com/manual.html) and [VPNs](https://en.wikipedia.org/wiki/Virtual_private_network), move files, run remote jobs, and use tunneling to access remote services (including [Jupyter](https://jupyter.org/documentation)) as if they were local.
 

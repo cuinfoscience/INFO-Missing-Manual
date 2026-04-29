@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Your collaborator’s variable names are single letters. Their indentation is mixed tabs and spaces. They keep using pickle for things that aren’t pickleable. They are also your friend.](../../graphics/memes/collaboration.png)
+![Inigo Meme: You keep calling this reproducible, I do not think it means what you think it means.](../../graphics/memes/collaboration.png)
 
 Collaboration is not a vague soft skill. It is a set of repeatable mechanics that make work legible, reviewable, and safe to change. In computing and data science, effective collaboration relies on shared artifacts (docs, issues, pull requests), disciplined communication (clear requests and responses), and predictable workflows (review, merge, release). This chapter teaches novice-friendly practices for working with other people without creating confusion, duplication, or fragile “tribal knowledge.”
 

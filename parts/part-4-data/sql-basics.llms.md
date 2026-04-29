@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![SQL was designed in 1974. It still runs the world. The syntax feels like time travel and a JOIN takes three tries even when you know what you’re doing.](../../graphics/memes/sql-basics.png)
+![Boat cate Meme: I should build a database.](../../graphics/memes/sql-basics.png)
 
 A huge share of the world’s interesting data lives in databases, not in CSV files. If you want to work with real datasets as a data scientist — transactional data from a company, public records, government open-data warehouses, research corpora — you will inevitably need to write SQL. The good news is that SQL is a small language for its power: a handful of keywords (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `JOIN`, `ORDER BY`, `LIMIT`) cover 80% of what a novice data scientist needs.
 

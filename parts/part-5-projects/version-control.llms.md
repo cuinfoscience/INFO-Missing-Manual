@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You ran git push --force to fix a small thing. You have just overwritten three days of your collaborator’s work. They have no backups. You have no time machine.](../../graphics/memes/version-control.png)
+![Fetch meme: Stop trying to make pull requests happen, it’s not going to happen.](../../graphics/memes/version-control.png)
 
 Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
 

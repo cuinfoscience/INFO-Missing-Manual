@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![Your notebook has 47 cells, four of them broken, and your advisor wants you to ‘just run it from the command line.’ argparse looks like a foreign language.](../../graphics/memes/scripting.png)
+![Pigeon Meme: Me, A 47-Cell Notebook, Is This A Script?](../../graphics/memes/scripting.png)
 
 As students progress, the limiting factor is rarely “can you write code”; it is whether your work can be reused, rerun, and explained. Scripts complement notebooks by making work *repeatable* from the command line and easier to automate, test, and share. This chapter teaches how to write simple scripts, import your own code into notebooks, translate notebooks into scripts, pass parameters from the command line, and make deliberate notebook-versus-script choices.
 

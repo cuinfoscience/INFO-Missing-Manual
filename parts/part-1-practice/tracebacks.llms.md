@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![A wall of red text. The line numbers point into a library you didn’t write. Somewhere in there is the one line that’s actually yours.](../../graphics/memes/tracebacks.png)
+![Fry from Futurama Meme: Not Sure If My Bug Or The Library’s Bug.](../../graphics/memes/tracebacks.png)
 
 When your Python code crashes, Python prints a wall of red text ending with something like `KeyError: 'date'` or `ValueError: could not convert string to float: 'N/A'`. Many novices glance at this wall, feel a jolt of dread, and scroll past to the error message at the bottom — losing most of the information the interpreter is trying to give them for free.
 

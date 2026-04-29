@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![There are at least nine ways to select rows in pandas. Six of them give a SettingWithCopyWarning. The other three give different answers. You will pick the wrong one and spend twenty minutes finding out.](../../graphics/memes/pandas-basics.png)
+![Bihw Meme: pd.read_csv(), It Ain’t Much But It’s Honest Work.](../../graphics/memes/pandas-basics.png)
 
 [`pandas`](https://pandas.pydata.org/docs/) is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, `pandas` is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.
 

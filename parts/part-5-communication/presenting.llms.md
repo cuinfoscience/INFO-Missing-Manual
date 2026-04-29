@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You practiced. You timed it at 18 minutes. You stand up at the podium, adrenaline kicks in, and you finish in nine.](../../graphics/memes/presenting.png)
+![DBG Meme: Talk length: 15 minutes, Practice talk: 45 minutes.](../../graphics/memes/presenting.png)
 
 A talk is not a paper read aloud. The medium is different, the attention budget is different, and the conventions that work in print fail in front of an audience. Slides full of text put audiences to sleep. Reading from notes turns a fifteen-minute talk into the longest fifteen minutes of the room’s life. Trying to cram every result onto every slide is a recipe for an audience that remembers nothing.
 

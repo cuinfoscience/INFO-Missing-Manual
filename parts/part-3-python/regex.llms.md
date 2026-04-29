@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You wrote a regex. It worked. You can no longer read it. Two weeks from now you will have to modify it and you will lose an afternoon.](../../graphics/memes/regex.png)
+![Headaches Meme: Writing Regex.](../../graphics/memes/regex.png)
 
 Sooner or later you will need to extract phone numbers from free-text notes, find every file name that matches a pattern, strip junk out of a column, or validate that a user-entered email address at least *looks* like one. These are all jobs for regular expressions — a small pattern language that matches shapes in text.
 

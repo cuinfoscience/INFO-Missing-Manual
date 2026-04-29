@@ -8,7 +8,7 @@
 
 ## Purpose
 
-![You wrote a beautiful Gantt chart at the start of the semester. It is now finals week. The Gantt chart has not been opened in ten weeks.](../../graphics/memes/project-management.png)
+![Gru Meme: Write a project plan, Follow the plan for one week, Do everything the night before, Do everything the night before.](../../graphics/memes/project-management.png)
 
 Most student projects fail for non-technical reasons: files scattered across desktops, unclear goals, missing data provenance, undocumented assumptions, and work tracked in private messages rather than a shared system. This chapter introduces lightweight project management practices that make small data-science projects stable, auditable, and collaborative.
 
