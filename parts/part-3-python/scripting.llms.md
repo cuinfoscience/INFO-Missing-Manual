@@ -546,7 +546,6 @@ Any project that anyone else might need to run, including future you, deserves a
 
 Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook. Expected outputs: `data/processed/sales_clean.csv` (~5 MB).
 
-
     The exact commands protect you from the classic "I just have to type this thing I remember from last month" failure mode. The expected runtime and outputs give the reader a sanity check: if the cleaning step takes five minutes instead of thirty seconds, or the output is 50 KB instead of 5 MB, something is wrong. A good "how to run" section is often the highest-leverage documentation you can write — it is what gets other people unblocked without asking you a question.
 
     ### Version control discipline

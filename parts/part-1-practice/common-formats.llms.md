@@ -12,18 +12,20 @@
 
 Before you write your first function, before you open your first dataset, you will encounter configuration files, README documents, and structured data exchanges that are written in formats you are expected to read and edit — but that nobody explicitly teaches you. A `README.md` is Markdown. A `_quarto.yml` or `.github/workflows/build.yml` is YAML. An API response is almost certainly JSON. If you cannot read or edit these formats confidently, you will spend time debugging invisible whitespace errors, misplaced colons, and mismatched brackets instead of doing the work you actually care about.
 
-This chapter introduces the syntax of the three text formats you will encounter most often outside of code itself: **Markdown**, **YAML**, and **JSON**. The goal is not to make you a format expert. It is to give you enough fluency to read a config file, write a formatted document, and troubleshoot a broken file without guessing.
+This chapter introduces the syntax of the three text formats you will encounter most often outside of code itself: **Markdown**, **YAML**, and **JSON**. Markdown gets the deepest treatment because it is more than a file format — it is the default way technical people write *for each other*: READMEs, issues, notebooks, documentation, and this very book. The goal is not to make you a format expert. It is to give you enough fluency to read a config file, write a formatted document, and troubleshoot a broken file without guessing.
 
 ## Learning objectives
 
 By the end of this chapter, you should be able to:
 
-1.  Write a Markdown document with headings, lists, links, code blocks, and emphasis.
-2.  Read and write a YAML configuration file, including nested keys, lists, and multi-line strings.
-3.  Read and write a JSON object, including nested structures and arrays.
-4.  Identify common syntax errors in each format and fix them.
-5.  Explain when each format is typically used and why.
-6.  Validate a YAML or JSON file using a command-line tool or online validator.
+1.  Explain why Markdown became the default writing style of technical communication, and name the contexts where you will use it.
+2.  Write a Markdown document with headings, lists, links, images, code blocks, and emphasis.
+3.  Recognize the major Markdown flavors (original, CommonMark, GitHub Flavored Markdown) and explain why the same file can render differently in different tools.
+4.  Read and write a YAML configuration file, including nested keys, lists, and multi-line strings.
+5.  Read and write a JSON object, including nested structures and arrays.
+6.  Identify common syntax errors in each format and fix them.
+7.  Explain when each format is typically used and why.
+8.  Validate a YAML or JSON file using a command-line tool or online validator.
 
 ## Running theme: know the format before you edit the file
 
@@ -31,9 +33,35 @@ Every file has a format. If you edit it without understanding that format’s ru
 
 ## 4.1 Markdown
 
-**Markdown** is a lightweight markup language for writing formatted text using plain characters. It was created in 2004 by John Gruber and has become the de facto standard for documentation, README files, Jupyter notebook text cells, GitHub issues, Slack messages, and many other contexts where you want *some* formatting without the overhead of HTML.
+**Markdown** is a lightweight markup language for writing formatted text using plain characters. John Gruber created it in 2004, with feedback on the syntax from Aaron Swartz, around a single design goal: a Markdown document should be publishable as-is, as plain text, without looking like it has been marked up with tags or formatting instructions. The formatting markers look like what they mean. A heading starts with `#`. A list item starts with `-` or `1.`. Bold text is wrapped in `**`. Even if the file is never rendered into a web page or PDF, a human can read it comfortably.
 
-The core idea is that the formatting markers look like what they mean. A heading starts with `#`. A list item starts with `-` or `1.`. Bold text is wrapped in `**`. The file stays readable even if you never render it.
+That design goal is why Markdown outgrew being “a file format” and became a *communication style*. When you write in Markdown you are making a small set of commitments that pay off later: your document is plain text, so it opens in any editor on any machine (see [sec-text-editors](#sec-text-editors)); it diffs line-by-line under version control, so collaborators can see exactly what changed (see [sec-git-github](#sec-git-github)); and it separates content from presentation, so the same source can render as a web page, a PDF, or a slide deck without rewriting a word.
+
+### Where you will write Markdown
+
+Markdown is the lingua franca of technical writing. You will use it — sometimes without realizing it — in:
+
+- **README files and project documentation.** Every repository host renders `README.md` as the project’s front page (see [sec-documentation](#sec-documentation)).
+- **GitHub issues, pull requests, and comments.** Bug reports, code reviews, and discussion threads are all written in Markdown (see [sec-git-github](#sec-git-github)).
+- **Jupyter notebook text cells.** The prose between your code cells is Markdown (see [sec-jupyter](#sec-jupyter)).
+- **Quarto and other publishing systems.** This book is written in Markdown; so are many course sites, blogs, and papers.
+- **Chat and forums.** Slack, Discord, and Discourse accept Markdown or a Markdown-like subset for formatting messages.
+- **Note-taking apps and static site generators.** Obsidian and Zettlr store notes as Markdown files; Jekyll, Hugo, and MkDocs turn folders of Markdown into websites.
+
+Because the same skill transfers across all of these, the hour you spend learning Markdown syntax repays itself for the rest of your career. GitHub’s [beginner’s guide to Markdown](https://github.blog/developer-skills/github/github-for-beginners-getting-started-with-markdown/) is a good complement to this section if you want a second walkthrough.
+
+### Paragraphs and line breaks
+
+A paragraph is one or more consecutive lines of text, separated from other content by a blank line. A single newline inside a paragraph is *not* a line break — most renderers join the lines with a space:
+
+``` markdown
+These two lines
+render as one paragraph on one line.
+
+This renders as a second paragraph.
+```
+
+To force a line break *without* starting a new paragraph, end a line with two or more spaces, or with a backslash. Because trailing spaces are invisible in most editors, prefer the backslash form — or just use separate paragraphs.
 
 ### Headings
 
@@ -98,6 +126,8 @@ Use `backticks` for anything that is code, a command, a filename, a variable nam
 
 Always write meaningful alt text for images. “Screenshot” is not meaningful. “Error message showing ModuleNotFoundError for pandas” is.
 
+The same accessibility rule applies to link text. Screen readers can jump from link to link, so a page full of links labeled “here” and “click this” is unnavigable. Make the link text describe the destination: write `[the pandas documentation](https://pandas.pydata.org/docs/)`, not `click [here](https://pandas.pydata.org/docs/)`.
+
 ### Code blocks
 
 For inline code, use single backticks: `` `pd.read_csv()` ``.
@@ -156,12 +186,54 @@ The alignment row (the `|---|` line) is required. You can control column alignme
 >
 > Markdown tables are painful for anything beyond five or six columns. If you need a serious table, consider generating it from code or using a CSV file and a rendering tool.
 
+### Escaping literal characters
+
+Sometimes you want a literal `*`, `#`, or `_` in your text without it being interpreted as formatting. Put a backslash in front of it:
+
+``` markdown
+\*not italic\*     <- renders with visible asterisks, no italics
+\# not a heading   <- renders as a literal hash at the start of a line
+2\. not a list     <- renders as "2." without starting an ordered list
+```
+
+The characters that may need escaping are `` \ ` * _ { } [ ] ( ) # + - . ! ``. You rarely need to escape all of them — only when the character would otherwise trigger formatting in that position.
+
+### Flavors: CommonMark, GFM, and friends
+
+Gruber’s original 2004 spec was short and deliberately informal, which left many details ambiguous — how deeply to indent a nested list, what happens when emphasis markers overlap, and so on. Every tool that adopted Markdown filled those gaps its own way, and the dialects drifted apart. The [history of that drift](https://en.wikipedia.org/wiki/Markdown) explains a fact that will otherwise surprise you: **the same Markdown file can render differently in different tools, and both renderings are “correct.”**
+
+Two names anchor the landscape today:
+
+- **CommonMark** is the community-maintained standard, first published in 2014. It nails down the ambiguities in the original spec and is the base most modern renderers build on.
+
+- **GitHub Flavored Markdown (GFM)** is CommonMark plus a set of extensions you will use constantly on GitHub: tables, strikethrough, autolinked URLs, and task lists:
+
+  ``` markdown
+  - [x] Clean the data
+  - [ ] Run the analysis
+  - [ ] Write it up
+  ```
+
+  Task lists render as real checkboxes in issues and pull requests, and collaborators can tick them off without editing the file.
+
+Beyond those two, tools layer on their own conventions: MDN’s documentation project uses GFM plus site-specific extensions and publishes its house rules (see Further reading), Quarto (which renders this book) adds callouts, citations, and cross-references on top of Pandoc’s Markdown, and chat tools like Slack support only a loose subset.
+
+Three practical consequences:
+
+1.  **Preview where your readers will read.** A document destined for GitHub should be previewed on GitHub, not just in your editor.
+2.  **Stay near the core when a document travels.** Headings, emphasis, lists, links, and fenced code blocks work everywhere; tables and task lists do not.
+3.  **When something renders oddly, suspect a flavor difference** before assuming you made a typo.
+
 ### Common Markdown mistakes
 
 1.  **No blank line before a list or heading.** Most renderers require a blank line before a heading or list to recognize it. Without the blank line, the heading or list may be rendered as plain text.
-2.  **Inconsistent indentation in nested lists.** Use exactly two or four spaces (pick one) for each nesting level. Tabs can cause unpredictable behavior.
-3.  **Forgetting the language hint on code blocks.** The code will still render, but without syntax highlighting it is harder to read.
-4.  **Using HTML when Markdown would suffice.** Markdown supports inline HTML, but mixing the two makes the source harder to read and is unnecessary for most formatting.
+2.  **Expecting a single newline to be a line break.** Inside a paragraph, one newline is joined into a space by most renderers. Use a blank line for a new paragraph, or a trailing backslash for a forced break.
+3.  **Inconsistent indentation in nested lists.** Use exactly two or four spaces (pick one) for each nesting level. Tabs can cause unpredictable behavior.
+4.  **Forgetting the language hint on code blocks.** The code will still render, but without syntax highlighting it is harder to read.
+5.  **Using HTML when Markdown would suffice.** Markdown supports inline HTML, but mixing the two makes the source harder to read and is unnecessary for most formatting.
+6.  **Assuming every renderer supports your flavor.** Tables, task lists, and footnotes are extensions, not core Markdown. If a document must travel across tools, stick to the shared core.
+
+If you want hands-on practice, [markdown.org](https://markdown.org/) collects tutorials and live-preview playgrounds, and the [W3Schools Markdown introduction](https://www.w3schools.io/file/markdown-introduction/) offers a step-by-step tour with exercises.
 
 ## 4.2 YAML
 
@@ -426,7 +498,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
 You have just started a class project analyzing campus dining data. Write a README that a teammate can follow:
 
-``` markdown
+```` markdown
 # Campus Dining Analysis
 
 Analysis of CU Boulder dining hall traffic patterns for INFO 2301.
@@ -450,29 +522,30 @@ python scripts/clean_data.py
 python scripts/analyze.py
 ```
 
-## 4.8 Team
+## Team
 
 - **Alice** — data cleaning
 - **Bob** — visualization
 - **Carol** — statistical analysis
+````
 
-&nbsp;
+Note the fences: because the README itself contains a triple-backtick code block, the example above is wrapped in a *four*-backtick fence. A fenced code block can only be closed by a fence at least as long as the one that opened it, so the inner ```` ``` ```` marks stay inside the example instead of ending it early.
 
+### 2. Reading a Quarto YAML config
 
-    ### 2. Reading a Quarto YAML config
+Given this snippet from a `_quarto.yml`:
 
-    Given this snippet from a `_quarto.yml`:
-
-    ```yaml
-    book:
-      title: "My Project"
-      author: "Alice"
+``` yaml
+book:
+  title: "My Project"
+  author: "Alice"
+  chapters:
+    - index.qmd
+    - part: "Part I"
       chapters:
-        - index.qmd
-        - part: "Part I"
-          chapters:
-            - intro.qmd
-            - methods.qmd
+        - intro.qmd
+        - methods.qmd
+```
 
 You can read this as: the top-level key `book` contains three child keys — `title`, `author`, and `chapters`. The `chapters` key contains a list. The first item is a simple string (`index.qmd`). The second item is itself a map with a `part` key and a nested `chapters` list.
 
@@ -489,12 +562,13 @@ You receive this JSON from a classmate and it will not parse:
 }
 ```
 
-There are four errors:
+There are three errors:
 
 1.  `'name'` and `'dining_data'` use single quotes — change to double quotes.
 2.  `["date", "hall", "count",]` has a trailing comma — remove the comma after `"count"`.
 3.  The line `"rows": 1500` is missing a comma before the next key — add a comma at the end.
-4.  After fixing all three, the corrected file is:
+
+After fixing all three, the corrected file is:
 
 ``` json
 {
@@ -505,17 +579,19 @@ There are four errors:
 }
 ```
 
-## 4.9 Exercises
+## 4.8 Exercises
 
 1.  Write a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks correct.
 
-2.  Open a `_quarto.yml` or `environment.yml` file from one of your class projects. Identify every key-value pair, every list, and every nested structure. Draw the tree structure on paper.
+2.  Take the document from exercise 1 and add a table and a task list. Preview it in two different renderers — for example, your editor’s Markdown preview and a GitHub gist. Note any differences in how the two render it, and identify which of the features you used are GFM extensions rather than core Markdown.
 
-3.  Find a public JSON API (for example, `https://api.github.com/users/octocat`) and examine the response. Identify the objects, arrays, strings, numbers, booleans, and nulls in the output.
+3.  Open a `_quarto.yml` or `environment.yml` file from one of your class projects. Identify every key-value pair, every list, and every nested structure. Draw the tree structure on paper.
 
-4.  Deliberately introduce three different errors into a valid JSON file (one trailing comma, one single-quoted string, one missing comma). Use `python -m json.tool` to see the error messages. Note how helpful (or unhelpful) each message is.
+4.  Find a public JSON API (for example, `https://api.github.com/users/octocat`) and examine the response. Identify the objects, arrays, strings, numbers, booleans, and nulls in the output.
 
-5.  Convert the following YAML to equivalent JSON by hand, then validate your JSON with `python -m json.tool`:
+5.  Deliberately introduce three different errors into a valid JSON file (one trailing comma, one single-quoted string, one missing comma). Use `python -m json.tool` to see the error messages. Note how helpful (or unhelpful) each message is.
+
+6.  Convert the following YAML to equivalent JSON by hand, then validate your JSON with `python -m json.tool`:
 
     ``` yaml
     project:
@@ -530,17 +606,18 @@ There are four errors:
         output_dir: results
     ```
 
-6.  Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Identify each feature and explain what it does.
+7.  Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Identify each feature and explain what it does.
 
-## 4.10 One-page checklist
+## 4.9 One-page checklist
 
-- **Markdown:** headings with `#`, emphasis with `*` and `**`, code with backticks, lists with `-` or `1.`, links with `[text](url)`, images with `![alt](path)`.
+- **Markdown:** headings with `#`, emphasis with `*` and `**`, code with backticks, lists with `-` or `1.`, links with `[text](url)`, images with `![alt](path)`. Blank lines separate paragraphs; a single newline is not a line break.
+- **Markdown flavors:** core syntax works everywhere; tables, task lists (`- [ ]`), and strikethrough are GFM extensions. Preview your document where your readers will read it.
 - **YAML:** key-value pairs with `key: value` (space after colon is mandatory), indentation with spaces only (no tabs), lists with `- item`, comments with `#`, quote strings that look like numbers or booleans.
 - **JSON:** objects with `{}`, arrays with `[]`, keys are double-quoted strings, no trailing commas, no comments, no single quotes.
 - **When in doubt, validate.** Use `python -m json.tool` for JSON, `yamllint` for YAML, and a Markdown previewer for Markdown.
 - **Know which format you are editing** before you start typing. The file extension (`.md`, `.yml`/`.yaml`, `.json`) tells you.
 
-## 4.11 Quick reference: syntax at a glance
+## 4.10 Quick reference: syntax at a glance
 
 | Feature | Markdown | YAML | JSON |
 |----|----|----|----|
@@ -554,9 +631,10 @@ There are four errors:
 
 > **NOTE:**
 >
+> - John Gruber, [Markdown: Basics](https://daringfireball.net/projects/markdown/basics) — the creator’s own introduction; short, and the clearest statement of the readable-as-plain-text design philosophy.
 > - [CommonMark Spec](https://spec.commonmark.org/) — the community-maintained Markdown standard. The reference for what “Markdown” should mean across renderers.
 > - [GitHub Flavored Markdown spec](https://github.github.com/gfm/) — extensions GitHub adds on top of CommonMark (tables, task lists, autolinks); the dialect most readers will see your docs in.
+> - MDN, [How to write in Markdown](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Markdown_in_MDN) — a worked example of how a large documentation project pins down its house dialect and style rules.
 > - [YAML 1.2 specification](https://yaml.org/spec/1.2.2/) — the official YAML spec; dense, but the place to settle arguments about quoting and indentation.
 > - IETF, [RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format](https://datatracker.ietf.org/doc/html/rfc8259) — the canonical JSON spec; short and surprisingly readable.
 > - Tom Preston-Werner, [TOML specification](https://toml.io/en/) — a fourth format you will encounter in Python packaging (`pyproject.toml`) and Rust tooling; useful to know exists when YAML feels too loose and JSON too strict.
-> - [JSON Schema](https://json-schema.org/) — a vocabulary for declaring the shape of JSON documents and validating them; the practical follow-up once “is this JSON valid?” becomes “does this JSON match the schema my tool expects?”

@@ -600,7 +600,6 @@ After you run a command successfully, write down what you ran. This sounds like 
 
 Produces: `data/processed/cleaned.csv` (expected ~5 MB, ~18,000 rows).
 
-
     A reproducible log has three pieces. It records the **inputs** (which files the command reads, which environment is active), the **command itself** including every flag, and the **outputs** (what should exist afterward, and ideally how big it should be). With those three pieces, any future reader — including you — can retrace the work without guessing. The log belongs in version control alongside the code, because a script is only as reproducible as the instructions for running it.
 
     ### Pattern 3: safe cleanup

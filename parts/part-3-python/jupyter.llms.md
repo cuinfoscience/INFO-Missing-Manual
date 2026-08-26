@@ -325,7 +325,6 @@ active = df[df["status"] != "cancelled"]
 
 Dropping cancellations removes about 4% of rows (12,104 of 302,811).
 
-
     The third piece is to **caption your plots and tables**. Every figure in a notebook should have at least a markdown cell above it that explains what you are about to see, and ideally another after it that points out what the reader should notice. A plot without a caption is decoration; a plot with a caption is evidence.
 
     The test for whether a notebook has enough narrative is to imagine handing it to someone who knows the topic but has never seen your data. Can they read it as a document and follow the argument? If yes, the narrative is doing its job. If they would need you to sit next to them and explain, there is more prose to write.
