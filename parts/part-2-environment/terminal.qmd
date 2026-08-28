@@ -27,31 +27,65 @@ The terminal (command line) is a fast, precise interface for navigating files, r
 
 By the end of this chapter, you should be able to:
 
-1.  Explain what a **terminal** and a **shell** are, and how commands run.
+1.  Open a terminal on macOS, Windows, or Linux, and identify which shell you are running.
 
-2.  Navigate the file system reliably (absolute/relative paths, current directory).
+2.  Explain what a **terminal** and a **shell** are, and how commands run.
 
-3.  Create, view, copy, move, and delete files and directories safely.
+3.  Navigate the file system reliably (absolute/relative paths, current directory).
 
-4.  Use help tools (`–help`, `man`) and interpret usage/syntax.
+4.  Create, view, copy, move, and delete files and directories safely.
 
-5.  Combine commands with pipes and redirection to build small workflows.
+5.  Use help tools (`–help`, `man`) and interpret usage/syntax.
 
-6.  Understand exit codes, errors, and common failure messages.
+6.  Combine commands with pipes and redirection to build small workflows.
 
-7.  Use permissions and `sudo` responsibly (least privilege, when *not* to use it).
+7.  Understand exit codes, errors, and common failure messages.
 
-8.  Apply basic security hygiene: protect secrets, avoid unsafe pastes, and reduce accidental damage.
+8.  Use permissions and `sudo` responsibly (least privilege, when *not* to use it).
+
+9.  Apply basic security hygiene: protect secrets, avoid unsafe pastes, and reduce accidental damage.
 
 ## Scope note {.unnumbered}
 
-This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL). An appendix maps concepts to Windows PowerShell where relevant.
+This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL or Git Bash). The section below on opening a terminal tells Windows readers how to get one of those; a section near the end maps concepts to Windows PowerShell where relevant.
 
 ## Running theme: see before you act {.unnumbered}
 
 The shell trades safety for speed: a single command can move, overwrite, or delete more work than an afternoon of clicking. Almost every command-line disaster is one keystroke away from being prevented by a `pwd`, an `ls`, or a dry-run preview before the destructive command runs.
 
 ## A beginner mental model
+
+None of the vocabulary in this section will stick until you have a terminal window open in front of you, so start there and read the rest with a prompt blinking on your screen.
+
+### Opening a terminal
+
+**macOS.** The terminal is already installed; you never need to download anything. The fastest way in is Spotlight: press `⌘ + Space`, type `terminal`, and press Enter. If you prefer to click, the application lives at **Applications → Utilities → Terminal**, or you can open Launchpad and look in the "Other" folder. Since macOS Catalina (10.15), the shell you land in is `zsh`; on older machines it is `bash`. Everything in this chapter works as written either way.
+
+**Windows.** Windows has several terminals and several shells, and the combination you pick decides whether this chapter's commands work verbatim. Windows 11 ships with **Windows Terminal**: press the Windows key, type `terminal`, and press Enter. On Windows 10, install Windows Terminal free from the Microsoft Store, or press the Windows key and type `powershell` to open PowerShell directly.
+
+Windows Terminal is a window that hosts *other* shells in tabs — the `˅` next to the new-tab button lists every shell it found on your machine. What opens by default is **PowerShell**, which is a capable shell with its own command names (`Get-ChildItem` where this chapter says `ls`). Some Unix names work in PowerShell as aliases, but many of this chapter's examples will not run there. To follow along, open one of these instead:
+
+- **Git Bash** — if you have installed [Git for Windows](https://gitforwindows.org/) (see @sec-git-github), you already have it. Press the Windows key and type `git bash`. It needs no administrator rights, installs in minutes, and runs most of this chapter as written. This is the path of least resistance on a managed or locked-down laptop.
+- **WSL (Windows Subsystem for Linux)** — the best long-term option. Open PowerShell as administrator, run [`wsl --install`](https://learn.microsoft.com/en-us/windows/wsl/install), and reboot. You get a real Ubuntu system alongside Windows, appearing as its own tab in Windows Terminal, where every command in this chapter runs exactly as printed.
+- **Anaconda Prompt** — if you installed Anaconda or Miniconda (see @sec-pkg-mgmt), this is the shell where `conda activate` works without extra configuration. Its file commands are Windows-native rather than Unix, so use it for environment work and one of the two above for everything else.
+
+**Linux.** On most desktop environments, `Ctrl + Alt + T` opens a terminal immediately. Otherwise, search your applications menu for "Terminal" — GNOME Terminal on Ubuntu and Fedora, Konsole on KDE. You are already in a Unix shell, so nothing in this chapter needs translating.
+
+| Platform | How to open | Shell you get | This chapter's examples |
+|---|---|---|---|
+| macOS | `⌘ + Space`, type `terminal` | `zsh` (or `bash`) | Work as written |
+| Windows | Start → `terminal` | PowerShell | Many need translating |
+| Windows | Start → `git bash` | `bash` | Work as written |
+| Windows | `wsl --install`, then a WSL tab | `bash` | Work as written |
+| Linux | `Ctrl + Alt + T` | `bash` (or `zsh`) | Work as written |
+
+To confirm which shell you actually landed in, run `echo $SHELL`. If it prints something ending in `zsh` or `bash`, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt — see the section on PowerShell and WSL near the end of this chapter.
+
+::: {.callout-tip}
+You will open a terminal hundreds of times this semester. Pin it now: right-click its icon in the macOS Dock and choose **Options → Keep in Dock**, or right-click it on the Windows taskbar and choose **Pin to taskbar**.
+:::
+
+### Terminal, shell, and command
 
 The first piece of vocabulary worth getting right is the difference between a **terminal** and a **shell**, because the words are often used interchangeably and the distinction matters when you read documentation. The **terminal** is the application window you type in — Terminal.app on macOS, [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/) or [PowerShell](https://learn.microsoft.com/en-us/powershell/) on Windows, GNOME Terminal or Konsole on Linux. The **shell** is the program running *inside* that window — usually [`bash`](https://www.gnu.org/software/bash/manual/) or [`zsh`](https://zsh.sourceforge.io/Doc/) on macOS and Linux, `pwsh` (PowerShell) or `cmd.exe` on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A **command** is the actual thing you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
 
@@ -76,6 +110,8 @@ $ echo $?                  # check the exit code of the previous command
 ::: {.column-margin}
 ![ALT: Windows Terminal with a PowerShell tab open, annotated to label the equivalent parts: current directory, prompt symbol, and command-line input area.](graphics/PLACEHOLDER-windows-terminal-annotated.png){#fig-windows-terminal}
 :::
+
+### Why bother, when the GUI is right there
 
 The reason any of this is worth learning, when GUI file managers are right there, is that the command line gives you four things the GUI cannot. It has a high **action-to-keystroke ratio** for repetitive work — moving fifty files into the right folders is one short command at the prompt and a fifteen-minute drag-and-drop session in the GUI. It is **composable**: small focused tools combined with pipes and redirection give you a flexible toolkit instead of fifty single-purpose buttons. It is **automatable**: anything you can type once, you can save in a script and run again on a schedule. And it is **remote-friendly**, which is the entire reason you can do real work on a server you have never physically seen (see @sec-remote-computing). None of those properties are nice-to-haves; they are the difference between doing a job once and doing it reliably for an entire semester.
 
@@ -848,23 +884,29 @@ If the bytes look like the filename you expected, you are good. If they include 
 
 ## Exercises
 
-1.  Navigate from your home directory to a course folder using only `cd`, `pwd`, `ls`.
+1.  Open a terminal on your own machine. Run `echo $SHELL` and `pwd`, and write down which shell you are in and where it started you. If you are on Windows and `echo $SHELL` prints nothing, identify which shell you opened and get a `bash` prompt using one of the options above.
 
-2.  Create a project directory structure with `mkdir -p`.
+2.  Navigate from your home directory to a course folder using only `cd`, `pwd`, `ls`.
 
-3.  Create a text file, preview it with `head`, then open it in `less`.
+3.  Create a project directory structure with `mkdir -p`.
 
-4.  Copy a directory; rename the copy; explain the difference between copy and move.
+4.  Create a text file, preview it with `head`, then open it in `less`.
 
-5.  Use a wildcard to list only `.csv` files; preview the expansion with `echo`.
+5.  Copy a directory; rename the copy; explain the difference between copy and move.
 
-6.  Build a pipeline that searches within a file and writes matching lines to an output file.
+6.  Use a wildcard to list only `.csv` files; preview the expansion with `echo`.
 
-7.  Trigger a permission error intentionally (in a safe location) and explain why `sudo` is not the first fix.
+7.  Build a pipeline that searches within a file and writes matching lines to an output file.
+
+8.  Trigger a permission error intentionally (in a safe location) and explain why `sudo` is not the first fix.
 
 ## One-page checklist
 
+-   I can open a terminal on my own machine and name the shell it runs.
+
 -   I can explain terminal vs shell, and command + arguments.
+
+-   I can activate and deactivate a virtual environment from the shell (see @sec-virtual-environments).
 
 -   I can navigate with `pwd`, `ls`, `cd` and understand paths.
 
@@ -895,27 +937,6 @@ If the bytes look like the filename you expected, you are good. If they include 
 -   Help: `–help`/`man` vs `Get-Help`.
 
 -   Pipes exist in both, but objects vs text differ.
-
-## What is a terminal?
-
-A terminal is a tool for interacting with your computer by issuing commands. A terminal launches a shell (e.g. `bash` or `zsh`), so sometimes you will hear a "terminal" also described as a "shell".
-
-## What terminal commands should I know, as a basic foundation?
-
-The exact syntax of terminal commands will be slightly different on Windows and Mac. So to keep things consistent, we are only going to detail high-level descriptions of terminal commands in this guide.
-You can Google the exact commands for your specific system; it is good practice to learn to search for the terminal commands you will need online.
-
-To get started with the terminal for your INFO classes, you should memorize the commands for each of the following:
-
--   Activate/deactivate a conda environment
-
--   Change your directory
-
--   Install a specific version of a package with conda
-
--   Inspect the location of a program to the terminal (e.g. `which Python`)
-
--   Print your working directory
 
 ::: {.callout-note}
 ## 📚 Further reading
