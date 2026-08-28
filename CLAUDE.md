@@ -119,7 +119,13 @@ INFO-Missing-Manual/
 - Section IDs: `{#sec-<slug>}`, matching the chapter file name without the extension.
 - Every chapter lives directly in `chapters/`. There are no part subdirectories: Quarto mirrors the source tree into the output, so nesting chapters by part is what produced URLs like `/parts/part-3-python/jupyter.html`. Flat sources give `/chapters/jupyter.html`. Part grouping is declared by the `part:` entries in `_quarto.yml` and is unaffected by where files sit on disk.
 
-**Published URLs and redirects.** Each chapter renders to `/chapters/<slug>.html`. Chapters previously lived under `parts/part-N-<topic>/`, so every chapter carries an `aliases:` entry naming its old path, and Quarto emits a redirect stub there:
+**Published URLs.** Each chapter renders to `/chapters/<slug>.html` — for example <https://cuinfoscience.github.io/INFO-Missing-Manual/chapters/jupyter.html>.
+
+**Known issue: old chapter URLs are dead.** Chapters used to live under `parts/part-N-<topic>/`, so they published at URLs like `/parts/part-3-python/jupyter.html`. Those URLs now **404**. This was a deliberate choice (August 2026): redirects were built and then removed in favour of a clean site with one canonical URL per chapter.
+
+The cost is real and worth remembering. Anything that linked a chapter before the move — a syllabus, an assignment sheet, a Canvas page, a Slack message, another site — is broken, and there is no server-side redirect to catch it because GitHub Pages does not support one. If someone reports a dead chapter link, this is almost certainly why: map the old `parts/part-N-<topic>/<slug>.html` to `chapters/<slug>.html` and the slug will be unchanged.
+
+**Treat chapter URLs as stable from here on.** Renaming a chapter file, or moving chapters into or out of `chapters/`, breaks every external link to it, silently and permanently. If a future change does need to move them, Quarto can emit redirect stubs via an `aliases:` entry in a chapter's frontmatter:
 
 ```yaml
 ---
@@ -128,7 +134,7 @@ aliases:
 ---
 ```
 
-The leading slash matters: without it the alias resolves relative to `chapters/` and the stub lands at `/chapters/parts/...`, redirecting nothing. Keep these entries — they are what stops previously shared links and syllabus URLs from 404ing. A new chapter has no old URL and needs no alias.
+The leading slash is required — without it the alias resolves relative to `chapters/` and the stub lands at `/chapters/parts/...`, redirecting nothing. Note these stubs are JavaScript redirects, not HTTP 301s, so they work in a browser but are weak for search engines and invisible to non-JS clients.
 
 ---
 
