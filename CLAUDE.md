@@ -113,7 +113,8 @@ INFO-Missing-Manual/
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
 ├── scripts/
 │   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
-│   └── requirements.txt             # (currently empty — generator uses stdlib only)
+│   ├── generate_terminal_figures.py # annotated terminal figures (HTML -> PNG)
+│   └── requirements.txt             # (currently empty — generators use stdlib only)
 └── _extensions/cuinfo/chapter-meme/ # Quarto shortcode wiring frontmatter -> generator
     ├── _extension.yml
     └── chapter-meme.lua
@@ -384,6 +385,23 @@ The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not 
 
 ---
 
+## Terminal figures
+
+Chapters that show a shell session use generated illustrations rather than screen captures. [scripts/generate_terminal_figures.py](scripts/generate_terminal_figures.py) draws each figure as a small HTML page and renders it to PNG with headless Chromium at 2x on a 4:3 card, producing `graphics/<slug>.png`. The five current figures are `macos-terminal-annotated`, `windows-terminal-annotated` (both @sec-terminal), `ssh-connected` (@sec-remote-computing), `venv-prompt` (@sec-virtual-environments), and `pip-install-success` (@sec-pkg-mgmt).
+
+```bash
+python scripts/generate_terminal_figures.py           # regenerate all figures
+python scripts/generate_terminal_figures.py --check   # fail if a PNG is stale
+```
+
+Figures are defined declaratively in the script's `FIGURES` dict: terminal lines plus numbered callouts positioned by character offset into a line. To add or edit one, change that dict and re-run. As with the memes, the PNGs are committed and CI never regenerates them — this is an authoring tool, not a build step.
+
+Two constraints worth knowing before you touch it. **Use a headless-shell build of Chromium.** A full Chrome build reserves about 87px of the window height for browser chrome, so the bottom of every figure renders blank while the PNG is still emitted at full size; `check_viewport()` fails loudly rather than letting that ship. Set `$CHROME` if the automatic search picks the wrong binary. **Callout offsets are character positions,** which only works because the figures use DejaVu Sans Mono; changing the font family means re-deriving `CHAR_ADVANCE`.
+
+Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer) or [asciinema](https://asciinema.org)? They emit animated GIF or SVG, which the PDF build cannot embed; they cannot draw the numbered callouts that carry the teaching; and a recording cannot show a Windows Terminal tab bar without a Windows machine to record on. [charmbracelet/freeze](https://github.com/charmbracelet/freeze) is the closest static alternative and worth revisiting if the book ever wants many unannotated output figures, at the cost of a Go dependency.
+
+**Remaining `PLACEHOLDER-*` images.** Twelve chapters still reference placeholder PNGs that do not exist. They are all screenshots of third-party GUIs — VS Code (×2), JupyterLab (×2), GitHub web UI (×4), Windows and macOS settings panels (×2), a browser JSON view, and a rendered pandas DataFrame. Unlike terminal sessions, these cannot be honestly simulated and need real captures from a real machine; treat them as an open editorial decision rather than a generation task.
+
 ## Common Tasks
 
 ### Add a new chapter
@@ -405,15 +423,16 @@ The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not 
 ### Add a figure
 
 1.  Place the PNG in `graphics/`.
-2.  Reference it with:
+2.  Reference it with a **leading slash** on the path:
 
     ```markdown
-    ::: {.column-margin}
-    ![Short descriptive caption.](graphics/filename.png){#fig-slug}
-    :::
+    ![Short descriptive caption.](/graphics/filename.png){#fig-slug fig-alt="What a reader who cannot see the image needs to know."}
     ```
 
-3.  Cross-reference it in prose with `@fig-slug`.
+    The leading slash matters. Chapters live two directories deep, so a bare `graphics/filename.png` resolves against `parts/part-N-topic/` and renders as a broken link with no warning from Quarto. A `/`-prefixed path is resolved against the project root and rewritten per page. (The unfilled `PLACEHOLDER-*` references still use the bare form; fix the path when you fill one in.)
+
+3.  Cross-reference it in prose with `@fig-slug`, and give every figure a `fig-alt`.
+4.  Use `::: {.column-margin}` only for small, simple images. Anything with labels, callouts, or fine detail is illegible at margin width (~220px) and belongs in the body column.
 
 ### Add a bibliography entry
 
