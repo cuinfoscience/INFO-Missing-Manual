@@ -83,9 +83,9 @@ source .venv/bin/activate
 
 After activation your shell prompt usually changes to show the env name, e.g. `(.venv) you@host:~/project$`. If you don’t see it, that is a hint something is off.
 
-![](graphics/PLACEHOLDER-venv-prompt.png)
+![Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.](../../graphics/venv-prompt.png)
 
-Figure 15.1: ALT: Terminal prompt before and after activating a virtual environment. The “after” prompt shows a `(.venv)` prefix at the start of the line, confirming the environment is active.
+Figure 15.1: A prompt before and after activating a virtual environment. The `(.venv)` prefix is the visible signal, and `which python` is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.
 
 **Install packages** into the active venv:
 

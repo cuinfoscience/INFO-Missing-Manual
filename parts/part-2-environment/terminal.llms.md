@@ -58,6 +58,12 @@ Windows Terminal is a window that hosts *other* shells in tabs — the `˅` next
 - **WSL (Windows Subsystem for Linux)** — the best long-term option. Open PowerShell as administrator, run [`wsl --install`](https://learn.microsoft.com/en-us/windows/wsl/install), and reboot. You get a real Ubuntu system alongside Windows, appearing as its own tab in Windows Terminal, where every command in this chapter runs exactly as printed.
 - **Anaconda Prompt** — if you installed Anaconda or Miniconda (see [sec-pkg-mgmt](#sec-pkg-mgmt)), this is the shell where `conda activate` works without extra configuration. Its file commands are Windows-native rather than Unix, so use it for environment work and one of the two above for everything else.
 
+[Figure fig-windows-terminal](#fig-windows-terminal) shows where those tabs live and what the PowerShell prompt looks like when you land in it.
+
+![Illustration of a Windows Terminal window with tabs labelled PowerShell, Ubuntu (WSL), and Git Bash, plus a new-tab button and a dropdown caret. The PowerShell tab shows 'PS C:\Users\you\Project\> Get-ChildItem data\\ and a directory listing of input.csv. Numbered callouts label the dropdown that opens another shell, the PS shell indicator, the current directory, the greater-than prompt symbol, and the command with its arguments.](../../graphics/windows-terminal-annotated.png)
+
+Figure 11.1: Windows Terminal with a PowerShell tab open. The dropdown beside the new-tab button is where you switch to WSL or Git Bash; the prompt itself carries the same information as a macOS prompt, arranged differently.
+
 **Linux.** On most desktop environments, `Ctrl + Alt + T` opens a terminal immediately. Otherwise, search your applications menu for “Terminal” — GNOME Terminal on Ubuntu and Fedora, Konsole on KDE. You are already in a Unix shell, so nothing in this chapter needs translating.
 
 | Platform | How to open | Shell you get | This chapter’s examples |
@@ -92,13 +98,11 @@ $ echo $?                  # check the exit code of the previous command
 0
 ```
 
-![](graphics/PLACEHOLDER-macos-terminal-annotated.png)
+Every prompt you meet is built from those same pieces, even when the details differ between machines ([Figure fig-macos-terminal](#fig-macos-terminal)).
 
-Figure 11.1: ALT: macOS Terminal window at a fresh prompt, annotated to label the username, hostname, current directory, and prompt character. The window shows an `ls -l data/` command at the top and its output underneath.
+![Illustration of a macOS Terminal window. The command line reads 'you@MacBook-Air Project % ls -l data/', with its output below, followed by 'pwd' printing /Users/you/Courses/INFO-3010/Project and 'echo \$?' printing 0. Five numbered callouts label the parts of the prompt in order: the username, the machine name, the current directory, the % prompt character, and the command with its arguments.](../../graphics/macos-terminal-annotated.png)
 
-![](graphics/PLACEHOLDER-windows-terminal-annotated.png)
-
-Figure 11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to label the equivalent parts: current directory, prompt symbol, and command-line input area.
+Figure 11.2: The anatomy of a prompt on macOS. Every shell shows some version of these pieces: who you are, where you are, and where your typing begins.
 
 ### Why bother, when the GUI is right there
 

@@ -869,19 +869,18 @@ vpn:        required from off-campus (CiscoSecureClient → "cs.example.edu")</c
 <p>The most common SSH command is:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@hostname</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For example, <code>ssh agandler@server.cs.example.edu</code>.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-ssh-connected" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<p>The prompt is what tells you the connection worked. Before you run <code>ssh</code> it names your own machine; afterwards it names the server, and every command you type from that point runs there rather than on your laptop (<a href="#fig-ssh-connected" class="quarto-xref">Figure&nbsp;<span>13.1</span></a>).</p>
+<div id="fig-ssh-connected" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a terminal window during an SSH login. The first line shows the local prompt 'you@laptop ~ %' running 'ssh agandler@server.cs.example.edu', followed by a password prompt and a last-login message. The following prompt reads 'agandler@server ~ $', and running 'hostname' there prints 'server.cs.example.edu'. Numbered callouts mark the local prompt, the connection command, and the remote prompt.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-ssh-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-ssh-connected.png" class="img-fluid figure-img">
+<img src="../../graphics/ssh-connected.png" class="img-fluid figure-img" alt="Illustration of a terminal window during an SSH login. The first line shows the local prompt 'you@laptop ~ %' running 'ssh agandler@server.cs.example.edu', followed by a password prompt and a last-login message. The following prompt reads 'agandler@server ~ $', and running 'hostname' there prints 'server.cs.example.edu'. Numbered callouts mark the local prompt, the connection command, and the remote prompt.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-ssh-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13.1: ALT: Terminal showing a successful SSH connection. The prompt has changed from the local hostname to the remote hostname (for example, from <code>you@laptop</code> to <code>agandler@server.cs.example.edu</code>), signalling that commands now run on the remote machine.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-ssh-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.1: A successful SSH connection. The prompt changes from your local machine to the remote server, which is how you know where your next command will run.
 </figcaption>
 </figure>
 </div>
-</div></div><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>

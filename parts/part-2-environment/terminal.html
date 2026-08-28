@@ -817,7 +817,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a-beginner-mental-model" class="level2 page-columns page-full" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="a-beginner-mental-model"><span class="header-section-number">11.1</span> A beginner mental model</h2>
 <p>None of the vocabulary in this section will stick until you have a terminal window open in front of you, so start there and read the rest with a prompt blinking on your screen.</p>
-<section id="opening-a-terminal" class="level3">
+<section id="opening-a-terminal" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="opening-a-terminal">Opening a terminal</h3>
 <p><strong>macOS.</strong> The terminal is already installed; you never need to download anything. The fastest way in is Spotlight: press <code>⌘ + Space</code>, type <code>terminal</code>, and press Enter. If you prefer to click, the application lives at <strong>Applications → Utilities → Terminal</strong>, or you can open Launchpad and look in the “Other” folder. Since macOS Catalina (10.15), the shell you land in is <code>zsh</code>; on older machines it is <code>bash</code>. Everything in this chapter works as written either way.</p>
 <p><strong>Windows.</strong> Windows has several terminals and several shells, and the combination you pick decides whether this chapter’s commands work verbatim. Windows 11 ships with <strong>Windows Terminal</strong>: press the Windows key, type <code>terminal</code>, and press Enter. On Windows 10, install Windows Terminal free from the Microsoft Store, or press the Windows key and type <code>powershell</code> to open PowerShell directly.</p>
@@ -827,6 +827,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>WSL (Windows Subsystem for Linux)</strong> — the best long-term option. Open PowerShell as administrator, run <a href="https://learn.microsoft.com/en-us/windows/wsl/install"><code>wsl --install</code></a>, and reboot. You get a real Ubuntu system alongside Windows, appearing as its own tab in Windows Terminal, where every command in this chapter runs exactly as printed.</li>
 <li><strong>Anaconda Prompt</strong> — if you installed Anaconda or Miniconda (see <a href="../part-3-python/package-management.html" class="quarto-xref"><span>Chapter 14</span></a>), this is the shell where <code>conda activate</code> works without extra configuration. Its file commands are Windows-native rather than Unix, so use it for environment work and one of the two above for everything else.</li>
 </ul>
+<p><a href="#fig-windows-terminal" class="quarto-xref">Figure&nbsp;<span>11.1</span></a> shows where those tabs live and what the PowerShell prompt looks like when you land in it.</p>
+<div id="fig-windows-terminal" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a Windows Terminal window with tabs labelled PowerShell, Ubuntu (WSL), and Git Bash, plus a new-tab button and a dropdown caret. The PowerShell tab shows 'PS C:\Users\you\Project> Get-ChildItem data\' and a directory listing of input.csv. Numbered callouts label the dropdown that opens another shell, the PS shell indicator, the current directory, the greater-than prompt symbol, and the command with its arguments.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../graphics/windows-terminal-annotated.png" class="img-fluid figure-img" alt="Illustration of a Windows Terminal window with tabs labelled PowerShell, Ubuntu (WSL), and Git Bash, plus a new-tab button and a dropdown caret. The PowerShell tab shows 'PS C:\Users\you\Project> Get-ChildItem data\' and a directory listing of input.csv. Numbered callouts label the dropdown that opens another shell, the PS shell indicator, the current directory, the greater-than prompt symbol, and the command with its arguments.">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: Windows Terminal with a PowerShell tab open. The dropdown beside the new-tab button is where you switch to WSL or Git Bash; the prompt itself carries the same information as a macOS prompt, arranged differently.
+</figcaption>
+</figure>
+</div>
 <p><strong>Linux.</strong> On most desktop environments, <code>Ctrl + Alt + T</code> opens a terminal immediately. Otherwise, search your applications menu for “Terminal” — GNOME Terminal on Ubuntu and Fedora, Konsole on KDE. You are already in a Unix shell, so nothing in this chapter needs translating.</p>
 <table class="caption-top table">
 <colgroup>
@@ -904,30 +915,17 @@ Tip
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">-rw-r--r--</span> 1 you staff 8421 Apr 10 12:34 input.csv</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$?</span>                  <span class="co"># check the exit code of the previous command</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-macos-terminal" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<p>Every prompt you meet is built from those same pieces, even when the details differ between machines (<a href="#fig-macos-terminal" class="quarto-xref">Figure&nbsp;<span>11.2</span></a>).</p>
+<div id="fig-macos-terminal" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a macOS Terminal window. The command line reads 'you@MacBook-Air Project % ls -l data/', with its output below, followed by 'pwd' printing /Users/you/Courses/INFO-3010/Project and 'echo $?' printing 0. Five numbered callouts label the parts of the prompt in order: the username, the machine name, the current directory, the % prompt character, and the command with its arguments.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-macos-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-macos-terminal-annotated.png" class="img-fluid figure-img">
+<img src="../../graphics/macos-terminal-annotated.png" class="img-fluid figure-img" alt="Illustration of a macOS Terminal window. The command line reads 'you@MacBook-Air Project % ls -l data/', with its output below, followed by 'pwd' printing /Users/you/Courses/INFO-3010/Project and 'echo $?' printing 0. Five numbered callouts label the parts of the prompt in order: the username, the machine name, the current directory, the % prompt character, and the command with its arguments.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-macos-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.1: ALT: macOS Terminal window at a fresh prompt, annotated to label the username, hostname, current directory, and prompt character. The window shows an <code>ls -l data/</code> command at the top and its output underneath.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-macos-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: The anatomy of a prompt on macOS. Every shell shows some version of these pieces: who you are, where you are, and where your typing begins.
 </figcaption>
 </figure>
 </div>
-</div><div class="">
-<div id="fig-windows-terminal" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-windows-terminal-annotated.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-windows-terminal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to label the equivalent parts: current directory, prompt symbol, and command-line input area.
-</figcaption>
-</figure>
-</div>
-</div></div>
 </section>
 <section id="why-bother-when-the-gui-is-right-there" class="level3">
 <h3 class="anchored" data-anchor-id="why-bother-when-the-gui-is-right-there">Why bother, when the GUI is right there</h3>

@@ -327,7 +327,7 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 Your computer’s “file system” is the hierarchy of folders and files where programs and documents are saved as well as the software and hardware for storing and retrieving these data. Windows and macOS are very different operating systems with very different underlying file systems. It is really important that you are able to access and navigate through your computer’s file system for everything from downloading files to configuring options. This section will cover how to familiarize yourself with your computer’s file system, the location of some important folders, and navigating to new folders you create. In this section, you will do this using the graphical user interfaces (GUI) in macOS or Windows.
 
-![](graphics/macos_finder_icon.png)
+![](../../graphics/macos_finder_icon.png)
 
 The macOS Finder icon.
 
@@ -345,7 +345,7 @@ The “Finder” application is the primary graphical user interface for interac
 
 5.  **Search effectively.** Press `Command + F` to search. Use the scope buttons to limit search to the current folder or your entire Mac, and refine results by kind, date, or name.
 
-![](graphics/windows_explorer_icon.png)
+![](../../graphics/windows_explorer_icon.png)
 
 The Windows File Explorer icon.
 
@@ -371,15 +371,15 @@ A “file path” is an address that describes where a folder or file lives on y
 
 Building on the ideas about your computer’s file system from the previous section, it is important to know where to find the files we download using our web browser. Depending on the defaults and other preferences of your web browser, downloaded folders might go to your Desktop, a Downloads folder, or some other place. The steps below will make sure that your browser is downloading the folders to a consistent location: your Downloads folder. Instructions for changing the download location of the most popular web browsers (Chrome, Safari, Firefox, and Edge) are listed below with links to their official documentation or other tutorials.
 
-![](graphics/download-location-chrome.png)
+![](../../graphics/download-location-chrome.png)
 
 Figure 10.1: Changing the Chrome download location.
 
 ##### Chrome.
 
-[^3] Open Chrome, click the ![hamburger menu icon](graphics/hamburger_trail.png) button in the upper right corner, select “Settings”, and scroll to the bottom and click “Advanced”. Under the “Downloads” section, click “Change”. Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-chrome](#fig-download-location-chrome).
+[^3] Open Chrome, click the ![hamburger menu icon](../../graphics/hamburger_trail.png) button in the upper right corner, select “Settings”, and scroll to the bottom and click “Advanced”. Under the “Downloads” section, click “Change”. Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-chrome](#fig-download-location-chrome).
 
-![](graphics/download-location-safari.png)
+![](../../graphics/download-location-safari.png)
 
 Figure 10.2: Changing the Safari download location.
 
@@ -389,21 +389,21 @@ Figure 10.2: Changing the Safari download location.
 
 ##### Mozilla.
 
-[^5] Open Firefox, click the ![hamburger menu icon](graphics/hamburger_menu.png) button in the upper-right, and select “Settings”. In the “General” panel, scroll down to the “Files and Applications” section, and click the “Browse…” button. Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-mozilla](#fig-download-location-mozilla).
+[^5] Open Firefox, click the ![hamburger menu icon](../../graphics/hamburger_menu.png) button in the upper-right, and select “Settings”. In the “General” panel, scroll down to the “Files and Applications” section, and click the “Browse…” button. Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-mozilla](#fig-download-location-mozilla).
 
-![](graphics/download-location-mozilla.png)
+![](../../graphics/download-location-mozilla.png)
 
 Figure 10.3: Changing the Firefox download location.
 
 ##### Edge.
 
-[^6] Open Edge, slick the ![three-dot menu icon](graphics/three_dots.png) button in the upper-right, and click “Settings”. Select “Downloads” in the menu on the left and in the “Location” area click the click the “Change” button. Use the File Explorer window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-edge](#fig-download-location-edge).
+[^6] Open Edge, slick the ![three-dot menu icon](../../graphics/three_dots.png) button in the upper-right, and click “Settings”. Select “Downloads” in the menu on the left and in the “Location” area click the click the “Change” button. Use the File Explorer window that pops up to navigate to your “Downloads” folder and click “Select Folder”. See [Figure fig-download-location-edge](#fig-download-location-edge).
 
 ##### File types.
 
 Note that some file types like PDFs may open by default in your web browser rather than saving to your Downloads folder. Some other types of files like DOC or XLS may open in Word or Excel by default and are saved in arcanely-named and impossible-to-find temporary folders. If you want to be able to work with these files after you have downloaded them, make sure to use the “Save as” functionality in the browser, PDF reader, Office application, *etc.* to move it to a more appropriate location like a “Downloads” or class-specific folder. The details on how to do this are specific to that application: use the documentation links provided for the browsers in the previous section to search for information and tutorials if you are having trouble.
 
-![](graphics/download-location-edge.png)
+![](../../graphics/download-location-edge.png)
 
 Figure 10.4: Changing the Edge download location.
 

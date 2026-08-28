@@ -957,19 +957,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-pip-install-success" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div id="fig-pip-install-success" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-pip-install-success.png" class="img-fluid figure-img">
+<img src="../../graphics/pip-install-success.png" class="img-fluid figure-img" alt="Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.1: ALT: Terminal output from a successful <code>pip install pandas</code> command. The output shows the download progress bar, the list of dependencies being collected (numpy, python-dateutil, pytz, six), and a final “Successfully installed” line listing the installed package versions.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: A successful <code>pip install pandas</code>. You asked for one package; the <code>Successfully installed</code> line reports five, because pip resolved and installed pandas’s dependencies as well.
 </figcaption>
 </figure>
 </div>
-</div></div><p>Record what you installed in a <code>requirements.txt</code> file so a teammate (or future-you) can recreate the environment. The simplest way is <code>pip freeze</code>:</p>
+<p>Record what you installed in a <code>requirements.txt</code> file so a teammate (or future-you) can recreate the environment. The simplest way is <code>pip freeze</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That produces a file listing every installed package, including transitive dependencies, with exact pins:</p>
 <pre class="text"><code>numpy==1.26.4
@@ -1361,7 +1359,7 @@ python -m pip check</code></pre>
 <div id="fig-conda-mini-ana" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/conda_mini_ana.png" class="img-fluid figure-img">
+<img src="../../graphics/conda_mini_ana.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;14.2: Relationships between <code>conda</code>, miniconda, and Anaconda.

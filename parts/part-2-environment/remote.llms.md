@@ -113,9 +113,11 @@ ssh username@hostname
 
 For example, `ssh agandler@server.cs.example.edu`.
 
-![](graphics/PLACEHOLDER-ssh-connected.png)
+The prompt is what tells you the connection worked. Before you run `ssh` it names your own machine; afterwards it names the server, and every command you type from that point runs there rather than on your laptop ([Figure fig-ssh-connected](#fig-ssh-connected)).
 
-Figure 13.1: ALT: Terminal showing a successful SSH connection. The prompt has changed from the local hostname to the remote hostname (for example, from `you@laptop` to `agandler@server.cs.example.edu`), signalling that commands now run on the remote machine.
+![Illustration of a terminal window during an SSH login. The first line shows the local prompt 'you@laptop ~ %' running 'ssh agandler@server.cs.example.edu', followed by a password prompt and a last-login message. The following prompt reads 'agandler@server ~ \$', and running 'hostname' there prints 'server.cs.example.edu'. Numbered callouts mark the local prompt, the connection command, and the remote prompt.](../../graphics/ssh-connected.png)
+
+Figure 13.1: A successful SSH connection. The prompt changes from your local machine to the remote server, which is how you know where your next command will run.
 
 > **WARNING:**
 >

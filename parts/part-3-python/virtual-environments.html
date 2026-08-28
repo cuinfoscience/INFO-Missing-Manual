@@ -807,19 +807,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows, cmd</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate.bat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>After activation your shell prompt usually changes to show the env name, e.g.&nbsp;<code>(.venv) you@host:~/project$</code>. If you don’t see it, that is a hint something is off.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-venv-prompt" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div id="fig-venv-prompt" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-venv-prompt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-venv-prompt.png" class="img-fluid figure-img">
+<img src="../../graphics/venv-prompt.png" class="img-fluid figure-img" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-venv-prompt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.1: ALT: Terminal prompt before and after activating a virtual environment. The “after” prompt shows a <code>(.venv)</code> prefix at the start of the line, confirming the environment is active.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-venv-prompt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.1: A prompt before and after activating a virtual environment. The <code>(.venv)</code> prefix is the visible signal, and <code>which python</code> is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.
 </figcaption>
 </figure>
 </div>
-</div></div><p><strong>Install packages</strong> into the active venv:</p>
+<p><strong>Install packages</strong> into the active venv:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas numpy matplotlib</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://pip.pypa.io/en/stable/cli/pip_install/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Using <code>python -m pip</code> (rather than just <code>pip</code>) is a small but valuable habit — it guarantees you are installing into the same Python that <code>python</code> runs. If <code>pip</code> and <code>python</code> ever get out of sync (a classic source of confusion), <code>python -m pip</code> sidesteps the problem entirely.</p>

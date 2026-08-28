@@ -218,9 +218,9 @@ python -m pip install "requests>=2.31,<3.0"
 >
 > If pip reports `ResolutionImpossible` with a wall of conflicting constraints, you have hit a dependency conflict. Do not try one-at-a-time manual fixes — instead, delete `.venv/`, recreate it from scratch, and install packages together so the solver sees all constraints at once. See [sec-asking-questions](#sec-asking-questions) if you need to escalate.
 
-![](graphics/PLACEHOLDER-pip-install-success.png)
+![Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.](../../graphics/pip-install-success.png)
 
-Figure 14.1: ALT: Terminal output from a successful `pip install pandas` command. The output shows the download progress bar, the list of dependencies being collected (numpy, python-dateutil, pytz, six), and a final “Successfully installed” line listing the installed package versions.
+Figure 14.1: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports five, because pip resolved and installed pandas’s dependencies as well.
 
 Record what you installed in a `requirements.txt` file so a teammate (or future-you) can recreate the environment. The simplest way is `pip freeze`:
 
@@ -743,7 +743,7 @@ The steps for downloading, installing, using, and maintaining Python with `conda
 
 `conda` is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, *etc*. At this stage you can either (1) install Anaconda Individual Edition[^1] that includes hundreds of popular libraries and their dependencies or (2) install “miniconda”[^2] and choose which libraries you want installed. In either case, `conda` will be the package manager that helps you install and maintain these libraries. [Figure fig-conda-mini-ana](#fig-conda-mini-ana) captures the relationships between `conda`, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.
 
-![](graphics/conda_mini_ana.png)
+![](../../graphics/conda_mini_ana.png)
 
 Figure 14.2: Relationships between `conda`, miniconda, and Anaconda.
 
