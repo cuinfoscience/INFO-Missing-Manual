@@ -23,9 +23,9 @@ meme:
 
 {{< chapter-meme >}}
 
-The single most common source of the "it worked yesterday" bug in Python data science is a confused [environment](../appendix/appendix-glossary.qmd#term-environment). You install a package, try to import it, and Python says "no such module." You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
+The single most common source of the "it worked yesterday" bug in Python data science is a confused [environment](appendix-glossary.qmd#term-environment). You install a package, try to import it, and Python says "no such module." You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
 
-A [virtual environment](../appendix/appendix-glossary.qmd#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you "activate" it, your shell and your tools point at that project's Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
+A [virtual environment](appendix-glossary.qmd#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you "activate" it, your shell and your tools point at that project's Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
 
 This chapter explains what a venv is (and is not), how to create and activate one with [`python -m venv`](https://docs.python.org/3/library/venv.html), how this compares to [`conda`](https://docs.conda.io/en/latest/), how to diagnose the "which Python is running?" question on any machine, and how to make sure [Jupyter](https://jupyter.org/documentation) and [VS Code](https://code.visualstudio.com/docs) are using the environment you think they are. @sec-pkg-mgmt covers `conda` in depth; this chapter focuses on `venv` and on the diagnostic skills that apply to both.
 
@@ -174,7 +174,7 @@ You can have both on the same machine — they do not conflict. Just do not try 
 
 ## Jupyter and venvs
 
-Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a [kernel](../appendix/appendix-glossary.qmd#term-kernel), and by default it may be pointed at your system Python. This causes the classic bug: you `pip install pandas` in your venv, open a notebook, and `import pandas` fails.
+Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a [kernel](appendix-glossary.qmd#term-kernel), and by default it may be pointed at your system Python. This causes the classic bug: you `pip install pandas` in your venv, open a notebook, and `import pandas` fails.
 
 The fix is to register your venv as a Jupyter kernel. From inside the activated venv:
 

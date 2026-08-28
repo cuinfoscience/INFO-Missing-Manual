@@ -60,54 +60,47 @@ INFO-Missing-Manual/
 ├── references.bib                   # BibTeX bibliography (22 entries)
 ├── .github/workflows/build-book.yml # CI: renders HTML + PDF on push/PR
 │
-├── parts/
-│   ├── part-1-practice/             # Part I — Practice of Technical Work
-│   │   ├── questions.qmd
-│   │   ├── documentation.qmd
-│   │   ├── common-formats.qmd
-│   │   ├── reading-docs.qmd
-│   │   ├── debugging.qmd
-│   │   ├── tracebacks.qmd
-│   │   └── artifacts-have-politics.qmd
-│   ├── part-2-environment/          # Part II — Computing Environment
-│   │   ├── operating-system.qmd
-│   │   ├── file-system.qmd
-│   │   ├── terminal.qmd
-│   │   ├── text-editors.qmd
-│   │   └── remote.qmd
-│   ├── part-3-python/               # Part III — Python Management
-│   │   ├── package-management.qmd
-│   │   ├── virtual-environments.qmd
-│   │   ├── jupyter.qmd
-│   │   ├── scripting.qmd
-│   │   ├── regex.qmd
-│   │   └── linting.qmd
-│   ├── part-4-data/                 # Part IV — Working with Data
-│   │   ├── data-file-formats.qmd
-│   │   ├── tabular-data.qmd
-│   │   ├── pandas-basics.qmd
-│   │   ├── sql-basics.qmd
-│   │   └── http-apis.qmd
-│   ├── part-5-communication/        # Part V — Communication
-│   │   ├── reading-scholarship.qmd
-│   │   ├── writing-manuscripts.qmd
-│   │   ├── writing-thesis.qmd
-│   │   ├── presenting.qmd
-│   │   └── latex.qmd
-│   ├── part-5-projects/             # Part VI — Project Management (directory slug retained)
-│   │   ├── project-management.qmd
-│   │   ├── version-control.qmd
-│   │   ├── collaboration.qmd
-│   │   ├── automation.qmd
-│   │   └── secrets.qmd
-│   ├── part-6-algorithmic/          # Part VII — Algorithmic Systems (directory slug retained)
-│   │   ├── ai-llm.qmd
-│   │   ├── llm-internals.qmd
-│   │   ├── ai-agents.qmd
-│   │   └── evaluating-ai.qmd
-│   └── appendix/
-│       ├── appendix-glossary.qmd        # Appendix A (glossary with term anchors)
-│       └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
+├── chapters/                        # every chapter and appendix, one flat directory
+│   │                                # reading order and part grouping live in _quarto.yml
+│   ├── questions.qmd                # Part I — Practice of Technical Work
+│   ├── documentation.qmd
+│   ├── common-formats.qmd
+│   ├── reading-docs.qmd
+│   ├── debugging.qmd
+│   ├── tracebacks.qmd
+│   ├── artifacts-have-politics.qmd
+│   ├── operating-system.qmd         # Part II — Computing Environment
+│   ├── file-system.qmd
+│   ├── terminal.qmd
+│   ├── text-editors.qmd
+│   ├── remote.qmd
+│   ├── package-management.qmd       # Part III — Python Management
+│   ├── virtual-environments.qmd
+│   ├── jupyter.qmd
+│   ├── scripting.qmd
+│   ├── regex.qmd
+│   ├── linting.qmd
+│   ├── data-file-formats.qmd        # Part IV — Working with Data
+│   ├── tabular-data.qmd
+│   ├── pandas-basics.qmd
+│   ├── sql-basics.qmd
+│   ├── http-apis.qmd
+│   ├── reading-scholarship.qmd      # Part V — Communication
+│   ├── writing-manuscripts.qmd
+│   ├── writing-thesis.qmd
+│   ├── presenting.qmd
+│   ├── latex.qmd
+│   ├── project-management.qmd       # Part VI — Project Management
+│   ├── version-control.qmd
+│   ├── collaboration.qmd
+│   ├── automation.qmd
+│   ├── secrets.qmd
+│   ├── ai-llm.qmd                   # Part VII — Algorithmic Systems
+│   ├── llm-internals.qmd
+│   ├── ai-agents.qmd
+│   ├── evaluating-ai.qmd
+│   ├── appendix-glossary.qmd        # Appendix A (glossary with term anchors)
+│   └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
 │
 ├── graphics/                        # PNGs referenced from chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
@@ -122,9 +115,26 @@ INFO-Missing-Manual/
 
 **Naming rules:**
 
-- Directory slugs: lowercase, hyphens, `part-N-<topic>` (no spaces, no uppercase).
 - Chapter file slugs: lowercase, hyphens (`virtual-environments.qmd`, not `virtual_environments.qmd` — underscores collide with Quarto's section-ID syntax).
 - Section IDs: `{#sec-<slug>}`, matching the chapter file name without the extension.
+- Every chapter lives directly in `chapters/`. There are no part subdirectories: Quarto mirrors the source tree into the output, so nesting chapters by part is what produced URLs like `/parts/part-3-python/jupyter.html`. Flat sources give `/chapters/jupyter.html`. Part grouping is declared by the `part:` entries in `_quarto.yml` and is unaffected by where files sit on disk.
+
+**Published URLs.** Each chapter renders to `/chapters/<slug>.html` — for example <https://cuinfoscience.github.io/INFO-Missing-Manual/chapters/jupyter.html>.
+
+**Known issue: old chapter URLs are dead.** Chapters used to live under `parts/part-N-<topic>/`, so they published at URLs like `/parts/part-3-python/jupyter.html`. Those URLs now **404**. This was a deliberate choice (August 2026): redirects were built and then removed in favour of a clean site with one canonical URL per chapter.
+
+The cost is real and worth remembering. Anything that linked a chapter before the move — a syllabus, an assignment sheet, a Canvas page, a Slack message, another site — is broken, and there is no server-side redirect to catch it because GitHub Pages does not support one. If someone reports a dead chapter link, this is almost certainly why: map the old `parts/part-N-<topic>/<slug>.html` to `chapters/<slug>.html` and the slug will be unchanged.
+
+**Treat chapter URLs as stable from here on.** Renaming a chapter file, or moving chapters into or out of `chapters/`, breaks every external link to it, silently and permanently. If a future change does need to move them, Quarto can emit redirect stubs via an `aliases:` entry in a chapter's frontmatter:
+
+```yaml
+---
+aliases:
+  - /parts/part-3-python/jupyter.html
+---
+```
+
+The leading slash is required — without it the alias resolves relative to `chapters/` and the stub lands at `/chapters/parts/...`, redirecting nothing. Note these stubs are JavaScript redirects, not HTTP 301s, so they work in a browser but are weak for search engines and invisible to non-JS clients.
 
 ---
 
@@ -212,7 +222,7 @@ Every content chapter follows this structure:
 12. `## Quick reference: ...` — tables and one-liners (optional)
 13. **Further reading callout** — `::: {.callout-note}` with a `## 📚 Further reading` heading; 3–7 curated annotated items at the very end of the chapter (see "Further reading section" below)
 
-The cornerstone chapter `parts/part-1-practice/artifacts-have-politics.qmd` is the documented exception: it is intentionally a reflective essay and does not include Worked examples, Exercises, or a One-page checklist.
+The cornerstone chapter `chapters/artifacts-have-politics.qmd` is the documented exception: it is intentionally a reflective essay and does not include Worked examples, Exercises, or a One-page checklist.
 
 ### Stakes and politics section
 
@@ -342,7 +352,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 Each chapter declares an optional meme in YAML frontmatter; the rendered PNG appears in the column-margin next to the `## Purpose` section.
 
-**Frontmatter contract** (`parts/part-N-<topic>/<chapter>.qmd`):
+**Frontmatter contract** (`chapters/<chapter>.qmd`):
 
 ```yaml
 meme:
@@ -406,7 +416,7 @@ Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer
 
 ### Add a new chapter
 
-1.  Create a file at `parts/part-N-<topic>/<slug>.qmd`.
+1.  Create a file at `chapters/<slug>.qmd`.
 2.  Start the file with `# Chapter Title {#sec-<slug>}`.
 3.  Add the Prerequisites callout template (copy from any existing chapter).
 4.  Follow the canonical 8-section structure above.
@@ -429,7 +439,7 @@ Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer
     ![Short descriptive caption.](/graphics/filename.png){#fig-slug fig-alt="What a reader who cannot see the image needs to know."}
     ```
 
-    The leading slash matters. Chapters live two directories deep, so a bare `graphics/filename.png` resolves against `parts/part-N-topic/` and renders as a broken link with no warning from Quarto. A `/`-prefixed path is resolved against the project root and rewritten per page. (The unfilled `PLACEHOLDER-*` references still use the bare form; fix the path when you fill one in.)
+    The leading slash matters. Chapters live in `chapters/`, so a bare `graphics/filename.png` resolves against `chapters/` and renders as a broken link with no warning from Quarto. A `/`-prefixed path is resolved against the project root and rewritten per page. (The unfilled `PLACEHOLDER-*` references still use the bare form; fix the path when you fill one in.)
 
 3.  Cross-reference it in prose with `@fig-slug`, and give every figure a `fig-alt`.
 4.  Use `::: {.column-margin}` only for small, simple images. Anything with labels, callouts, or fine detail is illegible at margin width (~220px) and belongs in the body column.
@@ -444,7 +454,7 @@ Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer
 
 ## Gap Chapter Backlog
 
-The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. (Note: directory slugs `part-5-projects/` and `part-6-algorithmic/` retain their original names even though they now correspond to Parts VI and VII, to avoid breaking external links.) The fifth round folded four standing backlog items into existing chapters rather than creating new ones: a Stack Overflow section in `questions.qmd` (search-first habits, asking norms, what gets a question closed); a `wget`/`curl` section in `http-apis.qmd` (CLI fetches before Python, when to use which); a Docker / containers section in `virtual-environments.qmd` (when venvs are not enough, minimal Dockerfile, when *not* to reach for a container); and a substantially expanded shell-scripting section in `automation.qmd` covering `set -euo pipefail`, control flow, functions, exit-code conventions, and `trap`-based cleanup, with a short pointer from `terminal.qmd`. The following topics remain as candidates for future work.
+The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. The fifth round folded four standing backlog items into existing chapters rather than creating new ones: a Stack Overflow section in `questions.qmd` (search-first habits, asking norms, what gets a question closed); a `wget`/`curl` section in `http-apis.qmd` (CLI fetches before Python, when to use which); a Docker / containers section in `virtual-environments.qmd` (when venvs are not enough, minimal Dockerfile, when *not* to reach for a container); and a substantially expanded shell-scripting section in `automation.qmd` covering `set -euo pipefail`, control flow, functions, exit-code conventions, and `trap`-based cleanup, with a short pointer from `terminal.qmd`. The following topics remain as candidates for future work.
 
 **Carried over from earlier rounds:**
 

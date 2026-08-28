@@ -88,11 +88,12 @@ return {
 
     -- Quarto runs each render with cwd set to the chapter's directory, so
     -- shell-outs and file checks need absolute paths anchored at the project
-    -- root. quarto.project.directory is the standard API; the gsub fallback
-    -- assumes parts/<part>/<chapter>.qmd.
+    -- root. quarto.project.directory is the standard API; the fallback simply
+    -- strips the trailing directory components, so it does not care how deep
+    -- the chapter sits or what its parent directories are called.
     local project_root = (quarto.project and quarto.project.directory) or ""
     if project_root == "" then
-      project_root = input:gsub("/parts/[^/]+/[^/]+%.qmd$", "")
+      project_root = input:gsub("/[^/]+/[^/]+%.qmd$", "")
     end
 
     local png_abs = project_root .. "/graphics/memes/" .. slug .. ".png"
@@ -126,13 +127,13 @@ return {
       end
     end
 
-    -- Build the Pandoc AST directly. The image path stays relative to the
-    -- source file: every chapter lives at parts/<part>/<chapter>.qmd, so
-    -- ../../ is the right prefix back to graphics/. Returning a constructed
-    -- Div lets Quarto wire up the column-margin layout and HTML alt text.
+    -- Build the Pandoc AST directly. The image path is project-root-absolute
+    -- (leading slash) so it does not depend on how deep the chapter sits in
+    -- the tree; Quarto rewrites it per page. Returning a constructed Div lets
+    -- Quarto wire up the column-margin layout and HTML alt text.
     local img = pandoc.Image(
       {pandoc.Str("")},
-      "../../graphics/memes/" .. slug .. ".png",
+      "/graphics/memes/" .. slug .. ".png",
       ""
     )
     img.attributes["fig-alt"] = alt
