@@ -667,7 +667,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
   <li><a href="#scope-note" id="toc-scope-note" class="nav-link" data-scroll-target="#scope-note">Scope note</a></li>
   <li><a href="#running-theme-see-before-you-act" id="toc-running-theme-see-before-you-act" class="nav-link" data-scroll-target="#running-theme-see-before-you-act">Running theme: see before you act</a></li>
-  <li><a href="#a-beginner-mental-model" id="toc-a-beginner-mental-model" class="nav-link" data-scroll-target="#a-beginner-mental-model"><span class="header-section-number">11.1</span> A beginner mental model</a></li>
+  <li><a href="#a-beginner-mental-model" id="toc-a-beginner-mental-model" class="nav-link" data-scroll-target="#a-beginner-mental-model"><span class="header-section-number">11.1</span> A beginner mental model</a>
+  <ul class="collapse">
+  <li><a href="#opening-a-terminal" id="toc-opening-a-terminal" class="nav-link" data-scroll-target="#opening-a-terminal">Opening a terminal</a></li>
+  <li><a href="#terminal-shell-and-command" id="toc-terminal-shell-and-command" class="nav-link" data-scroll-target="#terminal-shell-and-command">Terminal, shell, and command</a></li>
+  <li><a href="#why-bother-when-the-gui-is-right-there" id="toc-why-bother-when-the-gui-is-right-there" class="nav-link" data-scroll-target="#why-bother-when-the-gui-is-right-there">Why bother, when the GUI is right there</a></li>
+  </ul></li>
   <li><a href="#orientation-and-safety-first" id="toc-orientation-and-safety-first" class="nav-link" data-scroll-target="#orientation-and-safety-first"><span class="header-section-number">11.2</span> Orientation and safety first</a></li>
   <li><a href="#command-anatomy-and-help" id="toc-command-anatomy-and-help" class="nav-link" data-scroll-target="#command-anatomy-and-help"><span class="header-section-number">11.3</span> Command anatomy and help</a>
   <ul class="collapse">
@@ -736,8 +741,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#two-common-paths" id="toc-two-common-paths" class="nav-link" data-scroll-target="#two-common-paths">Two common paths</a></li>
   <li><a href="#concept-mapping-high-level" id="toc-concept-mapping-high-level" class="nav-link" data-scroll-target="#concept-mapping-high-level">Concept mapping (high level)</a></li>
   </ul></li>
-  <li><a href="#what-is-a-terminal" id="toc-what-is-a-terminal" class="nav-link" data-scroll-target="#what-is-a-terminal"><span class="header-section-number">11.21</span> What is a terminal?</a></li>
-  <li><a href="#what-terminal-commands-should-i-know-as-a-basic-foundation" id="toc-what-terminal-commands-should-i-know-as-a-basic-foundation" class="nav-link" data-scroll-target="#what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.22</span> What terminal commands should I know, as a basic foundation?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/parts/part-2-environment/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -792,6 +795,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol type="1">
+<li><p>Open a terminal on macOS, Windows, or Linux, and identify which shell you are running.</p></li>
 <li><p>Explain what a <strong>terminal</strong> and a <strong>shell</strong> are, and how commands run.</p></li>
 <li><p>Navigate the file system reliably (absolute/relative paths, current directory).</p></li>
 <li><p>Create, view, copy, move, and delete files and directories safely.</p></li>
@@ -804,7 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="scope-note" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="scope-note">Scope note</h2>
-<p>This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL). An appendix maps concepts to Windows PowerShell where relevant.</p>
+<p>This chapter focuses on Unix-like shells (macOS Terminal, Linux, and Windows via WSL or Git Bash). The section below on opening a terminal tells Windows readers how to get one of those; a section near the end maps concepts to Windows PowerShell where relevant.</p>
 </section>
 <section id="running-theme-see-before-you-act" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-see-before-you-act">Running theme: see before you act</h2>
@@ -812,6 +816,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="a-beginner-mental-model" class="level2 page-columns page-full" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="a-beginner-mental-model"><span class="header-section-number">11.1</span> A beginner mental model</h2>
+<p>None of the vocabulary in this section will stick until you have a terminal window open in front of you, so start there and read the rest with a prompt blinking on your screen.</p>
+<section id="opening-a-terminal" class="level3">
+<h3 class="anchored" data-anchor-id="opening-a-terminal">Opening a terminal</h3>
+<p><strong>macOS.</strong> The terminal is already installed; you never need to download anything. The fastest way in is Spotlight: press <code>⌘ + Space</code>, type <code>terminal</code>, and press Enter. If you prefer to click, the application lives at <strong>Applications → Utilities → Terminal</strong>, or you can open Launchpad and look in the “Other” folder. Since macOS Catalina (10.15), the shell you land in is <code>zsh</code>; on older machines it is <code>bash</code>. Everything in this chapter works as written either way.</p>
+<p><strong>Windows.</strong> Windows has several terminals and several shells, and the combination you pick decides whether this chapter’s commands work verbatim. Windows 11 ships with <strong>Windows Terminal</strong>: press the Windows key, type <code>terminal</code>, and press Enter. On Windows 10, install Windows Terminal free from the Microsoft Store, or press the Windows key and type <code>powershell</code> to open PowerShell directly.</p>
+<p>Windows Terminal is a window that hosts <em>other</em> shells in tabs — the <code>˅</code> next to the new-tab button lists every shell it found on your machine. What opens by default is <strong>PowerShell</strong>, which is a capable shell with its own command names (<code>Get-ChildItem</code> where this chapter says <code>ls</code>). Some Unix names work in PowerShell as aliases, but many of this chapter’s examples will not run there. To follow along, open one of these instead:</p>
+<ul>
+<li><strong>Git Bash</strong> — if you have installed <a href="https://gitforwindows.org/">Git for Windows</a> (see <a href="../part-5-projects/version-control.html" class="quarto-xref"><span>Chapter 31</span></a>), you already have it. Press the Windows key and type <code>git bash</code>. It needs no administrator rights, installs in minutes, and runs most of this chapter as written. This is the path of least resistance on a managed or locked-down laptop.</li>
+<li><strong>WSL (Windows Subsystem for Linux)</strong> — the best long-term option. Open PowerShell as administrator, run <a href="https://learn.microsoft.com/en-us/windows/wsl/install"><code>wsl --install</code></a>, and reboot. You get a real Ubuntu system alongside Windows, appearing as its own tab in Windows Terminal, where every command in this chapter runs exactly as printed.</li>
+<li><strong>Anaconda Prompt</strong> — if you installed Anaconda or Miniconda (see <a href="../part-3-python/package-management.html" class="quarto-xref"><span>Chapter 14</span></a>), this is the shell where <code>conda activate</code> works without extra configuration. Its file commands are Windows-native rather than Unix, so use it for environment work and one of the two above for everything else.</li>
+</ul>
+<p><strong>Linux.</strong> On most desktop environments, <code>Ctrl + Alt + T</code> opens a terminal immediately. Otherwise, search your applications menu for “Terminal” — GNOME Terminal on Ubuntu and Fedora, Konsole on KDE. You are already in a Unix shell, so nothing in this chapter needs translating.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>How to open</th>
+<th>Shell you get</th>
+<th>This chapter’s examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>macOS</td>
+<td><code>⌘ + Space</code>, type <code>terminal</code></td>
+<td><code>zsh</code> (or <code>bash</code>)</td>
+<td>Work as written</td>
+</tr>
+<tr class="even">
+<td>Windows</td>
+<td>Start → <code>terminal</code></td>
+<td>PowerShell</td>
+<td>Many need translating</td>
+</tr>
+<tr class="odd">
+<td>Windows</td>
+<td>Start → <code>git bash</code></td>
+<td><code>bash</code></td>
+<td>Work as written</td>
+</tr>
+<tr class="even">
+<td>Windows</td>
+<td><code>wsl --install</code>, then a WSL tab</td>
+<td><code>bash</code></td>
+<td>Work as written</td>
+</tr>
+<tr class="odd">
+<td>Linux</td>
+<td><code>Ctrl + Alt + T</code></td>
+<td><code>bash</code> (or <code>zsh</code>)</td>
+<td>Work as written</td>
+</tr>
+</tbody>
+</table>
+<p>To confirm which shell you actually landed in, run <code>echo $SHELL</code>. If it prints something ending in <code>zsh</code> or <code>bash</code>, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt — see the section on PowerShell and WSL near the end of this chapter.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You will open a terminal hundreds of times this semester. Pin it now: right-click its icon in the macOS Dock and choose <strong>Options → Keep in Dock</strong>, or right-click it on the Windows taskbar and choose <strong>Pin to taskbar</strong>.</p>
+</div>
+</div>
+</section>
+<section id="terminal-shell-and-command" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="terminal-shell-and-command">Terminal, shell, and command</h3>
 <p>The first piece of vocabulary worth getting right is the difference between a <strong>terminal</strong> and a <strong>shell</strong>, because the words are often used interchangeably and the distinction matters when you read documentation. The <strong>terminal</strong> is the application window you type in — Terminal.app on macOS, <a href="https://learn.microsoft.com/en-us/windows/terminal/">Windows Terminal</a> or <a href="https://learn.microsoft.com/en-us/powershell/">PowerShell</a> on Windows, GNOME Terminal or Konsole on Linux. The <strong>shell</strong> is the program running <em>inside</em> that window — usually <a href="https://www.gnu.org/software/bash/manual/"><code>bash</code></a> or <a href="https://zsh.sourceforge.io/Doc/"><code>zsh</code></a> on macOS and Linux, <code>pwsh</code> (PowerShell) or <code>cmd.exe</code> on Windows. The terminal is the dumb pipe that handles fonts and key presses; the shell is the smart program that interprets what you type. A <strong>command</strong> is the actual thing you ask the shell to run: a program name followed by some arguments, like <code>ls -l data/</code>.</p>
 <p>When you press Enter on a command line, a small choreographed sequence happens. The shell reads the line of text you typed. It expands any shortcuts you used — globs like <code>*.csv</code>, variables like <code>$HOME</code>, command substitutions like <code>$(date)</code>. It searches a list of folders called <code>PATH</code> to find the program you named. It launches that program as a new process, hands it the arguments you provided, and shows you whatever the program prints. When the program finishes, it returns a small integer called an <strong>exit code</strong> — <code>0</code> conventionally means “everything worked,” and any nonzero value means “something went wrong.” The shell then displays a prompt and waits for your next command.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-l</span> data/             <span class="co"># 1. read the line</span></span>
@@ -847,7 +928,11 @@ Figure&nbsp;11.2: ALT: Windows Terminal with a PowerShell tab open, annotated to
 </figure>
 </div>
 </div></div>
+</section>
+<section id="why-bother-when-the-gui-is-right-there" class="level3">
+<h3 class="anchored" data-anchor-id="why-bother-when-the-gui-is-right-there">Why bother, when the GUI is right there</h3>
 <p>The reason any of this is worth learning, when GUI file managers are right there, is that the command line gives you four things the GUI cannot. It has a high <strong>action-to-keystroke ratio</strong> for repetitive work — moving fifty files into the right folders is one short command at the prompt and a fifteen-minute drag-and-drop session in the GUI. It is <strong>composable</strong>: small focused tools combined with pipes and redirection give you a flexible toolkit instead of fifty single-purpose buttons. It is <strong>automatable</strong>: anything you can type once, you can save in a script and run again on a schedule. And it is <strong>remote-friendly</strong>, which is the entire reason you can do real work on a server you have never physically seen (see <a href="remote.html" class="quarto-xref"><span>Chapter 13</span></a>). None of those properties are nice-to-haves; they are the difference between doing a job once and doing it reliably for an entire semester.</p>
+</section>
 </section>
 <section id="orientation-and-safety-first" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="orientation-and-safety-first"><span class="header-section-number">11.2</span> Orientation and safety first</h2>
@@ -1381,6 +1466,7 @@ Commands:
 <section id="exercises" class="level2" data-number="11.18">
 <h2 data-number="11.18" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.18</span> Exercises</h2>
 <ol type="1">
+<li><p>Open a terminal on your own machine. Run <code>echo $SHELL</code> and <code>pwd</code>, and write down which shell you are in and where it started you. If you are on Windows and <code>echo $SHELL</code> prints nothing, identify which shell you opened and get a <code>bash</code> prompt using one of the options above.</p></li>
 <li><p>Navigate from your home directory to a course folder using only <code>cd</code>, <code>pwd</code>, <code>ls</code>.</p></li>
 <li><p>Create a project directory structure with <code>mkdir -p</code>.</p></li>
 <li><p>Create a text file, preview it with <code>head</code>, then open it in <code>less</code>.</p></li>
@@ -1393,7 +1479,9 @@ Commands:
 <section id="one-page-checklist" class="level2" data-number="11.19">
 <h2 data-number="11.19" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">11.19</span> One-page checklist</h2>
 <ul>
+<li><p>I can open a terminal on my own machine and name the shell it runs.</p></li>
 <li><p>I can explain terminal vs shell, and command + arguments.</p></li>
+<li><p>I can activate and deactivate a virtual environment from the shell (see <a href="../part-3-python/virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>).</p></li>
 <li><p>I can navigate with <code>pwd</code>, <code>ls</code>, <code>cd</code> and understand paths.</p></li>
 <li><p>I can create files/directories and view contents safely.</p></li>
 <li><p>I can copy/move/delete with caution and preview wildcards.</p></li>
@@ -1419,23 +1507,6 @@ Commands:
 <li><p>Help: <code>–help</code>/<code>man</code> vs <code>Get-Help</code>.</p></li>
 <li><p>Pipes exist in both, but objects vs text differ.</p></li>
 </ul>
-</section>
-</section>
-<section id="what-is-a-terminal" class="level2" data-number="11.21">
-<h2 data-number="11.21" class="anchored" data-anchor-id="what-is-a-terminal"><span class="header-section-number">11.21</span> What is a terminal?</h2>
-<p>A terminal is a tool for interacting with your computer by issuing commands. A terminal launches a shell (e.g.&nbsp;<code>bash</code> or <code>zsh</code>), so sometimes you will hear a “terminal” also described as a “shell”.</p>
-</section>
-<section id="what-terminal-commands-should-i-know-as-a-basic-foundation" class="level2" data-number="11.22">
-<h2 data-number="11.22" class="anchored" data-anchor-id="what-terminal-commands-should-i-know-as-a-basic-foundation"><span class="header-section-number">11.22</span> What terminal commands should I know, as a basic foundation?</h2>
-<p>The exact syntax of terminal commands will be slightly different on Windows and Mac. So to keep things consistent, we are only going to detail high-level descriptions of terminal commands in this guide. You can Google the exact commands for your specific system; it is good practice to learn to search for the terminal commands you will need online.</p>
-<p>To get started with the terminal for your INFO classes, you should memorize the commands for each of the following:</p>
-<ul>
-<li><p>Activate/deactivate a conda environment</p></li>
-<li><p>Change your directory</p></li>
-<li><p>Install a specific version of a package with conda</p></li>
-<li><p>Inspect the location of a program to the terminal (e.g.&nbsp;<code>which Python</code>)</p></li>
-<li><p>Print your working directory</p></li>
-</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1459,6 +1530,7 @@ Commands:
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
