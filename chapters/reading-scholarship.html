@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>25&nbsp; How to Read Scholarly Articles and Books – Missing Manual for Information Scientists</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/writing-manuscripts.html" rel="next">
+<link href="../chapters/http-apis.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ea76130a9f1d4361997a0a078e607410.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-88d7af80adaecb8c8fdc969d839e4aa2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-ea76130a9f1d4361997a0a078e607410.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Missing Manual for Information Scientists</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/common-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Common Text Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/artifacts-have-politics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Artifacts Have Politics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-scholarship.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/writing-manuscripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/writing-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/presenting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/latex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">How to Use LaTeX</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VII — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" id="toc-running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" class="nav-link" data-scroll-target="#running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully">Running theme: you are not reading to finish; you are reading to decide what to read more carefully</a></li>
+  <li><a href="#why-reading-is-hard-and-why-nobody-taught-you" id="toc-why-reading-is-hard-and-why-nobody-taught-you" class="nav-link" data-scroll-target="#why-reading-is-hard-and-why-nobody-taught-you"><span class="header-section-number">25.1</span> Why reading is hard (and why nobody taught you)</a></li>
+  <li><a href="#the-three-pass-method" id="toc-the-three-pass-method" class="nav-link" data-scroll-target="#the-three-pass-method"><span class="header-section-number">25.2</span> The three-pass method</a></li>
+  <li><a href="#reading-across-disciplines" id="toc-reading-across-disciplines" class="nav-link" data-scroll-target="#reading-across-disciplines"><span class="header-section-number">25.3</span> Reading across disciplines</a></li>
+  <li><a href="#skimming-vs.-deep-reading-deciding-what-a-paper-is-for" id="toc-skimming-vs.-deep-reading-deciding-what-a-paper-is-for" class="nav-link" data-scroll-target="#skimming-vs.-deep-reading-deciding-what-a-paper-is-for"><span class="header-section-number">25.4</span> Skimming vs.&nbsp;deep reading: deciding what a paper is for</a></li>
+  <li><a href="#note-taking-systems" id="toc-note-taking-systems" class="nav-link" data-scroll-target="#note-taking-systems"><span class="header-section-number">25.5</span> Note-taking systems</a></li>
+  <li><a href="#reference-management-with-zotero" id="toc-reference-management-with-zotero" class="nav-link" data-scroll-target="#reference-management-with-zotero"><span class="header-section-number">25.6</span> Reference management with Zotero</a></li>
+  <li><a href="#synthesis-building-a-literature-map" id="toc-synthesis-building-a-literature-map" class="nav-link" data-scroll-target="#synthesis-building-a-literature-map"><span class="header-section-number">25.7</span> Synthesis: building a literature map</a></li>
+  <li><a href="#reading-with-ai-legitimate-uses-and-traps" id="toc-reading-with-ai-legitimate-uses-and-traps" class="nav-link" data-scroll-target="#reading-with-ai-legitimate-uses-and-traps"><span class="header-section-number">25.8</span> Reading with AI: legitimate uses and traps</a></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">25.9</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">25.10</span> Worked examples</a>
+  <ul class="collapse">
+  <li><a href="#first-pass-a-chi-paper-in-eight-minutes" id="toc-first-pass-a-chi-paper-in-eight-minutes" class="nav-link" data-scroll-target="#first-pass-a-chi-paper-in-eight-minutes">First-pass a CHI paper in eight minutes</a></li>
+  <li><a href="#setting-up-a-zotero-library-for-a-semester-project" id="toc-setting-up-a-zotero-library-for-a-semester-project" class="nav-link" data-scroll-target="#setting-up-a-zotero-library-for-a-semester-project">Setting up a Zotero library for a semester project</a></li>
+  <li><a href="#synthesizing-five-papers-into-a-one-page-literature-map" id="toc-synthesizing-five-papers-into-a-one-page-literature-map" class="nav-link" data-scroll-target="#synthesizing-five-papers-into-a-one-page-literature-map">Synthesizing five papers into a one-page literature map</a></li>
+  </ul></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">25.11</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">25.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">25.13</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-matching-reading-depth-to-your-goal" id="toc-quick-reference-matching-reading-depth-to-your-goal" class="nav-link" data-scroll-target="#quick-reference-matching-reading-depth-to-your-goal"><span class="header-section-number">25.14</span> Quick reference: matching reading depth to your goal</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/reading-scholarship.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-reading-scholarship" class="quarto-section-identifier"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>, <a href="documentation.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+<p><strong>See also:</strong> <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>, <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>, <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered page-columns page-full">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../graphics/memes/reading-scholarship.png" class="img-fluid" alt="Too high meme: The number of pages in this paper is too damn high."></p>
+</div></div><p>The first time you open a research paper, it does not feel like reading. It feels like staring at a wall of jargon, equations, citation soup, and unfamiliar conventions. You read the abstract, blink, read it again, and have no idea what the paper actually claims. You scroll to the introduction, and the authors begin a polite argument with people you have never heard of about a problem you didn’t know existed. Twenty minutes later you are exhausted, and you still cannot tell a friend in one sentence what the paper is about.</p>
+<p>This chapter teaches you a small set of techniques that turn that experience into something tractable. It covers how to triage a paper before committing to read it, how to read at three different depths depending on your goal, how reading conventions differ between HCI papers, machine-learning papers, social-science papers, and humanities scholarship, and how to keep what you read in a system you can actually use months later. None of this is mysterious. It is just craft, and like all craft it improves rapidly once someone tells you what professionals actually do.</p>
+<p>Read this chapter before your first literature-heavy assignment. It will save you from a common failure mode where students “do the readings” by highlighting every other sentence and remembering nothing.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Apply Keshav’s three-pass method to triage and read a research paper at the depth your goal actually requires.</p></li>
+<li><p>Recognize the rhetorical conventions of HCI/CSCW papers, machine-learning and data-science papers, social-science empirical work, and humanities scholarship, and adjust your reading accordingly.</p></li>
+<li><p>Maintain a personal literature library in Zotero with the Better BibTeX add-on, so that your reading integrates seamlessly with your writing tools.</p></li>
+<li><p>Take structured notes (Cornell, Zettelkasten, or annotation-based) that you can synthesize across many sources without re-reading every paper.</p></li>
+<li><p>Build a small literature map for a research question and identify the recurring “key papers” and “key authors” in a field.</p></li>
+</ol>
+</section>
+<section id="running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-you-are-not-reading-to-finish-you-are-reading-to-decide-what-to-read-more-carefully">Running theme: you are not reading to finish; you are reading to decide what to read more carefully</h2>
+<p>Reading scholarship is fundamentally a triage problem. You will encounter far more papers than you can ever read deeply. The skill is not “reading faster” — it is reading at the right depth, for the right purpose, on the right paper, and knowing how to decide.</p>
+</section>
+<section id="why-reading-is-hard-and-why-nobody-taught-you" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="why-reading-is-hard-and-why-nobody-taught-you"><span class="header-section-number">25.1</span> Why reading is hard (and why nobody taught you)</h2>
+<p>Most undergraduates arrive at their first research paper with the reading habits they built in high school: read every sentence in order, highlight things that seem important, take notes if forced. That strategy works for a textbook, where every sentence is intended for you and the author has tried to maximize clarity. It fails for a research paper, where the audience is a small community of specialists, the structure is rhetorical rather than pedagogical, and the author’s primary goal is to defend a contribution against skeptical reviewers — not to teach you.</p>
+<p>This is not your fault, and it is not the authors’ fault either. Research papers are <em>condensed correspondence between specialists</em>. They assume context you don’t have. They use jargon as shorthand because the audience already knows it. They cite earlier work in passing because the audience has already read it. When you read a CHI paper as a sophomore and feel like the words are doing something different than in a textbook, you are correct: they are. The trick is not to read harder. The trick is to read with a different protocol.</p>
+<p>Two ideas underpin everything else in this chapter. First, <strong>most papers do not deserve a full read.</strong> A paper you cite once in a literature review may need only ten minutes of your attention. A paper you build directly on may need six hours. You decide. Second, <strong>you read in passes, not in a single sweep.</strong> Each pass adds depth, and you only commit the next pass if the previous pass justified it.</p>
+</section>
+<section id="the-three-pass-method" class="level2 page-columns page-full" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="the-three-pass-method"><span class="header-section-number">25.2</span> The three-pass method</h2>
+<p>Srinivasan Keshav’s three-page note “How to Read a Paper” (<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>) is the canonical reference. It is short — read it before your next assigned paper. The method:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf" class="uri">https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf</a></p></div></div><p><strong>Pass 1: the five-to-ten-minute skim.</strong> You are deciding whether to read this paper at all. Read the title, abstract, introduction’s first paragraph and last paragraph, and the conclusion. Look at every figure and read every figure caption. Glance at the section headings to get the structure. Skim the references for names you recognize. At the end of pass 1, you should be able to answer five questions: what is the paper’s category (empirical, theoretical, system-building, survey)? What is the broad context? Are the assumptions reasonable? What are the main contributions, in your own words? Is the paper well-written? If your one-line summary doesn’t fit, the paper either isn’t ready for you or isn’t what you thought.</p>
+<p><strong>Pass 2: the one-hour structured read.</strong> You have decided this paper is worth reading. Read it linearly, but ignore the proofs, the deepest math, and the appendices. Pay close attention to the figures, tables, and the sentences immediately surrounding them — those are usually the spine of the argument. Mark unfamiliar terms and citations to chase later. At the end of pass 2, you should be able to summarize the main thrust of the paper to someone else, with evidence — a paragraph, not a sentence. If you cannot, the paper may be poorly written, or you may be missing background. That’s a signal to read a related survey paper before coming back.</p>
+<p><strong>Pass 3: the deep read.</strong> You are going to build on this paper. Plan four to six hours, sometimes more. Read every section. Reproduce the argument from the paper’s premises. Try to re-derive the equations or re-implement the method from memory; check what you got wrong. Note the assumptions you would challenge in your own work. At the end of pass 3, you should be able to reconstruct the paper from scratch and identify its weaknesses.</p>
+<p>The cost of pass 1 is small. The cost of pass 3 is enormous. Most students invert this — they jump straight into linear reading and burn two hours on a paper that pass 1 would have told them to set aside. Don’t do that.</p>
+</section>
+<section id="reading-across-disciplines" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="reading-across-disciplines"><span class="header-section-number">25.3</span> Reading across disciplines</h2>
+<p>Information-science research draws from so many fields that you will read papers from at least four different rhetorical traditions in the same semester. Each genre signals “the contribution” in a different place.</p>
+<p><strong>HCI venues (CHI, CSCW, ICWSM, FAccT).</strong> These papers are usually IMRaD-shaped — Introduction, Related Work, Methods, Findings, Discussion — but with rhetorical flexibility. Qualitative and mixed-methods papers are common. The introduction earns its keep by stating the <em>gap</em> and the <em>contribution</em> clearly; if you cannot find the “in this paper, we…” sentence in the first two pages, you are probably reading a poor paper or you are reading too fast. The discussion section often contains “implications for design,” which is where the paper translates findings into something practitioners can use. In CSCW especially, the framing in the introduction does most of the rhetorical work; read it twice.</p>
+<p><strong>Data-science and machine-learning papers.</strong> These are denser, with the argument carried by figures, tables, and benchmarks. Related work is often a thicket of citations to keep up with a fast-moving field. The contribution is usually a method, an empirical result on a benchmark, or a dataset. Read the abstract, the figure showing the main result (almost always Figure 1 or Figure 2), and the experimental setup section. Skip the related work on a first pass; you can come back. If the paper claims state-of-the-art, look at how they define the baseline and what the error bars (if any) say.</p>
+<p><strong>Social-science empirical papers (JASIST, JCMC, <em>New Media &amp; Society</em>, <em>Information, Communication &amp; Society</em>).</strong> These follow theory–method–results–discussion fairly strictly. The theory section matters: it tells you what the authors think they are measuring and why. Operationalization — how an abstract construct gets turned into a measurable variable — is where most of the action is. Pay attention to the identification strategy (causal inference, descriptive, exploratory) and the limitations section, which is more substantive in social science than in many CS venues.</p>
+<p><strong>Humanities scholarship.</strong> Argument-driven. The abstract may not summarize the argument; sometimes it merely sets up the question. The structure is rhetorical, not formulaic. There is usually a thesis sentence — a single sentence that states what the author is claiming — somewhere in the first few pages, and the rest of the article is a move-by-move defense of that claim. When you read a humanities paper, hunt for the thesis sentence first, then read the article as a series of moves <em>on</em> that thesis: what is the author conceding, what are they arguing against, where are they introducing evidence?</p>
+<p>If you read across these traditions without adjusting, you will find yourself either lost (in humanities) or bored (in CS). The same paper, read with the wrong protocol, will feel either pretentious or trivial.</p>
+</section>
+<section id="skimming-vs.-deep-reading-deciding-what-a-paper-is-for" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="skimming-vs.-deep-reading-deciding-what-a-paper-is-for"><span class="header-section-number">25.4</span> Skimming vs.&nbsp;deep reading: deciding what a paper is for</h2>
+<p>Before you open a paper, name your purpose. Three common ones:</p>
+<p><strong>Reading for citation.</strong> You need to know what this paper says so you can refer to it accurately in your own writing. Pass 1 is usually enough. The dangerous failure mode is citing a paper for a claim it doesn’t actually make — make sure your one-line summary actually fits the sentence you plan to write.</p>
+<p><strong>Reading for replication.</strong> You are going to build on the paper, reuse its method, or reproduce its results. Pass 3 is required. Plan accordingly.</p>
+<p><strong>Reading to teach yourself a concept.</strong> You are using the paper as a textbook substitute. Often a survey paper or a textbook chapter is a better choice; if you must read primary literature, prefer the most recent paper that cites the older work and read its related-work section as a curated tour of the field.</p>
+<p>Different purposes, different passes. Refusing to triage is the most common reason students burn out reading.</p>
+</section>
+<section id="note-taking-systems" class="level2 page-columns page-full" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="note-taking-systems"><span class="header-section-number">25.5</span> Note-taking systems</h2>
+<p>A note-taking system is what turns reading into knowledge that survives. Without one, you will re-read the same paper six months later and not remember why you cared. Three approaches dominate; pick one and stick with it for a semester before judging.</p>
+<p><strong>Cornell notes.</strong> A page is divided into a narrow left column (cues), a wide right column (notes), and a strip at the bottom (summary). You take notes in the right column while reading, generate cue questions in the left column afterwards, and write a 2–3 sentence summary at the bottom. Excellent for a single dense source you need to study. Less helpful for synthesizing across sources.</p>
+<p><strong>Zettelkasten (“slip-box”) and atomic notes.</strong> A method developed by the German sociologist Niklas Luhmann, modernized in tools like Obsidian (<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) and Logseq (<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). Each note is small — one idea per note — and notes link to other notes. You write in your own words; you tag and link as you go. Over time the system becomes a graph of ideas you can navigate. The strength of Zettelkasten is synthesis: when you sit down to write a literature review, you already have the connective tissue. The weakness is overhead — if you build the system but never write, you have built a very pretty filing cabinet.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://obsidian.md/" class="uri">https://obsidian.md/</a></p></div><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://logseq.com/" class="uri">https://logseq.com/</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://web.hypothes.is/" class="uri">https://web.hypothes.is/</a></p></div></div><p><strong>Annotation-first.</strong> You highlight and comment directly on the PDF. Tools like Hypothes.is (<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>) annotate publicly on the web; Zotero’s built-in PDF reader annotates inside your library. Combine highlighting with tags and short comments, then extract the tagged passages into your notes when you write. Low overhead, good for fast triage. The risk is that highlights are not knowledge — re-read your annotations periodically to extract the ideas, or they will rot.</p>
+<p>You don’t need to choose forever. Most working researchers blend annotation-first with a Zettelkasten layer for the ideas that matter.</p>
+</section>
+<section id="reference-management-with-zotero" class="level2 page-columns page-full" data-number="25.6">
+<h2 data-number="25.6" class="anchored" data-anchor-id="reference-management-with-zotero"><span class="header-section-number">25.6</span> Reference management with Zotero</h2>
+<p>You will accumulate hundreds of papers over four years. If you do not manage them, you will lose them — to a dead Dropbox link, to a stale Mendeley export, to a bibliography that doesn’t match your <code>.tex</code> file. <strong>Use Zotero.</strong> It is free, open-source, actively maintained, and integrates with every writing tool you will use.</p>
+<p>Install Zotero (<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>) and the Zotero Connector browser extension. Create a top-level collection for each course or project — for example, “INFO 4XXX – Term Paper” — and save papers into it as you find them. The browser connector is the magic part: a single click on a Google Scholar result, a publisher’s PDF page, or an arXiv abstract saves the metadata, attaches the PDF, and files everything automatically.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://www.zotero.org/" class="uri">https://www.zotero.org/</a></p></div><div id="fn6"><p><sup>6</sup>&nbsp;<a href="https://retorque.re/zotero-better-bibtex/" class="uri">https://retorque.re/zotero-better-bibtex/</a></p></div></div><p>The single most useful add-on is <strong>Better BibTeX</strong> (<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>). It generates stable, readable citation keys (e.g., <code>keshav2007paper</code>) that don’t change when Zotero updates. Configure it once with a citation-key pattern like <code>[auth:lower][year]</code>, and your <code>.bib</code> exports will be consistent across years and machines. Better BibTeX also auto-exports your library to a <code>.bib</code> file on disk; point your LaTeX project at that file and your bibliography is always current. See <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a> for the writing-side workflow.</p>
+<p>Tag aggressively. Tags in Zotero are flat and free-form, which makes them excellent for the kind of “I’ll know it when I see it” filtering that comes up when you are writing. Tag by method, population, theory, or just <code>to-read</code> and <code>read</code>.</p>
+<p>Mendeley and Paperpile are alternatives. Mendeley’s parent company has a checkered history of changing terms in ways that hurt users; Paperpile is fine but proprietary and Google-Scholar-centric. For a portable, durable workflow, Zotero is the safe default.</p>
+</section>
+<section id="synthesis-building-a-literature-map" class="level2 page-columns page-full" data-number="25.7">
+<h2 data-number="25.7" class="anchored" data-anchor-id="synthesis-building-a-literature-map"><span class="header-section-number">25.7</span> Synthesis: building a literature map</h2>
+<p>A literature map is the artifact you build when you are about to write a literature review or a paper’s related-work section. It is not the literature review itself — it is the organized set of notes you write <em>from</em>.</p>
+<p>The simplest format is a <strong>concept matrix</strong> (Webster &amp; Watson 2002 (<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>)). Rows are papers; columns are concepts, methods, populations, or theoretical frames. A cell holds a one-word, one-phrase, or short note about how that paper treats that concept. After you populate the matrix for ten or fifteen papers, the columns become the natural sections of your literature review, and the empty cells reveal gaps in the literature — possibly your contribution.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;<a href="https://www.jstor.org/stable/4132319" class="uri">https://www.jstor.org/stable/4132319</a></p></div><div id="fn8"><p><sup>8</sup>&nbsp;<a href="https://www.connectedpapers.com/" class="uri">https://www.connectedpapers.com/</a></p></div><div id="fn9"><p><sup>9</sup>&nbsp;<a href="https://www.litmaps.com/" class="uri">https://www.litmaps.com/</a></p></div></div><p>To find the right papers in the first place, do <strong>forward and backward citation tracing.</strong> Backward: read the references of a key paper to find the work it builds on. Forward: paste the paper’s title into Google Scholar and click “Cited by N” to find the work that builds on it. Connected Papers (<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>) and Litmaps (<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>) both visualize these networks, and either is worth ten minutes when you start a new project. Look for <strong>key authors</strong> — names that appear in multiple bibliographies — and read their most recent paper to catch up on their current direction.</p>
+<p>A good literature map is small. Fifteen well-organized papers beat fifty disorganized ones. Resist the urge to expand the matrix until every cell is filled — your time is better spent reading the next paper deeply than reading the next paper at all.</p>
+</section>
+<section id="reading-with-ai-legitimate-uses-and-traps" class="level2" data-number="25.8">
+<h2 data-number="25.8" class="anchored" data-anchor-id="reading-with-ai-legitimate-uses-and-traps"><span class="header-section-number">25.8</span> Reading with AI: legitimate uses and traps</h2>
+<p>Large language models change the economics of reading, in both helpful and harmful ways. See <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> for the full discussion of what AI tools can and cannot do; the rules in this chapter are specific to scholarly reading.</p>
+<p><strong>Legitimate uses.</strong> Asking an LLM to summarize a paper for triage (pass 1, with caveats). Asking it to define a piece of unfamiliar notation or terminology. Asking it to critique your own one-paragraph summary of a paper, to surface what you missed. Generating a list of related papers you should look up — <em>which you then verify in Zotero or Scholar</em>, because LLMs hallucinate citations confidently.</p>
+<p><strong>Traps.</strong> Using an LLM summary as a substitute for reading the paper at all. This will catch up with you the first time you cite the paper for a claim it doesn’t actually make. LLMs are confident; they do not flag what they are unsure of; and they cannot distinguish a paper’s findings from a paper’s framing of others’ findings.</p>
+<p>A useful protocol: ask the LLM for a summary, then read the paper at pass 1, then compare. Where they disagree, the paper wins. Where the LLM mentioned something the paper didn’t, treat it as suspect and check.</p>
+</section>
+<section id="stakes-and-politics" class="level2" data-number="25.9">
+<h2 data-number="25.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">25.9</span> Stakes and politics</h2>
+<p>The skill of reading scholarship efficiently is genuinely useful. It is also entangled with a system that decides who gets to read at all. Three things to notice. First, <em>paywalls and access</em>. The major academic publishers (Elsevier, Springer Nature, Wiley, Taylor &amp; Francis) charge institutional subscription fees that are routinely in the millions of dollars per year, with predictable consequences: faculty at well-funded universities have frictionless access, faculty at smaller institutions and the entire Global South do not, and members of the public — including the taxpayers who funded most of the research — get a paywall by default. Sci-Hub and the broader open-access movement exist precisely because this gradient is so steep.</p>
+<p>Second, <em>citation networks encode status</em>. Whose papers get read, cited, and assigned in courses depends partly on the work’s quality and partly on the social and institutional networks the authors are inside. Citation patterns systematically under-cite women, scholars of color, scholars from non-English-speaking institutions, and scholars from the Global South, even when the underlying work is comparable. Whose ideas you read becomes whose ideas you cite, and whose ideas you cite becomes whose work the next reader sees.</p>
+<p>Third, <em>what publication shape counts</em>. The journals and proceedings most rewarded by hiring and tenure committees are overwhelmingly Anglophone, run by editorial boards from a small number of countries, and require fluency in genre conventions (IMRaD, theory-method-results) that have a specific provenance. Work that does not fit these conventions — community-engaged research, indigenous knowledge traditions, applied/practitioner work — is harder to publish and harder to find when you are reading.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you build a literature map, ask whose work was easy to find and whose work the system you searched in routinely buries.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="25.10">
+<h2 data-number="25.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">25.10</span> Worked examples</h2>
+<section id="first-pass-a-chi-paper-in-eight-minutes" class="level3">
+<h3 class="anchored" data-anchor-id="first-pass-a-chi-paper-in-eight-minutes">First-pass a CHI paper in eight minutes</h3>
+<p>Pick a recent CHI paper on a topic you care about — say, an empirical study of how data-science students use AI assistants. Set a timer for eight minutes.</p>
+<p><em>Minutes 0–1.</em> Read the title and abstract. Write one sentence in your notes: what is the paper claiming? If you cannot, re-read the abstract once.</p>
+<p><em>Minutes 1–3.</em> Read the first paragraph of the introduction (sets up the problem) and the last paragraph (states the contribution). The middle of the introduction is usually the literature gap and the framing — skim it for the names of competing approaches.</p>
+<p><em>Minutes 3–5.</em> Look at every figure. Read every caption. The figure that shows the main result is usually obvious — it is the one with the prominent comparison or the most callouts. If the paper is qualitative, the “figure” might be a participant quote in a callout box; treat it the same way.</p>
+<p><em>Minutes 5–7.</em> Read the section headings. Skim the discussion section for “implications” or “design considerations” — those are the takeaways. Glance at the related work for names you recognize.</p>
+<p><em>Minute 7–8.</em> Write three things: a one-sentence summary, the contribution in your own words, and one question you would want to ask the authors.</p>
+<p>You now have enough to decide whether to read pass 2. If you cannot fill in the three things, the paper is either poorly written or beyond your current background — either way, that is information.</p>
+</section>
+<section id="setting-up-a-zotero-library-for-a-semester-project" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-a-zotero-library-for-a-semester-project">Setting up a Zotero library for a semester project</h3>
+<p>You are starting a term paper for a class. Here is the setup, end to end.</p>
+<ol type="1">
+<li>Install Zotero from <a href="https://www.zotero.org/" class="uri">https://www.zotero.org/</a> and the Zotero Connector for your browser. Create a free Zotero account so your library syncs across devices.</li>
+<li>In Zotero, right-click “My Library” → New Collection → name it “INFO 4XXX – Term Paper”.</li>
+<li>Install Better BibTeX: from inside Zotero, Tools → Add-ons → install from <code>.xpi</code> (download the latest from <a href="https://retorque.re/zotero-better-bibtex/" class="uri">https://retorque.re/zotero-better-bibtex/</a>). Restart Zotero.</li>
+<li>In Edit → Preferences → Better BibTeX, set the citation-key formula to <code>[auth:lower][year]</code>. This produces keys like <code>keshav2007</code>.</li>
+<li>Open Better BibTeX preferences → Automatic Export → set up an auto-export of your collection to <code>~/code/term-paper/references.bib</code>. Now any time you save a paper into the collection, the <code>.bib</code> file updates automatically.</li>
+<li>Find five papers via Google Scholar. On each result page, click the Zotero Connector icon. Zotero pulls the metadata, fetches the PDF where it can, and files the entry in your collection. Add tags as you go.</li>
+<li>Open <code>references.bib</code> in your text editor; you should see five BibTeX entries with stable keys.</li>
+</ol>
+<p>Total time: about twenty minutes the first time, two minutes per paper after that.</p>
+</section>
+<section id="synthesizing-five-papers-into-a-one-page-literature-map" class="level3">
+<h3 class="anchored" data-anchor-id="synthesizing-five-papers-into-a-one-page-literature-map">Synthesizing five papers into a one-page literature map</h3>
+<p>You have read five papers about how moderation policies on online platforms affect user behavior. You need a literature review section.</p>
+<p>Build a concept matrix. Rows are the five papers. Columns are: <em>platform studied</em>, <em>moderation intervention</em>, <em>outcome measure</em>, <em>method</em>, <em>primary finding</em>, <em>limitation</em>. Fill each cell with one phrase.</p>
+<p>After you populate the matrix, look at the columns. <em>Outcome measure</em> might split into “behavioral” (post counts, user departures) and “linguistic” (toxicity, civility). That split is now a section of your literature review. <em>Method</em> might split into “natural experiment” and “interview study” — another section. The empty cells — say, no one has measured behavioral outcomes after a policy change on a small platform — is a candidate gap for your own contribution.</p>
+<p>Your three-paragraph synthesis writes itself. Paragraph one: scope of the literature. Paragraph two: what is converged on (the columns most papers fill the same way). Paragraph three: where the literature disagrees or is silent (the columns with disagreement or empty cells). You have not done magic; you have just made the structure visible.</p>
+</section>
+</section>
+<section id="templates" class="level2" data-number="25.11">
+<h2 data-number="25.11" class="anchored" data-anchor-id="templates"><span class="header-section-number">25.11</span> Templates</h2>
+<p>A reading-note template you can paste at the top of every new note:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># {Paper title}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>**Citation:** {full citation in your preferred style}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>**Zotero key:** {citation key from Better BibTeX}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>**Pass:** {1, 2, or 3}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>**Date read:** {YYYY-MM-DD}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## One-sentence summary</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>(In your own words.)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Claim</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>(What does the paper argue?)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Evidence</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>(How is the claim supported? Methods, data, key results.)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Critique / gap</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>(What did they not address? What would you challenge?)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Connections</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>See also: {[<span class="co">[</span><span class="ot">other-note</span><span class="co">]</span>] or @sec-... or paper key}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cites: {key works the paper builds on}</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cited by: {if known, key works that build on it}</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quotes worth keeping</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A literature-map concept-matrix template (paste into a new markdown file and edit):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Paper <span class="pp">|</span> Population <span class="pp">|</span> Method <span class="pp">|</span> Outcome <span class="pp">|</span> Theoretical frame <span class="pp">|</span> Finding <span class="pp">|</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|---|</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> @key1 <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> @key2 <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercises" class="level2" data-number="25.12">
+<h2 data-number="25.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">25.12</span> Exercises</h2>
+<ol type="1">
+<li>Apply Keshav’s pass 1 and pass 2 to an assigned paper. Submit a one-page summary that includes the contribution in your own words, the method, the main finding, and one limitation.</li>
+<li>Set up a Zotero library with the Better BibTeX add-on and export a <code>.bib</code> file containing at least five papers on a topic you care about.</li>
+<li>Pick an HCI paper and a data-science paper on similar topics. Write a 300-word note explaining how each genre privileges different kinds of evidence and contribution.</li>
+<li>Use Connected Papers (<a href="https://www.connectedpapers.com/" class="uri">https://www.connectedpapers.com/</a>) to find five neighbors of a paper you have read. Identify the “key author” who appears most often in the cluster, and read their most recent paper.</li>
+<li>Annotate a publicly available paper using Hypothes.is (<a href="https://web.hypothes.is/" class="uri">https://web.hypothes.is/</a>). Share the link with a classmate and discuss what you each highlighted.</li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="25.13">
+<h2 data-number="25.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">25.13</span> One-page checklist</h2>
+<ul>
+<li>Did you decide <em>before</em> reading what depth this paper deserves?</li>
+<li>Did you read the abstract and conclusion before the body?</li>
+<li>Did you look at every figure and read every caption?</li>
+<li>Did you write a one-sentence summary in your own words?</li>
+<li>Did you save the paper to Zotero with the right tags and collection?</li>
+<li>Did you record the citation key before you started writing?</li>
+<li>For pass 2 papers, did you write a structured note (claim / evidence / critique / connections)?</li>
+<li>For pass 3 papers, did you re-derive or re-implement the core method?</li>
+<li>When you used an LLM, did you verify its summary against the paper?</li>
+<li>Did you tag at least one connection to another paper or note?</li>
+</ul>
+</section>
+<section id="quick-reference-matching-reading-depth-to-your-goal" class="level2" data-number="25.14">
+<h2 data-number="25.14" class="anchored" data-anchor-id="quick-reference-matching-reading-depth-to-your-goal"><span class="header-section-number">25.14</span> Quick reference: matching reading depth to your goal</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Goal</th>
+<th>Pass</th>
+<th>Time</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Decide whether to cite</td>
+<td>1</td>
+<td>5–10 min</td>
+<td>One-line yes/no</td>
+</tr>
+<tr class="even">
+<td>Summarize for a literature review</td>
+<td>1 + 2</td>
+<td>1 hour</td>
+<td>Three-sentence note</td>
+</tr>
+<tr class="odd">
+<td>Replicate or build on the work</td>
+<td>1 + 2 + 3</td>
+<td>4–6 hours</td>
+<td>Reproduction notes</td>
+</tr>
+<tr class="even">
+<td>Teach a concept to yourself</td>
+<td>1 + 2 (often a survey instead)</td>
+<td>varies</td>
+<td>Notes you can teach from</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>S. Keshav, <a href="https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf">How to Read a Paper</a> (<em>ACM SIGCOMM CCR</em>, 2007) — the canonical 4-page essay on the three-pass method; worth re-reading before every literature search.</li>
+<li>Jane Webster and Richard T. Watson, <a href="https://www.jstor.org/stable/4132319">Analyzing the Past to Prepare for the Future: Writing a Literature Review</a> (<em>MIS Quarterly</em>, 2002) — the standard reference for concept-driven literature reviews in IS-adjacent fields.</li>
+<li>Sönke Ahrens, <a href="https://www.soenkeahrens.de/en/takesmartnotes"><em>How to Take Smart Notes</em></a> (2017) — the modern Zettelkasten manifesto; a useful pairing with Zotero for serious reading habits.</li>
+<li>Zotero, <a href="https://www.zotero.org/support/">Documentation</a> — the free, open-source reference manager most academics now use; the entry point for Better BibTeX, browser connectors, and group libraries.</li>
+<li>Jenny Bryan, <a href="https://speakerdeck.com/jennybc/how-to-name-files">Naming things</a> — the slides on file-naming conventions; applies directly to PDF and notes files in a reading workflow.</li>
+<li>DOAJ, <a href="https://doaj.org/">Directory of Open Access Journals</a> — the canonical index for venue-level open access; useful when you want to filter your searches to OA-by-default journals.</li>
+<li>ACM, <a href="https://www.acm.org/publications/openaccess">Open Access Initiatives</a> and arXiv, <a href="https://info.arxiv.org/about/index.html">About arXiv</a> — two of the largest discipline-relevant open-access channels for IS-adjacent work; pairs with the “Stakes and politics” framing above.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/http-apis.html" class="pagination-link" aria-label="HTTP and Web APIs">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/writing-manuscripts.html" class="pagination-link" aria-label="How to Write Scholarly Manuscripts">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/reading-scholarship.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

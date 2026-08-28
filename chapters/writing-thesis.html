@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>27&nbsp; How to Write a Thesis – Missing Manual for Information Scientists</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/presenting.html" rel="next">
+<link href="../chapters/writing-manuscripts.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ea76130a9f1d4361997a0a078e607410.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-88d7af80adaecb8c8fdc969d839e4aa2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-ea76130a9f1d4361997a0a078e607410.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../chapters/writing-thesis.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Missing Manual for Information Scientists</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I — Practice of Technical Work</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Asking Technical Questions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Technical Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/common-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Common Text Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Reading Official Documentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/debugging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Debugging</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tracebacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Reading Python Tracebacks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/artifacts-have-politics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Artifacts Have Politics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II — Computing Environment</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/operating-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Operating System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/file-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/text-editors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Text Editors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/remote.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Remote Computing</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III — Python Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/package-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Package Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Virtual Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/scripting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Scripting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Regular Expressions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/linting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Code Style</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part IV — Working with Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/data-file-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data File Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/tabular-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Tabular Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/pandas-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">pandas Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/sql-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/http-apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HTTP and Web APIs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part V — Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-scholarship.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">How to Read Scholarly Articles and Books</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/writing-manuscripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/writing-thesis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/presenting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/latex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">How to Use LaTeX</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VI — Project Management</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Project Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Version Control</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/collaboration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Collaboration Mechanics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Automation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/secrets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Environment Variables and Secrets</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part VII — Algorithmic Systems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ai-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Using AI Tools</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llm-internals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">How Language Models Work</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ai-agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Working with AI Agent Frameworks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/evaluating-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Evaluating and Auditing AI Outputs</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/appendix-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/appendix-ai-disclosure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Disclosure: Use of AI in Authoring</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#running-theme-a-thesis-is-one-argument-told-once-at-length-in-your-own-voice" id="toc-running-theme-a-thesis-is-one-argument-told-once-at-length-in-your-own-voice" class="nav-link" data-scroll-target="#running-theme-a-thesis-is-one-argument-told-once-at-length-in-your-own-voice">Running theme: a thesis is one argument, told once, at length, in your own voice</a></li>
+  <li><a href="#what-a-thesis-is-for" id="toc-what-a-thesis-is-for" class="nav-link" data-scroll-target="#what-a-thesis-is-for"><span class="header-section-number">27.1</span> What a thesis is for</a></li>
+  <li><a href="#genres-of-thesis" id="toc-genres-of-thesis" class="nav-link" data-scroll-target="#genres-of-thesis"><span class="header-section-number">27.2</span> Genres of thesis</a></li>
+  <li><a href="#the-proposal" id="toc-the-proposal" class="nav-link" data-scroll-target="#the-proposal"><span class="header-section-number">27.3</span> The proposal</a></li>
+  <li><a href="#the-committee" id="toc-the-committee" class="nav-link" data-scroll-target="#the-committee"><span class="header-section-number">27.4</span> The committee</a></li>
+  <li><a href="#comprehensive-exams-or-qualifying-exams" id="toc-comprehensive-exams-or-qualifying-exams" class="nav-link" data-scroll-target="#comprehensive-exams-or-qualifying-exams"><span class="header-section-number">27.5</span> Comprehensive exams or qualifying exams</a></li>
+  <li><a href="#outlining-and-drafting-at-thesis-scale" id="toc-outlining-and-drafting-at-thesis-scale" class="nav-link" data-scroll-target="#outlining-and-drafting-at-thesis-scale"><span class="header-section-number">27.6</span> Outlining and drafting at thesis scale</a></li>
+  <li><a href="#integrating-papers-into-a-dissertation" id="toc-integrating-papers-into-a-dissertation" class="nav-link" data-scroll-target="#integrating-papers-into-a-dissertation"><span class="header-section-number">27.7</span> Integrating papers into a dissertation</a></li>
+  <li><a href="#revision-and-feedback-cycles" id="toc-revision-and-feedback-cycles" class="nav-link" data-scroll-target="#revision-and-feedback-cycles"><span class="header-section-number">27.8</span> Revision and feedback cycles</a></li>
+  <li><a href="#the-defense" id="toc-the-defense" class="nav-link" data-scroll-target="#the-defense"><span class="header-section-number">27.9</span> The defense</a></li>
+  <li><a href="#finishing" id="toc-finishing" class="nav-link" data-scroll-target="#finishing"><span class="header-section-number">27.10</span> Finishing</a></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">27.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">27.12</span> Worked examples</a>
+  <ul class="collapse">
+  <li><a href="#a-three-paper-dissertation-outline" id="toc-a-three-paper-dissertation-outline" class="nav-link" data-scroll-target="#a-three-paper-dissertation-outline">A three-paper dissertation outline</a></li>
+  <li><a href="#a-12-month-proposal-to-defense-timeline" id="toc-a-12-month-proposal-to-defense-timeline" class="nav-link" data-scroll-target="#a-12-month-proposal-to-defense-timeline">A 12-month proposal-to-defense timeline</a></li>
+  <li><a href="#an-advisor-feedback-log-entry" id="toc-an-advisor-feedback-log-entry" class="nav-link" data-scroll-target="#an-advisor-feedback-log-entry">An advisor-feedback log entry</a></li>
+  </ul></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">27.13</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">27.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">27.15</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-thesis-genres-at-a-glance" id="toc-quick-reference-thesis-genres-at-a-glance" class="nav-link" data-scroll-target="#quick-reference-thesis-genres-at-a-glance"><span class="header-section-number">27.16</span> Quick reference: thesis genres at a glance</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/writing-thesis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/reading-scholarship.html">Part V — Communication</a></li><li class="breadcrumb-item"><a href="../chapters/writing-thesis.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-writing-thesis" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">How to Write a Thesis</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Prerequisites and see-also
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Prerequisites (read first if unfamiliar):</strong> <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>, <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a>.</p>
+<p><strong>See also:</strong> <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a>, <a href="presenting.html" class="quarto-xref"><span>Chapter 28</span></a>, <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>, <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="purpose" class="level2 unnumbered page-columns page-full">
+<h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="../graphics/memes/writing-thesis.png" class="img-fluid" alt="Worst Meme: This is the hardest writing I’ve ever done, This is the hardest writing so far."></p>
+</div></div><p>A thesis is the longest single argument most people will ever write. An MS thesis is a hundred pages. A PhD dissertation is two to three hundred. Either way, it is a different kind of object from a paper — it is sustained, it is yours alone in a way a co-authored paper isn’t, and it has to be coherent across more text than you have ever produced before. The writing problems are different too. In a paper, you can keep the whole argument in your head. In a thesis, you cannot, and the project becomes about how to manage scale: how to outline at three levels, how to revise without losing the thread, how to integrate published or under-review papers into a unified narrative, how to work with a committee, and how to finish.</p>
+<p>This chapter is for someone whose first thesis is on the horizon — an honors student in their senior year, a master’s student starting their second year, a PhD student moving toward a proposal. It does not cover the substance of thesis research; that is the work of your advisor, your committee, and your reading. It covers the meta-skill of how to <em>write the thesis as a coherent document.</em> It speaks generically about U.S. R1 PhD program norms and avoids university-specific policies — for those, talk to your program’s graduate coordinator.</p>
+<p>Read this chapter alongside <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>. The two share a great deal: both are exercises in writing a coherent argument for a critical reader. But a thesis is a bigger room with its own acoustics, and some of what works for a paper does not scale.</p>
+</section>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this chapter, you should be able to:</p>
+<ol type="1">
+<li><p>Distinguish an MS thesis, a monograph PhD dissertation, and a three-paper PhD dissertation, and explain when each is appropriate.</p></li>
+<li><p>Draft a thesis proposal that articulates a research question, situates it in the literature, and lays out a defensible plan and timeline.</p></li>
+<li><p>Choose and work with a thesis committee, and understand the rhythms of comprehensive exams, proposal defenses, and final defenses.</p></li>
+<li><p>Outline a long-form document at chapter, section, and paragraph granularity, and revise it without losing the thread.</p></li>
+<li><p>Integrate published or under-review papers into a unified dissertation narrative.</p></li>
+<li><p>Manage the emotional and logistical realities of long-form writing — drafting, feedback, revision, and finishing.</p></li>
+</ol>
+</section>
+<section id="running-theme-a-thesis-is-one-argument-told-once-at-length-in-your-own-voice" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-a-thesis-is-one-argument-told-once-at-length-in-your-own-voice">Running theme: a thesis is one argument, told once, at length, in your own voice</h2>
+<p>The temptation is to think of a thesis as a series of papers stapled together. Even when the dissertation contains three published papers, that is not what the thesis is. The thesis is one argument, and the papers are evidence for that argument. The introduction names it; the chapters develop it; the conclusion synthesizes it.</p>
+</section>
+<section id="what-a-thesis-is-for" class="level2" data-number="27.1">
+<h2 data-number="27.1" class="anchored" data-anchor-id="what-a-thesis-is-for"><span class="header-section-number">27.1</span> What a thesis is for</h2>
+<p>A thesis serves three audiences, each with different demands.</p>
+<p>The <strong>committee</strong> is the gatekeeper. They have read it, they will sign off on it, they will sit at your defense. They want to be persuaded that you have done a coherent piece of work and that you can defend it.</p>
+<p>Your <strong>future self</strong> is the second audience. You will look at this document in five or ten years and want to remember what you actually did and what you would do differently. The thesis is the most permanent record of a multi-year project, and the only one written from inside.</p>
+<p>Your <strong>future readers</strong> — colleagues, students, hiring committees, the broader research community — are the third. Most of them will read only the introduction and a chapter or two. Make those sections worth their time.</p>
+<p>These three audiences pull in slightly different directions. The committee wants completeness. Your future self wants honest record-keeping. Your future readers want compression. The compromise: write the introduction and conclusion for compression, the chapters for completeness, and the appendices for honesty.</p>
+</section>
+<section id="genres-of-thesis" class="level2" data-number="27.2">
+<h2 data-number="27.2" class="anchored" data-anchor-id="genres-of-thesis"><span class="header-section-number">27.2</span> Genres of thesis</h2>
+<p>Three forms dominate, and the choice between them shapes everything that follows.</p>
+<p><strong>MS thesis.</strong> Roughly fifty to a hundred pages, single coherent contribution, one or two research questions. An MS thesis is often a stepping stone — to a PhD, to industry research, to a portfolio piece. It is shorter than a PhD dissertation and shorter than most PhD students remember. The genre conventions of an MS thesis are closer to a long paper than to a monograph: introduction, methods, results, discussion, conclusion, with a literature review larger than a paper would carry.</p>
+<p><strong>Monograph PhD dissertation.</strong> A hundred-fifty to three hundred pages of sustained argument across chapters. Common in humanities and parts of social science. The strength of a monograph is depth — one big idea, developed across multiple chapters, each chapter doing rhetorical work. The risk is that none of the chapters become standalone publications, and you defend a thousand pages of work that nobody outside the committee will ever read.</p>
+<p><strong>Three-paper PhD dissertation.</strong> Increasingly common in HCI, information science, and computational social science. Three publishable manuscripts plus an introduction and a conclusion that frame them as a unified contribution. The strength is publishing throughput — you finish the dissertation with three papers in the pipeline. The weakness is coherence — if the three papers are too different, the framing introduction has to do enormous work to make them feel like one project.</p>
+<p>The choice depends on your field, your advisor, and the kind of work you do. A computational thesis with three large empirical projects fits the three-paper form naturally. A theoretical thesis with one developing argument fits the monograph. Talk to your advisor early; the choice is not lightly reversible.</p>
+</section>
+<section id="the-proposal" class="level2 page-columns page-full" data-number="27.3">
+<h2 data-number="27.3" class="anchored" data-anchor-id="the-proposal"><span class="header-section-number">27.3</span> The proposal</h2>
+<p>Most PhD programs require a written proposal between coursework and the dissertation work. Master’s programs vary. The proposal is a thirty-to-sixty-page document that contains a literature review, the research questions, the methods, the timeline, an ethics or IRB plan if applicable, and a statement of expected contribution.</p>
+<p>A useful framing: the proposal is the dissertation introduction, written before you have done the work. You will rewrite it later — many sentences will survive, many will not — but the act of writing it forces you to articulate what you don’t yet know. If you cannot state your research question in one sentence at proposal time, the next year of work will drift.</p>
+<p>Pat Thomson’s blog has a long-running series on proposals (<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>) that is the most realistic short read on the genre. Joan Bolker’s <em>Writing Your Dissertation in Fifteen Minutes a Day</em> (<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) is the standard companion on the writing side; Wendy Belcher’s twelve-week framework (cited in <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>) translates to thesis-scale writing once you scale the units up.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://patthomson.net/category/thesis/" class="uri">https://patthomson.net/category/thesis/</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/" class="uri">https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/</a></p></div></div></section>
+<section id="the-committee" class="level2" data-number="27.4">
+<h2 data-number="27.4" class="anchored" data-anchor-id="the-committee"><span class="header-section-number">27.4</span> The committee</h2>
+<p>The committee is the small group of faculty who supervise the thesis. The composition varies by program, but generic norms apply.</p>
+<p>Your <strong>chair</strong> (often your advisor) is the primary supervisor. You meet with them most often; they read drafts most carefully; they shepherd the project through milestones. Their job is to push you toward a defensible thesis and to defend you at the moments when committee disagreement gets sharp.</p>
+<p>The other members are usually two to four additional faculty. At least one is often from outside your department; they ensure the work is legible to a broader audience and they catch field-specific blind spots. Their reading is less continuous than the chair’s; they enter the project at proposal time and intensify their attention near the defense.</p>
+<p>Two practical rules. <strong>Read committee feedback charitably.</strong> A comment that lands as harsh on a Tuesday morning may be entirely reasonable when you re-read it Wednesday afternoon. <strong>Manage conflicting feedback explicitly.</strong> When two committee members disagree about what you should do, escalate to your chair; do not pick one and ignore the other. The chair’s job is to mediate.</p>
+</section>
+<section id="comprehensive-exams-or-qualifying-exams" class="level2" data-number="27.5">
+<h2 data-number="27.5" class="anchored" data-anchor-id="comprehensive-exams-or-qualifying-exams"><span class="header-section-number">27.5</span> Comprehensive exams or qualifying exams</h2>
+<p>Most PhD programs have one. Formats vary widely — written exams, oral exams, paper portfolios, literature reading lists with synthesis essays. The exam usually serves as the gateway from coursework to the proposal. It is field-specific and program-specific; for the precise rules, ask your program’s graduate coordinator. The advice that generalizes: start preparing earlier than you think you need to, treat the reading list as a literature map (see <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a>), and ask former students of your program for their actual study materials.</p>
+</section>
+<section id="outlining-and-drafting-at-thesis-scale" class="level2" data-number="27.6">
+<h2 data-number="27.6" class="anchored" data-anchor-id="outlining-and-drafting-at-thesis-scale"><span class="header-section-number">27.6</span> Outlining and drafting at thesis scale</h2>
+<p>A thesis is too big to outline at one level. You need three levels at once.</p>
+<p><strong>The chapter level.</strong> A one-page table of contents with the title of each chapter, a one-sentence statement of what each chapter does, and the rough word count. This is your map. You will revise it many times; that is fine.</p>
+<p><strong>The section level.</strong> Within each chapter, an outline of the sections and their order. Section-level outlines are where the rhetorical structure of the chapter becomes visible — and where you discover, sometimes painfully, that two of your sections are actually saying the same thing.</p>
+<p><strong>The paragraph level.</strong> For the chapter you are currently drafting, a list of paragraphs with topic-sentence stubs. This is the level where your daily writing happens. A good day is a few topic-sentence stubs turned into paragraphs.</p>
+<p>Anne Lamott’s “shitty first drafts” applies. A thesis chapter has to be drafted ugly and then revised. The most common failure mode is polishing the introduction of chapter one for two months and never writing chapter four. Set a daily writing target — Bolker’s fifteen minutes a day is real — and keep it.</p>
+<p>A second failure mode: writing in inspiration sprints and then disappearing for weeks. Steady throughput beats heroic effort. Belcher and Bolker both make this case. Block protected mornings; treat the writing time as a meeting that doesn’t get rescheduled.</p>
+</section>
+<section id="integrating-papers-into-a-dissertation" class="level2" data-number="27.7">
+<h2 data-number="27.7" class="anchored" data-anchor-id="integrating-papers-into-a-dissertation"><span class="header-section-number">27.7</span> Integrating papers into a dissertation</h2>
+<p>For a three-paper dissertation, the integration is the work that turns three papers into one thesis.</p>
+<p>The <strong>introduction</strong> is where the framing happens. It is not “here are three papers I wrote”; it is “here is one research question, and these three papers approach it from three angles.” Spend real time on this. The introduction is what your future readers will read, and the framing it establishes is what makes the thesis feel like a thesis.</p>
+<p>Each <strong>paper-chapter</strong> typically gets a short preface — a paragraph or two — explaining where it was published (or is under review), how it relates to the others, and what the reader should know coming in. The body of each chapter is usually the paper itself, possibly with adjustments to figure numbers, cross-references, and notation to keep the thesis internally consistent.</p>
+<p>The <strong>conclusion</strong> synthesizes across the three chapters. What did you learn that you could not have learned from any one paper alone? What is the contribution of the dissertation as a whole? Future work?</p>
+<p>A monograph dissertation handles integration differently — the chapters are continuous, with no paper-shaped seams to hide. The introduction and conclusion still do framing, but the chapters are not standalone artifacts.</p>
+</section>
+<section id="revision-and-feedback-cycles" class="level2" data-number="27.8">
+<h2 data-number="27.8" class="anchored" data-anchor-id="revision-and-feedback-cycles"><span class="header-section-number">27.8</span> Revision and feedback cycles</h2>
+<p>The drafting-to-defense workflow has a characteristic shape. You draft a chapter; you give it to your advisor; you revise based on their feedback; you circulate to the committee at proposal or pre-defense; you revise based on their feedback; you defend; you revise once more.</p>
+<p>Each cycle compresses. Advisor feedback on chapter one might run for months; committee feedback at the proposal might run for weeks; pre-defense revision is usually weeks; post-defense revision, days. Plan accordingly.</p>
+<p>Track changes matters. Word’s track-changes mode works for circulating to committee members who don’t use git. LaTeX users can use <code>latexdiff</code> to produce a marked-up PDF showing changes between two versions; see <a href="latex.html" class="quarto-xref"><span>Chapter 29</span></a>. Git is the persistent record; see <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a> for chapter-level branching strategies. Many students keep a <code>dissertation/</code> repo with one chapter per file and use branches for major revisions.</p>
+<p>The 80/20 rule: address most committee comments without argument. The few you choose to push back on, do so in a written response — even when the committee meeting is in person — so there is a record of what you decided and why.</p>
+</section>
+<section id="the-defense" class="level2" data-number="27.9">
+<h2 data-number="27.9" class="anchored" data-anchor-id="the-defense"><span class="header-section-number">27.9</span> The defense</h2>
+<p>The defense is mostly conversational. Your committee has read the document and has already decided whether to pass you; the defense is the formal occasion to confirm that decision and to surface the questions that didn’t fit on the page.</p>
+<p>The public-talk component — the thirty-to-forty-five-minute presentation — is the visible part. See <a href="presenting.html" class="quarto-xref"><span>Chapter 28</span></a> for slide design and timing; the presenting chapter has a section specifically on defenses. The Q&amp;A, often an hour or more, is where committee members ask the questions they care about. Surprises are rare if your advisor has done their job. Prepare for the questions you would ask if you were on the committee, and prepare for the question you most fear; that one is usually asked.</p>
+<p>After the defense, the committee deliberates briefly and tells you the outcome. Most defenses pass with revisions. The revisions are usually minor and have a deadline.</p>
+</section>
+<section id="finishing" class="level2 page-columns page-full" data-number="27.10">
+<h2 data-number="27.10" class="anchored" data-anchor-id="finishing"><span class="header-section-number">27.10</span> Finishing</h2>
+<p>“Done is better than perfect.” This is the hardest part of a thesis to internalize. The dissertation is not the last thing you will ever write; it is one document, and finishing it is a discrete milestone. The Thesis Whisperer blog (<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>) is the most candid public voice on the emotional reality of finishing — read it.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<a href="https://thesiswhisperer.com/" class="uri">https://thesiswhisperer.com/</a></p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://www.proquest.com/products-services/dissertations/" class="uri">https://www.proquest.com/products-services/dissertations/</a></p></div></div><p>Practical end-game logistics: institutional formatting requirements (margins, font, table of contents conventions); ProQuest deposit (<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>) for PhD dissertations; embargo decisions; institutional repository deposit. None of this is intellectual work. All of it has deadlines. Read your program’s formatting guide twice.</p>
+</section>
+<section id="stakes-and-politics" class="level2" data-number="27.11">
+<h2 data-number="27.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">27.11</span> Stakes and politics</h2>
+<p>A thesis is a multi-year commitment to a single sustained argument, and the conditions under which someone can sustain it are not equally distributed.</p>
+<p>Three things to notice. First, <em>who can afford the time</em>. A funded PhD with a teaching or research assistantship is a part-time wage in exchange for full-time scholarly labor, and the wage is set by the institution, not by the cost of living in its city. Students with caregiving obligations, debt, undocumented status, or chronic health conditions face a different calculation than students without those constraints, and “just take an extra year” is not a neutral piece of advice. The visible attrition statistics in PhD programs are downstream of an invisible filtering at admission, in advising, and in funding renewal. Second, <em>advising is a power relationship</em>. The advisor signs off on every milestone, writes every recommendation letter, and shapes the network the student will leave the program with. When the relationship works, the student flourishes; when it does not — through neglect, mismatch, or in the worst cases, harassment — the student often has no recourse short of starting over. Mental-health literature on graduate school documents elevated rates of depression and anxiety relative to comparable non-academic populations. Third, <em>citation, attribution, and “the field” apply to theses too</em>. Whose work you build on, whose names you canonize as the conversation, and whose contributions you credit in your acknowledgements all encode a position. See <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a> for the related framing on authorship and citation.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you plan a thesis, plan also for the conditions that make finishing possible — financial, relational, and emotional — and recognize that those conditions are unevenly distributed.</p>
+</section>
+<section id="worked-examples" class="level2" data-number="27.12">
+<h2 data-number="27.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">27.12</span> Worked examples</h2>
+<section id="a-three-paper-dissertation-outline" class="level3">
+<h3 class="anchored" data-anchor-id="a-three-paper-dissertation-outline">A three-paper dissertation outline</h3>
+<p>A hypothetical dissertation: “Governance on Volunteer-Run Online Platforms.” Three papers, framing introduction, conclusion.</p>
+<p><em>Introduction (8–10k words).</em> Frames the broader question — how do volunteer moderators on platforms like Reddit, Wikipedia, and Discord govern user behavior, and what changes when platforms shift policy from above? Sets up the three angles. Reviews the literature on online governance, content moderation, and volunteer labor. Names the three contributions.</p>
+<p><em>Chapter 2 (Paper 1, published at CSCW 2025).</em> A natural-experiment study of one subreddit before and after a moderation policy change. Method: difference-in-differences with a matched comparison community.</p>
+<p><em>Chapter 3 (Paper 2, under review at </em>New Media &amp; Society<em>).</em> An interview study of twenty volunteer moderators across five platforms. Method: semi-structured interviews and reflexive thematic analysis.</p>
+<p><em>Chapter 4 (Paper 3, in preparation).</em> A computational analysis of the rule-text corpora from a thousand subreddits, looking at how rule complexity correlates with community size and turnover.</p>
+<p><em>Conclusion (3–5k words).</em> Synthesizes across the three chapters. Argues that volunteer moderation shows a characteristic pattern of escalation and burnout that quantitative analysis alone can document but cannot explain, that interview work alone can describe but cannot generalize, and that the three approaches together produce an account neither would alone. Future work.</p>
+<p>The connective tissue is the framing introduction and the conclusion. Each chapter retains its standalone form (with a one-paragraph preface noting publication status) but reads as part of a single argument.</p>
+</section>
+<section id="a-12-month-proposal-to-defense-timeline" class="level3">
+<h3 class="anchored" data-anchor-id="a-12-month-proposal-to-defense-timeline">A 12-month proposal-to-defense timeline</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Month</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Draft proposal outline; share with advisor.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Draft proposal §1 (intro/literature).</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Draft proposal §2 (method/timeline).</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Circulate full proposal to committee; schedule proposal defense.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Proposal defense; revise per feedback. IRB submission if needed.</td>
+</tr>
+<tr class="even">
+<td>6–9</td>
+<td>Data collection / analysis / Paper 3 work.</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>Draft chapter 4 (Paper 3); update introduction.</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>Circulate full dissertation to committee; schedule defense.</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>Defense; final revisions; deposit.</td>
+</tr>
+</tbody>
+</table>
+<p>This is aggressive — most students take longer, and that is normal. The shape is what matters: proposal early, data work in the long middle, defense and deposit at the end.</p>
+</section>
+<section id="an-advisor-feedback-log-entry" class="level3">
+<h3 class="anchored" data-anchor-id="an-advisor-feedback-log-entry">An advisor-feedback log entry</h3>
+<p>Your advisor has commented on a methods section: “I’m not convinced the interview sample is balanced. Why only women moderators?”</p>
+<p>You disagree — the focus on women moderators is intentional and theoretically motivated. Your job is not to argue back; it is to record the decision and the reasoning, calmly, in writing.</p>
+<blockquote class="blockquote">
+<p><em>Advisor feedback (2026-03-12):</em> “Why only women moderators?”</p>
+<p><em>My response:</em> The all-women sample is intentional. Two reasons. First, the existing literature on volunteer moderation has focused largely on men’s experiences (cite Squirrell, Matias). The asymmetry in the literature is the reason for the asymmetry in the sample. Second, my interviews surfaced gendered patterns of harassment and emotional labor that are central to the contribution; a mixed sample would have diluted the analysis. I will revise §3.2 to make this rationale explicit. <em>Discussed with advisor 2026-03-15: agreed on revised framing.</em></p>
+</blockquote>
+<p>The point of the log is not to win the argument; it is to make the decision visible, defensible, and reviewable. When the committee or a reviewer raises the same question later, you have the answer ready.</p>
+</section>
+</section>
+<section id="templates" class="level2" data-number="27.13">
+<h2 data-number="27.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">27.13</span> Templates</h2>
+<p>A proposal outline:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># {Working dissertation title}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>**Advisor:** {name}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>**Committee:** {names}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>**Target proposal defense:** {YYYY-MM-DD}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>**Target final defense:** {YYYY-MM-DD}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## §1 Introduction (~3000 words)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The phenomenon</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The gap</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The research questions</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Roadmap</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## §2 Literature review (~6000 words)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Theme A: ...</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Theme B: ...</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Theme C: ...</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Synthesis: the gap</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## §3 Method (~4000 words)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Study 1: ...</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Study 2: ...</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Study 3: ...</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## §4 Timeline (~500 words + Gantt table)</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## §5 Expected contribution and limitations (~1000 words)</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A chapter outline at three levels (paste at the top of <code>chapter-N.md</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Chapter N: {title}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Section 1: {section title}</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Paragraph 1: {topic-sentence stub}</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Paragraph 2: {topic-sentence stub}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>...</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Section 2: {section title}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Paragraph 1: {topic-sentence stub}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A committee-feedback tracker:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Date <span class="pp">|</span> Source <span class="pp">|</span> Comment <span class="pp">|</span> Decision <span class="pp">|</span> Status <span class="pp">|</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2026-03-12 <span class="pp">|</span> Advisor <span class="pp">|</span> Sample skew? <span class="pp">|</span> Defended in §3.2 <span class="pp">|</span> Resolved <span class="pp">|</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2026-03-19 <span class="pp">|</span> R. Smith <span class="pp">|</span> Add formal analysis <span class="pp">|</span> Adding Appendix B <span class="pp">|</span> In progress <span class="pp">|</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span> ... <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercises" class="level2" data-number="27.14">
+<h2 data-number="27.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">27.14</span> Exercises</h2>
+<ol type="1">
+<li>Write a 250-word “contribution statement” for a hypothetical thesis project of your own. State the question, the approach, and the expected contribution.</li>
+<li>Find a recent PhD dissertation in your university’s institutional repository (in your subfield). Reverse-engineer its outline at chapter and section level. What kind of dissertation is it (MS, monograph, three-paper)? How does the introduction frame the chapters?</li>
+<li>Draft a committee-invitation email to a faculty member you would want on your committee. The email is short — one paragraph on the project, one paragraph on why you are asking them.</li>
+<li>Build a 12-month proposal-to-defense timeline for your own (real or hypothetical) thesis. Mark the dates of the proposal defense, the data-collection windows, and the final defense.</li>
+</ol>
+</section>
+<section id="one-page-checklist" class="level2" data-number="27.15">
+<h2 data-number="27.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">27.15</span> One-page checklist</h2>
+<ul>
+<li>Did you choose the dissertation genre (MS / monograph / three-paper) intentionally and with your advisor?</li>
+<li>Is your research question stated in one sentence somewhere in the proposal?</li>
+<li>Is your committee assembled, and have you confirmed each member can serve?</li>
+<li>Are you outlining at three levels (chapter, section, paragraph)?</li>
+<li>Is your daily writing time blocked and protected?</li>
+<li>Are chapters under version control (see <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>)?</li>
+<li>Are committee comments tracked in writing?</li>
+<li>Did you read your program’s formatting guide <em>before</em> the final-week scramble?</li>
+<li>Have you read about the emotional realities of finishing (Thesis Whisperer)?</li>
+</ul>
+</section>
+<section id="quick-reference-thesis-genres-at-a-glance" class="level2" data-number="27.16">
+<h2 data-number="27.16" class="anchored" data-anchor-id="quick-reference-thesis-genres-at-a-glance"><span class="header-section-number">27.16</span> Quick reference: thesis genres at a glance</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Genre</th>
+<th>Length</th>
+<th>Form</th>
+<th>Strength</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MS thesis</td>
+<td>50–100 pages</td>
+<td>Single project</td>
+<td>Stepping stone</td>
+<td>Compressed scope</td>
+</tr>
+<tr class="even">
+<td>Monograph PhD</td>
+<td>150–300 pages</td>
+<td>Single sustained argument</td>
+<td>Depth</td>
+<td>Chapters never publish</td>
+</tr>
+<tr class="odd">
+<td>Three-paper PhD</td>
+<td>150–250 pages</td>
+<td>Three papers + framing</td>
+<td>Publishing throughput</td>
+<td>Coherence</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📚 Further reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Joan Bolker, <a href="https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/"><em>Writing Your Dissertation in Fifteen Minutes a Day</em></a> (Henry Holt, 1998) — short, durable advice on building a daily writing habit; the title is the method.</li>
+<li>Peg Boyle Single, <a href="https://styluspub.presswarehouse.com/browse/book/9781579222932/Demystifying-Dissertation-Writing"><em>Demystifying Dissertation Writing</em></a> (Stylus, 2009) — a research-backed protocol for outlining, drafting, and revising at thesis scale.</li>
+<li>Pat Thomson, <a href="https://patthomson.net/category/thesis/"><em>patter</em> — thesis category</a> — long-running blog of practical advice from a PhD supervisor; especially good on revision and committee management.</li>
+<li><a href="https://thesiswhisperer.com/">The Thesis Whisperer</a> — Inger Mewburn’s blog and the most candid public voice on the emotional reality of finishing.</li>
+<li>Wendy Laura Belcher, <a href="https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html"><em>Writing Your Journal Article in Twelve Weeks</em></a> (2nd ed., 2019) — a paired resource for the three-paper-dissertation route, since each paper goes through the same workbook.</li>
+<li>Karen Kelsky, <a href="https://theprofessorisin.com/">The Professor Is In</a> — practical advice on the academic job market, advising relationships, and finishing strategy; especially useful when “what comes after the thesis?” needs to be planned.</li>
+<li>Teresa Evans et al., <a href="https://www.nature.com/articles/nbt.4089"><em>Evidence for a mental health crisis in graduate education</em></a> (<em>Nature Biotechnology</em>, 2018) — the empirical backbone for the “Stakes and politics” framing above.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/writing-manuscripts.html" class="pagination-link" aria-label="How to Write Scholarly Manuscripts">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">How to Write Scholarly Manuscripts</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/presenting.html" class="pagination-link" aria-label="How to Present">
+        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">How to Present</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/writing-thesis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
