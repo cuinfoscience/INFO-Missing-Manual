@@ -48,17 +48,8 @@ INFO-Missing-Manual/
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography
 │
-├── parts/
-│   ├── part-1-practice/             # Part I   — Practice of Technical Work
-│   ├── part-2-environment/          # Part II  — Computing Environment
-│   ├── part-3-python/               # Part III — Python Management
-│   ├── part-4-data/                 # Part IV  — Working with Data
-│   ├── part-5-communication/        # Part V   — Communication
-│   ├── part-5-projects/             # Part VI  — Project Management (directory slug retained)
-│   ├── part-6-algorithmic/          # Part VII — Algorithmic Systems (directory slug retained)
-│   └── appendix/
-│       ├── appendix-glossary.qmd        # Appendix A — Glossary
-│       └── appendix-ai-disclosure.qmd   # Appendix B — AI Disclosure
+├── chapters/                        # every chapter and appendix, one flat directory
+│                                    # part grouping and reading order live in _quarto.yml
 │
 ├── graphics/                        # images used in chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
@@ -153,7 +144,7 @@ Released under the [MIT License](LICENSE).
 
 ## AI Disclosure
 
-Portions of this book were drafted with assistance from large language model tools, including Claude. All content has been reviewed and edited by the author. See the [AI Disclosure appendix](parts/appendix/appendix-ai-disclosure.qmd) for the full statement.
+Portions of this book were drafted with assistance from large language model tools, including Claude. All content has been reviewed and edited by the author. See the [AI Disclosure appendix](chapters/appendix-ai-disclosure.qmd) for the full statement.
 
 ## Acknowledgments
 
