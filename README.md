@@ -57,6 +57,7 @@ INFO-Missing-Manual/
 │   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
 │   └── requirements.txt             # (currently empty — generator uses stdlib only)
 ├── _extensions/cuinfo/chapter-meme/ # Quarto shortcode that drives the generator
+├── .github/ISSUE_TEMPLATE/          # issue forms readers use to report problems
 └── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
 ```
 

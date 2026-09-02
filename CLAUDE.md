@@ -58,7 +58,10 @@ INFO-Missing-Manual/
 ├── index.qmd                        # landing page (Introduction)
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography (22 entries)
-├── .github/workflows/build-book.yml # CI: renders HTML + PDF on push/PR
+├── .github/
+│   ├── workflows/build-book.yml     # CI: renders + publishes on push/PR
+│   ├── workflows/labels.yml         # manual run: creates the labels the issue forms use
+│   └── ISSUE_TEMPLATE/              # five issue forms + chooser config (see "Issue templates")
 │
 ├── chapters/                        # every chapter and appendix, one flat directory
 │   │                                # reading order and part grouping live in _quarto.yml
@@ -107,6 +110,7 @@ INFO-Missing-Manual/
 ├── scripts/
 │   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
 │   ├── generate_terminal_figures.py # annotated terminal figures (HTML -> PNG)
+│   ├── sync_issue_chapters.py       # rebuilds the chapter dropdown in every issue form
 │   └── requirements.txt             # (currently empty — generators use stdlib only)
 └── _extensions/cuinfo/chapter-meme/ # Quarto shortcode wiring frontmatter -> generator
     ├── _extension.yml
@@ -412,6 +416,24 @@ Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer
 
 **Remaining `PLACEHOLDER-*` images.** Twelve chapters still reference placeholder PNGs that do not exist. They are all screenshots of third-party GUIs — VS Code (×2), JupyterLab (×2), GitHub web UI (×4), Windows and macOS settings panels (×2), a browser JSON view, and a rendered pandas DataFrame. Unlike terminal sessions, these cannot be honestly simulated and need real captures from a real machine; treat them as an open editorial decision rather than a generation task.
 
+## Issue templates
+
+Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLATE/` — structured YAML forms with dropdowns and required fields, not free-text markdown templates. They were modelled on the sibling repo [Web-Data-Science-Book](https://github.com/cuinfoscience/Web-Data-Science-Book/tree/main/.github/ISSUE_TEMPLATE) and tuned for a novice audience: plain language, reassurance that the reporter does not need to know the fix, and as few required fields as each form can get away with. Quarto's `repo-actions: [issue]` puts a "Report an issue" link on every chapter page that lands on the chooser, so this is the front door most readers will use.
+
+| Form | File | Label | Use |
+|---|---|---|---|
+| Something is wrong | `something-is-wrong.yml` | `broken` | A command fails, steps don't match the reader's computer, dead link, wrong fact |
+| I'm stuck or confused | `im-stuck.yml` | `gap` | Missing or unclear explanation — **and** questions the book doesn't answer |
+| Typo or quick fix | `typo.yml` | `typo` | Three fields; the lowest-friction form |
+| Suggestion | `suggestion.yml` | `suggestion` | Improvements, including "Propose a new chapter or topic" as a kind |
+| Accessibility problem | `accessibility.yml` | `accessibility` | Screen reader, keyboard, contrast, zoom, missing alt text |
+
+`config.yml` disables blank issues and offers two contact links (read the book; not sure which form). Design decisions worth keeping: the "I searched existing issues" checkbox is present but **optional** on every form — a duplicate is cheap to close, a novice bouncing off a required box is a lost report. Questions were folded into the gap form rather than given their own, because GitHub Discussions is not enabled on this repo and a reader's question is itself a gap signal. Adding a sixth form should clear a high bar; the chooser is part of the accessibility surface.
+
+**The chapter dropdown is generated.** Each form's "Which chapter?" options sit between `# BEGIN chapters` and `# END chapters` markers and are rebuilt from `_quarto.yml` plus each chapter's H1 by `scripts/sync_issue_chapters.py` (stdlib only). Numbering matches the rendered book, with the Introduction as Chapter 1. Do not edit that block by hand; run the script after any chapter add, rename, or reorder, and `--check` in review to catch drift. Options outside the markers (e.g. "The book as a whole") are hand-maintained per form.
+
+**Labels are not created automatically.** GitHub silently drops a form's labels if they do not exist in the repository. `.github/workflows/labels.yml` is a manual-trigger workflow that creates or refreshes all five with `gh label create --force`; run it once from the Actions tab after the forms land, and again if a label's color or description changes there. The workflow is the source of truth for label names and colors.
+
 ## Common Tasks
 
 ### Add a new chapter
@@ -421,8 +443,9 @@ Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer
 3.  Add the Prerequisites callout template (copy from any existing chapter).
 4.  Follow the canonical 8-section structure above.
 5.  Register the chapter in `_quarto.yml` under the appropriate `part:`.
-6.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
-7.  Run `quarto preview` and verify the sidebar and cross-references work.
+6.  Run `python scripts/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
+7.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
+8.  Run `quarto preview` and verify the sidebar and cross-references work.
 
 ### Add a cross-reference
 
