@@ -1,0 +1,28 @@
+# Creates (or refreshes) the labels the issue forms in .github/ISSUE_TEMPLATE/
+# apply. GitHub silently drops a form's labels if they do not exist in the
+# repository, so run this once after adding a form, and again whenever a
+# label's color or description changes here. Manual trigger only.
+name: Create issue labels
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or update labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          create() { gh label create "$1" --color "$2" --description "$3" --force; }
+          create broken        d73a4a "Something in the book is wrong or does not work"
+          create gap           0075ca "A reader got stuck: something missing, unclear, or unanswered"
+          create typo          c5def5 "Misspelling, wrong word, or formatting glitch"
+          create suggestion    a2eeef "An improvement or a new topic to cover"
+          create accessibility 7057ff "The website is hard to use with a screen reader, keyboard, zoom, or color"
