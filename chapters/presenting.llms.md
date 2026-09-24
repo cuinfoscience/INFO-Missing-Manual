@@ -12,7 +12,7 @@
 
 A talk is not a paper read aloud. The medium is different, the attention budget is different, and the conventions that work in print fail in front of an audience. Slides full of text put audiences to sleep. Reading from notes turns a fifteen-minute talk into the longest fifteen minutes of the room’s life. Trying to cram every result onto every slide is a recipe for an audience that remembers nothing.
 
-This chapter is a practical guide to designing, rehearsing, and delivering academic talks of the kinds you will actually have to give: a five-minute lightning talk in your first year, a fifteen-minute conference talk, a forty-five-minute job talk, a half-hour thesis-defense presentation, a poster, a lab meeting. The principles transfer across the genres; the specifics adjust. The single best free resource on this material is Patrick Winston’s MIT lecture *How to Speak* ([^1] / video at <https://www.youtube.com/watch?v=Unzc731iCUY>); watch it before you give your next talk.
+This chapter is a practical guide to designing, rehearsing, and delivering academic talks of the kinds you will actually have to give: a five-minute lightning talk in your first year, a fifteen-minute conference talk, a forty-five-minute job talk, a half-hour thesis-defense presentation, a poster, a lab meeting. The principles transfer across the genres; the specifics adjust. The single best free resource on this material is Patrick Winston’s MIT lecture [*How to Speak*](https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/) (also on [video](https://www.youtube.com/watch?v=Unzc731iCUY)); watch it before you give your next talk.
 
 This chapter, like the others in [sec-writing-manuscripts](#sec-writing-manuscripts) and [sec-writing-thesis](#sec-writing-thesis), is about communication craft. It does not assume you have given a talk before. It does assume you are willing to rehearse.
 
@@ -74,19 +74,19 @@ Before you draft a slide, name your audience. Three clean cases.
 
 This is the longest section of the chapter because it is where the most preventable mistakes happen.
 
-**Signal-to-noise ratio.** Every element on a slide either carries information or distracts from it. Distracting elements include: decorative clip art, busy templates, footers with the talk’s title on every slide, page numbers, and your university’s full logotype on every slide. Edward Tufte’s critique of PowerPoint ([^2]) is short and worth reading; the core idea is that the medium pushes you toward bullet lists at the expense of evidence.
+**Signal-to-noise ratio.** Every element on a slide either carries information or distracts from it. Distracting elements include: decorative clip art, busy templates, footers with the talk’s title on every slide, page numbers, and your university’s full logotype on every slide. Edward Tufte’s critique of PowerPoint ([^1]) is short and worth reading; the core idea is that the medium pushes you toward bullet lists at the expense of evidence.
 
 **One idea per slide.** A slide should be readable in five seconds and take one minute to talk through. The heading should be a full sentence that states the takeaway — not “Results” but “Civility increased by 18% in the month after the policy change.” The audience should remember the heading even if they remember nothing else.
 
 **Type.** Minimum 24 point. Aim for 30 point or larger for body text. Sans-serif fonts project better. If you are pasting in a figure with axis labels, make sure the labels are readable from the back of the room. The single most common slide problem is type that is too small.
 
-**Color and accessibility.** Aim for contrast ratios that work on a projector and for audience members with color vision deficiencies. WCAG-style 4.5:1 contrast is a usable target. Use colorblind-safe palettes — ColorBrewer ([^3]) and Viridis are the go-to defaults. Where color encodes meaning, also use shape or pattern, so the slide remains legible if someone can’t distinguish the colors.
+**Color and accessibility.** Aim for contrast ratios that work on a projector and for audience members with color vision deficiencies. WCAG-style 4.5:1 contrast is a usable target. Use colorblind-safe palettes — ColorBrewer ([^2]) and Viridis are the go-to defaults. Where color encodes meaning, also use shape or pattern, so the slide remains legible if someone can’t distinguish the colors.
 
 **Figures over text.** The strongest slides are a figure with a sentence-long heading and one or two annotation labels. The weakest are five bullet points read aloud verbatim. If you must show text, make it parsimonious: a single sentence, a short quote, three terse bullets at most.
 
 **Builds and animations.** Use sparingly. A single build that reveals a curve being added to a chart is good. A spinning logo is bad. Animations should serve the argument; if removing them doesn’t change what the audience understands, remove them.
 
-Two excellent books on slide craft if you want more: Garr Reynolds, *Presentation Zen* ([^4]), and Nancy Duarte, *slide:ology* ([^5]). Both argue for high-image, low-text slides; both have many examples.
+Two excellent books on slide craft if you want more: Garr Reynolds, *Presentation Zen* ([^3]), and Nancy Duarte, *slide:ology* ([^4]). Both argue for high-image, low-text slides; both have many examples.
 
 ## 28.5 Structuring a fifteen-minute talk
 
@@ -157,7 +157,7 @@ For hybrid talks, plan for both audiences. Design slides that work on a projecto
 The tools matter less than which one you’ll actually use; consistency across talks beats any individual tool’s features.
 
 - **Beamer** (LaTeX, see [sec-latex](#sec-latex)). Strong for math-heavy talks; the `metropolis` theme produces clean modern decks.
-- **Quarto Reveal.js** ([^6]). Excellent if you live in Quarto already and want code-and-output slides; integrates with [sec-jupyter](#sec-jupyter) and [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks) workflows.
+- **Quarto Reveal.js** ([^5]). Excellent if you live in Quarto already and want code-and-output slides; integrates with [sec-jupyter](#sec-jupyter) and [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks) workflows.
 - **Keynote / PowerPoint / Google Slides.** What most non-academics use. Fine. Pick the one your collaborators use.
 
 If you already know one tool well, do not switch tools the week before a job talk. The tool is the smallest of your problems.
@@ -300,14 +300,12 @@ First sentence memorized cold.
 > - W3C, [Web Content Accessibility Guidelines (WCAG 2.2)](https://www.w3.org/TR/WCAG22/) — the standard for accessible content; useful for slide contrast, alt text, and caption practices.
 > - ACM SIGACCESS, [Accessible presentation guide](https://www.sigaccess.org/welcome-to-sigaccess/resources/accessible-presentation-guide/) — practical guidance for accessible talks (captioning, microphones, alt text); addresses the access gap raised in “Stakes and politics” above.
 
-[^1]: <https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/>
+[^1]: <https://www.edwardtufte.com/tufte/powerpoint>
 
-[^2]: <https://www.edwardtufte.com/tufte/powerpoint>
+[^2]: <https://colorbrewer2.org/>
 
-[^3]: <https://colorbrewer2.org/>
+[^3]: <https://www.presentationzen.com/>
 
-[^4]: <https://www.presentationzen.com/>
+[^4]: <https://www.duarte.com/books/slideology/>
 
-[^5]: <https://www.duarte.com/books/slideology/>
-
-[^6]: <https://quarto.org/docs/presentations/revealjs/>
+[^5]: <https://quarto.org/docs/presentations/revealjs/>

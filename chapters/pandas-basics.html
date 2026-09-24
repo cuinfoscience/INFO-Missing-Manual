@@ -116,6 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
+<link rel="stylesheet" href="../tools/chapter-meme/chapter-meme.css">
 </head>
 
 <body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -658,7 +659,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p><img src="../graphics/memes/pandas-basics.png" class="chapter-meme img-fluid" alt="Bihw Meme: pd.read_csv(), It Ain't Much But It's Honest Work."></p>
+</div></div>
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
@@ -742,12 +745,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered page-columns page-full">
+<section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-
-<div class="no-row-height column-margin column-container"><div class="">
+<div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/pandas-basics.png" class="img-fluid" alt="Bihw Meme: pd.read_csv(), It Ain’t Much But It’s Honest Work."></p>
-</div></div><p><a href="https://pandas.pydata.org/docs/"><code>pandas</code></a> is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, <code>pandas</code> is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.</p>
+</div>
+<p><a href="https://pandas.pydata.org/docs/"><code>pandas</code></a> is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, <code>pandas</code> is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.</p>
 <p>This chapter is an orientation for students who have literally never used <code>pandas</code> — or who have copied notebook cells from an instructor but never sat down to understand the pieces. The goal is not to teach every method (there are thousands, and the official reference in <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a> is where you look them up). The goal is to give you the vocabulary and the mental model: what a Series and a DataFrame actually are, how indexing and selection work, how the common operations compose, and how to avoid the classic novice traps.</p>
 <p>If you know SQL, several sections will feel like translation. That is a feature — once you see pandas as “SQL against an in-memory table,” a lot of it clicks. See <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a> for the SQL side.</p>
 </section>
@@ -771,19 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-two-data-structures" class="level2 page-columns page-full" data-number="22.1">
 <h2 data-number="22.1" class="anchored" data-anchor-id="the-two-data-structures"><span class="header-section-number">22.1</span> The two data structures</h2>
 <p>Everything in pandas is built on two data structures.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-dataframe-render" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-dataframe-render.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. The rendering includes the row index on the left, bold column headers along the top, and several rows of data, illustrating the tabular structure a DataFrame provides.
-</figcaption>
-</figure>
-</div>
-</div></div><section id="series-a-labeled-1-d-array" class="level3">
+<section id="series-a-labeled-1-d-array" class="level3">
 <h3 class="anchored" data-anchor-id="series-a-labeled-1-d-array">Series: a labeled 1-D array</h3>
 <p>A <strong>Series</strong> is like a Python list, except every element has a label (the index). Think of it as a single column in a spreadsheet.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -801,7 +792,7 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Name: price, dtype: float64</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You access values by label: <code>prices["bread"]</code> returns <code>14.50</code>. You also get vectorized operations for free: <code>prices * 1.1</code> returns a new Series with every price marked up 10%, without a loop.</p>
 </section>
-<section id="dataframe-a-labeled-2-d-table" class="level3">
+<section id="dataframe-a-labeled-2-d-table" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="dataframe-a-labeled-2-d-table">DataFrame: a labeled 2-D table</h3>
 <p>A <strong>DataFrame</strong> is a dict of Series that share an index. Every column is a Series; every row is identified by the shared index.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
@@ -816,6 +807,17 @@ Figure&nbsp;22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. 
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># bread   14.50         1      True</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># milk     7.25         2     False</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># cheese  22.00         5      True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In a notebook, the same DataFrame is drawn as a table instead of printed as text (<a href="#fig-dataframe-render" class="quarto-xref">Figure&nbsp;<span>22.1</span></a>).</p>
+<div id="fig-dataframe-render" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="A JupyterLab code cell labelled [1] that builds a DataFrame from a dictionary with the keys price, quantity, and in_stock and the index apple, bread, milk, and cheese, then displays df. Below it, output [1] is a table: bold row labels apple, bread, milk, and cheese down the left; bold column headers price, quantity, and in_stock across the top; and the values 9.99, 3, True; 14.50, 1, True; 7.25, 2, False; and 22.00, 5, True.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../graphics/pandas-basics/dataframe-render.png" class="img-fluid figure-img" alt="A JupyterLab code cell labelled [1] that builds a DataFrame from a dictionary with the keys price, quantity, and in_stock and the index apple, bread, milk, and cheese, then displays df. Below it, output [1] is a table: bold row labels apple, bread, milk, and cheese down the left; bold column headers price, quantity, and in_stock across the top; and the values 9.99, 3, True; 14.50, 1, True; 7.25, 2, False; and 22.00, 5, True.">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-dataframe-render-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas 3.0, in September 2026. The index labels run in bold down the left and the column names in bold across the top; the index has no column name, because it is not a column.
+</figcaption>
+</figure>
+</div>
 <p>The <code>index</code> is <em>not</em> a column — it’s the row labels, and it is carried through most operations. You can always reset it to a default integer index with <code>df.reset_index()</code>, and promote a column to the index with <code>df.set_index("column_name")</code>.</p>
 </section>
 </section>

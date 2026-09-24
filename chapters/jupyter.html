@@ -116,6 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
+<link rel="stylesheet" href="../tools/chapter-meme/chapter-meme.css">
 </head>
 
 <body class="nav-sidebar docked slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -658,7 +659,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p><img src="../graphics/memes/jupyter.png" class="chapter-meme img-fluid" alt="Who Killed Hannibal? Meme: Out-of-Order Cell Execution, My Jupyter Notebook, Why Would Python Do This?"></p>
+</div></div>
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
@@ -762,12 +765,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="purpose" class="level2 unnumbered page-columns page-full">
+<section id="purpose" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="purpose">Purpose</h2>
-
-<div class="no-row-height column-margin column-container"><div class="">
+<div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/jupyter.png" class="img-fluid" alt="Who Killed Hannibal? Meme: Out-of-Order Cell Execution, My Jupyter Notebook, Why Would Python Do This?"></p>
-</div></div><p>Jupyter notebooks are an effective medium for exploratory analysis because they combine code, results, and narrative. The same flexibility can also create confusion: wrong working directories, out-of-order execution, hidden state, and notebooks that cannot be reproduced. This chapter teaches novices how to launch Jupyter correctly, navigate files, use cells effectively, run shell commands safely, and adopt notebook discipline so work remains interpretable and reproducible.</p>
+</div>
+<p>Jupyter notebooks are an effective medium for exploratory analysis because they combine code, results, and narrative. The same flexibility can also create confusion: wrong working directories, out-of-order execution, hidden state, and notebooks that cannot be reproduced. This chapter teaches novices how to launch Jupyter correctly, navigate files, use cells effectively, run shell commands safely, and adopt notebook discipline so work remains interpretable and reproducible.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -801,19 +804,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Courses/INFO-3010/Project          <span class="co"># 1. go to the project root</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate                <span class="co"># 2. activate the project's environment</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab                              <span class="co"># 3. start the server</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-jupyterlab-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-jupyterlab-overview.png" class="img-fluid figure-img">
+<div id="fig-jupyterlab-overview" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Screenshot of JupyterLab. The file browser on the left is at the project root and lists the folders data, notebooks, and src, and a README.md file. The main area has one tab, explore.ipynb: a heading, Weekly sales; a code cell that imports pandas, reads ../data/raw/sales.csv, and calls df.head(); and the first five rows of the table. At the notebook's top right, the kernel indicator reads Python 3 (ipykernel); the status bar says Idle.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="../graphics/jupyter/jupyterlab-overview.png" class="img-fluid figure-img column-page-inset-right" alt="Screenshot of JupyterLab. The file browser on the left is at the project root and lists the folders data, notebooks, and src, and a README.md file. The main area has one tab, explore.ipynb: a heading, Weekly sales; a code cell that imports pandas, reads ../data/raw/sales.csv, and calls df.head(); and the first five rows of the table. At the notebook's top right, the kernel indicator reads Python 3 (ipykernel); the status bar says Idle.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16.1: ALT: JupyterLab interface after launch, showing the file-browser sidebar on the left with the project’s folders (data/, notebooks/, src/), a notebook open as a tab in the centre pane, and the kernel indicator in the top-right showing the active Python environment.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-jupyterlab-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: JupyterLab 4.6 just after <code>jupyter lab</code>, in September 2026. The file browser on the left shows the project root, because that is where the server was started; the notebook opens as a tab in the centre; and the kernel indicator at the top right names the kernel the notebook runs on, <code>Python 3 (ipykernel)</code>.
 </figcaption>
 </figure>
 </div>
-</div></div><p>Each command matters. The <code>cd</code> puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project’s interpreter and packages, not the system Python. And <code>jupyter lab</code> (or <code>jupyter notebook</code> for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — <code>data/</code>, <code>notebooks/</code>, <code>src/</code>, the README. If it shows something else, stop and try again from the correct folder.</p>
+<p>Each command matters. The <code>cd</code> puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project’s interpreter and packages, not the system Python. And <code>jupyter lab</code> (or <code>jupyter notebook</code> for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — <code>data/</code>, <code>notebooks/</code>, <code>src/</code>, the README (<a href="#fig-jupyterlab-overview" class="quarto-xref">Figure&nbsp;<span>16.1</span></a>). If it shows something else, stop and try again from the correct folder.</p>
 <p>To verify you are in the right place once Jupyter is up, run a single cell at the top of any notebook:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.getcwd())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -853,20 +854,18 @@ Figure&nbsp;16.1: ALT: JupyterLab interface after launch, showing the file-brows
 <h3 class="anchored" data-anchor-id="cell-types">Cell types</h3>
 <p>Every cell in a Jupyter notebook has a <strong>type</strong>, and the type determines what the cell does when you run it. There are only three, and you will use two of them almost all the time.</p>
 <p>A <strong>Code</strong> cell holds Python (or whatever language the kernel speaks) and is sent to the kernel for execution when you run it. Whatever the last expression in the cell evaluates to is displayed below the cell as its <em>output</em>, alongside anything the code explicitly printed. Code cells are the only cells that actually compute anything — they are where the work happens.</p>
-<p>A <strong>Markdown</strong> cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, <code>code spans</code> become monospace, lists become lists, and equations written in LaTeX syntax (<code>$x^2$</code>) become typeset math. Markdown cells are how a notebook becomes a <em>document</em> — the paragraphs between your code cells that tell a reader what you are doing and why.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-jupyter-cell-types" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<p>A <strong>Markdown</strong> cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, <code>code spans</code> become monospace, lists become lists, and equations written in LaTeX syntax (<code>$x^2$</code>) become typeset math. Markdown cells are how a notebook becomes a <em>document</em> — the paragraphs between your code cells that tell a reader what you are doing and why. <a href="#fig-jupyter-cell-types" class="quarto-xref">Figure&nbsp;<span>16.2</span></a> shows one of each.</p>
+<div id="fig-jupyter-cell-types" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Two notebook cells. The first is a code cell labelled [1]: import pandas as pd, then df = pd.read_csv, and df.head(). Under it, output [1] is a table with columns date, store, product, units, and price and rows 0 to 4, all dated 2026-09-01, from the Pearl St and University Hill stores. The second cell is rendered Markdown: a heading, What to check next, and a sentence that ends with the word revenue in bold and units * price in code.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-jupyter-cell-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-jupyter-cell-types.png" class="img-fluid figure-img">
+<img src="../graphics/jupyter/jupyter-cell-types.png" class="img-fluid figure-img" alt="Two notebook cells. The first is a code cell labelled [1]: import pandas as pd, then df = pd.read_csv, and df.head(). Under it, output [1] is a table with columns date, store, product, units, and price and rows 0 to 4, all dated 2026-09-01, from the Pearl St and University Hill stores. The second cell is rendered Markdown: a heading, What to check next, and a sentence that ends with the word revenue in bold and units * price in code.">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-jupyter-cell-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16.2: ALT: A Jupyter notebook showing side-by-side cells. The top cell is a code cell with <code>df.head()</code> and its rendered DataFrame output. The cell below it is a markdown cell whose source contains a heading and a short paragraph, and which is rendered as formatted prose.
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-jupyter-cell-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.2: A code cell and a Markdown cell in JupyterLab 4.6, in September 2026. The code cell ran <code>df.head()</code>, and its output, the first five rows of the table, appears beneath it with the same <code>[1]</code> label. The Markdown cell below has been run too, so it shows a formatted heading and paragraph instead of its source.
 </figcaption>
 </figure>
 </div>
-</div></div><p>A <strong>Raw</strong> cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.</p>
+<p>A <strong>Raw</strong> cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.</p>
 <pre class="text"><code>[code cell]     → sent to kernel → produces output below the cell
 [markdown cell] → rendered as HTML → produces formatted text below
 [raw cell]      → passed through untouched (rarely needed)</code></pre>

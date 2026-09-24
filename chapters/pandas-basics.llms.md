@@ -36,10 +36,6 @@ Almost every pandas operation is a set-wise verb: “filter these rows,” “ad
 
 Everything in pandas is built on two data structures.
 
-![](graphics/PLACEHOLDER-dataframe-render.png)
-
-Figure 22.1: ALT: Jupyter cell output showing a rendered pandas DataFrame. The rendering includes the row index on the left, bold column headers along the top, and several rows of data, illustrating the tabular structure a DataFrame provides.
-
 ### Series: a labeled 1-D array
 
 A **Series** is like a Python list, except every element has a label (the index). Think of it as a single column in a spreadsheet.
@@ -80,6 +76,12 @@ print(df)
 # milk     7.25         2     False
 # cheese  22.00         5      True
 ```
+
+In a notebook, the same DataFrame is drawn as a table instead of printed as text ([Figure fig-dataframe-render](#fig-dataframe-render)).
+
+![A JupyterLab code cell labelled \[1\] that builds a DataFrame from a dictionary with the keys price, quantity, and in_stock and the index apple, bread, milk, and cheese, then displays df. Below it, output \[1\] is a table: bold row labels apple, bread, milk, and cheese down the left; bold column headers price, quantity, and in_stock across the top; and the values 9.99, 3, True; 14.50, 1, True; 7.25, 2, False; and 22.00, 5, True.](../graphics/pandas-basics/dataframe-render.png)
+
+Figure 22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas 3.0, in September 2026. The index labels run in bold down the left and the column names in bold across the top; the index has no column name, because it is not a column.
 
 The `index` is *not* a column — it’s the row labels, and it is carried through most operations. You can always reset it to a default integer index with `df.reset_index()`, and promote a column to the index with `df.set_index("column_name")`.
 
