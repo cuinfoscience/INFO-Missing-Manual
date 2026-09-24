@@ -9,13 +9,13 @@ page and rendered to PNG with headless Chromium at 2x scale, on a 4:3 card.
 
 Usage:
 
-    python scripts/generate_terminal_figures.py            # write graphics/*.png
-    python scripts/generate_terminal_figures.py --check    # fail if PNGs differ
+    python tools/terminal-figures/generate_terminal_figures.py            # write graphics/*.png
+    python tools/terminal-figures/generate_terminal_figures.py --check    # fail if PNGs differ
 
 Chromium is located via $CHROME, then $PLAYWRIGHT_BROWSERS_PATH, then the usual
 system paths; a headless-shell build is preferred (see find_chromium). Standard
 library only, no pip install needed. The PNGs are committed, so CI never runs
-this script — it is an authoring tool, like scripts/generate_chapter_meme.py.
+this script — it is an authoring tool, like tools/chapter-meme/generate_chapter_meme.py.
 
 To add a figure: append an entry to FIGURES and run the script. Annotation
 offsets are character positions into the unescaped line text; `where` places the
@@ -34,7 +34,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parents[2]
 GRAPHICS_DIR = REPO_ROOT / "graphics"
 
 SCALE = 2

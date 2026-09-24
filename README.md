@@ -6,6 +6,12 @@ A reference book for the skills that fall between knowing what to type and worki
 
 **Author:** Brian C. Keegan
 
+> **Help improve this book.** Found a mistake, got stuck, or have an idea? You don't need to know Git or how to fix it.
+> **[Read the contributing guide](CONTRIBUTING.md)**, or go straight to
+> [reporting a problem](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new/choose) ·
+> [fixing a typo in your browser](CONTRIBUTING.md#fix-it-yourself-in-your-browser) ·
+> [suggesting a topic](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=suggestion.yml).
+
 ## Who this is for
 
 Undergraduate students in data science, social science, humanities, and adjacent fields who use Python and computing as tools. No prior CS background assumed. The handbook covers what happens around the code — environments, documentation, debugging, collaboration, and automation — and is designed to be **used as reference documentation** rather than read front-to-back. Drop into any chapter that matches your current problem; each chapter opens with a "Prerequisites and see-also" callout linking to related material if you need more context.
@@ -14,7 +20,7 @@ Undergraduate students in data science, social science, humanities, and adjacent
 
 ### Prerequisites
 
-- **Quarto ≥ 1.9.0** — https://quarto.org/docs/download/ (the `llms-txt` feature requires 1.9.0+)
+- **Quarto 1.10 or later** — https://quarto.org/docs/download/ (CI uses 1.10.18; Quarto 1.9.15 rejects the `llms-txt` setting in `_quarto.yml`)
 - **TinyTeX** (optional) — only needed if you want to render the PDF locally (`quarto install tinytex`). CI renders HTML only.
 
 ### Commands
@@ -47,16 +53,22 @@ INFO-Missing-Manual/
 ├── index.qmd                        # landing page / introduction
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography
+├── CONTRIBUTING.md                  # how to report a problem or contribute (start here)
+├── AGENTS.md                        # instructions for AI agents and contributors
+├── CLAUDE.md                        # imports AGENTS.md, for Claude Code
+├── docs/                            # project records: decisions, hand-off, roadmap, AARs, plans
 │
 ├── chapters/                        # every chapter and appendix, one flat directory
 │                                    # part grouping and reading order live in _quarto.yml
 │
 ├── graphics/                        # images used in chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
-├── scripts/
-│   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
-│   └── requirements.txt             # (currently empty — generator uses stdlib only)
-├── _extensions/cuinfo/chapter-meme/ # Quarto shortcode that drives the generator
+├── tools/                           # supporting code, one folder per tool, each with a README
+│   ├── chapter-meme/                # the {{< chapter-meme >}} shortcode and its generator
+│   ├── terminal-figures/            # annotated terminal illustrations
+│   ├── issue-forms/                 # keeps the issue forms' chapter list in step with the book
+│   ├── shots/                       # screenshot toolkit (recipes, capture, provenance, checks)
+│   └── layout-audit/                # browser checks on a rendered copy of the book
 ├── .github/ISSUE_TEMPLATE/          # issue forms readers use to report problems
 └── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
 ```
@@ -83,7 +95,7 @@ The chapter then invokes the shortcode at the desired location (conventionally j
 {{< chapter-meme >}}
 ```
 
-A Lua shortcode in `_extensions/cuinfo/chapter-meme/` reads the frontmatter, calls `scripts/generate_chapter_meme.py`, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator hits the public [memegen.link](https://memegen.link) API; no Python dependencies are required beyond the stdlib. The cache key includes the template id, the `width`, the `font`, and the lines, so editing any of the four invalidates the cached PNG on the next render.
+A Lua shortcode in `tools/chapter-meme/` (loaded by the `shortcodes:` key in `_quarto.yml`) reads the frontmatter, calls the generator beside it, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator hits the public [memegen.link](https://memegen.link) API; no Python dependencies are required beyond the stdlib. The cache key includes the template id, the `width`, the `font`, and the lines, so editing any of the four invalidates the cached PNG on the next render.
 
 To force a regeneration of every meme (e.g. after changing the default width or font):
 
@@ -106,16 +118,22 @@ quarto render --to html
 
 ## Contributing
 
-Before contributing, read `CLAUDE.md` for the full style guide, chapter structure template, cross-reference syntax, and conventions.
+Contributions of every size are welcome, from a typo report to a new chapter, and most need no programming. **Start with [CONTRIBUTING.md](CONTRIBUTING.md)**: it walks through reporting a problem with the [issue forms](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new/choose), fixing something in your browser with no installs, and making larger changes on your own computer. The full style guide is in [`AGENTS.md`](AGENTS.md), and topics already wanted are in the [roadmap](docs/roadmap.md).
 
-The short version:
+The short version of the style:
 
 - Each content chapter follows the canonical 8-section structure (Purpose → Learning objectives → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
 - Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.
 - Tone: friendly guide, second-person ("you"), empathetic but rigorous.
-- Cross-references: `@sec-<slug>` (see the label table in `CLAUDE.md`).
+- Cross-references: `@sec-<slug>` (see the label table in `AGENTS.md`).
 - Citations: `[@bibkey]`, with entries in `references.bib`.
 - Formatting: `**bold**`, `*italic*`, `` `code` ``, fenced code blocks with language hints.
+
+## For AI agents
+
+Instructions for AI coding agents — Claude Code, Codex, and others — are in [`AGENTS.md`](AGENTS.md). If your agent looks for its own instructions file (`CLAUDE.md`, `GEMINI.md`, `.cursorrules`, and so on), point it at `AGENTS.md`: the repository keeps one set of instructions, and `CLAUDE.md` only imports it.
+
+Project records are in [`docs/`](docs/): the hand-off note ([`docs/handoff.md`](docs/handoff.md)) that says where work stands, the decision log ([`docs/decisions.md`](docs/decisions.md)), the roadmap, after-action reports, and plans. Read the hand-off note and the decision log before starting, and update them when you stop.
 
 ## CI
 

@@ -93,6 +93,11 @@ book:
 website:
   llms-txt: true
 
+# The chapter-meme shortcode lives with its generator in tools/chapter-meme/
+# rather than in an _extensions/ folder; this key loads it for every chapter.
+shortcodes:
+  - tools/chapter-meme/chapter-meme.lua
+
 bibliography: references.bib
 
 format:

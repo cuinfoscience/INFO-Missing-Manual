@@ -1,5 +1,5 @@
 -- chapter-meme: read each chapter's `meme:` YAML frontmatter, hash-check
--- against a sidecar, invoke scripts/generate_chapter_meme.py to produce
+-- against a sidecar, invoke tools/chapter-meme/generate_chapter_meme.py to produce
 -- graphics/memes/<slug>.png if missing or stale, and emit a {.column-margin}
 -- block referencing the PNG.
 --
@@ -98,7 +98,7 @@ return {
 
     local png_abs = project_root .. "/graphics/memes/" .. slug .. ".png"
     local spec_abs = project_root .. "/graphics/memes/" .. slug .. ".spec"
-    local script_abs = project_root .. "/scripts/generate_chapter_meme.py"
+    local script_abs = project_root .. "/tools/chapter-meme/generate_chapter_meme.py"
 
     local spec_payload = template .. "\n" .. width .. "\n" .. font .. "\n" .. table.concat(lines, "\n")
     local hash = hash_hex(spec_payload)

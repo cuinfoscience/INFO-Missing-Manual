@@ -27,7 +27,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install meme generator deps
-        run: pip install -r scripts/requirements.txt
+        run: pip install -r tools/requirements.txt
 
       - name: Render (PR validation)
         if: github.event_name == 'pull_request'

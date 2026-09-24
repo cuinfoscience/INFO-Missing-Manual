@@ -1,5 +1,7 @@
 # Comprehensive review — audit report
 
+> **Note added 2026-09-24.** This report was `REVIEW.md` at the repository root until it moved here; the text below is unchanged. Its links use the April 2026 layout (`parts/part-N-<topic>/<slug>.qmd`); chapters now live at `chapters/<slug>.qmd`. `CLAUDE.md` is now `AGENTS.md`, and the Gap Chapter Backlog it mentions moved to [`docs/roadmap.md`](../roadmap.md), which also tracks which of this report's follow-ups are still open.
+
 This file consolidates the audit findings from the comprehensive review of the *Missing Manual for Information Scientists* carried out across PRs #15–#21. It captures items that were deferred from each part PR rather than fixed inline, plus cross-cutting connectivity findings, recommended `CLAUDE.md` updates, and a list of backlog candidates that remain open.
 
 The goal of this report is not to dictate what gets fixed next. It is to make every deferred decision visible so the author can triage in one place rather than scrolling through seven PR descriptions.
