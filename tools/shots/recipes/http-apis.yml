@@ -1,0 +1,15 @@
+# Screenshots for chapters/http-apis.qmd.
+chapter: http-apis
+figures:
+  - id: browser-json-response
+    kind: capture
+    section: "curl for inspecting"
+    # A hand capture: a cloud session's proxy blocks the GitHub API outside this book's own
+    # repository, and the figure has to show the chapter's own example (docs/decisions.md).
+    url: "https://api.github.com/repos/pandas-dev/pandas"
+    legacy:
+      captured: 2026-09-24
+      by: "hand capture by the maintainer"
+      method: "Firefox's JSON viewer, Raw Data tab with Pretty Print, dark theme, at 1x; cropped by an agent to the top-left 700x590 (no other edits)"
+    drifts: true
+    notes: "To retake: open the URL in Firefox, choose Raw Data and Pretty Print, capture at 1x, crop to the top-left corner through \"html_url\", and run tools/shots/run adopt http-apis --force."
