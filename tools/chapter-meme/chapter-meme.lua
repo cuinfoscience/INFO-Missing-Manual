@@ -1,7 +1,8 @@
 -- chapter-meme: read each chapter's `meme:` YAML frontmatter, hash-check
 -- against a sidecar, invoke tools/chapter-meme/generate_chapter_meme.py to produce
--- graphics/memes/<slug>.png if missing or stale, and emit a {.column-margin}
--- block referencing the PNG.
+-- graphics/memes/<slug>.png if missing or stale, and emit the PNG: in HTML as an
+-- inline copy for narrow screens (wide screens show the chapter's margin-header),
+-- in other formats as a {.column-margin} block.
 --
 -- The shortcode takes no args. Editorial content lives in the chapter's
 -- frontmatter:
@@ -138,6 +139,15 @@ return {
     )
     img.attributes["fig-alt"] = alt
     local para = pandoc.Para({img})
+    -- In HTML the meme heads the right sidebar, above the table of contents: each
+    -- chapter's `margin-header`, written by sync_margin_header.py (issue #30). Quarto
+    -- hides that sidebar below 992 px, so HTML also gets this inline copy, which
+    -- Bootstrap's d-lg-none hides at 992 px and wider. It is deliberately not margin
+    -- content: a margin meme made Quarto collapse the table of contents. Other formats
+    -- keep the margin placement.
+    if quarto.doc.is_format("html") then
+      return pandoc.Div({para}, pandoc.Attr("", {"chapter-meme-inline", "d-lg-none"}, {}))
+    end
     return pandoc.Div({para}, pandoc.Attr("", {"column-margin"}, {}))
   end,
 }

@@ -36,7 +36,11 @@ H1 = re.compile(r"^#\s+(.*?)\s*(\{#[^}]*\})?\s*$")
 
 
 def h1_title(path: str) -> str:
-    for line in (ROOT / path).read_text(encoding="utf-8").splitlines():
+    lines = (ROOT / path).read_text(encoding="utf-8").splitlines()
+    start = 0
+    if lines and lines[0].strip() == "---":  # skip the front matter: its YAML comments start with "# " too
+        start = next((i + 1 for i, line in enumerate(lines[1:], 1) if line.strip() in ("---", "...")), 0)
+    for line in lines[start:]:
         m = H1.match(line)
         if m:
             return m.group(1).strip()

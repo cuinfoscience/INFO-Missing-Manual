@@ -29,6 +29,9 @@ jobs:
       - name: Install meme generator deps
         run: pip install -r tools/requirements.txt
 
+      - name: Check chapter memes' margin headers are current
+        run: python tools/chapter-meme/sync_margin_header.py --check
+
       - name: Render (PR validation)
         if: github.event_name == 'pull_request'
         uses: quarto-dev/quarto-actions/render@v2

@@ -1,0 +1,43 @@
+# Screenshots for chapters/jupyter.qmd, taken from the local JupyterLab fixture.
+# Start it first: bash tools/shots/fixtures/jupyter/start.sh (see its README),
+# and stop it afterwards with stop.sh. Nothing here touches the network.
+chapter: jupyter
+figures:
+  - id: jupyterlab-overview
+    kind: capture
+    section: "Launching Jupyter the right way"
+    url: "http://localhost:8899/lab/tree/notebooks/explore.ipynb?reset"   # ?reset: a clean layout, whatever the last capture left
+    window: [1024, 768]
+    relaxed: "At 800 pixels JupyterLab folds the kernel indicator into an overflow menu and wraps the DataFrame's dates; at 1024 the file browser, the notebook, and the kernel indicator the text describes all fit"
+    targets: {book: {column: page-inset-right}}
+    steps:
+      - wait: {selector: '.jp-Notebook .jp-OutputArea-output table'}
+      # JupyterLab moves the file browser into the notebook's folder about a second after the
+      # notebook appears; clicking home before that is undone. Wait for the move, then go home.
+      - wait: {selector: '.jp-BreadCrumbs-item[data-path="notebooks"]'}
+      - click: {selector: '.jp-BreadCrumbs-home'}
+      - wait: {selector: '.jp-DirListing-item[title^="Name: data"]'}
+      # Changing folder selects and focuses the first item (a blue row), a moment after the
+      # listing appears. Clicks elsewhere and Escape leave it; Ctrl+Space toggles it off.
+      - wait: {selector: '.jp-DirListing-item.jp-mod-selected'}
+      - press: 'Control+Space'
+      - wait: {selector: '.jp-DirListing-item.jp-mod-selected', state: detached}
+      - settle: 1
+    expect: {selector: ['.jp-Toolbar-kernelName']}
+    drifts: true
+    notes: "Local fixture tools/shots/fixtures/jupyter: JupyterLab 4.6.4 and pandas 3.0.6, pinned in its requirements.txt."
+  - id: jupyter-cell-types
+    kind: capture
+    section: "Cell types"
+    url: "http://localhost:8899/lab/tree/notebooks/explore.ipynb?reset"   # ?reset: a clean layout, whatever the last capture left
+    window: [800, 900]            # tall enough that both cells are on screen; the crop is what shows
+    steps:
+      - wait: {selector: '.jp-Notebook .jp-OutputArea-output table'}
+      - wait: {selector: '.jp-BreadCrumbs-item[data-path="notebooks"]'}
+      - click: {selector: '.jp-SideBar.jp-mod-left .lm-TabBar-tab.lm-mod-current'}   # fold the file browser away
+      # Make the last cell the active one, so the active cell's blue border is outside the crop.
+      - click: {selector: '.jp-Notebook .jp-CodeCell >> nth=1 >> .jp-InputPrompt'}
+      - settle: 1
+    crop: {between: ['.jp-Notebook .jp-CodeCell', '.jp-Notebook .jp-MarkdownCell >> nth=1'], pad: [8, 8, -2, 8]}   # stop just inside the cell's blank bottom padding: the active cell's border below reaches a pixel above its own box
+    drifts: true
+    notes: "Local fixture tools/shots/fixtures/jupyter, notebooks/explore.ipynb: the code cell with df.head() and the Markdown cell after it."

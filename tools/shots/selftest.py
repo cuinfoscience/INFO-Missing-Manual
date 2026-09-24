@@ -211,6 +211,7 @@ figures:
     targets: {{slides: {{width: 0.35}}}}
   - {{id: wide, kind: capture, url: "{base}/ok", window: [1000, 500]}}
   - {{id: fits, kind: capture, url: "{base}/ok", window: [{soft_w}, {soft_h}]}}
+  - {{id: between, kind: capture, url: "{base}/marks", crop: {{between: ['#title', '#box'], pad: 4}}}}
   - {{id: relaxed-ok, kind: capture, url: "{base}/ok", window: [960, 720], relaxed: "a test of a clearer view"}}
   - {{id: relaxed-small, kind: capture, url: "{base}/ok", window: [{relaxed_w}, {relaxed_h}], relaxed: "a test"}}
   - id: relaxed-column
@@ -325,7 +326,7 @@ figures:
     print("anchors, markers, legibility, composites")
     code, out = captured = shots("capture", "ch-99", "--only", "marks", "marks-2x", "small-text", "joined",
                                  "wide", "wide-allowed", "fits", "relaxed-ok", "relaxed-small", "relaxed-column",
-                                 "relaxed-too-big")
+                                 "relaxed-too-big", "between")
     marks, marks2, small, joined = newest("marks"), newest("marks-2x"), newest("small-text"), newest("joined")
     said = sections(out)
     over = (f"shows 1000×500 CSS pixels, over the {soft_w}×{soft_h} soft limit; "
@@ -361,6 +362,9 @@ figures:
     expect("a text anchor is the text's own box, not the element's", 39 <= title[0] <= 41
            and title[2] < 300 and 28 <= title[1] and title[3] <= 72, str(title))
     expect("the take records its text sizes", (marks.get("text") or {}).get("median") == 16.0, str(marks.get("text")))
+    between = newest("between")
+    expect("a headless crop between two elements runs from the top of one to the bottom of the other, padded",
+           between.get("ok") is True and between.get("size") == [588, 178], str(between.get("size")) + str(between.get("problems")))
     tex_tools = all(shutil.which(t) for t in ("pdflatex", "pdftocairo"))
     if tex_tools:
         stem = tmp / "out" / "ch-99" / "marks" / (Path(marks.get("image", "x.png")).name.removesuffix(".png") + ".annotated")

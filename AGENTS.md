@@ -11,7 +11,7 @@ People contributing for the first time start at `CONTRIBUTING.md`, the novice-fa
 The book's records live in `docs/`: after-action reports (AARs) and reviews, plans, the roadmap, the decision log, and the hand-off note. `docs/README.md` says how each kind is kept. They are how one session's lessons reach the next, so use them:
 
 - **Before starting work,** read `docs/handoff.md` (where work stands: what is done, paused, waiting on the maintainer, or known to be broken) and `docs/decisions.md` (standing decisions and the reason for each). Don't reverse a recorded decision on your own; if you think one is wrong, say so and let the maintainer decide.
-- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged, and read the screenshot plan plus the upstream screenshot AARs it links (in the companion book *Web Data Science*) before touching `tools/shots` or adding a screenshot.
+- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged, and before touching `tools/shots` or adding a screenshot, read "Patterns and pitfalls" in `tools/shots/README.md`, this book's screenshot AAR (`docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md`), and the screenshot plan with the upstream AARs it links (in the companion book *Web Data Science*).
 - **When the state changes, update the records in the same pull request.** Rewrite `handoff.md` when a session stops or work pauses; add an entry to `decisions.md` when the maintainer decides something; tick off `roadmap.md` items when they land.
 - **After a sprint, or a failure worth learning from,** write an AAR in `docs/aar/` named `AAR_INFO-Missing-Manual_<YYYY-MM-DD>.md`: what the written rules said should happen, what happened, why the two differed, and what changes as a result.
 - **Write rules down.** A rule the maintainer states in conversation does not survive the session. Put it in this file or in `decisions.md`, in the same pull request.
@@ -131,7 +131,8 @@ INFO-Missing-Manual/
 │   └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
 │
 ├── graphics/                        # PNGs referenced from chapters
-│   └── memes/                       # generated chapter memes (PNG + .spec hash)
+│   ├── memes/                       # generated chapter memes (PNG + .spec hash)
+│   └── <slug>/                      # screenshots for one chapter, with provenance.json (tools/shots)
 └── tools/                           # supporting code; every folder has a README
     ├── README.md                    # what each tool does and when it runs
     ├── requirements.txt             # what CI installs (empty: the meme generator is stdlib only)
@@ -139,6 +140,8 @@ INFO-Missing-Manual/
     ├── terminal-figures/            # annotated terminal illustrations (HTML -> PNG)
     ├── issue-forms/                 # rebuilds the chapter dropdown in every issue form
     ├── shots/                       # screenshot toolkit, ported from Web-Data-Science-Book
+    │   ├── recipes/                 # one YAML recipe per chapter with screenshots
+    │   └── fixtures/                # pinned local programs to capture (JupyterLab)
     └── layout-audit/                # browser checks on a rendered book (TOC visibility, column width)
 ```
 
@@ -378,7 +381,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ## Chapter memes
 
-Each chapter declares an optional meme in YAML frontmatter; the rendered PNG appears in the column-margin next to the `## Purpose` section.
+Each chapter declares an optional meme in YAML frontmatter. On wide screens (992 px and up) the rendered PNG heads the right sidebar, directly above the table of contents; on narrower screens it appears at the top of the `## Purpose` section.
 
 **Frontmatter contract** (`chapters/<chapter>.qmd`):
 
@@ -417,6 +420,14 @@ git -c http.postBuffer=524288000 push
 
 The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not need to be configured globally. Smaller meme changes (one or two PNGs) push fine with the default buffer.
 
+**Where the meme appears (issue #30).** A meme in the margin made Quarto collapse the table of contents on every chapter that had one, so the meme now has two copies:
+
+- **Wide screens:** the chapter's `margin-header`, which Quarto places at the top of the right sidebar, above the table of contents. Quarto reads `margin-header` before any filter runs, so it can't be computed during a render: `tools/chapter-meme/sync_margin_header.py` writes it into the chapter's front matter from `meme:`, under a "do not edit" comment. **Run it after adding, removing, or editing a `meme:` block**; CI runs it with `--check` and fails if a chapter is stale.
+- **Narrow screens,** where Quarto hides that sidebar: the shortcode's inline copy (class `chapter-meme-inline`, hidden at 992 px and up by Bootstrap's `d-lg-none`). Other output formats keep the old margin placement.
+- Sizing is in `tools/chapter-meme/chapter-meme.css`, loaded from `_quarto.yml`.
+
+**Keep the first screen of a chapter free of margin content.** Any margin note near the top (a footnote, since `reference-location: margin`, or a `.column-margin` block in Purpose) collapses the table of contents at load, just as the margin meme did. Link inline instead; `tools/layout-audit/audit.py toc` checks every page.
+
 **How the shortcode is loaded.** `_quarto.yml` names it in a project-level `shortcodes:` key (`- tools/chapter-meme/chapter-meme.lua`), so it sits beside the script it calls instead of in an `_extensions/` folder. Don't remove that key: every chapter that calls `{{< chapter-meme >}}` would render the literal shortcode instead of its meme. (An earlier version of this file said the shortcode could only live under `_extensions/`; that was wrong. See `docs/decisions.md`, 2026-09-24.)
 
 **Dependency.** The generator uses Python's standard library only (`urllib.request`); there is no `pip install` step. The build host needs outbound HTTPS to `api.memegen.link` on the first render after a meme's frontmatter changes; subsequent renders read the cached PNG and run offline. CI's GitHub Actions runners have outbound HTTPS by default, so no workflow changes are needed. See [memegen.link](https://github.com/jacebrowning/memegen) for template ids and font choices.
@@ -438,18 +449,21 @@ Two constraints worth knowing before you touch it. **Use a headless-shell build 
 
 Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer) or [asciinema](https://asciinema.org)? They emit animated GIF or SVG, which the PDF build cannot embed; they cannot draw the numbered callouts that carry the teaching; and a recording cannot show a Windows Terminal tab bar without a Windows machine to record on. [charmbracelet/freeze](https://github.com/charmbracelet/freeze) is the closest static alternative and worth revisiting if the book ever wants many unannotated output figures, at the cost of a Go dependency.
 
-**Remaining `PLACEHOLDER-*` images.** Twelve chapters still reference placeholder PNGs that do not exist. They are all screenshots of third-party GUIs — VS Code (×2), JupyterLab (×2), GitHub web UI (×4), Windows and macOS settings panels (×2), a browser JSON view, and a rendered pandas DataFrame. Unlike terminal sessions, these cannot be honestly simulated; they are real captures, made with `tools/shots` (next section) or, for the operating-system panels, by hand on a real machine. Which ones, in what order, is in `docs/plans/2026-09-24-screenshots.md`.
+**Remaining `PLACEHOLDER-*` images.** Nine placeholder PNGs, in seven chapters, still don't exist: VS Code (×2, `text-editors` and `linting`), GitHub's web interface (×4, `version-control` ×2, `collaboration`, `automation`), the Windows and macOS About panels (×2, `operating-system`), and a browser's JSON view (`http-apis`). The screenshot pilot replaced the other three (two JupyterLab views and a rendered DataFrame) in September 2026. Unlike terminal sessions, these cannot be honestly simulated; they are real captures, made with `tools/shots` (next section) or, for the operating-system panels, by hand on a real machine. Which ones, in what order, is in `docs/plans/2026-09-24-screenshots.md`.
 
 ## Screenshots
 
-Screenshots of real pages and programs are made with `tools/shots`, a toolkit ported from the companion book *Web Data Science*: a YAML recipe per chapter (`tools/shots/recipes/<slug>.yml`), guarded capture in Chrome for Testing, review at the size the book shows each figure, and `promote` into `graphics/<slug>/` with a `provenance.json` record. `tools/shots/README.md` is the manual; `tools/shots/UPSTREAM.md` lists what differs from upstream. Follow the rollout in `docs/plans/2026-09-24-screenshots.md`: one pilot chapter first, one chapter per pull request after that.
+Screenshots of real pages and programs are made with `tools/shots`, a toolkit ported from the companion book *Web Data Science*: a YAML recipe per chapter (`tools/shots/recipes/<slug>.yml`), guarded capture in Chrome for Testing, review at the size the book shows each figure, and `promote` into `graphics/<slug>/` with a `provenance.json` record. `tools/shots/README.md` is the manual; `tools/shots/UPSTREAM.md` lists what differs from upstream. Follow the rollout in `docs/plans/2026-09-24-screenshots.md`: the pilot (`jupyter`, plus the DataFrame figure in `pandas-basics`) is done, and each remaining chapter gets its own pull request.
+
+**Before writing a recipe, read "Patterns and pitfalls" in `tools/shots/README.md`.** It is the short list of what the captures so far have taught: how to choose the window and the column, how to get the same take twice from an application that remembers state, and how to keep interface state out of a crop. The [screenshot AAR](docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md) tells the story behind each rule, and `tools/shots/recipes/jupyter.yml` is a worked example with a comment beside each workaround. When a capture teaches you something new, add it to "Patterns and pitfalls", and as a comment in the recipe, in the same pull request.
 
 - **Real or labeled.** A screenshot is a real capture of a real page or program. Never rebuild a real interface by hand with invented content. Diagrams and illustrations are welcome, labeled as what they are; a figure drawn to look like a window (the terminal figures) says so in its caption.
 - **Readable, and not crammed.** A figure shows at most **800×600 CSS pixels** of the screen by default. It may show up to **1024×768** when the larger view **reduces clutter** (a site's desktop layout instead of its narrow one, or enough of the page around the subject that a reader can find it) **and its text still passes the legibility check** where the book shows it. The recipe says why in `relaxed:`, and `tools/shots` checks the text. This book's body column is only 678 px wide, so a 1024-px figure's text shrinks to 66% there: a relaxed figure usually goes in a wider Quarto column (`.column-page-inset-right`, 954 px) and names that column in its recipe. Wider columns cover the table of contents while they are on screen, so use them only where a figure needs one. Anything larger than 1024×768 is an exception, explained in `oversize:`.
 - **Scope first.** Crop to what the text discusses before reaching for a bigger view; for DevTools, zoom DevTools rather than widen the window.
 - **Honest and private.** Captures identify themselves with one User-Agent (`tools/shots/lib/recipes.py`) and pace their requests. No logins, no credentials, no student names or student work, and nothing from the capture machine (a proxy's address, an IP, a location) in frame.
-- **Dated and described.** A figure of something that changes says in its caption when it was captured ("in September 2026"). Every figure has `fig-alt` that transcribes the text and numbers a reader needs from it; 280–440 characters is a good target for a screenshot.
-- **Checked.** Before a pull request that adds or changes a screenshot, run `tools/shots/run sheet <slug>` and look at every take at book size, then `tools/shots/run check`. After changing the toolkit, run `tools/shots/run selftest`; every check must pass, and one real figure must be retaken before the change counts as done.
+- **Programs come from a pinned local fixture.** A program that runs on your own computer (JupyterLab now, perhaps an editor later) is captured from a fixture in `tools/shots/fixtures/<name>/`: pinned versions, made-up data, a scratch copy of the project, settings that silence first-run prompts, and start and stop scripts. Never capture your own setup or a live account, and start every capture from a known state (for JupyterLab, `?reset` on the URL, and a fresh `start.sh` before each full set of captures, since kernels outlive captures). `tools/shots/fixtures/jupyter/` is the model.
+- **Dated and described.** A figure of something that changes says in its caption when it was captured ("in September 2026"). Every figure has `fig-alt` that transcribes the text and numbers a reader needs from it; 280–440 characters is a good target for a screenshot. Write both from the capture itself, not from the placeholder's description, which describes a screen someone imagined, and read the figure against the paragraph beside it: no check catches a figure that contradicts its text.
+- **Checked.** Before a pull request that adds or changes a screenshot, capture the chapter's whole recipe file again (`tools/shots/run capture <slug>`), since one figure's steps can leave state that breaks the next; run `tools/shots/run sheet <slug>` and look at every take at book size, including the crop's edges; then run `tools/shots/run check`. After changing the toolkit, run `tools/shots/run selftest`; every check must pass, and one real figure must be retaken before the change counts as done.
 
 ## Issue templates
 
@@ -478,7 +492,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 3.  Add the Prerequisites callout template (copy from any existing chapter).
 4.  Follow the canonical 8-section structure above.
 5.  Register the chapter in `_quarto.yml` under the appropriate `part:`.
-6.  Run `python tools/issue-forms/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
+6.  If the chapter has a `meme:` block, run `python tools/chapter-meme/sync_margin_header.py`. Then run `python tools/issue-forms/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
 7.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
 8.  Run `quarto preview` and verify the sidebar and cross-references work.
 

@@ -19,7 +19,7 @@ For every page at each window size (`--sizes`, default a phone and three desktop
 
 It exits 1 if any page fails either check, so it can serve as the acceptance test for a layout fix. `-v` names each collapsed page; `--json <file>` writes every page's result.
 
-**September 2026 baseline** (issue [#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): the TOC is collapsed at load on 37 of 41 pages at 1280×800, 1440×900, and 1920×1080. The four where it shows (the Introduction, the Conclusion, and both appendices) are the four without a meme. Memes display at every size.
+**September 2026** (issue [#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): before the fix, the TOC was collapsed at load on 37 of 41 pages at 1280×800, 1440×900, and 1920×1080; the four where it showed were the four without a meme. After moving the meme into the sidebar's `margin-header` (and turning one early footnote in `presenting` into an inline link), it shows on 41 of 41, and the meme displays at 390×844, 820×1180, and all three desktop sizes. Run the audit with those five `--sizes` after any change to the page layout.
 
 ## `column`: how wide are the columns?
 
