@@ -48,7 +48,7 @@ From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-rev
 - [x] **`jupyter.qmd` empty heading.** Filled in September 2026 with a table of the IPython conveniences the chapter teaches.
 - [x] **`presenting.qmd` duplicate table.** The copy in Templates was removed in September 2026; the Quick reference keeps it.
 - [ ] **Stakes voice check.** Read three or four Stakes sections from different parts in a row; if the shared template reads as boilerplate, vary the opening paragraph in two or three tier-1 chapters.
-- [ ] **Inline glossary links.** Link the five terms the review added to the glossary (algorithmic audit, Matilda effect, open access, RLHF, schema) on first use in the chapters that introduce them.
+- [x] **Inline glossary links.** Linked in September 2026 on first use: auditing in `evaluating-ai`, Matilda effects in `writing-manuscripts`, open access in `reading-scholarship`, RLHF in `ai-llm` and `ai-agents`, and schema in `sql-basics`. The RLHF entry now points to `ai-agents` instead of `llm-internals`, which never mentions it.
 
 ## How the backlog got here
 
