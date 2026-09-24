@@ -1,27 +1,21 @@
 # Hand-off note
 
-**Updated 2026-09-24,** at the end of the session that set up `docs/`, `tools/`, the screenshot toolkit, and `CONTRIBUTING.md`. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
+**Updated 2026-09-24,** after #35 merged and the #34 sections were written. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
 
 ## Where things stand
 
-- **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings. Recent merged work: Markdown in Common Text Formats (#27), "Opening a terminal" (#28), generated terminal figures and the `/graphics/` path fix (#29), flat `/chapters/<slug>.html` URLs (#32), and five reader issue forms (#33).
-- **Open pull request from `claude/markdown-chapter-expansion-difpcc`**, not merged. Six commits:
-  1. `CLAUDE.md` renamed to `AGENTS.md` (`CLAUDE.md` imports it); this `docs/` folder, with `REVIEW.md` moved to `aar/` and the backlog moved to [`roadmap.md`](roadmap.md).
-  2. `scripts/` and the meme shortcode moved into `tools/`, one folder per tool with a README; the shortcode now loads through `_quarto.yml`'s `shortcodes:` key; a new `tools/layout-audit/`.
-  3. `tools/shots` vendored from *Web Data Science*, unchanged.
-  4. `tools/shots` adapted: `graphics/<slug>/`, the measured 678-px column, an explicit `--disable-infobars` with a bars guard, and the relaxed 1024×768 tier. Selftest 68 of 68.
-  5. `CONTRIBUTING.md`, linked from the README, the issue chooser and forms, a new pull request template, and `AGENTS.md`.
-  6. Three plans in [`plans/`](plans/): screenshots, #30, and #34.
-- **Verification so far:** a full render (Quarto 1.9.15 with the `llms-txt` key set aside, see below) matched the previous render except for the pages whose text changed, with all 37 memes identical; the issue-form and terminal-figure checks pass; `tools/shots/run check` is clean. CI renders with Quarto 1.10.18.
+- **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings.
+- **Merged 2026-09-24:** #35, which added `AGENTS.md` and this `docs/` folder, moved supporting code into `tools/` (with the screenshot toolkit and the layout audit), added `CONTRIBUTING.md`, and added the plans for screenshots, #30, and #34. The build and the GitHub Pages deploy after the merge both passed.
+- **Open pull request from `claude/markdown-chapter-expansion-difpcc`,** closing #34: a chapter 9 subsection on how much space programming tools take (measured sizes) and a chapter 10 section on cloud storage (`@sec-filesystem-cloud`), each with a dated CU callout sourced from OIT's pages; the repeated files-on-demand advice consolidated; three glossary terms; and these records.
 
 ## Waiting on the maintainer
 
 | Item | What to decide |
 |---|---|
-| This pull request | Review and merge (agents don't merge unless asked). |
+| The open pull request | Review and merge (agents don't merge unless asked). |
 | Screenshots ([plan](plans/2026-09-24-screenshots.md) §8) | Capture identity (User-Agent); pilot chapter (`jupyter` recommended); how to capture VS Code; the source of a real review thread; the Actions run view; "Illustration" in the terminal figures' captions; deleting eight orphaned images; the merge policy; wider columns against the table of contents. |
 | #30 ([plan](plans/2026-09-24-toc-below-meme.md) §4) | Option A (meme above the table of contents, via `margin-header`); a sticky or scrolling meme; its size. |
-| #34 ([plan](plans/2026-09-24-cloud-storage-sections.md) §4) | Sections rather than a chapter; a dated CU callout or not; consolidating the repeated files-on-demand advice; folding chapter 10's trailing sections. |
+| Chapter 10's trailing sections | Fold "downloaded from Canvas" and "unzip" into the body (a review follow-up in [`roadmap.md`](roadmap.md)). |
 | Community files | A `CODE_OF_CONDUCT.md` (for example, the Contributor Covenant). `CONTRIBUTING.md` has a short "Be kind" section, but no formal policy exists. |
 
 ## Known issues
@@ -42,8 +36,8 @@
 
 ## Next, when work resumes
 
-1. Merge this pull request if the maintainer approves it.
+1. Merge the open pull request (#34's sections) if the maintainer approves it.
 2. Settle the decisions above, and record each in [`decisions.md`](decisions.md).
 3. #30, since it also hides the *Edit* and *Report* links: implement option A, and prove it with `tools/layout-audit/audit.py toc`.
 4. The screenshot pilot (`jupyter`), then one chapter per pull request.
-5. #34's sections, with the university details checked against OIT's pages on the day of writing.
+5. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall; update the month in their headings.

@@ -39,6 +39,8 @@ By the end of this chapter, you should be able to:
 
 6.  Apply basic safety practices: avoid destructive moves, manage duplicates, and preserve provenance.
 
+7.  Tell synced, online-only, network, and web-only storage apart, and decide which of your files belong in each.
+
 ## Running theme: "Location is a dependency'' {.unnumbered}
 
 A script, notebook, or application often assumes files are in specific locations. Good file management makes those dependencies explicit and stable.
@@ -66,7 +68,7 @@ When you open File Explorer on Windows (the icon is a manila folder, usually pin
 
 Beyond pointing and clicking, File Explorer rewards a few specific skills. **Search** can be scoped to the current folder or the entire machine, and the difference matters: searching all of `This PC` for `data.csv` will find every CSV on your computer, which is rarely what you want, while searching from inside your project folder limits the result to that project. **Sort** and **view** options (right-click in the main pane or use the View tab) let you order files by name, date modified, type, or size; sorting by date modified is especially useful when you are trying to remember "what did I save yesterday?" In the View tab there are also two toggles you should know exist before you need them: **show file name extensions** and **show hidden items**. The first prevents the classic confusion where `data.csv` and `data.csv.txt` look identical to you in the GUI but are completely different files to your code. The second is occasionally needed when troubleshooting `.env` files, `.git` folders, or other dotfiles. Turn these on temporarily for diagnostics, and turn them off again when you are done so you do not accidentally delete a system file.
 
-A second important Windows-specific concept is **OneDrive sync**. If your account uses OneDrive, your `Documents` folder may not actually live on your laptop — it may live in the cloud, with placeholder files on disk that download on demand when you open them. Sync status icons next to each file or folder tell you what state things are in: a cloud icon means "in the cloud only, not local," a green checkmark means "always kept on this device," and a circular arrow means "currently syncing." For programming and data work, this matters because a script that tries to read a 2 GB CSV will silently trigger a download that may or may not finish before the script tries to use the file. The fix is to right-click any folder you actively work in and select "Always keep on this device," which forces a full local copy.
+A second important Windows-specific concept is **OneDrive sync**. If your account uses OneDrive, your `Documents` folder may not actually live on your laptop: it may live in the cloud, with placeholder files on disk that download only when you open them. The small icons next to each file in File Explorer tell you which is which, and they matter for code, because a script that reads a placeholder has to wait for a download first. @sec-filesystem-cloud explains the icons and how to keep a folder fully on your computer.
 
 ## Access and navigation on macOS
 
@@ -76,7 +78,7 @@ Finder's search box (top-right or `Command + F`) is powerful but defaults to sea
 
 A few system folders are hidden by default — the macOS root, the `~/Library` folder, anything starting with a dot. Treat them as off-limits unless you have a reason to be there: they hold configuration files for the operating system and your applications, and editing them by mistake can break things in subtle ways. When you do need to see them (most often `~/.ssh` for key files, see @sec-remote-computing), the keystroke `Command + Shift + .` toggles hidden items in any Finder window. Use it for the diagnosis you need, then toggle it off so you do not accidentally drag the wrong thing into the trash.
 
-The macOS equivalent of OneDrive's "files on demand" behavior is **iCloud Drive optimization**. If macOS thinks you are running low on disk space, it will quietly evict the least-used files in `Documents` and `Desktop` to iCloud, leaving placeholder icons that re-download when you open them. Same problem, same fix: for any folder where you actually run code, make sure the files are present locally. You can confirm by selecting a file and pressing `Command + I` to bring up the Get Info window, which says whether the file is on your Mac or only in iCloud.
+The macOS equivalent of OneDrive's "files on demand" behavior is **iCloud Drive optimization**. With *Optimize Mac Storage* on, macOS moves documents you haven't opened lately to iCloud when it needs space, leaving placeholders that download again when you open them. Same problem, same fix, both covered in @sec-filesystem-cloud: for any folder where you actually run code, make sure the files are really on your Mac.
 
 ## Organizing work: conventions that scale
 
@@ -176,11 +178,119 @@ When you see one of those errors on a file you expected to own, there are only a
 
 The general habit that prevents permission problems is to **do your real work inside your user home directory** and treat everything outside it as read-only. `~/Courses/`, `~/Projects/`, `~/Documents/` — all fine. `/usr/local/`, `C:\Windows\`, `/System/` — all off-limits. If a tutorial ever tells you to `sudo` something while you are still learning, pause: there is almost always a safer path that does not require administrator rights, and using them casually is the single fastest way to break your computer.
 
+## Files in the cloud: sync, access, and sharing {#sec-filesystem-cloud}
+
+Much of what feels like "your computer" now lives somewhere else as well. A [**sync client**](appendix-glossary.qmd#term-sync-client) (OneDrive, iCloud Drive, Google Drive, Dropbox) keeps a folder on your disk matched to a copy in the cloud. Your university gives you storage you reach through a browser or a network drive. A course's JupyterHub keeps your notebooks on its own server. Each of these behaves differently when the network drops, when two computers edit the same file, and when your account ends. This section is about knowing which kind of storage you are using, and choosing it on purpose.
+
+### Sync, backup, and sharing are different jobs
+
+The three words get used interchangeably, but they protect you from different things:
+
+| | What it does | Protects you from | Does not protect you from |
+|---|---|---|---|
+| **Sync** | Keeps the same files on every device signed in to your account | A lost or broken laptop, once the files have finished syncing | Your own mistakes: a deletion or a bad edit reaches every device within seconds |
+| **Backup** | Keeps earlier versions, in a copy separate from your working files | Deletions, overwritten files, a bad edit last week, ransomware | Nothing, if you have never tested a restore (@sec-os-management) |
+| **Sharing** | Gives other people access to a file or folder | Emailing attachments back and forth | Loss of control: anyone you share with can make their own copy |
+
+Sync services keep some history of their own (you can usually restore an earlier version of a file, or a deleted file, for a limited time), which is better than nothing. A real backup is still a separate copy you can restore even when the sync account is the thing that broke.
+
+### Online-only files: the name is here, the contents are not
+
+To save disk space, sync clients can leave a [**placeholder**](appendix-glossary.qmd#term-online-only-file) on your disk: the file's name and icon appear in File Explorer or Finder, but its contents stay in the cloud until something opens it. OneDrive does this by default on current Windows, and macOS does it for iCloud Drive when *Optimize Mac Storage* is on. For documents this is convenient. For code it is a trap: your script asks for `data/raw/survey.csv`, the operating system has to download it first, and the read either stalls or fails with a confusing error, especially when you are offline.
+
+Each service marks the state with an icon, and each lets you pin a folder so that everything in it stays downloaded:
+
+| Service | Online-only looks like | To keep a folder on your computer |
+|---|---|---|
+| OneDrive (Windows) | a blue cloud | Right-click → **Always keep on this device**. A green circle with a white check means it is pinned; **Free up space** undoes it. |
+| iCloud Drive (macOS) | the *In iCloud* cloud icon | Control-click → **Keep Downloaded**. For a single file, **Download Now**. |
+| Google Drive for desktop | a cloud, in *Stream files* mode | Right-click → **Offline access** → **Available offline**, or switch Drive to *Mirror files*, which keeps everything on your computer. |
+| Dropbox | a cloud ("online-only") | Right-click → **Make available offline**. |
+
+The quickest check from the terminal compares the size a file claims with the space it really uses on disk:
+
+```bash
+# macOS and Linux
+ls -lh data/raw/survey.csv   # the size the file reports, e.g. 4.2M
+du -h data/raw/survey.csv    # space really used: 0, or nearly, if online-only
+```
+
+On Windows, right-click the file, choose **Properties**, and compare **Size** with **Size on disk**; an online-only file takes 0 bytes on disk. The sure fix is not to run projects from a synced folder at all (see "What not to keep in a synced folder" below). If a project must live there, pin its whole folder before you run anything.
+
+### When your Documents folder is really in the cloud
+
+Both operating systems can move your everyday folders into the sync service, and it is easy to agree to it during setup without noticing. On Windows, OneDrive's **folder backup** (OneDrive's settings → **Sync and backup** → **Manage backup**) can move Desktop, Documents, Pictures, and other folders into OneDrive, so `Documents` now lives at a path like `C:\Users\you\OneDrive\Documents`, or, for a school account, `C:\Users\you\OneDrive - <your university>\Documents`. On macOS, iCloud's **Desktop & Documents Folders** option moves both folders into iCloud Drive.
+
+That has two consequences for technical work. First, everything you save in Documents is synced, including project folders you never meant to sync. Second, the path now contains spaces and punctuation, which breaks any command that doesn't quote it (@sec-terminal):
+
+```powershell
+# Fails: the spaces split the path into several arguments
+cd C:\Users\you\OneDrive - Example University\Documents
+
+# Works: the quotes keep it together
+cd "C:\Users\you\OneDrive - Example University\Documents"
+```
+
+You can switch folder backup off for a folder in the same **Manage backup** screen. Microsoft's note on what happens next is worth knowing: files already backed up *stay in the OneDrive folder*, and you move them back yourself. The simplest arrangement is to leave Documents synced for documents and keep projects somewhere else, as below.
+
+### Conflicts: when two copies disagree
+
+If you edit the same file on two computers before they sync, or while one of them is offline, the sync client cannot know which version should win, so it keeps both. The second one appears as a copy with the computer's name or the words "conflicted copy" in its name, such as `report-DESKTOP-4J2K.docx` or `report (Alex's conflicted copy 2026-09-24).docx`. Nothing is lost, but nothing is merged either: you compare the two and keep one. You can avoid most conflicts by closing a file before you switch computers and letting sync finish (watch the icon) before you shut the lid.
+
+### What not to keep in a synced folder
+
+Sync clients are built for documents: a few hundred files that change now and then. Programming projects produce thousands of small files that change constantly, and some tools assume that nothing else is writing to their folders. Keep these out of OneDrive, iCloud Drive, Google Drive, and Dropbox:
+
+- **Virtual environments** (`.venv/`, conda environments). They hold tens of thousands of files and are tied to the computer that made them, so they sync slowly and break on the other machine. They can be rebuilt from `requirements.txt` anyway (@sec-virtual-environments).
+- **Git repositories.** Git and the sync client each assume they are in charge of the folder. When they disagree (two computers, a half-finished sync), you can get conflicted copies inside the hidden `.git/` folder and a damaged repository. Let GitHub be the way a repository moves between computers (@sec-git-github).
+- **Caches and generated files**, such as `__pycache__/` and `node_modules/`: regenerated automatically, and useless on another machine.
+- **Large data files that change often.** Every change uploads the whole file again.
+
+A layout that works: keep active projects in a folder outside sync, such as `~/Projects/` (on Windows, `C:\Users\you\Projects\`, which OneDrive's folder backup does not touch), put their code under Git with a GitHub remote, and use the synced folder for finished documents you want on every device.
+
+### Mounted, synced, or web-only
+
+Not all remote storage behaves like a sync folder. You will meet three kinds, and they differ in what happens when the network goes away:
+
+| Kind | Examples | Works offline? | Good for running code? |
+|---|---|---|---|
+| **Synced folder** | OneDrive, iCloud Drive, Google Drive, Dropbox | Pinned files yes; online-only files no | Only for pinned files, and never for environments or repositories |
+| [**Network drive**](appendix-glossary.qmd#term-network-drive) (mounted) | A department file server: **Map network drive** in File Explorer on Windows (`\\server\share`), **Go → Connect to Server** in Finder on macOS (`smb://server/share`) | No | Slowly: every read crosses the network, and the drive disappears when the network (or the VPN) does |
+| **Web-only** | OneDrive or Google Drive in a browser, files attached in Canvas | No | No: download a copy into your project first |
+
+Files on a server you log in to, such as a lab machine, a research cluster, or a course's JupyterHub, are a fourth case. They stay on that server, and you move copies back and forth with `scp`, `rsync`, or the hub's download button (@sec-remote-computing). Anything you want to keep from such a server, download before the course ends.
+
+### Sharing links and permissions
+
+When you share from OneDrive or Google Drive, you choose who the link works for, and the choice matters more than the button suggests:
+
+- **Anyone with the link:** no sign-in needed; the link can be forwarded, pasted into a chat, or found by someone you never meant to reach.
+- **People in your organization:** anyone with an account at your university.
+- **Specific people:** only the accounts you name. This is the safe default.
+
+Choose view or edit access as well. Never share data about people (survey responses, grades, interview notes) through an anyone-link: a link is not a password. When a project ends, open its sharing settings and remove the links you no longer need.
+
+### Your university account will not last forever
+
+University storage is generous while you are enrolled, and it goes away soon after you leave. Quotas also change: in 2021 Google announced the end of unlimited storage for universities, and schools set their own limits in response. Before your last term ends, copy anything you want to keep (projects, writing, and any data you are allowed to keep) to storage you control, and move your code to a personal GitHub account.
+
+::: {.callout-note}
+## At CU Boulder (checked September 2026)
+
+- **OneDrive** comes with every current student account: 5 TB, with files up to 250 GB. OIT notes the quota may change as Microsoft moves to pooled storage. ([OIT: OneDrive](https://oit.colorado.edu/services/messaging-collaboration/microsoft-365/applications/onedrive))
+- **Google Drive** on your CU account is limited to 5 GB, and OIT points to OneDrive for large files. ([OIT: Google storage limits](https://oit.colorado.edu/services/messaging-collaboration/google-workspace/google-storage-limitations))
+- **After graduation,** you have "approximately 90 days after your degree conferral date" to save files from your CU Google and Microsoft accounts. After that you lose access and the files are deleted, and OIT can't move them for you. Your CU email lasts one year after your degree posts. ([OIT: alumni FAQ](https://oit.colorado.edu/accounts/alumni/faq))
+- **Off campus,** the campus VPN, free to students, reaches resources that only work on the campus network, such as some department file servers. ([OIT software catalog](https://oit.colorado.edu/software-hardware/software-catalog))
+- Some courses and departments run their own JupyterHub; your instructor will tell you if yours does. Its files live on the server, so download what you want to keep.
+
+Details change, and OIT's pages are the source of truth. If something here no longer matches them, please [report it](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=something-is-wrong.yml).
+:::
+
 ## Common student pitfalls (and how to avoid them)
 
 A small number of mistakes account for almost all the file-management pain that beginners suffer, and they are all preventable. The most common one is **working out of `Downloads/` or `Desktop/` forever**: every assignment lands wherever it was downloaded, duplicates accumulate, version `final-2.csv` ends up next to `final-3.csv` next to `data.csv`, and three weeks later nothing can be found. The fix is the one from the previous section — create a stable project root under `Courses/` or `Projects/` and move work there immediately, every time.
 
-The second is **confusing cloud sync with local storage**, which usually shows up as a notebook that cannot find the data file you can clearly see on your screen. The file is not really there; it is a placeholder that OneDrive or iCloud is going to download on demand, and your code reached the read before the download finished (or while you were offline). The fix is to make the project folder always-local: right-click and "Always keep on this device" on Windows, or "Download Now" / "Keep Downloaded" on macOS, before you ever try to run the code.
+The second is **confusing cloud sync with local storage**, which usually shows up as a notebook that cannot find, or hangs on, a data file you can clearly see on your screen. The file is a placeholder that OneDrive or iCloud downloads on demand, and your code reached it before the download finished, or while you were offline. The fix is to keep projects out of synced folders, or pin them so they stay downloaded (@sec-filesystem-cloud).
 
 The third is **accidental extension changes**, where you rename `data.csv` to `data` (because the GUI was hiding the extension and you thought you were renaming the whole filename), or where you save a CSV "as text" and end up with `data.csv.txt`. Both produce the same kind of confusing failure: the file opens in the wrong program, or your code says "no such file." The fix is to turn on **show file extensions** in your file manager and leave it on. The few seconds of cognitive overhead are worth never being burned by this again.
 
@@ -300,6 +410,8 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 5.  Break and fix: move a folder referenced by a notebook/script; then repair it using relative paths.
 
+6.  Find out whether your Documents folder is synced (OneDrive's folder backup on Windows, iCloud's Desktop & Documents Folders on macOS). If it is, choose a folder outside sync for your projects, write down its full path, and check one data file with the size comparison in @sec-filesystem-cloud.
+
 ## One-page checklist
 
 -   I know where my project root is.
@@ -314,6 +426,12 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 -   I understand whether files are local or cloud-on-demand.
 
+-   My projects, environments, and Git repositories live outside synced folders, and my code moves between computers through Git.
+
+-   I share files with specific people, not "anyone with the link," when they contain data about people.
+
+-   I know when my university account ends, and I keep my own copy of anything I want after that.
+
 -   I can show extensions/hidden items when troubleshooting and hide them afterward.
 
 -   I avoid working in system directories and respect permissions.
@@ -322,19 +440,23 @@ The third check, only if the first two pass, is whether the file is sync-strande
 
 ### Windows (typical)
 
--   User home: `C:\Users\\`
+-   User home: `C:\Users\<you>\`
 
--   Documents/Downloads/Desktop under user home
+-   Documents/Downloads/Desktop under user home (or inside OneDrive, if its folder backup is on)
 
--   OneDrive folder (if enabled): typically under user home
+-   OneDrive: `C:\Users\<you>\OneDrive\` for a personal account, `C:\Users\<you>\OneDrive - <organization>\` for a school or work account
+
+-   Google Drive for desktop: its own drive letter, usually `G:\`
 
 ### macOS (typical)
 
--   User home: `/Users//`
+-   User home: `/Users/<you>/`
 
--   Documents/Downloads/Desktop under user home
+-   Documents/Downloads/Desktop under user home (or inside iCloud Drive, if Desktop & Documents Folders is on)
 
--   iCloud Drive appears in Finder sidebar; local availability may vary with storage settings
+-   iCloud Drive: `~/Library/Mobile Documents/com~apple~CloudDocs/`, shown as *iCloud Drive* in the Finder sidebar
+
+-   OneDrive, Google Drive, and Dropbox: folders under `~/Library/CloudStorage/`
 
 Your computer's "file system" is the hierarchy of folders and files where programs and documents are saved as well as the software and hardware for storing and retrieving these data. Windows and macOS are very different operating systems with very different underlying file systems. It is really important that you are able to access and navigate through your computer's file system for everything from downloading files to configuring options. This section will cover how to familiarize yourself with your computer's file system, the location of some important folders, and navigating to new folders you create. In this section, you will do this using the graphical user interfaces (GUI) in macOS or Windows.
 

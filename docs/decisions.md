@@ -15,6 +15,17 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 
 **Where.** `AGENTS.md` ("Project memory"), `README.md` ("For AI agents"), [`README.md`](README.md) in this folder.
 
+## 2026-09-24 · Cloud storage is covered in chapters 9 and 10, with dated CU callouts
+
+**Decision.**
+- Issue #34 is answered with sections in existing chapters, not a new chapter: "How much space your programming tools take" in chapter 9, and "Files in the cloud: sync, access, and sharing" (`@sec-filesystem-cloud`) in chapter 10. The files-on-demand advice, which had been repeated four times across the two chapters, is explained once there.
+- University-specific facts appear only in callouts headed "At CU Boulder (checked <month year>)", each fact linked to the OIT page it came from. The rest of the text stays general, so the book works for readers elsewhere.
+- Sizes in the text are measured, with the date and platform stated, rather than quoted from memory.
+
+**Why.** The maintainer asked for sections in chapters 9 and 10 that close #34, whose reporter asked in particular about the free services CU gives students. Service details and quotas change (Google's 2021 end of unlimited storage is the example), so each one carries the date it was checked and its source.
+
+**Where.** `chapters/operating-system.qmd`, `chapters/file-system.qmd`, and three new glossary terms (network drive, online-only file, sync client). The plan is [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md).
+
 ## 2026-09-24 · A screenshot shows at most 800×600, or 1024×768 when that reduces clutter and stays legible
 
 **Decision.**

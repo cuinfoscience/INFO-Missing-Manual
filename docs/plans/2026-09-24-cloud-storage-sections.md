@@ -1,6 +1,6 @@
 # Plan: cloud storage, sync, and your disk (#34)
 
-**Status:** proposed, 2026-09-24. Addresses [#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34) with new sections in chapter 9 (Operating System, `chapters/operating-system.qmd`) and chapter 10 (Local File System, `chapters/file-system.qmd`), not a new chapter.
+**Status:** implemented 2026-09-24, in the pull request that closed [#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34): new sections in chapter 9 (Operating System, `chapters/operating-system.qmd`) and chapter 10 (Local File System, `chapters/file-system.qmd`), not a new chapter, with the CU callouts included. Folding chapter 10's two trailing sections was left for later (see [`../roadmap.md`](../roadmap.md)).
 
 ## 1. What the issue asks
 
