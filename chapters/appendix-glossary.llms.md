@@ -114,7 +114,7 @@ An interactive prompt that reads code, evaluates it, prints the result, and loop
 
 ### RLHF (Reinforcement Learning from Human Feedback)
 
-The post-training technique that teaches a base language model to follow instructions, refuse harmful requests, and produce useful responses. Human raters compare model outputs and rank them; those rankings train a reward model; the language model is then fine-tuned to maximize that reward. The labeling labor is typically performed by underpaid contract workers and is one of the hidden costs the AI industry externalizes. See [sec-ai-llm](#sec-ai-llm) and [sec-llm-internals](#sec-llm-internals).
+The post-training technique that teaches a base language model to follow instructions, refuse harmful requests, and produce useful responses. Human raters compare model outputs and rank them; those rankings train a reward model; the language model is then fine-tuned to maximize that reward. The labeling labor is typically performed by underpaid contract workers and is one of the hidden costs the AI industry externalizes. See [sec-ai-llm](#sec-ai-llm) and [sec-ai-agents](#sec-ai-agents).
 
 ### Schema
 

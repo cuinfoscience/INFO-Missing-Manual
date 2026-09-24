@@ -67,7 +67,7 @@ SELECT name, city
 FROM customers;
 ```
 
-Use `*` to return every column (fine in the REPL, discouraged in scripts because it couples your code to the current schema):
+Use `*` to return every column (fine in the REPL, discouraged in scripts because it couples your code to the current [schema](../chapters/appendix-glossary.llms.md#term-schema)):
 
 ``` sql
 SELECT *
