@@ -739,11 +739,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.18</span> Exercises</a></li>
   <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">11.19</span> One-page checklist</a></li>
-  <li><a href="#windows-notes-powershell-and-wsl-optional" id="toc-windows-notes-powershell-and-wsl-optional" class="nav-link" data-scroll-target="#windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.20</span> Windows notes: PowerShell and WSL (optional)</a>
-  <ul class="collapse">
-  <li><a href="#two-common-paths" id="toc-two-common-paths" class="nav-link" data-scroll-target="#two-common-paths">Two common paths</a></li>
-  <li><a href="#concept-mapping-high-level" id="toc-concept-mapping-high-level" class="nav-link" data-scroll-target="#concept-mapping-high-level">Concept mapping (high level)</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/terminal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -890,7 +885,7 @@ Figure&nbsp;11.1: Illustration: Windows Terminal with a PowerShell tab open. The
 </tr>
 </tbody>
 </table>
-<p>To confirm which shell you actually landed in, run <code>echo $SHELL</code>. If it prints something ending in <code>zsh</code> or <code>bash</code>, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt — see the section on PowerShell and WSL near the end of this chapter.</p>
+<p>To confirm which shell you actually landed in, run <code>echo $SHELL</code>. If it prints something ending in <code>zsh</code> or <code>bash</code>, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt. Open a Git Bash or WSL tab to follow this chapter as written, or translate as you go: PowerShell has the same ideas under different names. <code>cd</code> works, <code>pwd</code> is also <code>Get-Location</code>, <code>ls</code> and <code>dir</code> both list, and <code>Get-Help &lt;command&gt;</code> replaces <code>man</code> and <code>--help</code>. Pipes (<code>|</code>) exist too, but they pass objects rather than text, so recipes that pipe into <code>grep</code> or <code>wc</code> need rewriting.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1491,23 +1486,6 @@ Commands:
 <li><p>I understand permissions and use <code>sudo</code> only when appropriate.</p></li>
 <li><p>I avoid leaking secrets in commands and history.</p></li>
 </ul>
-</section>
-<section id="windows-notes-powershell-and-wsl-optional" class="level2" data-number="11.20">
-<h2 data-number="11.20" class="anchored" data-anchor-id="windows-notes-powershell-and-wsl-optional"><span class="header-section-number">11.20</span> Windows notes: PowerShell and WSL (optional)</h2>
-<section id="two-common-paths" class="level3">
-<h3 class="anchored" data-anchor-id="two-common-paths">Two common paths</h3>
-<ul>
-<li><p><strong>WSL</strong> gives a Linux-like shell where <code>sudo</code> and Unix commands apply.</p></li>
-<li><p><strong>PowerShell</strong> uses different command names and syntax (but the same mental models: paths, pipes, permissions).</p></li>
-</ul>
-</section>
-<section id="concept-mapping-high-level" class="level3">
-<h3 class="anchored" data-anchor-id="concept-mapping-high-level">Concept mapping (high level)</h3>
-<ul>
-<li><p>Navigation: <code>cd</code>, <code>pwd</code> (<code>Get-Location</code>), listing (<code>ls</code>/<code>dir</code>).</p></li>
-<li><p>Help: <code>–help</code>/<code>man</code> vs <code>Get-Help</code>.</p></li>
-<li><p>Pipes exist in both, but objects vs text differ.</p></li>
-</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1531,7 +1509,6 @@ Commands:
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

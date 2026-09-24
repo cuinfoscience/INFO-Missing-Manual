@@ -74,7 +74,7 @@ Figure 11.1: Illustration: Windows Terminal with a PowerShell tab open. The dro
 | Windows | `wsl --install`, then a WSL tab | `bash` | Work as written |
 | Linux | `Ctrl + Alt + T` | `bash` (or `zsh`) | Work as written |
 
-To confirm which shell you actually landed in, run `echo $SHELL`. If it prints something ending in `zsh` or `bash`, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt — see the section on PowerShell and WSL near the end of this chapter.
+To confirm which shell you actually landed in, run `echo $SHELL`. If it prints something ending in `zsh` or `bash`, you are in a Unix shell and ready to go. If it prints nothing or an error, you are almost certainly in PowerShell or Command Prompt. Open a Git Bash or WSL tab to follow this chapter as written, or translate as you go: PowerShell has the same ideas under different names. `cd` works, `pwd` is also `Get-Location`, `ls` and `dir` both list, and `Get-Help <command>` replaces `man` and `--help`. Pipes (`|`) exist too, but they pass objects rather than text, so recipes that pipe into `grep` or `wc` need rewriting.
 
 > **TIP:**
 >
@@ -912,22 +912,6 @@ If the bytes look like the filename you expected, you are good. If they include 
 - I understand permissions and use `sudo` only when appropriate.
 
 - I avoid leaking secrets in commands and history.
-
-## 11.20 Windows notes: PowerShell and WSL (optional)
-
-### Two common paths
-
-- **WSL** gives a Linux-like shell where `sudo` and Unix commands apply.
-
-- **PowerShell** uses different command names and syntax (but the same mental models: paths, pipes, permissions).
-
-### Concept mapping (high level)
-
-- Navigation: `cd`, `pwd` (`Get-Location`), listing (`ls`/`dir`).
-
-- Help: `–help`/`man` vs `Get-Help`.
-
-- Pipes exist in both, but objects vs text differ.
 
 > **NOTE:**
 >
