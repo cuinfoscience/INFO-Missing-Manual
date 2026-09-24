@@ -378,7 +378,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ## Chapter memes
 
-Each chapter declares an optional meme in YAML frontmatter; the rendered PNG appears in the column-margin next to the `## Purpose` section.
+Each chapter declares an optional meme in YAML frontmatter. On wide screens (992 px and up) the rendered PNG heads the right sidebar, directly above the table of contents; on narrower screens it appears at the top of the `## Purpose` section.
 
 **Frontmatter contract** (`chapters/<chapter>.qmd`):
 
@@ -416,6 +416,14 @@ git -c http.postBuffer=524288000 push
 ```
 
 The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not need to be configured globally. Smaller meme changes (one or two PNGs) push fine with the default buffer.
+
+**Where the meme appears (issue #30).** A meme in the margin made Quarto collapse the table of contents on every chapter that had one, so the meme now has two copies:
+
+- **Wide screens:** the chapter's `margin-header`, which Quarto places at the top of the right sidebar, above the table of contents. Quarto reads `margin-header` before any filter runs, so it can't be computed during a render: `tools/chapter-meme/sync_margin_header.py` writes it into the chapter's front matter from `meme:`, under a "do not edit" comment. **Run it after adding, removing, or editing a `meme:` block**; CI runs it with `--check` and fails if a chapter is stale.
+- **Narrow screens,** where Quarto hides that sidebar: the shortcode's inline copy (class `chapter-meme-inline`, hidden at 992 px and up by Bootstrap's `d-lg-none`). Other output formats keep the old margin placement.
+- Sizing is in `tools/chapter-meme/chapter-meme.css`, loaded from `_quarto.yml`.
+
+**Keep the first screen of a chapter free of margin content.** Any margin note near the top (a footnote, since `reference-location: margin`, or a `.column-margin` block in Purpose) collapses the table of contents at load, just as the margin meme did. Link inline instead; `tools/layout-audit/audit.py toc` checks every page.
 
 **How the shortcode is loaded.** `_quarto.yml` names it in a project-level `shortcodes:` key (`- tools/chapter-meme/chapter-meme.lua`), so it sits beside the script it calls instead of in an `_extensions/` folder. Don't remove that key: every chapter that calls `{{< chapter-meme >}}` would render the literal shortcode instead of its meme. (An earlier version of this file said the shortcode could only live under `_extensions/`; that was wrong. See `docs/decisions.md`, 2026-09-24.)
 
@@ -478,7 +486,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 3.  Add the Prerequisites callout template (copy from any existing chapter).
 4.  Follow the canonical 8-section structure above.
 5.  Register the chapter in `_quarto.yml` under the appropriate `part:`.
-6.  Run `python tools/issue-forms/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
+6.  If the chapter has a `meme:` block, run `python tools/chapter-meme/sync_margin_header.py`. Then run `python tools/issue-forms/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
 7.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
 8.  Run `quarto preview` and verify the sidebar and cross-references work.
 

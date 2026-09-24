@@ -9,7 +9,7 @@ New chapters follow the canonical structure in `AGENTS.md` ("Style Guide"), get 
 Larger pieces with a written plan, waiting on the maintainer's decisions (listed in each plan and in [`handoff.md`](handoff.md)):
 
 - [ ] **Screenshots for the twelve placeholders**, then the interface-heavy chapters, with `tools/shots`: [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md).
-- [ ] **The table of contents below the chapter meme** ([#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md).
+- [x] **The table of contents below the chapter meme** ([#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md). Done in the pull request that closed #30 (September 2026).
 - [x] **Cloud storage, sync, and your disk** ([#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34)), in chapters 9 and 10: [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md). Done in the pull request that closed #34 (September 2026); the plan's optional folding of chapter 10's trailing sections is still open below.
 
 ## Chapter and section candidates

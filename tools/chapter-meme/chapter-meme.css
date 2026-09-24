@@ -1,0 +1,21 @@
+/* Chapter memes (tools/chapter-meme/README.md).
+   Wide screens (992 px and up): the meme heads the right sidebar, above the table of
+   contents, as the chapter's margin-header. Narrow screens, where Quarto hides that
+   sidebar: the shortcode's inline copy (.chapter-meme-inline, hidden by d-lg-none on
+   wide screens) shows at the top of the Purpose section instead. Issue #30. */
+
+.quarto-margin-header .chapter-meme {
+  display: block;
+  width: 100%;
+  max-height: 15rem;
+  object-fit: contain;
+  object-position: left top;
+  margin-bottom: 0.5rem;
+}
+
+.chapter-meme-inline img {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  margin: 0.25rem auto 1.25rem;
+}

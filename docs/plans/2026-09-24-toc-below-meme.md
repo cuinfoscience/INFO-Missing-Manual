@@ -1,6 +1,6 @@
 # Plan: the table of contents, consistently below the chapter meme (#30)
 
-**Status:** proposed, 2026-09-24. Closes [#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30) when done.
+**Status:** implemented 2026-09-24 (option A, sticky, memes up to 15rem tall), in the pull request that closed [#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30). Two findings changed the implementation: a Lua filter cannot set `margin-header` (Quarto reads it before filters run), so a generator writes it into the front matter; and a footnote in `presenting`'s Purpose collapsed the table of contents the same way the meme did, so it became an inline link.
 
 ## 1. The problem
 

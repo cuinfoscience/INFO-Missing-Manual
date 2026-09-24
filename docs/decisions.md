@@ -15,6 +15,18 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 
 **Where.** `AGENTS.md` ("Project memory"), `README.md` ("For AI agents"), [`README.md`](README.md) in this folder.
 
+## 2026-09-24 · The chapter meme heads the right sidebar, above the table of contents
+
+**Decision.**
+- On screens 992 px and wider, each chapter's meme is its `margin-header`, at the top of the right sidebar with the table of contents directly below. On narrower screens, where Quarto hides that sidebar, an inline copy shows at the top of Purpose. PDF output keeps the margin placement.
+- The `margin-header` is written into each chapter's front matter from `meme:` by `tools/chapter-meme/sync_margin_header.py`, and CI fails if it is stale.
+- The sidebar stays sticky (Quarto's default), with the meme at most 15rem tall; a long table of contents scrolls inside the sidebar.
+- The first screen of a chapter carries no margin content: no footnotes (they become margin notes) and no `.column-margin` blocks in Purpose.
+
+**Why.** Issue #30: Quarto collapses the table of contents whenever margin content overlaps it, so the margin meme hid it at load on 37 of 41 pages, along with *Edit this page* and *Report an issue*. The maintainer approved the plan's option A. A Lua filter could not set `margin-header` (Quarto reads it before filters run), hence the generator. The sticky sidebar and the size were the plan's defaults, taken as given when the maintainer asked for the fix.
+
+**Where.** `tools/chapter-meme/` (shortcode, `sync_margin_header.py`, `chapter-meme.css`), `.github/workflows/build-book.yml`, `AGENTS.md` ("Chapter memes"). Verified with `tools/layout-audit/audit.py toc`: 41 of 41 pages at three desktop sizes, with a meme showing at phone and tablet sizes too.
+
 ## 2026-09-24 · Cloud storage is covered in chapters 9 and 10, with dated CU callouts
 
 **Decision.**

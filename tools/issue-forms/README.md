@@ -30,4 +30,5 @@ After adding, removing, renaming, or reordering a chapter. Nothing in CI runs it
 ## Things to know
 
 - The parser reads `_quarto.yml` line by line rather than as YAML: it looks for the `  chapters:` and `  appendices:` keys under `book:` and the `.qmd` items beneath them. A top-level key ends the book block. If you restructure `_quarto.yml`, run `--check` to confirm the chapter count still matches the sidebar.
+- A chapter's title is the first `# ` heading after its front matter. The front matter is skipped because YAML comments start with `# ` too: every chapter with a meme carries a generated `# margin-header: …` comment there (see `tools/chapter-meme/`), which the script would otherwise take for the title.
 - The labels these forms apply are created by the manual workflow `.github/workflows/labels.yml`, not by this script. See "Issue templates" in `AGENTS.md`.

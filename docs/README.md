@@ -18,7 +18,7 @@ Read [`handoff.md`](handoff.md) and [`decisions.md`](decisions.md) before starti
 |---|---|
 | [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-review.md) | The audit report from the comprehensive review (PRs #15–#22): what the review delivered and the judgment calls it deferred to the author. It was `REVIEW.md` at the repository root until September 2026. |
 | [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md) | Real screenshots for the twelve placeholders and beyond, with `tools/shots`: routes, milestones, the pilot, and the decisions it needs. Proposed. |
-| [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md) | Issue #30: keep the table of contents open by putting the chapter meme above it in the right sidebar. Proposed; the approach is tested. |
+| [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md) | Issue #30: keep the table of contents open by putting the chapter meme above it in the right sidebar. Implemented. |
 | [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md) | Issue #34: new sections on how much space tools take (chapter 9) and on cloud sync, access, and sharing (chapter 10). Implemented. |
 
 ## Records kept elsewhere

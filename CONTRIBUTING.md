@@ -18,7 +18,7 @@ You'll need a free [GitHub account](https://github.com/signup) for all of these.
 
 ## Reporting a problem
 
-Every chapter page has a **Report an issue** link. On a wide screen it sits at the right, under the page's table of contents: if you see only an **On this page** button there, click it. On a phone it is at the bottom of the page. The link opens a menu of the five forms in the table above; each asks only for what it needs.
+Every chapter page has a **Report an issue** link. On a wide screen it sits at the right, at the end of the page's table of contents (scroll that list if the chapter is long). On a phone it is at the bottom of the page. The link opens a menu of the five forms in the table above; each asks only for what it needs.
 
 - **You don't need the fix.** "I got stuck at step 3" is enough.
 - **Don't worry about duplicates.** A quick look at the [open issues](https://github.com/cuinfoscience/INFO-Missing-Manual/issues) helps, but a duplicate is easy to close and a missing report is lost.

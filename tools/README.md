@@ -4,7 +4,7 @@ The code that supports the book but isn't part of it: generators for the book's 
 
 | Folder | What it does | When it runs |
 |---|---|---|
-| [`chapter-meme/`](chapter-meme/) | The `{{< chapter-meme >}}` shortcode and its generator: turns a chapter's `meme:` frontmatter into `graphics/memes/<slug>.png` | During every render. It only fetches from memegen.link when a meme's frontmatter changed. |
+| [`chapter-meme/`](chapter-meme/) | The `{{< chapter-meme >}}` shortcode and its generator: turns a chapter's `meme:` frontmatter into `graphics/memes/<slug>.png`, and `sync_margin_header.py`, which puts that meme above the table of contents | The shortcode during every render (it only fetches from memegen.link when a meme changed); the sync script by hand after editing a meme, and with `--check` in CI |
 | [`terminal-figures/`](terminal-figures/) | Draws the annotated terminal illustrations (`graphics/*-annotated.png`, `ssh-connected.png`, and others) | By hand, after editing a figure |
 | [`issue-forms/`](issue-forms/) | Rebuilds the "Which chapter?" dropdown in every issue form from `_quarto.yml` | By hand, after adding, renaming, or reordering a chapter |
 | [`shots/`](shots/) | Screenshot toolkit ported from *Web Data Science*: recipes, guarded capture, provenance, legibility checks | By hand, per chapter |
