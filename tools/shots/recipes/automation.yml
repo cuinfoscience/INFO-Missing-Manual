@@ -1,0 +1,22 @@
+# Screenshots for chapters/automation.qmd: this book's own CI, signed out.
+# The maintainer chose the signed-out view (docs/decisions.md): step names and checks, no logs.
+chapter: automation
+figures:
+  - id: github-actions-run
+    kind: capture
+    section: "The automation ladder"
+    # One fixed job: the deploy after #38 merged, run #69. Its step list includes a step
+    # skipped on push ("Render (PR validation)"), which the caption points out.
+    url: "https://github.com/cuinfoscience/INFO-Missing-Manual/actions/runs/36055096074/job/107819930522"
+    # At 800 GitHub shows the job's steps beside a narrow sidebar; the window is tall so all
+    # thirteen steps are on screen, and the crop decides what shows.
+    window: [800, 1100]
+    steps:
+      - wait: {selector: "check-steps"}
+      - wait: {selector: "check-step >> nth=12"}
+      - settle: 1
+    # The job panel alone: its header ("build-deploy succeeded ... in 2m 59s") and every step.
+    crop: {left: 264, top: 430, width: 528, height: 600}
+    expect: {selector: ["check-steps"]}
+    drifts: true
+    notes: "This book's repository, signed out: GitHub hides step logs ('Sign in to view logs') but lists the steps. Logs expire after the repository's retention period; the step list is what the figure needs."

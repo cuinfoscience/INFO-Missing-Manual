@@ -4,6 +4,20 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-24 · Order of work: screenshots, then polish, then new sections
+
+**Decision** (the maintainer's answers to a scoping round after #38 merged):
+
+- **Order:** finish the screenshots first, then polish the existing chapters, then add new sections. There is no deadline; one pull request at a time, which the maintainer reviews and merges.
+- **Polish:** the stranded trailing sections in `file-system` and `terminal` are folded into the body where they add something, and the rest is cut. For the Stakes sections, the agent reads several side by side and reports which read as boilerplate, with sample rewrites; the maintainer picks.
+- **The roadmap keeps every candidate,** in this order: debuggers and second-week Git; cloud notebooks and out-of-memory data; data dictionaries and data ethics; then profiling, reproducible randomness, diagram literacy, and editor automation.
+- **`http-apis`' JSON figure is captured by hand** by the maintainer, from `api.github.com/repos/pandas-dev/pandas`, the chapter's own example. A cloud session's proxy blocks the GitHub API outside its configured repository, and the figure should match the text.
+- **`automation` shows the signed-out job view,** not the run summary: signed out, it lists every step with its check and hides only the logs, which is what the text describes. This refines item 5 of the entry below.
+
+**Why.** The maintainer's answers, 2026-09-24.
+
+**Where.** [`roadmap.md`](roadmap.md), [`handoff.md`](handoff.md), `tools/shots/recipes/automation.yml`.
+
 ## 2026-09-24 · The screenshot plan's open decisions, settled
 
 **Decision** (the maintainer's answers to [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md) §8, after the pilot merged):
