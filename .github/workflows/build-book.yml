@@ -32,6 +32,9 @@ jobs:
       - name: Check chapter memes' margin headers are current
         run: python tools/chapter-meme/sync_margin_header.py --check
 
+      - name: Check the issue forms' chapter list is current
+        run: python tools/issue-forms/sync_issue_chapters.py --check
+
       - name: Render (PR validation)
         if: github.event_name == 'pull_request'
         uses: quarto-dev/quarto-actions/render@v2

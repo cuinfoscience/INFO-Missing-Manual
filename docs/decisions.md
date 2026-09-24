@@ -4,6 +4,24 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-24 · The screenshot plan's open decisions, settled
+
+**Decision** (the maintainer's answers to [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md) §8, after the pilot merged):
+
+- **Capture identity (item 1):** every capture sends `Missing Manual/v1 brian.keegan@colorado.edu`, a contact address as *Web Data Science* does, instead of the repository's link.
+- **VS Code (item 3):** the two editor figures (`text-editors`, `linting`) are captured from VS Code in the browser (code-server), served from a pinned local fixture like JupyterLab, and captioned as the browser version.
+- **The review thread (item 4):** the maintainer leaves a real line comment on a merged pull request in this repository. The `version-control` diff figure shows it, and the same thread, once replied to and resolved, can serve `collaboration`.
+- **The Actions run (item 5):** `automation` shows the signed-out run summary, a green check beside each job and no log lines; the text around it matches that view.
+- **Terminal illustrations (item 6):** the five terminal figures' captions start with "Illustration:".
+- **The eight orphaned images (item 7):** kept for now; they may serve the operating-system screenshots.
+- **Wider columns (item 9):** allowed sparingly, only for a figure that fails the legibility check in the body column, as the JupyterLab overview does. Such a figure hides the table of contents while it is on screen.
+- **Rollout:** one pull request per chapter; milestone M2 starts with `version-control`.
+- **CI:** the build also runs `tools/issue-forms/sync_issue_chapters.py --check`, which caught a regression by hand in the #30 work.
+
+**Why.** The maintainer answered each question in conversation on 2026-09-24. A contact address lets a site owner reach a person. A real review thread keeps the diff figure honest. The browser version of VS Code can be captured reproducibly. Item 8 (merge policy) was not asked: the repository already merges with merge commits.
+
+**Where.** `tools/shots/lib/recipes.py` (the User-Agent), `.github/workflows/build-book.yml`, the terminal captions in `terminal`, `remote`, `virtual-environments`, and `package-management`, and `docs/handoff.md`.
+
 ## 2026-09-24 · Screenshots of programs come from pinned local fixtures, and each capture's lessons are written down
 
 **Decision.**

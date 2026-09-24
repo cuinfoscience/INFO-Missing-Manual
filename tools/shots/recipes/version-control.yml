@@ -1,0 +1,22 @@
+# Screenshots for chapters/version-control.qmd: this book's own repository on GitHub,
+# signed out. One page load per figure; the toolkit paces requests to github.com.
+chapter: version-control
+figures:
+  - id: github-repo
+    kind: capture
+    section: "Repository anatomy on GitHub"
+    url: "https://github.com/cuinfoscience/INFO-Missing-Manual"
+    # At 1024 GitHub keeps its desktop layout (tabs in one row, file list beside the About
+    # sidebar); at 680 it switches to the narrow one. The crop keeps only the left 680 px,
+    # so the figure shows 680x600 and its text stays legible in the body column.
+    window: [1024, 768]
+    steps:
+      - wait: {selector: "table[aria-labelledby='folders-and-files']"}
+      - wait: {selector: "nav[aria-label='Repository']"}
+      - settle: 1
+    # Below the black site header, from the repository name to the file list. The About
+    # sidebar and, further down, the Contributors list (other people's names) stay out.
+    crop: {left: 16, top: 74, width: 680, height: 600}   # 74: the site header's bottom edge reaches y=73
+    expect: {selector: ["nav[aria-label='Repository']"]}
+    drifts: true
+    notes: "This book's repository, signed out. Commit messages and times change with every push; the caption dates the capture."

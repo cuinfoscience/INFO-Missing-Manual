@@ -43,7 +43,7 @@ LAYOUT = {"gap", "pad", "label_px"}
 # Changing them needs no new take, so they stay out of the recipe's hash.
 NOT_CAPTURE = ("legacy", "notes", "annotate", "targets", "legibility", "oversize", "relaxed")
 DEFAULTS = {
-    "user_agent": "Missing Manual/v1 (+https://github.com/cuinfoscience/INFO-Missing-Manual)",
+    "user_agent": "Missing Manual/v1 brian.keegan@colorado.edu",
     "window": list(SOFT_LIMIT),   # CSS pixels; also the default limit on what a figure shows (lib/legibility.py)
     "scale": 2,              # device pixels per CSS pixel
     "pause": [8, 30],        # seconds between page loads on one host
