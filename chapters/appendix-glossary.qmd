@@ -64,9 +64,17 @@ A lightweight markup language that uses plain-text characters (`#`, `*`, `-`, ba
 
 The systematic under-citation and under-attribution of women's contributions to research, named by historian Margaret Rossiter as a counterpart to the "Matthew effect" (where established scholars accumulate disproportionate credit). The pattern extends beyond gender to scholars of color, scholars from non-English-speaking institutions, and scholars from the Global South. See @sec-writing-manuscripts.
 
+### Network drive {#term-network-drive}
+
+A folder on another computer, usually a file server, that your computer connects to over the network and shows as if it were local: a drive letter on Windows (`\\server\share`), a mounted volume on macOS (`smb://server/share`). Every read and write crosses the network, and the drive disappears when the network does. See @sec-filesystem-cloud.
+
 ### Notebook {#term-notebook}
 
 An interactive document that mixes executable code, prose, and output. In Python, the Jupyter notebook format (`.ipynb`) is the dominant choice. A notebook runs in a particular environment; see @sec-jupyter.
+
+### Online-only file {#term-online-only-file}
+
+A placeholder a sync client leaves on your disk to save space: the file's name and icon are there, but its contents stay in the cloud until something opens it. Code that reads an online-only file has to wait for a download, and fails when you are offline. Also called a *files-on-demand* or *dataless* file. See @sec-filesystem-cloud.
 
 ### Open access (OA) {#term-open-access}
 
@@ -115,6 +123,10 @@ The set of columns, types, and constraints that define the shape of a table or d
 ### Script {#term-script}
 
 A file of source code intended to be executed as a program. In Python, a script is typically a `.py` file you run with `python script.py`. See @sec-scripts-vs-notebooks.
+
+### Sync client {#term-sync-client}
+
+A program, such as OneDrive, iCloud Drive, Google Drive for desktop, or Dropbox, that keeps a folder on your computer matched to a copy in the cloud and on your other devices. Syncing is not a backup: a deletion or a bad edit syncs too. See @sec-filesystem-cloud.
 
 ### Terminal {#term-terminal}
 
