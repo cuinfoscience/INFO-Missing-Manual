@@ -15,6 +15,16 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 
 **Where.** `AGENTS.md` ("Project memory"), `README.md` ("For AI agents"), [`README.md`](README.md) in this folder.
 
+## 2026-09-24 · Supporting code lives in `tools/`, one folder per tool
+
+**Decision.**
+- Everything that supports the book but isn't part of it lives in `tools/`, one folder per tool, each with a README: `chapter-meme/`, `terminal-figures/`, `issue-forms/`, `shots/`, and `layout-audit/`. `scripts/` is gone.
+- The chapter-meme shortcode moved out of `_extensions/cuinfo/chapter-meme/` to sit beside its generator. `_quarto.yml` loads it with a project-level `shortcodes:` key.
+
+**Why.** The maintainer asked for a `tools/` folder to hold the screenshot toolkit and the existing scripts together. The old `CLAUDE.md` said the shortcode could only live under `_extensions/`; a scratch project showed the `shortcodes:` key loads it from any path, and a full render after the move matched the previous one except for the pages whose text changed, with all 37 memes identical.
+
+**Where.** `tools/README.md`, `_quarto.yml` (`shortcodes:`), `AGENTS.md` ("Repository Structure", "Chapter memes"). *Supersedes* the April 2026 instruction not to relocate the shortcode without a dedicated PR.
+
 ## 2026-09-01 · Readers report problems through five issue forms
 
 **Decision.**

@@ -56,10 +56,12 @@ INFO-Missing-Manual/
 │
 ├── graphics/                        # images used in chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
-├── scripts/
-│   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
-│   └── requirements.txt             # (currently empty — generator uses stdlib only)
-├── _extensions/cuinfo/chapter-meme/ # Quarto shortcode that drives the generator
+├── tools/                           # supporting code, one folder per tool, each with a README
+│   ├── chapter-meme/                # the {{< chapter-meme >}} shortcode and its generator
+│   ├── terminal-figures/            # annotated terminal illustrations
+│   ├── issue-forms/                 # keeps the issue forms' chapter list in step with the book
+│   ├── shots/                       # screenshot toolkit (recipes, capture, provenance, checks)
+│   └── layout-audit/                # browser checks on a rendered copy of the book
 ├── .github/ISSUE_TEMPLATE/          # issue forms readers use to report problems
 └── .github/workflows/build-book.yml # CI: renders + publishes to GitHub Pages
 ```
@@ -86,7 +88,7 @@ The chapter then invokes the shortcode at the desired location (conventionally j
 {{< chapter-meme >}}
 ```
 
-A Lua shortcode in `_extensions/cuinfo/chapter-meme/` reads the frontmatter, calls `scripts/generate_chapter_meme.py`, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator hits the public [memegen.link](https://memegen.link) API; no Python dependencies are required beyond the stdlib. The cache key includes the template id, the `width`, the `font`, and the lines, so editing any of the four invalidates the cached PNG on the next render.
+A Lua shortcode in `tools/chapter-meme/` (loaded by the `shortcodes:` key in `_quarto.yml`) reads the frontmatter, calls the generator beside it, and caches the result at `graphics/memes/<slug>.png` with a sidecar `.spec` hash for change detection. The generator hits the public [memegen.link](https://memegen.link) API; no Python dependencies are required beyond the stdlib. The cache key includes the template id, the `width`, the `font`, and the lines, so editing any of the four invalidates the cached PNG on the next render.
 
 To force a regeneration of every meme (e.g. after changing the default width or font):
 

@@ -128,14 +128,14 @@ INFO-Missing-Manual/
 │
 ├── graphics/                        # PNGs referenced from chapters
 │   └── memes/                       # generated chapter memes (PNG + .spec hash)
-├── scripts/
-│   ├── generate_chapter_meme.py     # thin wrapper around the memegen.link API
-│   ├── generate_terminal_figures.py # annotated terminal figures (HTML -> PNG)
-│   ├── sync_issue_chapters.py       # rebuilds the chapter dropdown in every issue form
-│   └── requirements.txt             # (currently empty — generators use stdlib only)
-└── _extensions/cuinfo/chapter-meme/ # Quarto shortcode wiring frontmatter -> generator
-    ├── _extension.yml
-    └── chapter-meme.lua
+└── tools/                           # supporting code; every folder has a README
+    ├── README.md                    # what each tool does and when it runs
+    ├── requirements.txt             # what CI installs (empty: the meme generator is stdlib only)
+    ├── chapter-meme/                # {{< chapter-meme >}} shortcode + memegen.link generator
+    ├── terminal-figures/            # annotated terminal illustrations (HTML -> PNG)
+    ├── issue-forms/                 # rebuilds the chapter dropdown in every issue form
+    ├── shots/                       # screenshot toolkit, ported from Web-Data-Science-Book
+    └── layout-audit/                # browser checks on a rendered book (TOC visibility, column width)
 ```
 
 **Naming rules:**
@@ -368,6 +368,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 - `_quarto.yml` top-level structure without a reason. In particular, do not remove the sibling `website: { llms-txt: true }` block; Quarto 1.9 has a bug where `llms-txt` under `book:` does not activate llms.txt generation, but under `website:` it does. See @sec-automation analog in the issue tracker if you want to upstream this.
 - Section ID prefixes. They are baked into cross-references across the book.
+- The `shortcodes:` key in `_quarto.yml`. It is what loads `{{< chapter-meme >}}`.
 
 ---
 
@@ -395,9 +396,9 @@ Inside the chapter body — conventionally just below the `## Purpose {.unnumber
 {{< chapter-meme >}}
 ```
 
-**Pipeline.** The Lua shortcode at `_extensions/cuinfo/chapter-meme/chapter-meme.lua` reads the frontmatter, hashes `template + width + font + lines` into a `.spec` sidecar, and invokes `scripts/generate_chapter_meme.py` if the cached PNG is missing or the hash changed. The Python script is a thin wrapper that builds a memegen URL of the form `https://api.memegen.link/images/<template>.png?text[]=line1&text[]=line2&width=1000&font=impact` and writes the response bytes to disk. Generated assets land in `graphics/memes/<slug>.png` (and a sidecar `<slug>.spec` holding the hash). All three components are checked in and the PNGs are committed to the repo so CI doesn't need to hit memegen on every build — but the `meme:` frontmatter is the source of truth, and editing it on a chapter triggers regeneration on next `quarto render`.
+**Pipeline.** The Lua shortcode at `tools/chapter-meme/chapter-meme.lua` reads the frontmatter, hashes `template + width + font + lines` into a `.spec` sidecar, and invokes `tools/chapter-meme/generate_chapter_meme.py` if the cached PNG is missing or the hash changed. The Python script is a thin wrapper that builds a memegen URL of the form `https://api.memegen.link/images/<template>.png?text[]=line1&text[]=line2&width=1000&font=impact` and writes the response bytes to disk. Generated assets land in `graphics/memes/<slug>.png` (and a sidecar `<slug>.spec` holding the hash). All three components are checked in and the PNGs are committed to the repo so CI doesn't need to hit memegen on every build — but the `meme:` frontmatter is the source of truth, and editing it on a chapter triggers regeneration on next `quarto render`.
 
-**Width and font knobs.** memegen sizes captions to each template's authored text-box geometry, so there is no `fontsize` setting; the analogous knobs are `width` (output resolution in pixels, default `1000`) and `font` (memegen font id, default `impact`). A chapter can override with `meme.width: 1200` or `meme.font: notosans`; both are part of the spec hash, so changes invalidate the cache cleanly. To retune the defaults for every chapter, edit the constants in [scripts/generate_chapter_meme.py](scripts/generate_chapter_meme.py) **and** the `or "1000"` / `or "impact"` fallbacks in [_extensions/cuinfo/chapter-meme/chapter-meme.lua](_extensions/cuinfo/chapter-meme/chapter-meme.lua) — keep them in sync. Then force a full regeneration:
+**Width and font knobs.** memegen sizes captions to each template's authored text-box geometry, so there is no `fontsize` setting; the analogous knobs are `width` (output resolution in pixels, default `1000`) and `font` (memegen font id, default `impact`). A chapter can override with `meme.width: 1200` or `meme.font: notosans`; both are part of the spec hash, so changes invalidate the cache cleanly. To retune the defaults for every chapter, edit the constants in [tools/chapter-meme/generate_chapter_meme.py](tools/chapter-meme/generate_chapter_meme.py) **and** the `or "1000"` / `or "impact"` fallbacks in [tools/chapter-meme/chapter-meme.lua](tools/chapter-meme/chapter-meme.lua) — keep them in sync. Then force a full regeneration:
 
 ```bash
 rm graphics/memes/*.png graphics/memes/*.spec
@@ -412,7 +413,7 @@ git -c http.postBuffer=524288000 push
 
 The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not need to be configured globally. Smaller meme changes (one or two PNGs) push fine with the default buffer.
 
-**Why `_extensions/cuinfo/chapter-meme/` is not under `scripts/`.** It would be tidier, but Quarto resolves shortcode contributions strictly relative to the extension directory under `_extensions/`. Moving the folder requires converting the shortcode to a Lua filter, which means editing every chapter that invokes `{{< chapter-meme >}}` and risks regressing the column-margin alignment. Don't relocate it without a dedicated PR.
+**How the shortcode is loaded.** `_quarto.yml` names it in a project-level `shortcodes:` key (`- tools/chapter-meme/chapter-meme.lua`), so it sits beside the script it calls instead of in an `_extensions/` folder. Don't remove that key: every chapter that calls `{{< chapter-meme >}}` would render the literal shortcode instead of its meme. (An earlier version of this file said the shortcode could only live under `_extensions/`; that was wrong. See `docs/decisions.md`, 2026-09-24.)
 
 **Dependency.** The generator uses Python's standard library only (`urllib.request`); there is no `pip install` step. The build host needs outbound HTTPS to `api.memegen.link` on the first render after a meme's frontmatter changes; subsequent renders read the cached PNG and run offline. CI's GitHub Actions runners have outbound HTTPS by default, so no workflow changes are needed. See [memegen.link](https://github.com/jacebrowning/memegen) for template ids and font choices.
 
@@ -420,11 +421,11 @@ The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not 
 
 ## Terminal figures
 
-Chapters that show a shell session use generated illustrations rather than screen captures. [scripts/generate_terminal_figures.py](scripts/generate_terminal_figures.py) draws each figure as a small HTML page and renders it to PNG with headless Chromium at 2x on a 4:3 card, producing `graphics/<slug>.png`. The five current figures are `macos-terminal-annotated`, `windows-terminal-annotated` (both @sec-terminal), `ssh-connected` (@sec-remote-computing), `venv-prompt` (@sec-virtual-environments), and `pip-install-success` (@sec-pkg-mgmt).
+Chapters that show a shell session use generated illustrations rather than screen captures. [tools/terminal-figures/generate_terminal_figures.py](tools/terminal-figures/generate_terminal_figures.py) draws each figure as a small HTML page and renders it to PNG with headless Chromium at 2x on a 4:3 card, producing `graphics/<slug>.png`. The five current figures are `macos-terminal-annotated`, `windows-terminal-annotated` (both @sec-terminal), `ssh-connected` (@sec-remote-computing), `venv-prompt` (@sec-virtual-environments), and `pip-install-success` (@sec-pkg-mgmt).
 
 ```bash
-python scripts/generate_terminal_figures.py           # regenerate all figures
-python scripts/generate_terminal_figures.py --check   # fail if a PNG is stale
+python tools/terminal-figures/generate_terminal_figures.py           # regenerate all figures
+python tools/terminal-figures/generate_terminal_figures.py --check   # fail if a PNG is stale
 ```
 
 Figures are defined declaratively in the script's `FIGURES` dict: terminal lines plus numbered callouts positioned by character offset into a line. To add or edit one, change that dict and re-run. As with the memes, the PNGs are committed and CI never regenerates them — this is an authoring tool, not a build step.
@@ -449,7 +450,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 
 `config.yml` disables blank issues and offers two contact links (read the book; not sure which form). Design decisions worth keeping: the "I searched existing issues" checkbox is present but **optional** on every form — a duplicate is cheap to close, a novice bouncing off a required box is a lost report. Questions were folded into the gap form rather than given their own, because GitHub Discussions is not enabled on this repo and a reader's question is itself a gap signal. Adding a sixth form should clear a high bar; the chooser is part of the accessibility surface.
 
-**The chapter dropdown is generated.** Each form's "Which chapter?" options sit between `# BEGIN chapters` and `# END chapters` markers and are rebuilt from `_quarto.yml` plus each chapter's H1 by `scripts/sync_issue_chapters.py` (stdlib only). Numbering matches the rendered book, with the Introduction as Chapter 1. Do not edit that block by hand; run the script after any chapter add, rename, or reorder, and `--check` in review to catch drift. Options outside the markers (e.g. "The book as a whole") are hand-maintained per form.
+**The chapter dropdown is generated.** Each form's "Which chapter?" options sit between `# BEGIN chapters` and `# END chapters` markers and are rebuilt from `_quarto.yml` plus each chapter's H1 by `tools/issue-forms/sync_issue_chapters.py` (stdlib only). Numbering matches the rendered book, with the Introduction as Chapter 1. Do not edit that block by hand; run the script after any chapter add, rename, or reorder, and `--check` in review to catch drift. Options outside the markers (e.g. "The book as a whole") are hand-maintained per form.
 
 **Labels are not created automatically.** GitHub silently drops a form's labels if they do not exist in the repository. `.github/workflows/labels.yml` is a manual-trigger workflow that creates or refreshes all five with `gh label create --force`; run it once from the Actions tab after the forms land, and again if a label's color or description changes there. The workflow is the source of truth for label names and colors.
 
@@ -462,7 +463,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 3.  Add the Prerequisites callout template (copy from any existing chapter).
 4.  Follow the canonical 8-section structure above.
 5.  Register the chapter in `_quarto.yml` under the appropriate `part:`.
-6.  Run `python scripts/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
+6.  Run `python tools/issue-forms/sync_issue_chapters.py` so the chapter appears in the issue forms' "Which chapter?" dropdown (nothing in CI does this for you; `--check` tells you if it is stale).
 7.  If the chapter introduces new vocabulary, add glossary terms to `appendix-glossary.qmd`.
 8.  Run `quarto preview` and verify the sidebar and cross-references work.
 
@@ -484,7 +485,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
     The leading slash matters. Chapters live in `chapters/`, so a bare `graphics/filename.png` resolves against `chapters/` and renders as a broken link with no warning from Quarto. A `/`-prefixed path is resolved against the project root and rewritten per page. (The unfilled `PLACEHOLDER-*` references still use the bare form; fix the path when you fill one in.)
 
 3.  Cross-reference it in prose with `@fig-slug`, and give every figure a `fig-alt`.
-4.  Use `::: {.column-margin}` only for small, simple images. Anything with labels, callouts, or fine detail is illegible at margin width (~220px) and belongs in the body column.
+4.  Use `::: {.column-margin}` only for small, simple images. Anything with labels, callouts, or fine detail is illegible at margin width (300 CSS px, against about 680 px for the body column; `tools/layout-audit/` measures both) and belongs in the body column.
 
 ### Add a bibliography entry
 

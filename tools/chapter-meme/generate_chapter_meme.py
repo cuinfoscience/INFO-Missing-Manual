@@ -1,7 +1,7 @@
 """Render a single chapter meme to a PNG via the memegen.link API.
 
 Usage:
-    python scripts/generate_chapter_meme.py \
+    python tools/chapter-meme/generate_chapter_meme.py \
         --template fine \
         --line "" --line "MY CODE IS ON FIRE BUT THIS IS FINE" \
         --out graphics/memes/debugging.png

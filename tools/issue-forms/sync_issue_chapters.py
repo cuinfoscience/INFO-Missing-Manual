@@ -12,8 +12,8 @@ H1 title of each chapter file, numbered the way the rendered book numbers them
 (the Introduction is Chapter 1). Run it after adding, removing, renaming, or
 reordering a chapter.
 
-    python scripts/sync_issue_chapters.py           # rewrite the forms
-    python scripts/sync_issue_chapters.py --check   # exit 1 if any form is stale
+    python tools/issue-forms/sync_issue_chapters.py           # rewrite the forms
+    python tools/issue-forms/sync_issue_chapters.py --check   # exit 1 if any form is stale
 
 Standard library only.
 """
@@ -25,7 +25,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 FORMS_DIR = ROOT / ".github" / "ISSUE_TEMPLATE"
 CONFIG = ROOT / "_quarto.yml"
 
