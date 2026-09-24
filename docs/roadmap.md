@@ -8,27 +8,35 @@ New chapters follow the canonical structure in `AGENTS.md` ("Style Guide"), get 
 
 Larger pieces with a written plan, waiting on the maintainer's decisions (listed in each plan and in [`handoff.md`](handoff.md)):
 
-- [ ] **Screenshots for the twelve placeholders**, then the interface-heavy chapters, with `tools/shots`: [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md). The pilot (M1) replaced three in the pull request that fixed #30: two JupyterLab views in `jupyter` and the rendered DataFrame in `pandas-basics`. M2 began with the repository page in `version-control`; eight remain, in seven chapters (M2–M5).
+- [ ] **Screenshots for the twelve placeholders**, then the interface-heavy chapters, with `tools/shots`: [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md). The pilot (M1) replaced three in the pull request that fixed #30: two JupyterLab views in `jupyter` and the rendered DataFrame in `pandas-basics`. M2 added the repository page (`version-control`) and the Actions job (`automation`); seven remain, in six chapters.
 - [x] **The table of contents below the chapter meme** ([#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md). Done in the pull request that closed #30 (September 2026).
 - [x] **Cloud storage, sync, and your disk** ([#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34)), in chapters 9 and 10: [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md). Done in the pull request that closed #34 (September 2026); the plan's optional folding of chapter 10's trailing sections is still open below.
 
 ## Chapter and section candidates
 
-### Carried over from earlier rounds
+In the maintainer's order of priority (September 2026). All of them come after the screenshots and the polish of existing chapters (see "Order of work" in [`decisions.md`](decisions.md)).
 
-- [ ] **Data dictionary / schema docs** — new section in `project-management.qmd` covering column documentation and schema change tracking.
-- [ ] **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd`, or a new short chapter in Part III.
+### 1. Debugging and Git, the next level
 
-### Newly identified candidates
+- [ ] **Interactive debuggers (`pdb`, IDE breakpoints)** — extend `debugging.qmd` with a section on stepping through code interactively rather than relying solely on print statements.
+- [ ] **Second-week Git (rebase, cherry-pick, reflog)** — extend `version-control.qmd` with the operations that show up in real collaboration once the basic add/commit/push loop is fluent.
 
-- [ ] **Reproducible randomness** — short section (likely in `pandas-basics.qmd` or `tabular-data.qmd`) on `np.random.default_rng(seed)`, why globals like `np.random.seed` are insufficient for parallel work, and how to thread a seed through a pipeline.
+### 2. Cloud notebooks and data too big for memory
+
 - [ ] **Cloud notebooks (Colab, Kaggle, Codespaces)** — add to `jupyter.qmd` or `remote.qmd`: what each platform is good for, how their environments differ from a local venv, and gotchas around persistence, secrets, and GPU access.
 - [ ] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — extension of `data-file-formats.qmd`: when to graduate from `pd.read_csv` to chunking, streaming, or a different tool entirely.
-- [ ] **Diagram literacy (Mermaid, ER, sequence)** — add to `documentation.qmd` or a new short chapter: how to read and produce ER diagrams, sequence diagrams, and architecture sketches as part of writing for technical audiences.
-- [ ] **Interactive debuggers (`pdb`, IDE breakpoints)** — extend `debugging.qmd` with a section on stepping through code interactively rather than relying solely on print statements.
-- [ ] **Editor automation (snippets, format-on-save, multi-cursor)** — extend `text-editors.qmd`: the keystrokes and configurations that turn an editor from a notepad into a tool.
-- [ ] **Second-week Git (rebase, cherry-pick, reflog)** — extend `version-control.qmd` with the operations that show up in real collaboration once the basic add/commit/push loop is fluent.
+
+### 3. Documenting and licensing data
+
+- [ ] **Data dictionary / schema docs** — new section in `project-management.qmd` covering column documentation and schema change tracking.
 - [ ] **Data ethics and licensing** — possible new chapter or section in `artifacts-have-politics.qmd` covering data licenses (CC-BY, ODbL, terms of use), citation of datasets, and the ethics of scraping vs. downloading from a published source.
+
+### 4. The rest
+
+- [ ] **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd`, or a new short chapter in Part III.
+- [ ] **Reproducible randomness** — short section (likely in `pandas-basics.qmd` or `tabular-data.qmd`) on `np.random.default_rng(seed)`, why globals like `np.random.seed` are insufficient for parallel work, and how to thread a seed through a pipeline.
+- [ ] **Diagram literacy (Mermaid, ER, sequence)** — add to `documentation.qmd` or a new short chapter: how to read and produce ER diagrams, sequence diagrams, and architecture sketches as part of writing for technical audiences.
+- [ ] **Editor automation (snippets, format-on-save, multi-cursor)** — extend `text-editors.qmd`: the keystrokes and configurations that turn an editor from a notepad into a tool.
 
 ## Open follow-ups from the comprehensive review
 
