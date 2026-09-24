@@ -8,6 +8,8 @@
     crop: {selector: "...", pad: [13, 0, 0, 18], width: 560, height: 595}
                                              padding as top, right, bottom, left, and a
                                              fixed size measured from the padded corner
+    crop: {between: ["A", "B"], pad: 8}      from the top of A to the bottom of B, as wide
+                                             as the two together (or `width`), padded
 """
 
 
@@ -40,7 +42,19 @@ def clip(page, fig):
         return None, True
     if crop.get("window"):
         return {"x": 0, "y": 0, "width": width, "height": height}, False
-    if "selector" in crop:
+    if "between" in crop:
+        boxes = [page.locator(s).first.bounding_box() for s in crop["between"]]
+        if not all(boxes):
+            raise CropError(f"crop between {crop['between']!r}: an element matched nothing visible")
+        first, last = boxes
+        top, right, bottom, left = pads(crop)
+        x = min(first["x"], last["x"]) - left
+        y = first["y"] - top
+        x2 = max(first["x"] + first["width"], last["x"] + last["width"]) + right
+        y2 = last["y"] + last["height"] + bottom
+        rect = {"x": max(0, x), "y": max(0, y), "width": crop.get("width", x2 - max(0, x)),
+                "height": y2 - max(0, y)}
+    elif "selector" in crop:
         box = page.locator(crop["selector"]).first.bounding_box()
         if not box:
             raise CropError(f"crop selector {crop['selector']!r} matched nothing visible")

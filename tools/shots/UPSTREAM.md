@@ -34,7 +34,14 @@ The first commit that added this folder is the upstream code, byte for byte; eve
 - `lib/legibility.py`: the default limit stays 800×600 (`SOFT_LIMIT`). A new tier, `RELAXED_LIMIT` (1024×768), allows a larger view when it reduces clutter, the recipe says why in `relaxed:` (a new key), and the text passes at every target. `size_report()` replaces `oversize()` and decides between nothing, a note, and a warning; `size_hint()` says what to try.
 - `lib/legibility.py` `COLUMNS` and `book_px()`: a figure can be judged in one of Quarto's wider columns (`targets: {book: {column: page-inset-right}}`), measured in this book; `check` fails a figure whose chapter doesn't carry the matching class.
 - `lib/recipes.py` validates `relaxed:` and the book target's `column`; both stay out of the recipe's hash, like `oversize:`.
-- `selftest.py` adds six checks for the tiers, the wider column, and `check`'s column rule, for 68 in all (upstream has 56).
+- `selftest.py` adds six checks for the tiers, the wider column, and `check`'s column rule.
+
+**A crop between two elements, for headless takes (the pilot, 2026-09-24)**
+
+- `lib/crop.py`: `crop: {between: [A, B]}` crops from the top of the first element matching `A` to the bottom of the first matching `B`, across the width of both, with `pad` as for `selector`. The pilot needed it to show a code cell and the Markdown cell after it. Upstream implements `between` only for headed takes (`lib/headed.py`), although its recipe check accepts the key for any figure: a headless take with it fell through to the whole window, silently.
+- `selftest.py` adds one check (a `between` crop of two marked elements, at its expected size), for 69 in all (upstream has 56).
+
+**Pilot material, not in upstream:** the JupyterLab fixture in `fixtures/jupyter/`, the recipes, and "Patterns and pitfalls" in the README, which adds this book's lessons to upstream's.
 
 ## Worth offering upstream
 
@@ -43,6 +50,8 @@ These fix or extend behavior that *Web Data Science* shares:
 1. The explicit `--disable-infobars`, the `ignore_default_args` pitfall, and the bars guard with its read-back tests.
 2. The relaxed tier, if that book wants it; its column is wider (778), so a 1024-pixel figure keeps 76% of its text size there, against 66% here.
 3. `figure_block()` accepting the leading slash, if that book's chapters ever move into a folder.
+4. The headless `between` crop with its selftest check; at the least, a recipe check that rejects `between` on a headless figure instead of ignoring it.
+5. The JupyterLab lessons in "Patterns and pitfalls" (saved layout and `?reset`, deferred navigation, hidden tabs, inner scrolling, the active cell's border, the file browser's selection, kernels that outlive captures), if that book ever captures JupyterLab.
 
 ## Syncing with upstream
 

@@ -75,11 +75,9 @@ source .venv/bin/activate                # 2. activate the project's environment
 jupyter lab                              # 3. start the server
 ```
 
-::: {.column-margin}
-![ALT: JupyterLab interface after launch, showing the file-browser sidebar on the left with the project's folders (data/, notebooks/, src/), a notebook open as a tab in the centre pane, and the kernel indicator in the top-right showing the active Python environment.](graphics/PLACEHOLDER-jupyterlab-overview.png){#fig-jupyterlab-overview}
-:::
+![JupyterLab 4.6 just after `jupyter lab`, in September 2026. The file browser on the left shows the project root, because that is where the server was started; the notebook opens as a tab in the centre; and the kernel indicator at the top right names the kernel the notebook runs on, `Python 3 (ipykernel)`.](/graphics/jupyter/jupyterlab-overview.png){#fig-jupyterlab-overview .column-page-inset-right fig-alt="Screenshot of JupyterLab. The file browser on the left is at the project root and lists the folders data, notebooks, and src, and a README.md file. The main area has one tab, explore.ipynb: a heading, Weekly sales; a code cell that imports pandas, reads ../data/raw/sales.csv, and calls df.head(); and the first five rows of the table. At the notebook's top right, the kernel indicator reads Python 3 (ipykernel); the status bar says Idle."}
 
-Each command matters. The `cd` puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project's interpreter and packages, not the system Python. And `jupyter lab` (or `jupyter notebook` for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — `data/`, `notebooks/`, `src/`, the README. If it shows something else, stop and try again from the correct folder.
+Each command matters. The `cd` puts Jupyter in the right folder. Activating the venv ensures Jupyter starts with your project's interpreter and packages, not the system Python. And `jupyter lab` (or `jupyter notebook` for the classic interface) is what actually launches the server. After running them, your default browser opens with the JupyterLab UI, and the file browser on the left should show the contents of your project — `data/`, `notebooks/`, `src/`, the README (@fig-jupyterlab-overview). If it shows something else, stop and try again from the correct folder.
 
 To verify you are in the right place once Jupyter is up, run a single cell at the top of any notebook:
 
@@ -124,11 +122,9 @@ Every cell in a Jupyter notebook has a **type**, and the type determines what th
 
 A **Code** cell holds Python (or whatever language the kernel speaks) and is sent to the kernel for execution when you run it. Whatever the last expression in the cell evaluates to is displayed below the cell as its *output*, alongside anything the code explicitly printed. Code cells are the only cells that actually compute anything — they are where the work happens.
 
-A **Markdown** cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, `code spans` become monospace, lists become lists, and equations written in LaTeX syntax (`$x^2$`) become typeset math. Markdown cells are how a notebook becomes a *document* — the paragraphs between your code cells that tell a reader what you are doing and why.
+A **Markdown** cell holds text, not code. When you run a markdown cell, Jupyter renders it as formatted prose: headings become headings, `code spans` become monospace, lists become lists, and equations written in LaTeX syntax (`$x^2$`) become typeset math. Markdown cells are how a notebook becomes a *document* — the paragraphs between your code cells that tell a reader what you are doing and why. @fig-jupyter-cell-types shows one of each.
 
-::: {.column-margin}
-![ALT: A Jupyter notebook showing side-by-side cells. The top cell is a code cell with `df.head()` and its rendered DataFrame output. The cell below it is a markdown cell whose source contains a heading and a short paragraph, and which is rendered as formatted prose.](graphics/PLACEHOLDER-jupyter-cell-types.png){#fig-jupyter-cell-types}
-:::
+![A code cell and a Markdown cell in JupyterLab 4.6, in September 2026. The code cell ran `df.head()`, and its output, the first five rows of the table, appears beneath it with the same `[1]` label. The Markdown cell below has been run too, so it shows a formatted heading and paragraph instead of its source.](/graphics/jupyter/jupyter-cell-types.png){#fig-jupyter-cell-types fig-alt="Two notebook cells. The first is a code cell labelled [1]: import pandas as pd, then df = pd.read_csv, and df.head(). Under it, output [1] is a table with columns date, store, product, units, and price and rows 0 to 4, all dated 2026-09-01, from the Pearl St and University Hill stores. The second cell is rendered Markdown: a heading, What to check next, and a sentence that ends with the word revenue in bold and units * price in code."}
 
 A **Raw** cell is passed through without rendering or execution. You will almost never need one as a student; they are mainly used when converting a notebook to another format (like LaTeX or a slide deck) and you need to include material that should not be interpreted by Jupyter. Leave them alone unless a specific tool tells you to use one.
 

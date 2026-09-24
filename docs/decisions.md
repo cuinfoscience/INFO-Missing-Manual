@@ -4,6 +4,19 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-24 · Screenshots of programs come from pinned local fixtures, and each capture's lessons are written down
+
+**Decision.**
+- A program that runs on your own computer (JupyterLab so far) is captured from a fixture in `tools/shots/fixtures/<name>/`: pinned versions, made-up data, a scratch copy of the project, a fixed local port, settings that silence first-run prompts, and start and stop scripts. It is never captured from anyone's own setup or a live account.
+- Every capture starts from a known state. For JupyterLab that means `?reset` on every URL, because JupyterLab restores its last layout from the server, and a fresh start of the fixture before each full set of captures, because kernels outlive captures and the status bar counts them.
+- Captions and alt text are written from the capture, not from the placeholder's description, and each figure is read against the paragraph beside it before it is promoted.
+- What a capture teaches goes into "Patterns and pitfalls" in `tools/shots/README.md`, and as a comment beside the workaround in the recipe, in the same pull request. Larger stories go in an AAR.
+- The pilot chapter was `jupyter`, plus the DataFrame figure in `pandas-basics`: the screenshot plan's recommendation (§8, item 2), taken as given when the maintainer asked for the pilot. One pilot figure, the JupyterLab overview, uses the relaxed 1024×768 tier in `column-page-inset-right`, the only column where its text passes. Whether wider columns are acceptable in general is still the maintainer's call (plan §8, item 9).
+
+**Why.** The maintainer asked for the pilot, and then for its lessons to be recorded so that future agents don't have to rediscover them. A fixture makes a take reproducible, private, and quick: no network, no pacing, no personal data, and a retake in seconds. The pilot lost takes to state the application kept between captures, to a deferred navigation that undid a click, and to the active cell's border leaking into crops. Each is now a rule, so the next chapter starts from them.
+
+**Where.** `tools/shots/fixtures/jupyter/`, `tools/shots/recipes/jupyter.yml` and `pandas-basics.yml`, `tools/shots/README.md` ("Patterns and pitfalls"), `AGENTS.md` ("Screenshots"), and the [screenshot AAR](aar/AAR_INFO-Missing-Manual_2026-09-24.md).
+
 ## 2026-09-24 · One instructions file, `AGENTS.md`; project records in `docs/`
 
 **Decision.**
@@ -71,7 +84,7 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 
 **Why.** The maintainer asked for the toolkit to be adapted and for a plan to add screenshots throughout the book. The rules are the ones *Web Data Science* learned the hard way (its screenshot AARs), and they match this book's earlier choice not to simulate GUIs (2026-08-28).
 
-**Status.** The toolkit is ported and tested (selftest 68 of 68; a real capture promoted and checked in a scratch tree). The rollout and the capture identity are proposals, waiting on the maintainer: see [`handoff.md`](handoff.md) and [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md).
+**Status.** The toolkit is ported and tested (selftest 68 of 68; a real capture promoted and checked in a scratch tree). The rollout and the capture identity are proposals, waiting on the maintainer: see [`handoff.md`](handoff.md) and [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md). *Update, later on 2026-09-24:* the pilot has run (three figures, from a local JupyterLab); see the entry on pinned local fixtures above. The capture identity is still open.
 
 **Where.** `tools/shots/`, `AGENTS.md` ("Screenshots").
 

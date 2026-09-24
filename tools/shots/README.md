@@ -4,8 +4,9 @@ Capture, check, and record the book's screenshots, so that every figure can be m
 
 The toolkit is ported from the companion book *Web Data Science* ([`tools/shots` there](https://github.com/cuinfoscience/Web-Data-Science-Book/tree/main/tools/shots)). [`UPSTREAM.md`](UPSTREAM.md) records the commit it came from and every local change. Before changing the toolkit or adding a screenshot, read:
 
+- "Patterns and pitfalls" below: what earlier captures taught, as rules for writing a recipe;
 - the plan for screenshots in this book, [`docs/plans/2026-09-24-screenshots.md`](../../docs/plans/2026-09-24-screenshots.md): which figures, in what order, and the decisions behind them;
-- the upstream after-action reports, whose lessons this port builds in: the [screenshot AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/2026-09-24-screenshots.md) and the [toolkit sprint AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/AAR_Web-Data-Science-Book_2026-09-24.md).
+- this book's [screenshot AAR](../../docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md), on the pilot (the Jupyter chapter, from a local JupyterLab), and the upstream after-action reports whose lessons this port builds in: the [screenshot AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/2026-09-24-screenshots.md) and the [toolkit sprint AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/AAR_Web-Data-Science-Book_2026-09-24.md).
 
 A **chapter** here is a chapter's slug: `jupyter` means `chapters/jupyter.qmd`, whose recipe is `recipes/jupyter.yml` and whose approved images go in `graphics/jupyter/`.
 
@@ -14,15 +15,17 @@ A **chapter** here is a chapter's slug: `jupyter` means `chapters/jupyter.qmd`, 
 ```bash
 bash tools/shots/bootstrap.sh --headed --tex      # once per machine or container; safe to re-run
 tools/shots/run doctor jupyter                    # every time, first: can this session capture?
+bash tools/shots/fixtures/jupyter/start.sh        # this chapter captures a local JupyterLab
 tools/shots/run capture jupyter                   # takes go to tools/shots/out/jupyter/<figure>/
 tools/shots/run sheet jupyter                     # look at every take at the size it will be shown
-tools/shots/run promote jupyter lab-overview      # copy the take into graphics/jupyter/, record it
+tools/shots/run promote jupyter jupyterlab-overview   # copy the take into graphics/jupyter/, record it
+bash tools/shots/fixtures/jupyter/stop.sh         # stop the fixture when the takes are done
 tools/shots/run check                             # before a pull request
 tools/shots/run selftest                          # after changing the toolkit
 ```
 
 - **`bootstrap.sh`** installs what is missing; creates `tools/shots/.venv` with the pinned packages in `requirements.txt`; fetches Chrome for Testing at a pinned major version (154) through Selenium Manager; makes sure Chrome trusts a session proxy's certificate, if there is one; and installs fonts. `--headed` adds the virtual display (Xvfb), real input (xdotool), and screen grabs (ImageMagick) that headed figures need; `--tex` adds pdflatex with TikZ and pdftocairo, which draw markers. It never runs `playwright install` and never turns off certificate checks. It uses `apt-get`; on a Mac, install the equivalents yourself or capture in a Linux container.
-- **`doctor`** answers whether capture works in this session. Don't reuse an earlier session's answer. It checks the proxy, the browser, a real headless capture of example.com, and a real headed one with DevTools open, including the height of the browser's bars (see "Headed figures"). It checks for TeX, and fails if a recipe has markers and TeX is missing. With a chapter, it makes one request to each host that chapter's recipes use, and reports a proxy refusal as a policy block, which you report rather than route around.
+- **`doctor`** answers whether capture works in this session. Don't reuse an earlier session's answer. It checks the proxy, the browser, a real headless capture of example.com, and a real headed one with DevTools open, including the height of the browser's bars (see "Headed figures"). It checks for TeX, and fails if a recipe has markers and TeX is missing. With a chapter, it makes one request to each host that chapter's recipes use, and reports a proxy refusal as a policy block, which you report rather than route around. For a chapter captured from a local fixture it warns `localhost: not reachable now`, fixture running or not, because it asks for `https://localhost/robots.txt`; ignore that warning, and check that the fixture answers instead (its `start.sh` waits until it does). Teaching `doctor` about fixtures is an open action in the [screenshot AAR](../../docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md).
 
 ## The rules
 
@@ -32,6 +35,65 @@ tools/shots/run selftest                          # after changing the toolkit
 - **No logins, no credentials, no student names or work.** A page behind a login is captured by hand, by the maintainer, and recorded with `adopt`.
 - **Dated captions.** A figure that shows things that change (counts, versions, live pages) says in its caption when it was captured, as in "in September 2026". `check` warns when a drifting figure's caption lacks the year.
 - **Readable, and not crammed.** A figure shows **at most 800×600 CSS pixels** of the screen by default. It may show **up to 1024×768 when the larger view reduces clutter and its text still passes** the legibility check wherever it is shown; the recipe says why in `relaxed:`. See "Legibility".
+
+## Patterns and pitfalls
+
+What earlier captures taught, so you don't have to learn it again. Read this before writing a recipe. The full stories are in this book's [screenshot AAR](../../docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md) and in *Web Data Science*'s [sprint AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/AAR_Web-Data-Science-Book_2026-09-24.md).
+
+**Choosing what to show**
+
+- **Start from the sentence the figure supports,** and show the smallest part of the screen that makes its point. Crop before you reach for a bigger window.
+- **Web apps rearrange themselves by width,** so look at the layout at the size you pick. At 680 px GitHub switches to its phone layout and moves the About sidebar below the files; at 800 px JupyterLab folds the kernel indicator into an overflow menu and wraps a DataFrame's dates. When the default window crams what the text describes, that is the case for `relaxed:` (up to 1024×768), and the reason names what the larger view shows.
+- **Do the arithmetic for this book's 678-px column first.** The book shows a figure at 678 ÷ (its width in CSS px) of its on-screen size, and text must come out at 11 px or more. An 800-px-wide figure needs 13-px text on screen; a 1024-px figure needs 16.6 px in the body column, or 12 px in `column-page-inset-right` (954 px). JupyterLab's 13-px interface at 1024 px passes only in the wider column (it measured 12.1 px there).
+- **A figure in a wider column covers the table of contents** while it is on screen, and Quarto folds the table of contents into its toggle until the reader scrolls past. Use a wider column only for a figure that needs the width.
+- **Never put a screenshot in `.column-margin`.** It is illegible at 300 px, and margin content near the top of a chapter hides the table of contents at load.
+
+**Getting a stable take**
+
+- **Wait for selectors, not text,** in application interfaces. A text wait needs *visible* text and can match a hidden element first; the first JupyterLab trial timed out that way. Scope selectors to the visible instance: `.first` can land on a hidden tab.
+- **Wait for the application's own deferred work before acting.** JupyterLab moves its file browser into the notebook's folder about a second after the notebook appears, and a click on "home" before that is silently undone. Wait for the state you expect (here, the `notebooks` breadcrumb), act, then wait for the result.
+- **Applications remember state between captures.** JupyterLab restores its last layout from the server, so the second capture inherited the first one's folded sidebar and open tab. Its kernels outlive captures too, and the status bar counts them: an overview taken after the `pandas-basics` capture showed two. Start every capture from a known state (`?reset` for JupyterLab's layout; a fresh start of the fixture for its kernels; the toolkit already gives each take a fresh browser context), and run the whole recipe file, not just one figure, before promoting.
+- **Some applications scroll inside the page** (JupyterLab's notebook does), so content below the fold is not on screen to crop. Use a window taller than the crop; only the crop counts toward the size limits.
+- **Interface state leaks into crops:** the active cell's blue border and toolbar, a selected file, a hover style, the selected URL in a headed take's address bar. JupyterLab selects the first item whenever its file browser changes folder, and only Ctrl+Space (which toggles the focused item) clears it. Move focus or selection outside the crop (click another cell), crop headed takes to `{content: true}`, and check the crop's edge rows for stray borders. A negative `pad` trims a pixel. A border cut in half is one or two pixels tall and easy to miss by eye, so count the colored pixels along each edge. The pilot's first four takes of `jupyter-cell-types` scored 20 or more on one edge, and the take it promoted scored 0 on all four. A figure whose subject really does run off the edge in color scores too, so treat a count as a reason to look, not a verdict:
+
+```bash
+tools/shots/.venv/bin/python - tools/shots/out/<chapter>/<figure>/*.png <<'EOF'
+import sys
+from PIL import Image
+for path in sys.argv[1:]:
+    im = Image.open(path).convert("RGB")
+    w, h = im.size
+    edges = {"top": [(x, 0) for x in range(w)], "bottom": [(x, h - 1) for x in range(w)],
+             "left": [(0, y) for y in range(h)], "right": [(w - 1, y) for y in range(h)]}
+    print(path, {k: sum(max(p) - min(p) > 60 for p in map(im.getpixel, v)) for k, v in edges.items()})
+EOF
+```
+
+- **For a span of elements** (a code cell through the Markdown cell after it), use `crop: {between: [A, B]}`; Playwright's `>> nth=1` picks a second match.
+- **Capture software from a pinned local fixture,** not from someone's machine or a live account: pinned versions, synthetic data, a scratch copy of the project, a fixed port, settings that silence first-run prompts, and a stop script. [`fixtures/jupyter/`](fixtures/jupyter/) is the model.
+
+**Headed captures**
+
+- **Chrome for Testing shows a 56-px notice** unless `--disable-infobars` is passed, and the toolkit passes it itself. Never list that flag in Playwright's `ignore_default_args`: it strips the toolkit's copy too. The bars guard fails any take whose browser bars exceed 100 DIPs.
+- **The address bar's URL is selected** in every headed take; crop to the content unless the address bar is the point.
+
+**Finishing a figure**
+
+- **Review every take at book size with `sheet`,** then look at the full-size take itself before promoting.
+- **Write the caption and alt text from the capture,** not from the placeholder's wish list: the placeholders describe imagined screens (one listed CI steps the book's workflow doesn't have). Alt text transcribes the text and numbers a reader needs in 280–440 characters, and a caption dates anything that drifts ("JupyterLab 4.6 … in September 2026").
+- **Check the figure against the sentences around it,** not only against the placeholder. The Jupyter chapter says the file browser shows `data/`, `notebooks/`, `src/`, and the README; the fixture had no README until a late retake added one.
+- **Put each decision where the next person will look:** a comment in the recipe beside each workaround, `notes:` for the source, and `relaxed:` or `oversize:` for the size.
+
+**Replacing a placeholder**
+
+Each `PLACEHOLDER-*` image in the chapters sits in a `::: {.column-margin}` block, with a wish list for a caption (`![ALT: …]`), a path without the leading slash, and no `fig-alt`. To replace one:
+
+1. Name the recipe's figure after the placeholder's file (`PLACEHOLDER-jupyterlab-overview.png` becomes `id: jupyterlab-overview`), so the image lands at `graphics/<chapter>/<id>.png`.
+2. Delete the `.column-margin` wrapper. The margin is 300 px wide, too narrow for a screenshot, and margin content near the top of a chapter collapses the table of contents.
+3. Point the image at `/graphics/<chapter>/<id>.png`, with the leading slash; `check` fails without it. Keep the `#fig-…` label, since other text may cite it, and add the wider column's class if the recipe names one.
+4. Write a dated caption and a `fig-alt` from the capture, as above.
+5. Put the figure next to the passage it illustrates, and cite it there with `@fig-…` (Quarto writes "Figure N.M").
+6. Run `tools/shots/run check`, then render the chapter and look at the figure on the page.
 
 ## How a capture works
 
@@ -75,7 +137,7 @@ One YAML file per chapter in `recipes/`, named for the chapter's slug; [`recipes
 
 - **Defaults:** an 800×600 window at scale 2, 8–30 second pauses, a 60-second limit on each wait, three retries, and JavaScript on. A chapter can change them under `defaults:`, and a figure can override any of them.
 - **Steps:** `wait` (for `text`, `selector`, or `network_idle`), `hover`, `click` (by `selector`, `text`, or, as a last resort, `position`), `scroll`, `press`, and `settle` (seconds, for animation with no end signal). `scroll: {selector: …, offset: 175}` puts an element's top 175 pixels below the window's top. A `wait` needs the text to be *visible*: a site's narrow layout may hide what its desktop layout shows.
-- **Crops around an element** take `pad` as one number or four (top, right, bottom, left, as in CSS), and `width` and `height` to fix the size: `{selector: '.card', pad: [13, 0, 0, 18.5], width: 560, height: 595}`.
+- **Crops around an element** take `pad` as one number or four (top, right, bottom, left, as in CSS), and `width` and `height` to fix the size: `{selector: '.card', pad: [13, 0, 0, 18.5], width: 560, height: 595}`. **A crop between two elements**, `{between: ['.first', '.last'], pad: 8}`, runs from the top of the first to the bottom of the second, as wide as both.
 - **Other modes:** `mode: headed` and `mode: composite` are below. An `engine:` other than Playwright marks a figure that `capture` skips with a note.
 - **Patterns** are regular expressions. A leading `(?i)` ignores case; the tool turns it into JavaScript's `i` flag, because Playwright and DevTools evaluate patterns in JavaScript, which has no inline flags.
 - **Quoting:** quote any YAML value that contains ` #`, or everything after it becomes a comment. In single quotes, a backslash is literal: write `'quotes\?page=2'`.
@@ -202,7 +264,7 @@ Screenshots live in per-chapter folders; the flat files directly in `graphics/` 
 
 It reports **warnings** for: a figure not used in its chapter; alt text under 80 characters; a drifting figure whose caption doesn't give the capture year; marks changed since the annotated image was drawn; and a figure over 800×600 whose recipe gives no reason, or whose `relaxed:` text fails.
 
-`selftest` runs 68 offline checks against a local web server. It needs the browser but no network. It covers the guards (the bars guard included), retries, `promote`, and `check`; the User-Agent and Client Hints; anchors and markers; the size limits (800×600, the relaxed 1024×768 tier with its text condition, a wider column, and `check`'s column rule); legibility; composites; `sheet`; and headed capture, including Chrome's command line read back from `chrome://version` with and without `--disable-infobars`. It skips the marker checks if TeX is missing and the headed checks if the virtual display is.
+`selftest` runs 69 offline checks against a local web server. It needs the browser but no network. It covers the guards (the bars guard included), retries, `promote`, and `check`; the User-Agent and Client Hints; anchors and markers; crops between two elements; the size limits (800×600, the relaxed 1024×768 tier with its text condition, a wider column, and `check`'s column rule); legibility; composites; `sheet`; and headed capture, including Chrome's command line read back from `chrome://version` with and without `--disable-infobars`. It skips the marker checks if TeX is missing and the headed checks if the virtual display is.
 
 ## Files
 
@@ -213,6 +275,7 @@ It reports **warnings** for: a figure not used in its chapter; alt text under 80
 | `selftest.py` | the offline test |
 | `UPSTREAM.md` | where this came from, and what changed here |
 | `recipes/` | one recipe file per chapter, and a README with a starter file |
+| `fixtures/` | pinned local applications that recipes capture from: [`fixtures/jupyter/`](fixtures/jupyter/) is JupyterLab with a made-up project |
 | `lib/env.py` | paths (`graphics/`, `recipes/`, `out/`), the proxy, and the pinned browser |
 | `lib/recipes.py` | loading and validating recipes; the default identity and window |
 | `lib/browser.py`, `lib/steps.py`, `lib/crop.py` | launching Chrome for Testing, running steps, and cropping |

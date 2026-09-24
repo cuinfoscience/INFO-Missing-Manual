@@ -1,0 +1,17 @@
+# Screenshots for chapters/pandas-basics.qmd, taken from the local JupyterLab fixture.
+# Start it first: bash tools/shots/fixtures/jupyter/start.sh (see its README).
+chapter: pandas-basics
+figures:
+  - id: dataframe-render
+    kind: capture
+    section: "The two data structures"
+    url: "http://localhost:8899/lab/tree/notebooks/dataframe.ipynb?reset"   # ?reset: a clean layout, whatever the last capture left
+    steps:
+      - wait: {selector: '.jp-Notebook .jp-OutputArea-output table'}
+      - wait: {selector: '.jp-BreadCrumbs-item[data-path="notebooks"]'}
+      - click: {selector: '.jp-SideBar.jp-mod-left .lm-TabBar-tab.lm-mod-current'}   # fold the file browser away
+      - click: {selector: '.jp-Notebook .jp-MarkdownCell'}   # move the active-cell highlight off the code cell
+      - settle: 1
+    crop: {selector: '.jp-Notebook .jp-CodeCell', pad: [8, 8, 0, 8]}   # no bottom pad: the active cell below has a blue border
+    drifts: true
+    notes: "Local fixture tools/shots/fixtures/jupyter, notebooks/dataframe.ipynb: the chapter's own DataFrame example, run by pandas 3.0.6."
