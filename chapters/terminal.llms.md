@@ -62,7 +62,7 @@ Windows Terminal is a window that hosts *other* shells in tabs — the `˅` next
 
 ![Illustration of a Windows Terminal window with tabs labelled PowerShell, Ubuntu (WSL), and Git Bash, plus a new-tab button and a dropdown caret. The PowerShell tab shows 'PS C:\Users\you\Project\> Get-ChildItem data\\ and a directory listing of input.csv. Numbered callouts label the dropdown that opens another shell, the PS shell indicator, the current directory, the greater-than prompt symbol, and the command with its arguments.](../graphics/windows-terminal-annotated.png)
 
-Figure 11.1: Windows Terminal with a PowerShell tab open. The dropdown beside the new-tab button is where you switch to WSL or Git Bash; the prompt itself carries the same information as a macOS prompt, arranged differently.
+Figure 11.1: Illustration: Windows Terminal with a PowerShell tab open. The dropdown beside the new-tab button is where you switch to WSL or Git Bash; the prompt itself carries the same information as a macOS prompt, arranged differently.
 
 **Linux.** On most desktop environments, `Ctrl + Alt + T` opens a terminal immediately. Otherwise, search your applications menu for “Terminal” — GNOME Terminal on Ubuntu and Fedora, Konsole on KDE. You are already in a Unix shell, so nothing in this chapter needs translating.
 
@@ -102,7 +102,7 @@ Every prompt you meet is built from those same pieces, even when the details dif
 
 ![Illustration of a macOS Terminal window. The command line reads 'you@MacBook-Air Project % ls -l data/', with its output below, followed by 'pwd' printing /Users/you/Courses/INFO-3010/Project and 'echo \$?' printing 0. Five numbered callouts label the parts of the prompt in order: the username, the machine name, the current directory, the % prompt character, and the command with its arguments.](../graphics/macos-terminal-annotated.png)
 
-Figure 11.2: The anatomy of a prompt on macOS. Every shell shows some version of these pieces: who you are, where you are, and where your typing begins.
+Figure 11.2: Illustration: The anatomy of a prompt on macOS. Every shell shows some version of these pieces: who you are, where you are, and where your typing begins.
 
 ### Why bother, when the GUI is right there
 

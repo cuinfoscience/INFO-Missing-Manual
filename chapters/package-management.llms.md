@@ -220,7 +220,7 @@ python -m pip install "requests>=2.31,<3.0"
 
 ![Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.](../graphics/pip-install-success.png)
 
-Figure 14.1: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports five, because pip resolved and installed pandas’s dependencies as well.
+Figure 14.1: Illustration: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports five, because pip resolved and installed pandas’s dependencies as well.
 
 Record what you installed in a `requirements.txt` file so a teammate (or future-you) can recreate the environment. The simplest way is `pip freeze`:
 

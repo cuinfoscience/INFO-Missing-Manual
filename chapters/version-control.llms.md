@@ -51,10 +51,6 @@ $ git log --oneline -3
 c127108 Merge pre-commit chapter into automation
 ```
 
-![](graphics/PLACEHOLDER-github-repo.png)
-
-Figure 31.1: ALT: GitHub repository page showing the Code tab, the list of top-level files, and the README rendered underneath. The navigation tabs (Code, Issues, Pull requests, Actions) are visible along the top of the page.
-
 > **WARNING:**
 >
 > A rejection almost always means **the remote has commits you do not have locally** — someone else pushed to the same branch before you. Run `git fetch origin` to see what changed, then `git pull --rebase origin <branch>` to replay your commits on top of theirs. If that produces conflicts, resolve them in the marked files, `git add` the resolved files, and continue the rebase with `git rebase --continue`. Once the rebase finishes cleanly, `git push` will work.
@@ -63,7 +59,7 @@ Figure 31.1: ALT: GitHub repository page showing the Code tab, the list of top-
 
 ![](graphics/PLACEHOLDER-github-pr-diff.png)
 
-Figure 31.2: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
+Figure 31.1: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
 
 Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.
 
@@ -249,7 +245,11 @@ The habit that prevents drift is simple: **pull before you start new work, and p
 
 ### Repository anatomy on GitHub
 
-A GitHub repository page has several tabs, and each one is a different surface your team uses for a different job. **Code** is the file browser — the current state of the default branch, with a rendering of the README at the bottom. **Issues** is where bugs, tasks, and open questions live; it is the project’s to-do list and discussion forum. **Pull Requests** is where proposed changes are reviewed and merged. **Actions** is where automated workflows run on every push ([sec-automation](#sec-automation) covers GitHub Actions and CI in depth). **Releases** is where you publish tagged, named versions of your project that other people can download and cite.
+A GitHub repository page has several tabs, and each one is a different surface your team uses for a different job. **Code** is the file browser — the current state of the default branch, with a rendering of the README at the bottom ([Figure fig-github-repo](#fig-github-repo)). **Issues** is where bugs, tasks, and open questions live; it is the project’s to-do list and discussion forum. **Pull Requests** is where proposed changes are reviewed and merged. **Actions** is where automated workflows run on every push ([sec-automation](#sec-automation) covers GitHub Actions and CI in depth). **Releases** is where you publish tagged, named versions of your project that other people can download and cite.
+
+![Screenshot of the GitHub page for cuinfoscience/INFO-Missing-Manual, marked Public. A row of tabs reads Code (selected), Issues, Pull requests, Actions, Projects, and Security. Below, a branch menu shows main. The latest commit, by brianckeegan, is a merged pull request with 121 commits in all. The file list shows folders .github, chapters, docs, graphics, and tools, then files such as AGENTS.md and CONTRIBUTING.md.](../graphics/version-control/github-repo.png)
+
+Figure 31.2: This book’s own repository on GitHub, signed out, in September 2026. The tabs along the top are the repository’s working surfaces; the Code tab, open here, lists the files and folders on the default branch, `main`, each beside the last commit that changed it. The README is rendered below the list, out of view.
 
 The single most important file in any repository is the **README**, because it is the front door. When someone lands on your repository for the first time — a classmate, a reviewer, a potential employer, or future-you — the README is what tells them what the project is, how to install it, and how to run it. If the README is missing or stale, every other tab is less useful because readers have no orientation. Invest in the README first and maintain it as part of the work (see [sec-project-management](#sec-project-management) for what a good README contains).
 
