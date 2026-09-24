@@ -81,6 +81,12 @@ Before you write any Python, the fastest way to confirm that an API actually wor
 curl https://api.github.com/repos/pandas-dev/pandas
 ```
 
+Paste the same URL into a browser and you get the same response, often formatted for reading ([Figure fig-browser-json](#fig-browser-json)). Either way, it is plain JSON: keys and values, with objects such as `owner` nested inside.
+
+![Screenshot of JSON in a dark browser window under Save, Copy, and Pretty Print buttons. It opens with an id of 858127, name pandas, full_name pandas-dev/pandas, and private false. Then an owner object, indented, gives login pandas-dev, type Organization, and a list of API URLs such as https://api.github.com/users/pandas-dev/repos. After the owner closes, html_url reads https://github.com/pandas-dev/pandas.](../graphics/http-apis/browser-json-response.png)
+
+Figure 24.1: The start of the GitHub API’s response for pandas’ repository, in Firefox’s JSON viewer, in September 2026. It is the same text `curl` prints, laid out with one key per line; `owner` is an object of its own, and the long URLs are links to further API requests. Cropped to the top-left corner of the response.
+
 The flag worth memorizing first is `-i`, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging “is the API actually responding?” or “what status code did I get?”, `-i` is the answer:
 
 ``` bash
@@ -140,10 +146,6 @@ python -m pip install requests
 ```
 
 The simplest possible use:
-
-![](graphics/PLACEHOLDER-browser-json-response.png)
-
-Figure 24.1: ALT: Web browser showing the raw JSON response from a public API (for example, `https://jsonplaceholder.typicode.com/users/1`). The response is a formatted object with name, email, and address fields, illustrating what API data looks like before any Python parsing.
 
 > **WARNING:**
 >

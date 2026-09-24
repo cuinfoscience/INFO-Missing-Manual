@@ -858,13 +858,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="quick-fetches-with-curl-and-wget" class="level2" data-number="24.2">
+<section id="quick-fetches-with-curl-and-wget" class="level2 page-columns page-full" data-number="24.2">
 <h2 data-number="24.2" class="anchored" data-anchor-id="quick-fetches-with-curl-and-wget"><span class="header-section-number">24.2</span> Quick fetches with <code>curl</code> and <code>wget</code></h2>
 <p>Before you write any Python, the fastest way to confirm that an API actually works is to call it from the command line. Two tools are universally available: <a href="https://curl.se/docs/manpage.html"><code>curl</code></a> and <a href="https://www.gnu.org/software/wget/manual/wget.html"><code>wget</code></a>. They overlap but are good at different things, and a working knowledge of both pays for itself the first time you have to debug an API at 3 AM with no Python interpreter in sight.</p>
-<section id="curl-for-inspecting" class="level3">
+<section id="curl-for-inspecting" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="curl-for-inspecting"><code>curl</code> for inspecting</h3>
 <p><code>curl</code> is a Swiss Army knife for HTTP. The bare invocation <code>curl &lt;url&gt;</code> sends a GET request and prints the response body to your terminal. That is enough for most quick checks:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/pandas-dev/pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paste the same URL into a browser and you get the same response, often formatted for reading (<a href="#fig-browser-json" class="quarto-xref">Figure&nbsp;<span>24.1</span></a>). Either way, it is plain JSON: keys and values, with objects such as <code>owner</code> nested inside.</p>
+<div id="fig-browser-json" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Screenshot of JSON in a dark browser window under Save, Copy, and Pretty Print buttons. It opens with an id of 858127, name pandas, full_name pandas-dev/pandas, and private false. Then an owner object, indented, gives login pandas-dev, type Organization, and a list of API URLs such as https://api.github.com/users/pandas-dev/repos. After the owner closes, html_url reads https://github.com/pandas-dev/pandas.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../graphics/http-apis/browser-json-response.png" class="img-fluid figure-img" alt="Screenshot of JSON in a dark browser window under Save, Copy, and Pretty Print buttons. It opens with an id of 858127, name pandas, full_name pandas-dev/pandas, and private false. Then an owner object, indented, gives login pandas-dev, type Organization, and a list of API URLs such as https://api.github.com/users/pandas-dev/repos. After the owner closes, html_url reads https://github.com/pandas-dev/pandas.">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.1: The start of the GitHub API’s response for pandas’ repository, in Firefox’s JSON viewer, in September 2026. It is the same text <code>curl</code> prints, laid out with one key per line; <code>owner</code> is an object of its own, and the long URLs are links to further API requests. Cropped to the top-left corner of the response.
+</figcaption>
+</figure>
+</div>
 <p>The flag worth memorizing first is <code>-i</code>, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging “is the API actually responding?” or “what status code did I get?”, <code>-i</code> is the answer:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-i</span> https://api.github.com/repos/pandas-dev/pandas <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">HTTP/2</span> 200</span>
@@ -897,24 +908,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A hidden benefit of starting with <code>curl</code>: many APIs include <code>curl</code> invocations in their documentation as the canonical example. Being able to read those examples directly — instead of mentally translating them into <code>requests</code> first — speeds up your reading of API docs by a noticeable amount.</p>
 </section>
 </section>
-<section id="the-requests-library" class="level2 page-columns page-full" data-number="24.3">
+<section id="the-requests-library" class="level2" data-number="24.3">
 <h2 data-number="24.3" class="anchored" data-anchor-id="the-requests-library"><span class="header-section-number">24.3</span> The <code>requests</code> library</h2>
 <p>The <a href="https://requests.readthedocs.io/en/latest/"><code>requests</code></a> library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The simplest possible use:</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-browser-json" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-browser-json-response.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-browser-json-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24.1: ALT: Web browser showing the raw JSON response from a public API (for example, <code>https://jsonplaceholder.typicode.com/users/1</code>). The response is a formatted object with name, email, and address fields, illustrating what API data looks like before any Python parsing.
-</figcaption>
-</figure>
-</div>
-</div></div><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
