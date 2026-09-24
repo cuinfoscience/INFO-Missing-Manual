@@ -50,7 +50,7 @@ def from_legacy(fig, image_sha256, size):
     """An image made before the toolkit existed, described by the recipe's `legacy:` block."""
     legacy = fig["legacy"]
     entry = {"file": fig["file"], "kind": fig["kind"], "url": fig.get("url"),
-             "captured": str(legacy["captured"]), "by": "hand-run script, before tools/shots",
+             "captured": str(legacy["captured"]), "by": legacy.get("by", "hand-run script, before tools/shots"),
              "method": legacy["method"], "size": size, "image_sha256": image_sha256}
     if legacy.get("note"):
         entry["note"] = legacy["note"]

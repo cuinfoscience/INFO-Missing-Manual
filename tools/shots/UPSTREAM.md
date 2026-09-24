@@ -41,6 +41,10 @@ The first commit that added this folder is the upstream code, byte for byte; eve
 - `lib/crop.py`: `crop: {between: [A, B]}` crops from the top of the first element matching `A` to the bottom of the first matching `B`, across the width of both, with `pad` as for `selector`. The pilot needed it to show a code cell and the Markdown cell after it. Upstream implements `between` only for headed takes (`lib/headed.py`), although its recipe check accepts the key for any figure: a headless take with it fell through to the whole window, silently.
 - `selftest.py` adds one check (a `between` crop of two marked elements, at its expected size), for 69 in all (upstream has 56).
 
+**A hand capture's maker (2026-09-24)**
+
+- `lib/provenance.py` `from_legacy()`: a `legacy:` block may say `by:`, who made the image ("hand capture by the maintainer"). Upstream always records "hand-run script, before tools/shots", which misdescribes a new hand capture.
+
 **Pilot material, not in upstream:** the JupyterLab fixture in `fixtures/jupyter/`, the recipes, and "Patterns and pitfalls" in the README, which adds this book's lessons to upstream's.
 
 ## Worth offering upstream
