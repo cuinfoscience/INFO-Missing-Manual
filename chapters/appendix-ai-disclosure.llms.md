@@ -21,7 +21,7 @@ The model weights, providers, and versions were chosen based on access and cost,
 
 We used the models for roughly five kinds of work, in decreasing order of editorial latitude:
 
-1.  **Mechanical conversion from LaTeX to Quarto.** Chapters originally written in LaTeX were converted to `.qmd` with a pandoc + Python cleanup pipeline (see the commit history and the `/tmp/convert_chapter.py` script discussed in CLAUDE.md). The AI wrote the cleanup script after being shown sample input and desired output. This was the safest and most deterministic use of the tools.
+1.  **Mechanical conversion from LaTeX to Quarto.** Chapters originally written in LaTeX were converted to `.qmd` with a pandoc + Python cleanup pipeline (the cleanup script was a one-off that never lived in the repository; the conversion itself is in the commit history). The AI wrote the cleanup script after being shown sample input and desired output. This was the safest and most deterministic use of the tools.
 2.  **Drafting gap chapters.** For a handful of chapters the human authors had already scoped but not written, we asked Claude to draft the prose from a detailed outline. We specified the canonical 8-section structure (see [sec-reading-docs](#sec-reading-docs)), the target audience, the tone (“friendly guide, second-person, empathetic”), the length, and the substantive points each section had to make. The model produced a first draft; the human authors then read, edited, reorganized, and verified the technical content.
 3.  **Editing and consistency passes.** On existing chapters we asked the models to suggest reorganizations, tighten phrasing, catch inconsistencies in terminology, and flag places where cross-references were stale. These were suggestions, not changes.
 4.  **Code example review.** Worked examples in Python, SQL, and shell were run or mentally executed by the human authors regardless of where they came from. When the AI wrote code, the human authors verified behavior and edited for clarity.
@@ -61,7 +61,7 @@ These are not disqualifying problems — they are workflow problems that we solv
 
 If you are a student reading this book to learn computing, three things are worth knowing:
 
-1.  **The code examples have been checked by humans** and either executed or traced mentally. If you find one that does not work, please open an issue — see `CLAUDE.md` for how.
+1.  **The code examples have been checked by humans** and either executed or traced mentally. If you find one that does not work, please open an issue: use the “Report an issue” link on any chapter page, and the *Something is wrong* form will walk you through what to include.
 2.  **The technical claims have been checked against documentation.** We expect occasional errors to remain (nothing this long is perfect) and we will fix them as they are reported.
 3.  **The pedagogical judgments — what to teach, in what order, with what emphasis — are the human authors’ choices**, informed by teaching students like you.
 
@@ -81,7 +81,7 @@ We think it matters for three reasons, which correspond to three different audie
 
 ## B.8 A note on the code we ship
 
-A separate but related question is how AI tools were used in any software we publish alongside the book — currently the cleanup script referenced in CLAUDE.md and the `_quarto.yml` / CI workflow configuration. Those were drafted with AI assistance and then tested: the conversion script was run end-to-end on every chapter, and the render pipeline was validated by a clean HTML build with zero warnings. The same “draft, verify, own the result” discipline applies.
+A separate but related question is how AI tools were used in any software we publish alongside the book — currently the helper tools in the repository’s `tools/` folder (the meme and figure generators, the issue-form script, and a screenshot toolkit adapted from a companion book) and the `_quarto.yml` / CI workflow configuration. Those were drafted with AI assistance and then tested: the original LaTeX conversion script was run end-to-end on every chapter, each tool is checked against the files it produces, and the render pipeline was validated by a clean HTML build with zero warnings. The same “draft, verify, own the result” discipline applies.
 
 If this book grows to include executable code cells (see [sec-jupyter](#sec-jupyter)) or tests that ship with the book itself, the same standard will apply to them: AI may draft, humans verify and take responsibility.
 
