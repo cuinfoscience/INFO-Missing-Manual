@@ -6,6 +6,12 @@ A reference book for the skills that fall between knowing what to type and worki
 
 **Author:** Brian C. Keegan
 
+> **Help improve this book.** Found a mistake, got stuck, or have an idea? You don't need to know Git or how to fix it.
+> **[Read the contributing guide](CONTRIBUTING.md)**, or go straight to
+> [reporting a problem](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new/choose) ·
+> [fixing a typo in your browser](CONTRIBUTING.md#fix-it-yourself-in-your-browser) ·
+> [suggesting a topic](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=suggestion.yml).
+
 ## Who this is for
 
 Undergraduate students in data science, social science, humanities, and adjacent fields who use Python and computing as tools. No prior CS background assumed. The handbook covers what happens around the code — environments, documentation, debugging, collaboration, and automation — and is designed to be **used as reference documentation** rather than read front-to-back. Drop into any chapter that matches your current problem; each chapter opens with a "Prerequisites and see-also" callout linking to related material if you need more context.
@@ -14,7 +20,7 @@ Undergraduate students in data science, social science, humanities, and adjacent
 
 ### Prerequisites
 
-- **Quarto ≥ 1.9.0** — https://quarto.org/docs/download/ (the `llms-txt` feature requires 1.9.0+)
+- **Quarto 1.10 or later** — https://quarto.org/docs/download/ (CI uses 1.10.18; Quarto 1.9.15 rejects the `llms-txt` setting in `_quarto.yml`)
 - **TinyTeX** (optional) — only needed if you want to render the PDF locally (`quarto install tinytex`). CI renders HTML only.
 
 ### Commands
@@ -47,6 +53,7 @@ INFO-Missing-Manual/
 ├── index.qmd                        # landing page / introduction
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography
+├── CONTRIBUTING.md                  # how to report a problem or contribute (start here)
 ├── AGENTS.md                        # instructions for AI agents and contributors
 ├── CLAUDE.md                        # imports AGENTS.md, for Claude Code
 ├── docs/                            # project records: decisions, hand-off, roadmap, AARs, plans
@@ -111,9 +118,9 @@ quarto render --to html
 
 ## Contributing
 
-Before contributing, read [`AGENTS.md`](AGENTS.md) for the full style guide, chapter structure template, cross-reference syntax, and conventions. Open ideas for new chapters and sections are in [`docs/roadmap.md`](docs/roadmap.md).
+Contributions of every size are welcome, from a typo report to a new chapter, and most need no programming. **Start with [CONTRIBUTING.md](CONTRIBUTING.md)**: it walks through reporting a problem with the [issue forms](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new/choose), fixing something in your browser with no installs, and making larger changes on your own computer. The full style guide is in [`AGENTS.md`](AGENTS.md), and topics already wanted are in the [roadmap](docs/roadmap.md).
 
-The short version:
+The short version of the style:
 
 - Each content chapter follows the canonical 8-section structure (Purpose → Learning objectives → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
 - Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.

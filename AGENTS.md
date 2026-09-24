@@ -2,6 +2,8 @@
 
 Instructions for AI coding agents (Claude Code, Codex, and any other) and for people extending the book. This is the one instructions file: `CLAUDE.md` only imports it, and an agent that looks for its own file (`GEMINI.md`, `.cursorrules`, and so on) should read this one. Read it before making any changes.
 
+People contributing for the first time start at `CONTRIBUTING.md`, the novice-facing guide; this file holds the detail behind it. The two, the issue forms, and the README link to each other, so when you change one (a form's name or label, the build prerequisites, a style rule), update the others in the same pull request.
+
 ---
 
 ## Project memory: `docs/`
@@ -30,7 +32,7 @@ The **Missing Manual for Information Scientists** is a Quarto book for undergrad
 
 ### Prerequisites
 
-- **Quarto ≥ 1.9.0** (required for `llms-txt` support) — https://quarto.org/docs/download/
+- **Quarto 1.10 or later** — https://quarto.org/docs/download/. CI uses the latest release (1.10.18 as of September 2026). Quarto 1.9.15 rejects the `website: llms-txt` key in `_quarto.yml` and won't build the book.
 - **TinyTeX** (optional, local only) — only needed if you want to render the PDF; `quarto install tinytex`. CI builds HTML only.
 - Optional: Python 3.11+ if you want to add executable code cells (not currently used)
 
@@ -79,10 +81,12 @@ INFO-Missing-Manual/
 ├── index.qmd                        # landing page (Introduction)
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography (22 entries)
+├── CONTRIBUTING.md                  # the novice-facing contributing guide (start here as a person)
 ├── .github/
 │   ├── workflows/build-book.yml     # CI: renders + publishes on push/PR
 │   ├── workflows/labels.yml         # manual run: creates the labels the issue forms use
-│   └── ISSUE_TEMPLATE/              # five issue forms + chooser config (see "Issue templates")
+│   ├── ISSUE_TEMPLATE/              # five issue forms + chooser config (see "Issue templates")
+│   └── pull_request_template.md     # short, optional checklist for pull requests
 │
 ├── chapters/                        # every chapter and appendix, one flat directory
 │   │                                # reading order and part grouping live in _quarto.yml
@@ -366,7 +370,7 @@ Each glossary term in `appendix-glossary.qmd` has an explicit `{#term-<slug>}` a
 
 ### What Not to Change
 
-- `_quarto.yml` top-level structure without a reason. In particular, do not remove the sibling `website: { llms-txt: true }` block; Quarto 1.9 has a bug where `llms-txt` under `book:` does not activate llms.txt generation, but under `website:` it does. See @sec-automation analog in the issue tracker if you want to upstream this.
+- `_quarto.yml` top-level structure without a reason. In particular, do not remove the sibling `website: { llms-txt: true }` block; Quarto 1.9 has a bug where `llms-txt` under `book:` does not activate llms.txt generation, but under `website:` it does. See @sec-automation analog in the issue tracker if you want to upstream this. (Quarto 1.9.15 rejects the key under `website:` outright, which is why local builds need 1.10 or later.)
 - Section ID prefixes. They are baked into cross-references across the book.
 - The `shortcodes:` key in `_quarto.yml`. It is what loads `{{< chapter-meme >}}`.
 
@@ -459,7 +463,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 | Suggestion | `suggestion.yml` | `suggestion` | Improvements, including "Propose a new chapter or topic" as a kind |
 | Accessibility problem | `accessibility.yml` | `accessibility` | Screen reader, keyboard, contrast, zoom, missing alt text |
 
-`config.yml` disables blank issues and offers two contact links (read the book; not sure which form). Design decisions worth keeping: the "I searched existing issues" checkbox is present but **optional** on every form — a duplicate is cheap to close, a novice bouncing off a required box is a lost report. Questions were folded into the gap form rather than given their own, because GitHub Discussions is not enabled on this repo and a reader's question is itself a gap signal. Adding a sixth form should clear a high bar; the chooser is part of the accessibility surface.
+`config.yml` disables blank issues and offers three contact links (read the book; fix it yourself, which opens `CONTRIBUTING.md`; not sure which form). The *Typo* form's intro points to the browser-editing route in `CONTRIBUTING.md`, and *Something is wrong* and *Suggestion* end with an optional "I would like to fix/make this myself" box, so a report can come with a volunteer. Design decisions worth keeping: the "I searched existing issues" checkbox is present but **optional** on every form — a duplicate is cheap to close, a novice bouncing off a required box is a lost report. Questions were folded into the gap form rather than given their own, because GitHub Discussions is not enabled on this repo and a reader's question is itself a gap signal. Adding a sixth form should clear a high bar; the chooser is part of the accessibility surface.
 
 **The chapter dropdown is generated.** Each form's "Which chapter?" options sit between `# BEGIN chapters` and `# END chapters` markers and are rebuilt from `_quarto.yml` plus each chapter's H1 by `tools/issue-forms/sync_issue_chapters.py` (stdlib only). Numbering matches the rendered book, with the Introduction as Chapter 1. Do not edit that block by hand; run the script after any chapter add, rename, or reorder, and `--check` in review to catch drift. Options outside the markers (e.g. "The book as a whole") are hand-maintained per form.
 
@@ -516,4 +520,4 @@ The chapter backlog lives in `docs/roadmap.md`: the history of the gap analysis,
 
 `.github/workflows/build-book.yml` renders the book on every push to `main` and on pull requests against `main`, using the latest stable Quarto release (`quarto-dev/quarto-actions/setup@v2`). Pull requests run a render-only validation step (`quarto-dev/quarto-actions/render@v2`) and do not publish. Pushes to `main` (and manual `workflow_dispatch` runs) render and publish the book to GitHub Pages via `quarto-dev/quarto-actions/publish@v2` with `target: gh-pages`.
 
-The minimum Quarto version is 1.9.0 (`llms-txt` requires it). If you need to pin a specific version for reproducibility, set `version:` in the workflow's `setup@v2` step.
+CI installs the latest Quarto release (1.10.18 as of September 2026). Local builds need 1.10 or later, since Quarto 1.9.15 rejects `website: llms-txt`. If you need to pin a specific version for reproducibility, set `version:` in the workflow's `setup@v2` step.

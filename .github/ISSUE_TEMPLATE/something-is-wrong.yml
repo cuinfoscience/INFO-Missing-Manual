@@ -137,7 +137,7 @@ body:
     id: proposal
     attributes:
       label: Do you know the fix?
-      description: Optional. If you worked out what is wrong, say so. If not, leave this blank — the report is still useful.
+      description: Optional. If you worked out what is wrong, say so. If not, leave this blank — the report is still useful. If you would like to make the fix yourself, tick the box below.
       placeholder: "On Ubuntu 24.04 the shortcut is Ctrl+Alt+T only if you have enabled it in Keyboard settings first."
     validations:
       required: false
@@ -149,4 +149,6 @@ body:
       description: Optional. If you have time, a quick search helps us avoid duplicates — but do not let it stop you.
       options:
         - label: I glanced at the open issues and did not see this one already.
+          required: false
+        - label: I would like to fix this myself (the [contributing guide](https://github.com/cuinfoscience/INFO-Missing-Manual/blob/main/CONTRIBUTING.md) shows how).
           required: false
