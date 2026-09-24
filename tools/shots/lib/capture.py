@@ -2,7 +2,7 @@
 
 Every take is written to tools/shots/out/<chapter>/<figure>/<UTC time>.png,
 with a .json log beside it. A take that fails a guard is named
-<UTC time>.FAILED.png. Nothing here writes to images/; `promote` does that.
+<UTC time>.FAILED.png. Nothing here writes to graphics/; `promote` does that.
 
 The log records what the browser knew at the moment of capture, in the
 take's own pixels: the box of everything the recipe's marks point at, and the
@@ -203,6 +203,8 @@ def capture(browser, fig, pacer, say=print):
             png = failed
         take = _log(fig, png, problems, status, result["final_url"], label, result["clip"], attempts)
         take.update(anchors=result["anchors"], text=result["text"])
+        if result.get("bars") is not None:
+            take["bars"] = result["bars"]     # headed: the browser's bars above the page, in DIPs
         _write(take, png)
         if problems and result["temporary"] and n < fig["retries"]:
             say(f"    attempt {n + 1}: {'; '.join(problems)}; will retry")

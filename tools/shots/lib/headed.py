@@ -63,13 +63,23 @@ class Session:
         args = ["--window-position=0,0", f"--window-size={self.W},{self.H}", f"--user-agent={fig['user_agent']}",
                 f"--force-device-scale-factor={self.S}", f"--remote-debugging-port={self.port}",
                 "--no-first-run", "--no-default-browser-check"]
+        # No "controlled by automated test software" bar across the window.
+        ignore = ["--enable-automation"]
+        if (fig.get("expect") or {}).get("infobar"):
+            # A figure of an infobar: drop the flag that hides one. Playwright applies
+            # ignore_default_args to every argument, its own and these, so this removes both copies.
+            ignore.append("--disable-infobars")
+        else:
+            # No infobar across the top of the window (see guards.MAX_BARS). Passed here, not left to
+            # Playwright's default list, which has it today but is not ours to rely on.
+            args.append("--disable-infobars")
         if self.devtools:
             args.append("--auto-open-devtools-for-tabs")
+        self.args = args
         options = {"executable_path": browser.path, "headless": False, "no_viewport": True,
                    "env": display.env, "args": args,
                    "java_script_enabled": fig["javascript"],
-                   # No "controlled by automated test software" bar across the window.
-                   "ignore_default_args": ["--enable-automation"]}
+                   "ignore_default_args": ignore}
         if proxy():
             options["proxy"] = {"server": proxy(), "bypass": "localhost,127.0.0.1"}
         self.context = browser.playwright.chromium.launch_persistent_context(str(self.profile), **options)
@@ -366,10 +376,11 @@ class Session:
 
 def attempt(browser, fig, display, png):
     """One headed attempt, as a dict: status, problems, temporary, clip, final_url, steps,
-    error, anchors, text (see capture._headless)."""
+    error, anchors, text (see capture._headless), and bars: the height of the browser's
+    own bars above the page, in DIPs."""
     session = Session(browser, fig, display)
     result = {"status": None, "problems": [], "temporary": False, "clip": None, "final_url": None,
-              "steps": [], "error": None, "anchors": {}, "text": None}
+              "steps": [], "error": None, "anchors": {}, "text": None, "bars": None}
     try:
         try:
             response = session.page.goto(fig["url"], wait_until="domcontentloaded",
@@ -391,11 +402,16 @@ def attempt(browser, fig, display, png):
         except (page_steps.StepError, dt.DevToolsError) as e:
             problems.append(str(e))
         time.sleep(fig["settle"])
-        text = session.page.evaluate("() => document.body ? document.body.innerText : ''")
-        issues, result["temporary"] = guards.page_problems(status, session.page.title(), text,
-                                                           fig.get("expect") or {})
-        problems += issues
         expect = fig.get("expect") or {}
+        try:
+            result["bars"] = round(session.toolbar(), 1)
+        except dt.DevToolsError as e:
+            problems.append(f"could not measure the browser's bars: {e}")
+        else:
+            problems += guards.bars_problems(result["bars"], expect)
+        text = session.page.evaluate("() => document.body ? document.body.innerText : ''")
+        issues, result["temporary"] = guards.page_problems(status, session.page.title(), text, expect)
+        problems += issues
         for text in expect.get("text") or []:
             if session.page.get_by_text(page_steps.pattern(text)).count() == 0:
                 problems.append(f"expected text /{text}/ not found")

@@ -1,4 +1,5 @@
-"""Load and check the recipe files: one YAML file per chapter in tools/shots/recipes/."""
+"""Load and check the recipe files: one YAML file per chapter in tools/shots/recipes/,
+named for the chapter's slug (recipes/jupyter.yml for chapters/jupyter.qmd)."""
 import hashlib
 import json
 import re
@@ -6,6 +7,7 @@ import re
 import yaml
 
 from .env import RECIPES, ROOT, rel
+from .legibility import COLUMNS, RELAXED_LIMIT, SOFT_LIMIT
 
 KINDS = {"capture", "render", "diagram", "illustration"}
 MODES = {"headless", "headed", "composite"}
@@ -14,13 +16,13 @@ HEADED_STEPS = {"inspect", "tree", "devtools_click", "devtools_wait", "key", "ty
 STEPS = PAGE_STEPS | HEADED_STEPS
 CROPS = {"window", "full_page", "content", "between", "top", "left", "width", "height", "selector", "pad",
          "devtools"}
-EXPECTS = {"status", "text", "selector", "block"}
+EXPECTS = {"status", "text", "selector", "block", "infobar"}
 DEVTOOLS = {"dock", "panel", "zoom", "size", "sidebar", "layout", "overview", "columns", "first_visit"}
 DEVTOOLS_LAYOUTS = {"side-by-side", "stacked", "auto"}
 FIGURE_KEYS = {"id", "file", "kind", "section", "url", "mode", "engine", "steps", "expect", "crop",
                "javascript", "drifts", "legacy", "notes", "devtools", "window", "scale",
                "user_agent", "pause", "settle", "timeout", "retries",
-               "annotate", "targets", "legibility", "parts", "layout", "oversize"}
+               "annotate", "targets", "legibility", "parts", "layout", "oversize", "relaxed"}
 ENGINES = {"playwright", "selenium", "codegen"}
 # Annotation (lib/annotate.py): marks placed from what the browser measured.
 ANNOTATE = {"width_in", "size", "border", "marks"}
@@ -39,10 +41,10 @@ PART_KEYS = {"label", "url", "steps", "expect", "crop", "javascript", "window", 
 LAYOUT = {"gap", "pad", "label_px"}
 # Settings that decide how a take is drawn on or judged, not how it is captured.
 # Changing them needs no new take, so they stay out of the recipe's hash.
-NOT_CAPTURE = ("legacy", "notes", "annotate", "targets", "legibility", "oversize")
+NOT_CAPTURE = ("legacy", "notes", "annotate", "targets", "legibility", "oversize", "relaxed")
 DEFAULTS = {
-    "user_agent": "Web Data Science/v1 brian.keegan@colorado.edu",
-    "window": [800, 600],    # CSS pixels; also the soft limit on what a figure shows (lib/legibility.py)
+    "user_agent": "Missing Manual/v1 (+https://github.com/cuinfoscience/INFO-Missing-Manual)",
+    "window": list(SOFT_LIMIT),   # CSS pixels; also the default limit on what a figure shows (lib/legibility.py)
     "scale": 2,              # device pixels per CSS pixel
     "pause": [8, 30],        # seconds between page loads on one host
     "settle": 1.0,           # seconds to let rendering finish after the last step
@@ -58,7 +60,7 @@ class RecipeError(Exception):
 
 
 def chapters():
-    return sorted(p.stem for p in RECIPES.glob("ch-*.yml"))
+    return sorted(p.stem for p in RECIPES.glob("*.yml"))
 
 
 def _problems(chapter, raw):
@@ -108,7 +110,14 @@ def _problems(chapter, raw):
         for key in set(f.get("legibility") or {}) - LEGIBILITY:
             out.append(f"{where}: unknown legibility key `{key}`")
         if "oversize" in f and not (isinstance(f["oversize"], str) and f["oversize"].strip()):
-            out.append(f"{where}: `oversize` is the reason a figure shows more than 800×600, as a sentence")
+            out.append(f"{where}: `oversize` is the reason a figure shows more than "
+                       f"{SOFT_LIMIT[0]}×{SOFT_LIMIT[1]}, as a sentence")
+        if "relaxed" in f and not (isinstance(f["relaxed"], str) and f["relaxed"].strip()):
+            out.append(f"{where}: `relaxed` is the reason a view up to {RELAXED_LIMIT[0]}×{RELAXED_LIMIT[1]} "
+                       "is less cluttered, as a sentence")
+        book = (f.get("targets") or {}).get("book")
+        if isinstance(book, dict) and "column" in book and book["column"] not in COLUMNS:
+            out.append(f"{where}: the book target's `column` is one of {sorted(COLUMNS)}")
         out += [f"{where}: {p}" for p in _composite_problems(f)]
     return out
 
@@ -217,7 +226,8 @@ def load(chapter):
                           sort_keys=True, default=str)
         fig["recipe_sha256"] = hashlib.sha256(text.encode()).hexdigest()
         figures.append(fig)
-    qmd = raw.get("qmd") or next((p.name for p in sorted(ROOT.glob(f"{chapter}-*.qmd"))), None)
+    qmd = raw.get("qmd") or (f"chapters/{chapter}.qmd" if (ROOT / "chapters" / f"{chapter}.qmd").exists()
+                             else None)
     return {"chapter": chapter, "qmd": qmd, "figures": figures, "path": path,
             "course": bool(raw.get("course"))}
 

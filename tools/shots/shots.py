@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 """Capture, check, and record the book's screenshots. See tools/shots/README.md.
 
-    tools/shots/run doctor [ch-NN]            can this session capture? (run first, every time)
-    tools/shots/run list [ch-NN]              recipes, approved images, and takes
-    tools/shots/run capture ch-NN [--only ID ...]
-    tools/shots/run compare ch-NN ID          newest take against the approved image
-    tools/shots/run annotate ch-NN ID [--take PATH]   redraw a take's markers after editing them
-    tools/shots/run sheet ch-NN [--only ID ...]   each newest take at the size it will be shown
-    tools/shots/run promote ch-NN ID [--take PATH]
-    tools/shots/run adopt ch-NN [--only ID ...]   record provenance for images made before tools/shots
-    tools/shots/run check [ch-NN ...]         recipes, provenance, legibility, markers, figure blocks
+A CHAPTER is a chapter's slug: `jupyter` for chapters/jupyter.qmd, whose recipe
+is tools/shots/recipes/jupyter.yml and whose approved images go in graphics/jupyter/.
+
+    tools/shots/run doctor [CHAPTER]          can this session capture? (run first, every time)
+    tools/shots/run list [CHAPTER]            recipes, approved images, and takes
+    tools/shots/run capture CHAPTER [--only ID ...]
+    tools/shots/run compare CHAPTER ID        newest take against the approved image
+    tools/shots/run annotate CHAPTER ID [--take PATH]   redraw a take's markers after editing them
+    tools/shots/run sheet CHAPTER [--only ID ...]   each newest take at the size it will be shown
+    tools/shots/run promote CHAPTER ID [--take PATH]
+    tools/shots/run adopt CHAPTER [--only ID ...]   record provenance for images made before tools/shots
+    tools/shots/run check [CHAPTER ...]       recipes, provenance, legibility, markers, figure blocks
     tools/shots/run status                    every figure's kind and age
-    tools/shots/run clean [ch-NN]             delete old takes
+    tools/shots/run clean [CHAPTER]           delete old takes
     tools/shots/run selftest                  offline test of the guards, promote, and markers
 """
 import argparse
@@ -29,7 +32,7 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from lib import annotate, legibility                                   # noqa: E402
+from lib import annotate, guards, legibility                           # noqa: E402
 from lib import provenance as prov                                      # noqa: E402
 from lib.capture import Pacer, PolicyBlock, capture, sha256, takes      # noqa: E402
 from lib.compare import compare                                         # noqa: E402
@@ -130,6 +133,7 @@ def doctor_headed():
         try:
             response = session.page.goto("https://example.com/", wait_until="domcontentloaded", timeout=60000)
             session.ready()
+            bars = round(session.toolbar(), 1)
             OUT.mkdir(parents=True, exist_ok=True)
             session.park()
             session.grab(OUT / "doctor-headed.png", session.crop_rect())
@@ -137,9 +141,15 @@ def doctor_headed():
             session.close()
         with Image.open(OUT / "doctor-headed.png") as img:
             spread = ImageStat.Stat(img.convert("L")).stddev[0]
+        too_tall = guards.bars_problems(bars, {})
+        if too_tall:
+            line(BAD, f"headed window: {too_tall[0]} (see {rel(OUT / 'doctor-headed.png')})",
+                 "every headed take would fail its guard; find what adds the bar before capturing")
+        else:
+            line(GOOD, f"headed window: the browser's bars measure {bars:g} DIPs (at most {guards.MAX_BARS})")
         if response and response.status == 200 and spread > 3:
             line(GOOD, "headed capture works (virtual display, DevTools, screen grab)")
-            return False
+            return bool(too_tall)
         line(BAD, f"headed capture of example.com came back wrong (status "
                   f"{response and response.status}, pixel spread {spread:.1f})")
     except Exception as e:
@@ -285,13 +295,12 @@ def report_take(fig, take):
         except annotate.AnnotateError as e:
             line(BAD, f"markers: {e}")
             return 1
-    over = legibility.oversize(take)
-    if over and fig.get("oversize"):
-        line("note", f"{over}; allowed: {fig['oversize']}")
-    elif over:
-        line(WARN, over, "crop to what the text discusses, or zoom DevTools, rather than widen the window "
-                         "(or say why in `oversize:`)")
     results = legibility.judge(fig, take.get("text"), take["size"][0], record)
+    level, said = legibility.size_report(fig, take, results)
+    if level == "note":
+        line("note", said)
+    elif level:
+        line(WARN, said, None if fig.get("relaxed") else legibility.size_hint(take))
     skip = (fig.get("legibility") or {}).get("skip")
     if results and skip and not all(r[-1] for r in results):
         line("note", f"text size: {legibility.describe(results)}; not judged: {skip}")
@@ -363,7 +372,7 @@ def cmd_promote(args):
     recipe = load(args.chapter)
     fig = figure(recipe, args.id)
     if recipe["course"]:
-        print(f"{args.chapter} holds course-only figures, which go to the course repo, not images/ "
+        print(f"{args.chapter} holds course-only figures, which go to a course repo, not graphics/ "
               "(`sync`, milestone M4). Use the take and its markers from tools/shots/out/.")
         return 1
     take = _take(args)
@@ -432,7 +441,9 @@ def cmd_adopt(args):
 
 # ---------------------------------------------------------------- check
 def figure_block(qmd_text, chapter, file):
-    pattern = re.compile(r"!\[(?P<caption>.*?)\]\(images/" + re.escape(f"{chapter}/{file}") +
+    """The chapter's figure for this file: ![caption](/graphics/<chapter>/<file>){attrs}.
+    AGENTS.md asks for the leading slash; a path without one is matched too, and reads as broken."""
+    pattern = re.compile(r"!\[(?P<caption>.*?)\]\((?P<slash>/?)graphics/" + re.escape(f"{chapter}/{file}") +
                          r"\)\{(?P<attrs>[^}]*)\}")
     return pattern.search(qmd_text)
 
@@ -457,12 +468,14 @@ def check_markers(fig, entry, chapter, err, warn):
 
 
 def check_size(fig, entry, warn):
-    """The first and soft limit: a figure shows at most 800x600 CSS pixels, or its recipe says why."""
-    over = legibility.oversize(entry)
-    if over and fig.get("oversize"):
-        line("note", f"{fig['id']}: {over}; allowed: {fig['oversize']}")
-    elif over:
-        warn(f"{fig['id']}: {over}")
+    """How much of the screen a figure shows: SOFT_LIMIT CSS pixels by default, RELAXED_LIMIT with
+    `relaxed:` while its text passes, more with `oversize:`."""
+    results = legibility.judge(fig, entry.get("text"), entry["size"][0], entry.get("annotated"))
+    level, said = legibility.size_report(fig, entry, results)
+    if level == "note":
+        line("note", f"{fig['id']}: {said}")
+    elif level:
+        warn(f"{fig['id']}: {said}")
 
 
 def check_legibility(fig, entry, err):
@@ -527,6 +540,13 @@ def cmd_check(args):
             if not block:
                 warn(f"{fig['id']}: not used in {recipe['qmd']}")
                 continue
+            if not block["slash"]:
+                err(f"{fig['id']}: {recipe['qmd']} refers to graphics/{chapter}/... without the leading "
+                    "slash, which breaks the image in a chapter under chapters/ (write /graphics/...)")
+            column = ((legibility.targets(fig).get("book") or {}).get("column"))
+            if column and not re.search(r"(^|\s)\.column-" + re.escape(column) + r"(\s|$)", block["attrs"]):
+                err(f"{fig['id']}: its recipe judges it in the {column} column, but the figure in "
+                    f"{recipe['qmd']} lacks `.column-{column}`")
             alt = re.search(r'fig-alt="([^"]*)"', block["attrs"])
             if not alt:
                 err(f"{fig['id']}: the figure in {recipe['qmd']} has no fig-alt")
@@ -550,8 +570,9 @@ def cmd_check(args):
 # ---------------------------------------------------------------- clean / selftest
 def cmd_clean(args):
     removed = 0
-    for chapter_dir in sorted([*OUT.glob("ch-*"), OUT / "course"]):
-        if not chapter_dir.is_dir() or (args.chapters and chapter_dir.name not in args.chapters):
+    for chapter_dir in sorted(OUT.iterdir() if OUT.is_dir() else []):
+        if (not chapter_dir.is_dir() or chapter_dir.name.startswith(".")
+                or (args.chapters and chapter_dir.name not in args.chapters)):
             continue
         for fig_dir in sorted(p for p in chapter_dir.iterdir() if p.is_dir()):
             logs = sorted((p for p in fig_dir.glob("*.json") if ".annotated." not in p.name), reverse=True)

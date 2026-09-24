@@ -1,11 +1,11 @@
 """Contact sheets: each figure's newest take, drawn at the size each target shows it.
 
-    tools/shots/run sheet ch-05            -> tools/shots/out/ch-05/sheet-1.png, ...
+    tools/shots/run sheet jupyter          -> tools/shots/out/jupyter/sheet-1.png, ...
 
 For the agent's own review before a pull request, and for the pull request
 itself: one look shows whether a marker covers what it points at, and
 whether the text can be read in the book's column, on a slide, and on paper.
-Each target is drawn at its real size: the book's column at 778 pixels, a
+Each target is drawn at its real size: the book's column at BOOK_PX pixels, a
 slide's share of a 1920-pixel-wide slide, a handout at 96 pixels per inch
 (a printed page seen at 100%). The measured text size and the verdict are
 written over each one.
@@ -27,7 +27,7 @@ def _widths(fig, image_w, annotated):
     out = {}
     for name, setting in legibility.targets(fig).items():
         if name == "book":
-            out[name] = min(setting.get("width_px", legibility.BOOK_PX), shown)
+            out[name] = min(legibility.book_px(setting), shown)
         elif name == "slides":
             out[name] = setting.get("width", 1.0) * legibility.SLIDE_PX * legibility.SLIDE_TEXT
         elif name == "handout":
@@ -69,15 +69,15 @@ def blocks(entries):
             title += f"  ·  annotated at {annotated['width_in']:g} in"
             if annotated.get("warnings"):
                 title += "  ·  " + "; ".join(annotated["warnings"])
-        over = legibility.oversize(take)
-        note = (over + (f"; allowed: {fig['oversize']}" if fig.get("oversize") else "")) if over else ""
+        level, note = legibility.size_report(fig, take, legibility.judge(fig, take.get("text"),
+                                                                          take["size"][0], annotated))
         height = MARGIN + 40 + (30 if note else 0) + sum(max(t.height for t, _, _ in r) + 40 + GAP for r in rows)
         block = Image.new("RGB", (WIDTH, height), "white")
         draw = ImageDraw.Draw(block)
         draw.text((MARGIN, MARGIN), title, fill="black", font=bold)
         y = MARGIN + 40
         if note:                         # the soft limit on what a figure shows
-            draw.text((MARGIN, y), note, fill=(110, 110, 110) if fig.get("oversize") else (190, 0, 0), font=font)
+            draw.text((MARGIN, y), note, fill=(110, 110, 110) if level == "note" else (190, 0, 0), font=font)
             y += 30
         for r in rows:
             x = MARGIN

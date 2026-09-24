@@ -50,7 +50,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from . import measure
+from . import legibility, measure
 from .env import ROOT, TOOL
 
 PT_PER_IN = 72.27
@@ -60,7 +60,7 @@ ARM_PT = 2.0            # a bracket's short arm
 TIP_PT = 1.0            # from a brace's or bracket's tip to its marker or label
 SPACING_PT = 1.5        # between markers spread apart on one line
 BEYOND_PT = 2.5         # how far a bracket's arrow reaches past the picture's edge
-BOOK_WIDTH_IN = 778 / 96  # the book's column (778 CSS pixels in a 1280-pixel-wide window)
+BOOK_WIDTH_IN = legibility.BOOK_PX / 96  # the book's column, at 96 CSS pixels per inch
 STYLES = TOOL / "styles"
 ANCHORS = {"right": {"start": "west", "end": "east"}, "left": {"start": "west", "end": "east"},
            "below": {"start": "north", "end": "south"}, "above": {"start": "north", "end": "south"}}

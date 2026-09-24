@@ -1,8 +1,9 @@
 """Decide whether a take shows the page, or an error or block page instead.
 
 A take that fails a guard is kept in out/ for inspection but can never be
-promoted into images/. A figure whose subject *is* a refusal says so with
-`expect: {block: true}`, and then the guard requires one.
+promoted into graphics/. A figure whose subject *is* a refusal says so with
+`expect: {block: true}`, and then the guard requires one. Likewise a headed
+figure whose subject is an infobar says `expect: {infobar: true}`.
 """
 import re
 
@@ -23,6 +24,15 @@ BLOCK_PATTERNS = [
 ]
 HEAD_CHARS = 3000
 
+# The browser's own bars above the page in a headed window, in DIPs. The tab
+# strip and toolbar measure 87 in Chrome for Testing 154 on Linux. An infobar
+# adds about 56 more: Chrome for Testing's "only for automated testing" notice,
+# or, where Playwright runs Chrome as root with --no-sandbox, the
+# unsupported-flag warning. It shows in a whole-window take and pushes the page
+# down in every other. headed.py passes --disable-infobars itself, rather than
+# trusting Playwright's default to; this catches anything that still gets through.
+MAX_BARS = 100
+
 
 def page_problems(status, title, text, expect):
     """Problems with a loaded page, and whether they look temporary."""
@@ -40,6 +50,19 @@ def page_problems(status, title, text, expect):
     if hits:
         problems.append("the page looks like " + " and ".join(sorted({label for label, _ in hits})))
     return problems, bool(hits) and all(temporary for _, temporary in hits)
+
+
+def bars_problems(height, expect):
+    """Problems with the height of the bars above the page in a headed window."""
+    if expect.get("infobar"):
+        if height <= MAX_BARS:
+            return [f"expected an infobar, but the browser's bars measure {height:g} DIPs "
+                    f"(at most {MAX_BARS} without one)"]
+        return []
+    if height > MAX_BARS:
+        return [f"the browser's bars above the page measure {height:g} DIPs, over {MAX_BARS}: "
+                "an infobar or notice is showing (look at the take)"]
+    return []
 
 
 def image_problems(path):

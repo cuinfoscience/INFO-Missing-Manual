@@ -5,7 +5,9 @@
 
 Needs the browser (bootstrap.sh) but no network: every page comes from a
 server on 127.0.0.1, which Chrome reaches directly. Everything is written to a
-temporary folder; the repository is not touched.
+temporary folder; the repository is not touched. Expected messages are built
+from the toolkit's own constants (the soft limit, the book's column, the
+User-Agent, the bars limit), so they follow this book's settings.
 """
 import http.server
 import json
@@ -64,6 +66,32 @@ def sections(output):
     return found
 
 
+_COMMAND_LINE = {}
+
+
+def chrome_command_line(infobar=False):
+    """Chrome's command line, read back from chrome://version in a headed window made the way
+    a headed take makes one (lib/headed.py), for a figure that does or doesn't expect an infobar,
+    and the arguments the toolkit itself passed."""
+    if infobar not in _COMMAND_LINE:
+        from lib import headed
+        from lib.browser import Browser
+        from lib.recipes import DEFAULTS
+        browser = Browser(use_proxy=False)
+        try:
+            fig = {**DEFAULTS, "id": "command-line", "chapter": "ch-99", "mode": "headed", "scale": 1,
+                   "window": [700, 500], "timeout": 20, "expect": {"infobar": True} if infobar else {}}
+            session = headed.Session(browser, fig, browser.display(700, 500))
+            try:
+                session.page.goto("chrome://version", wait_until="load")
+                _COMMAND_LINE[infobar] = (session.page.locator("#command_line").inner_text(), session.args)
+            finally:
+                session.close()
+        finally:
+            browser.close()
+    return _COMMAND_LINE[infobar]
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         SEEN.setdefault(self.path, []).append({k.lower(): v for k, v in self.headers.items()})
@@ -92,9 +120,19 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="shots-selftest-"))
     for sub in ("recipes", "out", "images/ch-99"):
         (tmp / sub).mkdir(parents=True)
+    # Point this process, and every `shots` it runs, at the temporary tree before lib/ is imported.
+    os.environ.update(SHOTS_RECIPES=str(tmp / "recipes"), SHOTS_OUT=str(tmp / "out"),
+                      SHOTS_IMAGES=str(tmp / "images"), SHOTS_BACKOFF="0,0,0")
+    sys.path.insert(0, str(HERE))
+    from lib.guards import MAX_BARS, bars_problems
+    from lib.legibility import BOOK_PX, COLUMNS, RELAXED_LIMIT, SOFT_LIMIT
+    from lib.recipes import DEFAULTS
+    soft_w, soft_h = SOFT_LIMIT
+    relaxed_w, relaxed_h = RELAXED_LIMIT
+    qmd = tmp / "ch-99.qmd"
     (tmp / "recipes" / "ch-99.yml").write_text(f"""
 chapter: ch-99
-qmd: none.qmd
+qmd: {qmd}
 defaults: {{window: [800, 600], scale: 1, pause: [0, 0], settle: 0.2, timeout: 10, retries: 1}}
 figures:
   - {{id: ok, kind: capture, url: "{base}/ok", expect: {{text: ["Hello from the selftest"]}}}}
@@ -172,6 +210,16 @@ figures:
     window: [555, 400]
     targets: {{slides: {{width: 0.35}}}}
   - {{id: wide, kind: capture, url: "{base}/ok", window: [1000, 500]}}
+  - {{id: fits, kind: capture, url: "{base}/ok", window: [{soft_w}, {soft_h}]}}
+  - {{id: relaxed-ok, kind: capture, url: "{base}/ok", window: [960, 720], relaxed: "a test of a clearer view"}}
+  - {{id: relaxed-small, kind: capture, url: "{base}/ok", window: [{relaxed_w}, {relaxed_h}], relaxed: "a test"}}
+  - id: relaxed-column
+    kind: capture
+    url: "{base}/ok"
+    window: [{relaxed_w}, {relaxed_h}]
+    relaxed: "a test of a wider column"
+    targets: {{book: {{column: page-inset-right}}}}
+  - {{id: relaxed-too-big, kind: capture, url: "{base}/ok", window: [1200, 700], relaxed: "a test"}}
   - {{id: wide-allowed, kind: capture, url: "{base}/ok", window: [1000, 500], oversize: "a test of the reason"}}
   - id: joined
     kind: capture
@@ -192,9 +240,14 @@ figures:
         - {{n: 1, at: {{devtools: {{row: '^<section'}}}}, side: left, x: 20}}
         - {{label: '← picked', at: {{devtools: {{selected: true}}}}, x: -4}}
         - {{n: 2, at: {{selector: '#target', box: text}}}}
+  - id: headed-infobar
+    kind: capture
+    url: "{base}/ok"
+    mode: headed
+    window: [900, 600]
+    expect: {{infobar: true}}
 """)
-    env = dict(os.environ, SHOTS_RECIPES=str(tmp / "recipes"), SHOTS_OUT=str(tmp / "out"),
-               SHOTS_IMAGES=str(tmp / "images"), SHOTS_BACKOFF="0,0,0")
+    env = dict(os.environ)
 
     def shots(*args):
         run = subprocess.run([sys.executable, str(HERE / "shots.py"), *args], env=env,
@@ -211,6 +264,13 @@ figures:
         condition = bool(condition)
         results.append(condition)
         print(f"  {'ok' if condition else 'FAIL':4}  {name}" + (f"  ({detail})" if detail and not condition else ""))
+
+    print("guards")
+    expect("the bars guard passes a headed window's own bars (87 DIPs) and fails one with an infobar (143)",
+           not bars_problems(87, {}) and "infobar" in " ".join(bars_problems(143, {})),
+           f"{bars_problems(87, {})} {bars_problems(143, {})}")
+    expect("...and, for a figure whose subject is an infobar, the reverse",
+           bars_problems(87, {"infobar": True}) and not bars_problems(143, {"infobar": True}))
 
     print("capture")
     code, out = shots("capture", "ch-99", "--only", "ok", "gateway", "wayback", "blocked",
@@ -235,7 +295,7 @@ figures:
     code, out = shots("capture", "ch-99", "--only", "ua")
     sent = (SEEN.get("/ua") or [{}])[-1]
     expect("requests carry the one User-Agent, and Client Hints that name this machine's system",
-           sent.get("user-agent") == "Web Data Science/v1 brian.keegan@colorado.edu"
+           sent.get("user-agent") == DEFAULTS["user_agent"]
            and sent.get("sec-ch-ua-platform") == PLATFORM, str(sent))
 
     print("promote")
@@ -264,16 +324,29 @@ figures:
 
     print("anchors, markers, legibility, composites")
     code, out = captured = shots("capture", "ch-99", "--only", "marks", "marks-2x", "small-text", "joined",
-                                 "wide", "wide-allowed")
+                                 "wide", "wide-allowed", "fits", "relaxed-ok", "relaxed-small", "relaxed-column",
+                                 "relaxed-too-big")
     marks, marks2, small, joined = newest("marks"), newest("marks-2x"), newest("small-text"), newest("joined")
     said = sections(out)
-    expect("a figure showing more than 800x600 CSS pixels gets a warning (the soft limit)",
-           "shows 1000×500 CSS pixels, over the 800×600 soft limit; the book's column shows its text at 78%"
-           in said.get("wide", "") and newest("wide").get("ok") is True, said.get("wide"))
+    over = (f"shows 1000×500 CSS pixels, over the {soft_w}×{soft_h} soft limit; "
+            f"the book's column shows its text at {round(100 * BOOK_PX / 1000)}%")
+    expect(f"a figure showing more than {soft_w}x{soft_h} CSS pixels gets a warning (the soft limit)",
+           over in said.get("wide", "") and newest("wide").get("ok") is True, said.get("wide"))
     expect("...which its recipe can allow, with a reason",
            "allowed: a test of the reason" in said.get("wide-allowed", ""), said.get("wide-allowed"))
-    expect("...and an 800x600 figure is within it", "marks" in said and "soft limit" not in said["marks"],
-           said.get("marks"))
+    expect(f"...and a {soft_w}x{soft_h} figure is within it", "fits" in said and "soft limit" not in said["fits"],
+           said.get("fits"))
+    expect(f"with `relaxed:`, a figure up to {relaxed_w}x{relaxed_h} whose text passes gets a note, not a warning",
+           f"relaxed to {relaxed_w}×{relaxed_h}, text passing: a test of a clearer view" in said.get("relaxed-ok", "")
+           and "warn" not in said.get("relaxed-ok", "").split("text size")[0], said.get("relaxed-ok"))
+    expect("...but not when its text fails in the book's column (a 1024-pixel page at 66%)",
+           "only while the text passes at every target" in said.get("relaxed-small", ""), said.get("relaxed-small"))
+    column_pct = round(100 * COLUMNS["page-inset-right"] / relaxed_w)
+    expect(f"...and a figure judged in a wider Quarto column keeps its text there ({column_pct}%)",
+           f"the page-inset-right column shows its text at {column_pct}%" in said.get("relaxed-column", "")
+           and "text passing" in said.get("relaxed-column", ""), said.get("relaxed-column"))
+    expect(f"`relaxed:` stops at {relaxed_w}x{relaxed_h}", f"over the {relaxed_w}×{relaxed_h} relaxed limit too"
+           in said.get("relaxed-too-big", ""), said.get("relaxed-too-big"))
 
     def anchor(take, at):
         return ((take.get("anchors") or {}).get(json.dumps(at, sort_keys=True, separators=(",", ":"))) or {}).get("box")
@@ -333,8 +406,19 @@ figures:
     code, out = shots("check", "ch-99")
     expect("check fails a promoted image whose text is too small to read",
            code == 1 and "text too small to read: slides 11.7 px" in out, out[-400:])
-    expect("check warns about an approved image over the 800x600 soft limit",
-           "wide: shows 1000×500 CSS pixels, over the 800×600 soft limit" in out, out[-400:])
+    expect(f"check warns about an approved image over the {soft_w}x{soft_h} soft limit",
+           f"wide: shows 1000×500 CSS pixels, over the {soft_w}×{soft_h} soft limit" in out, out[-400:])
+    code, out = shots("promote", "ch-99", "relaxed-column")
+    block = '![A relaxed figure.](/graphics/ch-99/relaxed-column.png){{#fig-r {cls}fig-alt="{alt}"}}\n'
+    alt = "A page of repeated words, shown wider than the body column, used to test the relaxed limit. " * 2
+    qmd.write_text(block.format(cls="", alt=alt))
+    code, out = shots("check", "ch-99")
+    expect("check fails a figure judged in a wider column that its chapter doesn't put there",
+           "lacks `.column-page-inset-right`" in out, out[-500:])
+    qmd.write_text(block.format(cls=".column-page-inset-right ", alt=alt))
+    code, out = shots("check", "ch-99")
+    expect("...and notes it as relaxed once the figure carries the class",
+           "lacks `.column-" not in out and "relaxed-column: shows" in out and "text passing" in out, out[-500:])
     if tex_tools:
         code, out = shots("promote", "ch-99", "marks")
         annotated = tmp / "images" / "ch-99" / "marks_annotated.png"
@@ -357,6 +441,23 @@ figures:
                inspect_take.get("ok") is True, str(inspect_take.get("problems")) + out[-300:])
         expect("the whole window is grabbed at its size", inspect_take.get("size") == [900, 600],
                str(inspect_take.get("size")))
+        bars = inspect_take.get("bars")
+        expect(f"a headed take records the height of the browser's bars above the page, at most {MAX_BARS} DIPs",
+               isinstance(bars, (int, float)) and 0 < bars <= MAX_BARS, str(bars))
+        line, ours = chrome_command_line()
+        expect("the toolkit passes --disable-infobars itself, and Chrome's command line (chrome://version) has it",
+               "--disable-infobars" in ours and "--disable-infobars" in line.split(), f"{ours} / {line}")
+        line, ours = chrome_command_line(infobar=True)
+        expect("...and a window for a figure of an infobar has no copy of it, Playwright's included",
+               "--disable-infobars" not in ours and "--disable-infobars" not in line.split(), f"{ours} / {line}")
+        code, out = shots("capture", "ch-99", "--only", "headed-infobar")
+        infobar = newest("headed-infobar")
+        if (infobar.get("bars") or 0) > MAX_BARS:
+            expect("without the flag an infobar shows, the guard measures it, and a figure expecting one passes",
+                   infobar.get("ok") is True, str(infobar.get("problems")) + out[-300:])
+        else:
+            print(f"  skip  no infobar shows here even without --disable-infobars "
+                  f"(bars {infobar.get('bars')} DIPs), so the guard has nothing live to catch")
         expect("DevTools opens the Network panel and a request is found and clicked by its text",
                network_take.get("ok") is True, str(network_take.get("problems")) + out[-300:])
         expect("View Source is cropped from the page top through a given line",

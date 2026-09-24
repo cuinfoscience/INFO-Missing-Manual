@@ -15,6 +15,43 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 
 **Where.** `AGENTS.md` ("Project memory"), `README.md` ("For AI agents"), [`README.md`](README.md) in this folder.
 
+## 2026-09-24 · A screenshot shows at most 800×600, or 1024×768 when that reduces clutter and stays legible
+
+**Decision.**
+- A screenshot shows at most 800×600 CSS pixels of the screen by default.
+- It may show up to 1024×768 when the larger view reduces clutter (a site's desktop layout instead of its narrow one, or enough of the page around the subject that a reader can find it) and its text still passes the legibility check where the book shows it. The recipe says why in `relaxed:`; the toolkit checks the text.
+- Anything larger is an exception, explained in the recipe's `oversize:`.
+
+**Why.** The maintainer's instruction. *Web Data Science* capped figures at 800×600, and its pilot found the other failure: figures so crammed they stopped reading as the screen a student sees ([upstream AAR](https://github.com/cuinfoscience/Web-Data-Science-Book/blob/main/docs/aar/AAR_Web-Data-Science-Book_2026-09-24.md), §5.1). A trial capture here showed the same thing: at 680 pixels GitHub switches to its narrow layout, hiding the About sidebar.
+
+**What it means in this book.** The body column is 678 CSS pixels, so a 1024-pixel figure keeps only 66% of its text size there, and ordinary 16-pixel page text fails the 11-pixel threshold. A relaxed figure therefore usually goes in one of Quarto's wider columns (measured at 1280 pixels: `column-page-inset-right` 954, `column-page-right` 1004), which the recipe names and `check` confirms. Those columns cover the table of contents while on screen (see #30).
+
+**Where.** `tools/shots/lib/legibility.py` (`SOFT_LIMIT`, `RELAXED_LIMIT`, `COLUMNS`), `tools/shots/README.md` ("Legibility"), `AGENTS.md` ("Screenshots"). The selftest covers each tier.
+
+## 2026-09-24 · Headed captures pass `--disable-infobars` themselves, and a guard catches tall bars
+
+**Decision.**
+- Every headed capture passes `--disable-infobars` explicitly instead of relying on Playwright's default argument list.
+- A headed take measures the browser's bars above the page and fails if they are taller than 100 DIPs (the tab strip and toolbar measure 87). A figure whose subject is an infobar says `expect: {infobar: true}`.
+
+**Why.** The maintainer's instruction: a 56-pixel Chrome for Testing notice slipped into captures because only Playwright's default suppressed it. Porting the fix exposed a second trap: Playwright's `ignore_default_args` removes matching arguments the caller passed too, so dropping Playwright's copy of the flag silently dropped the toolkit's. The selftest's read-back of Chrome's command line caught it.
+
+**Where.** `tools/shots/lib/headed.py`, `tools/shots/lib/guards.py` (`MAX_BARS`), `doctor`, and the selftest.
+
+## 2026-09-24 · Screenshots are real captures, made with `tools/shots`
+
+**Decision.**
+- Screenshots of real pages and programs are made with `tools/shots`, ported from *Web Data Science* (commit `3de5578`, local changes in `tools/shots/UPSTREAM.md`): a recipe per chapter, guarded capture, provenance, and legibility checks.
+- A screenshot is a real capture. Diagrams and illustrations are labeled as what they are. A real interface is never rebuilt by hand with invented content; if it can't be captured, the placeholder stays.
+- Captures identify themselves with one User-Agent and pace their requests; no logins, credentials, or student names or work.
+- The rollout starts with one pilot chapter.
+
+**Why.** The maintainer asked for the toolkit to be adapted and for a plan to add screenshots throughout the book. The rules are the ones *Web Data Science* learned the hard way (its screenshot AARs), and they match this book's earlier choice not to simulate GUIs (2026-08-28).
+
+**Status.** The toolkit is ported and tested (selftest 68 of 68; a real capture promoted and checked in a scratch tree). The rollout and the capture identity are proposals, waiting on the maintainer: see [`handoff.md`](handoff.md) and [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md).
+
+**Where.** `tools/shots/`, `AGENTS.md` ("Screenshots").
+
 ## 2026-09-24 · Supporting code lives in `tools/`, one folder per tool
 
 **Decision.**

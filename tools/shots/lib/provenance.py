@@ -1,4 +1,4 @@
-"""images/<chapter>/provenance.json, and the table it writes into IMAGES.md.
+"""graphics/<chapter>/provenance.json, and the table it writes into IMAGES.md.
 
 provenance.json holds one entry per image: what kind of image it is, where it
 came from, when, and how, plus a hash of the image so `check` notices a file
@@ -76,7 +76,7 @@ def table(data):
 
 
 def write_images_md(chapter, qmd, data):
-    """Update the generated table in images/<chapter>/IMAGES.md; returns what happened."""
+    """Update the generated table in graphics/<chapter>/IMAGES.md; returns what happened."""
     md = IMAGES / chapter / "IMAGES.md"
     block = f"{BEGIN}\n{table(data)}{END}\n"
     if not md.exists():

@@ -9,7 +9,7 @@ Instructions for AI coding agents (Claude Code, Codex, and any other) and for pe
 The book's records live in `docs/`: after-action reports (AARs) and reviews, plans, the roadmap, the decision log, and the hand-off note. `docs/README.md` says how each kind is kept. They are how one session's lessons reach the next, so use them:
 
 - **Before starting work,** read `docs/handoff.md` (where work stands: what is done, paused, waiting on the maintainer, or known to be broken) and `docs/decisions.md` (standing decisions and the reason for each). Don't reverse a recorded decision on your own; if you think one is wrong, say so and let the maintainer decide.
-- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged.
+- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged, and read the screenshot plan plus the upstream screenshot AARs it links (in the companion book *Web Data Science*) before touching `tools/shots` or adding a screenshot.
 - **When the state changes, update the records in the same pull request.** Rewrite `handoff.md` when a session stops or work pauses; add an entry to `decisions.md` when the maintainer decides something; tick off `roadmap.md` items when they land.
 - **After a sprint, or a failure worth learning from,** write an AAR in `docs/aar/` named `AAR_INFO-Missing-Manual_<YYYY-MM-DD>.md`: what the written rules said should happen, what happened, why the two differed, and what changes as a result.
 - **Write rules down.** A rule the maintainer states in conversation does not survive the session. Put it in this file or in `decisions.md`, in the same pull request.
@@ -434,7 +434,18 @@ Two constraints worth knowing before you touch it. **Use a headless-shell build 
 
 Why not a recorder like [terminalizer](https://github.com/faressoft/terminalizer) or [asciinema](https://asciinema.org)? They emit animated GIF or SVG, which the PDF build cannot embed; they cannot draw the numbered callouts that carry the teaching; and a recording cannot show a Windows Terminal tab bar without a Windows machine to record on. [charmbracelet/freeze](https://github.com/charmbracelet/freeze) is the closest static alternative and worth revisiting if the book ever wants many unannotated output figures, at the cost of a Go dependency.
 
-**Remaining `PLACEHOLDER-*` images.** Twelve chapters still reference placeholder PNGs that do not exist. They are all screenshots of third-party GUIs — VS Code (×2), JupyterLab (×2), GitHub web UI (×4), Windows and macOS settings panels (×2), a browser JSON view, and a rendered pandas DataFrame. Unlike terminal sessions, these cannot be honestly simulated and need real captures from a real machine; treat them as an open editorial decision rather than a generation task.
+**Remaining `PLACEHOLDER-*` images.** Twelve chapters still reference placeholder PNGs that do not exist. They are all screenshots of third-party GUIs — VS Code (×2), JupyterLab (×2), GitHub web UI (×4), Windows and macOS settings panels (×2), a browser JSON view, and a rendered pandas DataFrame. Unlike terminal sessions, these cannot be honestly simulated; they are real captures, made with `tools/shots` (next section) or, for the operating-system panels, by hand on a real machine. Which ones, in what order, is in `docs/plans/2026-09-24-screenshots.md`.
+
+## Screenshots
+
+Screenshots of real pages and programs are made with `tools/shots`, a toolkit ported from the companion book *Web Data Science*: a YAML recipe per chapter (`tools/shots/recipes/<slug>.yml`), guarded capture in Chrome for Testing, review at the size the book shows each figure, and `promote` into `graphics/<slug>/` with a `provenance.json` record. `tools/shots/README.md` is the manual; `tools/shots/UPSTREAM.md` lists what differs from upstream. Follow the rollout in `docs/plans/2026-09-24-screenshots.md`: one pilot chapter first, one chapter per pull request after that.
+
+- **Real or labeled.** A screenshot is a real capture of a real page or program. Never rebuild a real interface by hand with invented content. Diagrams and illustrations are welcome, labeled as what they are; a figure drawn to look like a window (the terminal figures) says so in its caption.
+- **Readable, and not crammed.** A figure shows at most **800×600 CSS pixels** of the screen by default. It may show up to **1024×768** when the larger view **reduces clutter** (a site's desktop layout instead of its narrow one, or enough of the page around the subject that a reader can find it) **and its text still passes the legibility check** where the book shows it. The recipe says why in `relaxed:`, and `tools/shots` checks the text. This book's body column is only 678 px wide, so a 1024-px figure's text shrinks to 66% there: a relaxed figure usually goes in a wider Quarto column (`.column-page-inset-right`, 954 px) and names that column in its recipe. Wider columns cover the table of contents while they are on screen, so use them only where a figure needs one. Anything larger than 1024×768 is an exception, explained in `oversize:`.
+- **Scope first.** Crop to what the text discusses before reaching for a bigger view; for DevTools, zoom DevTools rather than widen the window.
+- **Honest and private.** Captures identify themselves with one User-Agent (`tools/shots/lib/recipes.py`) and pace their requests. No logins, no credentials, no student names or student work, and nothing from the capture machine (a proxy's address, an IP, a location) in frame.
+- **Dated and described.** A figure of something that changes says in its caption when it was captured ("in September 2026"). Every figure has `fig-alt` that transcribes the text and numbers a reader needs from it; 280–440 characters is a good target for a screenshot.
+- **Checked.** Before a pull request that adds or changes a screenshot, run `tools/shots/run sheet <slug>` and look at every take at book size, then `tools/shots/run check`. After changing the toolkit, run `tools/shots/run selftest`; every check must pass, and one real figure must be retaken before the change counts as done.
 
 ## Issue templates
 
@@ -475,7 +486,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 
 ### Add a figure
 
-1.  Place the PNG in `graphics/`.
+1.  Place the PNG in `graphics/`. (A screenshot goes through `tools/shots` instead, which puts it in `graphics/<slug>/` with its provenance; see "Screenshots".)
 2.  Reference it with a **leading slash** on the path:
 
     ```markdown

@@ -5,11 +5,12 @@ import subprocess
 from pathlib import Path
 
 TOOL = Path(__file__).resolve().parent.parent      # tools/shots
-ROOT = TOOL.parent.parent                          # the textbook repository
+ROOT = TOOL.parent.parent                          # the book's repository
 # The three folders can be moved (selftest.py points them at a temporary tree).
 RECIPES = Path(os.environ.get("SHOTS_RECIPES", TOOL / "recipes"))
 OUT = Path(os.environ.get("SHOTS_OUT", TOOL / "out"))          # takes and logs; git-ignored
-IMAGES = Path(os.environ.get("SHOTS_IMAGES", ROOT / "images"))
+# Approved images go in graphics/<chapter slug>/, beside the book's other figures.
+IMAGES = Path(os.environ.get("SHOTS_IMAGES", ROOT / "graphics"))
 
 # Chrome for Testing, pinned by major version so DevTools and rendering stay put.
 CHROME_VERSION = os.environ.get("SHOTS_CHROME_VERSION", "154")

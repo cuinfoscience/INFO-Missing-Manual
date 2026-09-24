@@ -16,8 +16,10 @@ class Browser:
         self.path = chrome_path()
         self.version = chrome_version(self.path)
         self.playwright = sync_playwright().start()
+        # Headless Chrome draws no bars, but it gets the same explicit --disable-infobars as a
+        # headed window (lib/headed.py), so neither depends on Playwright's defaults for it.
         options = {"executable_path": self.path, "headless": True,
-                   "args": [f"--user-agent={DEFAULTS['user_agent']}"]}
+                   "args": [f"--user-agent={DEFAULTS['user_agent']}", "--disable-infobars"]}
         if use_proxy and proxy():
             # Every request goes through the session's proxy, certificate checks on,
             # except this machine's own servers (a local Jupyter, the selftest), which
