@@ -4,6 +4,14 @@ The chapter backlog, and follow-ups from reviews that are still open. Each item 
 
 New chapters follow the canonical structure in `AGENTS.md` ("Style Guide"), get registered in `_quarto.yml` and the label table in `AGENTS.md`, and need the issue forms' chapter dropdown regenerated.
 
+## Planned work
+
+Larger pieces with a written plan, waiting on the maintainer's decisions (listed in each plan and in [`handoff.md`](handoff.md)):
+
+- [ ] **Screenshots for the twelve placeholders**, then the interface-heavy chapters, with `tools/shots`: [`plans/2026-09-24-screenshots.md`](plans/2026-09-24-screenshots.md).
+- [ ] **The table of contents below the chapter meme** ([#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md).
+- [ ] **Cloud storage, sync, and your disk** ([#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34)), in chapters 9 and 10: [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md).
+
 ## Chapter and section candidates
 
 ### Carried over from earlier rounds
