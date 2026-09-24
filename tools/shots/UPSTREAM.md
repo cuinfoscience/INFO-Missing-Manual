@@ -41,6 +41,11 @@ The first commit that added this folder is the upstream code, byte for byte; eve
 - `lib/crop.py`: `crop: {between: [A, B]}` crops from the top of the first element matching `A` to the bottom of the first matching `B`, across the width of both, with `pad` as for `selector`. The pilot needed it to show a code cell and the Markdown cell after it. Upstream implements `between` only for headed takes (`lib/headed.py`), although its recipe check accepts the key for any figure: a headless take with it fell through to the whole window, silently.
 - `selftest.py` adds one check (a `between` crop of two marked elements, at its expected size), for 69 in all (upstream has 56).
 
+**Typing in a headless take (2026-09-24)**
+
+- `lib/steps.py`: `type: 'text'` works in headless takes too, through Playwright's keyboard; headed takes keep their real key events (`lib/headed.py`). `lib/recipes.py` moves `type` from the headed-only steps to the page steps. The editor screenshots type a command into VS Code's terminal.
+- `selftest.py` adds one check (typing into a page that echoes its input), for 70 in all.
+
 **A hand capture's maker (2026-09-24)**
 
 - `lib/provenance.py` `from_legacy()`: a `legacy:` block may say `by:`, who made the image ("hand capture by the maintainer"). Upstream always records "hand-run script, before tools/shots", which misdescribes a new hand capture.

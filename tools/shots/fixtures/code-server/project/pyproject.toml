@@ -1,0 +1,12 @@
+# The chapter's starting Ruff configuration (chapters/linting.qmd).
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors (PEP 8)
+    "F",    # pyflakes (logic errors)
+    "I",    # isort (import order)
+    "B",    # bugbear (likely bugs)
+    "UP",   # pyupgrade (modernize syntax)
+]
+ignore = [
+    "E501", # line too long — let the formatter handle it
+]

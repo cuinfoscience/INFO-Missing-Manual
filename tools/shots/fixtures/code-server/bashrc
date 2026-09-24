@@ -1,0 +1,6 @@
+# The integrated terminal's shell, installed as the fixture's ~/.bashrc by start.sh:
+# a short prompt that names only the folder, and the project's .venv active, as the
+# Text Editors and Virtual Environments chapters teach. Nothing from the capture
+# machine (user, host, full path) shows in frame.
+PS1='\W $ '
+if [ -f .venv/bin/activate ]; then source .venv/bin/activate; fi
