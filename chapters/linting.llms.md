@@ -154,10 +154,6 @@ A sensible starting config for a student project: select `E`, `F`, `I`, `B`, `UP
 
 The real magic happens when your editor runs the formatter automatically on every save. Your code is never in an unformatted state for more than a split second, and you stop thinking about style entirely.
 
-![](graphics/PLACEHOLDER-vscode-ruff-squiggles.png)
-
-Figure 19.1: ALT: VS Code editor showing a Python file with Ruff squiggly underlines on three lines flagging an unused import, a shadowed built-in, and a style violation. Hovering over one of the squiggles shows the rule identifier and a one-sentence explanation.
-
 ### VS Code
 
 Install the [Black Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) or [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) extension, then add to your workspace `settings.json`:
@@ -176,6 +172,12 @@ Install the [Black Formatter](https://marketplace.visualstudio.com/items?itemNam
 ```
 
 Now every time you hit `Cmd+S` / `Ctrl+S`, Ruff formats and fixes imports and unused variables.
+
+The extension also lints as you type. It underlines each problem Ruff finds, and hovering over one names the rule and offers a quick fix ([Figure fig-vscode-ruff-squiggles](#fig-vscode-ruff-squiggles)).
+
+![Screenshot of a file named lint_demo.py in VS Code, with 3 on its tab. Wavy underlines mark os in import os on line 4, the empty list in def clean(names, seen=\[\]) on line 7, and None in if name == None on line 9. A hover box over line 4 reads: os imported but unused, Ruff (F401), with links View Problem and Quick Fix.](../graphics/linting/vscode-ruff-squiggles.png)
+
+Figure 19.1: Ruff in VS Code, in September 2026, with this chapter’s starting configuration. Three lines are underlined, one for each rule they break, and the box over line 4 is what appears when you hover over `os`: the message and the rule’s code, F401. The tab’s “3” counts the file’s problems.
 
 ### PyCharm
 

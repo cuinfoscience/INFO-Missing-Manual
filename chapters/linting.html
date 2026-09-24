@@ -842,19 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="editor-integration-format-on-save" class="level2 page-columns page-full" data-number="19.5">
 <h2 data-number="19.5" class="anchored" data-anchor-id="editor-integration-format-on-save"><span class="header-section-number">19.5</span> Editor integration: format on save</h2>
 <p>The real magic happens when your editor runs the formatter automatically on every save. Your code is never in an unformatted state for more than a split second, and you stop thinking about style entirely.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-vscode-ruff-squiggles" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-vscode-ruff-squiggles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-vscode-ruff-squiggles.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-vscode-ruff-squiggles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly underlines on three lines flagging an unused import, a shadowed built-in, and a style violation. Hovering over one of the squiggles shows the rule identifier and a one-sentence explanation.
-</figcaption>
-</figure>
-</div>
-</div></div><section id="vs-code" class="level3">
+<section id="vs-code" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="vs-code">VS Code</h3>
 <p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter">Black Formatter</a> or <a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff">Ruff</a> extension, then add to your workspace <code>settings.json</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
@@ -868,6 +856,17 @@ Figure&nbsp;19.1: ALT: VS Code editor showing a Python file with Ruff squiggly u
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now every time you hit <code>Cmd+S</code> / <code>Ctrl+S</code>, Ruff formats and fixes imports and unused variables.</p>
+<p>The extension also lints as you type. It underlines each problem Ruff finds, and hovering over one names the rule and offers a quick fix (<a href="#fig-vscode-ruff-squiggles" class="quarto-xref">Figure&nbsp;<span>19.1</span></a>).</p>
+<div id="fig-vscode-ruff-squiggles" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Screenshot of a file named lint_demo.py in VS Code, with 3 on its tab. Wavy underlines mark os in import os on line 4, the empty list in def clean(names, seen=[]) on line 7, and None in if name == None on line 9. A hover box over line 4 reads: os imported but unused, Ruff (F401), with links View Problem and Quick Fix.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-vscode-ruff-squiggles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../graphics/linting/vscode-ruff-squiggles.png" class="img-fluid figure-img" alt="Screenshot of a file named lint_demo.py in VS Code, with 3 on its tab. Wavy underlines mark os in import os on line 4, the empty list in def clean(names, seen=[]) on line 7, and None in if name == None on line 9. A hover box over line 4 reads: os imported but unused, Ruff (F401), with links View Problem and Quick Fix.">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-vscode-ruff-squiggles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19.1: Ruff in VS Code, in September 2026, with this chapter’s starting configuration. Three lines are underlined, one for each rule they break, and the box over line 4 is what appears when you hover over <code>os</code>: the message and the rule’s code, F401. The tab’s “3” counts the file’s problems.
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="pycharm" class="level3">
 <h3 class="anchored" data-anchor-id="pycharm">PyCharm</h3>
