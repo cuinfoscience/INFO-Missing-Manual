@@ -56,6 +56,12 @@ The way you make environments **reproducible** is by writing down what is instal
 
 The Python ecosystem has two major package management traditions, and you will encounter both. **conda** comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.
 
+You get conda in one of two bundles ([Figure fig-conda-mini-ana](#fig-conda-mini-ana)). [Anaconda](https://www.anaconda.com/download) installs conda, Python, and hundreds of popular libraries at once: the easiest start, but a large install that is harder to keep up to date. [Miniconda](https://www.anaconda.com/docs/getting-started/concepts/anaconda-or-miniconda) installs only conda and Python, and you add the libraries each environment needs: a smaller download that stays easier to maintain. Either works on macOS, Windows, and Linux. Neither installs on a Chromebook or an iPad, and on a managed computer, such as one in a library or a computer lab, you usually can’t install it yourself.
+
+![](../graphics/conda_mini_ana.png)
+
+Figure 14.1: Relationships between `conda`, miniconda, and Anaconda.
+
 **pip** is the standard installer that ships with Python itself, and it installs packages from [PyPI](https://pypi.org/) (the Python Package Index). Combined with the standard-library `venv` module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.
 
 The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, **never install packages globally** for course work — every project gets its own environment, period.
@@ -220,7 +226,7 @@ python -m pip install "requests>=2.31,<3.0"
 
 ![Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.](../graphics/pip-install-success.png)
 
-Figure 14.1: Illustration: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports five, because pip resolved and installed pandas’s dependencies as well.
+Figure 14.2: Illustration: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports five, because pip resolved and installed pandas’s dependencies as well.
 
 Record what you installed in a `requirements.txt` file so a teammate (or future-you) can recreate the environment. The simplest way is `pip freeze`:
 
@@ -739,34 +745,6 @@ If the path it prints contains your project’s `.venv/bin/python`, the notebook
     python -m pip freeze > requirements.txt
     python -m pip check
 
-The steps for downloading, installing, using, and maintaining Python with `conda` will differ based on your operating system. `conda` can be used by Macs running macOS (OS X), PCs running Windows, and PCs running Linux. `conda` cannot be installed or used on managed operating systems like ChromeOS (*e.g.*, Chromebooks) or iOS (*e.g.*, iPads). It is unlikely that you will be able to install or configure `conda` yourself on “managed” computers like those found in libraries or computer labs.
-
-`conda` is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, *etc*. At this stage you can either (1) install Anaconda Individual Edition[^1] that includes hundreds of popular libraries and their dependencies or (2) install “miniconda”[^2] and choose which libraries you want installed. In either case, `conda` will be the package manager that helps you install and maintain these libraries. [Figure fig-conda-mini-ana](#fig-conda-mini-ana) captures the relationships between `conda`, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.
-
-![](../graphics/conda_mini_ana.png)
-
-Figure 14.2: Relationships between `conda`, miniconda, and Anaconda.
-
-## 14.18 Downloading
-
-## 14.19 Installation
-
-### Testing
-
-### Updating
-
-### Common problems
-
-## 14.20 Installing libraries
-
-like `numpy`, `matplotlib`, `pandas`, `scikit-learn`, and `networkx`
-
-## 14.21 Maintaining libraries
-
-## 14.22 Removing libraries
-
-## 14.23 Environments
-
 > **NOTE:**
 >
 > - Python Packaging Authority, [Python Packaging User Guide](https://packaging.python.org/en/latest/) — the authoritative reference on pip, virtual environments, and PyPI; treat it as the single source of truth when blog posts disagree.
@@ -776,7 +754,3 @@ like `numpy`, `matplotlib`, `pandas`, `scikit-learn`, and `networkx`
 > - Python, [PEP 668 — Externally Managed Environments](https://peps.python.org/pep-0668/) — explains the “externally-managed-environment” error you will eventually see when running `pip install` on a system Python; the solution is always a virtual environment.
 > - [Real Python: Managing Python Packages](https://realpython.com/installing-python/) — a beginner-friendly overview of installation and package management patterns.
 > - Sustain, [Sustainable open source](https://sustainoss.org/) — community discussions and reports on the funding and labor models behind the packages you install; useful context for the “Stakes and politics” framing above.
-
-[^1]: <https://www.anaconda.com/products/individual>
-
-[^2]: <https://docs.conda.io/en/latest/miniconda.html>

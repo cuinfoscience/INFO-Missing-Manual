@@ -747,17 +747,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#conda" id="toc-conda" class="nav-link" data-scroll-target="#conda">conda</a></li>
   <li><a href="#pip-inside-an-env" id="toc-pip-inside-an-env" class="nav-link" data-scroll-target="#pip-inside-an-env">pip (inside an env)</a></li>
   </ul></li>
-  <li><a href="#downloading" id="toc-downloading" class="nav-link" data-scroll-target="#downloading"><span class="header-section-number">14.18</span> Downloading</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation"><span class="header-section-number">14.19</span> Installation</a>
-  <ul class="collapse">
-  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
-  <li><a href="#updating" id="toc-updating" class="nav-link" data-scroll-target="#updating">Updating</a></li>
-  <li><a href="#common-problems" id="toc-common-problems" class="nav-link" data-scroll-target="#common-problems">Common problems</a></li>
-  </ul></li>
-  <li><a href="#installing-libraries" id="toc-installing-libraries" class="nav-link" data-scroll-target="#installing-libraries"><span class="header-section-number">14.20</span> Installing libraries</a></li>
-  <li><a href="#maintaining-libraries" id="toc-maintaining-libraries" class="nav-link" data-scroll-target="#maintaining-libraries"><span class="header-section-number">14.21</span> Maintaining libraries</a></li>
-  <li><a href="#removing-libraries" id="toc-removing-libraries" class="nav-link" data-scroll-target="#removing-libraries"><span class="header-section-number">14.22</span> Removing libraries</a></li>
-  <li><a href="#environments" id="toc-environments" class="nav-link" data-scroll-target="#environments"><span class="header-section-number">14.23</span> Environments</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/package-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -837,10 +826,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">~/miniconda3/envs/research/</span>          <span class="co"># another conda env</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The way you make environments <strong>reproducible</strong> is by writing down what is installed in them, in a small text file you commit alongside your code. Conda’s version of that file is <code>environment.yml</code>; pip’s version is <code>requirements.txt</code>. Both list package names and (optionally) version constraints. A more rigorous version is a <strong>lockfile</strong>, which records the <em>exact</em> version of every package and every transitive dependency that was actually resolved — so that installing from the lockfile gives you a bit-for-bit identical environment, even months later. For coursework, <code>environment.yml</code> or <code>requirements.txt</code> is usually enough; lockfiles are more common in production teams.</p>
 </section>
-<section id="choosing-tools-conda-vs-pip-vs-venv" class="level2" data-number="14.2">
+<section id="choosing-tools-conda-vs-pip-vs-venv" class="level2 page-columns page-full" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="choosing-tools-conda-vs-pip-vs-venv"><span class="header-section-number">14.2</span> Choosing tools: <code>conda</code> vs <code>pip</code> vs <code>venv</code></h2>
 <p>The Python ecosystem has two major package management traditions, and you will encounter both. <strong>conda</strong> comes from the scientific Python world; it manages not only Python packages but also non-Python compiled libraries, system dependencies like CUDA, and even other languages like R and C++ libraries. It is the right choice for projects with heavy compiled dependencies — anything that involves GPU acceleration, GIS tools, bioinformatics stacks, or scientific libraries that are hard to install via pip. Its solver is also better at untangling complex dependency graphs across compiled packages.</p>
-<p><strong>pip</strong> is the standard installer that ships with Python itself, and it installs packages from <a href="https://pypi.org/">PyPI</a> (the Python Package Index). Combined with the standard-library <code>venv</code> module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.</p>
+<p>You get conda in one of two bundles (<a href="#fig-conda-mini-ana" class="quarto-xref">Figure&nbsp;<span>14.1</span></a>). <a href="https://www.anaconda.com/download">Anaconda</a> installs conda, Python, and hundreds of popular libraries at once: the easiest start, but a large install that is harder to keep up to date. <a href="https://www.anaconda.com/docs/getting-started/concepts/anaconda-or-miniconda">Miniconda</a> installs only conda and Python, and you add the libraries each environment needs: a smaller download that stays easier to maintain. Either works on macOS, Windows, and Linux. Neither installs on a Chromebook or an iPad, and on a managed computer, such as one in a library or a computer lab, you usually can’t install it yourself.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div id="fig-conda-mini-ana" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../graphics/conda_mini_ana.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Relationships between <code>conda</code>, miniconda, and Anaconda.
+</figcaption>
+</figure>
+</div>
+</div></div><p><strong>pip</strong> is the standard installer that ships with Python itself, and it installs packages from <a href="https://pypi.org/">PyPI</a> (the Python Package Index). Combined with the standard-library <code>venv</code> module, it gives you lightweight isolated environments using just what comes with Python. For pure-Python work — most web development, most data analysis with no exotic libraries — pip + venv is simpler, lighter, and works identically on every machine.</p>
 <p>The practical guidance for a student is straightforward. If your course provides a conda environment file, use conda — your instructor has thought about which channel to use and which versions to pin. If you need a library that exists only on PyPI (which is most of them), use pip inside an active environment. And no matter which tool you pick, <strong>never install packages globally</strong> for course work — every project gets its own environment, period.</p>
 </section>
 <section id="baseline-hygiene-rules-non-negotiable" class="level2" data-number="14.3">
@@ -966,7 +968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <img src="../graphics/pip-install-success.png" class="img-fluid figure-img" alt="Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0'. Numbered callouts mark the single package requested and the full list of packages actually installed.">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-pip-install-success-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.1: Illustration: A successful <code>pip install pandas</code>. You asked for one package; the <code>Successfully installed</code> line reports five, because pip resolved and installed pandas’s dependencies as well.
+Figure&nbsp;14.2: Illustration: A successful <code>pip install pandas</code>. You asked for one package; the <code>Successfully installed</code> line reports five, because pip resolved and installed pandas’s dependencies as well.
 </figcaption>
 </figure>
 </div>
@@ -1339,7 +1341,7 @@ python -m pip check</code></pre>
 <li><p>I verify environments with a small smoke test before important work.</p></li>
 </ul>
 </section>
-<section id="quick-reference-commands-students-use-most" class="level2 page-columns page-full" data-number="14.17">
+<section id="quick-reference-commands-students-use-most" class="level2" data-number="14.17">
 <h2 data-number="14.17" class="anchored" data-anchor-id="quick-reference-commands-students-use-most"><span class="header-section-number">14.17</span> Quick reference: commands students use most</h2>
 <section id="conda" class="level3">
 <h3 class="anchored" data-anchor-id="conda">conda</h3>
@@ -1350,55 +1352,12 @@ conda update PKG
 conda env export &gt; environment.yml
 conda env remove -n NAME</code></pre>
 </section>
-<section id="pip-inside-an-env" class="level3 page-columns page-full">
+<section id="pip-inside-an-env" class="level3">
 <h3 class="anchored" data-anchor-id="pip-inside-an-env">pip (inside an env)</h3>
 <pre><code>python -m pip install PKG
 python -m pip install -r requirements.txt
 python -m pip freeze &gt; requirements.txt
 python -m pip check</code></pre>
-<p>The steps for downloading, installing, using, and maintaining Python with <code>conda</code> will differ based on your operating system. <code>conda</code> can be used by Macs running macOS (OS X), PCs running Windows, and PCs running Linux. <code>conda</code> cannot be installed or used on managed operating systems like ChromeOS (<em>e.g.</em>, Chromebooks) or iOS (<em>e.g.</em>, iPads). It is unlikely that you will be able to install or configure <code>conda</code> yourself on “managed” computers like those found in libraries or computer labs.</p>
-<p><code>conda</code> is only a package manager: it does not include Python or any of its libraries for data retrieval, analysis, visualization, <em>etc</em>. At this stage you can either (1) install Anaconda Individual Edition<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that includes hundreds of popular libraries and their dependencies or (2) install “miniconda”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and choose which libraries you want installed. In either case, <code>conda</code> will be the package manager that helps you install and maintain these libraries. <a href="#fig-conda-mini-ana" class="quarto-xref">Figure&nbsp;<span>14.2</span></a> captures the relationships between <code>conda</code>, miniconda, and Anaconda. Anaconda is easier to install and harder to keep up-to-date while miniconda is harder to install and a easier to keep up-to-date.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://www.anaconda.com/products/individual" class="uri">https://www.anaconda.com/products/individual</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;<a href="https://docs.conda.io/en/latest/miniconda.html" class="uri">https://docs.conda.io/en/latest/miniconda.html</a></p></div><div class="">
-<div id="fig-conda-mini-ana" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../graphics/conda_mini_ana.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-conda-mini-ana-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14.2: Relationships between <code>conda</code>, miniconda, and Anaconda.
-</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-</section>
-<section id="downloading" class="level2" data-number="14.18">
-<h2 data-number="14.18" class="anchored" data-anchor-id="downloading"><span class="header-section-number">14.18</span> Downloading</h2>
-</section>
-<section id="installation" class="level2" data-number="14.19">
-<h2 data-number="14.19" class="anchored" data-anchor-id="installation"><span class="header-section-number">14.19</span> Installation</h2>
-<section id="testing" class="level3">
-<h3 class="anchored" data-anchor-id="testing">Testing</h3>
-</section>
-<section id="updating" class="level3">
-<h3 class="anchored" data-anchor-id="updating">Updating</h3>
-</section>
-<section id="common-problems" class="level3">
-<h3 class="anchored" data-anchor-id="common-problems">Common problems</h3>
-</section>
-</section>
-<section id="installing-libraries" class="level2" data-number="14.20">
-<h2 data-number="14.20" class="anchored" data-anchor-id="installing-libraries"><span class="header-section-number">14.20</span> Installing libraries</h2>
-<p>like <code>numpy</code>, <code>matplotlib</code>, <code>pandas</code>, <code>scikit-learn</code>, and <code>networkx</code></p>
-</section>
-<section id="maintaining-libraries" class="level2" data-number="14.21">
-<h2 data-number="14.21" class="anchored" data-anchor-id="maintaining-libraries"><span class="header-section-number">14.21</span> Maintaining libraries</h2>
-</section>
-<section id="removing-libraries" class="level2" data-number="14.22">
-<h2 data-number="14.22" class="anchored" data-anchor-id="removing-libraries"><span class="header-section-number">14.22</span> Removing libraries</h2>
-</section>
-<section id="environments" class="level2" data-number="14.23">
-<h2 data-number="14.23" class="anchored" data-anchor-id="environments"><span class="header-section-number">14.23</span> Environments</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1423,7 +1382,7 @@ Figure&nbsp;14.2: Relationships between <code>conda</code>, miniconda, and Anaco
 
 
 </section>
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

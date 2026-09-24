@@ -1279,6 +1279,64 @@ Environment:
 </section>
 <section id="quick-reference-ipython-conveniences" class="level2" data-number="16.15">
 <h2 data-number="16.15" class="anchored" data-anchor-id="quick-reference-ipython-conveniences"><span class="header-section-number">16.15</span> Quick reference: IPython conveniences</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type this in a cell</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>len?</code></td>
+<td>Show a function’s signature and docstring (<code>??</code> shows its source too)</td>
+</tr>
+<tr class="even">
+<td><code>Tab</code> after a name</td>
+<td>Complete it; <code>Shift + Tab</code> inside the parentheses shows the signature</td>
+</tr>
+<tr class="odd">
+<td><code>%pwd</code>, <code>%ls</code>, <code>%cd path</code></td>
+<td>Print, list, or change the kernel’s working directory</td>
+</tr>
+<tr class="even">
+<td><code>!command</code></td>
+<td>Run one shell command, such as <code>!ls data/raw/</code></td>
+</tr>
+<tr class="odd">
+<td><code>%env VAR</code></td>
+<td>Show an environment variable (<code>%env VAR=value</code> sets it)</td>
+</tr>
+<tr class="even">
+<td><code>%time expr</code>, <code>%%time</code></td>
+<td>Time one line, or the whole cell</td>
+</tr>
+<tr class="odd">
+<td><code>%timeit expr</code>, <code>%%timeit</code></td>
+<td>Run a small piece of code many times and report how long it takes</td>
+</tr>
+<tr class="even">
+<td><code>%load_ext autoreload</code> then <code>%autoreload 2</code></td>
+<td>Reload your own modules (<code>src/</code>) when you edit them</td>
+</tr>
+<tr class="odd">
+<td><code>%who</code></td>
+<td>List the variables defined in the kernel</td>
+</tr>
+<tr class="even">
+<td><code>%run script.py</code></td>
+<td>Run a script in the kernel, keeping its variables afterwards</td>
+</tr>
+<tr class="odd">
+<td><code>%lsmagic</code></td>
+<td>List every magic command available</td>
+</tr>
+</tbody>
+</table>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

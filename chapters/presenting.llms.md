@@ -234,15 +234,6 @@ Slide count: 12
 12. Thanks.
 ```
 
-A timing budget:
-
-| Format     | Talk      | Q&A       | Slides |
-|------------|-----------|-----------|--------|
-| Lightning  | 5 min     | 0–2 min   | 5–7    |
-| Conference | 15–20 min | 5 min     | 12–18  |
-| Job talk   | 45–60 min | 30 min    | 30–45  |
-| Defense    | 30–45 min | 60–90 min | 25–35  |
-
 A pre-talk checklist:
 
 Slides on laptop and as PDF backup on USB.
