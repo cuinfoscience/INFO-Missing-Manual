@@ -71,6 +71,7 @@ EOF
 
 - **For a span of elements** (a code cell through the Markdown cell after it), use `crop: {between: [A, B]}`; Playwright's `>> nth=1` picks a second match.
 - **GitHub, signed out:** at 1024 px it keeps the desktop layout, and a crop of the left 680 px (repository name, tabs, file list) passes the legibility check in the body column, so no wider column is needed. Keep the Contributors list out of frame: it names other people. The black site header's bottom edge reaches y=73, so crops start at 74. In a cloud session the proxy answers `github.com/robots.txt` with 403, so `doctor` warns; read GitHub's rules another way (a web fetch) before capturing. In September 2026 they allowed a repository page, a pull request's files, and an Actions run. Signed out, an Actions *job* page (`…/actions/runs/<run>/job/<job>`) lists every step with its check and hides only the logs; at 800 px it shows the steps beside a narrow sidebar. The proxy also blocks the GitHub *API* for repositories outside the session's configuration, so an API response for another project is a hand capture.
+- **Editors and IDEs need taming before a take is honest.** VS Code (code-server) showed the capture machine's user and paths in its terminal, drew terminal text on a canvas that text waits can't see, flagged its terminal with a warning when extensions finished late, and kept a status spinner going. Each has a setting or a wait; the list is in [`fixtures/code-server/README.md`](fixtures/code-server/README.md). Squiggles and similar overlays take no pointer events: reach them from the keyboard (move the cursor there, then the application's "show hover" key) rather than a `hover` step.
 - **Capture software from a pinned local fixture,** not from someone's machine or a live account: pinned versions, synthetic data, a scratch copy of the project, a fixed port, settings that silence first-run prompts, and a stop script. [`fixtures/jupyter/`](fixtures/jupyter/) is the model.
 
 **Headed captures**
@@ -137,7 +138,7 @@ One YAML file per chapter in `recipes/`, named for the chapter's slug; [`recipes
 ```
 
 - **Defaults:** an 800×600 window at scale 2, 8–30 second pauses, a 60-second limit on each wait, three retries, and JavaScript on. A chapter can change them under `defaults:`, and a figure can override any of them.
-- **Steps:** `wait` (for `text`, `selector`, or `network_idle`), `hover`, `click` (by `selector`, `text`, or, as a last resort, `position`), `scroll`, `press`, and `settle` (seconds, for animation with no end signal). `scroll: {selector: …, offset: 175}` puts an element's top 175 pixels below the window's top. A `wait` needs the text to be *visible*: a site's narrow layout may hide what its desktop layout shows.
+- **Steps:** `wait` (for `text`, `selector`, or `network_idle`), `hover`, `click` (by `selector`, `text`, or, as a last resort, `position`), `scroll`, `press` (a key or a chord, `'Control+Backquote'`), `type` (text, a key at a time, into whatever has focus), and `settle` (seconds, for animation with no end signal). `scroll: {selector: …, offset: 175}` puts an element's top 175 pixels below the window's top. A `wait` needs the text to be *visible*: a site's narrow layout may hide what its desktop layout shows.
 - **Crops around an element** take `pad` as one number or four (top, right, bottom, left, as in CSS), and `width` and `height` to fix the size: `{selector: '.card', pad: [13, 0, 0, 18.5], width: 560, height: 595}`. **A crop between two elements**, `{between: ['.first', '.last'], pad: 8}`, runs from the top of the first to the bottom of the second, as wide as both.
 - **Other modes:** `mode: headed` and `mode: composite` are below. An `engine:` other than Playwright marks a figure that `capture` skips with a note.
 - **Patterns** are regular expressions. A leading `(?i)` ignores case; the tool turns it into JavaScript's `i` flag, because Playwright and DevTools evaluate patterns in JavaScript, which has no inline flags.
@@ -168,7 +169,7 @@ How a headed capture runs:
 - **Before any step:** it waits for the page's `load` event and, with DevTools open, for DevTools to draw its Elements tree.
 - **The screen grab:** the pointer is parked in the page's bottom-left corner, so hover styles and DevTools' node highlight clear. Then the screen is grabbed.
 
-Headed steps, in addition to the ones above: `inspect: {selector: …, selects: '^<img'}` (select an element in DevTools through its element picker), `tree: {keys: [Left], until: '^<section', max: 24}` (walk the Elements tree by keyboard), `devtools_click` and `devtools_wait` (find something in DevTools by its text or `css:`; `button: 3` right-clicks, 4 and 5 turn the wheel), and `key`, `type`, and `pointer` (real keys, real typing, and the real pointer resting on something, for tooltips).
+Headed steps, in addition to the ones above: `inspect: {selector: …, selects: '^<img'}` (select an element in DevTools through its element picker), `tree: {keys: [Left], until: '^<section', max: 24}` (walk the Elements tree by keyboard), `devtools_click` and `devtools_wait` (find something in DevTools by its text or `css:`; `button: 3` right-clicks, 4 and 5 turn the wheel), and `key`, `type`, and `pointer` (real keys, real typing, and the real pointer resting on something, for tooltips). In a headed take `type` sends real key events through the virtual display; in a headless one it uses Playwright's keyboard.
 
 Crops for headed figures are in window coordinates: `{window: true}`, `{devtools: true}` (the docked DevTools pane alone), `{content: true, height: 560}` (below the browser's bars), `{top: 0, height: 480}`, `{between: ['body', 'td.line-number[value="43"]']}` (View Source cut at a line), and `{selector: …, pad: 8}`.
 
@@ -265,7 +266,7 @@ Screenshots live in per-chapter folders; the flat files directly in `graphics/` 
 
 It reports **warnings** for: a figure not used in its chapter; alt text under 80 characters; a drifting figure whose caption doesn't give the capture year; marks changed since the annotated image was drawn; and a figure over 800×600 whose recipe gives no reason, or whose `relaxed:` text fails.
 
-`selftest` runs 69 offline checks against a local web server. It needs the browser but no network. It covers the guards (the bars guard included), retries, `promote`, and `check`; the User-Agent and Client Hints; anchors and markers; crops between two elements; the size limits (800×600, the relaxed 1024×768 tier with its text condition, a wider column, and `check`'s column rule); legibility; composites; `sheet`; and headed capture, including Chrome's command line read back from `chrome://version` with and without `--disable-infobars`. It skips the marker checks if TeX is missing and the headed checks if the virtual display is.
+`selftest` runs 70 offline checks against a local web server. It needs the browser but no network. It covers the guards (the bars guard included), retries, `promote`, and `check`; the User-Agent and Client Hints; anchors and markers; crops between two elements; typing in a headless take; the size limits (800×600, the relaxed 1024×768 tier with its text condition, a wider column, and `check`'s column rule); legibility; composites; `sheet`; and headed capture, including Chrome's command line read back from `chrome://version` with and without `--disable-infobars`. It skips the marker checks if TeX is missing and the headed checks if the virtual display is.
 
 ## Files
 
@@ -276,7 +277,7 @@ It reports **warnings** for: a figure not used in its chapter; alt text under 80
 | `selftest.py` | the offline test |
 | `UPSTREAM.md` | where this came from, and what changed here |
 | `recipes/` | one recipe file per chapter, and a README with a starter file |
-| `fixtures/` | pinned local applications that recipes capture from: [`fixtures/jupyter/`](fixtures/jupyter/) is JupyterLab with a made-up project |
+| `fixtures/` | pinned local applications that recipes capture from, each with a made-up project: [`fixtures/jupyter/`](fixtures/jupyter/) is JupyterLab, [`fixtures/code-server/`](fixtures/code-server/) is VS Code in the browser |
 | `lib/env.py` | paths (`graphics/`, `recipes/`, `out/`), the proxy, and the pinned browser |
 | `lib/recipes.py` | loading and validating recipes; the default identity and window |
 | `lib/browser.py`, `lib/steps.py`, `lib/crop.py` | launching Chrome for Testing, running steps, and cropping |

@@ -11,8 +11,8 @@ from .legibility import COLUMNS, RELAXED_LIMIT, SOFT_LIMIT
 
 KINDS = {"capture", "render", "diagram", "illustration"}
 MODES = {"headless", "headed", "composite"}
-PAGE_STEPS = {"wait", "hover", "click", "scroll", "press", "settle"}
-HEADED_STEPS = {"inspect", "tree", "devtools_click", "devtools_wait", "key", "type", "pointer"}
+PAGE_STEPS = {"wait", "hover", "click", "scroll", "press", "type", "settle"}
+HEADED_STEPS = {"inspect", "tree", "devtools_click", "devtools_wait", "key", "pointer"}
 STEPS = PAGE_STEPS | HEADED_STEPS
 CROPS = {"window", "full_page", "content", "between", "top", "left", "width", "height", "selector", "pad",
          "devtools"}

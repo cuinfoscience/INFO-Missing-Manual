@@ -45,6 +45,7 @@ PAGES = {
     "/small": (200, "<!DOCTYPE html><title>Small</title><body style='margin:8px;font:11px sans-serif'>"
                     + "<p>quotes?page=2 {has_next: true, page: 2, quotes: [...]}</p>" * 30),
 }
+PAGES["/type"] = (200, "<!DOCTYPE html><title>Type</title><input id='q' oninput=\"document.getElementById('echo').textContent=this.value\"><p id='echo'></p>")
 PAGES["/ua"] = PAGES["/ok"]
 PAGES["/cookie"] = (200, "<title>Cookie</title><h1>A page that sets a cookie</h1>"
                          + "<p>" + "Something to look at. " * 40 + "</p>")
@@ -212,6 +213,7 @@ figures:
   - {{id: wide, kind: capture, url: "{base}/ok", window: [1000, 500]}}
   - {{id: fits, kind: capture, url: "{base}/ok", window: [{soft_w}, {soft_h}]}}
   - {{id: between, kind: capture, url: "{base}/marks", crop: {{between: ['#title', '#box'], pad: 4}}}}
+  - {{id: typed, kind: capture, url: "{base}/type", steps: [{{click: {{selector: '#q'}}}}, {{type: 'typed here'}}, {{wait: {{text: '^typed here$'}}}}]}}
   - {{id: relaxed-ok, kind: capture, url: "{base}/ok", window: [960, 720], relaxed: "a test of a clearer view"}}
   - {{id: relaxed-small, kind: capture, url: "{base}/ok", window: [{relaxed_w}, {relaxed_h}], relaxed: "a test"}}
   - id: relaxed-column
@@ -326,7 +328,7 @@ figures:
     print("anchors, markers, legibility, composites")
     code, out = captured = shots("capture", "ch-99", "--only", "marks", "marks-2x", "small-text", "joined",
                                  "wide", "wide-allowed", "fits", "relaxed-ok", "relaxed-small", "relaxed-column",
-                                 "relaxed-too-big", "between")
+                                 "relaxed-too-big", "between", "typed")
     marks, marks2, small, joined = newest("marks"), newest("marks-2x"), newest("small-text"), newest("joined")
     said = sections(out)
     over = (f"shows 1000×500 CSS pixels, over the {soft_w}×{soft_h} soft limit; "
@@ -365,6 +367,9 @@ figures:
     between = newest("between")
     expect("a headless crop between two elements runs from the top of one to the bottom of the other, padded",
            between.get("ok") is True and between.get("size") == [588, 178], str(between.get("size")) + str(between.get("problems")))
+    typed = newest("typed")
+    expect("a headless `type` step types into the element that has focus",
+           typed.get("ok") is True, str(typed.get("problems")))
     tex_tools = all(shutil.which(t) for t in ("pdflatex", "pdftocairo"))
     if tex_tools:
         stem = tmp / "out" / "ch-99" / "marks" / (Path(marks.get("image", "x.png")).name.removesuffix(".png") + ".annotated")

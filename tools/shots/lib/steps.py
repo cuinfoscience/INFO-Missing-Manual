@@ -10,6 +10,7 @@
     - scroll: {selector: '...', offset: 175} so the element's top is 175 pixels below
                                              the window's top
     - press: 'Escape'                        a key
+    - type: 'python analyze.py'              text, typed a key at a time into whatever has focus
     - settle: 1.5                            seconds, for animation that has no end signal
 
 Playwright's text and CSS locators reach inside open shadow roots, which the
@@ -96,6 +97,8 @@ def run(page, fig, log, extra=None):
                     page.mouse.wheel(0, arg.get("y", 0))
             elif kind == "press":
                 page.keyboard.press(arg)
+            elif kind == "type":
+                page.keyboard.type(str(arg), delay=40)
             elif kind == "settle":
                 time.sleep(float(arg))
             else:

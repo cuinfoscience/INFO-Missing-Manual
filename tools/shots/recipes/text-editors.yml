@@ -1,0 +1,39 @@
+# Screenshots for chapters/text-editors.qmd, taken from the local code-server fixture:
+# VS Code in the browser (docs/decisions.md). Start it first with
+# bash tools/shots/fixtures/code-server/start.sh (see its README); stop.sh afterwards.
+chapter: text-editors
+figures:
+  - id: vscode-overview
+    kind: capture
+    section: "Choosing your tool: three editor classes"
+    url: "http://localhost:8898/"
+    window: [1024, 768]
+    timeout: 180                  # the Python extension's "Initializing virtual environments" can take a minute or more
+    relaxed: "At 800 pixels VS Code squeezes the editor to about 35 columns and the terminal wraps each line of output; at 1024 the file tree, the whole of analyze.py, and the terminal's output all fit"
+    targets: {book: {column: page-inset-right}}
+    steps:
+      - wait: {selector: '.explorer-folders-view .monaco-list-row[aria-label*="analyze.py"]'}
+      - click: {selector: '.explorer-folders-view .monaco-list-row[aria-label*="analyze.py"]'}
+      - wait: {selector: '.editor-actions a[aria-label^="Run Python File"]'}
+      # Let the Python extension finish starting (interpreter chosen, "Initializing virtual
+      # environments" gone) before the terminal opens. A terminal opened earlier misses the
+      # extensions' environment changes and shows a warning sign on its tab.
+      - wait: {selector: '.statusbar-item[aria-label*=".venv"]'}
+      - wait: {selector: '.statusbar-item:has-text("Initializing")', state: detached}
+      - settle: 3
+      # Ctrl+` opens the integrated terminal, as the chapter says; the fixture's .bashrc
+      # activates the project's .venv and keeps the prompt to the folder name.
+      - press: 'Control+Backquote'
+      - wait: {selector: '.terminal-wrapper.active .xterm-rows'}
+      # The fixture turns the terminal's GPU renderer off, so its text is in the page to wait on.
+      - wait: {text: '\(\.venv\)\s+Project\s+\$'}
+      - type: 'python analyze.py'
+      - press: 'Enter'
+      - wait: {text: 'University Hill\s+1219'}
+      # Opening the terminal starts "Initializing virtual environments" again; let it finish.
+      - settle: 2
+      - wait: {selector: '.statusbar-item:has-text("Initializing")', state: detached}
+      - settle: 2
+    expect: {selector: ['.editor-actions a[aria-label^="Run Python File"]']}
+    drifts: true
+    notes: "Local fixture tools/shots/fixtures/code-server: code-server 4.138.0 (VS Code 1.138.0) with the Python and Ruff extensions, pinned in its versions.env."
