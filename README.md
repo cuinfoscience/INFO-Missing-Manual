@@ -47,6 +47,9 @@ INFO-Missing-Manual/
 ├── index.qmd                        # landing page / introduction
 ├── conclusion.qmd                   # final chapter
 ├── references.bib                   # BibTeX bibliography
+├── AGENTS.md                        # instructions for AI agents and contributors
+├── CLAUDE.md                        # imports AGENTS.md, for Claude Code
+├── docs/                            # project records: decisions, hand-off, roadmap, AARs, plans
 │
 ├── chapters/                        # every chapter and appendix, one flat directory
 │                                    # part grouping and reading order live in _quarto.yml
@@ -106,16 +109,22 @@ quarto render --to html
 
 ## Contributing
 
-Before contributing, read `CLAUDE.md` for the full style guide, chapter structure template, cross-reference syntax, and conventions.
+Before contributing, read [`AGENTS.md`](AGENTS.md) for the full style guide, chapter structure template, cross-reference syntax, and conventions. Open ideas for new chapters and sections are in [`docs/roadmap.md`](docs/roadmap.md).
 
 The short version:
 
 - Each content chapter follows the canonical 8-section structure (Purpose → Learning objectives → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
 - Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.
 - Tone: friendly guide, second-person ("you"), empathetic but rigorous.
-- Cross-references: `@sec-<slug>` (see the label table in `CLAUDE.md`).
+- Cross-references: `@sec-<slug>` (see the label table in `AGENTS.md`).
 - Citations: `[@bibkey]`, with entries in `references.bib`.
 - Formatting: `**bold**`, `*italic*`, `` `code` ``, fenced code blocks with language hints.
+
+## For AI agents
+
+Instructions for AI coding agents — Claude Code, Codex, and others — are in [`AGENTS.md`](AGENTS.md). If your agent looks for its own instructions file (`CLAUDE.md`, `GEMINI.md`, `.cursorrules`, and so on), point it at `AGENTS.md`: the repository keeps one set of instructions, and `CLAUDE.md` only imports it.
+
+Project records are in [`docs/`](docs/): the hand-off note ([`docs/handoff.md`](docs/handoff.md)) that says where work stands, the decision log ([`docs/decisions.md`](docs/decisions.md)), the roadmap, after-action reports, and plans. Read the hand-off note and the decision log before starting, and update them when you stop.
 
 ## CI
 

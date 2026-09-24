@@ -1,0 +1,41 @@
+# Roadmap
+
+The chapter backlog, and follow-ups from reviews that are still open. Each item would make a reasonable first PR for a contributor. When one lands, tick it off here with the PR number in the same pull request; when a new candidate comes up, add it with a line on where it would go. Plans for larger pieces of work are in [`plans/`](plans/), and what is actively in progress is in [`handoff.md`](handoff.md).
+
+New chapters follow the canonical structure in `AGENTS.md` ("Style Guide"), get registered in `_quarto.yml` and the label table in `AGENTS.md`, and need the issue forms' chapter dropdown regenerated.
+
+## Chapter and section candidates
+
+### Carried over from earlier rounds
+
+- [ ] **Data dictionary / schema docs** — new section in `project-management.qmd` covering column documentation and schema change tracking.
+- [ ] **Profiling / performance (`%%timeit`, `cProfile`)** — add to `jupyter.qmd`, or a new short chapter in Part III.
+
+### Newly identified candidates
+
+- [ ] **Reproducible randomness** — short section (likely in `pandas-basics.qmd` or `tabular-data.qmd`) on `np.random.default_rng(seed)`, why globals like `np.random.seed` are insufficient for parallel work, and how to thread a seed through a pipeline.
+- [ ] **Cloud notebooks (Colab, Kaggle, Codespaces)** — add to `jupyter.qmd` or `remote.qmd`: what each platform is good for, how their environments differ from a local venv, and gotchas around persistence, secrets, and GPU access.
+- [ ] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — extension of `data-file-formats.qmd`: when to graduate from `pd.read_csv` to chunking, streaming, or a different tool entirely.
+- [ ] **Diagram literacy (Mermaid, ER, sequence)** — add to `documentation.qmd` or a new short chapter: how to read and produce ER diagrams, sequence diagrams, and architecture sketches as part of writing for technical audiences.
+- [ ] **Interactive debuggers (`pdb`, IDE breakpoints)** — extend `debugging.qmd` with a section on stepping through code interactively rather than relying solely on print statements.
+- [ ] **Editor automation (snippets, format-on-save, multi-cursor)** — extend `text-editors.qmd`: the keystrokes and configurations that turn an editor from a notepad into a tool.
+- [ ] **Second-week Git (rebase, cherry-pick, reflog)** — extend `version-control.qmd` with the operations that show up in real collaboration once the basic add/commit/push loop is fluent.
+- [ ] **Data ethics and licensing** — possible new chapter or section in `artifacts-have-politics.qmd` covering data licenses (CC-BY, ODbL, terms of use), citation of datasets, and the ethics of scraping vs. downloading from a published source.
+
+## Open follow-ups from the comprehensive review
+
+From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-review.md), checked against the chapters in September 2026.
+
+- [ ] **`file-system.qmd` trailing legacy sections.** "Why can't I find a file I downloaded from Canvas?" and "What does it mean to unzip a file?" still sit after the Quick reference. Fold what is new into the body and delete the rest.
+- [ ] **`terminal.qmd` trailing section.** "Windows notes: PowerShell and WSL (optional)" still sits after the One-page checklist. (The other two orphan sections the review named were removed in #28.)
+- [ ] **`package-management.qmd` empty stubs.** Six heading-only sections (`## Downloading` through `## Environments`) still sit before Further reading. Delete them; the body covers the material.
+- [ ] **`jupyter.qmd` empty heading.** `## Quick reference: IPython conveniences` has no body. Fill it or delete it.
+- [ ] **`presenting.qmd` duplicate table.** The timing-across-formats table appears in Worked examples and again as the Quick reference. Keep one.
+- [ ] **Stakes voice check.** Read three or four Stakes sections from different parts in a row; if the shared template reads as boilerplate, vary the opening paragraph in two or three tier-1 chapters.
+- [ ] **Inline glossary links.** Link the five terms the review added to the glossary (algorithmic audit, Matilda effect, open access, RLHF, schema) on first use in the chapters that introduce them.
+
+## How the backlog got here
+
+The handbook's original gap analysis identified 16 candidate chapters. The first round added three high-priority chapters that survived (`tracebacks`, `virtual-environments`, `data-file-formats`); a fourth, on testing with pytest, was drafted but later removed because the topic was outside the handbook's intended audience. The second round added eight more: `reading-docs`, `regex`, `linting`, `tabular-data`, `pandas-basics`, `sql-basics`, `http-apis`, and `secrets`. (Pre-commit hooks were originally drafted as a separate chapter, then condensed into a section of `automation.qmd` because the standalone treatment was too detailed for the intended audience.) The third round added `common-formats` (Markdown, YAML, JSON syntax) and moved `ai-llm` from Part I to the Algorithmic Systems part, where it sits alongside the other AI chapters. The fourth round added a new **Part V — Communication** with five chapters: `reading-scholarship`, `writing-manuscripts`, `writing-thesis`, `presenting`, and `latex`; this pushed Project Management to Part VI and Algorithmic Systems to Part VII. The fifth round folded four standing backlog items into existing chapters rather than creating new ones: a Stack Overflow section in `questions.qmd` (search-first habits, asking norms, what gets a question closed); a `wget`/`curl` section in `http-apis.qmd` (CLI fetches before Python, when to use which); a Docker / containers section in `virtual-environments.qmd` (when venvs are not enough, minimal Dockerfile, when *not* to reach for a container); and a substantially expanded shell-scripting section in `automation.qmd` covering `set -euo pipefail`, control flow, functions, exit-code conventions, and `trap`-based cleanup, with a short pointer from `terminal.qmd`.
+
+Since then, work has gone into existing chapters rather than new ones: deeper Markdown coverage in `common-formats.qmd` (#27) and an "Opening a terminal" walkthrough in `terminal.qmd` (#28).
