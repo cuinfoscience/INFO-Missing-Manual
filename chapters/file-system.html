@@ -681,28 +681,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#delete-and-recover" id="toc-delete-and-recover" class="nav-link" data-scroll-target="#delete-and-recover">Delete and recover</a></li>
   <li><a href="#permissions-basics-just-enough" id="toc-permissions-basics-just-enough" class="nav-link" data-scroll-target="#permissions-basics-just-enough">Permissions basics (just enough)</a></li>
   </ul></li>
-  <li><a href="#common-student-pitfalls-and-how-to-avoid-them" id="toc-common-student-pitfalls-and-how-to-avoid-them" class="nav-link" data-scroll-target="#common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.7</span> Common student pitfalls (and how to avoid them)</a></li>
-  <li><a href="#bridging-to-the-terminal-and-programming" id="toc-bridging-to-the-terminal-and-programming" class="nav-link" data-scroll-target="#bridging-to-the-terminal-and-programming"><span class="header-section-number">10.8</span> Bridging to the terminal and programming</a>
+  <li><a href="#sec-filesystem-cloud" id="toc-sec-filesystem-cloud" class="nav-link" data-scroll-target="#sec-filesystem-cloud"><span class="header-section-number">10.7</span> Files in the cloud: sync, access, and sharing</a>
+  <ul class="collapse">
+  <li><a href="#sync-backup-and-sharing-are-different-jobs" id="toc-sync-backup-and-sharing-are-different-jobs" class="nav-link" data-scroll-target="#sync-backup-and-sharing-are-different-jobs">Sync, backup, and sharing are different jobs</a></li>
+  <li><a href="#online-only-files-the-name-is-here-the-contents-are-not" id="toc-online-only-files-the-name-is-here-the-contents-are-not" class="nav-link" data-scroll-target="#online-only-files-the-name-is-here-the-contents-are-not">Online-only files: the name is here, the contents are not</a></li>
+  <li><a href="#when-your-documents-folder-is-really-in-the-cloud" id="toc-when-your-documents-folder-is-really-in-the-cloud" class="nav-link" data-scroll-target="#when-your-documents-folder-is-really-in-the-cloud">When your Documents folder is really in the cloud</a></li>
+  <li><a href="#conflicts-when-two-copies-disagree" id="toc-conflicts-when-two-copies-disagree" class="nav-link" data-scroll-target="#conflicts-when-two-copies-disagree">Conflicts: when two copies disagree</a></li>
+  <li><a href="#what-not-to-keep-in-a-synced-folder" id="toc-what-not-to-keep-in-a-synced-folder" class="nav-link" data-scroll-target="#what-not-to-keep-in-a-synced-folder">What not to keep in a synced folder</a></li>
+  <li><a href="#mounted-synced-or-web-only" id="toc-mounted-synced-or-web-only" class="nav-link" data-scroll-target="#mounted-synced-or-web-only">Mounted, synced, or web-only</a></li>
+  <li><a href="#sharing-links-and-permissions" id="toc-sharing-links-and-permissions" class="nav-link" data-scroll-target="#sharing-links-and-permissions">Sharing links and permissions</a></li>
+  <li><a href="#your-university-account-will-not-last-forever" id="toc-your-university-account-will-not-last-forever" class="nav-link" data-scroll-target="#your-university-account-will-not-last-forever">Your university account will not last forever</a></li>
+  </ul></li>
+  <li><a href="#common-student-pitfalls-and-how-to-avoid-them" id="toc-common-student-pitfalls-and-how-to-avoid-them" class="nav-link" data-scroll-target="#common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.8</span> Common student pitfalls (and how to avoid them)</a></li>
+  <li><a href="#bridging-to-the-terminal-and-programming" id="toc-bridging-to-the-terminal-and-programming" class="nav-link" data-scroll-target="#bridging-to-the-terminal-and-programming"><span class="header-section-number">10.9</span> Bridging to the terminal and programming</a>
   <ul class="collapse">
   <li><a href="#why-file-habits-matter-for-code" id="toc-why-file-habits-matter-for-code" class="nav-link" data-scroll-target="#why-file-habits-matter-for-code">Why file habits matter for code</a></li>
   <li><a href="#cross-platform-path-handling-conceptual" id="toc-cross-platform-path-handling-conceptual" class="nav-link" data-scroll-target="#cross-platform-path-handling-conceptual">Cross-platform path handling (conceptual)</a></li>
   </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">10.9</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">10.10</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">10.10</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">10.11</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-a-course-workspace-from-scratch" id="toc-building-a-course-workspace-from-scratch" class="nav-link" data-scroll-target="#building-a-course-workspace-from-scratch">Building a course workspace from scratch</a></li>
   <li><a href="#turning-a-messy-downloads-folder-into-a-clean-project" id="toc-turning-a-messy-downloads-folder-into-a-clean-project" class="nav-link" data-scroll-target="#turning-a-messy-downloads-folder-into-a-clean-project">Turning a messy Downloads folder into a clean project</a></li>
   <li><a href="#diagnosing-file-not-found" id="toc-diagnosing-file-not-found" class="nav-link" data-scroll-target="#diagnosing-file-not-found">Diagnosing “file not found”</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">10.12</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-key-locations" id="toc-quick-reference-key-locations" class="nav-link" data-scroll-target="#quick-reference-key-locations"><span class="header-section-number">10.13</span> Quick reference: key locations</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.12</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">10.13</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-key-locations" id="toc-quick-reference-key-locations" class="nav-link" data-scroll-target="#quick-reference-key-locations"><span class="header-section-number">10.14</span> Quick reference: key locations</a>
   <ul class="collapse">
   <li><a href="#windows-typical" id="toc-windows-typical" class="nav-link" data-scroll-target="#windows-typical">Windows (typical)</a></li>
   <li><a href="#macos-typical" id="toc-macos-typical" class="nav-link" data-scroll-target="#macos-typical">macOS (typical)</a></li>
   </ul></li>
-  <li><a href="#why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" id="toc-why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" class="nav-link" data-scroll-target="#why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go"><span class="header-section-number">10.14</span> Why can’t I find a file I downloaded from Canvas? Where did it go?</a></li>
-  <li><a href="#what-does-it-mean-to-unzip-a-file-how-do-i-do-that" id="toc-what-does-it-mean-to-unzip-a-file-how-do-i-do-that" class="nav-link" data-scroll-target="#what-does-it-mean-to-unzip-a-file-how-do-i-do-that"><span class="header-section-number">10.15</span> What does it mean to unzip a file? How do I do that?</a></li>
+  <li><a href="#why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" id="toc-why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" class="nav-link" data-scroll-target="#why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go"><span class="header-section-number">10.15</span> Why can’t I find a file I downloaded from Canvas? Where did it go?</a></li>
+  <li><a href="#what-does-it-mean-to-unzip-a-file-how-do-i-do-that" id="toc-what-does-it-mean-to-unzip-a-file-how-do-i-do-that" class="nav-link" data-scroll-target="#what-does-it-mean-to-unzip-a-file-how-do-i-do-that"><span class="header-section-number">10.16</span> What does it mean to unzip a file? How do I do that?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/file-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -763,6 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Adopt naming and organization conventions that scale from one assignment to a multi-month project.</p></li>
 <li><p>Recognize hidden files, sync-folder behaviors (OneDrive/iCloud), and common pitfalls.</p></li>
 <li><p>Apply basic safety practices: avoid destructive moves, manage duplicates, and preserve provenance.</p></li>
+<li><p>Tell synced, online-only, network, and web-only storage apart, and decide which of your files belong in each.</p></li>
 </ol>
 </section>
 <section id="running-theme-location-is-a-dependency" class="level2 unnumbered">
@@ -784,14 +796,14 @@ Relative path (either):    ../data.csv              (one folder up)</code></pre>
 <h2 data-number="10.2" class="anchored" data-anchor-id="access-and-navigation-on-windows"><span class="header-section-number">10.2</span> Access and navigation on Windows</h2>
 <p>When you open File Explorer on Windows (the icon is a manila folder, usually pinned to the taskbar), you see three things you should learn to recognize: a <strong>sidebar</strong> down the left with shortcuts to common locations like Quick Access and This PC, a <strong>main pane</strong> in the middle showing the contents of whichever folder you have selected, and an <strong>address bar</strong> along the top showing your current location as a sequence of clickable segments. Those segments are called <em>breadcrumbs</em>, and clicking any one of them jumps you back to that folder — so if you are deep inside <code>C:\Users\you\Documents\project\notebooks\drafts</code>, you can click <code>Documents</code> once and land in your Documents folder without using the Back button five times.</p>
 <p>Beyond pointing and clicking, File Explorer rewards a few specific skills. <strong>Search</strong> can be scoped to the current folder or the entire machine, and the difference matters: searching all of <code>This PC</code> for <code>data.csv</code> will find every CSV on your computer, which is rarely what you want, while searching from inside your project folder limits the result to that project. <strong>Sort</strong> and <strong>view</strong> options (right-click in the main pane or use the View tab) let you order files by name, date modified, type, or size; sorting by date modified is especially useful when you are trying to remember “what did I save yesterday?” In the View tab there are also two toggles you should know exist before you need them: <strong>show file name extensions</strong> and <strong>show hidden items</strong>. The first prevents the classic confusion where <code>data.csv</code> and <code>data.csv.txt</code> look identical to you in the GUI but are completely different files to your code. The second is occasionally needed when troubleshooting <code>.env</code> files, <code>.git</code> folders, or other dotfiles. Turn these on temporarily for diagnostics, and turn them off again when you are done so you do not accidentally delete a system file.</p>
-<p>A second important Windows-specific concept is <strong>OneDrive sync</strong>. If your account uses OneDrive, your <code>Documents</code> folder may not actually live on your laptop — it may live in the cloud, with placeholder files on disk that download on demand when you open them. Sync status icons next to each file or folder tell you what state things are in: a cloud icon means “in the cloud only, not local,” a green checkmark means “always kept on this device,” and a circular arrow means “currently syncing.” For programming and data work, this matters because a script that tries to read a 2 GB CSV will silently trigger a download that may or may not finish before the script tries to use the file. The fix is to right-click any folder you actively work in and select “Always keep on this device,” which forces a full local copy.</p>
+<p>A second important Windows-specific concept is <strong>OneDrive sync</strong>. If your account uses OneDrive, your <code>Documents</code> folder may not actually live on your laptop: it may live in the cloud, with placeholder files on disk that download only when you open them. The small icons next to each file in File Explorer tell you which is which, and they matter for code, because a script that reads a placeholder has to wait for a download first. <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a> explains the icons and how to keep a folder fully on your computer.</p>
 </section>
 <section id="access-and-navigation-on-macos" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="access-and-navigation-on-macos"><span class="header-section-number">10.3</span> Access and navigation on macOS</h2>
 <p>Finder on macOS plays the same role as File Explorer on Windows. You open it by clicking the smiley-face icon in the Dock, and you immediately see a <strong>sidebar</strong> with Favorites and iCloud Drive on the left, a <strong>toolbar</strong> with view-mode buttons across the top, and the <strong>main pane</strong> showing whichever folder is selected. The view-mode buttons are worth learning: icon view is good for browsing photos, list view is good for sorting by date or size, column view is the fastest way to drill down through several folders in a row, and gallery view is mostly useful for media. Column view in particular is the best macOS feature for “where am I?” — each column shows the contents of the next level down, so you can navigate a deep folder hierarchy without losing your place.</p>
 <p>Finder’s search box (top-right or <code>Command + F</code>) is powerful but defaults to searching your entire Mac. If you only want to search inside the current folder, click the scope button in the search bar and choose the folder name. You can also refine results by file kind, modification date, and other metadata, which is the easiest way to find that “report from last week” you cannot remember the name of. macOS also has <strong>tags</strong> (the colored circles you sometimes see on file icons), which act as lightweight categories — tag a file as “Course X” or “needs review” without moving it, and then filter by that tag later. Tags are an underused habit that pays off for long-running projects.</p>
 <p>A few system folders are hidden by default — the macOS root, the <code>~/Library</code> folder, anything starting with a dot. Treat them as off-limits unless you have a reason to be there: they hold configuration files for the operating system and your applications, and editing them by mistake can break things in subtle ways. When you do need to see them (most often <code>~/.ssh</code> for key files, see <a href="remote.html" class="quarto-xref"><span>Chapter 13</span></a>), the keystroke <code>Command + Shift + .</code> toggles hidden items in any Finder window. Use it for the diagnosis you need, then toggle it off so you do not accidentally drag the wrong thing into the trash.</p>
-<p>The macOS equivalent of OneDrive’s “files on demand” behavior is <strong>iCloud Drive optimization</strong>. If macOS thinks you are running low on disk space, it will quietly evict the least-used files in <code>Documents</code> and <code>Desktop</code> to iCloud, leaving placeholder icons that re-download when you open them. Same problem, same fix: for any folder where you actually run code, make sure the files are present locally. You can confirm by selecting a file and pressing <code>Command + I</code> to bring up the Get Info window, which says whether the file is on your Mac or only in iCloud.</p>
+<p>The macOS equivalent of OneDrive’s “files on demand” behavior is <strong>iCloud Drive optimization</strong>. With <em>Optimize Mac Storage</em> on, macOS moves documents you haven’t opened lately to iCloud when it needs space, leaving placeholders that download again when you open them. Same problem, same fix, both covered in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>: for any folder where you actually run code, make sure the files are really on your Mac.</p>
 </section>
 <section id="organizing-work-conventions-that-scale" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="organizing-work-conventions-that-scale"><span class="header-section-number">10.4</span> Organizing work: conventions that scale</h2>
@@ -868,95 +880,282 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <p>The general habit that prevents permission problems is to <strong>do your real work inside your user home directory</strong> and treat everything outside it as read-only. <code>~/Courses/</code>, <code>~/Projects/</code>, <code>~/Documents/</code> — all fine. <code>/usr/local/</code>, <code>C:\Windows\</code>, <code>/System/</code> — all off-limits. If a tutorial ever tells you to <code>sudo</code> something while you are still learning, pause: there is almost always a safer path that does not require administrator rights, and using them casually is the single fastest way to break your computer.</p>
 </section>
 </section>
-<section id="common-student-pitfalls-and-how-to-avoid-them" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.7</span> Common student pitfalls (and how to avoid them)</h2>
+<section id="sec-filesystem-cloud" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="sec-filesystem-cloud"><span class="header-section-number">10.7</span> Files in the cloud: sync, access, and sharing</h2>
+<p>Much of what feels like “your computer” now lives somewhere else as well. A <a href="../chapters/appendix-glossary.html#term-sync-client"><strong>sync client</strong></a> (OneDrive, iCloud Drive, Google Drive, Dropbox) keeps a folder on your disk matched to a copy in the cloud. Your university gives you storage you reach through a browser or a network drive. A course’s JupyterHub keeps your notebooks on its own server. Each of these behaves differently when the network drops, when two computers edit the same file, and when your account ends. This section is about knowing which kind of storage you are using, and choosing it on purpose.</p>
+<section id="sync-backup-and-sharing-are-different-jobs" class="level3">
+<h3 class="anchored" data-anchor-id="sync-backup-and-sharing-are-different-jobs">Sync, backup, and sharing are different jobs</h3>
+<p>The three words get used interchangeably, but they protect you from different things:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>What it does</th>
+<th>Protects you from</th>
+<th>Does not protect you from</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Sync</strong></td>
+<td>Keeps the same files on every device signed in to your account</td>
+<td>A lost or broken laptop, once the files have finished syncing</td>
+<td>Your own mistakes: a deletion or a bad edit reaches every device within seconds</td>
+</tr>
+<tr class="even">
+<td><strong>Backup</strong></td>
+<td>Keeps earlier versions, in a copy separate from your working files</td>
+<td>Deletions, overwritten files, a bad edit last week, ransomware</td>
+<td>Nothing, if you have never tested a restore (<a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>)</td>
+</tr>
+<tr class="odd">
+<td><strong>Sharing</strong></td>
+<td>Gives other people access to a file or folder</td>
+<td>Emailing attachments back and forth</td>
+<td>Loss of control: anyone you share with can make their own copy</td>
+</tr>
+</tbody>
+</table>
+<p>Sync services keep some history of their own (you can usually restore an earlier version of a file, or a deleted file, for a limited time), which is better than nothing. A real backup is still a separate copy you can restore even when the sync account is the thing that broke.</p>
+</section>
+<section id="online-only-files-the-name-is-here-the-contents-are-not" class="level3">
+<h3 class="anchored" data-anchor-id="online-only-files-the-name-is-here-the-contents-are-not">Online-only files: the name is here, the contents are not</h3>
+<p>To save disk space, sync clients can leave a <a href="../chapters/appendix-glossary.html#term-online-only-file"><strong>placeholder</strong></a> on your disk: the file’s name and icon appear in File Explorer or Finder, but its contents stay in the cloud until something opens it. OneDrive does this by default on current Windows, and macOS does it for iCloud Drive when <em>Optimize Mac Storage</em> is on. For documents this is convenient. For code it is a trap: your script asks for <code>data/raw/survey.csv</code>, the operating system has to download it first, and the read either stalls or fails with a confusing error, especially when you are offline.</p>
+<p>Each service marks the state with an icon, and each lets you pin a folder so that everything in it stays downloaded:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Service</th>
+<th>Online-only looks like</th>
+<th>To keep a folder on your computer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OneDrive (Windows)</td>
+<td>a blue cloud</td>
+<td>Right-click → <strong>Always keep on this device</strong>. A green circle with a white check means it is pinned; <strong>Free up space</strong> undoes it.</td>
+</tr>
+<tr class="even">
+<td>iCloud Drive (macOS)</td>
+<td>the <em>In iCloud</em> cloud icon</td>
+<td>Control-click → <strong>Keep Downloaded</strong>. For a single file, <strong>Download Now</strong>.</td>
+</tr>
+<tr class="odd">
+<td>Google Drive for desktop</td>
+<td>a cloud, in <em>Stream files</em> mode</td>
+<td>Right-click → <strong>Offline access</strong> → <strong>Available offline</strong>, or switch Drive to <em>Mirror files</em>, which keeps everything on your computer.</td>
+</tr>
+<tr class="even">
+<td>Dropbox</td>
+<td>a cloud (“online-only”)</td>
+<td>Right-click → <strong>Make available offline</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>The quickest check from the terminal compares the size a file claims with the space it really uses on disk:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS and Linux</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> data/raw/survey.csv   <span class="co"># the size the file reports, e.g. 4.2M</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> data/raw/survey.csv    <span class="co"># space really used: 0, or nearly, if online-only</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On Windows, right-click the file, choose <strong>Properties</strong>, and compare <strong>Size</strong> with <strong>Size on disk</strong>; an online-only file takes 0 bytes on disk. The sure fix is not to run projects from a synced folder at all (see “What not to keep in a synced folder” below). If a project must live there, pin its whole folder before you run anything.</p>
+</section>
+<section id="when-your-documents-folder-is-really-in-the-cloud" class="level3">
+<h3 class="anchored" data-anchor-id="when-your-documents-folder-is-really-in-the-cloud">When your Documents folder is really in the cloud</h3>
+<p>Both operating systems can move your everyday folders into the sync service, and it is easy to agree to it during setup without noticing. On Windows, OneDrive’s <strong>folder backup</strong> (OneDrive’s settings → <strong>Sync and backup</strong> → <strong>Manage backup</strong>) can move Desktop, Documents, Pictures, and other folders into OneDrive, so <code>Documents</code> now lives at a path like <code>C:\Users\you\OneDrive\Documents</code>, or, for a school account, <code>C:\Users\you\OneDrive - &lt;your university&gt;\Documents</code>. On macOS, iCloud’s <strong>Desktop &amp; Documents Folders</strong> option moves both folders into iCloud Drive.</p>
+<p>That has two consequences for technical work. First, everything you save in Documents is synced, including project folders you never meant to sync. Second, the path now contains spaces and punctuation, which breaks any command that doesn’t quote it (<a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fails: the spaces split the path into several arguments</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> C<span class="op">:</span>\Users\you\OneDrive <span class="op">-</span> Example University\Documents</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Works: the quotes keep it together</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">"C:\Users\you\OneDrive - Example University\Documents"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can switch folder backup off for a folder in the same <strong>Manage backup</strong> screen. Microsoft’s note on what happens next is worth knowing: files already backed up <em>stay in the OneDrive folder</em>, and you move them back yourself. The simplest arrangement is to leave Documents synced for documents and keep projects somewhere else, as below.</p>
+</section>
+<section id="conflicts-when-two-copies-disagree" class="level3">
+<h3 class="anchored" data-anchor-id="conflicts-when-two-copies-disagree">Conflicts: when two copies disagree</h3>
+<p>If you edit the same file on two computers before they sync, or while one of them is offline, the sync client cannot know which version should win, so it keeps both. The second one appears as a copy with the computer’s name or the words “conflicted copy” in its name, such as <code>report-DESKTOP-4J2K.docx</code> or <code>report (Alex's conflicted copy 2026-09-24).docx</code>. Nothing is lost, but nothing is merged either: you compare the two and keep one. You can avoid most conflicts by closing a file before you switch computers and letting sync finish (watch the icon) before you shut the lid.</p>
+</section>
+<section id="what-not-to-keep-in-a-synced-folder" class="level3">
+<h3 class="anchored" data-anchor-id="what-not-to-keep-in-a-synced-folder">What not to keep in a synced folder</h3>
+<p>Sync clients are built for documents: a few hundred files that change now and then. Programming projects produce thousands of small files that change constantly, and some tools assume that nothing else is writing to their folders. Keep these out of OneDrive, iCloud Drive, Google Drive, and Dropbox:</p>
+<ul>
+<li><strong>Virtual environments</strong> (<code>.venv/</code>, conda environments). They hold tens of thousands of files and are tied to the computer that made them, so they sync slowly and break on the other machine. They can be rebuilt from <code>requirements.txt</code> anyway (<a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>).</li>
+<li><strong>Git repositories.</strong> Git and the sync client each assume they are in charge of the folder. When they disagree (two computers, a half-finished sync), you can get conflicted copies inside the hidden <code>.git/</code> folder and a damaged repository. Let GitHub be the way a repository moves between computers (<a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>).</li>
+<li><strong>Caches and generated files</strong>, such as <code>__pycache__/</code> and <code>node_modules/</code>: regenerated automatically, and useless on another machine.</li>
+<li><strong>Large data files that change often.</strong> Every change uploads the whole file again.</li>
+</ul>
+<p>A layout that works: keep active projects in a folder outside sync, such as <code>~/Projects/</code> (on Windows, <code>C:\Users\you\Projects\</code>, which OneDrive’s folder backup does not touch), put their code under Git with a GitHub remote, and use the synced folder for finished documents you want on every device.</p>
+</section>
+<section id="mounted-synced-or-web-only" class="level3">
+<h3 class="anchored" data-anchor-id="mounted-synced-or-web-only">Mounted, synced, or web-only</h3>
+<p>Not all remote storage behaves like a sync folder. You will meet three kinds, and they differ in what happens when the network goes away:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>Examples</th>
+<th>Works offline?</th>
+<th>Good for running code?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Synced folder</strong></td>
+<td>OneDrive, iCloud Drive, Google Drive, Dropbox</td>
+<td>Pinned files yes; online-only files no</td>
+<td>Only for pinned files, and never for environments or repositories</td>
+</tr>
+<tr class="even">
+<td><a href="../chapters/appendix-glossary.html#term-network-drive"><strong>Network drive</strong></a> (mounted)</td>
+<td>A department file server: <strong>Map network drive</strong> in File Explorer on Windows (<code>\\server\share</code>), <strong>Go → Connect to Server</strong> in Finder on macOS (<code>smb://server/share</code>)</td>
+<td>No</td>
+<td>Slowly: every read crosses the network, and the drive disappears when the network (or the VPN) does</td>
+</tr>
+<tr class="odd">
+<td><strong>Web-only</strong></td>
+<td>OneDrive or Google Drive in a browser, files attached in Canvas</td>
+<td>No</td>
+<td>No: download a copy into your project first</td>
+</tr>
+</tbody>
+</table>
+<p>Files on a server you log in to, such as a lab machine, a research cluster, or a course’s JupyterHub, are a fourth case. They stay on that server, and you move copies back and forth with <code>scp</code>, <code>rsync</code>, or the hub’s download button (<a href="remote.html" class="quarto-xref"><span>Chapter 13</span></a>). Anything you want to keep from such a server, download before the course ends.</p>
+</section>
+<section id="sharing-links-and-permissions" class="level3">
+<h3 class="anchored" data-anchor-id="sharing-links-and-permissions">Sharing links and permissions</h3>
+<p>When you share from OneDrive or Google Drive, you choose who the link works for, and the choice matters more than the button suggests:</p>
+<ul>
+<li><strong>Anyone with the link:</strong> no sign-in needed; the link can be forwarded, pasted into a chat, or found by someone you never meant to reach.</li>
+<li><strong>People in your organization:</strong> anyone with an account at your university.</li>
+<li><strong>Specific people:</strong> only the accounts you name. This is the safe default.</li>
+</ul>
+<p>Choose view or edit access as well. Never share data about people (survey responses, grades, interview notes) through an anyone-link: a link is not a password. When a project ends, open its sharing settings and remove the links you no longer need.</p>
+</section>
+<section id="your-university-account-will-not-last-forever" class="level3">
+<h3 class="anchored" data-anchor-id="your-university-account-will-not-last-forever">Your university account will not last forever</h3>
+<p>University storage is generous while you are enrolled, and it goes away soon after you leave. Quotas also change: in 2021 Google announced the end of unlimited storage for universities, and schools set their own limits in response. Before your last term ends, copy anything you want to keep (projects, writing, and any data you are allowed to keep) to storage you control, and move your code to a personal GitHub account.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>At CU Boulder (checked September 2026)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>OneDrive</strong> comes with every current student account: 5 TB, with files up to 250 GB. OIT notes the quota may change as Microsoft moves to pooled storage. (<a href="https://oit.colorado.edu/services/messaging-collaboration/microsoft-365/applications/onedrive">OIT: OneDrive</a>)</li>
+<li><strong>Google Drive</strong> on your CU account is limited to 5 GB, and OIT points to OneDrive for large files. (<a href="https://oit.colorado.edu/services/messaging-collaboration/google-workspace/google-storage-limitations">OIT: Google storage limits</a>)</li>
+<li><strong>After graduation,</strong> you have “approximately 90 days after your degree conferral date” to save files from your CU Google and Microsoft accounts. After that you lose access and the files are deleted, and OIT can’t move them for you. Your CU email lasts one year after your degree posts. (<a href="https://oit.colorado.edu/accounts/alumni/faq">OIT: alumni FAQ</a>)</li>
+<li><strong>Off campus,</strong> the campus VPN, free to students, reaches resources that only work on the campus network, such as some department file servers. (<a href="https://oit.colorado.edu/software-hardware/software-catalog">OIT software catalog</a>)</li>
+<li>Some courses and departments run their own JupyterHub; your instructor will tell you if yours does. Its files live on the server, so download what you want to keep.</li>
+</ul>
+<p>Details change, and OIT’s pages are the source of truth. If something here no longer matches them, please <a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=something-is-wrong.yml">report it</a>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="common-student-pitfalls-and-how-to-avoid-them" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.8</span> Common student pitfalls (and how to avoid them)</h2>
 <p>A small number of mistakes account for almost all the file-management pain that beginners suffer, and they are all preventable. The most common one is <strong>working out of <code>Downloads/</code> or <code>Desktop/</code> forever</strong>: every assignment lands wherever it was downloaded, duplicates accumulate, version <code>final-2.csv</code> ends up next to <code>final-3.csv</code> next to <code>data.csv</code>, and three weeks later nothing can be found. The fix is the one from the previous section — create a stable project root under <code>Courses/</code> or <code>Projects/</code> and move work there immediately, every time.</p>
-<p>The second is <strong>confusing cloud sync with local storage</strong>, which usually shows up as a notebook that cannot find the data file you can clearly see on your screen. The file is not really there; it is a placeholder that OneDrive or iCloud is going to download on demand, and your code reached the read before the download finished (or while you were offline). The fix is to make the project folder always-local: right-click and “Always keep on this device” on Windows, or “Download Now” / “Keep Downloaded” on macOS, before you ever try to run the code.</p>
+<p>The second is <strong>confusing cloud sync with local storage</strong>, which usually shows up as a notebook that cannot find, or hangs on, a data file you can clearly see on your screen. The file is a placeholder that OneDrive or iCloud downloads on demand, and your code reached it before the download finished, or while you were offline. The fix is to keep projects out of synced folders, or pin them so they stay downloaded (<a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>).</p>
 <p>The third is <strong>accidental extension changes</strong>, where you rename <code>data.csv</code> to <code>data</code> (because the GUI was hiding the extension and you thought you were renaming the whole filename), or where you save a CSV “as text” and end up with <code>data.csv.txt</code>. Both produce the same kind of confusing failure: the file opens in the wrong program, or your code says “no such file.” The fix is to turn on <strong>show file extensions</strong> in your file manager and leave it on. The few seconds of cognitive overhead are worth never being burned by this again.</p>
 <p>The fourth is <strong>moving folders after you have written code that depends on them</strong>. A script that references <code>data/input.csv</code> works fine until you reorganize and the data file moves. The fix is twofold: pick your project root early, do not move it casually, and inside the project use <em>relative</em> paths so that everything is stable as long as the project root stays put. If you must use absolute paths, compute them at runtime from <code>__file__</code> rather than hard-coding <code>/Users/alex/...</code>, since hard-coded absolute paths immediately break when anyone else clones the project — including future you on a different laptop.</p>
 </section>
-<section id="bridging-to-the-terminal-and-programming" class="level2" data-number="10.8">
-<h2 data-number="10.8" class="anchored" data-anchor-id="bridging-to-the-terminal-and-programming"><span class="header-section-number">10.8</span> Bridging to the terminal and programming</h2>
+<section id="bridging-to-the-terminal-and-programming" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="bridging-to-the-terminal-and-programming"><span class="header-section-number">10.9</span> Bridging to the terminal and programming</h2>
 <section id="why-file-habits-matter-for-code" class="level3">
 <h3 class="anchored" data-anchor-id="why-file-habits-matter-for-code">Why file habits matter for code</h3>
 <p>When you run a script or a notebook, the operating system hands it a single piece of context that quietly controls almost every path it will ever read or write: the <strong>current working directory</strong>, or CWD. A relative path like <code>data/raw/survey.csv</code> is not an address on disk; it is an instruction to “start from the current working directory, then look for a folder called <code>data</code>, then a folder inside that called <code>raw</code>, then a file called <code>survey.csv</code>.” Change the CWD, and the same path means something completely different — or nothing at all.</p>
 <p>This is why the advice earlier in the chapter — keep a stable project root, and launch your code from that root — is more than just tidiness. A notebook that works perfectly when you launch Jupyter from <code>~/Courses/INFO-3010/Project/</code> will throw <code>FileNotFoundError</code> for the same line of code if you launch it from <code>~/Courses/INFO-3010/</code>, because one extra level up means the <code>data/</code> folder is nowhere in sight. When something breaks, always check the CWD before you change the code:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux — print the current working directory</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows PowerShell</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Get-Location</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From inside Python or a notebook cell</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.getcwd())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux — print the current working directory</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows PowerShell</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Get-Location</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From inside Python or a notebook cell</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.getcwd())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The corollary is that <strong>hard-coded, machine-specific absolute paths are a code smell</strong>. A line like <code>pd.read_csv("/Users/alex/Downloads/survey.csv")</code> will work on exactly one laptop, owned by one person, until the day they move the file. Nobody else who clones the project — including you six months from now, on a new machine — can run it without editing the source. Relative paths anchored to the project root are portable for free; keep them.</p>
 </section>
 <section id="cross-platform-path-handling-conceptual" class="level3">
 <h3 class="anchored" data-anchor-id="cross-platform-path-handling-conceptual">Cross-platform path handling (conceptual)</h3>
 <p>If you only ever use macOS or only ever use Windows, path handling is usually invisible. The moment you share code with someone on the other platform, though, the separator character (<code>/</code> vs <code>\</code>) and the shape of the root (<code>/Users/...</code> vs <code>C:\Users\...</code>) start producing subtle bugs that are hard to track down. The safe habit is to stop writing paths as strings at all and instead use whatever path-handling utility your language provides. In Python, that utility is <a href="https://docs.python.org/3/library/pathlib.html"><code>pathlib</code></a>, and it is worth learning on day one:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Good: portable, works the same on Windows and macOS</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>project_root <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>raw_data     <span class="op">=</span> project_root <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"raw"</span> <span class="op">/</span> <span class="st">"survey.csv"</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(raw_data)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad: breaks on the other operating system</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data</span><span class="ch">\\</span><span class="st">raw</span><span class="ch">\\</span><span class="st">survey.csv"</span>)   <span class="co"># Windows-only</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/survey.csv"</span>)     <span class="co"># usually fine, but brittle</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Good: portable, works the same on Windows and macOS</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>project_root <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>raw_data     <span class="op">=</span> project_root <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"raw"</span> <span class="op">/</span> <span class="st">"survey.csv"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(raw_data)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad: breaks on the other operating system</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data</span><span class="ch">\\</span><span class="st">raw</span><span class="ch">\\</span><span class="st">survey.csv"</span>)   <span class="co"># Windows-only</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/survey.csv"</span>)     <span class="co"># usually fine, but brittle</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>Path(__file__).resolve().parent</code> is the trick that makes a script find its own folder no matter where it is launched from: the script asks the operating system where its own source file lives, resolves any symlinks, and uses that as the anchor for all subsequent paths. Every relative path is then built by joining with the <code>/</code> operator, which <code>pathlib</code> translates into whatever separator the current operating system wants. (See <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a> for when to bring this discipline from notebooks into reusable scripts, and <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a> for how the project layout interacts with version control — <code>data/raw/</code> typically belongs in <code>.gitignore</code>, while <code>src/</code> and <code>notebooks/</code> do not.)</p>
 <p>Two small supporting habits make everything else smoother. <strong>Keep paths short</strong> — deep project trees hit Windows’ legacy path-length limits and make every error message harder to read — and <strong>avoid special characters</strong> in filenames you pass to code. Spaces, parentheses, accented letters, and curly quotes all work in the GUI and all occasionally break in the terminal or a script. Stick to letters, digits, hyphens, and underscores for anything a script will touch, and you will never need to learn which layer of which tool is responsible for the broken quoting.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="10.9">
-<h2 data-number="10.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">10.9</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="10.10">
+<h2 data-number="10.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">10.10</span> Stakes and politics</h2>
 <p>A “local” file system is less local than it used to be. The biggest political shift in personal computing over the last fifteen years has been the migration of student work from the laptop’s own disk into corporate cloud sync — OneDrive, iCloud Drive, Google Drive, Dropbox. The migration is sometimes a deliberate choice and sometimes a default: a Windows laptop signs in to a Microsoft account and your <code>Documents</code> folder is silently rewired to OneDrive, with placeholder files where bytes used to be.</p>
 <p>Two consequences worth naming. First, <em>who controls the bytes</em>. Files in cloud-synced folders live on the vendor’s storage, governed by their terms of service; deletion, recovery, account suspension, and law-enforcement requests are now the vendor’s decisions to make, not yours. Second, <em>who pays for sync’s failures</em>. When a sync conflict produces “myfile (alex’s MacBook Pro).docx” or a network blip leaves a placeholder where a script needed real bytes, the cost of debugging the mismatch between what the GUI shows and what the disk holds falls on the user — almost always a non-specialist who is being asked to reason about a layered system they did not choose.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you decide where a project lives, ask whose rules the storage runs under and what happens when the network is gone.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="10.10">
-<h2 data-number="10.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">10.10</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="10.11">
+<h2 data-number="10.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">10.11</span> Worked examples</h2>
 <section id="building-a-course-workspace-from-scratch" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-course-workspace-from-scratch">Building a course workspace from scratch</h3>
 <p>You are starting a new semester with three classes. The first thing to do, before you download any handouts, is to create the home that will hold all of them. Open a terminal in your user directory and run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs</span><span class="op">,</span><span class="dt">Project}</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-4040/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Project}</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/STAT-2010/<span class="dt">{Labs</span><span class="op">,</span><span class="dt">Assignments}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Labs</span><span class="op">,</span><span class="dt">Project}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-4040/<span class="dt">{Assignments</span><span class="op">,</span><span class="dt">Project}</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/STAT-2010/<span class="dt">{Labs</span><span class="op">,</span><span class="dt">Assignments}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>(On Windows, do the same in PowerShell with <code>New-Item -ItemType Directory -Force -Path</code> or just create them by right-clicking in File Explorer.) Then add the top-level <code>Courses</code> folder to your file manager’s favorites: drag it to the Finder sidebar on macOS, or right-click and choose “Pin to Quick access” in File Explorer on Windows. From this point on, every assignment you save lives somewhere predictable, and you can get to any of them in two clicks.</p>
 </section>
 <section id="turning-a-messy-downloads-folder-into-a-clean-project" class="level3">
 <h3 class="anchored" data-anchor-id="turning-a-messy-downloads-folder-into-a-clean-project">Turning a messy Downloads folder into a clean project</h3>
 <p>You started a project a month ago by downloading a few CSVs into <code>~/Downloads/</code> and writing some throwaway code. Now there are seventeen files mixed up with a semester’s worth of unrelated downloads, and the project is starting to matter. Time to rescue it.</p>
 <p>The mechanical version of the rescue is just three steps. First, create the new project root and the standard subfolders:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/Project/<span class="dt">{data/raw</span><span class="op">,</span><span class="dt">data/processed</span><span class="op">,</span><span class="dt">src</span><span class="op">,</span><span class="dt">notebooks</span><span class="op">,</span><span class="dt">reports}</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Courses/INFO-3010/Project</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Courses/INFO-3010/Project/<span class="dt">{data/raw</span><span class="op">,</span><span class="dt">data/processed</span><span class="op">,</span><span class="dt">src</span><span class="op">,</span><span class="dt">notebooks</span><span class="op">,</span><span class="dt">reports}</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Courses/INFO-3010/Project</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Second, move the project files out of <code>Downloads</code>. Sort <code>Downloads</code> by date or by filename to identify them, and move everything related to this project — <code>*.csv</code> data files into <code>data/raw/</code>, notebooks into <code>notebooks/</code>, scripts into <code>src/</code> — into the new project. Third, open every script and notebook, find any path that points at <code>~/Downloads/something.csv</code>, and rewrite it to a relative path like <code>data/raw/something.csv</code> so the project no longer depends on the absolute location of your old Downloads folder. Run the code from the project root once to confirm everything still works. Now the project is portable, reproducible, and almost impossible to lose.</p>
 </section>
 <section id="diagnosing-file-not-found" class="level3">
 <h3 class="anchored" data-anchor-id="diagnosing-file-not-found">Diagnosing “file not found”</h3>
 <p>You run a script and Python tells you <code>FileNotFoundError: data/input.csv</code>. Resist the urge to immediately edit the path. Instead, gather evidence in three short steps. First, confirm the file actually exists where you think it does by listing the directory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> data/        <span class="co"># macOS / Linux</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir</span> data<span class="dt">\ </span>          <span class="co"># Windows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> data/        <span class="co"># macOS / Linux</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir</span> data<span class="dt">\ </span>          <span class="co"># Windows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>input.csv</code> does not appear in the listing, the bug is not in the code — the file is genuinely missing or has a different name (a trailing space, a typo, a <code>.csv.txt</code> extension you cannot see). Fix the file or the filename; do not fix the code.</p>
 <p>If the file <em>does</em> appear in the listing but Python still cannot find it, the second check is your current working directory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>                 <span class="co"># macOS / Linux  (Windows: cd with no arguments)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>                 <span class="co"># macOS / Linux  (Windows: cd with no arguments)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A relative path like <code>data/input.csv</code> is interpreted relative to whatever directory you launched Python from. If you launched Python from the project root, <code>data/input.csv</code> works. If you launched it from inside <code>notebooks/</code> or <code>src/</code>, the same path no longer resolves. Either <code>cd</code> to the project root before running, or rewrite the path so it is computed from <code>__file__</code>.</p>
 <p>The third check, only if the first two pass, is whether the file is sync-stranded: you can see a placeholder for it but the bytes are still in the cloud. On macOS you can confirm with <code>Command + I</code> in Finder; on Windows the sync icon next to the file tells you. Force a local copy and try again. Most “file not found” errors will be solved by one of these three checks; only after all three should you start looking at code.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="10.11">
-<h2 data-number="10.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="10.12">
+<h2 data-number="10.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.12</span> Exercises</h2>
 <ol type="1">
 <li><p>Create a project folder structure and explain (in one paragraph) why each folder exists.</p></li>
 <li><p>Rename 10 files using a consistent naming convention; justify the convention.</p></li>
 <li><p>Find all <code>.csv</code> files in your course workspace using OS search.</p></li>
 <li><p>Make a “raw data is immutable’’ rule: copy raw data, produce processed data, and document the transformation.</p></li>
 <li><p>Break and fix: move a folder referenced by a notebook/script; then repair it using relative paths.</p></li>
+<li><p>Find out whether your Documents folder is synced (OneDrive’s folder backup on Windows, iCloud’s Desktop &amp; Documents Folders on macOS). If it is, choose a folder outside sync for your projects, write down its full path, and check one data file with the size comparison in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="10.12">
-<h2 data-number="10.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">10.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="10.13">
+<h2 data-number="10.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">10.13</span> One-page checklist</h2>
 <ul>
 <li><p>I know where my project root is.</p></li>
 <li><p>My project uses a consistent folder structure.</p></li>
@@ -964,26 +1163,31 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <li><p>Filenames are descriptive, stable, and machine-friendly.</p></li>
 <li><p>I can find files by search (extension/date/keyword).</p></li>
 <li><p>I understand whether files are local or cloud-on-demand.</p></li>
+<li><p>My projects, environments, and Git repositories live outside synced folders, and my code moves between computers through Git.</p></li>
+<li><p>I share files with specific people, not “anyone with the link,” when they contain data about people.</p></li>
+<li><p>I know when my university account ends, and I keep my own copy of anything I want after that.</p></li>
 <li><p>I can show extensions/hidden items when troubleshooting and hide them afterward.</p></li>
 <li><p>I avoid working in system directories and respect permissions.</p></li>
 </ul>
 </section>
-<section id="quick-reference-key-locations" class="level2 page-columns page-full" data-number="10.13">
-<h2 data-number="10.13" class="anchored" data-anchor-id="quick-reference-key-locations"><span class="header-section-number">10.13</span> Quick reference: key locations</h2>
+<section id="quick-reference-key-locations" class="level2 page-columns page-full" data-number="10.14">
+<h2 data-number="10.14" class="anchored" data-anchor-id="quick-reference-key-locations"><span class="header-section-number">10.14</span> Quick reference: key locations</h2>
 <section id="windows-typical" class="level3">
 <h3 class="anchored" data-anchor-id="windows-typical">Windows (typical)</h3>
 <ul>
-<li><p>User home: <code>C:\Users\\</code></p></li>
-<li><p>Documents/Downloads/Desktop under user home</p></li>
-<li><p>OneDrive folder (if enabled): typically under user home</p></li>
+<li><p>User home: <code>C:\Users\&lt;you&gt;\</code></p></li>
+<li><p>Documents/Downloads/Desktop under user home (or inside OneDrive, if its folder backup is on)</p></li>
+<li><p>OneDrive: <code>C:\Users\&lt;you&gt;\OneDrive\</code> for a personal account, <code>C:\Users\&lt;you&gt;\OneDrive - &lt;organization&gt;\</code> for a school or work account</p></li>
+<li><p>Google Drive for desktop: its own drive letter, usually <code>G:\</code></p></li>
 </ul>
 </section>
 <section id="macos-typical" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="macos-typical">macOS (typical)</h3>
 <ul>
-<li><p>User home: <code>/Users//</code></p></li>
-<li><p>Documents/Downloads/Desktop under user home</p></li>
-<li><p>iCloud Drive appears in Finder sidebar; local availability may vary with storage settings</p></li>
+<li><p>User home: <code>/Users/&lt;you&gt;/</code></p></li>
+<li><p>Documents/Downloads/Desktop under user home (or inside iCloud Drive, if Desktop &amp; Documents Folders is on)</p></li>
+<li><p>iCloud Drive: <code>~/Library/Mobile Documents/com~apple~CloudDocs/</code>, shown as <em>iCloud Drive</em> in the Finder sidebar</p></li>
+<li><p>OneDrive, Google Drive, and Dropbox: folders under <code>~/Library/CloudStorage/</code></p></li>
 </ul>
 <p>Your computer’s “file system” is the hierarchy of folders and files where programs and documents are saved as well as the software and hardware for storing and retrieving these data. Windows and macOS are very different operating systems with very different underlying file systems. It is really important that you are able to access and navigate through your computer’s file system for everything from downloading files to configuring options. This section will cover how to familiarize yourself with your computer’s file system, the location of some important folders, and navigating to new folders you create. In this section, you will do this using the graphical user interfaces (GUI) in macOS or Windows.</p>
 
@@ -1030,8 +1234,8 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 </section>
 </section>
 </section>
-<section id="why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" class="level2 page-columns page-full" data-number="10.14">
-<h2 data-number="10.14" class="anchored" data-anchor-id="why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go"><span class="header-section-number">10.14</span> Why can’t I find a file I downloaded from Canvas? Where did it go?</h2>
+<section id="why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go" class="level2 page-columns page-full" data-number="10.15">
+<h2 data-number="10.15" class="anchored" data-anchor-id="why-cant-i-find-a-file-i-downloaded-from-canvas-where-did-it-go"><span class="header-section-number">10.15</span> Why can’t I find a file I downloaded from Canvas? Where did it go?</h2>
 <p>Building on the ideas about your computer’s file system from the previous section, it is important to know where to find the files we download using our web browser. Depending on the defaults and other preferences of your web browser, downloaded folders might go to your Desktop, a Downloads folder, or some other place. The steps below will make sure that your browser is downloading the folders to a consistent location: your Downloads folder. Instructions for changing the download location of the most popular web browsers (Chrome, Safari, Firefox, and Edge) are listed below with links to their official documentation or other tutorials.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -1102,8 +1306,8 @@ Figure&nbsp;10.4: Changing the Edge download location.
 </div>
 </div></div></section>
 </section>
-<section id="what-does-it-mean-to-unzip-a-file-how-do-i-do-that" class="level2" data-number="10.15">
-<h2 data-number="10.15" class="anchored" data-anchor-id="what-does-it-mean-to-unzip-a-file-how-do-i-do-that"><span class="header-section-number">10.15</span> What does it mean to unzip a file? How do I do that?</h2>
+<section id="what-does-it-mean-to-unzip-a-file-how-do-i-do-that" class="level2" data-number="10.16">
+<h2 data-number="10.16" class="anchored" data-anchor-id="what-does-it-mean-to-unzip-a-file-how-do-i-do-that"><span class="header-section-number">10.16</span> What does it mean to unzip a file? How do I do that?</h2>
 <p>Compressed zip files are archives that bundle one or more files into a single package and reduce their size. Before you can work with the contents, you need to <em>unzip</em> (extract) the archive. Both Windows and macOS provide built‑in tools to handle zip files, and many third‑party tools exist. The basic workflow is the same:</p>
 <section id="on-windows." class="level5">
 <h5 class="anchored" data-anchor-id="on-windows.">On Windows.</h5>

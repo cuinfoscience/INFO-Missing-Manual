@@ -20,15 +20,17 @@ By the end of this chapter, you should be able to:
 
 2.  Check OS version/build information and interpret what matters for troubleshooting.
 
-3.  Understand types of updates and apply a safe patching workflow.
+3.  Measure how much disk space your programming tools take, and reclaim it without breaking anything.
 
-4.  Set a baseline security posture (account hygiene, screen lock, encryption awareness).
+4.  Understand types of updates and apply a safe patching workflow.
 
-5.  Configure backups and understand restore/recovery options.
+5.  Set a baseline security posture (account hygiene, screen lock, encryption awareness).
 
-6.  Apply a simple troubleshooting playbook (what to try first, what evidence to gather).
+6.  Configure backups and understand restore/recovery options.
 
-7.  Establish a sustainable maintenance schedule for a semester.
+7.  Apply a simple troubleshooting playbook (what to try first, what evidence to gather).
+
+8.  Establish a sustainable maintenance schedule for a semester.
 
 ## Running theme: stability comes from routines
 
@@ -91,18 +93,60 @@ macOS:     Apple menu → About This Mac → More Info → Storage Settings
 
 A practical rule of thumb: keep at least **15–20% of your disk free at all times**. Modern SSDs slow down dramatically when they fill up, and the operating system itself needs scratch space for swap, caches, and updates. Running at 1–2% free is asking for trouble — at that point even opening a large spreadsheet can fail. When free space dips below the buffer, clear it: empty the Downloads folder, remove old installers, delete obsolete virtual environments ([sec-virtual-environments](#sec-virtual-environments)), and uninstall apps you are not using.
 
-### Understand local vs synced storage
+### How much space your programming tools take
 
-Cloud sync tools — OneDrive on Windows, iCloud Drive on macOS, Google Drive, Dropbox — blur the line between “the file is on your laptop” and “the file is available if the network is up.” Modern versions of both OneDrive and iCloud default to a “files on demand” mode where files show up in your file browser but are not actually downloaded until you open them. For everyday documents this is convenient. For programming and data work it can be catastrophic, because your script sees a file that *is not really there*, tries to read it, and either hangs for minutes while the OS downloads it or fails with an opaque error.
+Nobody mentions this on the first day: the tools for data work are large, and they multiply. Every course asks for Python and a few packages, every project gets its own environment, and every installation leaves a cache behind. None of it shows up in your Documents folder, so the first sign is often a full disk in the week an assignment is due.
 
-The fix is to be explicit about what lives locally. For any dataset your code needs, mark it as “Always keep on this device” in the sync client (right-click the folder in the file browser, look for the “Always keep on this device” option in OneDrive, or “Keep Downloaded” in Finder for iCloud). Better still, keep your active project folder — including the `data/raw` directory — *outside* the synced area entirely, and use version control ([sec-git-github](#sec-git-github)) for the code and an explicit data workflow for the datasets. Sync is a backup convenience, not a project filesystem.
+Some real numbers, measured on a Linux computer in September 2026 with Python 3.11 (sizes on Windows and macOS are in the same range):
+
+| What | Space on disk |
+|----|----|
+| A virtual environment with pandas and the packages it needs | 177 MB |
+| The same environment with matplotlib added | 273 MB |
+| A virtual environment with JupyterLab and pandas (97 packages) | 390 MB |
+| A fresh Miniforge (conda) installation, before you create any environments | 659 MB |
+| Anaconda Distribution | at least 5 GB, by Anaconda’s own system requirements |
+| pip’s download cache, after one day of installing the above | 172 MB |
+
+One environment is not the problem; the pile is. Five course projects with a JupyterLab environment each come to about 2 GB before you add a single dataset. Add an editor and its extensions, a container tool ([sec-virtual-environments](#sec-virtual-environments)), and a second Python installation you forgot about, and a 256 GB laptop fills up fast.
+
+**See where the space went.** The storage views above show categories. The terminal ([sec-terminal](#sec-terminal)) shows folders:
 
 ``` bash
-# Quick sanity check that a file is really local and not a stub:
-ls -lh data/raw/sales.csv
-# If the size is the actual size (e.g., 4.2M), it's local.
-# If it's tiny (a few KB) or the icon shows a cloud, it's a stub.
+# macOS and Linux
+du -sh ~/Projects/*/.venv          # each project's environment
+du -sh ~/miniforge3 ~/anaconda3    # conda installs, if any
+df -h                              # free space on each disk
+
+# Every system
+pip cache info                     # pip's cache: where, how big
+conda clean --all --dry-run        # preview a conda cleanup
 ```
+
+On Windows, File Explorer shows a folder’s size under right-click → **Properties**, and PowerShell can total one for you:
+
+``` powershell
+$files = Get-ChildItem .venv -Recurse -File
+($files | Measure-Object -Property Length -Sum).Sum / 1MB   # size in MB
+```
+
+**Reclaim it safely.** Three kinds of space come back without breaking anything:
+
+- **Caches.** `pip cache purge` empties pip’s download cache, and `conda clean --all` removes the package files conda downloaded; on the fresh Miniforge installation above it freed 101 MB. Caches only save download time, and they refill as you install things.
+- **Environments for finished projects.** An environment can be rebuilt from a list of what it needs, so when a course ends, save that list (`pip freeze > requirements.txt`) and delete the environment’s folder ([sec-virtual-environments](#sec-virtual-environments)). Keep the code and the data; the environment is disposable.
+- **Duplicate Python installations.** Python from python.org, Anaconda, Homebrew, and the Microsoft Store can all end up on one computer, each taking space and competing to be the `python` your terminal runs ([sec-pkg-mgmt](#sec-pkg-mgmt)). Keep one, and remove the others with their own uninstallers.
+
+Anything else goes through “Storage cleanup (do no harm)” below: if you don’t know what a folder is for, don’t delete it.
+
+**What you actually need.** For the workflows in this book, that is one terminal (already on your computer), one Python installation with one way of making environments ([sec-pkg-mgmt](#sec-pkg-mgmt)), one editor ([sec-text-editors](#sec-text-editors)), Git ([sec-git-github](#sec-git-github)), and JupyterLab installed inside each project’s environment rather than globally ([sec-jupyter](#sec-jupyter)). Install anything else when a course or project asks for it, into that project’s environment, and remove it when the project is done.
+
+> **NOTE:**
+>
+> Before you pay for software, check OIT’s [software catalog](https://oit.colorado.edu/software-hardware/software-catalog). Microsoft 365, including the desktop apps, is free to students and can be installed on up to five computers, five tablets, and five phones ([OIT: Microsoft 365](https://oit.colorado.edu/software-hardware/software-catalog/microsoft-365)). The catalog also lists MATLAB, Tableau (for academic use), Overleaf, Qualtrics, ArcGIS, and the campus VPN at no cost to students. Where your files go, and what happens to them after you graduate, is in [sec-filesystem-cloud](#sec-filesystem-cloud).
+
+### Understand local vs synced storage
+
+Cloud sync tools, such as OneDrive on Windows, iCloud Drive on macOS, Google Drive, and Dropbox, can leave a file’s name on your disk while its contents stay in the cloud, which breaks code that tries to read it. How to tell the difference, and how to keep project files fully on your computer, is in [sec-filesystem-cloud](#sec-filesystem-cloud). From the operating system’s side the rule is short: sync is a convenience for documents, not a backup (see “Backups and recovery” below) and not a place to run projects from.
 
 ## 9.4 Updates and patching: best practices
 
@@ -430,6 +474,8 @@ If you need to roll the update back, both OSes provide that. Windows lets you un
 
 6.  Simulate a recovery: restore one older version of a document from backup.
 
+7.  Find the three largest folders your coursework has created (environments, caches, datasets). For each, decide whether it could be rebuilt from a file you keep, and reclaim the space of one that can.
+
 ## 9.13 One-page checklist
 
 - I can find key settings (updates, backups, security, storage).
@@ -443,6 +489,8 @@ If you need to roll the update back, both OSes provide that. Windows lets you un
 - Backups are configured, recent, and I have practiced a restore.
 
 - I keep adequate free disk space.
+
+- I know how much space my environments and caches take, and I clear caches and finished projects’ environments at the end of a term.
 
 - Screen lock is enabled and accounts use strong authentication.
 
