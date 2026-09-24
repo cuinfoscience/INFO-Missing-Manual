@@ -44,9 +44,9 @@ From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-rev
 
 - [x] **`file-system.qmd` trailing legacy sections.** Folded in September 2026: copying a full path went into the Windows and macOS navigation sections, where downloads land into "Organizing work" (with links to each browser's own help instead of four outdated screenshots), and unzipping into "File operations and safety". The repeated Finder and File Explorer walkthroughs, the first-person paths example, and the orphaned footnotes were cut.
 - [x] **`terminal.qmd` trailing section.** Folded in September 2026: the PowerShell translation notes (`Get-Location`, `Get-Help`, pipes that pass objects) now sit where the chapter tells you to check which shell you are in.
-- [ ] **`package-management.qmd` empty stubs.** Six heading-only sections (`## Downloading` through `## Environments`) still sit before Further reading. Delete them; the body covers the material.
-- [ ] **`jupyter.qmd` empty heading.** `## Quick reference: IPython conveniences` has no body. Fill it or delete it.
-- [ ] **`presenting.qmd` duplicate table.** The timing-across-formats table appears in Worked examples and again as the Quick reference. Keep one.
+- [x] **`package-management.qmd` empty stubs.** Deleted in September 2026. The stranded paragraph after the Quick reference (Anaconda or Miniconda; where conda can't be installed) moved into "Choosing tools" with its diagram, and its footnotes became links.
+- [x] **`jupyter.qmd` empty heading.** Filled in September 2026 with a table of the IPython conveniences the chapter teaches.
+- [x] **`presenting.qmd` duplicate table.** The copy in Templates was removed in September 2026; the Quick reference keeps it.
 - [ ] **Stakes voice check.** Read three or four Stakes sections from different parts in a row; if the shared template reads as boilerplate, vary the opening paragraph in two or three tier-1 chapters.
 - [ ] **Inline glossary links.** Link the five terms the review added to the glossary (algorithmic audit, Matilda effect, open access, RLHF, schema) on first use in the chapters that introduce them.
 
