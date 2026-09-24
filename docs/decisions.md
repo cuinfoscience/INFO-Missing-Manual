@@ -4,6 +4,18 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-24 · Stakes sections: vary the openings, keep the closing
+
+**Decision** (the maintainer's pick, option (a) of the side-by-side report after #44):
+
+- **Openings:** `package-management`, `version-control`, and `evaluating-ai` open their Stakes sections on a concrete case or experience (the `xz-utils` backdoor, a "ruined" repository, the COMPAS dispute) instead of a stock move, and drop the "N things to notice" count. New chapters open the same way.
+- **The closing sentence stays fixed** ("See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: …"). Loosening it (option b) was not chosen.
+- `version-control`'s opening said "two distinct political dimensions" before listing three; fixed.
+
+**Why.** Read one at a time, each section is specific; read in a row, fifteen of 36 opened with one of two stock moves and 25 announced a count, which reads as boilerplate. Varying the opening fixes that without touching the template's closing, which the style guide relies on.
+
+**Where.** `AGENTS.md` ("Stakes and politics section"), [`roadmap.md`](roadmap.md).
+
 ## 2026-09-24 · Order of work: screenshots, then polish, then new sections
 
 **Decision** (the maintainer's answers to a scoping round after #38 merged):

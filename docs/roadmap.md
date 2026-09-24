@@ -47,7 +47,7 @@ From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-rev
 - [x] **`package-management.qmd` empty stubs.** Deleted in September 2026. The stranded paragraph after the Quick reference (Anaconda or Miniconda; where conda can't be installed) moved into "Choosing tools" with its diagram, and its footnotes became links.
 - [x] **`jupyter.qmd` empty heading.** Filled in September 2026 with a table of the IPython conveniences the chapter teaches.
 - [x] **`presenting.qmd` duplicate table.** The copy in Templates was removed in September 2026; the Quick reference keeps it.
-- [ ] **Stakes voice check.** Read three or four Stakes sections from different parts in a row; if the shared template reads as boilerplate, vary the opening paragraph in two or three tier-1 chapters.
+- [x] **Stakes voice check.** Read side by side in September 2026: the content is specific, but fifteen openings used one of two stock moves. `package-management`, `version-control`, and `evaluating-ai` now open on a concrete case, and `AGENTS.md` asks new chapters to do the same ([`decisions.md`](decisions.md)).
 - [x] **Inline glossary links.** Linked in September 2026 on first use: auditing in `evaluating-ai`, Matilda effects in `writing-manuscripts`, open access in `reading-scholarship`, RLHF in `ai-llm` and `ai-agents`, and schema in `sql-basics`. The RLHF entry now points to `ai-agents` instead of `llm-internals`, which never mentions it.
 
 ## How the backlog got here
