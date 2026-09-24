@@ -668,6 +668,20 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 ## Quick reference: IPython conveniences
 
+| Type this in a cell | What it does |
+|---|---|
+| `len?` | Show a function's signature and docstring (`??` shows its source too) |
+| `Tab` after a name | Complete it; `Shift + Tab` inside the parentheses shows the signature |
+| `%pwd`, `%ls`, `%cd path` | Print, list, or change the kernel's working directory |
+| `!command` | Run one shell command, such as `!ls data/raw/` |
+| `%env VAR` | Show an environment variable (`%env VAR=value` sets it) |
+| `%time expr`, `%%time` | Time one line, or the whole cell |
+| `%timeit expr`, `%%timeit` | Run a small piece of code many times and report how long it takes |
+| `%load_ext autoreload` then `%autoreload 2` | Reload your own modules (`src/`) when you edit them |
+| `%who` | List the variables defined in the kernel |
+| `%run script.py` | Run a script in the kernel, keeping its variables afterwards |
+| `%lsmagic` | List every magic command available |
+
 ::: {.callout-note}
 ## 📚 Further reading
 
