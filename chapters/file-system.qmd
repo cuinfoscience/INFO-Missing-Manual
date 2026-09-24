@@ -67,7 +67,7 @@ Each filename usually ends with an **extension** like `.csv`, `.py`, or `.docx`,
 
 ## Access and navigation on Windows
 
-When you open File Explorer on Windows (the icon is a manila folder, usually pinned to the taskbar), you see three things you should learn to recognize: a **sidebar** down the left with shortcuts to common locations like Quick Access and This PC, a **main pane** in the middle showing the contents of whichever folder you have selected, and an **address bar** along the top showing your current location as a sequence of clickable segments. Those segments are called *breadcrumbs*, and clicking any one of them jumps you back to that folder — so if you are deep inside `C:\Users\you\Documents\project\notebooks\drafts`, you can click `Documents` once and land in your Documents folder without using the Back button five times.
+When you open File Explorer on Windows (the icon is a manila folder, usually pinned to the taskbar), you see three things you should learn to recognize: a **sidebar** down the left with shortcuts to common locations like Quick Access and This PC, a **main pane** in the middle showing the contents of whichever folder you have selected, and an **address bar** along the top showing your current location as a sequence of clickable segments. Those segments are called *breadcrumbs*, and clicking any one of them jumps you back to that folder — so if you are deep inside `C:\Users\you\Documents\project\notebooks\drafts`, you can click `Documents` once and land in your Documents folder without using the Back button five times. Click the empty space at the end of the address bar and the breadcrumbs turn into the full path as text: copy it, or type a path there and press `Enter` to jump straight to it. To copy a file's own path for a script, right-click it and choose **Copy as path** (on Windows 10, hold `Shift` while you right-click).
 
 Beyond pointing and clicking, File Explorer rewards a few specific skills. **Search** can be scoped to the current folder or the entire machine, and the difference matters: searching all of `This PC` for `data.csv` will find every CSV on your computer, which is rarely what you want, while searching from inside your project folder limits the result to that project. **Sort** and **view** options (right-click in the main pane or use the View tab) let you order files by name, date modified, type, or size; sorting by date modified is especially useful when you are trying to remember "what did I save yesterday?" In the View tab there are also two toggles you should know exist before you need them: **show file name extensions** and **show hidden items**. The first prevents the classic confusion where `data.csv` and `data.csv.txt` look identical to you in the GUI but are completely different files to your code. The second is occasionally needed when troubleshooting `.env` files, `.git` folders, or other dotfiles. Turn these on temporarily for diagnostics, and turn them off again when you are done so you do not accidentally delete a system file.
 
@@ -75,7 +75,7 @@ A second important Windows-specific concept is **OneDrive sync**. If your accoun
 
 ## Access and navigation on macOS
 
-Finder on macOS plays the same role as File Explorer on Windows. You open it by clicking the smiley-face icon in the Dock, and you immediately see a **sidebar** with Favorites and iCloud Drive on the left, a **toolbar** with view-mode buttons across the top, and the **main pane** showing whichever folder is selected. The view-mode buttons are worth learning: icon view is good for browsing photos, list view is good for sorting by date or size, column view is the fastest way to drill down through several folders in a row, and gallery view is mostly useful for media. Column view in particular is the best macOS feature for "where am I?" — each column shows the contents of the next level down, so you can navigate a deep folder hierarchy without losing your place.
+Finder on macOS plays the same role as File Explorer on Windows. You open it by clicking the smiley-face icon in the Dock, and you immediately see a **sidebar** with Favorites and iCloud Drive on the left, a **toolbar** with view-mode buttons across the top, and the **main pane** showing whichever folder is selected. The view-mode buttons are worth learning: icon view is good for browsing photos, list view is good for sorting by date or size, column view is the fastest way to drill down through several folders in a row, and gallery view is mostly useful for media. Column view in particular is the best macOS feature for "where am I?" — each column shows the contents of the next level down, so you can navigate a deep folder hierarchy without losing your place. Finder hides the full path by default; turn on **View → Show Path Bar** to see it along the bottom of every window. To copy a file's full path for a script, select it and press `Option + Command + C`.
 
 Finder's search box (top-right or `Command + F`) is powerful but defaults to searching your entire Mac. If you only want to search inside the current folder, click the scope button in the search bar and choose the folder name. You can also refine results by file kind, modification date, and other metadata, which is the easiest way to find that "report from last week" you cannot remember the name of. macOS also has **tags** (the colored circles you sometimes see on file icons), which act as lightweight categories — tag a file as "Course X" or "needs review" without moving it, and then filter by that tag later. Tags are an underused habit that pays off for long-running projects.
 
@@ -86,6 +86,8 @@ The macOS equivalent of OneDrive's "files on demand" behavior is **iCloud Drive 
 ## Organizing work: conventions that scale
 
 The single biggest improvement most students can make to their file management is to **stop working out of `Downloads/` and `Desktop/`** and instead create a stable top-level home for everything school-related. The exact name does not matter — `School/`, `Courses/`, `Coursework/` are all fine — but the existence of one designated place does matter, because it gives every assignment, lab, and project a predictable parent. Inside that home, give each course its own folder, and inside each course folder, separate `Assignments/`, `Labs/`, and `Project/`. The reward is enormous: when you come back to the work in three weeks, you do not have to remember where you put things; you just open the path you always use.
+
+Part of that habit is knowing where your browser puts downloads. Depending on its settings, a file you download from Canvas may land in `Downloads`, on the Desktop, or wherever you saved the last one, so a handout you "just downloaded" can seem to vanish. Every browser has a setting for this: point it at your `Downloads` folder, or turn on the option to ask where to save each file, and move each download into its course folder when it arrives. The official instructions for [Chrome](https://support.google.com/chrome/answer/95759), [Safari](https://support.apple.com/guide/safari/download-items-from-the-web-sfri40598/mac), [Firefox](https://support.mozilla.org/en-US/kb/where-find-and-manage-downloaded-files-firefox), and [Edge](https://support.microsoft.com/en-us/microsoft-edge/change-the-downloads-folder-location-in-microsoft-edge-4049e93b-0ef6-e44f-aca0-7d5f37a39294) stay current as the menus change. Some files never reach `Downloads` at all: a PDF may open in a browser tab, and a Word or Excel file may open straight from a temporary folder you will never find again. Use **Save as** (in the browser, the PDF viewer, or the Office app) to put a copy where you can find it.
 
 ```text
 ~/Courses/
@@ -171,6 +173,14 @@ A few operations skip the bin entirely and go straight to permanent deletion, an
 
 # Terminal: NOT reversible on most systems
 rm data/processed/old-output.csv   # gone immediately
+```
+
+### Unzipping an archive
+
+Course materials and datasets often arrive as a `.zip` file: one or more files bundled and compressed into a single package. Your programs cannot read what is inside until you **extract** (unzip) it. On Windows, right-click the file in File Explorer and choose **Extract All…**; on macOS, double-click it in Finder. Either way you get a folder with the same name next to the archive. Work from that folder, not from inside the zip: Windows lets you browse into a zip file as if it were a folder, but a notebook pointed at a path inside it will not find its data. Choose where the extracted folder lands (your course or project folder, never a system folder), and never run a program from an archive you do not trust. Once you have checked that everything extracted, delete the `.zip`, or keep it in `data/raw/` if you need the original exactly as you received it.
+
+```bash
+unzip lab-03.zip -d lab-03/        # macOS and Linux terminal
 ```
 
 ### Permissions basics (just enough)
@@ -460,116 +470,6 @@ The third check, only if the first two pass, is whether the file is sync-strande
 -   iCloud Drive: `~/Library/Mobile Documents/com~apple~CloudDocs/`, shown as *iCloud Drive* in the Finder sidebar
 
 -   OneDrive, Google Drive, and Dropbox: folders under `~/Library/CloudStorage/`
-
-Your computer's "file system" is the hierarchy of folders and files where programs and documents are saved as well as the software and hardware for storing and retrieving these data. Windows and macOS are very different operating systems with very different underlying file systems. It is really important that you are able to access and navigate through your computer's file system for everything from downloading files to configuring options. This section will cover how to familiarize yourself with your computer's file system, the location of some important folders, and navigating to new folders you create. In this section, you will do this using the graphical user interfaces (GUI) in macOS or Windows.
-
-::: {.column-margin}
-![The macOS Finder icon.](/graphics/macos_finder_icon.png)
-:::
-
-##### macOS Finder.
-
-The "Finder" application is the primary graphical user interface for interacting with the macOS file system.[^1] Finder is always running in the background when you are using macOS. A few core actions will help you orient yourself:
-
-1.  **Open a Finder window.** Click the Finder smiley face icon in the Dock. If Finder is already active but no window is visible, choose `File `→` New Finder Window` from the menu bar or press `Command + N`.
-
-2.  **Navigate via the sidebar.** The sidebar lists common locations (Favorites, iCloud Drive, Downloads, Applications). Clicking a folder shows its contents in the main pane. Use the back and forward buttons to move through history.
-
-3.  **Choose a view.** Use the toolbar buttons or `View `→ menu to switch between icon, list, column, and gallery views. Column view is especially useful for seeing the folder hierarchy and previewing files without opening them.
-
-4.  **See the full path.** Enable the path bar via `View `→` Show Path Bar`. You can also right‑click the window title to copy the folder's full path for use in scripts.
-
-5.  **Search effectively.** Press `Command + F` to search. Use the scope buttons to limit search to the current folder or your entire Mac, and refine results by kind, date, or name.
-
-::: {.column-margin}
-![The Windows File Explorer icon.](/graphics/windows_explorer_icon.png)
-:::
-
-##### Windows File Explorer.
-
-Windows File Explorer is the graphical tool for navigating the file system on Windows. Open it by clicking the folder icon in the taskbar, pressing `Windows + E`, or selecting `File Explorer` from the Start menu. Key concepts include:
-
-1.  **Navigation pane.** The left‑hand pane contains Quick Access (pinned and recent folders), This PC (drives and user folders), and network locations. Click an entry to display its contents in the main pane. Pin frequently used folders to Quick Access by right‑clicking and choosing "Pin to Quick access."
-
-2.  **Address bar and breadcrumbs.** The address bar shows your current path as clickable segments (breadcrumbs). You can type a path (e.g., `C:\Users\name\Documents`) and press `Enter` to jump directly. Right‑click the bar to copy the full path.
-
-3.  **Views and sorting.** Use the `View` tab or the layout buttons to switch between details, list, tiles, or large icons. Sort by name, date modified, type, or size to locate files quickly.
-
-4.  **Search box.** The search box in the top‑right corner searches within the current folder by default. Combine it with filters like kind or date (via the Search tab) to narrow results. Remember that searching the entire drive can take time.
-
-##### File paths.
-
-A "file path" is an address that describes where a folder or file lives on your computer. The file paths for Windows and macOS use different formats and the commands for navigating and accessing each are not compatible. I am going to use my personal Mac and PC computers as an example; the file paths on your computer will be different. My "Downloads" folder on my Windows has a file path of `C:\Users\Brian\Downloads`. The `C:\` is the name of the primary hard drive on almost every PC.[^2] My "Downloads" folder on my macOS has a file path of `/Users/Brian/Downloads`.
-
-**Note on drives and separators.** Windows may assign other drive letters (`D:`, `E:`, etc.) if you have multiple hard drives or partitions. Replace `C:\` with the correct letter when constructing paths. Also remember that Windows uses backslashes (`\`) to separate path components, whereas macOS and Linux use forward slashes (`/`). This difference matters when typing paths in the terminal or code.
-
-## Why can't I find a file I downloaded from Canvas? Where did it go?
-
-Building on the ideas about your computer's file system from the previous section, it is important to know where to find the files we download using our web browser. Depending on the defaults and other preferences of your web browser, downloaded folders might go to your Desktop, a Downloads folder, or some other place. The steps below will make sure that your browser is downloading the folders to a consistent location: your Downloads folder. Instructions for changing the download location of the most popular web browsers (Chrome, Safari, Firefox, and Edge) are listed below with links to their official documentation or other tutorials.
-
-::: {.column-margin}
-![Changing the Chrome download location.](/graphics/download-location-chrome.png){#fig-download-location-chrome}
-:::
-
-##### Chrome.
-
-[^3] Open Chrome, click the ![hamburger menu icon](/graphics/hamburger_trail.png) button in the upper right corner, select "Settings", and scroll to the bottom and click "Advanced". Under the "Downloads" section, click "Change". Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your "Downloads" folder and click "Select Folder". See @fig-download-location-chrome.
-
-::: {.column-margin}
-![Changing the Safari download location.](/graphics/download-location-safari.png){#fig-download-location-safari}
-:::
-
-##### Safari.
-
-[^4] This should be set to your "Downloads" folder by default but here are the steps to change it. Open Safari, select "Safari" from the menu bar, and click "Preferences…". In the "General" tab, click the drop-down next to "File download location. User the Finder window that pops up to navigate to your "Downloads" folder. See @fig-download-location-safari.
-
-##### Mozilla.
-
-[^5] Open Firefox, click the ![hamburger menu icon](/graphics/hamburger_menu.png) button in the upper-right, and select "Settings". In the "General" panel, scroll down to the "Files and Applications" section, and click the "Browse…" button. Use the Finder (macOS) or File Explorer (Windows) window that pops up to navigate to your "Downloads" folder and click "Select Folder". See @fig-download-location-mozilla.
-
-::: {.column-margin}
-![Changing the Firefox download location.](/graphics/download-location-mozilla.png){#fig-download-location-mozilla}
-:::
-
-##### Edge.
-
-[^6] Open Edge, slick the ![three-dot menu icon](/graphics/three_dots.png) button in the upper-right, and click "Settings". Select "Downloads" in the menu on the left and in the "Location" area click the click the "Change" button. Use the File Explorer window that pops up to navigate to your "Downloads" folder and click "Select Folder". See @fig-download-location-edge.
-
-##### File types.
-
-Note that some file types like PDFs may open by default in your web browser rather than saving to your Downloads folder. Some other types of files like DOC or XLS may open in Word or Excel by default and are saved in arcanely-named and impossible-to-find temporary folders. If you want to be able to work with these files after you have downloaded them, make sure to use the "Save as" functionality in the browser, PDF reader, Office application, *etc.* to move it to a more appropriate location like a "Downloads" or class-specific folder. The details on how to do this are specific to that application: use the documentation links provided for the browsers in the previous section to search for information and tutorials if you are having trouble.
-
-::: {.column-margin}
-![Changing the Edge download location.](/graphics/download-location-edge.png){#fig-download-location-edge}
-:::
-
-## What does it mean to unzip a file? How do I do that?
-
-Compressed zip files are archives that bundle one or more files into a single package and reduce their size. Before you can work with the contents, you need to *unzip* (extract) the archive. Both Windows and macOS provide built‑in tools to handle zip files, and many third‑party tools exist. The basic workflow is the same:
-
-##### On Windows.
-
-Locate the `.zip` file in File Explorer. Right‑click the file and choose "Extract All…" from the context menu. A dialog will ask where to extract the files; by default it creates a folder with the same name as the zip file in the current directory. You can browse to choose a different location. After extraction completes, open the new folder to access the files. It is safe to delete the original zip file once you have verified that the extraction succeeded.
-
-##### On macOS.
-
-Double‑click the `.zip` file in Finder or select it and choose `File `→` Open`. Archive Utility will automatically decompress the archive into a folder alongside the zip file. If you need more control, you can right‑click and select "Open With → Archive Utility" or use a third‑party app such as The Unarchiver. After unzipping, a folder with the same name appears; open it to access the extracted files. You can move this folder into your project structure and delete the original zip file.
-
-##### Safety tips.
-
-Never run executables from a zip file you downloaded unless you trust the source. Always choose a destination folder you can locate easily (for example, your "Downloads" folder or a course project folder), and avoid unzipping directly into system folders. Keep raw zipped archives if you need to preserve the original state for provenance, but otherwise deleting them saves space.
-
-[^1]: <https://support.apple.com/en-us/HT201732>
-
-[^2]: If you have multiple hard drives,
-
-[^3]: <https://support.google.com/chrome/answer/95759>
-
-[^4]: <https://www.macrumors.com/how-to/change-safari-download-save-location-mac/>
-
-[^5]: <https://support.mozilla.org/en-US/kb/where-find-and-manage-downloaded-files-firefox>
-
-[^6]: <https://support.microsoft.com/en-us/microsoft-edge/change-the-downloads-folder-location-in-microsoft-edge-4049e93b-0ef6-e44f-aca0-7d5f37a39294>
 
 ::: {.callout-note}
 ## 📚 Further reading

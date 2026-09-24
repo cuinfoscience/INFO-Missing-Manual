@@ -7,8 +7,8 @@
 - **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings.
 - **Merged 2026-09-24:** #35 (`AGENTS.md`, `docs/`, `tools/`, `CONTRIBUTING.md`), #36 (cloud storage; closed #34), #37 (the meme above the table of contents, closing #30; the JupyterLab screenshot pilot), and #38 (the repository-page screenshot, the contact-address User-Agent, the issue-forms check in CI, "Illustration:" captions). Each deploy passed.
 - **Order of work** ([`decisions.md`](decisions.md)): the screenshots first, then polish of the existing chapters, then new sections in the roadmap's new priority order. One pull request at a time; the maintainer merges.
-- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap) and #40 (the maintainer's hand capture for `http-apis`).
-- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** screenshot milestone M4, the two VS Code figures (`text-editors`, `linting`), from a new pinned code-server fixture (`tools/shots/fixtures/code-server/`, VS Code 1.138 in the browser, with the Python and Ruff extensions). The toolkit's `type` step now works headless (selftest 70 of 70).
+- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), and #41 (the two VS Code screenshots, from a code-server fixture).
+- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** the first polish pull request: the stranded trailing sections of `file-system` and `terminal` folded into their bodies, and the rest cut.
 
 ## Waiting on the maintainer
 
@@ -16,11 +16,11 @@
 |---|---|
 | A review comment for the diff figure | Leave a real line comment on a merged pull request in this repository (for example, #37's *Files changed*). The `version-control` diff figure shows it; replied to and resolved, it can later serve `collaboration`. The session watches #37 for it. |
 | The open pull request | Review and merge (agents don't merge unless asked). |
-| Chapter 10's trailing sections | Fold "downloaded from Canvas" and "unzip" into the body (a review follow-up in [`roadmap.md`](roadmap.md)). |
 | Community files | A `CODE_OF_CONDUCT.md` (for example, the Contributor Covenant). |
 
 ## Known issues
 
+- **Seventeen images in `graphics/` are used by no chapter:** the eight orphans the screenshot plan listed, plus nine the `file-system` polish left behind (four outdated browser download-settings screenshots, the Finder and File Explorer icons, and three menu icons). They stay until the maintainer decides otherwise (`decisions.md`).
 - **Four `PLACEHOLDER-*` images** don't exist, in three chapters (`operating-system` 2, `version-control` 1, `collaboration` 1), so those figures render broken. All four wait on the maintainer: a review thread, and two hand captures on real machines.
 - **Wide figures hide the table of contents** while on screen (the JupyterLab overview is the one so far); accepted, per the decision above.
 - **`tools/shots/run doctor <chapter>`** warns for a fixture chapter (`localhost: not reachable now`) and, in a cloud session, for GitHub (`robots.txt answered 403`, which is the session's proxy, not GitHub). "Patterns and pitfalls" in `tools/shots/README.md` says how to check each instead.
@@ -40,7 +40,7 @@
 ## Next, when work resumes
 
 1. **Screenshots, when the maintainer is ready:** the `version-control` diff and `collaboration` (after the review comment on a merged pull request), and the operating-system panels (hand captures on macOS and Windows, recorded with `adopt`). M6, a CI check for screenshots, can come any time.
-2. **Polish, next for agents** ([`roadmap.md`](roadmap.md), review follow-ups), one small pull request each: fold the trailing sections of `file-system` and `terminal` into the body and cut the rest; the empty headings in `jupyter` and `package-management`; the duplicate table in `presenting`; the inline glossary links. Then read the Stakes sections side by side and report which read as boilerplate, with sample rewrites, for the maintainer to choose.
+2. **Polish, next for agents** ([`roadmap.md`](roadmap.md), review follow-ups), one small pull request each: the empty headings in `jupyter` and `package-management`; the duplicate table in `presenting`; the inline glossary links. Then read the Stakes sections side by side and report which read as boilerplate, with sample rewrites, for the maintainer to choose.
 3. **New sections,** in the roadmap's order: debuggers and second-week Git first.
 4. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
 5. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall.
