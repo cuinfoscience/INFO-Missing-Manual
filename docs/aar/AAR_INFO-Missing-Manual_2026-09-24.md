@@ -105,3 +105,5 @@ Each item gives what happened, why, the fix, and where the lesson is recorded no
 | The remaining nine placeholders, one chapter per pull request (plan M2–M5) | agent, then the maintainer for hand captures | Open |
 | A CI check for screenshots (plan M6) | agent | Open |
 | Run `tools/issue-forms/sync_issue_chapters.py --check` in CI, as `sync_margin_header.py --check` already is; run by hand, it caught the `margin-header` regression | maintainer to decide, then agent | Open |
+
+*Note, 2026-09-24, after #37 merged:* the maintainer settled item 9 (wider columns allowed sparingly) and asked for the issue-forms check in CI, which the next pull request adds. See `docs/decisions.md`.

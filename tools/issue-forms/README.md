@@ -25,7 +25,7 @@ The script rebuilds the block from the chapter order in `_quarto.yml` and the H1
 
 ## When to run it
 
-After adding, removing, renaming, or reordering a chapter. Nothing in CI runs it for you; run `--check` in review to catch drift.
+After adding, removing, renaming, or reordering a chapter. CI runs it with `--check` on every pull request and push and fails if a form is stale, but it doesn't fix the forms for you: run the script and commit what it writes.
 
 ## Things to know
 

@@ -30,7 +30,7 @@ tools/shots/run selftest                          # after changing the toolkit
 ## The rules
 
 - **Real or labeled.** A screenshot is a real capture of a real page or program. Diagrams and renders are welcome, marked with their `kind` (`capture`, `render`, `diagram`, `illustration`). Never rebuild a real site's or program's interface with invented content. The book's terminal figures are drawn, not captured (`tools/terminal-figures/`), and their captions say so.
-- **One honest User-Agent** for every request: `Missing Manual/v1 (+https://github.com/cuinfoscience/INFO-Missing-Manual)`. It goes to Chrome as Chrome's own `--user-agent` flag, so the User-Agent Client Hints (`Sec-CH-UA-Platform` and the rest) name the system the capture runs on. (Playwright's `user_agent` option rewrites the hints too, and for a string that names no system it claims Windows.) Page loads on one host are 8–30 seconds apart.
+- **One honest User-Agent** for every request: `Missing Manual/v1 brian.keegan@colorado.edu`, so a site owner can reach a person (the maintainer's choice, `docs/decisions.md`). It goes to Chrome as Chrome's own `--user-agent` flag, so the User-Agent Client Hints (`Sec-CH-UA-Platform` and the rest) name the system the capture runs on. (Playwright's `user_agent` option rewrites the hints too, and for a string that names no system it claims Windows.) Page loads on one host are 8–30 seconds apart.
 - **Retries:** a 5xx or a dropped connection is retried three times, 30, 60, then 120 seconds apart. A block page, a 403, or a proxy refusal is not retried.
 - **No logins, no credentials, no student names or work.** A page behind a login is captured by hand, by the maintainer, and recorded with `adopt`.
 - **Dated captions.** A figure that shows things that change (counts, versions, live pages) says in its caption when it was captured, as in "in September 2026". `check` warns when a drifting figure's caption lacks the year.
@@ -70,6 +70,7 @@ EOF
 ```
 
 - **For a span of elements** (a code cell through the Markdown cell after it), use `crop: {between: [A, B]}`; Playwright's `>> nth=1` picks a second match.
+- **GitHub, signed out:** at 1024 px it keeps the desktop layout, and a crop of the left 680 px (repository name, tabs, file list) passes the legibility check in the body column, so no wider column is needed. Keep the Contributors list out of frame: it names other people. The black site header's bottom edge reaches y=73, so crops start at 74. In a cloud session the proxy answers `github.com/robots.txt` with 403, so `doctor` warns; read GitHub's rules another way (a web fetch) before capturing. In September 2026 they allowed a repository page, a pull request's files, and an Actions run.
 - **Capture software from a pinned local fixture,** not from someone's machine or a live account: pinned versions, synthetic data, a scratch copy of the project, a fixed port, settings that silence first-run prompts, and a stop script. [`fixtures/jupyter/`](fixtures/jupyter/) is the model.
 
 **Headed captures**
