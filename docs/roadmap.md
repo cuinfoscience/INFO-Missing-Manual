@@ -42,8 +42,8 @@ In the maintainer's order of priority (September 2026). All of them come after t
 
 From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-review.md), checked against the chapters in September 2026.
 
-- [ ] **`file-system.qmd` trailing legacy sections.** "Why can't I find a file I downloaded from Canvas?" and "What does it mean to unzip a file?" still sit after the Quick reference. Fold what is new into the body and delete the rest.
-- [ ] **`terminal.qmd` trailing section.** "Windows notes: PowerShell and WSL (optional)" still sits after the One-page checklist. (The other two orphan sections the review named were removed in #28.)
+- [x] **`file-system.qmd` trailing legacy sections.** Folded in September 2026: copying a full path went into the Windows and macOS navigation sections, where downloads land into "Organizing work" (with links to each browser's own help instead of four outdated screenshots), and unzipping into "File operations and safety". The repeated Finder and File Explorer walkthroughs, the first-person paths example, and the orphaned footnotes were cut.
+- [x] **`terminal.qmd` trailing section.** Folded in September 2026: the PowerShell translation notes (`Get-Location`, `Get-Help`, pipes that pass objects) now sit where the chapter tells you to check which shell you are in.
 - [ ] **`package-management.qmd` empty stubs.** Six heading-only sections (`## Downloading` through `## Environments`) still sit before Further reading. Delete them; the body covers the material.
 - [ ] **`jupyter.qmd` empty heading.** `## Quick reference: IPython conveniences` has no body. Fill it or delete it.
 - [ ] **`presenting.qmd` duplicate table.** The timing-across-formats table appears in Worked examples and again as the Quick reference. Keep one.
