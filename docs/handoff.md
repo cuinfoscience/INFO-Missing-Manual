@@ -1,14 +1,14 @@
 # Hand-off note
 
-**Updated 2026-09-24,** after #58 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
+**Updated 2026-09-24,** after #59 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
 
 ## Where things stand
 
 - **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings.
 - **Merged 2026-09-24:** #35 (`AGENTS.md`, `docs/`, `tools/`, `CONTRIBUTING.md`), #36 (cloud storage; closed #34), #37 (the meme above the table of contents, closing #30; the JupyterLab screenshot pilot), and #38 (the repository-page screenshot, the contact-address User-Agent, the issue-forms check in CI, "Illustration:" captions). Each deploy passed.
 - **Order of work** ([`decisions.md`](decisions.md)): the screenshots first, then polish of the existing chapters, then new sections in the roadmap's new priority order. One pull request at a time; the maintainer merges.
-- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), #44 (the glossary terms linked on first use), #45 (three Stakes openings rewritten), #46 (interactive debuggers in `debugging`), #47 (second-week Git in `version-control`), #48 (hosted notebooks in `jupyter`), #49 (data bigger than memory in `data-file-formats`), #50 (the review-thread screenshots, and `blur:` in `tools/shots`), #51 (pandas 3's `str` dtype named beside `object`), #52 (data dictionaries in `project-management`), #53 (profiling in `jupyter`), #54 (reproducible randomness in `pandas-basics`), #55 (diagram literacy in `documentation`), #56 (editor automation in `text-editors`), #57 (`version-control`'s worked examples), and #58 (`collaboration`'s). The polish of existing chapters is done.
-- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** `project-management`'s worked examples, written out from their one-line outlines.
+- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), #44 (the glossary terms linked on first use), #45 (three Stakes openings rewritten), #46 (interactive debuggers in `debugging`), #47 (second-week Git in `version-control`), #48 (hosted notebooks in `jupyter`), #49 (data bigger than memory in `data-file-formats`), #50 (the review-thread screenshots, and `blur:` in `tools/shots`), #51 (pandas 3's `str` dtype named beside `object`), #52 (data dictionaries in `project-management`), #53 (profiling in `jupyter`), #54 (reproducible randomness in `pandas-basics`), #55 (diagram literacy in `documentation`), #56 (editor automation in `text-editors`), #57 (`version-control`'s worked examples), #58 (`collaboration`'s), and #59 (`project-management`'s). The polish of existing chapters is done.
+- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** `automation`'s worked examples, the last chapter whose examples were outlines.
 
 ## Waiting on the maintainer
 
@@ -41,6 +41,6 @@
 ## Next, when work resumes
 
 1. **Screenshots, when the maintainer is ready:** the operating-system panels (hand captures on macOS and Windows, recorded with `adopt`). M6, a CI check for screenshots, can come any time.
-2. **New sections:** every roadmap candidate is done except data ethics and licensing, which waits on the maintainer's choice of placement (above). Under way: writing out the Worked examples that are still one-line outlines (roadmap, open follow-ups), one chapter per pull request: `version-control` and `collaboration` (done), `project-management` (open), then `automation`.
+2. **New sections:** every roadmap candidate is done except data ethics and licensing, which waits on the maintainer's choice of placement (above). The Worked examples that were one-line outlines are all written out once the open pull request merges.
 3. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
 4. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall, and the hosted-notebook limits in `jupyter` (Colab, Kaggle, Codespaces) against their docs.

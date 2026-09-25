@@ -809,7 +809,7 @@ Then drop a `.pre-commit-config.yaml` at the repo root listing the checks you wa
 ```yaml
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -818,9 +818,9 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.7
+    rev: v0.16.9
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix]
       - id: ruff-format
 ```
@@ -833,12 +833,12 @@ When you `git commit`, the hooks run. If a hook auto-fixes a file, the commit ab
 $ git commit -m "Add cleaning helper"
 trim trailing whitespace.................................................Failed
 - files were modified by this hook
-ruff.....................................................................Passed
+ruff check...............................................................Passed
 
 $ git add src/cleaning.py
 $ git commit -m "Add cleaning helper"
 trim trailing whitespace.................................................Passed
-ruff.....................................................................Passed
+ruff check...............................................................Passed
 [main a1b2c3d] Add cleaning helper
 ```
 
@@ -983,49 +983,173 @@ Second, *automation infrastructure is no longer free*. GitHub Actions, GitLab CI
 
 See @sec-artifacts-politics for the broader framework, including the "hidden labor" framing. The concrete prompt to carry forward: every automation has an author, an operator, and a reader-of-the-logs, and those are often three different people.
 
-## Worked examples (outline)
+## Worked examples
+
+These automate the `coffee-sales` project from the worked examples in @sec-project-management: a cleaning script, a report script, and one test. The commands and output are from real runs in September 2026 (Linux, Python 3.11); the GitHub parts are described, since they run on GitHub's computers, not yours.
 
 ### Turn a 6-step checklist into `make` targets
 
--   Create `make format`, `make test`, `make report`.
+The project's README had grown a checklist: activate the environment, run `clean.py`, run `report.py`, run `ruff`, run the tests, and remember to rerun the report whenever the cleaning changes. The last step is the one people forget. A Makefile turns the checklist into targets, and states which file depends on which (see "Incremental builds for data pipelines" above):
 
--   Add a default target `make all`.
+```make
+.PHONY: all lint test clean
+
+all: reports/revenue_by_product.csv
+
+data/processed/sales.parquet: data/raw/sales-2026-04-10.csv src/clean.py
+	python src/clean.py
+
+reports/revenue_by_product.csv: data/processed/sales.parquet src/report.py
+	mkdir -p reports
+	python src/report.py
+
+lint:
+	ruff check src/ tests/
+
+test: data/processed/sales.parquet
+	pytest tests/ -q
+
+clean:
+	rm -rf data/processed/* reports/
+```
+
+Now `make` does exactly the work that is out of date:
+
+```text
+$ make
+python src/clean.py
+wrote 8 rows to data/processed/sales.parquet
+mkdir -p reports
+python src/report.py
+...
+$ make
+make: Nothing to be done for 'all'.
+$ touch src/report.py
+$ make
+mkdir -p reports
+python src/report.py
+...
+```
+
+The second `make` does nothing, because nothing changed. After `report.py` changes, only the report is rebuilt; the cleaning step is skipped because its inputs are the same. The forgotten step on the checklist can't be forgotten any more: change `clean.py`, and `make` reruns the report too.
 
 ### Schedule a daily pipeline run
 
--   Create a script with logs.
+The cafés now send a new export every morning. A scheduled job has no terminal, no activated environment, and often a different starting folder, so the script it runs has to carry all of that itself:
 
--   Add a cron entry (macOS/Linux) or Task Scheduler entry (Windows).
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
--   Verify outputs and failure behavior.
+cd "$(dirname "$0")"                     # run from the project folder, wherever cron starts
+mkdir -p logs
+log="logs/run-$(date +%Y-%m-%d).log"
+
+{
+  echo "start $(date '+%Y-%m-%d %H:%M:%S')"
+  .venv/bin/python src/clean.py
+  .venv/bin/python src/report.py
+  echo "done  $(date '+%Y-%m-%d %H:%M:%S')"
+} >> "$log" 2>&1
+```
+
+It moves to its own folder, calls the environment's Python by its path instead of relying on `activate`, and appends everything, errors included, to a dated log. Before scheduling it, run it the way a scheduler will: from another folder, with an empty environment. `cd / && env -i /bin/bash /path/to/coffee-sales/run_daily.sh` runs it with no `PATH` and no variables at all, and here it exited 0 with a log running from `start` to `done`. Then check the failure: with the raw file moved away, the script exited 1, and the log ended in the traceback, with no `done` line:
+
+```text
+FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales-2026-04-10.csv'
+```
+
+Only then add the schedule: on macOS or Linux, `crontab -e` and a line such as `15 6 * * * /path/to/coffee-sales/run_daily.sh`, which runs it at 6:15 every morning; on Windows, a Task Scheduler task (see "Scheduling scripts" above). Check the log the next morning, and again after the first day something goes wrong.
 
 ### Add GitHub Actions CI
 
--   Run on push and pull request.
+CI runs a list of commands on a fresh computer, so try those commands on a fresh copy of your project before you push the workflow. Clone the repository into a new folder, install from `requirements.txt`, and run the steps from "A minimal CI workflow" above. For this project, the tests failed:
 
--   Install deps, run tests.
+```text
+$ pytest tests/ -q
+...
+FAILED tests/test_clean.py::test_processed_has_no_duplicates - FileNotFoundEr...
+1 failed in 0.46s
+```
 
--   Upload artifacts on failure.
+The test checks the processed file, and a fresh clone has none; `data/processed/` is ignored by Git. On your own computer the file was always there, which is why the test always passed. The fix is for CI to build what the test needs, which the Makefile already knows how to do: change the workflow's test step from `pytest tests/ -q` to `make test`. In the fresh clone, `make test` runs `clean.py` first and then passes.
+
+Commit the workflow as `.github/workflows/ci.yml` and push. The pull request page shows a check beside each commit, and the Actions tab shows each step, as @fig-github-actions-run does for this book. When a step fails, open it, read the log from the bottom up, and reproduce the failure locally before changing anything.
 
 ### Speed up CI with caching
 
--   Add dependency caching.
+The minimal workflow already has the one line that matters most: `cache: pip` in the `setup-python` step. It saves the downloaded packages after a run, keyed on `requirements.txt`, and restores them on the next run, until `requirements.txt` changes. To see whether it helps, compare runs in the Actions tab, which lists each run's duration. The first run after adding the cache is no faster, because it fills the cache; compare the second with a run from before. If the install step is only a few seconds either way, the project doesn't need more caching, and a cache you don't need is one more thing that can go stale.
 
--   Compare runtimes before/after.
+### Add pre-commit hooks, and CI to enforce them
 
-### Add pre-commit hooks + CI enforcement
+Install pre-commit with the configuration from "Local quality gates" above, then run `pre-commit autoupdate` before the first commit, so the hooks start at their current versions:
 
--   Run lightweight checks before commit.
+```text
+$ pre-commit autoupdate
+[https://github.com/pre-commit/pre-commit-hooks] updating v4.6.0 -> v6.0.0
+[https://github.com/astral-sh/ruff-pre-commit] updating v0.5.7 -> v0.16.9
+```
 
--   Ensure CI runs the same checks.
+Pinned versions go stale, so run it again every few months. When this example was first run, the project's configuration pinned the older releases shown, and the old `pre-commit-hooks` printed a deprecation warning on every run; the update silenced it. In `ruff-pre-commit`'s current releases the lint hook is called `ruff-check`, as in the configuration above; the old name `ruff` still works but is marked a legacy alias. Now a commit with trailing spaces, an unused import, and unformatted code is stopped and fixed:
 
-### Use AI to draft a workflow, then validate
+```text
+$ git commit -m "Add by-store helper"
+trim trailing whitespace.................................................Failed
+- hook id: trailing-whitespace
+- exit code: 1
+- files were modified by this hook
 
--   Draft YAML with AI.
+Fixing src/by_store.py
 
--   Verify triggers/permissions.
+fix end of files.........................................................Passed
+check for added large files..............................................Passed
+ruff check...............................................................Failed
+- hook id: ruff-check
+- files were modified by this hook
 
--   Run locally and via PR.
+Found 1 error (1 fixed, 0 remaining).
+
+ruff format..............................................................Failed
+- hook id: ruff-format
+- files were modified by this hook
+
+1 file reformatted
+```
+
+Every hook fixed what it found, so `git add src/by_store.py` and the same commit command again succeeds, with every hook passing. Hooks run only on computers where someone ran `pre-commit install`, and `--no-verify` skips them, so add the same checks to CI as one more workflow step: `pre-commit run --all-files`.
+
+### Use AI to draft a workflow, then validate it
+
+An AI assistant asked for "a GitHub Actions workflow that runs my tests" produced this, and it looks plausible:
+
+```yaml
+name: CI
+on: push
+permissions: write-all
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - run: pip install -r requirements.txt
+      - run: pytest tests/
+        env:
+          API_KEY: ${{ secret.API_KEY }}
+```
+
+Check it with a linter before you run it anywhere. [actionlint](https://github.com/rhysd/actionlint) checks workflow files (it installs with `pip install actionlint-py`), and it found three problems:
+
+```text
+$ actionlint
+.github/workflows/ci.yml:8:15: the runner of "actions/checkout@v2" action is too old to run on GitHub Actions. update the action's version to fix this issue [action]
+.github/workflows/ci.yml:9:15: the runner of "actions/setup-python@v2" action is too old to run on GitHub Actions. update the action's version to fix this issue [action]
+.github/workflows/ci.yml:15:24: undefined variable "secret". available variables are "env", "github", "inputs", "job", "matrix", "needs", "runner", "secrets", "steps", "strategy", "vars" [expression]
+```
+
+Then read it for what no linter checks. `python-version: 3.10` without quotes is the number 3.1 to YAML, so the job would ask for Python 3.1; write `"3.10"`. `on: push` never runs on pull requests, where review happens. `permissions: write-all` gives the job far more power than running tests needs; `permissions: contents: read` is enough (see "CI security basics" above). And `pytest tests/` has the missing-file problem from "Add GitHub Actions CI." An AI draft saves typing; it doesn't save you from reading every line, and a draft that looks finished is the one most worth checking.
 
 ## Templates
 
