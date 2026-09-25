@@ -17,7 +17,7 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
     - [x] Part I — Practice of Technical Work (#62)
     - [x] Part II — Computing Environment (#63)
     - [x] Part III — Python Management (#64)
-    - [ ] Part IV — Working with Data (the rest of it)
+    - [x] Part IV — Working with Data (the rest of it) (#65)
     - [ ] Part V — Communication
     - [ ] Part VI — Project Management
     - [ ] Part VII — Algorithmic Systems, and the appendices, introduction, and conclusion
