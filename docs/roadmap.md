@@ -28,7 +28,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 
 ### 3. Documenting and licensing data
 
-- [ ] **Data dictionary / schema docs** — new section in `project-management.qmd` covering column documentation and schema change tracking.
+- [x] **Data dictionary / schema docs** — added to `project-management.qmd` in September 2026: "Data dictionary and codebook" now has a dictionary for a sales export, code that drafts one from the data, codebooks, and a check that fails when new data stops matching (a renamed column, a new value, a `$` in a number); "Versioning data" says how to record a schema change. A glossary entry for *data dictionary*.
 - [ ] **Data ethics and licensing** — possible new chapter or section in `artifacts-have-politics.qmd` covering data licenses (CC-BY, ODbL, terms of use), citation of datasets, and the ethics of scraping vs. downloading from a published source.
 
 ### 4. The rest
