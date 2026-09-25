@@ -10,531 +10,409 @@
 
 ![Astronaut Meme: Wait, it’s just autocomplete? Always has been. Me. Every ML paper since 2017.](../graphics/memes/ai-llm.png)
 
-AI assistants can reduce friction in programming and data science. They can draft documentation, summarize error messages, propose alternative implementations, and generate boilerplate. They can also produce plausible but incorrect guidance. This chapter treats AI assistance as one input to a disciplined workflow. The goal is not to get answers faster. The goal is to produce correct, reproducible, and safe work with less unnecessary effort.
+It’s late, the assignment is due in the morning, and your code won’t run. You paste the error into a chat assistant, and it hands you a friendly explanation and a fix: just call `df.clean_columns()` first. You try it and get `AttributeError: 'DataFrame' object has no attribute 'clean_columns'`. Twenty minutes of wondering what’s wrong with *your* pandas later, it dawns on you that the method never existed. The assistant made it up, and sounded exactly as sure as it does when it’s right.
 
-The governing rule is simple:
+If that has happened to you, you’re in good company, and it doesn’t mean you’re bad at using these tools. AI assistants are built on [large language models](https://en.wikipedia.org/wiki/Large_language_model), which produce text that *fits* the patterns in their training data and your prompt. Fitting and being true overlap most of the time, which is why the tools are so useful for drafting and explaining. They don’t always overlap, and the assistant can’t tell you which case you’re in. So this chapter rests on one rule:
 
 > **AI can propose. You must verify.**
 
-Verification means using primary documentation, running small experiments, and adding tests. Those practices remain your responsibility, even if an assistant produced the first draft.
+Verifying means checking official documentation, running small experiments, and adding tests, and it stays your job whoever wrote the first draft. This chapter covers how much checking a task needs, how to ask for answers you *can* check, how to use AI for debugging, documentation, and code, what never to paste into a chat window, and how to stay within your course’s policy. How the models work inside is [sec-llm-internals](#sec-llm-internals), evaluating AI systematically is [sec-evaluating-ai](#sec-evaluating-ai), and agents are [sec-ai-agents](#sec-ai-agents). It won’t tell you which product to use, either: tools and prices change every few months, and these habits should outlast them.
 
-## Learning objectives
+## Why read this chapter
 
-By the end of this chapter, you should be able to:
-
-1.  Identify high-value AI uses and common failure modes.
-
-2.  Apply a risk-based policy to decide how much verification is required.
-
-3.  Write prompts that produce usable how-to guidance, not vague advice.
-
-4.  Validate AI outputs using primary sources, minimal experiments, and automated tests.
-
-5.  Avoid privacy and security mistakes when sharing context.
-
-6.  Use AI in coursework and collaboration without undermining learning or integrity.
+- An assistant told you to call a function that doesn’t exist, and it took you far too long to suspect the advice instead of your code.
+- You asked for sources for a paper, and one of them isn’t in the library, on Google Scholar, or anywhere else.
+- Code an assistant wrote for you runs without a single error, and you have no idea whether the numbers it prints are right.
+- A chatbot suggested `sudo chmod -R 777` to fix a permission error, and you’re not sure whether you should run it.
+- One syllabus bans AI tools, another asks you to disclose them, and a third encourages them, and you’d like habits that hold up under all three.
+- You’re about to paste a dataset (or an API key) into a chat window and have a nagging feeling you shouldn’t.
+- You keep getting vague, generic answers and suspect a better question would get a better one.
 
 ## Running theme: AI can propose; you must verify
 
-A large language model produces plausible text that fits patterns in its training data and your prompt. That makes it useful for drafting and transformation, but it does not guarantee correctness. Verification — primary documentation, small experiments, tests — remains your responsibility no matter how confident the assistant sounds.
+An assistant sounds just as confident when it’s wrong as when it’s right, so its confidence tells you nothing; the documentation, a small experiment, and a test are what tell you whether to trust it.
 
 ## 35.1 What an AI assistant is doing
 
-Most AI assistants in technical settings are built on [large language models](../chapters/appendix-glossary.llms.md#term-llm) (LLMs) — see [sec-llm-internals](#sec-llm-internals) for a deeper look at how they work. An LLM generates text that fits patterns in its training data and in your prompt. That makes it useful for drafting and transformation tasks, such as turning rough notes into a README or converting a stack trace into a troubleshooting plan. It does not guarantee factual correctness.
+Whether it’s a chat window or a coding helper in your editor, an AI assistant is almost always built on a [large language model](../chapters/appendix-glossary.llms.md#term-llm) (LLM). [sec-llm-internals](#sec-llm-internals) explains how they work; for using them, one idea is enough. An LLM generates the text that most plausibly comes next, given its training and what you’ve typed, so it’s very good at shaping language and weak at guaranteeing facts. Picture a fast, well-read collaborator who has never seen your computer and is occasionally, fluently wrong. Your job is to turn that collaborator’s drafts into work you can stand behind.
 
-A practical interpretation is to treat AI output as a draft produced by a fast collaborator who can be wrong. Your job is to turn drafts into reliable artifacts.
+The strengths follow from that picture. Assistants shine when the task is mostly language, structure, or common patterns: drafting an outline, a README, a docstring, or an issue template, where the shape is conventional and you need a starting point to edit. They’re good at rewriting an explanation for a different reader, and at [boilerplate](https://en.wikipedia.org/wiki/Boilerplate_code) you’d otherwise look up every time, like the skeleton of a command-line script with [argparse](https://docs.python.org/3/howto/argparse.html) or a standard [logging setup](https://docs.python.org/3/howto/logging.html). They’re good at suggesting search terms, documentation sections worth reading, likely causes of a problem, and long checklists you can cut down. In each case “roughly right” is a fine start, because your editing finishes the job.
 
-### What AI is usually good at
+The weaknesses follow from the same picture, and they’re worth knowing by name:
 
-LLM assistance is strongest when the task is primarily about language, structure, or recall of common patterns. It is reliably useful for drafting an outline, a README, a docstring, or an issue template — anything where the shape is conventional and you mostly need a starting point you can edit. It is good at rewriting an explanation in a different register, such as taking a paragraph from a research paper and making it readable for a novice. It is good at producing boilerplate that you would otherwise have to re-derive every time, like the standard `argparse` skeleton for a command-line script or the standard logging configuration for a Python module. It is good at suggesting search terms, the names of likely documentation sections, and common failure modes for a problem you describe. And it is good at generating long checklists that you can then shorten and validate against your own situation.
+- **Invented details.** A flag, a function, a parameter, or a citation that sounds plausible and doesn’t exist. This is usually called [hallucination](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)), and the `clean_columns()` story above is a typical case.
+- **The wrong version.** Advice that was right for some version of [pandas](https://pandas.pydata.org/docs/), [scikit-learn](https://scikit-learn.org/stable/), or [git](https://git-scm.com/doc), just not the one you have. A model learns from text up to a [cutoff date](https://en.wikipedia.org/wiki/Knowledge_cutoff), and libraries keep changing after it.
+- **Hidden prerequisites.** The answer assumes you’ve already activated the right environment, moved into the right folder, or installed a system library, and never says so.
+- **Silent logic bugs.** Code that runs without an error on the example in your prompt and is wrong on the data you actually have.
+- **Unsafe defaults.** A fix that technically works by weakening security or by making a mistake much harder to undo.
 
-The common thread is that all of these are tasks where being “approximately right” gets you 80% of the way to a finished artifact, and your editing then takes you the rest of the way.
-
-### What AI is not reliable at
-
-The other side of that pattern: LLMs are unreliable in exactly the ways you would expect a fluent writer with no working memory of your machine to be unreliable. The most common failure is **hallucinated details**, where the model produces a flag, API call, or citation that sounds plausible but does not exist. The second is **version mismatch**: the advice is correct for some version of [pandas](https://pandas.pydata.org/docs/), [scikit-learn](https://scikit-learn.org/stable/), or [git](https://git-scm.com/doc) — just not the version you have installed. The third, and the one most likely to bite you, is **hidden prerequisites**: the assistant assumes you have already activated the right environment, changed into the right directory, or installed a system dependency, and never says so out loud. A fourth class is **silent logic bugs**, where the suggested code runs without error on the example in the prompt but is wrong on edge cases the prompt did not mention. A fifth is **unsafe defaults**, where the model proposes a solution that technically works but weakens security or increases destructive blast radius.
-
-You should assume any of these errors are possible at any time. That assumption shapes good habits: ask for primary sources, run small tests on real inputs, and prefer minimal changes you can reason about over large changes you cannot.
+Some assistants can now search the web or read files you attach. That helps with versions but not the rest: an assistant can misread a page, or cite one that doesn’t say what it claims. The quieter trap is on your side of the screen. People over-trust suggestions from automated systems even when they have evidence to know better ([automation bias](https://en.wikipedia.org/wiki/Automation_bias)), and a fluent answer switches off the part of you that would have checked. So assume any of these errors can turn up: ask where a claim comes from, test on real inputs, and prefer small changes you can reason about.
 
 ## 35.2 A risk-based verification policy
 
-Not all tasks have the same consequences if something goes wrong. Use risk level to decide how careful you need to be.
+“Can I trust AI?” is the wrong question, because it depends on the task. A better one is *what happens if this answer is wrong?* A clumsy sentence in a draft README costs you a minute; a wrong `rm -rf` can cost you a semester. Let the cost of a mistake set how carefully you check. (Organizations do the same at a larger scale: the U.S. [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) is built around matching care to potential harm.)
 
 ### Low risk: drafting and formatting
 
-Low-risk work is anything where an error is cheap to spot and cheap to correct: rewriting a paragraph for clarity, drafting a README skeleton, producing a checklist or a template. The cost of being wrong is reading the output, noticing the mistake, and editing it. For these tasks, your verification step is to read what the model produced for accuracy and completeness, and check that it matches the assignment or project you are actually trying to deliver.
+Low-risk work is anything where a mistake is cheap to spot and cheap to fix: rewriting a paragraph, drafting a README skeleton, producing a checklist or a template. Being wrong costs a careful read and an edit, so that’s the check: read the output for accuracy and completeness, and make sure it fits the assignment you’re actually doing, not a generic version of it.
 
 ### Medium risk: technical guidance you can test quickly
 
-Medium-risk work involves real technical claims, but the claims can be validated with small experiments. Examples include interpreting a stack trace and proposing checks to run, suggesting a sequence of commands to inspect your environment, drafting a unit-test scaffold, or proposing a refactor that your test suite can validate. The cost of being wrong is wasted time on a check that does not apply, which is annoying but not damaging. Your verification is to actually run the proposed checks, look up the relevant function in the official docs to confirm the assistant has not invented anything, and lock in the result with a test or an assertion so the same fix does not silently regress later.
+Medium-risk work makes technical claims you can test with small experiments: interpreting a stack trace, suggesting commands to inspect your environment, drafting a test scaffold, proposing a refactor your tests can check. Being wrong usually costs time, not damage. The check is to run the proposed commands, look up each function in the official docs to confirm it exists and does what was claimed, and lock in the result with a test or an assertion.
 
 ### High risk: destructive commands, security changes, and sensitive data
 
-High-risk work is anything whose mistakes cannot be easily undone or whose mistakes can hurt other people. The clearest examples are commands that delete, overwrite, or recursively move files; any use of privilege escalation (`sudo`) or broad permission changes such as `chmod -R 777`; any change to network or authentication configuration like SSH keys, VPNs, or firewall rules; and any handling of confidential, protected, or legally regulated data.
+High-risk work is anything whose mistakes can’t easily be undone, or can hurt someone besides you: commands that delete, overwrite, or recursively move files; anything using [`sudo`](https://en.wikipedia.org/wiki/Sudo) or broad permission changes like `chmod -R 777`; changes to SSH keys, VPNs, firewalls, or other network and login settings; and anything touching confidential, protected, or regulated data.
 
-For high-risk work, the verification bar is much higher. You should consult primary documentation and not just the assistant’s summary of it. You should prefer supervised help — instructor, TA, or an experienced colleague — over executing the suggestion alone. When possible, test the change in a sandbox (a throwaway VM, a scratch directory, a forked branch) before running it for real. And the firmest rule is the simplest one: **never execute a command you do not understand**, no matter how confident the assistant sounds.
+Here the bar goes way up. Read the primary documentation yourself, not the assistant’s summary of it. Get help from an instructor, a TA, or an experienced colleague rather than running the suggestion alone. Where you can, try the change in a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(computer_security)) first: a throwaway virtual machine, a scratch folder, a separate branch. And **never run a command you don’t understand**, however confident the assistant sounds. Treat these as stop signs until you’ve confirmed the paths, the backups, and what you meant to do:
 
 ``` bash
-# Pause and verify before any of these
-sudo rm -rf /var/log/old           # high-risk: privilege + recursive delete
-chmod -R 777 ~/project             # high-risk: broad permission change
-git push --force origin main       # high-risk: rewriting shared history
+# Stop signs: do not run these on an assistant's say-so
+rm -rf <path>                  # macOS/Linux: recursive delete, no undo
+del /s <path>                  # Windows: recursive delete
+mv <source> <dest>             # can silently overwrite <dest>
+chmod -R 777 <path>            # everyone can read, write, and run everything
+sudo <anything>                # runs with full administrator rights
+git push --force origin main   # rewrites history your teammates share
 ```
 
-### A non-negotiable warning for destructive commands
-
-Treat these as stop signs until you have confirmed paths, backups, and intent:
-
-    # Examples of destructive patterns (do not run blindly)
-    # rm -rf <path>              # macOS/Linux: recursive delete
-    # del /s <path>              # Windows: recursive delete
-    # mv <source> <dest>         # can overwrite depending on flags/context
-    # chmod -R 777 <path>        # broad permissions (usually wrong)
-    # sudo <anything>            # elevated privileges
-
-If an assistant suggests one of these as a fix, pause. Ask: What exactly will this change? What evidence says this is the right change? How do I undo it?
+When an assistant suggests one of these, ask: What exactly will this change? What evidence says it’s the right change? How would I undo it? If you can’t answer all three, don’t run it.
 
 ## 35.3 The assistive loop: a workflow that forces evidence
 
-A reliable workflow is an assistive loop: you use AI to propose an approach, then you validate it with evidence.
+AI help usually goes wrong not with one bad answer but with a loop. You paste an error, try the fix, get a new error, paste that, and an hour later your code has changed in six places, still doesn’t work, and you can’t say what the original problem was. The way out is to keep the loop yours: the assistant proposes, and evidence decides.
 
-### Step 1: write a short specification
+**Start with a short specification:** a one-sentence goal; the context the assistant can’t see (operating system, Python version, environment, package versions); the inputs (a snippet, a command, a sample of the data); what happened, with the exact error text; what you expected; and what you’ve tried. That’s the shape of a good question for a person, too ([sec-asking-questions](#sec-asking-questions)): if you can describe the situation clearly to a human, you can describe it to a model.
 
-Start by writing down what you are trying to accomplish in a way the model can act on. A good specification includes a one-sentence goal, the context the assistant cannot see (OS, Python version, environment name, relevant package versions), the inputs you are working with (a code snippet, a command, a file path, a sample of the data), the behavior you observed (the exact error or output text), the behavior you expected, and the things you have already tried and what happened when you tried them. This is the same shape as a good technical question for a human helper, and that is not a coincidence: the better you can describe the situation to a person, the better you can describe it to a model.
+**Ask for alternatives and checkpoints, not one answer.** Asking for *the* fix invites the model to commit to one path and you to follow it without thinking. Ask for two to four plausible causes, checks that tell them apart, and a plan with a way to confirm each step, so you have somewhere to go when the first guess is wrong.
 
-### Step 2: request alternatives and checkpoints
+**Check claims against primary documentation.** When an answer depends on facts (what a function returns, what a flag does, which version added a feature), look it up in the official docs for your installed version ([sec-reading-docs](#sec-reading-docs) shows how). If nobody can find a primary source, treat the claim as a guess.
 
-Avoid prompts that ask for a single answer. Single-answer prompts encourage the model to commit to one path and you to follow it without thinking. Instead, ask for two to four plausible root causes, a short decision tree of checks you can run to discriminate between them, and a step-by-step plan that has verification checkpoints along the way. This forces the model to externalize the reasoning you would otherwise do in your head, and it gives you escape hatches if the first hypothesis turns out to be wrong.
-
-### Step 3: validate claims in primary documentation
-
-Whenever the output depends on external truth — what a function returns, what a flag does, what version a feature was introduced in — verify it in official documentation for the version you have installed. If the assistant cannot point to a primary source, or if you cannot find one yourself, treat the claim as tentative until you can.
-
-### Step 4: run a minimal experiment
-
-Once you have a hypothesis you trust enough to test, convert it into the smallest experiment that can succeed or fail. Change one factor at a time so that the result is interpretable, and write down what you ran and what happened. The goal is not to prove the assistant right but to find out whether the explanation matches reality.
+**Run the smallest experiment that could fail.** Change one thing at a time so the result means something, and write down what you ran and what happened. The point isn’t to prove the assistant right; it’s to find out whether its explanation matches your computer.
 
 ``` bash
-# A minimal experiment: change one factor, record the result
-python -c "import sys; print(sys.executable)"   # which Python is active?
-python -c "import pandas; print(pandas.__version__)"   # which version?
+# Change one thing, record the result
+python -c "import sys; print(sys.executable)"          # which Python is running?
+python -c "import pandas; print(pandas.__version__)"   # which pandas does it see?
 ```
 
-### Step 5: lock in the outcome
+**When the assistant and your computer disagree, your computer wins.** The assistant says a function returns a list, and yours returns a Series: trust what happened when you ran the code. Then confirm your versions and environment, read the docs for *that* version, and if it’s still unclear, ask a person with a well-structured question.
 
-After the fix works, add something that will catch the same problem next time. The lightest-weight options are a unit test that exercises the previously broken behavior, an assertion that encodes the invariant you just discovered (shape, type, range), or a one-line entry in your project’s checklist or README. Each of these turns one round of debugging into a permanent improvement. Without it, the same bug will come back the next time someone touches that area of the code.
+**Lock in what you learned.** Once the fix works, add something that will catch the problem next time: a [unit test](https://en.wikipedia.org/wiki/Unit_testing) for the broken behavior, an assertion for what you just discovered (a shape, a type, a range), or a line in the README. Without one, the same bug comes back the next time someone touches that code.
 
 ## 35.4 Prompt patterns that produce usable how-to guidance
 
-Prompts work best when they specify output format and constraints. The goal is to be unambiguous.
+If you’ve asked “why doesn’t my code work?” and got back a polite, generic essay, the problem was probably the question. Assistants fill the gaps you leave with the most typical answer, which rarely fits your situation. Prompts work best when they say what shape the output should take and what constraints it must respect. The craft is called [prompt engineering](https://en.wikipedia.org/wiki/Prompt_engineering), and the major vendors publish guides to it (see Further reading), but you don’t need special vocabulary: be specific, and ask for answers you can check. These six patterns cover most everyday needs; fill in the angle brackets.
 
-### Pattern A: decision tree diagnosis
+**Pattern A, decision-tree diagnosis:**
 
-    # "I am seeing: <symptom or exact error>. Provide a decision tree with 8 checks.
-    # Each check must be a concrete command or observation, and you must say what
-    # each outcome implies. Keep it specific to <OS> and <tool/version>."
+``` text
+I am seeing: <symptom or exact error>. Give me a decision tree of 8 checks.
+Each check must be a concrete command or observation, and you must say what
+each outcome implies. Keep it specific to <OS> and <tool and version>.
+```
 
-### Pattern B: minimal reproducible example reduction
+**Pattern B, shrinking a failing example** into a [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example):
 
-    # "Here is my current minimal failing snippet. Reduce it further if possible.
-    # Replace real data with synthetic data. Output:
-    # (1) reduced code, (2) what you removed and why, (3) how to verify failure."
+``` text
+Here is my current failing snippet. Reduce it further if possible, and replace
+the real data with synthetic data. Output: (1) the reduced code, (2) what you
+removed and why, (3) how to confirm it still fails.
+```
 
-### Pattern C: test-first scaffold
+**Pattern C, tests first:**
 
-    # "Write 4 pytest tests for the intended behavior below (include 2 edge cases).
-    # Then propose an implementation that satisfies the tests. State assumptions."
+``` text
+Write 4 pytest tests for the intended behavior below, including 2 edge cases.
+Then propose an implementation that passes them. State your assumptions.
+```
 
-### Pattern D: documentation rewrite without inventing steps
+**Pattern D, a documentation rewrite that can’t invent steps:**
 
-    # "Rewrite these notes into a how-to guide with sections: Purpose, Prerequisites,
-    # Steps, Verify, Troubleshooting. Do not invent commands I did not provide.
-    # If prerequisites are missing, list questions under 'Prerequisites'."
+``` text
+Rewrite these notes as a how-to guide with sections: Purpose, Prerequisites,
+Steps, Verify, Troubleshooting. Do not invent commands I did not provide.
+If prerequisites are missing, list them as questions under Prerequisites.
+```
 
-### Pattern E: safe command review
+**Pattern E, reviewing a command before you run it:**
 
-Use when you want to understand a command before running it.
+``` text
+Explain what this command does, what it changes on disk, and how to undo it:
+<command>
+Then suggest a safer alternative, or a dry-run option if one exists.
+```
 
-    # "Explain what this command does, what it changes on disk, and how to undo it:
-    # <command>
-    # Then give a safer alternative or a dry run option if available."
+**Pattern F, a patch instead of a rewrite:**
 
-### Pattern F: request a patch instead of a rewrite
+``` text
+Here is the current function. Give me a minimal patch, as a diff, that fixes
+<specific bug>. Do not refactor unrelated code. Explain how to test the fix.
+```
 
-For code changes, request a minimal diff rather than a full replacement.
-
-    # "Here is the current function. Provide a minimal patch (diff-style) to fix
-    # <specific bug>. Do not refactor unrelated code. Explain how to test the fix."
+Each one asks for output you can verify (a check, a test, a diff), and each fences off a way assistants go wrong: inventing steps, rewriting too much, or offering one confident guess.
 
 ## 35.5 Using AI to improve technical questions
 
-Good questions produce good answers. AI can help you edit and structure questions before you ask a human.
+Sometimes the best use of an assistant is getting a question into shape before you ask a person ([sec-asking-questions](#sec-asking-questions) has the details). Paste in your messy description, minus anything private, and ask for it reorganized as goal, expected behavior, actual behavior, steps to reproduce, context (versions and operating system), and what you tried. The structure makes the gaps obvious. Then audit the result: never accept an “improved” question with details you didn’t give it. If you don’t remember the exact error, the right output is a placeholder, not a plausible-looking message.
 
-### Rewrite into a standard template
+If you don’t know what context matters, ask for a checklist. For Python data work it’s nearly always the operating system, the Python version, the path of the interpreter actually running, the environment manager (conda or venv) and active environment, the relevant package versions (`pip show pandas`, `conda list scikit-learn`), and the working folder plus the paths the program reads or writes. Write “unknown” rather than guessing: the unknowns are often where the bug is.
 
-A useful first move is to ask the assistant to convert your messy first description into a standard structure: goal, expected behavior, actual behavior, reproduction steps, context (versions and OS), and what you tried. This is the same shape as a good question for a human helper, and getting the model to fill in the structure forces you to notice what is missing — usually it is the context or the reproduction steps. Audit the result before you send it anywhere; in particular, do **not** let the assistant improve your question by inventing details that were not in your original description. If you cannot remember exactly what error you saw, the right thing for the assistant to do is leave a placeholder, not make one up.
-
-### Generate a context checklist
-
-If you do not know what context matters, ask the assistant for a checklist. The same six or seven fields come up over and over for Python data work: the operating system and version, the Python version, the path of the interpreter that is currently active, the environment manager you are using (conda, venv) and the name of the active environment, the version of the relevant packages (`pip show pandas`, `conda list scikit-learn`), and your working directory plus the paths of any files the program is trying to read or write. Fill in everything you can; for fields you genuinely do not know, write “unknown” rather than guessing — the unknowns are often where the bug is hiding.
+The question you post should be yours, even if an assistant helped tidy it. Some communities ban AI-written content outright; [Stack Overflow’s policy](https://stackoverflow.com/help/gen-ai-policy) says generative AI tools “may not be used to generate content” for the site.
 
 ## 35.6 Using AI in debugging: hypotheses, checks, and minimal diffs
 
-Use AI to propose hypotheses and checks. Keep control of the debugging loop.
+Debugging is where assistants are most tempting and where the runaway loop bites hardest. Let the assistant propose hypotheses and checks, and keep the loop in your hands. [sec-debugging](#sec-debugging) has the full method; here’s how AI fits the most common situations.
 
-### Import errors: identify the interpreter and environment
+**Import errors are usually environment errors.** When `import pandas` fails in one place and works in another, the question is *which* Python is running and where its packages live. Find out before you accept any fix:
 
-Most import problems are environment problems. Confirm which Python is running and where packages are installed.
+``` bash
+# Which interpreter, and which packages?
+python --version
+python -c "import sys; print(sys.executable)"
+which python          # macOS/Linux
+where.exe python      # Windows (Command Prompt or PowerShell)
+pip show <package>
+conda list <package>  # if you use conda
+```
 
-    # Interpreter and environment checks
-    python --version
-    python -c "import sys; print(sys.executable)"
+If [`sys.executable`](https://docs.python.org/3/library/sys.html#sys.executable) isn’t inside the environment you expected, you’re running the wrong interpreter. If [`pip show`](https://pip.pypa.io/en/stable/cli/pip_show/) says the package lives under a different Python than `sys.executable`, you installed it into the wrong environment. Don’t accept commands that change your environment until you understand them ([sec-virtual-environments](#sec-virtual-environments) explains the moving parts).
 
-    # macOS/Linux:
-    which python
+**Data that loads wrong needs inspecting, not guessing.** When a CSV lands in one column, the likely causes are a different delimiter, odd quoting, or an encoding problem. An assistant can list those, but it can’t see your file (and you shouldn’t paste a sensitive one). Look at the first raw lines yourself, try the delimiter you see, and check the column names after loading, as the worked example “A CSV that loads into one column” does.
 
-    # Windows:
-    where python
+**Path errors need a look around, not a fix.** Many “file not found” errors come from running a program in a different folder than you think. Check where you are before changing any code:
 
-    # Package presence:
-    pip show <package>
-    conda list <package>
+``` bash
+pwd       # macOS/Linux: where am I?
+ls -la    # what's here?
+cd        # Windows (Command Prompt): where am I?
+dir       # what's here?
+```
 
-Interpretation:
+If an assistant suggests moving, renaming, or deleting files to solve a path problem, stop. Fix the path or where you ran the program from first.
 
-- If `sys.executable` is not in the environment you expect, you are using the wrong interpreter.
-
-- If `pip show` reports a package under a different Python than `sys.executable`, you installed into the wrong environment.
-
-Ask the assistant to propose a diagnosis tree, but do not accept environment-changing commands without understanding them.
-
-### Data ingestion bugs: inspect the intermediate
-
-For many data issues, the right move is to inspect intermediate representations.
-
-Example: a CSV loads into one column instead of many. Plausible causes include the wrong delimiter, quoting, or encoding artifacts. A useful debugging sequence is:
-
-1.  print the first few lines of the file,
-
-2.  test delimiters explicitly,
-
-3.  check column names and types after load.
-
-&nbsp;
-
-    # Quick inspection approach (Python)
-    import pandas as pd
-
-    path = "data/input.csv"
-    with open(path, "r", encoding="utf-8", errors="replace") as f:
-    for _ in range(5):
-    print(f.readline().rstrip(""))
-
-    df = pd.read_csv(path) # default delimiter is comma
-    print(df.shape)
-    print(df.columns.tolist())
-
-    df_tab = pd.read_csv(path, sep=""͡)
-    print(df_tab.shape)
-
-Use AI to suggest likely causes and checks, but interpret the output yourself. A model cannot see your file contents unless you provide them, and you should avoid pasting sensitive data.
-
-### Path and working directory confusion
-
-Many errors are simple path mistakes. Validate where you are before changing code.
-
-    # Working directory checks
-    # macOS/Linux:
-    pwd
-    ls -la
-
-    # Windows:
-    cd
-    dir
-
-If AI suggests changing or deleting files to solve a path problem, stop. Verify the path and fix the invocation first.
-
-### Prefer minimal diffs over large rewrites
-
-A common anti-pattern is accepting a large rewrite because it makes an error disappear. Large changes reduce your ability to identify cause and increase the chance of introducing new bugs. If an assistant proposes a rewrite:
-
-- ask for the smallest change that preserves intent,
-
-- apply one change at a time,
-
-- verify with a test or a checkpoint.
+**Prefer small diffs to big rewrites.** It’s tempting to accept a large rewrite because the error goes away. So does your ability to say what caused it, and a big change has room for new bugs. Ask for the smallest change that keeps your intent (Pattern F), apply one change at a time, and check each. Reading changes as a [diff](https://en.wikipedia.org/wiki/Diff), lines removed and lines added, makes this much easier.
 
 ## 35.7 Using AI for documentation and project hygiene
 
-Documentation is a strong target for AI assistance because outputs are reviewable and verifiable.
+Documentation is a good job to hand an assistant, because you can review the output by reading it and running its commands. The trap is that a well-formatted README *looks* finished even when half its commands were invented ([sec-documentation](#sec-documentation) has more).
 
-### Draft a README that can be executed
-
-A README is good only if a reader can follow it. Use AI to draft structure, then validate it by running it from scratch.
-
-Minimum sections:
+A README is only good if someone can follow it. Let the assistant draft the structure, give it the commands you actually use, and let it format them. At minimum a project README needs:
 
 - Purpose
-
-- Setup (environment creation)
-
+- Setup (creating the environment)
 - How to run
-
 - Verify (what success looks like)
-
 - Troubleshooting (common failures)
 
-Provide the actual commands you use. Ask the assistant to format them. Then test them in a fresh environment. This is often where missing steps are discovered.
+Then follow it yourself in a fresh environment, from a fresh clone, exactly as written. That’s where the missing steps turn up, like the package you installed months ago and forgot.
 
-### Troubleshooting sections: symptom, cause, check, fix
+For troubleshooting sections, ask for entries in a strict format: **symptom**, **likely cause**, **check** (a command or something to look at), and **fix** (the smallest action that works). Try every fix on your own system and delete any entry you can’t confirm; readers will trust an untested entry.
 
-Ask the assistant to propose troubleshooting entries in a strict format:
-
-- Symptom
-
-- Likely cause
-
-- Check (a command or observable)
-
-- Fix (a minimal action)
-
-Then validate each fix on your system. Remove entries you cannot verify.
-
-### Runbooks for repetitive tasks
-
-For recurring tasks (refreshing a dataset, rebuilding outputs), create a runbook. Include:
-
-- prerequisites and inputs,
-
-- step-by-step commands,
-
-- verification checks,
-
-- rollback or recovery steps.
-
-AI can draft a runbook; you must execute it to confirm it works.
+For jobs you repeat, such as refreshing a dataset, a [runbook](https://en.wikipedia.org/wiki/Runbook) lists the prerequisites and inputs, the commands in order, the checks that show each step worked, and how to recover if one fails. An assistant can draft it from your notes; it counts only once you’ve run it end to end.
 
 ## 35.8 Using AI for code: constraints, review, and tests
 
-AI-generated code is useful when you control scope and require verification.
+AI-written code is most useful when you keep the pieces small and check them, and most dangerous when it works on the first try and you stop looking.
 
-### Request small, testable units
+**Ask for one small, testable unit at a time.** Instead of a whole pipeline, ask for one function with a clear contract: input types and constraints, the output type and what it guarantees, a realistic example, and tests including edge cases. A function like that is small enough to read top to bottom and test on its own, and cheap to throw away if it’s wrong. A pipeline drafted in one prompt feels efficient, but its inevitable bug is far harder to find.
 
-Instead of asking for an entire pipeline, request one function at a time, with a clear contract attached: input types and any constraints they must satisfy, the output type and the invariants it should preserve, at least one realistic example, and a small set of tests including the edge cases you can think of. A function described this way is small enough to read top to bottom, small enough to test in isolation, and small enough that if the assistant gets it wrong, you can throw it away and try again without having lost much. A pipeline drafted in one prompt is none of those things — it is tempting because it feels efficient, but the inevitable bug is much harder to find than the equivalent bug in any one of its functions would have been.
+**Expect code that runs and is still wrong.** This catches the most people, because nothing looks broken. Say you ask for year-over-year growth in enrollment, and the assistant writes this:
 
-### Verification ladder
+``` python
+import pandas as pd
 
-Use this ladder for any AI-generated code you plan to keep:
+def yearly_growth(df):
+    """Percent change in enrollment from the year before."""
+    return df.set_index("year")["enrollment"].pct_change() * 100
+```
 
-1.  Read it line by line. You should be able to explain it.
+On the tidy example in your prompt, it’s perfect:
 
+``` python
+example = pd.DataFrame({"year": [2020, 2021, 2022], "enrollment": [100, 110, 121]})
+print(yearly_growth(example))
+```
+
+``` text
+year
+2020     NaN
+2021    10.0
+2022    10.0
+Name: enrollment, dtype: float64
+```
+
+But [`pct_change`](https://pandas.pydata.org/docs/reference/api/pandas.Series.pct_change.html) compares each row with the row *above it*, not with the previous year. Give it your real file, where the rows happen to arrive as 2021, 2020, 2022, and it reports a 9% drop in 2020 and 21% growth in 2022, with no error and no warning. A test written *before* you trust the code catches it:
+
+``` python
+import pytest
+
+def test_growth_does_not_depend_on_row_order():
+    df = pd.DataFrame({"year": [2021, 2020, 2022], "enrollment": [110, 100, 121]})
+    assert yearly_growth(df).loc[2021] == pytest.approx(10.0)
+```
+
+Run it with [pytest](https://docs.pytest.org/en/stable/getting-started.html) and it fails with `Obtained: nan` and `Expected: 10.0 ± 1.0e-05`. Adding `.sort_index()` after `set_index("year")` fixes it. That’s why asking for tests first (Pattern C, the idea behind [test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)) works so well: writing tests forces you to pin down what “right” means. For a function that cleans a text column, you’d have to decide how empty strings are treated, what happens to whitespace, whether case is kept, and what a non-string value does. Once those decisions are tests, the assistant’s code meets them or it doesn’t.
+
+**Climb the verification ladder** for any AI-written code you plan to keep:
+
+1.  Read it line by line. You should be able to explain every line.
 2.  Run a smoke test on tiny inputs.
+3.  Add assertions for what must always be true (shape, type, ranges).
+4.  Add unit tests, including edge cases.
+5.  If it replaces existing code, compare its output with the old code’s on the same inputs.
 
-3.  Add assertions for invariants (shape, type, ranges).
+If you can’t explain the code, don’t keep it. “It works” isn’t enough, especially in a course, where understanding it is the point.
 
-4.  Add unit tests (including edge cases).
-
-5.  Compare outputs to a baseline if replacing existing code.
-
-If you cannot explain the code, do not ship it. “It works” is not a sufficient reason to keep code you do not understand, especially in an educational context.
-
-### Ask for tests before implementations
-
-A reliable pattern is to ask for tests first. Tests clarify the contract and catch silent errors.
-
-For example, if you are cleaning a column:
-
-- define how empty strings should be treated,
-
-- define how whitespace is handled,
-
-- define whether case is preserved,
-
-- define how non-string values should behave.
-
-Then request tests that lock that behavior in.
-
-### Warnings for file operations in code
-
-Code that writes files can destroy work. When an assistant proposes code that deletes or overwrites:
-
-- request a dry run mode,
-
-- request explicit confirmation before destructive operations,
-
-- request that outputs go to a dedicated `outputs/` directory,
-
-- confirm the code uses explicit paths, not implicit working-directory assumptions.
+**Be extra careful with code that writes or deletes files.** When an assistant’s code deletes or overwrites anything, ask for a dry-run mode that prints what it *would* do, a confirmation before anything destructive, output to a dedicated `outputs/` folder, and explicit paths rather than assumptions about which folder the code runs from.
 
 ## 35.9 Security and privacy hygiene
 
-Security mistakes often begin as convenience: pasting too much context.
+Most security mistakes with AI tools start as convenience: the error involves a config file, so you paste the whole file, key and all.
 
-### Never paste secrets
-
-The simplest rule is the strictest one: do not paste passwords, API keys or tokens, private SSH keys, institutional credentials, or confidential datasets into any prompt. Once a secret has been pasted into a service you do not control, you have to assume it is no longer secret, even if the interface promises otherwise. If you need help with code that uses a secret, describe the *structure* (which environment variable it comes from, what the call signature looks like) and the error message — never the value. If you need an example, use a synthetic value:
+**Never paste secrets:** passwords, API keys or tokens, private SSH keys, university logins, or confidential datasets. Once a secret is in a service you don’t control, assume it’s no longer secret, whatever the interface promises ([sec-secrets](#sec-secrets) says what to do if it happens). Share the *structure* instead (which environment variable holds the key, what the call looks like) and the error message, never the value:
 
 ``` python
-# Safe: describe shape with a fake value
-api_key = "sk-EXAMPLEEXAMPLEEXAMPLE"   # placeholder, not a real key
-response = client.get(url, headers={"Authorization": f"Bearer {api_key}"})
+import os
+import requests
+
+api_key = os.environ["WEATHER_API_KEY"]   # the real value never appears in the code
+response = requests.get(
+    "https://api.example.com/v1/forecast",
+    headers={"Authorization": f"Bearer {api_key}"},
+    timeout=10,
+)
 ```
 
-### Prefer synthetic or summarized data
+Code like this is safe to share: the key lives in your environment, not in the text you paste.
 
-When you need help with a data issue, share the *shape* of the data instead of the data itself. The most useful things to provide are the schema (column names and types), three to five synthetic rows that match the structure of the real data, and a few aggregate statistics like counts, missingness rates, or value ranges. Avoid copying raw records whenever they include personal or sensitive information; if course policy, IRB rules, or any law applies, assume raw disclosure is not allowed. The synthetic version is almost always sufficient for the assistant to give you the same advice it would have given for the real data.
+**Know where your words go.** What you type goes to the provider’s servers, where, depending on the service and your settings, it may be stored, used to train future models, or read by people. Google’s [Gemini Apps privacy notice](https://support.google.com/gemini/answer/13594961), for one, says human reviewers read some chats and asks users not to enter “confidential information that you wouldn’t want a reviewer to see.” Other providers’ terms differ and change often, so read the ones for your tool, and check which tools your university has approved for which data (a university-licensed version may have different terms from the free one).
 
-### Treat privilege escalation as high risk
+**Share the shape of your data, not the data:** the schema (column names and types), three to five made-up rows with the same structure, and a few summary numbers such as counts, missing-value rates, or ranges. That [synthetic](https://en.wikipedia.org/wiki/Synthetic_data) version almost always gets you the same advice. Never paste raw records containing [personal data](https://en.wikipedia.org/wiki/Personal_data), and if data is covered by a course policy, an [IRB](https://en.wikipedia.org/wiki/Institutional_review_board) protocol, or a law such as [FERPA](https://en.wikipedia.org/wiki/Family_Educational_Rights_and_Privacy_Act) for student records, assume you can’t paste it anywhere.
 
-Commands that request elevated privileges deserve a stop-and-verify reflex. If the assistant suggests `sudo`, a recursive `chmod`, or any change to system-wide configuration, do not run it before you confirm three things in primary documentation: what exactly the command will change on disk, how broadly it will apply, and how to undo it. Whenever a least-privilege alternative exists — installing into your user environment, writing to a folder you own, using a project-local config file — prefer it. And when you are unsure whether you actually need elevated privileges, ask a human who has used the system before.
+**Treat requests for more privileges as high risk.** Before running a suggested `sudo`, recursive `chmod`, or system-wide setting, confirm in the documentation what it changes, how widely, and how to undo it. Prefer the option with the least power (the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)): install into your own environment, write to a folder you own. Unsure whether you need administrator rights? Ask someone who knows that system.
 
 ## 35.10 Academic integrity and collaboration
 
-Courses and teams differ in their policies. Follow the policy that governs your work.
+Here’s a frustration nearly every student has now: one course bans AI tools, another asks you to disclose them, a third expects you to use them, and a fourth doesn’t say. There’s no single rule, so find out the rule for *this* piece of work. Read the syllabus and the assignment; if they’re silent, ask the instructor before you start, not after you submit. “I assumed it was fine” is a hard position to argue in an [academic integrity](https://en.wikipedia.org/wiki/Academic_integrity) meeting.
 
-### Disclose AI assistance when required
+**When disclosure is expected, be specific** about what the assistant did and how you checked it:
 
-When disclosure is expected, keep it concrete:
+- “Used an AI assistant to draft the README structure and suggest unit test scaffolding; verified every command by running it locally; edited the output for accuracy.”
 
-- “Used AI assistance to draft README structure and suggest unit test scaffolding; verified commands by running locally; edited output for accuracy.”
+A vague “AI was used in this assignment” tells the reader nothing about what to trust. This book does the same: [sec-ai-disclosure](#sec-ai-disclosure) describes how AI tools were used to write it, what they got wrong, and what the human authors checked.
 
-Avoid vague statements that do not clarify what was assisted and what was verified.
+**Use AI to learn, not to skip the learning.** When an assistant hands you an answer, ask for a smaller example, ask what it assumes and which edge cases it ignores, then predict what happens if an input changes and test the prediction. A good rule: if you can’t explain it, you don’t own it.
 
-### Use AI to support learning
+**Keep people in the loop on a team.** Pull requests should explain their intent and include tests, review comments should point to evidence (a test, a log, the docs), and AI-generated code is reviewed, tested, and justified like any other contribution, by the person who submits it. “The AI wrote it” doesn’t move the responsibility anywhere ([sec-collaboration](#sec-collaboration) covers review).
 
-If you receive an answer, convert it into learning:
+## 35.11 Stakes and politics
 
-- Ask for a smaller example.
+In 2023, two New York lawyers filed a brief in a personal-injury suit against the airline Avianca that cited court decisions ChatGPT had invented, complete with made-up quotations. When the other side couldn’t find the cases, one of the lawyers asked ChatGPT whether they were real, and it assured him they were. The judge fined the lawyers \$5,000 ([*Mata v. Avianca*](https://en.wikipedia.org/wiki/Mata_v._Avianca,_Inc.)). No one fined the tool.
 
-- Ask for assumptions and edge cases.
+That is the arrangement this chapter’s rule quietly accepts. “AI can propose, you must verify” is the right habit for you, and it is also how an industry ships a product to hundreds of millions of people while leaving the cost of each mistake with the individual who trusted it.
 
-- Predict what will happen if an input changes.
+The costs run upstream, too. The text these models learned from (books, news, code, forum answers) was largely collected without asking the people who wrote it, and the legal questions are still being fought over in court. The human judgments that make chat assistants usable, including the ratings behind [reinforcement learning from human feedback](../chapters/appendix-glossary.llms.md#term-rlhf) (RLHF), come from people as well, often contract workers paid little. In 2023 [TIME reported](https://time.com/6247678/openai-chatgpt-kenya-workers/) that workers in Kenya labeling descriptions of violence and sexual abuse, so that ChatGPT could learn to filter them, took home roughly \$1.32 to \$2 an hour. The value you get from an assistant is partly their labor.
 
-- Test those predictions.
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you accept an AI suggestion, ask whose labor produced it and who pays when it’s wrong.
 
-A useful personal rule is: if you cannot explain it, you do not own it.
+## 35.12 Worked examples
 
-### Collaboration: keep humans in the loop
-
-In team settings, AI can accelerate drafting, but humans should review:
-
-- Pull requests should explain intent and include tests.
-
-- Code review comments should reference evidence (tests, logs, docs).
-
-- Generated code should be treated like any other contribution: reviewed, tested, and justified.
-
-## 35.11 When AI advice conflicts with your observations
-
-Conflicts are common. Resolve them with evidence.
-
-### Resolution protocol
-
-1.  Trust local evidence: what happened when you ran the code.
-
-2.  Confirm versions and environment.
-
-3.  Consult primary documentation for that version.
-
-4.  If still unclear, ask a human with a structured question.
-
-If the assistant cannot provide a verifiable primary source, treat its claim as tentative.
-
-## 35.12 Stakes and politics
-
-The advice in this chapter — use AI tools as drafting aids, verify their outputs, do not paste secrets — is good practical guidance. It is also a workflow built on top of an industry whose costs and externalities are largely paid by people other than the user.
-
-Three things to notice. First, *training data and consent*. Modern LLMs are trained on text and code scraped from the open web, much of it without explicit permission from the authors. Books, blog posts, GitHub repositories under restrictive licenses, news articles, Stack Overflow answers — all of it has been ingested, with the legal questions still being litigated. When you use an AI tool, the value it delivers to you is partly the labor of millions of writers and developers who were not asked. Second, *labeling labor*. The [reinforcement learning from human feedback](../chapters/appendix-glossary.llms.md#term-rlhf) (RLHF) that makes modern chat assistants usable is performed by underpaid contract workers, often in Kenya, the Philippines, Venezuela, and India, reviewing prompts and outputs that are sometimes traumatic. Mary Gray and Siddharth Suri’s *Ghost Work* (cited in [sec-artifacts-politics](#sec-artifacts-politics)) documents the broader pattern; the AI version is its current peak.
-
-Third, *the verification responsibility is yours, not theirs*. The framing this chapter teaches — “AI can propose, you must verify” — is correct, and it is also a quiet transfer of liability. When an AI assistant suggests an unsafe command, a hallucinated citation, or a security-weakening pattern, the consequences fall on the person who ran the command, not on the company that built the model. That is a defensible workflow for individual users. It is also a remarkable arrangement at the level of an industry: an unprecedented tool is shipped to billions of people with the legal and practical responsibility for its failures pushed onto each of those people individually.
-
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, and [sec-llm-internals](#sec-llm-internals) for what the model is actually doing under the hood. The concrete prompt to carry forward: when you accept an AI suggestion, ask whose labor produced it and who pays when it is wrong.
-
-## 35.13 Worked examples
-
-These worked examples illustrate how AI fits into a disciplined workflow.
+Each of these starts with an assistant’s suggestion and ends with evidence from your own computer deciding what to do.
 
 ### A notebook kernel mismatch
 
-Suppose you can `import pandas` from the terminal, but the same import fails in your Jupyter notebook with `ModuleNotFoundError: No module named 'pandas'`. The assistant’s job is to propose hypotheses; yours is to gather evidence.
-
-You ask the assistant for plausible causes and it suggests the most common one first: the notebook kernel is pointing at a different Python interpreter than the terminal. You verify this directly inside the notebook:
+You can `import pandas` in the terminal, but in your Jupyter notebook it fails with `ModuleNotFoundError: No module named 'pandas'`. An assistant suggests the most common cause: the notebook’s kernel runs a different Python from your terminal. Don’t take its word for it; check inside the notebook:
 
 ``` python
 import sys
 print(sys.executable)
-# /Users/alex/anaconda3/bin/python    # the system Python — wrong!
 ```
 
-Compared to what `which python` reports in the terminal (your project’s `.venv/bin/python`), this confirms the hypothesis. The fix is to switch the notebook’s kernel to your project’s environment, or install pandas into the kernel that is actually running. The lasting fix is to add one line to the project README — *“Kernel must be `proj-venv`”* — so the next person to clone the repo doesn’t repeat the same loop. The assistant proposed a check; your local evidence determined the fix.
+``` text
+/Users/you/anaconda3/bin/python
+```
+
+That’s Anaconda’s base Python, but in the terminal `which python` says `/Users/you/project/.venv/bin/python`. Now evidence, not the assistant’s confidence, confirms the hypothesis. Switch the notebook to a kernel that uses your project’s environment ([registering the environment as a kernel](https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments) if it isn’t listed), or install pandas into the kernel that’s running. The lasting fix is a line in the README, such as “Use the `proj-venv` kernel,” so the next person to clone the repository doesn’t repeat your evening ([sec-jupyter](#sec-jupyter) has more on kernels).
 
 ### A CSV that loads into one column
 
-A familiar version of “the data is wrong” is `pd.read_csv("data.csv")` returning a DataFrame with exactly one column whose name is the entire header line. You ask the assistant for plausible causes and it lists three: the file is tab-separated, the delimiter has been quoted, or the file has an unusual encoding. Rather than blindly trying fixes, you inspect the file:
+You load a file and something’s clearly off:
 
 ``` python
-with open("data.csv", "r", encoding="utf-8") as f:
-    for _ in range(3):
-        print(repr(f.readline()))
-# 'name\tage\tcity\n'   <- tabs, not commas
+import pandas as pd
+
+df = pd.read_csv("data.csv")
+print(df.shape)
+print(df.columns.tolist())
 ```
 
-Now the cause is unambiguous. You update the load to `pd.read_csv("data.csv", sep="\t")` and add an assertion that the expected columns are present so the same problem cannot silently return:
+``` text
+(2, 1)
+['name\tage\tcity']
+```
+
+One column, named after the whole header line. The assistant offers three suspects: tabs instead of commas, odd quoting, or an unusual encoding. Rather than trying fixes at random, look at the raw lines; [`repr`](https://docs.python.org/3/library/functions.html#repr) shows invisible characters like tabs:
+
+``` python
+with open("data.csv", encoding="utf-8") as f:
+    for _ in range(3):
+        print(repr(f.readline()))
+```
+
+``` text
+'name\tage\tcity\n'
+'Ana\t21\tBoulder\n'
+'Ben\t23\tDenver\n'
+```
+
+Tabs: the cause is no longer a guess. Tell [`read_csv`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) the separator, and add an assertion so the problem can’t come back silently:
 
 ``` python
 df = pd.read_csv("data.csv", sep="\t")
 assert {"name", "age", "city"}.issubset(df.columns), df.columns.tolist()
 ```
 
-The fix is reliable because it is backed by direct inspection and a runtime check, not by hope.
+The fix rests on what you saw in the file and a check that runs every time, not on hope.
 
 ### A merge conflict in a notebook
 
-The symptom is a merge conflict in `analysis.ipynb` after you `git pull`. You ask the assistant for the options: you can resolve the conflict by hand in a text editor (painful, because notebooks are JSON with embedded base64 outputs), you can use a notebook-aware diff tool like `nbdime`, or you can throw away one side and rerun the cells to regenerate the outputs. The right answer depends on your team’s policy and whether your notebook outputs are themselves part of the deliverable. After resolving, the long-term fix is upstream: configure pre-commit (see [sec-automation](#sec-automation)) to strip notebook outputs on commit, so this kind of conflict cannot happen again. See [sec-git-github](#sec-git-github) for the broader version-control workflow.
+After a `git pull`, git reports a merge conflict in `analysis.ipynb`. An assistant offers three options. You can resolve it by hand in a text editor, which is painful, because a notebook is a JSON file with its outputs (images included, encoded as text) stored inside. You can use a notebook-aware tool like [nbdime](https://nbdime.readthedocs.io/), which shows the conflict cell by cell. Or you can keep one side and rerun the cells to regenerate the outputs. Which is right depends on your team and on whether the outputs are part of what you hand in. Afterwards, fix the cause: set up [nbstripout](https://pypi.org/project/nbstripout/) as a [pre-commit](https://pre-commit.com/) hook (see [sec-automation](#sec-automation)) to strip outputs before each commit, and most of these conflicts disappear, since two people editing different cells no longer both change the outputs. [sec-git-github](#sec-git-github) covers the wider workflow.
 
 ### A high-risk fix you should not run
 
-Sometimes the assistant suggests a “fix” you should refuse. A common case: you get a permission error writing to a directory, and the assistant suggests `sudo chmod -R 777 ~/project` or `sudo` your script. Both are stop signs.
+Sometimes the right answer to an assistant is no. You get `Permission denied` writing to a folder, and the assistant suggests `sudo chmod -R 777 ~/project`, or running your script with `sudo`. Both are stop signs.
 
-The correct response is to step back and ask why the program cannot write where you told it to. Almost always the answer is that the path is wrong — you are trying to write into `/usr/local/share/...` instead of into a folder you own — and the right fix is to change the path, not the permissions. Prefer writing into a user-owned folder under your home directory (a project-local `outputs/` works fine). If you genuinely think you need system permissions, that is the moment to ask a TA or instructor before running anything. High-risk suggestions are exactly the situations where the assistant has the least context and the consequences of being wrong are largest.
+Ask instead why the program can’t write where you told it to. Almost always the path is wrong: the script is writing into a system folder like `/usr/local/share/...` instead of one you own. Change the path, not the permissions, and write under your home directory (a project-level `outputs/` works well). If you really think you need system permissions, ask a TA or instructor before running anything. High-risk suggestions are exactly where the assistant knows least about your situation and being wrong costs most.
 
-## 35.14 Exercises
+## 35.13 Exercises
 
-1.  Take a recent error. Ask an assistant for three hypotheses and two checks per hypothesis. Run the checks and record which hypotheses you eliminated.
+1.  Take a recent error. Ask an assistant for three hypotheses and two checks for each. Run the checks and record which hypotheses you eliminated.
+2.  Draft a help request (Goal, Expected, Actual, Steps to reproduce, Context, What I tried). Ask an assistant to make it clearer without changing any facts. Compare the versions, remove anything it invented, then post it.
+3.  Ask an assistant for three published papers, with DOIs, on a topic from one of your courses. Look each up on [Google Scholar](https://scholar.google.com/) or at `https://doi.org/<the DOI>`. How many exist, and do they say what the assistant claimed?
+4.  Ask for a README skeleton for one of your projects. Follow every command in a fresh environment, then add a Verify section and one troubleshooting entry you’ve confirmed.
+5.  Ask for a small function with unit tests. Add one edge-case test of your own, run everything, and revise until all the tests pass.
+6.  Find the AI policy for each course you’re taking this term. Where one is silent, write down the question you’d ask the instructor.
+7.  Write a personal “do not paste” list (credentials, tokens, private or protected data) and keep it where you work.
 
-2.  Draft a structured help request (Goal/Expected/Actual/Repro/Context/What I tried). Ask the assistant to improve clarity without changing facts. Audit the result and then post it.
+## 35.14 One-page checklist
 
-3.  Ask for a README skeleton for your project. Verify each command in a fresh environment. Add a Verify section and one troubleshooting entry.
-
-4.  Ask for a small function plus unit tests. Run the tests. If any fail, revise until they pass.
-
-5.  Create a personal “do not paste” list (credentials, tokens, private data). Keep it near your workstation.
-
-## 35.15 One-page checklist
-
-- I treat AI output as a proposal and require evidence.
-
-- I scale verification to risk.
-
-- I request alternatives and checkpoints, not a single answer.
-
-- I confirm commands and API behavior in primary documentation.
-
-- I run minimal experiments and change one thing at a time.
-
-- I add tests or assertions after fixes.
-
-- I do not paste secrets or sensitive data.
-
-- I disclose AI assistance when required and keep it specific.
+- I treat AI output as a proposal and look for evidence before I trust it.
+- I scale my checking to the cost of being wrong.
+- I ask for alternatives and checkpoints, not a single answer.
+- I confirm commands, functions, and citations in primary sources.
+- I run small experiments and change one thing at a time.
+- I add a test or an assertion after every fix.
+- I never run a command I can’t explain.
+- I don’t paste secrets or sensitive data, and I share the shape of data instead.
+- I know my course’s AI policy, and I disclose AI help specifically when it’s required.
 
 > **NOTE:**
 >
-> - Anthropic, [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — Anthropic’s guide to structured, verifiable prompts.
-> - OpenAI, [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, with patterns for chat and API workflows.
-> - Google, [Generative AI prompt guide](https://ai.google.dev/gemini-api/docs/prompting-intro) — a beginner-friendly walk-through from Gemini’s documentation.
-> - Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell, [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — the canonical critical paper on large language models; required reading for the “Stakes and politics” framing above.
-> - Arvind Narayanan and Sayash Kapoor, [*AI Snake Oil*](https://www.aisnakeoil.com/) — a calm, evidence-driven book on what AI can and cannot do; an excellent counterweight to both hype and panic.
-> - Mary L. Gray and Siddharth Suri, [*Ghost Work*](https://ghostwork.info/) — the foundational book on the hidden human labor behind “automated” systems; the AI labeling industry is its current peak.
-> - [Distributed AI Research Institute (DAIR)](https://www.dair-institute.org/) — Timnit Gebru’s research institute; a current and ongoing source on AI labor, bias, and accountability.
-> - Karen Hao, [*Empire of AI*](https://karenhao.com/empire-of-ai/) — long-form journalism on the labor and resource flows behind modern AI; pairs with the labeling-labor framing above.
+> - **Anthropic**, [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) — a vendor’s guide to clear, structured prompts, with techniques you can try in any assistant.
+> - **OpenAI**, [Prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering) — a parallel guide, useful for comparing which advice holds across tools.
+> - **Google**, [Prompt design strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies) — a beginner-friendly walk-through from the Gemini documentation.
+> - **Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell**, [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — the widely cited critical paper on large language models, and the background to this chapter’s “Stakes and politics.”
+> - **Arvind Narayanan and Sayash Kapoor**, [*AI Snake Oil*](https://press.princeton.edu/books/hardcover/9780691249131/ai-snake-oil) — a calm, evidence-driven book on what AI can and can’t do; a good counterweight to both hype and panic.
+> - **Mary L. Gray and Siddharth Suri**, [*Ghost Work*](https://ghostwork.info/) — the foundational book on the hidden human labor behind “automated” systems, including the data labeling AI depends on.
+> - **Karen Hao**, [*Empire of AI*](https://karenhao.com/empire-of-ai/) — long-form journalism on the labor and resource flows behind modern AI; pairs with the labeling-labor framing above.

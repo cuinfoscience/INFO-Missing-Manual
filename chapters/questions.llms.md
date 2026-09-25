@@ -218,7 +218,7 @@ Add one more line if the operating system might matter, `python -c "import platf
 
 ### File system context
 
-“File not found” might be the single most common error students ask about, and it’s rarely what it sounds like. The file usually exists. Python is just looking for it somewhere else, because relative paths are resolved from your [working directory](https://en.wikipedia.org/wiki/Working_directory), the folder your program was started from, and that’s often not the folder you think. So when an issue involves a missing file, paste three things: the folder you’re in, the [path](../chapters/appendix-glossary.llms.md#term-path) your code uses, and a listing that shows where the file really is.
+“File not found” might be the single most common error students ask about, and it’s rarely what it sounds like. The file usually exists. Python is just looking for it somewhere else, because relative paths are resolved from your [working directory](https://en.wikipedia.org/wiki/Working_directory), the folder your program was started from, and that’s often not the folder you think. So when an issue involves a missing file, paste three things: the folder you’re in, the path your code uses, and a listing that shows where the file really is.
 
 ``` bash
 $ pwd

@@ -2,30 +2,32 @@
 
 ## Purpose
 
-A handbook that teaches students how to use AI tools responsibly would be hypocritical if it quietly pretended its own authors did not. This appendix is a transparent record of how large language models were used in drafting, editing, and maintaining the *INFO Missing Manual*, plus a discussion of the editorial choices we made about what the AI was and was not allowed to do.
+A handbook that teaches you to use AI tools responsibly would be hypocritical if its own authors quietly pretended they hadn’t used them. This appendix is an open record of how large language models were used in drafting, editing, and maintaining the *Missing Manual for Information Scientists*, plus a discussion of the editorial choices we made about what the AI was and was not allowed to do.
 
-We are writing this in the voice of the human authors, not the model — Brian C. Keegan and Abram Handler. If you are using this book in a classroom and want a concrete example of what “AI disclosure” looks like for a piece of academic work, the first half of this appendix is it. The second half discusses the harder editorial and pedagogical questions the tools forced us to confront.
+We’re writing it in the voice of the human authors, Brian C. Keegan and Abram Handler, not the model’s. If you’re using this book in a class and want a concrete example of what an “AI disclosure” looks like for a piece of academic work, the first half of this appendix is one. The second half takes up the harder editorial and teaching questions the tools forced us to face.
 
 ## B.1 What AI tools were used
 
 During the drafting and conversion of this handbook we used:
 
-- **Claude (Anthropic)**, accessed through Claude Code, to draft prose, convert LaTeX source files into Quarto, and assist with editing passes. Claude wrote first drafts of several chapters in [sec-tracebacks](#sec-tracebacks), [sec-virtual-environments](#sec-virtual-environments), [sec-data-file-formats](#sec-data-file-formats), [sec-tabular-data](#sec-tabular-data), [sec-regex](#sec-regex), [sec-http-apis](#sec-http-apis), [sec-secrets](#sec-secrets), [sec-reading-docs](#sec-reading-docs), [sec-linting](#sec-linting), [sec-pandas-basics](#sec-pandas-basics), [sec-sql-basics](#sec-sql-basics), and this appendix. Claude also drafted the chapter-to-meme template assignments now stored in each chapter’s `meme:` frontmatter (curated and reviewed by the human authors); see [sec-ai-llm](#sec-ai-llm) for related context.
+- **Claude (Anthropic)**, accessed through [Claude Code](https://code.claude.com/docs/en/overview), to draft prose, convert LaTeX source files into Quarto, and assist with editing passes. Claude wrote first drafts of several chapters in [sec-tracebacks](#sec-tracebacks), [sec-virtual-environments](#sec-virtual-environments), [sec-data-file-formats](#sec-data-file-formats), [sec-tabular-data](#sec-tabular-data), [sec-regex](#sec-regex), [sec-http-apis](#sec-http-apis), [sec-secrets](#sec-secrets), [sec-reading-docs](#sec-reading-docs), [sec-linting](#sec-linting), [sec-pandas-basics](#sec-pandas-basics), [sec-sql-basics](#sec-sql-basics), and this appendix. Claude also drafted the chapter-to-meme template assignments now stored in each chapter’s `meme:` frontmatter (curated and reviewed by the human authors); see [sec-ai-llm](#sec-ai-llm) for related context.
 - **ChatGPT (OpenAI)**, occasionally, as a second opinion during outlining.
-- **GitHub Copilot**, inside the editor, for small-scale code completion in worked examples.
+- **[GitHub Copilot](https://docs.github.com/en/copilot)**, inside the editor, for small-scale code completion in worked examples.
 - A few earlier chapters were drafted by the human authors before AI assistance was introduced; those chapters were later edited with AI assistance but are substantively human-written.
 
-The model weights, providers, and versions were chosen based on access and cost, not endorsement. A handbook written today would include somewhat different tools than one written a year ago; we expect the list above to keep shifting.
+We chose the models, providers, and versions for access and cost, not as an endorsement. A handbook written today would use somewhat different tools than one written a year ago, and we expect the list above to keep shifting.
 
 ## B.2 What the AI was asked to do
 
 We used the models for roughly five kinds of work, in decreasing order of editorial latitude:
 
-1.  **Mechanical conversion from LaTeX to Quarto.** Chapters originally written in LaTeX were converted to `.qmd` with a pandoc + Python cleanup pipeline (the cleanup script was a one-off that never lived in the repository; the conversion itself is in the commit history). The AI wrote the cleanup script after being shown sample input and desired output. This was the safest and most deterministic use of the tools.
-2.  **Drafting gap chapters.** For a handful of chapters the human authors had already scoped but not written, we asked Claude to draft the prose from a detailed outline. We specified the canonical 8-section structure (see [sec-reading-docs](#sec-reading-docs)), the target audience, the tone (“friendly guide, second-person, empathetic”), the length, and the substantive points each section had to make. The model produced a first draft; the human authors then read, edited, reorganized, and verified the technical content.
+1.  **Mechanical conversion from LaTeX to Quarto.** Chapters originally written in LaTeX were converted to `.qmd` with a [pandoc](https://pandoc.org/) + Python cleanup pipeline (the cleanup script was a one-off that never lived in the repository; the conversion itself is in the commit history). The AI wrote the cleanup script after being shown sample input and desired output. This was the safest and most deterministic use of the tools.
+2.  **Drafting gap chapters.** For a handful of chapters the human authors had already scoped but not written, we asked Claude to draft the prose from a detailed outline. We specified the book’s canonical chapter structure (then eight sections), the target audience, the tone (“friendly guide, second-person, empathetic”), the length, and the substantive points each section had to make. The model produced a first draft; the human authors then read, edited, reorganized, and verified the technical content.
 3.  **Editing and consistency passes.** On existing chapters we asked the models to suggest reorganizations, tighten phrasing, catch inconsistencies in terminology, and flag places where cross-references were stale. These were suggestions, not changes.
-4.  **Code example review.** Worked examples in Python, SQL, and shell were run or mentally executed by the human authors regardless of where they came from. When the AI wrote code, the human authors verified behavior and edited for clarity.
+4.  **Code example review.** Until September 2026, worked examples in Python, SQL, and shell were run or mentally executed by the human authors regardless of where they came from, and when the AI wrote code, the human authors verified behavior and edited for clarity. In the September 2026 rewrite described below, the agents ran the examples and made the output shown match what the code printed.
 5.  **Brainstorming and outlining.** Before any prose was written for a gap chapter, we sometimes used Claude or ChatGPT as a brainstorming partner: “What are the seven things a novice data scientist gets wrong about CSVs?” The outputs informed our outlines but never replaced editorial judgment about what belonged in the book.
+
+In September 2026 we used AI for a larger job: rewriting every chapter, and then the introduction, the conclusion, and these appendices, in the book’s current voice, with more links to official documentation and Wikipedia, and with the facts re-checked. The work was done by AI coding agents, sessions of Claude Code, working from written instructions: the style rules in the repository’s [`AGENTS.md`](https://github.com/cuinfoscience/INFO-Missing-Manual/blob/main/AGENTS.md) and a plan, [`docs/plans/2026-09-25-voice-rollout.md`](https://github.com/cuinfoscience/INFO-Missing-Manual/blob/main/docs/plans/2026-09-25-voice-rollout.md), that gave every chapter’s agent the same brief and set out how each rewrite was checked before it was committed. The agents ran the code examples and made the output shown match what the code really printed, checked that every link resolved, and checked the facts they touched, softening or cutting claims they couldn’t source. Each part of the book then went to Brian as its own pull request, and he merged each one (#61 through \#67, and the pull request that added this paragraph). The pass found and corrected real errors, about thirty in the seven chapters of Part I alone: code examples that didn’t run or didn’t fail the way the text said they would, outdated error messages, a shell command described as safe that wasn’t, advice about imports that didn’t work, and invented references, including a Further reading item whose authors didn’t exist and whose DOI didn’t resolve. The plan and the repository’s commit history record what changed in each chapter and why.
 
 ## B.3 What the AI was *not* asked to do
 
@@ -42,12 +44,12 @@ Some decisions we explicitly kept out of AI hands:
 The case for using AI tools in authoring a textbook — especially a textbook about computing practices — comes down to three things:
 
 1.  **Speed matters in a fast-moving field.** Computing tooling changes every year. The marginal cost of a well-placed chapter on virtual environments or pre-commit hooks is lower with AI assistance, which means more chapters get written, fewer gaps linger in the book, and students get better coverage of topics that would otherwise be deferred forever.
-2.  **We retain editorial responsibility.** A draft is not a decision. Every paragraph in this book was read by a human author with discretion to rewrite, reorganize, or delete. The AI is a fast junior writer, not a co-author; the buck stops with us.
-3.  **Transparency is the right norm.** Many textbooks use AI tools and do not say so. We would rather disclose than let students guess. If our disclosure turns out to be more generous than our peers’, so much the better — it gives readers a clear basis to evaluate our choices.
+2.  **We retain editorial responsibility.** A draft is not a decision. Every paragraph written before September 2026 was read by a human author with discretion to rewrite, reorganize, or delete. The September 2026 rewrite came to Brian one part at a time, as pull requests he could change or refuse, and he merged each one. The AI is a fast junior writer, not a co-author; the buck stops with us.
+3.  **Transparency is the right norm.** Many textbooks use AI tools and don’t say so. We’d rather disclose than let you guess. If our disclosure turns out to be more generous than our peers’, so much the better — it gives readers a clear basis to evaluate our choices.
 
 ## B.5 What we got wrong, and what we watched for
 
-Honesty requires admitting the failure modes we hit. In rough order of how often:
+Being honest means admitting the failure modes we hit. Here they are, roughly from most to least common:
 
 - **Plausible-sounding but incorrect API details.** The models would confidently describe a parameter to `pd.read_csv` or a pytest feature that did not exist in the version we targeted, or that had been renamed. Every code example in the book was checked against documentation or executed.
 - **Fabricated citations.** Once or twice, we asked for “a paper on X” and received a plausibly-formatted reference that did not exist. Every bibliography entry in `references.bib` corresponds to a real source that one of the human authors verified.
@@ -55,21 +57,21 @@ Honesty requires admitting the failure modes we hit. In rough order of how often
 - **Lost voice and tone drift.** A chapter drafted in a single pass would sometimes slip from our “friendly guide” tone into something more formal or generic. Editing passes by the human authors restored the voice.
 - **Uneven depth.** The model sometimes gave equal weight to a trivial topic and a critical one. Re-outlining and shortening or expanding sections was a common human edit.
 
-These are not disqualifying problems — they are workflow problems that we solved with editing. But they are worth naming so that a reader can calibrate the risk.
+None of these disqualifies the tools. They’re workflow problems, and we solved them with editing. But they’re worth naming, so that you can judge the risk for yourself.
 
 ## B.6 What this means for students using the book
 
-If you are a student reading this book to learn computing, three things are worth knowing:
+If you’re reading this book to learn computing, three things are worth knowing:
 
-1.  **The code examples have been checked by humans** and either executed or traced mentally. If you find one that does not work, please open an issue: use the “Report an issue” link on any chapter page, and the *Something is wrong* form will walk you through what to include.
-2.  **The technical claims have been checked against documentation.** We expect occasional errors to remain (nothing this long is perfect) and we will fix them as they are reported.
+1.  **The code examples have been checked.** Before September 2026 the human authors executed or traced them; in the September 2026 rewrite the agents ran them and matched the output shown to what the code printed. If you find one that doesn’t work, please open an issue: use the “Report an issue” link on any chapter page, and the *Something is wrong* form will walk you through what to include.
+2.  **The technical claims have been checked against documentation.** We expect a few errors to remain (nothing this long is perfect), and we’ll fix them as they’re reported.
 3.  **The pedagogical judgments — what to teach, in what order, with what emphasis — are the human authors’ choices**, informed by teaching students like you.
 
-You should apply the same skeptical habits we describe in [sec-ai-llm](#sec-ai-llm) and [sec-evaluating-ai](#sec-evaluating-ai) when you read this or any other text, regardless of how it was authored.
+Bring the same skeptical habits we describe in [sec-ai-llm](#sec-ai-llm) and [sec-evaluating-ai](#sec-evaluating-ai) to this book and to anything else you read, however it was written.
 
 ## B.7 Discussion: why we disclose at all
 
-“Does it matter?” is a reasonable question. A textbook is supposed to be correct and clear; what does the provenance of individual sentences have to do with that?
+“Does it matter?” is a fair question. A textbook is supposed to be correct and clear, so what does it matter where each sentence came from?
 
 We think it matters for three reasons, which correspond to three different audiences.
 
@@ -77,27 +79,27 @@ We think it matters for three reasons, which correspond to three different audie
 
 **For instructors.** An instructor adopting this book for a course has a right to know what kind of artifact they are teaching from. Some instructors will be more comfortable with this than others. We want to make it possible for them to make that choice knowingly, rather than quietly.
 
-**For the broader academic community.** Norms around AI authorship are still forming. Journals, publishers, and universities are all working out their own disclosure requirements, and the resulting guidelines are inconsistent and sometimes contradictory. By writing down what we did and why, we contribute one data point to that ongoing conversation. We do not expect our practices to become the standard, but we would rather be on the record with a defensible position than hope nobody asks.
+**For the broader academic community.** Norms around AI authorship are still forming. Journals, publishers, and universities are all working out their own disclosure requirements, and the resulting guidelines are inconsistent and sometimes contradictory. By writing down what we did and why, we contribute one data point to that ongoing conversation. We don’t expect our practices to become the standard, but we’d rather be on the record with a defensible position than hope nobody asks.
 
 ## B.8 A note on the code we ship
 
-A separate but related question is how AI tools were used in any software we publish alongside the book — currently the helper tools in the repository’s `tools/` folder (the meme and figure generators, the issue-form script, and a screenshot toolkit adapted from a companion book) and the `_quarto.yml` / CI workflow configuration. Those were drafted with AI assistance and then tested: the original LaTeX conversion script was run end-to-end on every chapter, each tool is checked against the files it produces, and the render pipeline was validated by a clean HTML build with zero warnings. The same “draft, verify, own the result” discipline applies.
+A separate but related question is how AI tools were used in any software we publish alongside the book — currently the helper tools in the repository’s `tools/` folder (the meme and figure generators, the issue-form script, a screenshot toolkit adapted from a companion book, and browser checks of the page layout) and the `_quarto.yml` / CI workflow configuration. Those were drafted with AI assistance and then tested: the original LaTeX conversion script was run end-to-end on every chapter, each tool is checked against the files it produces, and the render pipeline was validated by a clean HTML build with zero warnings. The same “draft, verify, own the result” discipline applies.
 
 If this book grows to include executable code cells (see [sec-jupyter](#sec-jupyter)) or tests that ship with the book itself, the same standard will apply to them: AI may draft, humans verify and take responsibility.
 
 ## B.9 How we will keep this appendix current
 
-AI tools change. The list of tools we used, the ways we used them, and the kinds of mistakes they made are all moving targets. When we revise the book — adding a chapter, updating an example, responding to reader feedback — we will also update this appendix to reflect the new state of practice.
+AI tools change. The list of tools we used, the ways we used them, and the kinds of mistakes they made are all moving targets. When we revise the book — adding a chapter, updating an example, responding to reader feedback — we will also update this appendix to reflect the new state of practice. The last substantial update was in September 2026, when we added the account of the voice rewrite above.
 
-If a reader notices a substantive gap between what this appendix says and what the book obviously contains, that is a bug and we would like to hear about it.
+If you notice a real gap between what this appendix says and what the book obviously contains, that’s a bug, and we’d like to hear about it.
 
 ## B.10 Further reading
 
-Students interested in the broader conversation about AI and scholarly authorship might start with:
+If you’re interested in the broader conversation about AI and scholarly authorship, here are some places to start:
 
 - The chapters [sec-ai-llm](#sec-ai-llm), [sec-llm-internals](#sec-llm-internals), [sec-ai-agents](#sec-ai-agents), and [sec-evaluating-ai](#sec-evaluating-ai) in this handbook itself.
-- Your own institution’s policies on AI assistance in academic work, which are almost certainly stricter in the student-assignment context than ours are in the textbook-authoring context. Do not assume our disclosure gives you cover for your own assignments.
-- The editorial policies of the journals and publishers in your field — many now require authors to disclose AI use, and they disagree about what counts as sufficient disclosure.
+- Your own institution’s policies on AI assistance in academic work, which are almost certainly stricter in the student-assignment context than ours are in the textbook-authoring context. Don’t assume our disclosure gives you cover for your own assignments.
+- The editorial policies of the journals and publishers in your field. Many now require authors to disclose AI use, and they disagree about what counts as enough; compare [Nature Portfolio’s policy on AI](https://www.nature.com/nature-portfolio/editorial-policies/ai) with the [guidance on AI-assisted technology](https://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html) from the International Committee of Medical Journal Editors.
 - Prior essays and position papers on the topic, which are voluminous and moving quickly. Use your library rather than a search engine for the authoritative ones.
 
 ## B.11 Checklist for your own work

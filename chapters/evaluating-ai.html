@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -633,51 +668,46 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-measure-before-you-trust" id="toc-running-theme-measure-before-you-trust" class="nav-link" data-scroll-target="#running-theme-measure-before-you-trust">Running theme: measure before you trust</a></li>
-  <li><a href="#why-evaluation-is-hard" id="toc-why-evaluation-is-hard" class="nav-link" data-scroll-target="#why-evaluation-is-hard"><span class="header-section-number">38.1</span> Why evaluation is hard</a></li>
-  <li><a href="#dimensions-of-quality" id="toc-dimensions-of-quality" class="nav-link" data-scroll-target="#dimensions-of-quality"><span class="header-section-number">38.2</span> Dimensions of quality</a></li>
-  <li><a href="#verification-workflows-at-scale" id="toc-verification-workflows-at-scale" class="nav-link" data-scroll-target="#verification-workflows-at-scale"><span class="header-section-number">38.3</span> Verification workflows at scale</a></li>
-  <li><a href="#manual-evaluation-and-auditing" id="toc-manual-evaluation-and-auditing" class="nav-link" data-scroll-target="#manual-evaluation-and-auditing"><span class="header-section-number">38.4</span> Manual evaluation and auditing</a>
+  <li><a href="#why-checking-ai-is-harder-than-testing-code" id="toc-why-checking-ai-is-harder-than-testing-code" class="nav-link" data-scroll-target="#why-checking-ai-is-harder-than-testing-code"><span class="header-section-number">38.1</span> Why checking AI is harder than testing code</a></li>
+  <li><a href="#decide-what-good-means" id="toc-decide-what-good-means" class="nav-link" data-scroll-target="#decide-what-good-means"><span class="header-section-number">38.2</span> Decide what “good” means</a></li>
+  <li><a href="#match-your-effort-to-the-stakes" id="toc-match-your-effort-to-the-stakes" class="nav-link" data-scroll-target="#match-your-effort-to-the-stakes"><span class="header-section-number">38.3</span> Match your effort to the stakes</a></li>
+  <li><a href="#build-a-small-evaluation-set" id="toc-build-a-small-evaluation-set" class="nav-link" data-scroll-target="#build-a-small-evaluation-set"><span class="header-section-number">38.4</span> Build a small evaluation set</a></li>
+  <li><a href="#check-your-human-labels-first" id="toc-check-your-human-labels-first" class="nav-link" data-scroll-target="#check-your-human-labels-first"><span class="header-section-number">38.5</span> Check your human labels first</a>
   <ul class="collapse">
-  <li><a href="#rubrics" id="toc-rubrics" class="nav-link" data-scroll-target="#rubrics">Rubrics</a></li>
-  <li><a href="#spot-checking" id="toc-spot-checking" class="nav-link" data-scroll-target="#spot-checking">Spot-checking</a></li>
-  <li><a href="#red-teaming-and-adversarial-prompting" id="toc-red-teaming-and-adversarial-prompting" class="nav-link" data-scroll-target="#red-teaming-and-adversarial-prompting">Red-teaming and adversarial prompting</a></li>
+  <li><a href="#write-a-rubric" id="toc-write-a-rubric" class="nav-link" data-scroll-target="#write-a-rubric">Write a rubric</a></li>
+  <li><a href="#measure-how-often-the-raters-agree" id="toc-measure-how-often-the-raters-agree" class="nav-link" data-scroll-target="#measure-how-often-the-raters-agree">Measure how often the raters agree</a></li>
+  <li><a href="#spot-check-what-you-cant-label" id="toc-spot-check-what-you-cant-label" class="nav-link" data-scroll-target="#spot-check-what-you-cant-label">Spot-check what you can’t label</a></li>
   </ul></li>
-  <li><a href="#automated-evaluation" id="toc-automated-evaluation" class="nav-link" data-scroll-target="#automated-evaluation"><span class="header-section-number">38.5</span> Automated evaluation</a>
+  <li><a href="#score-the-model-with-honest-uncertainty" id="toc-score-the-model-with-honest-uncertainty" class="nav-link" data-scroll-target="#score-the-model-with-honest-uncertainty"><span class="header-section-number">38.6</span> Score the model, with honest uncertainty</a>
   <ul class="collapse">
-  <li><a href="#regression-test-suites" id="toc-regression-test-suites" class="nav-link" data-scroll-target="#regression-test-suites">Regression test suites</a></li>
-  <li><a href="#llm-as-judge" id="toc-llm-as-judge" class="nav-link" data-scroll-target="#llm-as-judge">LLM-as-judge</a></li>
-  <li><a href="#reference-based-scoring" id="toc-reference-based-scoring" class="nav-link" data-scroll-target="#reference-based-scoring">Reference-based scoring</a></li>
+  <li><a href="#accuracy-and-where-the-errors-went" id="toc-accuracy-and-where-the-errors-went" class="nav-link" data-scroll-target="#accuracy-and-where-the-errors-went">Accuracy, and where the errors went</a></li>
+  <li><a href="#precision-and-recall" id="toc-precision-and-recall" class="nav-link" data-scroll-target="#precision-and-recall">Precision and recall</a></li>
+  <li><a href="#how-sure-can-you-be" id="toc-how-sure-can-you-be" class="nav-link" data-scroll-target="#how-sure-can-you-be">How sure can you be?</a></li>
   </ul></li>
-  <li><a href="#building-an-evaluation-set" id="toc-building-an-evaluation-set" class="nav-link" data-scroll-target="#building-an-evaluation-set"><span class="header-section-number">38.6</span> Building an evaluation set</a>
+  <li><a href="#automated-checks-that-run-on-every-change" id="toc-automated-checks-that-run-on-every-change" class="nav-link" data-scroll-target="#automated-checks-that-run-on-every-change"><span class="header-section-number">38.7</span> Automated checks that run on every change</a>
   <ul class="collapse">
-  <li><a href="#representative-inputs" id="toc-representative-inputs" class="nav-link" data-scroll-target="#representative-inputs">Representative inputs</a></li>
-  <li><a href="#edge-cases-and-boundary-conditions" id="toc-edge-cases-and-boundary-conditions" class="nav-link" data-scroll-target="#edge-cases-and-boundary-conditions">Edge cases and boundary conditions</a></li>
-  <li><a href="#known-failure-modes" id="toc-known-failure-modes" class="nav-link" data-scroll-target="#known-failure-modes">Known failure modes</a></li>
-  <li><a href="#maintaining-and-versioning-the-evaluation-set" id="toc-maintaining-and-versioning-the-evaluation-set" class="nav-link" data-scroll-target="#maintaining-and-versioning-the-evaluation-set">Maintaining and versioning the evaluation set</a></li>
+  <li><a href="#regression-checks" id="toc-regression-checks" class="nav-link" data-scroll-target="#regression-checks">Regression checks</a></li>
+  <li><a href="#using-a-model-as-the-judge" id="toc-using-a-model-as-the-judge" class="nav-link" data-scroll-target="#using-a-model-as-the-judge">Using a model as the judge</a></li>
+  <li><a href="#comparing-against-a-reference-answer" id="toc-comparing-against-a-reference-answer" class="nav-link" data-scroll-target="#comparing-against-a-reference-answer">Comparing against a reference answer</a></li>
   </ul></li>
-  <li><a href="#managing-outputs-at-scale" id="toc-managing-outputs-at-scale" class="nav-link" data-scroll-target="#managing-outputs-at-scale"><span class="header-section-number">38.7</span> Managing outputs at scale</a>
+  <li><a href="#try-to-break-it" id="toc-try-to-break-it" class="nav-link" data-scroll-target="#try-to-break-it"><span class="header-section-number">38.8</span> Try to break it</a></li>
+  <li><a href="#keep-measuring-after-you-ship" id="toc-keep-measuring-after-you-ship" class="nav-link" data-scroll-target="#keep-measuring-after-you-ship"><span class="header-section-number">38.9</span> Keep measuring after you ship</a></li>
+  <li><a href="#auditing-who-does-the-system-fail" id="toc-auditing-who-does-the-system-fail" class="nav-link" data-scroll-target="#auditing-who-does-the-system-fail"><span class="header-section-number">38.10</span> Auditing: who does the system fail?</a>
   <ul class="collapse">
-  <li><a href="#logging" id="toc-logging" class="nav-link" data-scroll-target="#logging">Logging</a></li>
-  <li><a href="#monitoring-and-drift-detection" id="toc-monitoring-and-drift-detection" class="nav-link" data-scroll-target="#monitoring-and-drift-detection">Monitoring and drift detection</a></li>
-  <li><a href="#rerunning-evaluations-after-changes" id="toc-rerunning-evaluations-after-changes" class="nav-link" data-scroll-target="#rerunning-evaluations-after-changes">Rerunning evaluations after changes</a></li>
+  <li><a href="#break-your-scores-down-by-group" id="toc-break-your-scores-down-by-group" class="nav-link" data-scroll-target="#break-your-scores-down-by-group">Break your scores down by group</a></li>
+  <li><a href="#counterfactual-tests" id="toc-counterfactual-tests" class="nav-link" data-scroll-target="#counterfactual-tests">Counterfactual tests</a></li>
   </ul></li>
-  <li><a href="#auditing-for-bias-and-unexpected-behaviors" id="toc-auditing-for-bias-and-unexpected-behaviors" class="nav-link" data-scroll-target="#auditing-for-bias-and-unexpected-behaviors"><span class="header-section-number">38.8</span> Auditing for bias and unexpected behaviors</a>
-  <ul class="collapse">
-  <li><a href="#what-to-look-for" id="toc-what-to-look-for" class="nav-link" data-scroll-target="#what-to-look-for">What to look for</a></li>
-  <li><a href="#structured-bias-testing" id="toc-structured-bias-testing" class="nav-link" data-scroll-target="#structured-bias-testing">Structured bias testing</a></li>
-  <li><a href="#sensitivity-checks" id="toc-sensitivity-checks" class="nav-link" data-scroll-target="#sensitivity-checks">Sensitivity checks</a></li>
-  </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">38.9</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">38.10</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">38.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">38.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-an-evaluation-suite-for-a-summarization-system" id="toc-building-an-evaluation-suite-for-a-summarization-system" class="nav-link" data-scroll-target="#building-an-evaluation-suite-for-a-summarization-system">Building an evaluation suite for a summarization system</a></li>
   <li><a href="#auditing-a-classification-system-for-demographic-disparities" id="toc-auditing-a-classification-system-for-demographic-disparities" class="nav-link" data-scroll-target="#auditing-a-classification-system-for-demographic-disparities">Auditing a classification system for demographic disparities</a></li>
   <li><a href="#setting-up-production-monitoring-for-an-ai-application" id="toc-setting-up-production-monitoring-for-an-ai-application" class="nav-link" data-scroll-target="#setting-up-production-monitoring-for-an-ai-application">Setting up production monitoring for an AI application</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">38.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">38.12</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">38.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">38.14</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/evaluating-ai.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -726,279 +756,441 @@ ul.task-list li input[type="checkbox"] {
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/evaluating-ai.png" class="img-fluid" alt="Ants Meme: Do you want hallucinations? Because that’s how you get hallucinations."></p>
 </div>
-<p>Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter — or whether it regresses when the model, prompt, or data changes.</p>
-<p>Evaluation is the practice of measuring AI system behavior in a principled way. <a href="../chapters/appendix-glossary.html#term-audit">Auditing</a> is the practice of looking critically for failures you did not anticipate: biases, edge cases, safety violations, and inconsistencies. Together they give you the evidence to know whether a system is working, in what ways it is failing, and whether a change made things better or worse.</p>
-<p>This chapter builds on the verification practices introduced in <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> and applies them at scale: not just “check this output before you use it” but “design an evaluation system that tells you the truth about your AI application.”</p>
+<p>Here’s a situation that comes up in almost every class that lets students use AI. You have 2,000 open-ended comments from a course survey, and you ask a language model to sort each one into positive, negative, or mixed. You try five first, it gets all five right, so you run the rest and write that the model “classified the comments accurately.” Then your instructor asks: how accurately, compared to what, and for whom? You can’t answer any of the three.</p>
+<p>If that has happened to you, you’re in good company. Five right answers <em>feel</em> like evidence, and that feeling is how most AI mistakes get into finished work. What you need is what you’d want from any measuring instrument: cases where you already know the right answer, a count of how often the system gets them, and an honest sense of how far off that count could be. That’s <strong>evaluation</strong>. Its partner, <a href="../chapters/appendix-glossary.html#term-audit">auditing</a>, is looking on purpose for the failures you didn’t anticipate: the groups, topics, and odd inputs where the system does worse than its average suggests.</p>
+<p><a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> teaches you to check one output before you use it. This chapter scales that habit up: building a small evaluation set, checking your own labels, scoring a model with a few lines of pandas and scikit-learn, automating checks, watching a system after it ships, and auditing it for who it fails. Every example uses made-up data and simulated model outputs, so you can run it all without an API key. It won’t teach you to train models; it gives you enough to make a claim about an AI system that you can defend.</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li><p>Explain why evaluating AI outputs is fundamentally harder than evaluating traditional software</p></li>
-<li><p>Describe the key dimensions along which AI output quality can be measured</p></li>
-<li><p>Construct a rubric for manually evaluating outputs in a specific domain</p></li>
-<li><p>Build a simple evaluation test suite and run it against a prompt or model</p></li>
-<li><p>Describe how LLM-as-judge evaluation works, including its limitations</p></li>
-<li><p>Design a representative evaluation set that covers edge cases and known failure modes</p></li>
-<li><p>Explain what drift is and describe how to monitor for it in a deployed system</p></li>
-<li><p>Apply an auditing mindset to identify unexpected or biased behaviors</p></li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You tried your prompt on five examples, it got all five right, and you’re not sure that means anything.</li>
+<li>You used a model to label a few thousand survey responses, tweets, or abstracts, and now you need to report how accurate it was with a number you can defend.</li>
+<li>You and a classmate labeled the same 50 items by hand, disagreed on a dozen, and don’t know whose labels count as “right.”</li>
+<li>Your script parsed the model’s JSON fine yesterday, and today it dies with <code>JSONDecodeError: Expecting value: line 1 column 1 (char 0)</code>.</li>
+<li>You changed one sentence in a prompt and have no idea whether things got better or worse.</li>
+<li>Someone suggested having one model grade another model’s answers, and you’d like to know when that’s trustworthy.</li>
+<li>A tool advertises 90% accuracy, and you want to know who’s in the other 10%.</li>
+</ul>
 </section>
 <section id="running-theme-measure-before-you-trust" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-measure-before-you-trust">Running theme: measure before you trust</h2>
-<p>A system you cannot measure is a system you cannot improve. Before deploying any AI application, decide how you will know if it is working. After deploying, keep measuring. AI systems that seem fine during development regularly surprise you in production.</p>
+<p>If you can’t say how you’d know the system is working, you don’t yet know that it is. Decide how you’ll measure before you rely on it, and keep measuring afterwards, because AI systems that look fine in testing regularly surprise people once real inputs arrive.</p>
 </section>
-<section id="why-evaluation-is-hard" class="level2" data-number="38.1">
-<h2 data-number="38.1" class="anchored" data-anchor-id="why-evaluation-is-hard"><span class="header-section-number">38.1</span> Why evaluation is hard</h2>
-<p>Evaluating traditional software is relatively tractable: given input <code>X</code>, the function should return <code>Y</code>. If it returns something else, it is wrong. AI systems break this assumption in several ways.</p>
-<p><strong>There is often no single correct answer.</strong> “Summarize this article” can have many valid outputs. “Is this response helpful?” involves human judgment that varies by person, context, and purpose. Traditional pass/fail testing does not map cleanly onto open-ended generation tasks.</p>
-<p><strong>Outputs are stochastic.</strong> The same input at temperature &gt; 0 produces different outputs each time. A system that passes a test today may fail the same test tomorrow. You need to evaluate distributions of outputs, not just single examples.</p>
-<p><strong>Failures are subtle.</strong> A wrong answer in traditional software is usually obvious (exception, wrong type, wrong value). An AI system can produce fluent, confident, plausible-sounding text that is subtly wrong, misleading, or harmful — and it will look fine to a casual reader.</p>
-<p><strong>The evaluation target moves.</strong> Model providers update models. You change prompts. Data distributions shift. An evaluation suite that was passing last month may produce different results today, and without monitoring you will not know until a user complains.</p>
-<p><strong>Human judgment is expensive.</strong> The most reliable evaluation is careful human review. But human review does not scale to thousands of outputs, and human raters disagree with each other. Building a scalable evaluation system requires a combination of automated and human methods.</p>
+<section id="why-checking-ai-is-harder-than-testing-code" class="level2" data-number="38.1">
+<h2 data-number="38.1" class="anchored" data-anchor-id="why-checking-ai-is-harder-than-testing-code"><span class="header-section-number">38.1</span> Why checking AI is harder than testing code</h2>
+<p>Testing ordinary code is reasonably easy: a function that adds two numbers should return 4 when you give it 2 and 2, and a one-line test will tell you forever whether it does. AI systems break that comfortable picture in several ways at once.</p>
+<p><strong>There’s often no single right answer.</strong> “Summarize this article” has many good summaries. Even labeling a comment gets fuzzy at the edges: is “Lectures were fine but the exams felt unfair” negative or mixed? Two careful people can disagree.</p>
+<p><strong>Outputs vary.</strong> A language model picks each word by sampling from probabilities (see <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>), so the same input can give different outputs on different runs. A low temperature helps but doesn’t guarantee repeatability: Anthropic’s <a href="https://platform.claude.com/docs/en/about-claude/glossary">glossary</a> warns that even at temperature 0, identical inputs may produce different outputs across API calls. So you evaluate on many inputs, not one lucky example.</p>
+<p><strong>Failures look like successes.</strong> Broken code usually throws an error. A model that’s wrong gives you fluent, confident text, which is why people call it a <a href="https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)">hallucination</a>. A casual read won’t catch it; a comparison against a known answer will.</p>
+<p><strong>The target moves.</strong> Providers update models, you edit prompts, and the inputs change. A 2023 study by <a href="https://arxiv.org/abs/2307.09009">Chen, Zaharia, and Zou</a> found that GPT-4’s accuracy at identifying prime numbers fell from 84% in its March 2023 version to 51% in June: same model name, same questions, very different answers.</p>
+<p><strong>People are expensive, and they disagree.</strong> Careful human review is the most trustworthy evaluation there is, but it doesn’t scale to thousands of outputs. Most real evaluation is a mix: people set the standard on a small set, and code carries it to the rest.</p>
+<p>You’ll also see models ranked on public benchmarks such as <a href="https://en.wikipedia.org/wiki/MMLU">MMLU</a> (multiple-choice questions across 57 subjects) or Stanford’s <a href="https://crfm.stanford.edu/helm/">HELM</a>, which scores calibration, fairness, bias, toxicity, and efficiency as well as accuracy. They’re useful for comparing models in general, but they measure the benchmark’s task, not yours. Because the questions are public, some can end up in the text models are trained on, and once everyone competes on a number, people tune for the number: <a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">Goodhart’s law</a>, “when a measure becomes a target, it ceases to be a good measure.” The only evaluation that tells you whether a model works for <em>your</em> task is one built from your task.</p>
 </section>
-<section id="dimensions-of-quality" class="level2" data-number="38.2">
-<h2 data-number="38.2" class="anchored" data-anchor-id="dimensions-of-quality"><span class="header-section-number">38.2</span> Dimensions of quality</h2>
-<p>Before you can measure quality, you need to decide what quality means for your specific application. Different tasks call for different dimensions.</p>
-<p><strong>Correctness.</strong> Does the output contain accurate information? For factual tasks (Q&amp;A, data extraction, code generation), this is often the primary dimension. Correctness is usually verified by comparing to a reference answer or running the output (in the case of code).</p>
-<p><strong>Completeness.</strong> Does the output include all the required information? A summary that omits a key finding is incomplete even if everything it says is accurate.</p>
-<p><strong>Consistency.</strong> Does the system produce the same answer when the same question is asked in different ways? Inconsistency is a sign that the model is sensitive to phrasing rather than reasoning about the underlying question.</p>
-<p><strong>Relevance.</strong> Does the output address what was asked? A model that answers a different question than the one posed may be technically accurate about something you did not ask.</p>
-<p><strong>Safety.</strong> Does the output avoid harmful, offensive, or inappropriate content? Safety evaluation is required for any consumer-facing or sensitive application.</p>
-<p><strong>Format compliance.</strong> If you specified a format (JSON, numbered list, specific fields), does the output follow it? Format failures break downstream code.</p>
-<p><strong>Tone and style.</strong> For user-facing content, does the tone match the intended audience? Is it too formal, too casual, too long, or too terse?</p>
-<p>Not every dimension matters for every application. A classification system needs correctness and consistency. A customer-facing chatbot needs relevance, safety, and tone. Decide which dimensions matter for your task before designing your evaluation.</p>
+<section id="decide-what-good-means" class="level2" data-number="38.2">
+<h2 data-number="38.2" class="anchored" data-anchor-id="decide-what-good-means"><span class="header-section-number">38.2</span> Decide what “good” means</h2>
+<p>“Is this output good?” is too vague to score, and it’s where many projects skip ahead too fast. Break “good” into dimensions, each asking a question you could actually answer:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>The question it asks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Correctness</td>
+<td>Is the information accurate? Does the code run and pass tests?</td>
+</tr>
+<tr class="even">
+<td>Completeness</td>
+<td>Is everything required there? A summary that skips the key finding fails even if every sentence is true.</td>
+</tr>
+<tr class="odd">
+<td>Consistency</td>
+<td>Do rephrasings of the same question get the same answer?</td>
+</tr>
+<tr class="even">
+<td>Relevance</td>
+<td>Does it answer the question that was asked?</td>
+</tr>
+<tr class="odd">
+<td>Safety</td>
+<td>Does it avoid harmful, offensive, or inappropriate content?</td>
+</tr>
+<tr class="even">
+<td>Format</td>
+<td>Does it follow the structure you asked for? Format failures break the code downstream.</td>
+</tr>
+<tr class="odd">
+<td>Tone and style</td>
+<td>Does it suit the audience, at the right length?</td>
+</tr>
+</tbody>
+</table>
+<p>You don’t need all seven. A classifier mostly needs correctness and consistency; a public chatbot needs relevance, safety, and tone; an extraction pipeline lives or dies on format. Pick two or three and write them down <em>before</em> you look at outputs. Choose afterwards, and you’ll tend to pick the ones your system already does well on.</p>
 </section>
-<section id="verification-workflows-at-scale" class="level2" data-number="38.3">
-<h2 data-number="38.3" class="anchored" data-anchor-id="verification-workflows-at-scale"><span class="header-section-number">38.3</span> Verification workflows at scale</h2>
-<p><a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> introduced a risk-based verification policy for individual outputs: low-risk outputs get a quick sanity check; high-risk outputs get careful verification against authoritative sources. The same principle scales to evaluation systems.</p>
-<p><strong>For low-stakes bulk processing</strong> (summarizing internal documents, classifying records, generating draft content): automate evaluation with simple heuristics (length, format compliance, keyword presence) and sample a small fraction for human review.</p>
-<p><strong>For medium-stakes applications</strong> (customer-facing responses, research assistance, code review): build a structured evaluation suite with representative test cases, run it on every prompt change and model update, and review failures before deploying.</p>
-<p><strong>For high-stakes applications</strong> (medical, legal, financial, safety-critical): manual review of every output may be necessary. AI systems in these domains typically require human in the loop for the final decision regardless of how good the model is.</p>
+<section id="match-your-effort-to-the-stakes" class="level2" data-number="38.3">
+<h2 data-number="38.3" class="anchored" data-anchor-id="match-your-effort-to-the-stakes"><span class="header-section-number">38.3</span> Match your effort to the stakes</h2>
+<p><a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> introduced a risk-based policy for single outputs. The same idea decides how much evaluation a whole system needs, and it saves you from both extremes: hand-checking every output of a harmless tool, or trusting a consequential one on vibes.</p>
+<p><strong>For low-stakes bulk work</strong> (summarizing your own notes, sorting records for a first look), automate cheap checks such as length and format, and read a small random sample. <strong>For medium-stakes work</strong> (labels that feed a paper, answers other people will read), build an evaluation set with known answers and rerun it on every prompt change or model update. <strong>For high-stakes work</strong> (anything medical, legal, financial, or affecting people’s access to jobs, housing, or services), plan for a person to review every output and make the final decision, however good the scores look.</p>
+<p>For the formal version, see the U.S. National Institute of Standards and Technology’s <a href="https://www.nist.gov/itl/ai-risk-management-framework">AI Risk Management Framework</a> (January 2023), which organizes this thinking into four functions: govern, map, measure, and manage.</p>
 </section>
-<section id="manual-evaluation-and-auditing" class="level2" data-number="38.4">
-<h2 data-number="38.4" class="anchored" data-anchor-id="manual-evaluation-and-auditing"><span class="header-section-number">38.4</span> Manual evaluation and auditing</h2>
-<p>Manual evaluation is slower than automation but more reliable. It is your ground truth, and it is necessary for building and calibrating automated evaluators.</p>
-<section id="rubrics" class="level3">
-<h3 class="anchored" data-anchor-id="rubrics">Rubrics</h3>
-<p>A rubric is a structured scoring guide. Rather than asking “is this good?”, a rubric asks specific, answerable questions:</p>
-<pre><code>Correctness (0-2):
+<section id="build-a-small-evaluation-set" class="level2" data-number="38.4">
+<h2 data-number="38.4" class="anchored" data-anchor-id="build-a-small-evaluation-set"><span class="header-section-number">38.4</span> Build a small evaluation set</h2>
+<p>An <strong>evaluation set</strong> is a collection of inputs where you already know what a good output looks like. Everything else in this chapter depends on it, and it’s less work than it sounds: twenty examples that probe where the system might stumble tell you more than fifty easy ones that all pass.</p>
+<p><strong>Start from real inputs,</strong> with names and personal details removed. Toy examples you write yourself are cleaner and easier than the real thing. If inputs come in kinds (short and long, one language and another), sample from each on purpose, which is <a href="https://en.wikipedia.org/wiki/Stratified_sampling">stratified sampling</a>, so rare kinds aren’t left out.</p>
+<p><strong>Add the edges,</strong> the inputs you suspect will be hard:</p>
+<ul>
+<li>very short inputs, and very long ones near the context limit</li>
+<li>unusual formatting: emoji, accented characters, code, tables</li>
+<li>writing in another language, or in more than one</li>
+<li>ambiguous inputs that could honestly be read two ways</li>
+<li>inputs outside what the system is meant to handle</li>
+</ul>
+<p><strong>Add every failure you find,</strong> so the same mistake can’t come back unnoticed. <strong>And keep the set like raw data</strong> (see <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a>): save it as a CSV, commit it, note where each example came from, and never quietly edit an answer to make a new prompt look better.</p>
+<p>Here’s the set this chapter uses: sixteen invented course-survey comments. Two people labeled each one independently (<code>rater_a</code>, <code>rater_b</code>), then talked through their disagreements and settled a final answer (<code>gold</code>). The <code>model</code> column is simulated for this chapter, not a real model’s output. The <code>english</code> column records whether the writer said English was their first language or an additional one, which you’ll need for auditing.</p>
+<pre class="text"><code>id,english,comment,rater_a,rater_b,gold,model
+1,first,"Loved the weekly labs, best class this term.",positive,positive,positive,positive
+2,first,"Lectures were fine but the exams felt unfair.",mixed,negative,mixed,negative
+3,first,"Too much reading and never enough time to do it.",negative,negative,negative,negative
+4,first,"Honestly the group project was the best part.",positive,positive,positive,positive
+5,first,"Grading was slow and nobody answered emails.",negative,negative,negative,negative
+6,first,"Pretty good overall, although the textbook cost a fortune.",mixed,mixed,mixed,mixed
+7,first,"Labs were useful. Lectures, not so much.",mixed,mixed,mixed,mixed
+8,first,"Nothing to complain about.",positive,mixed,positive,positive
+9,additional,"The TA office hours saved my grade.",positive,positive,positive,positive
+10,additional,"Professor is very kind but homework is too much for me.",mixed,mixed,mixed,negative
+11,additional,"I not understand the slides many times.",negative,negative,negative,negative
+12,additional,"Class is good, projects are hard but I learn a lot.",positive,mixed,positive,negative
+13,additional,"The exam was too long, we had no time to finish.",negative,negative,negative,negative
+14,additional,"Very helpful course, I recommend to my friends.",positive,positive,positive,mixed
+15,additional,"Sometimes the lecture is fast, but the notes help me.",mixed,mixed,mixed,mixed
+16,additional,"Teacher explain very clear, I like it.",positive,positive,positive,positive</code></pre>
+<p>Save it as <code>eval_set.csv</code> and load it with pandas (see <a href="pandas-basics.html" class="quarto-xref"><span>Chapter 22</span></a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"eval_set.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"gold"</span>].value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>(16, 7)
+gold
+positive    7
+mixed       5
+negative    4
+Name: count, dtype: int64</code></pre>
+<p>Sixteen rows is tiny on purpose: small enough to read in one sitting, and the next sections show exactly how much (and how little) it can tell you.</p>
+</section>
+<section id="check-your-human-labels-first" class="level2" data-number="38.5">
+<h2 data-number="38.5" class="anchored" data-anchor-id="check-your-human-labels-first"><span class="header-section-number">38.5</span> Check your human labels first</h2>
+<p>It’s tempting to skip straight to scoring the model. But your gold labels are the ruler you’ll measure it with, and if two careful people can’t agree on them, the ruler is bent. So measure the people first.</p>
+<section id="write-a-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="write-a-rubric">Write a rubric</h3>
+<p>A rubric replaces “is this good?” with specific questions that have specific answers. For open-ended outputs such as summaries, it might look like this:</p>
+<pre class="text"><code>Correctness (0-2):
   0 = Contains factual errors
   1 = Mostly correct but missing key details
   2 = Fully accurate and complete
 
 Format (0-1):
-  0 = Does not follow required JSON structure
+  0 = Does not follow the required JSON structure
   1 = Valid JSON with all required fields
 
 Tone (0-1):
   0 = Too technical for the intended audience
   1 = Appropriate for a non-specialist reader</code></pre>
-<p>Rubrics make evaluation faster, more consistent across raters, and easier to aggregate into metrics. When building a rubric, pilot it on 10–20 examples before scaling up: if two raters consistently disagree on a dimension, the dimension is underspecified.</p>
+<p>For a labeling task, the rubric is a definition of each label with an example of the hard cases (“mixed means the comment praises one thing and criticizes another”). Rubrics make scoring faster and raters more consistent. Before using one at scale, pilot it on 10 to 20 examples with two raters.</p>
 </section>
-<section id="spot-checking" class="level3">
-<h3 class="anchored" data-anchor-id="spot-checking">Spot-checking</h3>
-<p>For large-scale outputs, systematically sampling and reviewing a fraction is often more informative than exhaustive review of a small set. Sample <em>stratified by input type</em>: if your system handles different kinds of queries, make sure your sample includes all types, not just the most common.</p>
-<p>Review failures with as much context as possible: the original input, the full output, and the expected output. Understanding why a failure occurred is as important as knowing that it occurred.</p>
+<section id="measure-how-often-the-raters-agree" class="level3">
+<h3 class="anchored" data-anchor-id="measure-how-often-the-raters-agree">Measure how often the raters agree</h3>
+<p>The obvious measure is the share of items both raters labeled the same way. The catch is that some agreement happens by luck: two people guessing among three labels would still match now and then. <strong>Cohen’s kappa</strong> corrects for that, comparing the agreement you saw with what chance alone would give, so that 1 means perfect agreement and 0 means no better than chance. It’s the standard first measure of <a href="https://en.wikipedia.org/wiki/Inter-rater_reliability">inter-rater reliability</a>, and <a href="https://scikit-learn.org/stable/install.html">scikit-learn</a> computes it (<code>pip install scikit-learn</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> cohen_kappa_score</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>agree <span class="op">=</span> (df[<span class="st">"rater_a"</span>] <span class="op">==</span> df[<span class="st">"rater_b"</span>]).mean()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(df[<span class="st">"rater_a"</span>], df[<span class="st">"rater_b"</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Raw agreement: </span><span class="sc">{</span>agree<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cohen's kappa: </span><span class="sc">{</span>kappa<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Raw agreement: 0.81
+Cohen's kappa: 0.72</code></pre>
+<p>If that feels like a black box, compute it yourself once. Chance agreement comes from how often each rater used each label:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p_a <span class="op">=</span> df[<span class="st">"rater_a"</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p_b <span class="op">=</span> df[<span class="st">"rater_b"</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>chance <span class="op">=</span> (p_a <span class="op">*</span> p_b).<span class="bu">sum</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Chance agreement: </span><span class="sc">{</span>chance<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Kappa by hand:    </span><span class="sc">{</span>(agree <span class="op">-</span> chance) <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> chance)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Chance agreement: 0.33
+Kappa by hand:    0.72</code></pre>
+<p>Is 0.72 good? You’ll often see the Landis and Koch (1977) scale, which calls 0.61 to 0.80 “substantial,” but the <a href="https://en.wikipedia.org/wiki/Cohen%27s_kappa">Wikipedia article on Cohen’s kappa</a> notes those cutoffs rest on opinion, not evidence. More useful is reading the disagreements. All three (comments 2, 8, and 12) involve “mixed,” so the rubric’s definition of mixed needs work. Every disagreement is a small bug report about your rubric: fix the wording, relabel, and measure again.</p>
 </section>
-<section id="red-teaming-and-adversarial-prompting" class="level3">
-<h3 class="anchored" data-anchor-id="red-teaming-and-adversarial-prompting">Red-teaming and adversarial prompting</h3>
-<p>Red-teaming is the practice of deliberately trying to break your system. Write inputs designed to:</p>
-<ul>
-<li><p>Trigger harmful or policy-violating outputs</p></li>
-<li><p>Confuse the model about what is being asked</p></li>
-<li><p>Cause the model to ignore your system prompt instructions</p></li>
-<li><p>Produce incorrect outputs by exploiting the model’s biases</p></li>
-<li><p>Elicit confidential information (system prompt leakage)</p></li>
-</ul>
-<p>Red-teaming is most useful when done by someone other than the system’s author. You are too close to the system to imagine all the ways a user might misuse or confuse it.</p>
+<section id="spot-check-what-you-cant-label" class="level3">
+<h3 class="anchored" data-anchor-id="spot-check-what-you-cant-label">Spot-check what you can’t label</h3>
+<p>When a system produces far more output than you could ever label, read a sample of it, drawn from every kind of input and not only the common ones. Look at each output beside its input so you can see <em>why</em> it went wrong. A spot-check won’t give you a precise number, but it’s how you find failure modes you didn’t know to put in the set.</p>
 </section>
 </section>
-<section id="automated-evaluation" class="level2" data-number="38.5">
-<h2 data-number="38.5" class="anchored" data-anchor-id="automated-evaluation"><span class="header-section-number">38.5</span> Automated evaluation</h2>
-<p>Manual evaluation does not scale. Once you have calibrated your rubric against human judgments, you can automate significant parts of evaluation.</p>
-<section id="regression-test-suites" class="level3">
-<h3 class="anchored" data-anchor-id="regression-test-suites">Regression test suites</h3>
-<p>A regression test suite is a collection of (input, expected output) pairs that you run against your system on every change. Unlike unit tests for traditional software, AI regression tests are rarely exact-match: you test properties of the output rather than the exact string.</p>
-<pre><code>def test_json_output():
-    response = call_model(EXTRACTION_PROMPT, SAMPLE_DOCUMENT)
-    parsed = json.loads(response)
-    assert "title" in parsed
-    assert "date" in parsed
-    assert isinstance(parsed["date"], str)
-    assert len(parsed["title"]) &gt; 0
+<section id="score-the-model-with-honest-uncertainty" class="level2" data-number="38.6">
+<h2 data-number="38.6" class="anchored" data-anchor-id="score-the-model-with-honest-uncertainty"><span class="header-section-number">38.6</span> Score the model, with honest uncertainty</h2>
+<p>With gold labels you trust, you can ask how the model did. The scikit-learn <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">user guide on metrics</a> covers dozens of measures; three get you a long way.</p>
+<section id="accuracy-and-where-the-errors-went" class="level3">
+<h3 class="anchored" data-anchor-id="accuracy-and-where-the-errors-went">Accuracy, and where the errors went</h3>
+<p><strong>Accuracy</strong> is the share of items the model got right:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"correct"</span>] <span class="op">=</span> df[<span class="st">"model"</span>] <span class="op">==</span> df[<span class="st">"gold"</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>df[<span class="st">'correct'</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Accuracy: 0.75</code></pre>
+<p>Seventy-five percent hides <em>which</em> mistakes the model makes. A <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> shows them, with one row per true label, one column per label the model gave, and a count in every cell. pandas makes one with <a href="https://pandas.pydata.org/docs/reference/api/pandas.crosstab.html"><code>crosstab</code></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.crosstab(df[<span class="st">"gold"</span>], df[<span class="st">"model"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>model     mixed  negative  positive
+gold
+mixed         3         2         0
+negative      0         4         0
+positive      1         1         5</code></pre>
+<p>The diagonal holds the correct answers (3 + 4 + 5 = 12); everything else is an error. The pattern is plain once you look: the model never missed a negative comment, but it called three comments negative that weren’t. It’s too quick to see criticism.</p>
+</section>
+<section id="precision-and-recall" class="level3">
+<h3 class="anchored" data-anchor-id="precision-and-recall">Precision and recall</h3>
+<p>That pattern has names. For one label, <strong>precision</strong> asks “when the model said <em>negative</em>, how often was it right?” and <strong>recall</strong> asks “of the truly negative comments, how many did it find?” (Wikipedia’s <a href="https://en.wikipedia.org/wiki/Precision_and_recall">precision and recall</a> article has good pictures.) scikit-learn’s <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html"><code>classification_report</code></a> prints both for every label:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(df[<span class="st">"gold"</span>], df[<span class="st">"model"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>              precision    recall  f1-score   support
 
-def test_does_not_include_pii():
-    response = call_model(SUMMARY_PROMPT, DOCUMENT_WITH_NAMES)
-    assert "John Smith" not in response
-    assert "555-1234" not in response</code></pre>
-<p>Structure your regression tests around behaviors that must hold, not around specific wording. Run them after any prompt change, model upgrade, or configuration change.</p>
-</section>
-<section id="llm-as-judge" class="level3">
-<h3 class="anchored" data-anchor-id="llm-as-judge">LLM-as-judge</h3>
-<p>You can use a language model to evaluate another model’s outputs. The evaluator model receives a rubric, the original input, and the output to evaluate, and returns a structured score.</p>
-<pre><code>JUDGE_PROMPT = """
-You are evaluating the quality of an AI assistant response.
+       mixed       0.75      0.60      0.67         5
+    negative       0.57      1.00      0.73         4
+    positive       1.00      0.71      0.83         7
 
-Input to the assistant: {input}
-Assistant response: {response}
-
-Rate the response on correctness (0-2) and relevance (0-2).
-Respond in JSON: {"correctness": &lt;score&gt;, "relevance": &lt;score&gt;,
-  "reasoning": "&lt;brief explanation&gt;"}
-"""</code></pre>
-<p>LLM-as-judge is useful for evaluating dimensions like tone, helpfulness, and coherence that are hard to check programmatically. Its limitations:</p>
+    accuracy                           0.75        16
+   macro avg       0.77      0.77      0.74        16
+weighted avg       0.81      0.75      0.75        16</code></pre>
+<p>Negative has perfect recall and poor precision: the confusion matrix’s story in two numbers. Which matters more depends on your purpose. If you’re flagging complaints for a person to follow up, a miss is worse than a false alarm. If you’re reporting what share of comments were negative, the false alarms inflate your number. F1 balances the two, and “support” is how many true examples of each label there were.</p>
+</section>
+<section id="how-sure-can-you-be" class="level3">
+<h3 class="anchored" data-anchor-id="how-sure-can-you-be">How sure can you be?</h3>
+<p>Here’s the question almost everyone skips: if the model got 75% of <em>these</em> sixteen right, what would it get on the other 1,984? A <a href="https://en.wikipedia.org/wiki/Confidence_interval">confidence interval</a> puts a range around the number, and the easiest way to get one is the <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">bootstrap</a>: treat your evaluation set as the population, draw thousands of same-sized sets from it with replacement, score each, and see how far the scores spread. NumPy’s <a href="https://numpy.org/doc/stable/reference/random/index.html">random generator</a> does the drawing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>correct <span class="op">=</span> df[<span class="st">"correct"</span>].to_numpy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [rng.choice(correct, size<span class="op">=</span><span class="bu">len</span>(correct)).mean() <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10_000</span>)]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>low, high <span class="op">=</span> np.percentile(scores, [<span class="fl">2.5</span>, <span class="fl">97.5</span>])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy </span><span class="sc">{</span>correct<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">, 95% interval </span><span class="sc">{</span>low<span class="sc">:.2f}</span><span class="ss"> to </span><span class="sc">{</span>high<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Accuracy 0.75, 95% interval 0.50 to 0.94</code></pre>
+<p>Honest, and humbling: on this evidence the real accuracy could be anything from a coin flip to excellent. The fix is more examples. The same bootstrap on larger sets, each 75% correct, gives:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Items in the set</th>
+<th>95% interval around 75%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16</td>
+<td>0.50 to 0.94</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>0.62 to 0.86</td>
+</tr>
+<tr class="odd">
+<td>200</td>
+<td>0.69 to 0.81</td>
+</tr>
+<tr class="even">
+<td>1,000</td>
+<td>0.72 to 0.78</td>
+</tr>
+</tbody>
+</table>
+<p>Two hundred labeled examples turns “somewhere between a coin flip and excellent” into “about 75%, give or take six points.” Report the interval (or at least the number of examples) beside every score. And when two prompts’ intervals overlap a lot, the “better” one may just have been luckier.</p>
+</section>
+</section>
+<section id="automated-checks-that-run-on-every-change" class="level2" data-number="38.7">
+<h2 data-number="38.7" class="anchored" data-anchor-id="automated-checks-that-run-on-every-change"><span class="header-section-number">38.7</span> Automated checks that run on every change</h2>
+<p>Once people have set the standard, you can hand parts of it to code. Automated checks run in seconds, so you can run them after every prompt edit or model update, which is exactly when <a href="https://en.wikipedia.org/wiki/Regression_testing">regressions</a> sneak in.</p>
+<section id="regression-checks" class="level3">
+<h3 class="anchored" data-anchor-id="regression-checks">Regression checks</h3>
+<p>AI checks are rarely exact-match, because the wording changes from run to run. Instead, check <em>properties</em> the output must have: it parses, the required fields are there, and nothing forbidden appears. Here’s a check for a model that extracts a title and a date as JSON, using Python’s <a href="https://docs.python.org/3/library/json.html"><code>json</code> module</a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>FORBIDDEN <span class="op">=</span> [<span class="st">"John Smith"</span>, <span class="st">"555-1234"</span>]   <span class="co"># details that must never reach the output</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_extraction(response: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the problems with one model response; an empty list means it passed."""</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        parsed <span class="op">=</span> json.loads(response)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> json.JSONDecodeError <span class="im">as</span> err:</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="ss">f"not valid JSON (</span><span class="sc">{</span>err<span class="sc">}</span><span class="ss">)"</span>]</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    problems <span class="op">=</span> []</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> field <span class="kw">in</span> [<span class="st">"title"</span>, <span class="st">"date"</span>]:</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> parsed.get(field):</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>            problems.append(<span class="ss">f"missing or empty </span><span class="sc">{</span>field<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> secret <span class="kw">in</span> FORBIDDEN:</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> secret <span class="kw">in</span> response:</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>            problems.append(<span class="ss">f"leaked </span><span class="sc">{</span>secret<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> problems</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>good <span class="op">=</span> <span class="st">'{"title": "Budget hearing", "date": "2026-03-04"}'</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>fenced <span class="op">=</span> <span class="st">'```json</span><span class="ch">\n</span><span class="st">{"title": "Budget hearing", "date": "2026-03-04"}</span><span class="ch">\n</span><span class="st">```'</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>leaky <span class="op">=</span> <span class="st">'{"title": "Call John Smith at 555-1234", "date": ""}'</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, response <span class="kw">in</span> [(<span class="st">"good"</span>, good), (<span class="st">"fenced"</span>, fenced), (<span class="st">"leaky"</span>, leaky)]:</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, check_extraction(response))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>good []
+fenced ['not valid JSON (Expecting value: line 1 column 1 (char 0))']
+leaky ["missing or empty 'date'", "leaked 'John Smith'", "leaked '555-1234'"]</code></pre>
+<p>The <code>fenced</code> case is one of the most common snags there is. The model returned good JSON wrapped in a Markdown code fence, and <code>json.loads</code> gives up on the first character. If your script has died with <code>Expecting value: line 1 column 1 (char 0)</code> on output that looked fine, this is almost certainly why: tighten the prompt, or strip the fence before parsing. Run checks like these over the whole evaluation set after every change; <a href="https://docs.pytest.org/en/stable/getting-started.html">pytest</a> can run them for you as tests.</p>
+</section>
+<section id="using-a-model-as-the-judge" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-model-as-the-judge">Using a model as the judge</h3>
+<p>Tone, helpfulness, or whether a summary caught the main point are hard to check with code. A common workaround is <strong>LLM-as-judge</strong>: give a second model a rubric, the input, and the output, and ask for a score.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>JUDGE_PROMPT <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="st">You are evaluating the quality of an AI assistant response.</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">Input to the assistant: </span><span class="sc">{input}</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">Assistant response: </span><span class="sc">{response}</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">Rate the response on correctness (0-2) and relevance (0-2).</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">Respond in JSON: </span><span class="sc">{{</span><span class="st">"correctness": &lt;score&gt;, "relevance": &lt;score&gt;,</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">  "reasoning": "&lt;brief explanation&gt;"</span><span class="sc">}}</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(JUDGE_PROMPT.<span class="bu">format</span>(<span class="bu">input</span><span class="op">=</span><span class="st">"What is 2 + 2?"</span>, response<span class="op">=</span><span class="st">"4"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice the doubled braces around the JSON example. Python’s <a href="https://docs.python.org/3/library/string.html#format-string-syntax"><code>str.format</code></a> treats every <code>{...}</code> as a slot to fill, so with single braces the call fails with <code>KeyError: '"correctness"'</code>, which is baffling the first time. A doubled brace means a literal one, and the printed prompt shows single braces.</p>
+<p>Judges are useful, with known weaknesses. A 2023 study by <a href="https://arxiv.org/abs/2306.05685">Zheng and colleagues</a> found that GPT-4 as a judge agreed with human preferences over 80% of the time, about as often as humans agreed with each other, and also documented <em>position bias</em> (favoring the answer shown first), <em>verbosity bias</em> (favoring longer answers), and <em>self-enhancement bias</em> (favoring its own answers). A judge is also another model call: it costs money, sometimes fails, and can make up a score.</p>
+<p>So validate the judge the way you validated your raters: have a person and the judge score the same sample, and compare. Here are ten simulated pairs of 0 to 2 scores:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"human"</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>],</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"judge"</span>: [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>],</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.mean())</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Exact agreement: </span><span class="sc">{</span>(scores[<span class="st">'human'</span>] <span class="op">==</span> scores[<span class="st">'judge'</span>])<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Kappa:           </span><span class="sc">{</span>cohen_kappa_score(scores[<span class="st">'human'</span>], scores[<span class="st">'judge'</span>])<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weighted kappa:  </span><span class="sc">{</span>cohen_kappa_score(scores[<span class="st">'human'</span>], scores[<span class="st">'judge'</span>], weights<span class="op">=</span><span class="st">'quadratic'</span>)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>human    1.3
+judge    1.6
+dtype: float64
+Exact agreement: 0.70
+Kappa:           0.47
+Weighted kappa:  0.74</code></pre>
+<p>Because the scores are ordered, <em>weighted</em> kappa gives partial credit when the judge is off by one rather than two, which is why it’s higher. But the most useful line is the first: in all three disagreements, the judge was more generous. A lenient judge makes every version of your prompt look better than it is. Catching that takes ten minutes of scoring by hand. Use a validated judge for fast first-pass scoring, and keep people in charge of anything high-stakes.</p>
+</section>
+<section id="comparing-against-a-reference-answer" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-against-a-reference-answer">Comparing against a reference answer</h3>
+<p>When you have a correct reference for each input, you can score by comparison. <strong>Exact match</strong> works for short outputs such as labels, which is what the survey example does. For longer text, overlap scores count shared words and phrases: <a href="https://en.wikipedia.org/wiki/ROUGE_(metric)">ROUGE</a> for summaries, <a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a> for translation. They’re rough, since a summary can share most of its words with the reference and still miss the point. <strong>Semantic similarity</strong> compares embeddings of the two texts (see <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>), which copes better with paraphrase. No automatic score captures quality alone; use them to spot changes, then read what they flag.</p>
+</section>
+</section>
+<section id="try-to-break-it" class="level2" data-number="38.8">
+<h2 data-number="38.8" class="anchored" data-anchor-id="try-to-break-it"><span class="header-section-number">38.8</span> Try to break it</h2>
+<p>Everything so far measures the system on inputs you expect. <strong>Red-teaming</strong>, named after the <a href="https://en.wikipedia.org/wiki/Red_team">red teams</a> that play the attacker in security exercises, is deliberately trying to make it fail. Write inputs designed to:</p>
 <ul>
-<li><p>The evaluator model has its own biases; it may prefer verbose responses, favor its own style, or miss subtle factual errors.</p></li>
-<li><p>Agreement with human judgments varies by task. Always validate your LLM judge against human ratings on a sample before relying on it.</p></li>
-<li><p>LLM-as-judge is itself a model call: it costs tokens, has non-zero failure rates, and can hallucinate scores.</p></li>
+<li>produce harmful or policy-violating output</li>
+<li>confuse the model about what’s being asked</li>
+<li>get it to ignore your instructions (<a href="https://en.wikipedia.org/wiki/Prompt_injection">prompt injection</a>)</li>
+<li>exploit a bias to get a wrong answer</li>
+<li>make it reveal its system prompt or other confidential details</li>
 </ul>
-<p>Use LLM-as-judge for scalable first-pass evaluation, not as a replacement for human review of high-stakes outputs.</p>
+<p>The <a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM applications</a> is a good checklist of what attackers try. Red-teaming works best when someone other than the builder does it, since you’re too close to imagine every way a stranger might misuse your system, so trade with a classmate. If your system is an agent that takes actions, <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a> covers what to add. Every successful attack becomes a new row in your evaluation set.</p>
 </section>
-<section id="reference-based-scoring" class="level3">
-<h3 class="anchored" data-anchor-id="reference-based-scoring">Reference-based scoring</h3>
-<p>When you have a ground-truth reference answer (a correct summary, the right extraction, the expected classification), you can compare the model’s output to the reference using similarity metrics:</p>
+<section id="keep-measuring-after-you-ship" class="level2" data-number="38.9">
+<h2 data-number="38.9" class="anchored" data-anchor-id="keep-measuring-after-you-ship"><span class="header-section-number">38.9</span> Keep measuring after you ship</h2>
+<p>Evaluation doesn’t end at launch. Inputs change, models change, and you’ll change the prompt; the only way to notice what that does is to keep records and keep checking.</p>
+<p><strong>Log everything.</strong> Without logs you can’t explain a failure after the fact, notice a slow decline, or build new test cases from real use. At a minimum, record:</p>
 <ul>
-<li><p><strong>Exact match</strong>: for short classifications, slot-filling, or constrained outputs.</p></li>
-<li><p><strong>ROUGE / BLEU</strong>: overlap-based metrics commonly used for summarization. Useful as a rough signal; not reliable as a sole metric.</p></li>
-<li><p><strong>Semantic similarity</strong>: embed both the reference and the output and compare vector similarity. More robust to paraphrase than exact or overlap metrics.</p></li>
+<li>the timestamp</li>
+<li>the full input, including which system prompt version was used</li>
+<li>the full output</li>
+<li>the model version and settings such as temperature and maximum tokens</li>
+<li>token counts, response time, and any error codes</li>
 </ul>
-<p>No automated metric perfectly captures quality. Treat automated scores as signals that require human interpretation, especially when making deployment decisions.</p>
+<p>Real inputs often contain personal information, so mask names and identifying details unless you have explicit permission to keep them, and store logs somewhere private.</p>
+<p><strong>Watch for drift.</strong> The inputs people send can shift away from what you evaluated on (<a href="https://en.wikipedia.org/wiki/Concept_drift">concept drift</a>), and the model underneath can change, as the GPT-4 study showed. Rerun your evaluation on a sample of real traffic on a schedule, and look for falling scores, new kinds of failure, and changes in output length, format compliance, or error rate. Alert when a score drops below a threshold, not only when something crashes: the dangerous failures are the quiet ones.</p>
+<p><strong>Rerun the evaluation after every change</strong> (prompt, model version, tool definition, retrieval settings) before you redeploy. Where your provider allows it, name a specific dated model version rather than an alias that moves to newer models. And keep a changelog of every change and every score, so that when something gets worse you can line it up with what changed and roll back.</p>
+</section>
+<section id="auditing-who-does-the-system-fail" class="level2" data-number="38.10">
+<h2 data-number="38.10" class="anchored" data-anchor-id="auditing-who-does-the-system-fail"><span class="header-section-number">38.10</span> Auditing: who does the system fail?</h2>
+<p>An accuracy score is an average, and averages hide things. <strong>Auditing</strong> asks where the errors land: whether some users, groups, or topics get systematically worse results. This is how <a href="https://en.wikipedia.org/wiki/Algorithmic_bias">algorithmic bias</a> gets found in practice.</p>
+<p>The classic example is Joy Buolamwini and Timnit Gebru’s 2018 study <a href="https://proceedings.mlr.press/v81/buolamwini18a.html"><em>Gender Shades</em></a> (<a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> tells how it started). Three commercial systems that guessed gender from photos had overall accuracies between about 88% and 94%, which sounds respectable. Broken down by skin type and gender, error rates for darker-skinned women reached 34.7%, against at most 0.8% for lighter-skinned men. The overall number was accurate and said almost nothing about who the systems failed.</p>
+<section id="break-your-scores-down-by-group" class="level3">
+<h3 class="anchored" data-anchor-id="break-your-scores-down-by-group">Break your scores down by group</h3>
+<p>You can do the same with your evaluation set in one line, using a pandas <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">group-by</a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">"english"</span>)[<span class="st">"correct"</span>].agg([<span class="st">"mean"</span>, <span class="st">"size"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>             mean  size
+english
+additional  0.625     8
+first       0.875     8</code></pre>
+<p>The model got 7 of 8 right for writers whose first language is English and 5 of 8 for everyone else, and looking back at the comments you can guess why: “Very helpful course, I recommend to my friends” is plainly positive, and the model misread it. Before announcing a finding, though, bootstrap the gap:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>first <span class="op">=</span> df.loc[df[<span class="st">"english"</span>] <span class="op">==</span> <span class="st">"first"</span>, <span class="st">"correct"</span>].to_numpy()</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>additional <span class="op">=</span> df.loc[df[<span class="st">"english"</span>] <span class="op">==</span> <span class="st">"additional"</span>, <span class="st">"correct"</span>].to_numpy()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>gaps <span class="op">=</span> [rng.choice(first, <span class="bu">len</span>(first)).mean() <span class="op">-</span> rng.choice(additional, <span class="bu">len</span>(additional)).mean()</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10_000</span>)]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.percentile(gaps, [<span class="fl">2.5</span>, <span class="fl">97.5</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>[-0.125  0.625]</code></pre>
+<p>With eight comments per group, the interval runs from slightly below zero to a very large gap, so you can’t yet tell a real disparity from bad luck. That’s not a reason to drop it; it’s a lead. Collect more comments from writers whose first language isn’t English, and measure again. A disparity that shows up in a small audit and gets waved away is how systems like the ones in <em>Gender Shades</em> reach the public.</p>
+<p>Group gaps come in several forms, and it helps to know what you’re looking for. <strong>Demographic disparities</strong> show up when a system does worse for names, dialects, or topics associated with particular groups. <strong>Topic sensitivity</strong> shows up as inconsistency: refusing harmless questions on some subjects, answering harmful ones on others. <strong>Style sensitivity</strong> penalizes nonstandard grammar or non-native English, which is what the survey example hints at. And <strong>stereotype reinforcement</strong> ties roles or traits to particular groups in ways that echo social biases.</p>
+</section>
+<section id="counterfactual-tests" class="level3">
+<h3 class="anchored" data-anchor-id="counterfactual-tests">Counterfactual tests</h3>
+<p>To test a disparity directly, write <strong>counterfactual pairs</strong>: inputs identical except for the one detail that signals a group. It’s the design of the <a href="https://en.wikipedia.org/wiki/Audit_study">audit studies</a> social scientists use to measure discrimination in hiring and housing, where matched applicants differ in only one characteristic. The names below echo the best-known one, Bertrand and Mullainathan’s <a href="https://www.nber.org/papers/w9873">“Are Emily and Greg More Employable than Lakisha and Jamal?”</a>, which sent otherwise identical résumés to employers.</p>
+<pre class="text"><code>A: "Summarize the qualifications of candidate Emily Walsh: five years of
+    data analysis experience, SQL and Python, led a team of three..."
+B: "Summarize the qualifications of candidate Lakisha Washington: five years of
+    data analysis experience, SQL and Python, led a team of three..."</code></pre>
+<p>Change one thing at a time: if the swapped name signals both a different gender and a different race, you won’t know which one caused a difference. Run each pair several times (outputs vary), record the label or score, the length, and whether the framing is positive or negative, and compare across many pairs, not one. If outputs differ systematically when only the name changes, write it down and act: change the prompt, change the design, narrow what the system is used for, or don’t use it.</p>
+<p>Finally, test the topics where a wrong answer does real damage (politics, medical and legal advice, people in crisis) against what the system <em>should</em> do: a course-help bot shouldn’t give legal advice. Document what you find either way; “we looked, and here’s what we found” makes the next audit cheaper.</p>
 </section>
 </section>
-<section id="building-an-evaluation-set" class="level2" data-number="38.6">
-<h2 data-number="38.6" class="anchored" data-anchor-id="building-an-evaluation-set"><span class="header-section-number">38.6</span> Building an evaluation set</h2>
-<p>Your evaluation set is only as good as its coverage. A set of 50 easy examples that all succeed gives you false confidence; a set of 20 well-chosen examples that probe known failure modes is more informative.</p>
-<section id="representative-inputs" class="level3">
-<h3 class="anchored" data-anchor-id="representative-inputs">Representative inputs</h3>
-<p>Start with a sample of real inputs your system will encounter. If you are building a customer support bot, collect real support messages (anonymized). If you are building a data extraction tool, collect real documents. Distribution matters: the system that works on toy examples may fail on real ones.</p>
+<section id="stakes-and-politics" class="level2" data-number="38.11">
+<h2 data-number="38.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">38.11</span> Stakes and politics</h2>
+<p>In 2016, ProPublica and the company that sold COMPAS, a <a href="https://en.wikipedia.org/wiki/COMPAS_(software)">risk-assessment tool</a> used in some US criminal courts, looked at the same scores for the same defendants and reached opposite conclusions. ProPublica’s <a href="https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm">analysis</a> found that Black defendants who didn’t go on to reoffend were nearly twice as likely as white defendants to have been labeled higher risk (45 percent against 23 percent). The company answered that a given score meant the same chance of reoffending whatever a defendant’s race. Both were right. They were measuring different things, and deciding which one counts as “working well” is deciding whose errors the system is allowed to make.</p>
+<p>It wasn’t a quirk of one dataset. Common definitions of <a href="https://en.wikipedia.org/wiki/Fairness_(machine_learning)">fairness in classification</a>, such as equal false-positive rates, equal false-negative rates, and equal calibration, can’t all hold at once when groups have different base rates, unless predictions are perfect. Every audit has to choose, and a good one makes the choice visible. Audits can also launder more than they expose: one that tests only the metrics the system was tuned for, or only the groups its builders thought of, can leave large disparities in place while “we ran a bias audit” reads as accountability. And who runs it matters. A vendor auditing its own product, an organization checking a tool it bought, and an independent group with reason to dig are different things. Most audits are the first kind, and the independent ecosystem (researchers, groups like AI Now and the Algorithmic Justice League, newsrooms like ProPublica and The Markup) is small next to the scale of deployment.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.</p>
 </section>
-<section id="edge-cases-and-boundary-conditions" class="level3">
-<h3 class="anchored" data-anchor-id="edge-cases-and-boundary-conditions">Edge cases and boundary conditions</h3>
-<p>Deliberately include inputs at the boundaries of your system’s expected behavior:</p>
-<ul>
-<li><p>Very short inputs (one word, one sentence)</p></li>
-<li><p>Very long inputs (near the context limit)</p></li>
-<li><p>Inputs with unusual formatting (non-ASCII characters, code blocks, tables)</p></li>
-<li><p>Inputs in a language other than the primary one</p></li>
-<li><p>Ambiguous inputs that could be interpreted multiple ways</p></li>
-<li><p>Inputs that fall outside the system’s intended scope</p></li>
-</ul>
-</section>
-<section id="known-failure-modes" class="level3">
-<h3 class="anchored" data-anchor-id="known-failure-modes">Known failure modes</h3>
-<p>Include examples specifically designed to probe failures you have already observed or can anticipate. If the system has previously hallucinated a specific fact, include a test for that fact. If the system has failed on a particular phrasing, add that phrasing. An evaluation set should grow as you discover new failure modes.</p>
-</section>
-<section id="maintaining-and-versioning-the-evaluation-set" class="level3">
-<h3 class="anchored" data-anchor-id="maintaining-and-versioning-the-evaluation-set">Maintaining and versioning the evaluation set</h3>
-<p>Treat your evaluation set like code: version it, document the rationale for each example, and review it when the system’s requirements change. Remove examples that are no longer relevant; add examples that cover new functionality.</p>
-</section>
-</section>
-<section id="managing-outputs-at-scale" class="level2" data-number="38.7">
-<h2 data-number="38.7" class="anchored" data-anchor-id="managing-outputs-at-scale"><span class="header-section-number">38.7</span> Managing outputs at scale</h2>
-<p>Evaluation does not end at deployment. Production systems change in ways that are hard to predict.</p>
-<section id="logging" class="level3">
-<h3 class="anchored" data-anchor-id="logging">Logging</h3>
-<p>Log every input and output your system produces in production. Without logs, you cannot diagnose failures after the fact, monitor for drift, or build evaluation sets from real usage.</p>
-<p>At minimum, log:</p>
-<ul>
-<li><p>Timestamp</p></li>
-<li><p>Full input (including system prompt version)</p></li>
-<li><p>Full output</p></li>
-<li><p>Token count</p></li>
-<li><p>Model version and parameters (temperature, max tokens)</p></li>
-<li><p>Any error codes or latency information</p></li>
-</ul>
-<p>Store logs in a way that preserves privacy: redact or omit personally identifying information unless you have explicit authorization to store it.</p>
-</section>
-<section id="monitoring-and-drift-detection" class="level3">
-<h3 class="anchored" data-anchor-id="monitoring-and-drift-detection">Monitoring and drift detection</h3>
-<p>After deployment, run your evaluation suite periodically on samples of real production traffic. Watch for:</p>
-<ul>
-<li><p>Declining scores on your key metrics</p></li>
-<li><p>New failure modes that were not in your original evaluation set</p></li>
-<li><p>Changes in output length, format compliance, or response patterns</p></li>
-<li><p>Increases in latency, error rates, or token usage</p></li>
-</ul>
-<p>Model providers silently update models. Prompt behavior that was consistent may change when the underlying model is updated. Set up alerts when evaluation scores drop below a threshold, not just when errors occur.</p>
-</section>
-<section id="rerunning-evaluations-after-changes" class="level3">
-<h3 class="anchored" data-anchor-id="rerunning-evaluations-after-changes">Rerunning evaluations after changes</h3>
-<p>Treat any change to the system — prompt, model version, tool definition, retrieval parameters — as requiring a fresh evaluation run before redeployment. Track evaluation scores across versions so you can compare and roll back if a change causes regression.</p>
-</section>
-</section>
-<section id="auditing-for-bias-and-unexpected-behaviors" class="level2" data-number="38.8">
-<h2 data-number="38.8" class="anchored" data-anchor-id="auditing-for-bias-and-unexpected-behaviors"><span class="header-section-number">38.8</span> Auditing for bias and unexpected behaviors</h2>
-<p>Beyond measuring performance on intended inputs, auditing looks for systematic patterns in how a system fails — particularly patterns that affect some users or groups differently.</p>
-<section id="what-to-look-for" class="level3">
-<h3 class="anchored" data-anchor-id="what-to-look-for">What to look for</h3>
-<ul>
-<li><p><strong>Demographic disparities</strong>: Does the system perform differently for names, dialects, or topics associated with different groups? A system that classifies job applications may score resumes with certain names lower.</p></li>
-<li><p><strong>Topic sensitivity</strong>: Are there topics the system handles inconsistently (over-refuses benign requests, under-refuses harmful ones, produces different quality answers)?</p></li>
-<li><p><strong>Style sensitivity</strong>: Does the system penalize non-standard grammar or non-native English in ways that disadvantage some users?</p></li>
-<li><p><strong>Stereotype reinforcement</strong>: Does the system associate roles, traits, or behaviors with particular groups in ways that reflect and amplify social biases?</p></li>
-</ul>
-</section>
-<section id="structured-bias-testing" class="level3">
-<h3 class="anchored" data-anchor-id="structured-bias-testing">Structured bias testing</h3>
-<p>To test for demographic disparities, use counterfactual inputs: identical prompts with only the group-identifying information changed.</p>
-<pre><code># Test 1: Identical prompts with different names
-prompt_a = "Summarize the qualifications of candidate Alice Chen..."
-prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
-
-# Run both; compare tone, length, positive/negative framing</code></pre>
-<p>If outputs differ systematically when only names change, the system may be amplifying training data biases. Document findings; address them by adjusting the prompt, the system design, or the scope of the application.</p>
-</section>
-<section id="sensitivity-checks" class="level3">
-<h3 class="anchored" data-anchor-id="sensitivity-checks">Sensitivity checks</h3>
-<p>Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system’s handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.</p>
-</section>
-</section>
-<section id="stakes-and-politics" class="level2" data-number="38.9">
-<h2 data-number="38.9" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">38.9</span> Stakes and politics</h2>
-<p>In 2016, ProPublica and the company that sold COMPAS, a risk-assessment tool used in US criminal courts, looked at the same scores for the same defendants and reached opposite conclusions. ProPublica found that Black defendants who did not reoffend were about twice as likely as white defendants to have been labeled high risk. The company answered that a given score meant the same chance of reoffending whatever a defendant’s race. Both were right. They were measuring different things, and deciding which one counts as “working well” is deciding whose errors the system is allowed to make.</p>
-<p>First, <em>fairness has incompatible mathematical definitions</em>. The COMPAS dispute was not a quirk of one dataset (see <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a>): common notions of fairness in classification — equal false-positive rates, equal false-negative rates, equal calibration — are mathematically incompatible whenever group base rates differ. You cannot satisfy them all simultaneously; you have to <em>choose</em> which kind of fairness you prioritize. That choice is a political decision dressed as a technical one, and the audit’s job is to make the choice visible, not to disappear it. Second, <em>audits can launder more than they expose</em>. A “we ran a bias audit” line in a deployment announcement reads as accountability and is sometimes the substance of accountability and sometimes its replacement. An audit that tests only the metrics the system was already optimized for, or only on the demographic slices the development team thought to consider, is consistent with very large remaining disparities. The presence of an audit is not the same as the audit having teeth.</p>
-<p>Third, <em>who runs the audit matters</em>. A first-party audit run by the system’s vendor is structurally different from a second-party audit run by the deploying organization, which is structurally different from a third-party audit run by an independent group with the access and incentive to find problems. Most “audits” in practice are first-party. The independent-audit ecosystem (academic researchers, civil-society organizations like AI Now and the Algorithmic Justice League, journalism in the <em>ProPublica</em>/<em>Markup</em> mold) is small and underfunded relative to the deployment scale.</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a> for the model-level biases your audit will be measuring, and <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a> for what changes when the system is taking autonomous actions instead of returning text. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.</p>
-</section>
-<section id="worked-examples" class="level2" data-number="38.10">
-<h2 data-number="38.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">38.10</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="38.12">
+<h2 data-number="38.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">38.12</span> Worked examples</h2>
 <section id="building-an-evaluation-suite-for-a-summarization-system" class="level3">
 <h3 class="anchored" data-anchor-id="building-an-evaluation-suite-for-a-summarization-system">Building an evaluation suite for a summarization system</h3>
-<p>You want to know whether your summarization prompt is actually any good — and whether it gets better or worse when you change it. Start by collecting <strong>20 real documents</strong> from the domain your system will be summarizing. Toy examples are tempting, but they will mislead you about real performance. Then write a <strong>rubric</strong> with three concrete dimensions — say, completeness (does it include the key findings?), accuracy (no fabrications?), and conciseness (no padding?), each scored 0–2. Have <strong>two human raters</strong> independently score 10 summaries with the rubric and <strong>compute inter-rater agreement</strong>. Wherever the raters disagree, the rubric is underspecified — revise the question until the raters land on the same score. The final 10 rated examples become your <strong>calibration set</strong>, the ground truth against which you can test automated evaluators. Now build an LLM judge using the calibrated rubric, run it on the same 10 examples, and compare its scores to the human ratings. If they agree closely, you have a scalable evaluator. If not, refine the judge’s prompt or fall back to human review for the dimensions it cannot score reliably. Run the validated suite on the full set of 20 documents to establish a <strong>baseline</strong>, and rerun it after every prompt change so you can see whether you are making things better or worse.</p>
+<p>You want to know whether your summarization prompt is any good, and whether a change makes it better or worse. <strong>Collect 20 real documents</strong> from the domain it will summarize; toy documents will mislead you. <strong>Write a rubric</strong> with three dimensions, say completeness, accuracy (nothing made up), and conciseness, each scored 0 to 2. <strong>Have two people score 10 summaries independently</strong> and compute kappa for each dimension; wherever they disagree, reword the rubric until they don’t. Those 10 settled examples are your <strong>calibration set</strong>. <strong>Build an LLM judge from the rubric,</strong> score the same 10, and compare with the human scores, checking both kappa and whether the judge runs high; refine it, or keep people on the dimensions it can’t score. Then <strong>run the suite on all 20</strong> to set a baseline with a bootstrap interval, and rerun it after every prompt change so you can tell whether a change helped by more than the noise.</p>
 </section>
 <section id="auditing-a-classification-system-for-demographic-disparities" class="level3">
 <h3 class="anchored" data-anchor-id="auditing-a-classification-system-for-demographic-disparities">Auditing a classification system for demographic disparities</h3>
-<p>You suspect your classification system might treat different groups inconsistently, and you want concrete evidence one way or the other. Begin by identifying the <strong>group-identifying signals</strong> in typical inputs — names, locations, writing styles, dialects, anything that might serve as a demographic proxy. Then construct <strong>paired counterfactual examples</strong>: identical inputs that differ only in the group signal (a resume with the same qualifications but a different name, a complaint with the same content but a different location). Run the system on each pair and record the classification, the model’s confidence, and any qualitative differences you notice in the response. Aggregate the results: pass rates broken down by group, score distributions, false-positive and false-negative rates. <strong>Flag any dimension</strong> where the difference is large enough to be statistically meaningful, and follow up with deeper investigation. Document the findings <em>whether or not they indicate a problem</em> — a clean audit is itself a valuable artifact, and the trail of “we looked and here is what we found” is what makes future audits cheaper.</p>
+<p>You suspect a classifier treats groups differently and want evidence either way. <strong>Identify the group signals</strong> in typical inputs: names, locations, writing style, dialect. <strong>Write counterfactual pairs</strong> that differ in only one signal, such as the same résumé with a different name. <strong>Run each pair several times</strong> and record the label, any confidence score, and anything odd in the wording. <strong>Aggregate by group</strong> (accuracy, false-positive and false-negative rates), each with a bootstrap interval so you can tell a real gap from noise. <strong>Follow up on any gap that holds up</strong> with more examples, and <strong>document the findings whether or not they show a problem</strong>; a clean audit is a useful record too.</p>
 </section>
 <section id="setting-up-production-monitoring-for-an-ai-application" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-production-monitoring-for-an-ai-application">Setting up production monitoring for an AI application</h3>
-<p>You have shipped an AI feature and you want to know if it is silently degrading in the wild. The first step is <strong>instrumentation</strong>: log every input, every output, the metadata (model version, temperature, prompt version), and any user feedback signals (thumbs up, thumbs down, escalation to human). Then define <strong>key metrics</strong> that map to the dimensions you care about — format compliance rate (what percentage of outputs parse as valid JSON?), the average rubric score on sampled evaluations, the explicit error rate. Set <strong>alert thresholds</strong> that match the stakes of your application (alert if format compliance drops below 95%, alert if error rate exceeds 1%, alert if user satisfaction signals degrade by more than X%). Schedule a <strong>weekly evaluation run</strong> on a stratified sample of production traffic so you can compare current behavior to your baseline. Maintain a <strong>changelog</strong> that records every model update, every prompt change, every configuration change — this is what lets you correlate degradations with specific changes. Review alerts on a regular cadence and investigate every metric that crosses a threshold <em>before</em> you ship the next change, not after.</p>
+<p>You’ve shipped an AI feature and want to know if it’s quietly getting worse. <strong>Log every input and output</strong> with its metadata (model version, temperature, prompt version) and any feedback users give. <strong>Define a few metrics</strong> that match your dimensions: the share of outputs that parse as valid JSON, the average rubric score on a sample, the error rate. <strong>Set alert thresholds</strong> that fit the stakes, such as format compliance below 95% or errors above 1%. <strong>Run the evaluation on a stratified sample of real traffic</strong> every week and compare with your baseline. <strong>Keep a changelog</strong> of every model, prompt, and configuration change, and look into every alert <em>before</em> you ship the next change, not after.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="38.11">
-<h2 data-number="38.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">38.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="38.13">
+<h2 data-number="38.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">38.13</span> Exercises</h2>
 <ol type="1">
-<li><p>Choose a simple AI task (classify sentiment, extract named entities, summarize a paragraph). Write a rubric with three dimensions, each scored 0–2. Write three test cases that would each score differently on at least one dimension. Explain your scoring.</p></li>
-<li><p>Write three automated test assertions for an AI system that extracts structured data from job postings (company name, location, salary range). Each assertion should test a property of the output rather than exact text match.</p></li>
-<li><p>Design a 10-example evaluation set for a Q&amp;A system about Python programming. Include at least: two easy cases, two edge cases, and one adversarial case. For each example, write the input, the expected behavior, and the dimension being tested.</p></li>
-<li><p>Choose an AI-powered tool you use regularly (a code assistant, a writing tool, a search feature). Describe one way you would test it for inconsistency across paraphrased inputs, and one way you would test it for demographic bias. You do not need to run the tests; just design them.</p></li>
-<li><p>You deploy a summarization tool and after two weeks notice that user complaints have increased but your evaluation scores look the same. List three possible explanations and describe what log data you would examine to distinguish between them.</p></li>
+<li>Choose a simple AI task (classify sentiment, extract names, summarize a paragraph). Write a rubric with three dimensions scored 0 to 2, and three test cases that would each score differently on at least one dimension.</li>
+<li>Save this chapter’s <code>eval_set.csv</code> and run every code block in order. Then edit the <code>model</code> column so it makes the same number of mistakes, all on first-language writers. Which numbers change, and which don’t?</li>
+<li>With a classmate, label the same 30 short texts (reviews, headlines, comments) independently with three labels. Compute raw agreement and Cohen’s kappa, rewrite your label definitions to fix the disagreements, then label 30 new texts and measure again.</li>
+<li>Write three automated checks for a system that extracts company name, location, and salary range from job postings. Each should test a property of the output, not exact text.</li>
+<li>Design a 10-example evaluation set for a question-answering system about Python, with at least two easy cases, two edge cases, and one adversarial case. For each, write the input, the expected behavior, and the dimension it tests.</li>
+<li>Choose an AI tool you use regularly. Design one test for inconsistency across paraphrased inputs and one counterfactual test for demographic bias, precisely enough that a classmate could run them.</li>
+<li>Two weeks after you deploy a summarization tool, user complaints are up but your evaluation scores haven’t moved. List three possible explanations, and the log data you’d examine to tell them apart.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="38.12">
-<h2 data-number="38.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">38.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="38.14">
+<h2 data-number="38.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">38.14</span> One-page checklist</h2>
 <ul>
-<li><p>Define which quality dimensions matter for your specific task before building evaluation</p></li>
-<li><p>Write a rubric with specific, answerable questions rather than holistic “is this good?” judgments</p></li>
-<li><p>Build your evaluation set from real inputs, not just toy examples; include edge cases and known failures</p></li>
-<li><p>Validate any automated evaluator (including LLM-as-judge) against human ratings before relying on it</p></li>
-<li><p>Run evaluation after every prompt change, model update, or configuration change before redeploying</p></li>
-<li><p>Log all inputs, outputs, and metadata in production; treat logs as a source for future evaluation sets</p></li>
-<li><p>Set monitoring alerts for metric degradation, not just for explicit errors</p></li>
-<li><p>Test for demographic disparities using counterfactual inputs that hold content constant while varying group signals</p></li>
-<li><p>Document evaluation results and audit findings, whether or not they indicate a problem</p></li>
-<li><p>Treat evaluation rigor as proportional to stakes: more scrutiny for higher-risk applications</p></li>
+<li>Decide which quality dimensions matter before you look at outputs.</li>
+<li>Write a rubric with specific, answerable questions.</li>
+<li>Build the evaluation set from real inputs, with edge cases and every failure you find, and version it.</li>
+<li>Measure agreement between two human raters (Cohen’s kappa) before trusting gold labels.</li>
+<li>Report accuracy with a confusion matrix, and precision and recall for the labels that matter.</li>
+<li>Put a bootstrap interval, or at least the number of examples, beside every score.</li>
+<li>Validate any automated scorer, including an LLM judge, against human scores, and check whether it runs high.</li>
+<li>Rerun the evaluation after every prompt, model, or configuration change, before redeploying.</li>
+<li>Log inputs, outputs, and metadata with personal details removed, and alert on falling scores, not only errors.</li>
+<li>Break scores down by group, and test with counterfactual pairs that change one thing at a time.</li>
+<li>Document audit findings whether or not they show a problem, and scale the rigor to the stakes.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1011,13 +1203,13 @@ prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Hugging Face, <a href="https://huggingface.co/docs/evaluate/index">Evaluate library</a> — a toolkit for benchmarking models against many standard metrics; the entry point for “what metric should I use?”</li>
-<li>Anthropic, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/overview">Evaluating outputs</a> — practical guidance on designing prompt evaluations and test sets.</li>
-<li>OpenAI, <a href="https://github.com/openai/evals">Evals framework</a> — an open-source framework for writing and running LLM evaluations; pairs well with the Anthropic guide.</li>
-<li>Solon Barocas, Moritz Hardt, and Arvind Narayanan, <a href="https://fairmlbook.org/"><em>Fairness and Machine Learning: Limitations and Opportunities</em></a> — the standard textbook on the technical and political dimensions of fairness; chapters 2 and 3 cover the incompatibility result discussed in “Stakes and politics” above.</li>
-<li>Margaret Mitchell et al., <a href="https://arxiv.org/abs/1810.03677">Model Cards for Model Reporting</a> (FAT* 2019) — proposes a documentation standard for the intended use, training data, and evaluation results of every released model; lightweight to apply to your own systems.</li>
-<li>Inioluwa Deborah Raji and Joy Buolamwini, <a href="https://dl.acm.org/doi/10.1145/3306618.3314244">Actionable Auditing</a> (AIES 2019) — the <em>Gender Shades</em> follow-up showing how third-party audits drove measurable improvements in commercial face APIs; the canonical example of audits with teeth.</li>
-<li>AI Now Institute, <a href="https://ainowinstitute.org/publications">Reports</a> and Algorithmic Justice League, <a href="https://www.ajl.org/library/research">Reports</a> — ongoing independent research and advocacy on AI auditing; the third-party-audit ecosystem named in “Stakes and politics” above.</li>
+<li><strong>Hugging Face</strong>, <a href="https://huggingface.co/docs/evaluate/index">Evaluate library</a> — a toolkit of standard metrics with a helpful guide to choosing one; for evaluating language models, its docs now point to the more actively maintained LightEval.</li>
+<li><strong>Anthropic</strong>, <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Define success criteria and build evaluations</a> — practical guidance on writing success criteria and building evaluations, from exact-match checks to model-based grading.</li>
+<li><strong>OpenAI</strong>, <a href="https://github.com/openai/evals">Evals framework</a> — an open-source framework for writing and running evaluations of language models, with many examples to copy from.</li>
+<li><strong>Solon Barocas, Moritz Hardt, and Arvind Narayanan</strong>, <a href="https://fairmlbook.org/"><em>Fairness and Machine Learning: Limitations and Opportunities</em></a> — the standard free textbook on the technical and political sides of fairness, including the incompatibility result in “Stakes and politics.”</li>
+<li><strong>Margaret Mitchell et al.</strong>, <a href="https://arxiv.org/abs/1810.03993">Model Cards for Model Reporting</a> (FAT* 2019) — a short documentation standard for a model’s intended use, training data, and evaluation results, including results broken down by group.</li>
+<li><strong>Inioluwa Deborah Raji and Joy Buolamwini</strong>, <a href="https://doi.org/10.1145/3306618.3314244">Actionable Auditing</a> (AIES 2019) — the <em>Gender Shades</em> follow-up: within seven months, all three audited companies released new versions that reduced their disparities, the clearest example of an audit with teeth.</li>
+<li><strong>AI Now Institute</strong>, <a href="https://ainowinstitute.org/publications">Publications</a>, and <strong>Algorithmic Justice League</strong>, <a href="https://www.ajl.org/library/research">Research</a> — ongoing independent research and advocacy on AI accountability; the third-party audit ecosystem named in “Stakes and politics.”</li>
 </ul>
 </div>
 </div>

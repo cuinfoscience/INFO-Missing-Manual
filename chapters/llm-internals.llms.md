@@ -10,360 +10,424 @@
 
 ![Ten Guy Meme: What if every word is just a point in a 4096-dimensional space?](../graphics/memes/llm-internals.png)
 
-You have probably used a chatbot, had AI help you write code, or asked a language model to explain a confusing error message. These tools are now embedded in text editors, search engines, notebooks, and APIs. But most people use them with little understanding of what is actually happening under the hood — and that gap causes real problems: you paste in a prompt, get a confident-sounding answer, and have no way to judge whether it is trustworthy, or why it failed when it did.
+You ask a chatbot to fix a bug, and it writes forty clean lines of Python in five seconds. Then you ask how many r’s are in “strawberry,” and it gets it wrong. You paste in a long reading with careful instructions, and ten replies later it’s ignoring them. You run the same prompt twice and get two different answers. And now and then it cites a paper or a function that doesn’t exist, in the same confident tone it uses for everything else.
 
-This chapter gives you the conceptual vocabulary you need to use language models more deliberately. You do not need to know how to train a model. You do not need to understand the mathematics of transformers. What you need is a working mental model: how text becomes input, how context shapes output, how temperature controls variation, how embeddings enable search, and what the difference is between typing into a chatbot and calling an API. With that mental model in place, you can write better prompts, diagnose failures faster, and build more reliable workflows around AI tools.
+If that has left you unsure when to trust these tools, you’re asking the right question. None of those behaviors is random, and none means the tool is broken. They follow from how a [large language model](../chapters/appendix-glossary.llms.md#term-llm) turns your text into numbers and predicts what comes next. Once you can picture those steps, you can tell a bad prompt from a limit of the model, and you stop being surprised by the same failure twice.
 
-## Learning objectives
+This chapter gives you that picture, with code you can run on a laptop, most of it without an API key: tokens, next-token prediction, context windows, temperature, embeddings, calling a model from code, tool use, and why models state false things fluently. It doesn’t teach the math of training. Everyday habits for using AI assistants are in [sec-ai-llm](#sec-ai-llm), models that take actions are in [sec-ai-agents](#sec-ai-agents), and testing whether an AI system works is in [sec-evaluating-ai](#sec-evaluating-ai).
 
-By the end of this chapter, you should be able to:
+## Why read this chapter
 
-1.  Explain what tokens are and why tokenization affects model behavior
-
-2.  Describe what a context window is and how to work within its limits
-
-3.  Explain what temperature and sampling do and when to adjust them
-
-4.  Define embeddings and describe at least one practical use
-
-5.  Construct a well-structured prompt using system and user roles
-
-6.  Identify when to use a chatbot interface versus an API call
-
-7.  Explain what function calling (tool use) is and how a model invokes a tool
-
-8.  Describe at least two reasons models hallucinate and how internals contribute
+- You asked a chatbot how many r’s are in “strawberry,” it got it wrong, and you’d like to know how something that writes fluent essays can’t count letters.
+- You ran the exact same prompt twice, maybe even with the temperature set to 0, and got two different answers.
+- You pasted a long document into a chat, and a few replies later the model was ignoring the instructions you gave at the start.
+- A model handed you a citation or a function name that sounded perfect and turned out not to exist.
+- You’re paying for an API by the token and want to know what a token is, and why the same sentence in Hindi or Amharic costs more than in English.
+- You keep hearing “embeddings,” “RAG,” and “vector database,” and you’d like to see what they mean in a few lines of code.
+- Someone said “the model called a tool,” and you want to know who actually ran the code.
 
 ## Running theme: the model sees text, not meaning
 
-Every behavior of a language model — useful and frustrating — follows from one fact: the model processes sequences of tokens and predicts likely continuations. It does not understand your intent, look things up, or reason the way a person does. The better you understand what the model actually sees, the better you can guide it toward what you actually want.
+Almost everything a language model does, the impressive parts and the maddening ones, follows from one fact: it turns your text into tokens and predicts, one token at a time, what’s likely to come next.
 
-## 36.1 Tokens and tokenization
+## 36.1 Tokens: what the model actually reads
 
-When you type a message into a language model, the first thing that happens is not reading. It is tokenization: your text is split into small chunks called **tokens**, and those tokens — not characters, not words — are what the model processes.
-
-A token is roughly four characters of English text on average, which works out to about three-quarters of a word. The sentence “the quick brown fox” might become five tokens: `the`, `quick`, `brown`, `fox` (approximately). But tokenization is not simply splitting on spaces. Subword tokenization means common words become single tokens while rare or compound words get split further. The word `unbelievable` might be three tokens: `un`, `believ`, `able`.
-
-Several practical implications follow from this:
-
-- **Non-English text uses more tokens.** Many tokenizers were trained primarily on English, so languages like Thai, Arabic, or Chinese may require two to four times as many tokens to express the same content. This affects both cost and context capacity.
-
-- **Code is tokenized differently from prose.** Symbols like `{`, `=>`, and indentation may each be their own tokens. Whitespace matters more than you might expect.
-
-- **Counting tokens is not counting words.** API pricing and context limits are in tokens, not words. Most providers offer tokenizer tools so you can measure before you send.
-
-- **Rare or technical terms may get fragmented.** A domain-specific word that the model rarely saw during training might be split into subwords that, individually, have different associations. This can subtly affect how the model interprets your request.
-
-When diagnosing unexpected model behavior, tokenization is worth checking. If a model consistently misinterprets a technical term, it may be seeing it as two or three tokens with different meanings rather than one cohesive concept.
-
-## 36.2 Context windows
-
-A language model does not have persistent memory between conversations. Everything the model “knows” about your current task is contained in the **context window**: the full sequence of tokens that is sent to the model for a given request.
-
-The context window includes your system prompt, the conversation history, any documents or code you paste in, and the model’s own previous responses. All of that must fit within a fixed limit — typically measured in thousands of tokens, with limits ranging from a few thousand to over a million tokens depending on the model.
-
-When your input exceeds the context window, the model does not crash or warn you in an obvious way. Depending on the implementation, older content is silently truncated from the beginning of the context, which means the model may answer as if it never saw your earlier instructions or data.
-
-Practical implications:
-
-- **Earlier instructions get lost in long conversations.** If you set up a detailed system prompt and then have a long back-and-forth, the original instructions may be pushed out. Restate important constraints periodically.
-
-- **Pasting large files into chat is risky.** A 10,000-line log file will consume most of a mid-range context window. Prefer to paste targeted excerpts rather than full files.
-
-- **Context position matters.** Models tend to attend more reliably to content at the beginning and end of the context than to content buried in the middle. For important instructions or key examples, placement matters.
-
-- **Context windows are not permanent storage.** If you start a new conversation, the model has no memory of previous sessions unless you explicitly provide that history.
-
-## 36.3 Sampling and temperature
-
-Language models do not produce a single deterministic answer. They produce a **probability distribution** over what token might come next, and then sample from that distribution. This is why the same prompt can produce different outputs each time you run it.
-
-**Temperature** is the parameter that controls how that distribution is shaped before sampling:
-
-- At **temperature 0**, the model always picks the highest-probability token. Output is deterministic and consistent, but can feel repetitive and may get stuck in predictable patterns.
-
-- At **low temperature** (0.1–0.4), the model strongly favors likely tokens but still has some variation. Good for tasks where accuracy and consistency matter: code generation, structured data extraction, classification.
-
-- At **medium temperature** (0.5–0.8), the model balances probability and diversity. A common default for general-purpose conversation.
-
-- At **high temperature** (0.9–2.0), the model explores less probable options more often. Useful for brainstorming, creative writing, and generating diverse options — but more likely to produce errors, inconsistencies, or off-topic content.
-
-Related parameters you may encounter:
-
-- **Top-p (nucleus sampling)**: instead of a fixed temperature, only sample from the smallest set of tokens whose cumulative probability exceeds a threshold. Temperature and top-p are often used together.
-
-- **Max tokens**: limits the length of the output. If you set this too low, responses get truncated mid-sentence.
-
-- **Stop sequences**: strings that tell the model to stop generating. Useful for structured output: you can stop the model when it produces a delimiter like `END` or `“‘`.
-
-When you need reproducible output (unit tests, data pipelines, evaluations), set temperature to 0. When you need variety (brainstorming, multiple drafts), raise it. When a model is giving you boring, repetitive answers, try increasing temperature slightly before rewriting your prompt.
-
-## 36.4 Embeddings
-
-Embeddings are a different use of language models from text generation. An **embedding model** converts text into a list of numbers — a vector — that encodes the meaning of that text in a high-dimensional space. Similar texts produce similar vectors; dissimilar texts produce vectors that are far apart.
-
-Embeddings are the foundation of several practical applications:
-
-- **Semantic search**: instead of keyword matching, embed the query and all documents, then find documents whose vectors are closest to the query vector. This works even when the exact words differ (“reduce memory usage” matches “optimize RAM consumption”).
-
-- **Retrieval-augmented generation (RAG)**: embed a large document collection, store embeddings in a vector database, and at query time retrieve the most relevant chunks to include in the model’s context. This is how you give a language model access to information that does not fit in its context window.
-
-- **Clustering and classification**: group texts by semantic similarity without labeling, or train a simple classifier on top of embedding vectors rather than raw text.
-
-- **Deduplication**: find near-duplicate records in a dataset by comparing embedding similarity.
-
-Embeddings come from specialized embedding models (distinct from chat models) and are typically cheaper and faster to generate. If your task involves finding similar text, organizing documents by topic, or connecting a model to a large knowledge base, embeddings are usually the right tool — not just pasting everything into a chat window.
-
-## 36.5 Prompting best practices
-
-A prompt is not just a question. It is structured input that shapes the model’s behavior across the entire response. Understanding the anatomy of a well-constructed prompt lets you get more reliable, predictable output.
-
-### The anatomy of a prompt
-
-Modern language model APIs organize input into **roles**:
-
-- **System**: Instructions set before the conversation begins. Use this for persistent context: who the model is, what format to use, what topics to avoid, and what assumptions to make.
-
-- **User**: The human’s turn. Your questions, requests, or data go here.
-
-- **Assistant**: The model’s responses. You can also pre-fill the assistant turn to steer the response format (“The answer is: …”).
-
-In a chat interface, the system prompt is often hidden. In an API call, you set it explicitly. One of the biggest practical differences between a chatbot and an API call is that you control the system prompt.
-
-### Principles for reliable prompts
-
-1.  **Be specific about the task.** Vague prompts produce vague answers. “Summarize this” is worse than “Summarize this in three bullet points for an audience with no background in statistics.”
-
-2.  **Provide format instructions.** If you need JSON, a table, a numbered list, or markdown, say so explicitly. Language models follow format instructions reliably when they are clear.
-
-3.  **Give examples (few-shot prompting).** Showing two or three examples of input-output pairs dramatically improves consistency. This is especially useful for classification, extraction, and rewriting tasks.
-
-4.  **Separate data from instructions.** Use clear delimiters (triple backticks, XML tags, or section headers) to mark the boundary between your instructions and the text you want the model to operate on.
-
-5.  **Assign a role when it helps.** “You are a careful code reviewer” or “You are a plain-language writer” primes the model toward a useful perspective. Do not over-specify; one clear role beats a paragraph of competing instructions.
-
-6.  **Ask for reasoning before the answer.** “Explain your reasoning step by step, then give the final answer” produces more accurate results on multi-step problems than asking for the answer directly.
-
-7.  **Test prompts systematically.** Small wording changes can produce large output changes. Treat prompt development like code development: make one change at a time and evaluate the result before moving on.
-
-## 36.6 API versus chatbot interfaces
-
-The two primary ways to interact with a language model are the **chatbot interface** (a web or app UI like [ChatGPT](https://chatgpt.com/), [Claude.ai](https://claude.ai/), or [Gemini](https://gemini.google.com/)) and the **API** (a programmatic interface — for example, the [Anthropic API](https://docs.anthropic.com/) or the [OpenAI API](https://platform.openai.com/docs/) — you call from code). Understanding the difference helps you choose the right tool.
-
-### What a chatbot gives you
-
-- Low friction: type a message, read the response
-
-- Session memory (within a single conversation)
-
-- Access to built-in tools like web browsing, code execution, or image generation
-
-- Operator-defined system prompts you cannot see or change
-
-- No need to manage authentication or rate limits
-
-Use a chatbot for exploratory, one-off tasks: getting an explanation, brainstorming, reviewing a single document, generating a first draft.
-
-### What an API gives you
-
-- Full control over system prompt, temperature, max tokens, and other parameters
-
-- The ability to call the model from inside code (scripts, notebooks, web apps)
-
-- Structured output via JSON mode or tool use
-
-- The ability to process many inputs in a loop (batch processing)
-
-- Cost transparency: you see exactly how many tokens each request consumes
-
-- No session memory by default — you manage conversation history yourself
-
-A minimal Python API call looks like:
-
-    import anthropic    # https://docs.anthropic.com/en/api/getting-started
-
-    client = anthropic.Anthropic()
-    message = client.messages.create(
-        model="claude-opus-4-6",
-        max_tokens=1024,
-        system="You are a helpful data analysis assistant.",
-        messages=[
-            {"role": "user", "content": "What is the median of [3, 7, 2, 9, 5]?"}
-        ]
-    )
-    print(message.content[0].text)
-
-When to use an API: any time you need to run the same prompt over multiple inputs, integrate AI into a script or pipeline, control parameters precisely, or build something reproducible.
-
-## 36.7 Tools and function calling
-
-Language models on their own cannot browse the web, run code, read files, or query databases. **Function calling** (also called tool use) is the mechanism by which a model can invoke external capabilities that you define.
-
-The pattern works as follows:
-
-1.  You describe available tools to the model in a structured format: tool name, description, and the parameters it accepts.
-
-2.  The model, when it decides a tool is needed, responds with a structured tool-call request rather than a text answer.
-
-3.  Your code receives the tool-call request, runs the actual function, and sends the result back to the model.
-
-4.  The model incorporates the result into its final response.
-
-A tool definition might look like:
-
-    {
-      "name": "get_weather",
-      "description": "Returns current weather for a given city.",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "city": {
-            "type": "string",
-            "description": "City name, e.g. Denver"
-          }
-        },
-        "required": ["city"]
-      }
-    }
-
-The model does not run the function. It decides whether to call it and constructs the arguments. Your code does the actual execution. This design keeps the model sandboxed: it can only invoke what you expose to it, with the parameters you define.
-
-Function calling is powerful for connecting language models to live data, APIs, and databases. It is also where safety considerations become important: if a tool can modify files, send emails, or execute code, you need to be deliberate about what you expose and when you actually run what the model requests (see [sec-ai-llm](#sec-ai-llm) for risk-based verification policies).
-
-## 36.8 Why models hallucinate
-
-“Hallucination” is the common term for when a language model confidently states something that is false. Understanding why this happens helps you anticipate and check for it.
-
-- **The model predicts likely text, not true statements.** Training on human-written text means the model learned what fluent, plausible-sounding sentences look like — not what is factually correct. A confident tone is common in training data even for false claims.
-
-- **Rare facts are underrepresented in training.** If the correct answer appeared rarely in training text, the model may not have learned it well. It may substitute a plausible-sounding but wrong answer drawn from more common patterns.
-
-- **The training cutoff limits recency.** Models are trained up to a knowledge cutoff date. Events, packages, APIs, and documentation that changed after that date may produce outdated or incorrect answers.
-
-- **Tokenization artifacts.** Fragmented tokens for technical terms can lead to misinterpretation and generation errors that look like factual errors.
-
-- **There is no “I don’t know” training signal.** Standard language modeling does not penalize the model for answering when uncertain; it is optimized to produce fluent completions. Some models have been fine-tuned to express uncertainty more reliably, but this is not universal.
-
-Practical responses to hallucination:
-
-- For factual claims, always verify against primary sources.
-
-- For code, run it and test it; reading is not sufficient.
-
-- Ask the model to cite or explain where its information comes from.
-
-- Use retrieval (RAG) to ground the model in verified documents.
-
-- Prefer lower temperatures for factual tasks.
-
-- Ask “Are you confident in this?” or “What might be wrong here?” — models often acknowledge uncertainty when asked directly.
-
-## 36.9 Stakes and politics
-
-This chapter explains how the model works mechanically — tokens, attention, sampling, embeddings. The political dimension lives one level up, in the questions of *what* is being modeled and *who* paid to build the model that does the modeling.
-
-Three things to notice. First, *training corpora are not the world*. LLMs are trained on the parts of human language that ended up on the internet, in the languages that dominate the internet, in the time period the crawl happened to cover. That corpus is overwhelmingly English (often more than 90% by token count even in “multilingual” models), drawn from contributors who are disproportionately male, US/European, and middle-class, and weighted toward formal published text rather than oral, vernacular, or domain-specific writing. The model’s “default” voice is the median voice of that corpus; languages and cultures outside it appear as edge cases at best.
-
-Second, *frontier-model training concentrates compute*. Training a modern flagship model takes tens of thousands of GPUs, hundreds of millions to billions of dollars, and energy and water on a scale that is now a measurable fraction of regional grids. Only a handful of companies — OpenAI, Anthropic, Google, Meta, a small set of well-funded Chinese labs — can do this. The community of people who decide what the next major model will be like, what data it will see, and what it will refuse to do is correspondingly small. Open-weights releases (Meta’s Llama family, Mistral, and others) partly mitigate this; they do not change the fact that the upstream training labs decide what gets released at all.
-
-Third, *embeddings encode the same biases*. The embedding spaces this chapter introduces are useful precisely because they capture statistical regularities in the corpus — including the regularities that reflect prejudice, stereotype, and uneven representation. “Distance in embedding space” is sometimes an objective measure and sometimes a measurement of who the corpus knew about.
-
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, [sec-ai-llm](#sec-ai-llm) for the user-facing workflow this chapter underpins, [sec-ai-agents](#sec-ai-agents) for what happens when these models start acting, and [sec-evaluating-ai](#sec-evaluating-ai) for how these biases get surfaced (or laundered) by audits. The concrete prompt to carry forward: when a model “knows” something, ask whose corpus it learned from.
-
-## 36.10 Worked examples
-
-### Diagnosing why a prompt produces inconsistent output
-
-You have a prompt that “usually works” but sometimes returns garbage, and you want to find out why before throwing more wording at it. The trick is to change one variable at a time. Start by writing down the current prompt and three or four sample outputs that demonstrate the inconsistency — actual text, side by side. Check the **token count** of your prompt with your provider’s tokenizer tool: if you are anywhere near the context window, that alone could be the cause. Then **set temperature to 0 and re-run** the same prompt several times. If outputs are now identical, the inconsistency was sampling variance; if they still vary, the inconsistency is in something else (maybe an external tool or retrieval step). Next, **add explicit format instructions** (“Return JSON with keys `summary` and `tags`”) and re-run; format failures often disappear instantly when the format is named. If the model is still wandering, **add one or two few-shot examples** showing exactly the output you want. After each change, compare against your original samples and note which change actually fixed the inconsistency — that is the lesson you want to keep.
+The first surprise is that the model never sees your letters. Your text is cut into chunks called **tokens**, each chunk is swapped for a number, and the numbers are what the model works with. You can watch this happen with [tiktoken](https://pypi.org/project/tiktoken/), OpenAI’s tokenizer library (`pip install tiktoken`):
 
 ``` python
-import anthropic
-client = anthropic.Anthropic()
+import tiktoken
 
-def call(prompt, temperature=0):
-    return client.messages.create(
-        model="claude-opus-4-6",
-        max_tokens=512,
-        temperature=temperature,
-        messages=[{"role": "user", "content": prompt}],
-    ).content[0].text
+enc = tiktoken.get_encoding("o200k_base")  # the tokenizer GPT-4o uses
 
-print(call(prompt))                       # baseline
-print(call(prompt, temperature=0))        # remove sampling variance
-print(call(prompt + "\nReturn JSON."))    # add format instruction
+for text in ["the quick brown fox", "unbelievable", "strawberry", " strawberry", "Boulder"]:
+    ids = enc.encode(text)
+    pieces = [enc.decode([i]) for i in ids]
+    print(f"{text!r:22} {pieces}  {ids}")
 ```
 
-### Converting a chatbot workflow to an API call
+``` text
+'the quick brown fox'  ['the', ' quick', ' brown', ' fox']  [3086, 4853, 19705, 68347]
+'unbelievable'         ['un', 'bel', 'ievable']  [373, 9880, 45794]
+'strawberry'           ['st', 'raw', 'berry']  [302, 1618, 19772]
+' strawberry'          [' strawberry']  [101830]
+'Boulder'              ['B', 'oulder']  [33, 62664]
+```
 
-You have been running the same task in a chatbot UI — paste a document, ask the same question, copy the answer — and you are tired of doing it by hand. Time to convert it to an API call. Identify exactly what you are doing interactively: the question (which probably has a stable structure), any pasted documents (the per-request input), and the format you want back. Pull the stable parts out as a **system prompt** (the instructions you repeat every time) and leave the variable parts as the **user turn** (the actual document or query). Set up an API client, write the call with explicit `temperature` and `max_tokens` so behavior is reproducible, and run it on a single example to compare against your chatbot result. Once they agree, **parameterize** the user turn to take a file path or query string from the command line, and wrap the whole thing in a loop over inputs. Log every input, output, and token count so you can audit later.
+Common words get a token of their own, leading space included, while rarer words are built from pieces. The pieces come from [byte-pair encoding](https://en.wikipedia.org/wiki/Byte-pair_encoding), which starts from single characters and keeps merging the pairs that appear together most often in a pile of training text, until it has a vocabulary of a set size (about 200,000 entries here). Hugging Face’s course has a [clear walk-through](https://huggingface.co/learn/llm-course/chapter6/5) of how the merges are learned.
 
-### Building a simple semantic search with embeddings
+Now look at “strawberry” again. With a space in front, as it usually appears mid-sentence, it’s one token, number 101830. That’s why the letter-counting question is hard: the model isn’t looking at s-t-r-a-w-b-e-r-r-y, it’s looking at one number, and it has to have *learned* how many r’s that number contains. Python gets `"strawberry".count("r")` right because it works on characters. Newer models often get the strawberry question right too, but when a model stumbles on spelling, letter counts, or reversing a word, tokens are usually why.
 
-You want to search a small document collection by *meaning*, not just keywords. Embeddings make this a 50-line script. Assemble your collection (50 paragraphs from a dataset is enough to play with), call an embedding API to generate a vector for each one, and store the vectors as a matrix. When a query arrives, embed it with the **same** embedding model — different models produce incompatible vector spaces. Compute cosine similarity between the query vector and every document vector, sort by score, and return the top three.
+Tokens are also the unit you **pay in and hit limits in**. For ordinary English a token averages about four characters, or three-quarters of a word, but tokenizers differ even within one company: Anthropic’s [models overview](https://platform.claude.com/docs/en/about-claude/models/overview) says a million tokens holds about 555,000 words on its current tokenizer and 750,000 on the one before. To count exactly, use the provider’s own tool: tiktoken for OpenAI models, or Anthropic’s [token-counting endpoint](https://platform.claude.com/docs/en/build-with-claude/token-counting) for Claude, whose tokenizer isn’t public. Code splits differently from prose (`df.groupby('state')['income'].median()` is nine tokens), and a technical term the tokenizer never learned whole reaches the model as fragments.
+
+The biggest differences are between languages. Here is Article 1 of the [Universal Declaration of Human Rights](https://en.wikipedia.org/wiki/Universal_Declaration_of_Human_Rights) in nine languages, counted with GPT-2’s tokenizer from 2019 and GPT-4o’s from 2024:
+
+| Language             | GPT-2 tokens | GPT-4o tokens |
+|----------------------|--------------|---------------|
+| English              | 33           | 33            |
+| Spanish              | 58           | 38            |
+| Swahili              | 49           | 36            |
+| Chinese (simplified) | 82           | 37            |
+| Arabic               | 120          | 44            |
+| Hindi                | 296          | 54            |
+| Thai                 | 260          | 63            |
+| Yoruba               | 171          | 82            |
+| Amharic              | 309          | 206           |
+
+Tokens for Article 1 of the Universal Declaration of Human Rights, counted with tiktoken (`gpt2` and `o200k_base`) on the texts in Unicode’s UDHR collection, September 2026. {.caption-top .table}
+
+GPT-2’s tokenizer was learned mostly from English web pages, so everything else came out in tiny pieces. The newer one is far fairer, but Amharic still takes six times as many tokens as English to say the same thing, which means a bigger bill, a slower reply, and less room in the context window.
+
+## 36.2 Predicting the next token
+
+Once your text is a list of numbers, the model does one thing with it: for every token in its vocabulary, it computes how likely that token is to come next. One token is picked and added to the end, and the whole thing runs again; a 300-word answer is a few hundred trips around that loop. You can see one trip with [GPT-2](https://en.wikipedia.org/wiki/GPT-2), a small model OpenAI released in 2019 that runs fine on a laptop, using Hugging Face’s [Transformers](https://huggingface.co/docs/transformers/generation_strategies) library (`pip install transformers torch`; the first run downloads about 550 MB):
+
+``` python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
+model = AutoModelForCausalLM.from_pretrained("gpt2")
+
+prompt = "My favorite thing to eat for breakfast is"
+ids = tokenizer(prompt, return_tensors="pt").input_ids
+with torch.no_grad():
+    scores = model(ids).logits[0, -1]      # one score per token in the vocabulary
+probs = torch.softmax(scores, dim=-1)      # scores -> probabilities that sum to 1
+
+print(len(probs), "possible next tokens")
+top = torch.topk(probs, 5)
+for p, i in zip(top.values, top.indices):
+    print(f"{tokenizer.decode(int(i))!r:12} {p.item():.3f}")
+```
+
+``` text
+50257 possible next tokens
+' a'         0.095
+' the'       0.060
+' bacon'     0.025
+' spinach'   0.020
+' chicken'   0.018
+```
+
+That’s the whole output: a probability for each of 50,257 possible next tokens. There’s no lookup of facts and no plan for the rest of the sentence, just “given everything so far, what usually comes next?” The rest of this chapter is about what happens to that list.
+
+Inside, each token ID becomes a vector, a long list of numbers (768 in GPT-2, 4,096 in a mid-sized model like [Mistral 7B](https://huggingface.co/mistralai/Mistral-7B-v0.1), which is where the meme’s number comes from). The vectors pass through a stack of layers built on the [transformer](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)) design from the 2017 paper [“Attention Is All You Need”](https://arxiv.org/abs/1706.03762). Its key step, *attention*, updates each token’s vector by looking back at earlier tokens and weighing the ones that matter, which is how “it” gets connected to the noun it stands for. Training sets the millions or billions of numbers in those layers by nudging the model, over enormous amounts of text, toward predicting the real next token. Jay Alammar’s illustrated guide in Further reading is the gentlest way into the details.
+
+A chat assistant is the same kind of model, trained further on example conversations and human ratings of its answers ([RLHF](../chapters/appendix-glossary.llms.md#term-rlhf)) so that the likeliest continuation of a question is a helpful answer. The chat app wraps your message in a template with roles and hidden instructions before the model sees it. It’s still predicting the next token; it has been shaped to predict an assistant’s.
+
+## 36.3 Context windows: why it “forgets”
+
+Here’s something that surprises almost everyone: the model has no memory between requests. Each time you send a message, the chat app sends the *entire* conversation so far, hidden instructions included, and the model reads it all from scratch. That bundle of tokens is the **context window**, and it’s everything the model knows about your task.
+
+Every model limits how big that bundle can be. GPT-2’s limit was 1,024 tokens, about two pages. Anthropic’s [context windows guide](https://platform.claude.com/docs/en/build-with-claude/context-windows) lists up to a million tokens for its current models. The limit counts everything: instructions, history, pasted documents, and the reply being written.
+
+So why does a model “forget”? There are three different reasons. **The window can fill up.** An API request that’s too long comes back as an error (Anthropic’s says “prompt is too long”). Chat apps try to keep a long conversation going instead: depending on the app, they drop older turns, summarize them, or ask you to start over, and not all of them tell you. **Long contexts get used unevenly.** Even when everything fits, models use information in the middle of a long context worse than information at the start or end; a 2023 study called it getting [“lost in the middle”](https://arxiv.org/abs/2307.03172), and Anthropic’s guide calls the general decline as contexts grow *context rot*. **A new conversation starts empty,** unless the app has a memory feature that pastes notes back in.
+
+The fixes follow from the causes. Restate the constraints that matter when a conversation runs long, or start fresh with a short summary. Paste the relevant part of a 10,000-line log, not the whole thing. Put the most important instructions at the beginning or end. And when you call an API, remember that sending the history is your code’s job.
+
+## 36.4 Sampling and temperature: why the same prompt gives different answers
+
+Something still has to choose one token from that list, and that choice is called **sampling**. Always taking the top token tends to produce flat, repetitive text, so usually the program draws at random, weighted by the probabilities. That’s why asking twice gets you two answers.
+
+**Temperature** controls how adventurous the draw is. Before the scores become probabilities (with the [softmax function](https://en.wikipedia.org/wiki/Softmax_function), the same step as in the GPT-2 code), they’re divided by the temperature. A low temperature stretches the gaps, so the favorite nearly always wins; a high one squashes them, so long shots get a chance. A few lines of [NumPy](https://numpy.org/doc/stable/user/absolute_beginners.html) show it:
 
 ``` python
 import numpy as np
 
-docs = [...]  # 50 paragraph strings
+words = ["pancakes", "eggs", "toast", "cereal", "broccoli"]
+scores = np.array([3.0, 2.5, 2.0, 1.0, -1.0])  # made-up scores for five candidates
 
-def embed(text):
-    # pseudo-code; replace with your provider's embedding call
-    return np.array(provider.embed(text))
+def softmax(scores, temperature=1.0):
+    z = scores / temperature
+    e = np.exp(z - z.max())  # subtracting the max avoids overflow; same result
+    return e / e.sum()
 
-doc_vecs = np.stack([embed(d) for d in docs])
+for t in [0.2, 0.7, 1.0, 1.5]:
+    probs = softmax(scores, t)
+    print(f"T={t}: " + "  ".join(f"{w} {p:.2f}" for w, p in zip(words, probs)))
 
-def search(query, k=3):
-    q = embed(query)
-    sims = doc_vecs @ q / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(q))
-    top = sims.argsort()[::-1][:k]
-    return [(docs[i], float(sims[i])) for i in top]
+rng = np.random.default_rng(seed=42)
+for t in [0.2, 1.0, 1.5]:
+    print(f"8 draws at T={t}:", " ".join(rng.choice(words, size=8, p=softmax(scores, t))))
 ```
 
-Test it with a handful of real queries and compare against grep over the same documents — you will quickly see the cases where keyword search misses paraphrases that semantic search catches.
+``` text
+T=0.2: pancakes 0.92  eggs 0.08  toast 0.01  cereal 0.00  broccoli 0.00
+T=0.7: pancakes 0.56  eggs 0.27  toast 0.13  cereal 0.03  broccoli 0.00
+T=1.0: pancakes 0.47  eggs 0.29  toast 0.17  cereal 0.06  broccoli 0.01
+T=1.5: pancakes 0.39  eggs 0.28  toast 0.20  cereal 0.10  broccoli 0.03
+8 draws at T=0.2: pancakes pancakes pancakes pancakes pancakes eggs pancakes pancakes
+8 draws at T=1.0: pancakes pancakes pancakes toast eggs toast pancakes pancakes
+8 draws at T=1.5: eggs pancakes toast eggs toast pancakes cereal cereal
+```
 
-## 36.11 Exercises
+At 0.2, pancakes wins 92% of the time; at 1.5, even cereal gets picked. Temperature 0 is the limit: always take the top token, called greedy decoding. So keep it low for consistency (extraction, classification, code) and raise it for variety (brainstorming, alternative drafts). Where you can set it, OpenAI’s API takes 0 to 2 and Anthropic’s takes 0 to 1.
 
-1.  Use your model provider’s tokenizer tool to count the tokens in a 500-word essay. Then count the tokens in the same content in another language (use a translation tool if needed). How does the token count differ, and what does this imply for cost?
+Two confusions come up constantly. First, **temperature 0 still varies.** In theory it’s deterministic; in practice hosted models give slightly different answers to identical requests, as Anthropic’s [API reference](https://platform.claude.com/docs/en/api/messages) says outright. One reason is that computers round, so in [floating-point arithmetic](https://en.wikipedia.org/wiki/Floating-point_arithmetic) the order you add numbers in changes the answer:
 
-2.  Write the same request (e.g., “Explain what a p-value is”) as both a vague prompt and a structured prompt with role, format instructions, and audience specification. Compare the outputs and describe what changed.
+``` python
+print((0.1 + 0.2) + 0.3)
+print(0.1 + (0.2 + 0.3))
+```
 
-3.  Run the same well-specified prompt five times at temperature 0 and five times at temperature 1.0. Document the variation. For what kinds of tasks does the difference matter most?
+``` text
+0.6000000000000001
+0.6
+```
 
-4.  Write a short system prompt and a user prompt that together produce a consistent JSON output with three fields: `summary`, `key_terms`, and `confidence`. Test it on three different input documents.
+A server batching your request with other people’s may add things up in a different order depending on how busy it is, as a [2025 write-up from Thinking Machines](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/) explains. When two tokens are nearly tied, a difference in the last decimal place flips which one is “top,” and the rest of the answer follows a different path. Providers also update the model behind a name. So treat temperature 0 as “much less random,” never as “reproducible.”
 
-5.  Find a piece of text where a language model confidently gave you a wrong answer (or construct a case by asking about a recent event after the model’s training cutoff). Explain which of the hallucination causes from this chapter likely applies, and describe how you would verify the correct answer.
+Second, **the newest models often won’t let you set it.** Anthropic’s API reference says its newer models reject any temperature but the default, and other providers restrict it on some models too. If setting a temperature gets you a 400 error, check the model’s documentation.
 
-6.  Make an API call from a Python script (using any model you have access to) that takes a string from the command line, sends it to the model with a system prompt you write, and prints the response. Confirm that the output changes when you change the system prompt.
+Three related settings travel with temperature. **Top-p**, or [nucleus sampling](https://en.wikipedia.org/wiki/Top-p_sampling), draws only from the smallest set of tokens whose probabilities add up to p; providers suggest adjusting it or temperature, not both. **Max tokens** caps the reply’s length, and set too low it cuts the answer off mid-sentence. **Stop sequences** are strings, such as `END`, that end the reply as soon as the model writes one.
 
-## 36.12 One-page checklist
+## 36.5 Embeddings: text as points in space
 
-- Before sending a long prompt, check the token count to ensure it fits within the context window
+Embeddings are a different job: turning a piece of text into a fixed-length vector, arranged so that texts with similar meanings land close together. This is the meme at the top of the chapter taken literally, each text a point in a space of hundreds or thousands of dimensions. The idea started with single [word embeddings](https://en.wikipedia.org/wiki/Word_embedding) and now covers whole documents. “Close” is usually measured with [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity), which is 1 when two vectors point the same way and near 0 when they’re unrelated:
 
-- Set temperature to 0 for tasks requiring consistency; raise it only when variation is desirable
+``` python
+import numpy as np
 
-- Use system prompts (not just user prompts) to set persistent instructions and format expectations
+def cosine(a, b):
+    return a @ b / (np.linalg.norm(a) * np.linalg.norm(b))
 
-- Use few-shot examples for classification, extraction, and structured output tasks
+cat    = np.array([0.9, 0.8, 0.1])   # made-up 3-number "embeddings"
+kitten = np.array([0.8, 0.9, 0.2])
+tax    = np.array([0.1, 0.2, 0.9])
 
-- Separate instructions from data with clear delimiters (backticks, XML tags, or section headers)
+print(f"cat vs kitten: {cosine(cat, kitten):.2f}")
+print(f"cat vs tax:    {cosine(cat, tax):.2f}")
+```
 
-- Verify factual claims from AI output against primary sources before using them
+``` text
+cat vs kitten: 0.99
+cat vs tax:    0.30
+```
 
-- Use embeddings when the task involves finding similar documents or building retrieval systems
+Real embeddings have 384, 1,024, or 3,072 numbers that no one can interpret one by one, but the arithmetic is the same, and it powers a lot. **[Semantic search](https://en.wikipedia.org/wiki/Semantic_search)** embeds a query and your documents and returns the closest, so “reduce memory usage” finds “optimize RAM consumption” with no words in common (the third worked example builds one). **[Retrieval-augmented generation](https://en.wikipedia.org/wiki/Retrieval-augmented_generation)** (RAG) runs that search first and pastes the best passages into the model’s context, which is how “chat with your PDFs” tools handle collections bigger than any context window; the vectors usually live in a [vector database](https://en.wikipedia.org/wiki/Vector_database). Embeddings also let you cluster documents by topic without labels and find near-duplicate records.
 
-- Use the API (not just a chatbot) when you need to automate, loop, or control parameters precisely
+They come from embedding models, which are separate from chat models and usually much cheaper. OpenAI has an [embeddings guide](https://developers.openai.com/api/docs/guides/embeddings); Anthropic doesn’t make an embedding model, and its [embeddings page](https://platform.claude.com/docs/en/build-with-claude/embeddings) points to Voyage AI; and free models from [Sentence Transformers](https://sbert.net/) run on a laptop. One rule catches people out: **compare vectors only from the same model.** Each model has its own space, and mixing them gives meaningless scores with no error to warn you.
 
-- When exposing tools to a model, define them with precise descriptions and only expose what is necessary
+## 36.6 Writing prompts that work
 
-- When outputs are inconsistent, diagnose whether the cause is sampling variance, prompt ambiguity, or context length before changing the prompt
+A prompt feels like a question, but to the model it’s the start of a document to continue, so everything in it shapes the answer. Keep that in mind and most prompting advice stops seeming like magic.
+
+When you call a model from code, the input comes in **roles**. The **system** prompt holds standing instructions: who the model should be, what format to use, what to assume. **User** turns carry your requests and data, and **assistant** turns are the model’s earlier replies, sent back as history (you can also write some yourself, as examples). Some APIs once let you start the assistant’s reply for it (“The answer is:”) to steer the format; newer Claude models reject that, and structured-output features do the job instead. In a chat app the company writes the system prompt and mostly hides it; through an API it’s yours.
+
+The habits that help follow from “it continues what you give it.” **Be specific about the task and the reader:** “Summarize this in three bullet points for someone with no statistics background,” not “Summarize this.” **Name the format,** and for machine-readable output use the providers’ structured-output features ([Anthropic](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), [OpenAI](https://developers.openai.com/api/docs/guides/structured-outputs)), which make the reply match a [JSON](../chapters/appendix-glossary.llms.md#term-json) schema. **Show two or three examples** of input and the output you want (few-shot prompting); for classifying, extracting, and rewriting, examples beat descriptions. **Separate instructions from data** with clear markers, such as XML-style tags or a line of `---`. **Give it a role when that helps** (“You are a careful code reviewer”), but one clear role beats a paragraph of competing ones.
+
+**Let it reason before it answers** on multi-step problems. Asking for the working first and the answer last, called [chain-of-thought prompting](https://arxiv.org/abs/2201.11903), helps because each token of reasoning becomes context for the next. Many current models have a built-in “thinking” or “reasoning” mode that does this on its own, so check the model’s documentation before adding the instruction. And **change one thing at a time:** keep a few test inputs, change one line, compare, and keep what helped. The prompt engineering guides in Further reading go further.
+
+## 36.7 Chatbot or API?
+
+A **chat app** like [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), or [Gemini](https://gemini.google.com/) is a website or program you type into. An **API**, such as the [Claude API](https://platform.claude.com/docs/en/get-started) or the [OpenAI API](https://developers.openai.com/api/docs/quickstart), lets your own code send a prompt and get the reply back as data. The model underneath is the same kind, but you get very different things:
+
+|  | Chat app | API |
+|----|----|----|
+| Getting started | Type and go | An account, a key, some code |
+| System prompt | Set by the company, mostly hidden | Yours to write |
+| Memory | The app keeps the conversation | None: your code resends the history |
+| 500 inputs | Paste 500 times | Write a loop |
+| Extras (web search, files) | Usually included | Only what you turn on or build |
+| Cost | Free tier or a monthly plan | Per token, itemized on every call |
+
+What a chat app and an API give you. {.caption-top .table}
+
+Use a chat app for one-off work: an explanation, a brainstorm, a first draft. Use the API when the same task has to run over many inputs, inside a script, with settings you control. A minimal call from Python (it needs `pip install anthropic` and an API key in the `ANTHROPIC_API_KEY` environment variable; see [sec-secrets](#sec-secrets) for keeping keys out of code):
+
+``` python
+import anthropic  # reads your key from the ANTHROPIC_API_KEY environment variable
+
+client = anthropic.Anthropic()
+message = client.messages.create(
+    model="MODEL-NAME",  # copy a current model name from the provider's models page
+    max_tokens=1024,
+    system="You are a patient statistics tutor. Answer in two sentences or fewer.",
+    messages=[
+        {"role": "user", "content": "What is the median of [3, 7, 2, 9, 5]?"},
+    ],
+)
+print("".join(block.text for block in message.content if block.type == "text"))
+print(message.usage.input_tokens, "tokens in,", message.usage.output_tokens, "tokens out")
+```
+
+The reply comes back as a list of **content blocks**, not a string, and on models with a thinking mode the first block may be the (usually hidden) reasoning, so the code keeps only the text blocks instead of grabbing `message.content[0]`. The `usage` numbers are what you’re billed for; printing them while you develop saves surprises.
+
+## 36.8 Tools and function calling: who runs the code?
+
+On its own, a model can only produce text; it can’t check the weather, run code, or query a database. **Function calling**, also called **tool use**, is how it gets those abilities, and the common misunderstanding is about who does the work: *the model never runs anything.* It writes a request, and your code decides whether to carry it out.
+
+**First, you describe the tools** you’re willing to run: a name, a plain-language description, and the arguments, written as a [JSON Schema](https://json-schema.org/learn/getting-started-step-by-step). Anthropic’s [tool use guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview) calls the schema `input_schema`; OpenAI’s [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) calls it `parameters`.
+
+``` json
+{
+  "name": "get_weather",
+  "description": "Returns the current weather for a city. Use it when the user asks about current conditions.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "City name, e.g. Denver"
+      }
+    },
+    "required": ["city"]
+  }
+}
+```
+
+**Next, the model decides.** If a tool would help, it replies with a structured request instead of an answer, in effect “call `get_weather` with `city` set to `Boulder`.” It writes those arguments the way it writes anything, by predicting likely tokens, so they can be wrong. **Then your code runs the function,** if you decide it should, and sends back the result. **Finally, the model writes its answer** from that result.
+
+Because every action passes through your code, you control what the model can touch. That’s also where the risk lives: a tool that deletes files or sends email will do exactly what the model asks, even when the model has misread the situation. Expose only what the task needs, and have a person approve anything hard to undo (see [sec-ai-llm](#sec-ai-llm) for matching checks to risk). Running this round trip in a loop until the job is done is what makes an agent, the subject of [sec-ai-agents](#sec-ai-agents).
+
+## 36.9 Why models state false things fluently
+
+When a model confidently says something false, people call it a [hallucination](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). The unsettling part is that it sounds exactly like the true answers, and once you remember what the model does, that stops being mysterious. Here’s GPT-2 asked about something that never happened, with sampling off so it always takes the likeliest token:
+
+``` python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
+model = AutoModelForCausalLM.from_pretrained("gpt2")
+
+ids = tokenizer("The first person to walk on Mars was", return_tensors="pt").input_ids
+out = model.generate(ids, max_new_tokens=12, do_sample=False,   # greedy: always the top token
+                     pad_token_id=tokenizer.eos_token_id)
+print(tokenizer.decode(out[0]))
+```
+
+``` text
+The first person to walk on Mars was a man named John Glenn.
+
+The first person to
+```
+
+No one has walked on Mars, and John Glenn orbited Earth. But “a man named” plus a famous astronaut is a likely way for that sentence to go on, and likely is all the model is built to produce. Modern assistants would almost certainly get this one right, but they fail the same way on questions where the mistake is harder to spot.
+
+The causes stack up. **The model predicts plausible text, not true text,** so a false sentence and a true one come out in the same confident tone. **Rare facts are learned poorly:** a study of this [“long tail”](https://arxiv.org/abs/2211.08411) found that models answer worse when the answer appears in few training documents, and in its place they produce something that fits the common pattern, like a plausible author for a paper. **Training data stops at a date,** the [knowledge cutoff](https://en.wikipedia.org/wiki/Knowledge_cutoff), so newer library versions and events are missing and the model fills in what used to be true. **Guessing gets rewarded:** a 2025 paper, [“Why Language Models Hallucinate,”](https://arxiv.org/abs/2509.04664) argues that training and evaluation favor a confident guess over “I don’t know,” the way an exam with no penalty for wrong answers rewards guessing. And **tokenization adds errors** in spelling, counting, and arithmetic, as the strawberry example showed.
+
+The practical responses follow:
+
+- Check facts, citations, and numbers against a primary source before you use them.
+- Run code and test it; reading it isn’t enough.
+- Give the model the source material (paste the documentation, or use retrieval) instead of relying on its memory.
+- Ask what might be wrong; models often flag real uncertainty when asked directly, though not reliably.
+- Keep the temperature low for factual tasks, where you can set it.
+
+## 36.10 Stakes and politics
+
+Article 1 of the Universal Declaration of Human Rights says that all human beings are born free and equal in dignity and rights. In the token table earlier in this chapter, that sentence costs 33 tokens in English and 206 in Amharic. Anyone paying by the token pays about six times as much to send it in Amharic, waits longer for the reply, and fits a sixth as much into the context window. [Petrov and colleagues](https://arxiv.org/abs/2305.15425) found gaps of up to 15 times between languages. Nobody set out to charge Amharic speakers more; the tokenizer’s vocabulary was learned from text dominated by English and a few other widely published languages. It can change, too: Hindi went from 182 tokens with GPT-4’s tokenizer to 54 with GPT-4o’s, which shows these were design choices all along.
+
+The same thing happens at every layer. The training text over-represents formal, published, English-language writing by people who write a lot online, so the model’s default voice is that corpus’s average. Embeddings carry the corpus’s associations: in 2016, [Bolukbasi and colleagues](https://arxiv.org/abs/1607.06520) found that word embeddings trained on Google News completed “man is to computer programmer as woman is to \_\_\_” with “homemaker.” And only a few very well-funded companies can train frontier models, so a small group decides what those models read, how they’re tuned, and what they refuse; open-weights models like the GPT-2 you ran here spread the using, not the deciding. [sec-evaluating-ai](#sec-evaluating-ai) covers how to test for gaps like these.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when a model “knows” something, or charges you more to say something, ask whose text it learned from.
+
+## 36.11 Worked examples
+
+### Diagnosing why a prompt produces inconsistent output
+
+A prompt “usually works” but sometimes returns garbage, and you want to know why before piling on more wording. **Start by collecting evidence:** save the prompt and a few bad outputs side by side, and count the prompt’s tokens; if you’re near the context window, that alone could be the cause. **Next, take sampling out of the picture** by setting the temperature to 0, if your model allows it, and running the prompt several times. If the outputs now agree, the inconsistency was sampling; if they still vary a lot, look elsewhere, such as a retrieval step that returns different documents each time. **Then name the format** (“Reply with JSON only, with the keys `summary` and `tags`”); format failures often vanish once the format is spelled out. **If it still wanders, add one or two examples** of exactly the output you want. After each step, write down which change fixed it; that note is the lesson worth keeping.
+
+``` python
+import anthropic
+
+client = anthropic.Anthropic()
+
+def call(prompt, temperature=None):
+    settings = {}
+    if temperature is not None:
+        # Recent SDKs have no temperature= argument, and some models don't accept one,
+        # so pass it through extra_body, to a model whose documentation says it does.
+        settings["extra_body"] = {"temperature": temperature}
+    message = client.messages.create(
+        model="MODEL-NAME",  # a model that accepts temperature
+        max_tokens=512,
+        messages=[{"role": "user", "content": prompt}],
+        **settings,
+    )
+    return "".join(block.text for block in message.content if block.type == "text")
+
+prompt = "Summarize this abstract in one sentence: ..."
+for _ in range(3):
+    print(call(prompt, temperature=0))   # take sampling out of the picture
+print(call(prompt + "\n\nReply with JSON only, with the keys summary and tags."))
+```
+
+The comment in `call` is a lesson of its own: version 1 of Anthropic’s Python SDK has no `temperature` argument, and not every model accepts one. Settings that were standard a year ago can disappear, so when a call fails with an unexpected-argument error or a 400, check the current documentation before assuming your code is wrong.
+
+### Converting a chatbot workflow to an API call
+
+For weeks you’ve pasted a document into a chat window, asked the same question, and copied the answer into a spreadsheet. Time to hand it to a script. **Pull apart what you do by hand:** the question you retype is standing instructions, and the pasted document is the part that changes. **Move the standing part into a system prompt** and send the document as the user turn. **Make one call and compare it** with an answer from the chat window, adjusting the system prompt until they agree, with `max_tokens` set so long answers aren’t cut off. **Then make the input a parameter,** a file path from the command line (see [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks)), and loop over a folder. **Log every input, output, and token count** to a CSV so you can audit the results and the bill. Keep the API key in an environment variable, never in the script.
+
+### Building a simple semantic search with embeddings
+
+You want to search documents by *meaning*, and see it work before paying for anything. A small free model from [Sentence Transformers](https://sbert.net/docs/quickstart.html) runs on a laptop (`pip install sentence-transformers`; the model is a 90 MB download on first use):
+
+``` python
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("all-MiniLM-L6-v2")  # small, free, runs on a laptop
+
+docs = [
+    "How to reduce memory usage in pandas",
+    "Optimizing RAM consumption for large DataFrames",
+    "Baking sourdough bread at home",
+    "My notebook crashes when I load a big CSV file",
+    "Choosing colors for a bar chart",
+]
+doc_vecs = model.encode(docs)  # one row of numbers per document
+print(doc_vecs.shape)
+
+def search(query, k=3):
+    q = model.encode(query)
+    sims = doc_vecs @ q / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(q))
+    best = np.argsort(sims)[::-1][:k]  # indexes of the k highest scores
+    return [(float(sims[i]), docs[i]) for i in best]
+
+for score, doc in search("my laptop runs out of memory reading a huge spreadsheet"):
+    print(f"{score:.2f}  {doc}")
+```
+
+``` text
+(5, 384)
+0.60  My notebook crashes when I load a big CSV file
+0.47  How to reduce memory usage in pandas
+0.46  Optimizing RAM consumption for large DataFrames
+```
+
+The top result shares none of the query’s key words (“laptop,” “memory,” “huge,” “spreadsheet”), so a keyword search would have missed it. To grow this into something real, embed your documents once and save the matrix (`np.save`), embed only the query at search time, use the same model for both, and test a few queries where you know the right answer against a plain keyword search to see where each wins.
+
+## 36.12 Exercises
+
+1.  Tokenize a paragraph you wrote with tiktoken, then the same paragraph in another language. How do the counts compare, and what would the difference mean for cost and context space?
+2.  Tokenize “strawberry”, ” strawberry”, “Strawberry”, and a long word from your field. Then ask a chatbot to spell each one backwards. Does it do worse on words that split into more pieces?
+3.  Run the softmax code with your own made-up scores. At what temperature does the second-best option win at least one draw in ten? Then give the GPT-2 code a prompt from your field and look at the top five next tokens.
+4.  Write the same request (“Explain what a p-value is”) vaguely, then with a role, an audience, and a format. Compare the answers and describe what changed.
+5.  Write a system prompt and user prompt that produce JSON with the fields `summary`, `key_terms`, and `confidence`. Test it on three documents. Did the format hold every time?
+6.  Get a model to state something false with confidence, for example about an event after its knowledge cutoff or an obscure paper in your field. Which cause from this chapter explains it, and how would you check the right answer?
+7.  If you have API access, write a script that takes a question from the command line, sends it with your own system prompt, and prints the reply and token counts. Change the system prompt and confirm the answers change.
+
+## 36.13 One-page checklist
+
+- The model reads tokens, not letters: check its spelling, letter counts, and arithmetic.
+- Count tokens with the provider’s own tool before sending anything long.
+- Put key instructions at the start or end, and restate them in long conversations.
+- Paste targeted excerpts, not whole files.
+- Keep the temperature low for consistency where you can set it, and never count on identical outputs.
+- Use a system prompt for standing instructions, name the format, and show examples.
+- Separate instructions from data with clear markers.
+- Compare embeddings only from the same model.
+- Use the API, not a chat window, when you need to loop, log, or control settings; keep keys in environment variables.
+- Expose only the tools a task needs, and have a person approve anything hard to undo.
+- Verify facts, citations, and code from a model against primary sources.
 
 > **NOTE:**
 >
-> - Anthropic, [Prompt engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) — structured prompt design patterns and evaluation tips.
-> - OpenAI, [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including system-message best practices.
-> - Hugging Face, [Transformers documentation](https://huggingface.co/docs/transformers/index) — the reference implementation of the model architecture behind most modern chat models.
-> - Vaswani et al., [Attention Is All You Need](https://arxiv.org/abs/1706.03762) (NeurIPS 2017) — the original transformer paper; short, technical, and worth reading once the conceptual picture in this chapter is clear.
-> - Jay Alammar, [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) — the canonical visual explanation of attention; 30 minutes of reading that demystifies most of what is happening inside the model.
-> - Andrej Karpathy, [Let’s build GPT from scratch in code, spelled out](https://www.youtube.com/watch?v=kCc8FmEb1nY) — a two-hour video that walks through implementing a small transformer end-to-end; the deepest practical understanding most non-specialists will get.
-> - Anthropic, [Mapping the Mind of a Large Language Model](https://www.anthropic.com/news/mapping-mind-language-model) — public-facing summary of mechanistic interpretability research; useful context for “what is the model actually representing.”
-> - Emily M. Bender et al., [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — required reading for the “Stakes and politics” framing above; pairs with the labor and corpus-bias points.
+> - **Anthropic**, [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) — practical patterns for structuring prompts, with advice on testing them.
+> - **OpenAI**, [Prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering) — OpenAI’s parallel guide, including how to use system messages and examples.
+> - **Jay Alammar**, [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) — the classic picture-by-picture explanation of attention; about half an hour that demystifies most of what happens inside the model.
+> - **Andrej Karpathy**, [Let’s build GPT: from scratch, in code, spelled out](https://www.youtube.com/watch?v=kCc8FmEb1nY) — a two-hour video that builds a small transformer line by line; the deepest practical understanding most non-specialists will get.
+> - **Hugging Face**, [Transformers documentation](https://huggingface.co/docs/transformers/index) — the library behind the GPT-2 examples in this chapter, with tutorials for running open models yourself.
+> - **Anthropic**, [Mapping the Mind of a Large Language Model](https://www.anthropic.com/news/mapping-mind-language-model) — a readable summary of interpretability research on what the numbers inside a model represent.
+> - **Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell**, [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (FAccT, 2021) — the widely cited critique of ever-larger language models, covering training data, cost, and who bears the risks; pairs with the Stakes section above.

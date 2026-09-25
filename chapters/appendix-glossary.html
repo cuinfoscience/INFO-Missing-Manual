@@ -695,163 +695,163 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This alphabetized glossary defines important terms from across the handbook so you can look up a word you hit mid-chapter without reading from the top. Each entry has an anchor ID that other chapters link to (for example, a mention of a <strong>package manager</strong> elsewhere in the book will be a direct link to the entry below).</p>
-<p>The “technology stack” is the collection of hardware and software systems that enables an application to run. On contemporary personal computers it includes the following components. If you know the name of the component that is confusing you, you will have more success finding help online or from your instructors and peers.</p>
+<p>You’re halfway through a chapter, you hit a word like “kernel” or “PATH,” and nobody ever told you what it means. This page is for that moment. The terms are in alphabetical order, each with a short, plain definition and a pointer to the chapter that teaches it properly, so you can look one up and get straight back to what you were doing. When a chapter uses one of these words for the first time, it usually links here (a mention of a <strong>package</strong> in <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>, for example, jumps straight to its entry below).</p>
+<p>A lot of these words name layers of the software on your computer: the operating system at the bottom, then the file system, the shell, Python, its packages, and finally your own code. Together they’re sometimes called the <a href="https://en.wikipedia.org/wiki/Solution_stack">technology stack</a>. When something breaks, figuring out <em>which layer</em> is misbehaving is half the battle, and knowing its name makes the other half, searching for help or asking someone, a lot easier.</p>
 <section id="term-audit" class="level3">
 <h3 class="anchored" data-anchor-id="term-audit">Algorithmic audit</h3>
-<p>A structured evaluation of an AI or algorithmic system, usually focused on whether the system meets some standard of fairness, safety, or accuracy across the populations it affects. Audits can be <strong>first-party</strong> (run by the vendor that built the system), <strong>second-party</strong> (run by the organization deploying it), or <strong>third-party</strong> (run by an independent group with the access and incentive to find problems). The presence of an audit is not the same as the audit having teeth — see <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a> and <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
+<p>A close look at an AI or algorithmic system to find out whether it’s fair, safe, or accurate for the people it affects, including the failures nobody planned for. Who runs it matters: a <strong>first-party</strong> audit is done by the company that built the system, a <strong>second-party</strong> audit by the organization using it, and a <strong>third-party</strong> audit by an independent group with the access and the reason to find problems. Most audits in practice are first-party, so “we audited it” doesn’t by itself mean much. See <a href="evaluating-ai.html" class="quarto-xref"><span>Chapter 38</span></a>, and <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for why who holds the power matters.</p>
 </section>
 <section id="term-application" class="level3">
 <h3 class="anchored" data-anchor-id="term-application">Application</h3>
-<p>A self-contained program that allows a user to perform specific tasks. Applications are built differently depending on the operating system and typically need permission to access the file system to store and retrieve data. Microsoft Word and Excel, Google Chrome, and Apple Mail are all applications.</p>
+<p>A program you open to get something done, like Microsoft Word, Excel, Google Chrome, or Apple Mail. Applications are built separately for each operating system, which is why a Mac app won’t run on Windows, and they need your permission to read and save files in some places.</p>
 </section>
 <section id="term-breakpoint" class="level3">
 <h3 class="anchored" data-anchor-id="term-breakpoint">Breakpoint</h3>
-<p>A line where a running program pauses so you can inspect its state in a debugger: the values of its variables, the calls that led there, and what happens as you run it one line at a time. You set one by writing <code>breakpoint()</code> in Python code or by clicking beside a line number in an editor; a <em>conditional</em> breakpoint pauses only when an expression you give it is true. See <a href="debugging.html" class="quarto-xref"><span>Chapter 6</span></a> and <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
+<p>A line where a running program pauses so you can look around inside it with a debugger: the values of your variables, the chain of calls that got you there, and what happens as you run it one line at a time. You set one by writing <code>breakpoint()</code> in Python code or by clicking beside a line number in your editor; a <em>conditional</em> breakpoint pauses only when an expression you give it is true, such as <code>row_id == 1047</code>. See <a href="debugging.html" class="quarto-xref"><span>Chapter 6</span></a> and <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
 </section>
 <section id="term-channel" class="level3">
 <h3 class="anchored" data-anchor-id="term-channel">Channel</h3>
-<p>When you install packages using <code>conda</code>, it downloads packages from a <em>channel</em> — a named bin that holds packages you can choose. Most often you will download packages from a large channel called <code>conda-forge</code> using <code>-c conda-forge</code> in conda commands. If conda can’t find a package, make sure you are using an appropriate channel.</p>
+<p>A named place <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/channels.html">conda</a> downloads packages from. Anaconda and Miniconda start with Anaconda’s own <code>defaults</code> channel, while Miniforge starts with <strong>conda-forge</strong>, a community channel with far more packages. If conda says it can’t find a package, or two packages won’t install together, the channel is one of the first things to check. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
 </section>
 <section id="term-cli" class="level3">
 <h3 class="anchored" data-anchor-id="term-cli">Command line interface (CLI)</h3>
-<p>The most direct method for interacting with a computer’s operating and file systems. A CLI accepts only specifically-formatted text commands to navigate the file system and run applications and scripts, but it is potentially more customizable than graphical interfaces. The macOS CLI lives in the “Terminal” application; the Windows CLI lives in “Command Prompt,” “PowerShell,” or “Windows Terminal.”</p>
+<p>A way of using your computer by typing commands instead of clicking, such as <code>ls</code> to list the files in a folder or <code>python analyze.py</code> to run a script. It looks bare at first, but it’s often faster than clicking, it can be scripted, and it’s the only option on many servers. On a Mac you get to it through the Terminal app; on Windows, through Windows Terminal running PowerShell, Command Prompt, or (the one the book recommends) WSL or Git Bash. See <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>.</p>
 </section>
 <section id="term-csv" class="level3">
 <h3 class="anchored" data-anchor-id="term-csv">CSV (Comma-Separated Values)</h3>
-<p>A plain-text file format for tabular data where each row is a line and each column is separated by a delimiter (traditionally a comma, sometimes a tab or semicolon). See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for the quirks of reading CSVs reliably.</p>
+<p>A plain-text file format for tables: each row is a line, and the columns are separated by a delimiter, usually a comma (sometimes a tab or a semicolon). Because a CSV stores everything as text, the program that reads it has to guess what’s a number, a date, or a missing value, and it sometimes guesses wrong. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for how to read one reliably.</p>
 </section>
 <section id="term-data-dictionary" class="level3">
 <h3 class="anchored" data-anchor-id="term-data-dictionary">Data dictionary</h3>
-<p>A table that documents a dataset one column at a time: each column’s name, type, meaning in plain words, units, allowed values, and how missing values are coded. Kept as a file beside the data, it lets someone else (or you, months later) use the data correctly, and a short script can check new data against it. A <em>codebook</em> is the survey-research version, adding each question’s wording and what its response codes mean. See <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a>.</p>
+<p>A small table that explains a dataset one column at a time: each column’s name, its type, what it means in plain words, its units, the values it’s allowed to take, and how missing values are marked. Keep it as a file next to the data, and someone else (or you, six months from now) can use the data correctly, and a short script can check new data against it. A <em>codebook</em> is the survey-research version, which adds each question’s exact wording and what its answer codes mean (<code>1</code> = “strongly disagree”). See <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a>.</p>
 </section>
 <section id="term-driver" class="level3">
 <h3 class="anchored" data-anchor-id="term-driver">Driver</h3>
-<p>Software that interfaces between hardware and software (for example, allowing an operating system to receive information from your mouse and keyboard) or between software programs (for example, allowing your web browser to combine network packets into a complete data request). Your operating system will typically keep drivers for hardware like video cards, sound, and networking up-to-date.</p>
+<p>A small program that lets the operating system talk to a piece of hardware, such as your Wi-Fi card, printer, graphics card, or trackpad. Your operating system keeps most drivers up to date through its own updates, so install drivers only from the operating system or the hardware’s maker, never from a “driver updater” site. See <a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
 </section>
 <section id="term-environment" class="level3">
 <h3 class="anchored" data-anchor-id="term-environment">Environment</h3>
-<p>Code on your computer does not run in isolation. To run a Python file you need a Python interpreter stored somewhere on your computer that reads and executes each line of your code. Your Python program will sometimes load files from a given directory or access packages stored somewhere on your machine. A program’s <em>environment</em> is the combination of the interpreter, installed packages, environment variables, and working directory that the program uses to run. <code>conda</code> and <code>venv</code> both manage Python environments; see <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
+<p>Everything your code runs <em>inside</em> of, beyond the code itself. In Python talk it usually means one Python interpreter and the packages installed for it, and you can have many on the same computer, one per project. More broadly, a program’s environment also includes its environment variables (like <code>PATH</code>) and the folder it was started from. When code works on one computer and fails on another, a different environment is the usual suspect. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 </section>
 <section id="term-file-system" class="level3">
 <h3 class="anchored" data-anchor-id="term-file-system">File system</h3>
-<p>The software and hardware that store, retrieve, and organize the data folders, files, and their permissions for the users on your computer.</p>
+<p>The part of your computer that stores your files and folders, keeps track of where each one is, and decides who’s allowed to read or change it. Every file has an address in it, called a <em>path</em>, like <code>Documents/thesis/data/survey.csv</code>. See <a href="file-system.html" class="quarto-xref"><span>Chapter 10</span></a>.</p>
 </section>
 <section id="term-gui" class="level3">
 <h3 class="anchored" data-anchor-id="term-gui">Graphical user interface (GUI)</h3>
-<p>A way of interacting with a computer by clicking on icons rather than typing text commands. The macOS file system is accessed graphically via “Finder”; the Windows file system is accessed via “File Explorer.” You will sometimes hear GUI pronounced “ghee-you-eye” or “gooey.”</p>
+<p>The windows, icons, menus, and buttons you click to use a computer, as opposed to typing commands. Finder on macOS and File Explorer on Windows are GUIs for your file system. You’ll sometimes hear GUI pronounced “gooey.”</p>
 </section>
 <section id="term-json" class="level3">
 <h3 class="anchored" data-anchor-id="term-json">JSON (JavaScript Object Notation)</h3>
-<p>A plain-text file format for structured data that supports nested objects and arrays. It is the dominant format for data returned from web APIs. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> and <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
+<p>A plain-text format for structured data, built from <code>{ }</code> objects (named fields) and <code>[ ]</code> lists that can nest inside each other, like <code>{"name": "Ada", "courses": ["INFO 1201", "STAT 2010"]}</code>. It’s what most web APIs send back, what many tools use for settings, and even what a Jupyter notebook is underneath. See <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a> and <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</p>
 </section>
 <section id="term-kernel" class="level3">
 <h3 class="anchored" data-anchor-id="term-kernel">Jupyter kernel</h3>
-<p>The computational engine that executes the code in a Jupyter notebook. Each notebook is connected to a kernel; the kernel determines which Python interpreter (and therefore which environment) your code runs in. If your imports fail or the wrong version of a package shows up, check the kernel first. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>.</p>
+<p>The separate program that actually runs the code in your Jupyter notebook; for a Python notebook, it’s a Python interpreter. The kernel remembers every variable you’ve created until it restarts, even ones whose cells you’ve since deleted, which is why a notebook can “work” only because of something still in memory. It also decides which Python (and so which installed packages) your code sees, so if an import fails in a notebook but works in the terminal, check the kernel first. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> and <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 </section>
 <section id="term-llm" class="level3">
 <h3 class="anchored" data-anchor-id="term-llm">Large language model (LLM)</h3>
-<p>A neural network trained on large amounts of text that generates text by predicting the next token in a sequence. LLMs power AI assistants like ChatGPT, Claude, and GitHub Copilot. See <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> and <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>.</p>
+<p>The kind of AI model behind ChatGPT, Claude, Gemini, and GitHub Copilot. It’s a neural network trained on huge amounts of text, and it writes by predicting, over and over, which small piece of text (a <em>token</em>) should come next. That makes it good at producing text that sounds right, which isn’t the same as text that is right. See <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> and <a href="llm-internals.html" class="quarto-xref"><span>Chapter 36</span></a>.</p>
 </section>
 <section id="term-library" class="level3">
 <h3 class="anchored" data-anchor-id="term-library">Library</h3>
-<p>A set of software resources that expand the functionality of a programming language. The basic version of Python only includes a core set of functionality; libraries like <code>numpy</code>, <code>pandas</code>, and <code>matplotlib</code> add numerical computation, data manipulation, and plotting. “Library” and “package” are often used interchangeably in Python.</p>
+<p>Code someone else wrote that adds abilities to a programming language. Python on its own covers the basics; libraries like <code>numpy</code>, <code>pandas</code>, and <code>matplotlib</code> add fast math, data tables, and plotting. In Python, “library” and “package” are used almost interchangeably. When a traceback shows a path containing <code>site-packages/</code>, that’s a library you installed. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
 </section>
 <section id="term-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="term-markdown">Markdown</h3>
-<p>A lightweight markup language that uses plain-text characters (<code>#</code>, <code>*</code>, <code>-</code>, backticks) to represent formatting like headings, emphasis, lists, and code blocks. Markdown is the standard format for README files, GitHub issues, Jupyter notebook text cells, and documentation tools like Quarto. See <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
+<p>A simple way to format plain text with ordinary characters: <code>#</code> for a heading, <code>**bold**</code> for bold, <code>-</code> for a list item, and backticks for <code>code</code>. The raw file stays readable, and tools turn it into a nicely formatted page. It’s how README files, GitHub issues, Jupyter text cells, and Quarto books like this one are written. See <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
 </section>
 <section id="term-matilda-effect" class="level3">
 <h3 class="anchored" data-anchor-id="term-matilda-effect">Matilda effect</h3>
-<p>The systematic under-citation and under-attribution of women’s contributions to research, named by historian Margaret Rossiter as a counterpart to the “Matthew effect” (where established scholars accumulate disproportionate credit). The pattern extends beyond gender to scholars of color, scholars from non-English-speaking institutions, and scholars from the Global South. See <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a>.</p>
+<p>The pattern of women’s contributions to research being under-cited and credited to someone else, often a male colleague. The historian of science Margaret Rossiter named it in 1993, after the suffragist Matilda Joslyn Gage, as a counterpart to the <a href="https://en.wikipedia.org/wiki/Matthew_effect">Matthew effect</a>, in which people who already have credit get more of it. The same pattern shows up for scholars of color and scholars outside the most powerful institutions and countries. See <a href="writing-manuscripts.html" class="quarto-xref"><span>Chapter 26</span></a> and <a href="https://en.wikipedia.org/wiki/Matilda_effect">Wikipedia’s article</a>.</p>
 </section>
 <section id="term-network-drive" class="level3">
 <h3 class="anchored" data-anchor-id="term-network-drive">Network drive</h3>
-<p>A folder on another computer, usually a file server, that your computer connects to over the network and shows as if it were local: a drive letter on Windows (<code>\\server\share</code>), a mounted volume on macOS (<code>smb://server/share</code>). Every read and write crosses the network, and the drive disappears when the network does. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
+<p>A folder on another computer, usually a department file server, that your computer connects to over the network and shows as if it were local: a mapped drive on Windows (<code>\\server\share</code>), or a server you connect to from Finder on a Mac (<code>smb://server/share</code>). Every read and write crosses the network, so it’s slow for big files and it vanishes when you go offline. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
 </section>
 <section id="term-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="term-notebook">Notebook</h3>
-<p>An interactive document that mixes executable code, prose, and output. In Python, the Jupyter notebook format (<code>.ipynb</code>) is the dominant choice. A notebook runs in a particular environment; see <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>.</p>
+<p>A document that mixes code you can run, the output it produces (tables, charts, errors), and written notes, all in one file. The Jupyter notebook (a <code>.ipynb</code> file) is the most common kind in Python. Great for exploring, but the order you ran the cells in isn’t always the order on the page, so restart and run everything from the top before you trust the results. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>.</p>
 </section>
 <section id="term-online-only-file" class="level3">
 <h3 class="anchored" data-anchor-id="term-online-only-file">Online-only file</h3>
-<p>A placeholder a sync client leaves on your disk to save space: the file’s name and icon are there, but its contents stay in the cloud until something opens it. Code that reads an online-only file has to wait for a download, and fails when you are offline. Also called a <em>files-on-demand</em> or <em>dataless</em> file. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
+<p>A placeholder a sync client leaves on your disk to save space: the file’s name and icon are there, but its contents stay in the cloud until something opens it. OneDrive calls this Files On-Demand, and iCloud Drive does it when <em>Optimize Mac Storage</em> is on. It’s handy for documents, but code that reads an online-only file has to wait for a download, and fails if you’re offline. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
 </section>
 <section id="term-open-access" class="level3">
 <h3 class="anchored" data-anchor-id="term-open-access">Open access (OA)</h3>
-<p>Scholarly publishing models in which articles are freely readable on the open web rather than behind a subscription paywall. <em>Gold OA</em> journals are open by default (often funded by article-processing charges paid by the author or their institution); <em>green OA</em> refers to author-deposited versions in institutional or subject repositories like arXiv. See <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a> and the <a href="https://doaj.org/">Directory of Open Access Journals</a>.</p>
+<p>Research that anyone can read for free online, with no subscription or paywall. <em>Gold</em> OA means the journal itself publishes the article openly, sometimes paid for by a fee from the author or their university; <em>green</em> OA means the author has posted a free copy somewhere else, such as arXiv or their university’s repository. See <a href="reading-scholarship.html" class="quarto-xref"><span>Chapter 25</span></a> and the <a href="https://doaj.org/">Directory of Open Access Journals</a>.</p>
 </section>
 <section id="term-operating-system" class="level3">
 <h3 class="anchored" data-anchor-id="term-operating-system">Operating system</h3>
-<p>The software that coordinates the hardware (processor, hard drive, keyboard, mouse, and so on) and other software (file system, interfaces, programs, compilers, drivers, and so on) on your computer. macOS, Windows, and Linux are operating systems. See <a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
+<p>The software between your apps and your hardware: macOS, Windows, and Linux are all operating systems. It launches and stops programs, runs the file system, keeps user accounts and their permissions separate, and talks to your keyboard, screen, Wi-Fi, and storage through drivers. See <a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
 </section>
 <section id="term-package" class="level3">
 <h3 class="anchored" data-anchor-id="term-package">Package</h3>
-<p>Computer code that somebody else has already written and published for others to install and use. <a href="https://numpy.org/">numpy</a> and <a href="https://pandas.pydata.org/">pandas</a> are common packages for data science.</p>
+<p>Code that someone else has already written and published for you to install and use, such as <a href="https://numpy.org/">numpy</a>, <a href="https://pandas.pydata.org/">pandas</a>, or <code>requests</code>. The word has a second, narrower meaning in Python: a folder of your own <code>.py</code> files that you import as one unit, usually marked by an <code>__init__.py</code> file inside it. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
 </section>
 <section id="term-package-manager" class="level3">
 <h3 class="anchored" data-anchor-id="term-package-manager">Package manager</h3>
-<p>A tool that installs, updates, and removes packages, tracking their versions and dependencies. <code>conda</code> and <code>pip</code> are the two package managers most commonly used in Python data science. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
+<p>A tool that installs, updates, and removes packages for you, and works out which versions of everything they depend on can live together. <code>pip</code> and <code>conda</code> are the two you’ll meet most in Python data work, and <code>uv</code> is a fast newer one. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
 </section>
 <section id="term-parquet" class="level3">
 <h3 class="anchored" data-anchor-id="term-parquet">Parquet</h3>
-<p>A column-oriented binary file format for tabular data, designed for fast reads of large datasets. Parquet files are smaller and faster to load than CSVs for analytical work. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</p>
+<p>A file format for tables that’s built for analysis. It stores data column by column, compresses it, and remembers each column’s type, so dates stay dates. You can’t read it in a text editor, but it’s usually much smaller and faster to load than the same data as a CSV. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</p>
 </section>
 <section id="term-path" class="level3">
 <h3 class="anchored" data-anchor-id="term-path">PATH</h3>
-<p>An environment variable that tells your computer where to look for programs. If you see errors like <code>command not found</code>, it often means a program you want is not on your <code>PATH</code>.</p>
+<p>An environment variable holding the <a href="https://en.wikipedia.org/wiki/PATH_(variable)">list of folders</a> your shell searches, in order, when you type a command like <code>python</code>. <code>command not found</code> means the program isn’t in any of those folders, and running the “wrong” Python usually means a different one comes first on the list. (Don’t confuse it with a lowercase <em>path</em>, the address of a file, like <code>data/survey.csv</code>.) See <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>.</p>
 </section>
 <section id="term-pip" class="level3">
 <h3 class="anchored" data-anchor-id="term-pip"><code>pip</code></h3>
-<p>A package manager for Python, typically paired with <code>venv</code>. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
+<p>Python’s built-in package manager, which installs packages from the <a href="https://pypi.org/">Python Package Index (PyPI)</a>: <code>pip install pandas</code>. Run it inside an activated virtual environment, so packages land in your project and not in some other Python on your computer. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> and <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 </section>
 <section id="term-programming-language" class="level3">
 <h3 class="anchored" data-anchor-id="term-programming-language">Programming language</h3>
-<p>A structured language that a computer can execute. Python, Java, Ruby, C++, and JavaScript are examples. Languages share concepts like variables, loops, and functions but their syntax usually does not translate directly.</p>
+<p>A language for writing instructions a computer can carry out, like Python, R, JavaScript, Java, or C++. Most share the same big ideas (variables, loops, functions), so learning a second one is much easier than the first, even though the exact way you write things differs.</p>
 </section>
 <section id="term-repl" class="level3">
 <h3 class="anchored" data-anchor-id="term-repl">REPL (Read–Eval–Print Loop)</h3>
-<p>An interactive prompt that reads code, evaluates it, prints the result, and loops. Typing <code>python</code> with no arguments drops you into Python’s REPL. Jupyter notebooks are a graphical form of REPL.</p>
+<p>An interactive prompt that reads a line of code, runs it, prints the result, and waits for the next one (the <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">name</a> spells out that loop). Type <code>python</code> with nothing after it in a terminal and you’re in Python’s REPL; type <code>exit()</code> to leave. A Jupyter kernel works the same way, which is why it remembers everything you’ve run. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>.</p>
 </section>
 <section id="term-rlhf" class="level3">
 <h3 class="anchored" data-anchor-id="term-rlhf">RLHF (Reinforcement Learning from Human Feedback)</h3>
-<p>The post-training technique that teaches a base language model to follow instructions, refuse harmful requests, and produce useful responses. Human raters compare model outputs and rank them; those rankings train a reward model; the language model is then fine-tuned to maximize that reward. The labeling labor is typically performed by underpaid contract workers and is one of the hidden costs the AI industry externalizes. See <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> and <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a>.</p>
+<p>One of the training steps that turns a raw text predictor into a helpful chat assistant, usually after it has first been trained on example conversations. People compare pairs of the model’s answers and pick the better one; those choices train a <em>reward model</em>, and the language model is then tuned to write answers that model scores highly. Much of that rating work is done by low-paid contract workers, sometimes reviewing disturbing material, which is one of the hidden costs behind AI tools. See <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a>, <a href="ai-agents.html" class="quarto-xref"><span>Chapter 37</span></a>, and <a href="https://en.wikipedia.org/wiki/Reinforcement_learning_from_human_feedback">Wikipedia’s article</a>.</p>
 </section>
 <section id="term-schema" class="level3">
 <h3 class="anchored" data-anchor-id="term-schema">Schema</h3>
-<p>The set of columns, types, and constraints that define the shape of a table or document store. A schema is also a frozen ontology — once a <code>gender</code> column allows two values or a <code>country</code> column uses a fixed list of ISO codes, those choices become claims the application makes before any user gets to disagree with them. See <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a> and <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
+<p>The blueprint of a table or database: which columns it has, what type each one is, and what rules the values must follow (for example, “every order has a customer ID”). A schema is also a set of choices about the world. Once a <code>gender</code> column allows only two values, or a form offers only a fixed list of race categories, anyone who doesn’t fit gets squeezed in or left out, and the choice tends to stick because everything downstream depends on it. See <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>, and <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the bigger picture.</p>
 </section>
 <section id="term-script" class="level3">
 <h3 class="anchored" data-anchor-id="term-script">Script</h3>
-<p>A file of source code intended to be executed as a program. In Python, a script is typically a <code>.py</code> file you run with <code>python script.py</code>. See <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
+<p>A file of code you run as a program from start to finish, like <code>python analyze.py</code>. Unlike a notebook, a script runs the same way every time, top to bottom, which makes it the better choice for anything you’ll repeat or share. See <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>.</p>
 </section>
 <section id="term-sync-client" class="level3">
 <h3 class="anchored" data-anchor-id="term-sync-client">Sync client</h3>
-<p>A program, such as OneDrive, iCloud Drive, Google Drive for desktop, or Dropbox, that keeps a folder on your computer matched to a copy in the cloud and on your other devices. Syncing is not a backup: a deletion or a bad edit syncs too. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
+<p>A program, such as OneDrive, iCloud Drive, Google Drive for desktop, or Dropbox, that keeps a folder on your computer matched to a copy in the cloud and on your other devices. Syncing isn’t a backup: if you delete a file or save a bad edit, that syncs everywhere too. See <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p>
 </section>
 <section id="term-terminal" class="level3">
 <h3 class="anchored" data-anchor-id="term-terminal">Terminal</h3>
-<p>A program that launches a shell and shows its input and output in a window. “Terminal” and “shell” are sometimes used interchangeably, but technically the terminal is the window and the shell is the program that interprets your commands. See <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>.</p>
+<p>The application window you type commands into, such as Terminal on macOS or Windows Terminal. People often say “terminal” when they mean the <em>shell</em>, but they’re two things: the terminal is the window, and the shell (<code>zsh</code>, <code>bash</code>, or PowerShell) is the program inside it that reads and runs what you type. See <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>.</p>
 </section>
 <section id="term-text-editor" class="level3">
 <h3 class="anchored" data-anchor-id="term-text-editor">Text editor</h3>
-<p>A program for editing files — like a word processor but for code. Common choices are VS Code, Sublime Text, Notepad++, vim, and emacs. See <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
+<p>A program for writing and editing plain-text files, such as code, data, and configuration. Unlike a word processor, it saves exactly the characters you type and nothing else, which is what code needs. VS Code is the common all-purpose choice; <code>nano</code> and <code>vim</code> run inside a terminal, so they work on any server. See <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
 </section>
 <section id="term-traceback" class="level3">
 <h3 class="anchored" data-anchor-id="term-traceback">Traceback</h3>
-<p>The sequence of function calls Python prints when an error occurs, showing the path from your entry point down to the line that raised the exception. Reading tracebacks is one of the highest-leverage debugging skills. See <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
+<p>The block of text Python prints when your code crashes. It lists the chain of calls that led to the error, from your code down to the line that failed, and ends with the error’s type and message. Start reading at the last line, which says what went wrong, then look up the list for the last line that’s in <em>your</em> code. See <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
 </section>
 <section id="term-version" class="level3">
 <h3 class="anchored" data-anchor-id="term-version">Version</h3>
-<p>An identifier (usually something like <code>1.2.3</code>) that marks a specific release of a package or language. Good package management pins the versions you depend on so your work reproduces later. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
+<p>A label, usually something like <code>2.2.3</code>, that marks one specific release of a package or of Python itself. Many packages follow <a href="https://semver.org/">semantic versioning</a>, where a change in the first number warns you that code written for the old version might break. Writing down the exact versions a project uses (<em>pinning</em> them) is what lets it run the same way later. See <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
 </section>
 <section id="term-virtual-environment" class="level3">
 <h3 class="anchored" data-anchor-id="term-virtual-environment">Virtual environment</h3>
-<p>An isolated Python installation scoped to a single project, so packages you install for one project don’t leak into others. <code>python -m venv .venv</code> creates one; <code>source .venv/bin/activate</code> turns it on. See <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
+<p>A private Python setup for one project, with its own folder of installed packages, so what you install for one project can’t break another. <code>python -m venv .venv</code> creates one. You then <em>activate</em> it, with <code>source .venv/bin/activate</code> on macOS or Linux or <code>.venv\Scripts\Activate.ps1</code> in Windows PowerShell, and your prompt starts with <code>(.venv)</code> while it’s on. See <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.</p>
 </section>
 <section id="term-yaml" class="level3">
 <h3 class="anchored" data-anchor-id="term-yaml">YAML</h3>
-<p>A human-readable data serialization format that uses indentation (spaces, never tabs) to represent nested structure. YAML is the standard format for configuration files in tools like Quarto, GitHub Actions, and conda. See <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
+<p>A plain-text format for settings files, written as <code>key: value</code> lines with indentation to show what belongs inside what. The indentation has to be spaces, never tabs, and a stray colon or tab is behind most YAML errors. Quarto, GitHub Actions, and conda’s <code>environment.yml</code> all use it. See <a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
 
 
 </section>
