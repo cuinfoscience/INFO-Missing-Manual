@@ -3,6 +3,7 @@
 
     tools/shots/.venv/bin/python tools/layout-audit/audit.py toc
     tools/shots/.venv/bin/python tools/layout-audit/audit.py column
+    tools/shots/.venv/bin/python tools/layout-audit/audit.py widths
 
 toc     On every page, at each window size: is the right-hand table of contents
         showing when the page loads, or has Quarto collapsed it behind its
@@ -11,6 +12,10 @@ toc     On every page, at each window size: is the right-hand table of contents
 column  How wide the body column and the margin column are, in CSS pixels, at
         common window widths. The screenshot toolkit's legibility targets are
         set from the body width (tools/shots/lib/legibility.py, BOOK_PX).
+widths  On every page, at each window width: are the body column, the table of
+        contents, and the left navigation the same width as on every other page,
+        and does the page fit the window without a sideways scroll? Exits 1 if
+        any page differs or overflows. (styles/layout.css.)
 
 Both read the rendered HTML in book/ (render first with `quarto render --to html`,
 or pass --book), serve it on 127.0.0.1, and never touch the network. They use
@@ -53,6 +58,16 @@ TOC_JS = """() => {
     has_meme: memes.length > 0,
     meme_visible: memes.some(i => { const r = i.getBoundingClientRect(); return r.width > 0 && r.height > 0; }),
   };
+}"""
+
+WIDTHS_JS = """() => {
+  const w = sel => { const e = document.querySelector(sel); return e && e.offsetWidth ? Math.round(e.getBoundingClientRect().width) : null; };
+  const main = document.querySelector('main.content');
+  const para = main && [...main.querySelectorAll('p')].find(p => p.offsetWidth > 0 &&
+      !p.closest('.column-margin, .callout, figure, [class*="column-page"], [class*="column-body-outset"], [class*="column-screen"]'));
+  return {body: para ? Math.round(para.getBoundingClientRect().width) : null,
+          toc: w('#quarto-margin-sidebar'), nav: w('#quarto-sidebar'),
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth};
 }"""
 
 COLUMN_JS = """() => {
@@ -153,6 +168,40 @@ def cmd_column(args, book):
     return 0
 
 
+def cmd_widths(args, book):
+    from collections import Counter
+    from playwright.sync_api import sync_playwright
+    paths = pages(book)
+    failed = False
+    server = Server(book)
+    try:
+        with sync_playwright() as p:
+            b = browser(p)
+            for width in (int(w) for w in args.widths.split(",")):
+                page = b.new_page(viewport={"width": width, "height": 900})
+                rows = {}
+                for path in paths:
+                    page.goto(f"{server.url}/{path}", wait_until="load")
+                    page.wait_for_timeout(300)
+                    rows[path] = page.evaluate(WIDTHS_JS)
+                page.close()
+                line = [f"{width} px window:"]
+                for key in ("body", "toc", "nav"):
+                    counts = Counter(r[key] for r in rows.values())
+                    usual = counts.most_common(1)[0][0]
+                    odd = [Path(k).stem for k, r in rows.items() if r[key] != usual]
+                    line.append(f"{key} {usual} px" + (f" (differs on {', '.join(odd)})" if odd else ""))
+                    failed = failed or bool(odd)
+                wide = [f"{Path(k).stem} (+{r['overflow']} px)" for k, r in rows.items() if r["overflow"] > 0]
+                line.append("no page overflows" if not wide else "overflows: " + ", ".join(wide))
+                failed = failed or bool(wide)
+                print("  ".join(line))
+            b.close()
+    finally:
+        server.close()
+    return 1 if failed else 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--book", default=str(ROOT / "book"), help="rendered HTML book (default: book/)")
@@ -165,12 +214,14 @@ def main():
     column = sub.add_parser("column", help="measure the body and margin columns")
     column.add_argument("--widths", default="1280,1440,1920", help="comma-separated window widths")
     column.add_argument("--page", default="chapters/terminal.html", help="page to measure, relative to the book")
+    widths = sub.add_parser("widths", help="are the columns the same width on every page, with no sideways scroll?")
+    widths.add_argument("--widths", default="1024,1280,1440,1920", help="comma-separated window widths")
     args = parser.parse_args()
 
     book = Path(args.book).resolve()
     if not (book / "index.html").exists():
         sys.exit(f"no rendered book at {book}; run `quarto render --to html` first, or pass --book")
-    return {"toc": cmd_toc, "column": cmd_column}[args.command](args, book)
+    return {"toc": cmd_toc, "column": cmd_column, "widths": cmd_widths}[args.command](args, book)
 
 
 if __name__ == "__main__":

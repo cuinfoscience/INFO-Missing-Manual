@@ -21,6 +21,12 @@ It exits 1 if any page fails either check, so it can serve as the acceptance tes
 
 **September 2026** (issue [#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): before the fix, the TOC was collapsed at load on 37 of 41 pages at 1280×800, 1440×900, and 1920×1080; the four where it showed were the four without a meme. After moving the meme into the sidebar's `margin-header` (and turning one early footnote in `presenting` into an inline link), it shows on 41 of 41, and the meme displays at 390×844, 820×1180, and all three desktop sizes. Run the audit with those five `--sizes` after any change to the page layout.
 
+## `widths`: are the columns the same on every page?
+
+Loads every page at each window width (`--widths`, default 1024, 1280, 1440, and 1920) and measures the body column, the table of contents, and the left navigation. It reports the usual width of each, names any page that differs, names any page wider than the window (a sideways scroll), and exits 1 if there is either.
+
+**September 2026** (the maintainer noticed the widths changing from chapter to chapter): before `styles/layout.css`, 20 of 41 pages had a 778-px body and a 200-px table of contents at 1280 px, against 678 and 300 on the rest, because Quarto narrows the body only on pages with margin content (figure captions, footnotes). Four pages also scrolled sideways, from long URLs in margin notes and a code block that a list item had turned into inline code. After the fix, all 41 pages match at all four widths and none overflows. At 390 px (a phone), five pages still scroll sideways, four because of wide tables; that is a known issue (`docs/handoff.md`).
+
 ## `column`: how wide are the columns?
 
 Measures the width of a body paragraph and of the margin column on one page (`--page`, default the Command Line chapter) at several window widths (`--widths`).
