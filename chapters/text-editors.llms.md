@@ -30,6 +30,8 @@ By the end of this chapter, you should be able to:
 
 7.  Configure an editor minimally: indentation, formatting, linting, and extensions.
 
+8.  Edit faster with the command palette, language-aware rename, multiple cursors, and snippets.
+
 ## Running theme: editors are tools, not identities
 
 Choose an editor that fits the task, and build habits that transfer across editors: paths, file formats, search, safe edits, and reproducibility.
@@ -306,7 +308,67 @@ Most editors distinguish between **global (user) settings**, which apply everywh
 
 This particular file tells VS Code to use the project’s own virtual environment as the Python interpreter, to format files on save, and to draw a vertical ruler at column 88 (the `black` default). It does not say anything about your personal color theme or font size — those belong in your global settings, where they do not affect collaborators. Keeping global settings light is what makes your setup portable: when you borrow a friend’s laptop for half an hour, you can install VS Code, open the project, and be productive in a few minutes.
 
-## 12.8 IDEs: fundamentals without overwhelm
+## 12.8 Editing faster: the command palette, multiple cursors, and snippets
+
+Once the settings above are in place, a few editor features turn repetitive editing from a chore into a few keystrokes. The examples use VS Code; Sublime Text, JetBrains IDEs, and most other GUI editors have the same features under similar names.
+
+### The command palette: the one shortcut to learn
+
+Press **Ctrl+Shift+P** (Cmd+Shift+P on macOS) and start typing what you want: “format document,” “toggle word wrap,” “change language mode,” “rename symbol.” Every command the editor has is in this list, including the ones added by extensions, so you never need to remember which menu something lives in. The palette also shows each command’s keyboard shortcut beside it, which makes it the best way to learn shortcuts: when you notice you have run the same command from the palette three times, learn its shortcut. **Ctrl+P** (Cmd+P) is its sibling for opening files by name.
+
+A handful of shortcuts are worth learning early:
+
+| Windows / Linux | macOS | What it does |
+|----|----|----|
+| Ctrl+Shift+P | Cmd+Shift+P | Open the command palette |
+| Ctrl+P | Cmd+P | Open a file by typing part of its name |
+| Ctrl+/ | Cmd+/ | Comment or uncomment the selected lines |
+| Alt+Up / Alt+Down | Option+Up / Option+Down | Move the current line up or down |
+| F2 | F2 | Rename a variable or function everywhere it is used |
+| Ctrl+D | Cmd+D | Add the next match of the selection to the selection |
+| Ctrl+K Ctrl+S | Cmd+K Cmd+S | Open the list of every shortcut, and change any of them |
+
+Table 12.1: A starter set of VS Code shortcuts.
+
+**Rename (F2) is not find-and-replace.** It understands the language, so renaming the variable `df` doesn’t touch `df_raw`, a string that happens to contain “df”, or a `df` in an unrelated function. Use it whenever you rename something in code, and keep find-and-replace, with the protocol above, for text.
+
+### Multiple cursors
+
+Most editors let you place several cursors and type at all of them at once. Suppose you pasted a list of column names and need them as a Python list:
+
+``` text
+date                        "date",
+store             →         "store",
+revenue                     "revenue",
+```
+
+Put the cursor before `date`, then add a cursor on each line below: **Ctrl+Alt+Down** on Windows, **Option+Cmd+Down** on macOS (on Linux, find “Add Cursor Below” in the command palette, which shows its shortcut there). Or hold **Alt** (Option on macOS) and click where each cursor should go. Now type `"`, press **End** to jump every cursor to the end of its line, and type `",`. Press **Escape** to go back to one cursor. To place cursors in a straight column, hold **Shift+Alt** (Shift+Option on macOS) and drag.
+
+**Ctrl+D** (Cmd+D) is the other half. Select a word, and each press adds the next place that word appears as another selection, so you can change several occurrences at once while seeing each one before you commit to it. **Ctrl+Shift+L** (Cmd+Shift+L) selects every occurrence in the file at once. Because you watch every change as you type it, multiple cursors are a safer way than a blind replace to edit a handful of similar lines.
+
+### Snippets: text you type often
+
+A **snippet** is a template you insert by typing a short prefix and pressing Tab. Editors come with snippets for common code, and you can write your own for the blocks you retype: the header of every notebook, the lines you run after every `read_csv` (see [sec-data-file-formats](#sec-data-file-formats)). In VS Code, run **Snippets: Configure Snippets** from the command palette and choose Python; the editor opens a JSON file where each snippet has a prefix, a body, and a description:
+
+``` json
+{
+  "Inspect a DataFrame": {
+    "prefix": "inspect",
+    "body": [
+      "print(${1:df}.shape)",
+      "print($1.dtypes)",
+      "$1.head()$0"
+    ],
+    "description": "Shape, dtypes, and the first rows"
+  }
+}
+```
+
+Typing `inspect` and pressing Tab inserts the three lines with `df` selected. Type a different name, and it changes in all three places at once, because `$1` marks the same spot in each; press Tab again to jump to `$0`, where the cursor ends. For snippets the whole team should share, choose the option for the project folder instead: VS Code saves them in a `.code-snippets` file inside the project’s `.vscode` folder, which you can commit alongside the workspace settings above.
+
+Learn these one at a time. A new shortcut is slower than the mouse for the first day; pick one a week, and use it until it’s automatic.
+
+## 12.9 IDEs: fundamentals without overwhelm
 
 A full IDE — IntelliJ, PyCharm, Visual Studio, Xcode, RStudio — is a heavier tool than a GUI code editor. It is worth understanding IDEs at a conceptual level even if you do not use one day-to-day, because eventually a course or a job will put you in front of one.
 
@@ -343,7 +405,7 @@ A watch panel shows the values of variables you want to keep an eye on. A call s
 
 As with the GUI-editor debugger, you do not have to learn this on day one. Many students go through an entire intro sequence on `print`-debugging and tests alone, and that is fine. But when you hit the bug where you need to understand the state of a complicated object at a specific iteration of a loop, the debugger will save you hours and you should know it is there.
 
-## 12.9 Best practices: habits that prevent pain
+## 12.10 Best practices: habits that prevent pain
 
 The habits in this section are cheap to build and expensive to learn the hard way.
 
@@ -395,7 +457,7 @@ git checkout .                  # throw everything away; back to the commit
 
 The habit to build: **commit small, commit often, and commit before anything that scares you.** Commits are cheap, and the safety they provide is enormous. See [sec-git-github](#sec-git-github) for the mechanics and [sec-project-management](#sec-project-management) for how commit hygiene fits into broader project discipline.
 
-## 12.10 Stakes and politics
+## 12.11 Stakes and politics
 
 Editors look like the most neutral tool in the kit, but the editor industry has consolidated dramatically in the last decade and the consequences are worth seeing. Visual Studio Code, the dominant editor for new programmers, is a Microsoft product; it ships with telemetry enabled by default, its Python extension is published by Microsoft, and the same company owns GitHub and a substantial stake in OpenAI. None of that makes VS Code a bad editor — it is, by most measures, an excellent one — but the situation in which the default editor, the default code host, and the default AI coding assistant are all owned by a single company is new, and it concentrates an unusual amount of influence over how programming gets taught and learned. The community fork VSCodium exists precisely because some users want the editor without the telemetry and proprietary marketplace.
 
@@ -403,7 +465,7 @@ A second, sharper concern: editor extensions are code that runs with full access
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose an editor and its extensions, ask whose code is now running every time you open a file, and what defaults you have inherited without choosing.
 
-## 12.11 Worked examples
+## 12.12 Worked examples
 
 ### Writing and running a tiny script
 
@@ -469,7 +531,7 @@ exit
 
 The whole interaction is under a minute if you know the basic `nano` keystrokes. The reason the chapter recommended learning `nano` for emergencies is exactly this scenario: you want a tool that is already installed on every Unix box you might log into and that you can drive without a tutorial open in front of you.
 
-## 12.12 Templates
+## 12.13 Templates
 
 ### Template A: Editor setup checklist (first week)
 
@@ -493,7 +555,7 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
     5. Run tests or rerun script
     6. Commit with a message describing the change
 
-## 12.13 Exercises
+## 12.14 Exercises
 
 1.  Configure your editor to show line numbers and visible whitespace; explain what you changed.
 
@@ -507,7 +569,9 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 6.  Optional: learn a minimal vim workflow (insert, save, quit, search).
 
-## 12.14 One-page checklist
+7.  Paste ten column names, one per line, into a new file and turn them into a Python list with multiple cursors, without retyping any name. Then write a snippet for a block of code you type often and use it three times.
+
+## 12.15 One-page checklist
 
 - I can open, save, and locate files reliably.
 
@@ -519,11 +583,13 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 - My editor is minimally configured (indentation, formatting, linting).
 
+- I find commands in the command palette, rename code with F2 rather than find-and-replace, and learn one new shortcut at a time.
+
 - I use version control to review and recover from editing mistakes.
 
 - I have a fallback editor skill for remote/emergency use.
 
-## 12.15 Quick reference: terminal editor survival commands (optional handout)
+## 12.16 Quick reference: terminal editor survival commands (optional handout)
 
 ### nano
 
@@ -537,13 +603,15 @@ The whole interaction is under a minute if you know the basic `nano` keystrokes.
 
 ### vim
 
-## 12.16 Quick reference: GUI/IDE search
+## 12.17 Quick reference: GUI/IDE search
 
 - Find in file, replace in file
 
 - Find in workspace, replace in workspace
 
 - Go to line, go to file, go to definition
+
+- Command palette (Ctrl+Shift+P, Cmd+Shift+P on macOS); more shortcuts in [Table tbl-editor-shortcuts](#tbl-editor-shortcuts)
 
 > **NOTE:**
 >
