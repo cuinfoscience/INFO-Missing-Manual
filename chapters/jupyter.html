@@ -700,13 +700,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#file-not-found-paths" id="toc-file-not-found-paths" class="nav-link" data-scroll-target="#file-not-found-paths">File not found (paths)</a></li>
   <li><a href="#long-running-or-stuck-cells" id="toc-long-running-or-stuck-cells" class="nav-link" data-scroll-target="#long-running-or-stuck-cells">Long-running or stuck cells</a></li>
   </ul></li>
-  <li><a href="#when-to-move-from-notebooks-to-scripts-and-back" id="toc-when-to-move-from-notebooks-to-scripts-and-back" class="nav-link" data-scroll-target="#when-to-move-from-notebooks-to-scripts-and-back"><span class="header-section-number">16.8</span> When to move from notebooks to scripts (and back)</a>
+  <li><a href="#finding-whats-slow-measure-then-profile" id="toc-finding-whats-slow-measure-then-profile" class="nav-link" data-scroll-target="#finding-whats-slow-measure-then-profile"><span class="header-section-number">16.8</span> Finding what’s slow: measure, then profile</a>
+  <ul class="collapse">
+  <li><a href="#time-one-step-timeit" id="toc-time-one-step-timeit" class="nav-link" data-scroll-target="#time-one-step-timeit">Time one step: <code>%timeit</code></a></li>
+  <li><a href="#find-where-the-time-goes-a-profiler" id="toc-find-where-the-time-goes-a-profiler" class="nav-link" data-scroll-target="#find-where-the-time-goes-a-profiler">Find where the time goes: a profiler</a></li>
+  <li><a href="#fix-the-biggest-cost-then-measure-again" id="toc-fix-the-biggest-cost-then-measure-again" class="nav-link" data-scroll-target="#fix-the-biggest-cost-then-measure-again">Fix the biggest cost, then measure again</a></li>
+  <li><a href="#the-usual-suspects-in-pandas" id="toc-the-usual-suspects-in-pandas" class="nav-link" data-scroll-target="#the-usual-suspects-in-pandas">The usual suspects in pandas</a></li>
+  </ul></li>
+  <li><a href="#when-to-move-from-notebooks-to-scripts-and-back" id="toc-when-to-move-from-notebooks-to-scripts-and-back" class="nav-link" data-scroll-target="#when-to-move-from-notebooks-to-scripts-and-back"><span class="header-section-number">16.9</span> When to move from notebooks to scripts (and back)</a>
   <ul class="collapse">
   <li><a href="#notebook-strengths" id="toc-notebook-strengths" class="nav-link" data-scroll-target="#notebook-strengths">Notebook strengths</a></li>
   <li><a href="#script-strengths" id="toc-script-strengths" class="nav-link" data-scroll-target="#script-strengths">Script strengths</a></li>
   <li><a href="#a-practical-boundary-for-students" id="toc-a-practical-boundary-for-students" class="nav-link" data-scroll-target="#a-practical-boundary-for-students">A practical boundary for students</a></li>
   </ul></li>
-  <li><a href="#notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" id="toc-notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" class="nav-link" data-scroll-target="#notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces"><span class="header-section-number">16.9</span> Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces</a>
+  <li><a href="#notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" id="toc-notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" class="nav-link" data-scroll-target="#notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces"><span class="header-section-number">16.10</span> Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces</a>
   <ul class="collapse">
   <li><a href="#what-survives-when-you-leave" id="toc-what-survives-when-you-leave" class="nav-link" data-scroll-target="#what-survives-when-you-leave">What survives when you leave</a></li>
   <li><a href="#the-environment-isnt-yours" id="toc-the-environment-isnt-yours" class="nav-link" data-scroll-target="#the-environment-isnt-yours">The environment isn’t yours</a></li>
@@ -714,22 +721,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#gpus-available-not-promised" id="toc-gpus-available-not-promised" class="nav-link" data-scroll-target="#gpus-available-not-promised">GPUs: available, not promised</a></li>
   <li><a href="#before-you-upload-data" id="toc-before-you-upload-data" class="nav-link" data-scroll-target="#before-you-upload-data">Before you upload data</a></li>
   </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">16.10</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">16.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">16.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">16.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#launching-jupyter-in-the-right-place" id="toc-launching-jupyter-in-the-right-place" class="nav-link" data-scroll-target="#launching-jupyter-in-the-right-place">Launching Jupyter in the right place</a></li>
   <li><a href="#debugging-no-files" id="toc-debugging-no-files" class="nav-link" data-scroll-target="#debugging-no-files">Debugging “no files”</a></li>
   <li><a href="#making-a-notebook-reproducible" id="toc-making-a-notebook-reproducible" class="nav-link" data-scroll-target="#making-a-notebook-reproducible">Making a notebook reproducible</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">16.12</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">16.13</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-notebook-header-block" id="toc-template-a-notebook-header-block" class="nav-link" data-scroll-target="#template-a-notebook-header-block">Template A: Notebook header block</a></li>
   <li><a href="#template-b-reproducibility-checklist-cell" id="toc-template-b-reproducibility-checklist-cell" class="nav-link" data-scroll-target="#template-b-reproducibility-checklist-cell">Template B: Reproducibility checklist cell</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">16.14</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-launch-and-debugging-moves" id="toc-quick-reference-common-launch-and-debugging-moves" class="nav-link" data-scroll-target="#quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.15</span> Quick reference: common launch and debugging moves</a></li>
-  <li><a href="#quick-reference-ipython-conveniences" id="toc-quick-reference-ipython-conveniences" class="nav-link" data-scroll-target="#quick-reference-ipython-conveniences"><span class="header-section-number">16.16</span> Quick reference: IPython conveniences</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">16.15</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-launch-and-debugging-moves" id="toc-quick-reference-common-launch-and-debugging-moves" class="nav-link" data-scroll-target="#quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.16</span> Quick reference: common launch and debugging moves</a></li>
+  <li><a href="#quick-reference-ipython-conveniences" id="toc-quick-reference-ipython-conveniences" class="nav-link" data-scroll-target="#quick-reference-ipython-conveniences"><span class="header-section-number">16.17</span> Quick reference: IPython conveniences</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/jupyter.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -793,6 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Make notebooks reproducible: restart-and-run-all, environment capture, and data provenance.</p></li>
 <li><p>Convert notebooks into scripts/reports when appropriate.</p></li>
 <li><p>Work in a hosted notebook (Colab, Kaggle, or Codespaces) knowing what survives a session, where secrets go, and what data should not be uploaded.</p></li>
+<li><p>Find what makes code slow with <code>%timeit</code> and a profiler (<code>%prun</code>, <code>cProfile</code>) before changing it, and fix the biggest cost first.</p></li>
 </ol>
 </section>
 <section id="running-theme-notebooks-are-documents-and-programs" class="level2 unnumbered">
@@ -951,7 +959,7 @@ Menu: Run → Run All Above Selected  (up to the current cell)</code></pre>
 <li><strong><code>%env VAR=value</code></strong> sets an environment variable for the kernel, and <code>%env VAR</code> prints its current value. Useful for configuring things like <code>DATABASE_URL</code> without leaving the notebook.</li>
 <li><strong><code>%time statement</code></strong> runs a single statement and prints how long it took. Great for quick “is this line the slow one?” checks.</li>
 <li><strong><code>%%time</code></strong> (two percent signs) at the top of a cell times the whole cell instead of one line. Useful for measuring a full data-loading or modeling step.</li>
-<li><strong><code>%%timeit</code></strong> runs a cell many times and reports the best time, for benchmarking small pieces of code.</li>
+<li><strong><code>%%timeit</code></strong> runs a cell many times and reports the average time and how much it varied, for comparing small pieces of code (see “Finding what’s slow” below).</li>
 <li><strong><code>%load_ext autoreload</code></strong> followed by <strong><code>%autoreload 2</code></strong> sets up automatic reloading of imported modules, so edits to <code>src/</code> are picked up without restarting the kernel (see <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>).</li>
 <li><strong><code>%matplotlib inline</code></strong> tells matplotlib to draw plots directly into the notebook instead of in a separate window. Most modern Jupyter installs do this by default, but it is occasionally needed as an explicit line at the top.</li>
 </ul>
@@ -1156,8 +1164,85 @@ Kernel → Restart Kernel and Run All Cells</code></pre>
 <p>The structural prevention is to <strong>move expensive work out of notebooks and into scripts</strong> whenever it is genuinely expensive. A model that takes four hours to train does not belong in a notebook cell where the slightest mistake costs you the whole run. Put the training in a script that writes the model to disk, then have the notebook load the saved artifact and analyze it. Notebooks are for interactive exploration; anything that takes longer than the time you are willing to sit and wait should live somewhere else.</p>
 </section>
 </section>
-<section id="when-to-move-from-notebooks-to-scripts-and-back" class="level2" data-number="16.8">
-<h2 data-number="16.8" class="anchored" data-anchor-id="when-to-move-from-notebooks-to-scripts-and-back"><span class="header-section-number">16.8</span> When to move from notebooks to scripts (and back)</h2>
+<section id="finding-whats-slow-measure-then-profile" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="finding-whats-slow-measure-then-profile"><span class="header-section-number">16.8</span> Finding what’s slow: measure, then profile</h2>
+<p>A slow notebook tempts you to start rewriting whatever looks inefficient. Resist it: the slow part is rarely where you’d guess. The three-step pipeline below takes a minute on 200,000 rows of sales data, and the step that looks most suspicious isn’t the one to blame. The method is the same one <a href="debugging.html" class="quarto-xref"><span>Chapter 6</span></a> teaches for bugs: measure first, change one thing, measure again.</p>
+<section id="time-one-step-timeit" class="level3">
+<h3 class="anchored" data-anchor-id="time-one-step-timeit">Time one step: <code>%timeit</code></h3>
+<p><code>%timeit</code> runs a line many times and reports how long it takes on average, which makes it the tool for comparing two ways of doing the same step. Here are two ways to turn a <code>revenue</code> column of strings like <code>"$3.95"</code> into numbers:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">"revenue"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="bu">float</span>(s.replace(<span class="st">"$"</span>, <span class="st">""</span>)))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">"revenue"</span>].<span class="bu">str</span>.replace(<span class="st">"$"</span>, <span class="st">""</span>).astype(<span class="bu">float</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>87.7 ms ± 2.5 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+44.7 ms ± 1.89 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+<p>Read each line as “the average time for one run, plus or minus how much it varied”: <code>%timeit</code> ran the line in 7 batches of 10 and averaged them. The second version is twice as fast, and it saves 43 milliseconds, which is not worth an afternoon. Whether a speedup matters depends on how much of the whole run the step takes, and for that you need a profiler.</p>
+</section>
+<section id="find-where-the-time-goes-a-profiler" class="level3">
+<h3 class="anchored" data-anchor-id="find-where-the-time-goes-a-profiler">Find where the time goes: a profiler</h3>
+<p>A <strong>profiler</strong> runs your program and records how long each function takes, including everything the function calls. Python comes with one, <code>cProfile</code>. Here is the whole pipeline as a script, <code>clean.py</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_revenue(df):</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"revenue"</span>] <span class="op">=</span> df[<span class="st">"revenue"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="bu">float</span>(s.replace(<span class="st">"$"</span>, <span class="st">""</span>)))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_month(df):</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"month"</span>] <span class="op">=</span> df[<span class="st">"date"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> d: pd.to_datetime(d).strftime(<span class="st">"%Y-%m"</span>))</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> monthly_totals(df):</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.groupby([<span class="st">"month"</span>, <span class="st">"store"</span>])[<span class="st">"revenue"</span>].<span class="bu">sum</span>()</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> parse_revenue(df)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> add_month(df)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(monthly_totals(df).head(<span class="dv">3</span>))</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run it under the profiler, sorted by cumulative time, and look for the lines that name your own file:</p>
+<pre class="text"><code>$ python -m cProfile -s cumulative clean.py
+...
+         151048296 function calls (151035047 primitive calls) in 123.508 seconds
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  122.930  122.930 clean.py:18(main)
+        1    0.000    0.000  122.493  122.493 clean.py:9(add_month)
+   200000    2.419    0.000  122.189    0.001 clean.py:10(&lt;lambda&gt;)
+        1    0.000    0.000    0.217    0.217 readers.py:349(read_csv)
+        1    0.000    0.000    0.190    0.190 clean.py:4(parse_revenue)
+   200000    0.078    0.000    0.100    0.000 clean.py:5(&lt;lambda&gt;)
+        1    0.000    0.000    0.027    0.027 clean.py:14(monthly_totals)</code></pre>
+<p>(The full table lists hundreds of pandas’ own functions; these are the lines for <code>clean.py</code> and <code>read_csv</code>.) <code>cumtime</code> is the time spent in a function and everything it called, and <code>ncalls</code> is how many times it was called. The answer is plain: <code>add_month</code> takes 122 of the 123 seconds, and its <code>lambda</code> ran 200,000 times, once per row, each time calling <code>pd.to_datetime</code> on a single date. <code>parse_revenue</code>, which also uses <code>apply</code> on every row, takes 0.19 seconds. Rewriting it first, as the <code>%timeit</code> comparison tempted, would have saved almost nothing.</p>
+<p>Profiling slows a program down (this run took 123 seconds under <code>cProfile</code> and 62 without it), but the proportions hold, and the proportions are what you need. In a notebook, <code>%prun -s cumulative main()</code> gives the same table without leaving the cell.</p>
+</section>
+<section id="fix-the-biggest-cost-then-measure-again" class="level3">
+<h3 class="anchored" data-anchor-id="fix-the-biggest-cost-then-measure-again">Fix the biggest cost, then measure again</h3>
+<p>The fix for <code>add_month</code> is to hand pandas the whole column at once, so it parses every date in one call instead of 200,000:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_month(df):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"month"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>]).dt.strftime(<span class="st">"%Y-%m"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With that change (and the same kind of change to <code>parse_revenue</code>), the script runs in 1.6 seconds instead of 62. <code>%timeit</code> shows where the difference comes from: the per-row version takes 300 ms for just 1,000 rows, about a minute for all 200,000, while the whole-column version does all 200,000 in 0.9 seconds.</p>
+<p>Then measure again, from the top. Once the biggest cost is gone, something else is the biggest; if the program is now fast enough for what you need, stop.</p>
+</section>
+<section id="the-usual-suspects-in-pandas" class="level3">
+<h3 class="anchored" data-anchor-id="the-usual-suspects-in-pandas">The usual suspects in pandas</h3>
+<p>When a profile points at pandas code, the cause is usually one of these:</p>
+<ul>
+<li><strong>Row-by-row work:</strong> <code>apply</code> with a Python function, <code>iterrows()</code>, or a <code>for</code> loop over rows. Look for a method that works on the whole column: <code>.str</code> for text, <code>.dt</code> for dates, arithmetic and comparisons, <code>np.where</code> for if-else.</li>
+<li><strong>Growing a DataFrame inside a loop.</strong> Each <code>pd.concat</code> copies everything built so far, so the loop gets slower as it goes. Collect plain Python rows in a list and build the DataFrame once at the end: for 5,000 rows, growing took 1.8 seconds and collecting took 3.7 milliseconds.</li>
+<li><strong>Reading more than you need, or the same file over and over.</strong> Read only the columns you use, and save an expensive intermediate result to Parquet so the next run starts from it (see “Data bigger than memory” in <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>).</li>
+</ul>
+<p>The timings here are from one computer, with pandas 3.0 in September 2026. Yours will differ; the order of the costs is what carries over.</p>
+</section>
+</section>
+<section id="when-to-move-from-notebooks-to-scripts-and-back" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="when-to-move-from-notebooks-to-scripts-and-back"><span class="header-section-number">16.9</span> When to move from notebooks to scripts (and back)</h2>
 <p><a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a> covers the scripting workflow in full; this section explains how notebooks and scripts fit together and when to use which.</p>
 <section id="notebook-strengths" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-strengths">Notebook strengths</h3>
@@ -1189,8 +1274,8 @@ scripts/
 <p>The notebook and the script import the <em>same</em> functions from <code>src/</code>. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need <code>src/</code> as they get more complex, and grow again to include <code>scripts/</code> when they need automation — without ever having to rewrite from scratch.</p>
 </section>
 </section>
-<section id="notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" class="level2" data-number="16.9">
-<h2 data-number="16.9" class="anchored" data-anchor-id="notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces"><span class="header-section-number">16.9</span> Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces</h2>
+<section id="notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="notebooks-on-someone-elses-computer-colab-kaggle-and-codespaces"><span class="header-section-number">16.10</span> Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces</h2>
 <p>Everything so far assumes Jupyter runs on your own computer. Often it doesn’t. A course hands out a Google Colab link, a dataset lives on Kaggle, or a project opens in a GitHub Codespace. The notebook looks the same, but the kernel runs on a machine you rent or borrow, and five things change: what survives when you leave, which packages are installed, where secrets go, what hardware you get, and who else can see your data.</p>
 <div id="tbl-hosted-notebooks" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1261,9 +1346,9 @@ Table&nbsp;16.1: Three hosted notebook platforms, and what changes on each.
 <p>The biggest surprise on a hosted platform is that the notebook survives and its files don’t.</p>
 <ul>
 <li><p><strong>Colab</strong> saves the notebook to your Drive, but the code runs in a virtual machine that Google deletes when you have been idle for a while or when it reaches a maximum lifetime (as of September 2026, at most 12 hours on the free tier). Anything you downloaded or wrote there, such as <code>data.csv</code> or a trained model, goes with it. To keep files, mount your Drive and write there:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">"/content/drive"</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"/content/drive/MyDrive/thesis/clean.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">"/content/drive"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"/content/drive/MyDrive/thesis/clean.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Kaggle</strong> attaches datasets read-only under <code>/kaggle/input/</code>. Files you write to <code>/kaggle/working/</code> are kept as the notebook’s output when you save a version (<em>Save Version</em>, then <em>Save &amp; Run All</em>); everything else ends with the session.</p></li>
 <li><p><strong>Codespaces</strong> behave more like a computer of your own. A codespace stops after 30 minutes of inactivity by default and keeps your saved changes while stopped, but GitHub deletes an unused codespace after 30 days by default. Rebuilding one keeps only what is inside <code>/workspaces</code>. Treat <code>git push</code> as the save button: work that is only in a codespace is one deletion away from gone.</p></li>
 </ul>
@@ -1276,17 +1361,17 @@ Table&nbsp;16.1: Three hosted notebook platforms, and what changes on each.
 <section id="secrets-go-in-the-platforms-secrets-store" class="level3">
 <h3 class="anchored" data-anchor-id="secrets-go-in-the-platforms-secrets-store">Secrets go in the platform’s secrets store</h3>
 <p>Never paste an API key into a cell. Notebooks are made to be shared, and a key in a cell is shared with them, along with the outputs, which can print it too. Each platform has a secrets store that keeps the key outside the notebook:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colab: add the key in the Secrets panel (key icon), then</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> userdata.get(<span class="st">"WEATHER_API_KEY"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Kaggle: add it under Add-ons → Secrets, then</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> kaggle_secrets <span class="im">import</span> UserSecretsClient</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> UserSecretsClient().get_secret(<span class="st">"WEATHER_API_KEY"</span>)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Codespaces: add it in GitHub's Codespaces settings; it arrives as an environment variable</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"WEATHER_API_KEY"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colab: add the key in the Secrets panel (key icon), then</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> userdata.get(<span class="st">"WEATHER_API_KEY"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Kaggle: add it under Add-ons → Secrets, then</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> kaggle_secrets <span class="im">import</span> UserSecretsClient</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> UserSecretsClient().get_secret(<span class="st">"WEATHER_API_KEY"</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Codespaces: add it in GitHub's Codespaces settings; it arrives as an environment variable</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"WEATHER_API_KEY"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The code differs, but the idea is the one in <a href="secrets.html" class="quarto-xref"><span>Chapter 34</span></a>: the notebook names the secret and never contains it.</p>
 </section>
 <section id="gpus-available-not-promised" class="level3">
@@ -1298,26 +1383,26 @@ Table&nbsp;16.1: Three hosted notebook platforms, and what changes on each.
 <p>Uploading a file to a hosted notebook copies it to a company’s servers. For public data, that’s fine. For interview transcripts, student records, health data, or anything under a data-use agreement or an ethics board’s approval (IRB), check before you upload: many agreements name where the data may be stored, and “a free notebook service” is rarely on the list. Your university may run its own JupyterHub for exactly this reason; ask your instructor or IT office. And remember that a shared notebook carries its outputs: every <code>df.head()</code> shows real rows to whoever opens the link.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="16.10">
-<h2 data-number="16.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">16.10</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="16.11">
+<h2 data-number="16.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">16.11</span> Stakes and politics</h2>
 <p>Notebooks are unusual in that they look like the most transparent computing artifact possible — code and output side by side, ready to read — but they have political dimensions that the appearance hides. Two things to notice. First, <em>the reproducibility theatre</em>. A notebook that displays a clean run from top to bottom can have been produced by any sequence of cell executions, with any history of variables in memory, against any version of any package. The very feature that makes notebooks teachable — you can see the answer right there — also makes them easy to share in a state nobody can rerun. “Reproducible” notebooks require explicit work that is not visible in the notebook itself: pinned environments, raw-data provenance, “Restart kernel and run all” before every save. Without that work, the notebook is closer to a screenshot than a program.</p>
 <p>Second, <em>the data leak that comes free with <code>df.head()</code></em>. Notebook cells routinely display real rows of real datasets — names, identifiers, free-text comments — directly inside the file. When a notebook is committed to a public GitHub repo or pasted into a forum for help, those rows go with it. The convenience of inline output is a privacy hazard the format does not warn you about.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you share a notebook, ask whether someone could rerun it from scratch, and whether anything in its output should not have left your laptop.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="16.11">
-<h2 data-number="16.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">16.11</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="16.12">
+<h2 data-number="16.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">16.12</span> Worked examples</h2>
 <section id="launching-jupyter-in-the-right-place" class="level3">
 <h3 class="anchored" data-anchor-id="launching-jupyter-in-the-right-place">Launching Jupyter in the right place</h3>
 <p>You have a project at <code>~/Courses/INFO-3010/Project</code> and you want to start a notebook session for it. The full sequence:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses/INFO-3010/Project</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source .venv/bin/activate</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">.venv</span><span class="kw">)</span> <span class="ex">$</span> jupyter lab</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[I</span> 2026-04-10 12:34:56.789 ServerApp] http://localhost:8888/lab<span class="pp">?</span>token=abc...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Courses/INFO-3010/Project</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source .venv/bin/activate</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">.venv</span><span class="kw">)</span> <span class="ex">$</span> jupyter lab</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[I</span> 2026-04-10 12:34:56.789 ServerApp] http://localhost:8888/lab<span class="pp">?</span>token=abc...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Click the URL Jupyter prints (or it will open automatically), then create a new Python 3 notebook. In the first cell, confirm you are where you think you are:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, sys</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"files:"</span>, <span class="bu">sorted</span>(os.listdir(<span class="st">"."</span>))[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, sys</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"files:"</span>, <span class="bu">sorted</span>(os.listdir(<span class="st">"."</span>))[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Expected output (paths abbreviated for clarity):</p>
 <pre class="text"><code>python: /Users/you/Courses/INFO-3010/Project/.venv/bin/python
 cwd: /Users/you/Courses/INFO-3010/Project
@@ -1327,11 +1412,11 @@ files: ['README.md', 'data', 'notebooks', 'src']</code></pre>
 <section id="debugging-no-files" class="level3">
 <h3 class="anchored" data-anchor-id="debugging-no-files">Debugging “no files”</h3>
 <p>You open JupyterLab and the file browser shows your home directory instead of your project. Stop the server (<code>Ctrl+C</code> in the terminal twice), then reopen the terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you</span>                   <span class="co"># the wrong place</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd Courses/INFO-3010/Project</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source .venv/bin/activate</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">.venv</span><span class="kw">)</span> <span class="ex">$</span> jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/you</span>                   <span class="co"># the wrong place</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd Courses/INFO-3010/Project</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source .venv/bin/activate</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">.venv</span><span class="kw">)</span> <span class="ex">$</span> jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now the file browser shows the project, and the working-directory check cell from the previous example confirms it. The whole fix is “go to the right folder before starting the server,” which is also why the previous example put <code>cd</code> first.</p>
 </section>
 <section id="making-a-notebook-reproducible" class="level3">
@@ -1339,8 +1424,8 @@ files: ['README.md', 'data', 'notebooks', 'src']</code></pre>
 <p>A notebook that runs once but fails on a clean kernel is not really finished. Three habits make a notebook genuinely reproducible. The first is to give it a clear linear structure: a title in a markdown cell, a one-paragraph purpose statement, then an “imports and setup” code cell, then the analysis cells in execution order, then a “results” section. The second is to extract any logic that you might want to reuse into functions in <code>src/</code>, and import them rather than copy-pasting code between cells. The third is the discipline of <strong>Restart Kernel and Run All</strong> every time you finish a meaningful chunk of work — and <em>especially</em> before you commit the notebook to git or share it with anyone. If “Restart and Run All” produces an error that interactive use never did, you have just discovered a hidden-state bug, and now is the right time to fix it. Better to find it now than to ship a notebook that quietly does not reproduce.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="16.12">
-<h2 data-number="16.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">16.12</span> Templates</h2>
+<section id="templates" class="level2" data-number="16.13">
+<h2 data-number="16.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">16.13</span> Templates</h2>
 <section id="template-a-notebook-header-block" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-notebook-header-block">Template A: Notebook header block</h3>
 <pre><code>Title:
@@ -1370,18 +1455,19 @@ Environment:
 # 4) run a small smoke test</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="16.13">
-<h2 data-number="16.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="16.14">
+<h2 data-number="16.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.14</span> Exercises</h2>
 <ol type="1">
 <li><p>Open a terminal in a project folder, launch JupyterLab from there, and confirm in the file browser that you can see the project’s files. Then launch it from your home folder and notice what changes.</p></li>
 <li><p>In a new notebook, define a variable in cell 3, use it in cell 2, and run the cells out of order so the notebook “works.” Then run <em>Restart Kernel and Run All Cells</em> and fix what breaks.</p></li>
 <li><p>Add a first cell to one of your notebooks that prints the Python executable, the versions of the packages you import, and the date, as in “Environment capture” above.</p></li>
 <li><p>Take a notebook that does the same cleaning in two places, move that code into a function in <code>src/</code>, and import it in the notebook.</p></li>
 <li><p>Open a notebook in Google Colab. Write a small file to the virtual machine and another to your mounted Drive, choose <em>Runtime → Disconnect and delete runtime</em>, reconnect, and check which file is still there.</p></li>
+<li><p>Profile the slowest notebook or script you have with <code>%prun -s cumulative</code> (or <code>python -m cProfile -s cumulative</code>). Write down which of your functions takes the most time before you change anything, fix only that one, and measure again.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="16.14">
-<h2 data-number="16.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">16.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="16.15">
+<h2 data-number="16.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">16.15</span> One-page checklist</h2>
 <ul>
 <li><p>I launch Jupyter from the correct project folder (or pass the correct directory).</p></li>
 <li><p>I can diagnose “no files” as a working-directory/server mix-up.</p></li>
@@ -1392,10 +1478,11 @@ Environment:
 <li><p>I record environment details and keep data provenance explicit.</p></li>
 <li><p>I keep outputs controlled and store large artifacts outside the notebook.</p></li>
 <li><p>On a hosted notebook, I save files somewhere that outlasts the session, keep keys in the platform’s secrets store, and check before uploading restricted data.</p></li>
+<li><p>When code is slow, I profile before I rewrite, and I replace row-by-row work with whole-column operations.</p></li>
 </ul>
 </section>
-<section id="quick-reference-common-launch-and-debugging-moves" class="level2" data-number="16.15">
-<h2 data-number="16.15" class="anchored" data-anchor-id="quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.15</span> Quick reference: common launch and debugging moves</h2>
+<section id="quick-reference-common-launch-and-debugging-moves" class="level2" data-number="16.16">
+<h2 data-number="16.16" class="anchored" data-anchor-id="quick-reference-common-launch-and-debugging-moves"><span class="header-section-number">16.16</span> Quick reference: common launch and debugging moves</h2>
 <ul>
 <li><p>Confirm working directory before launching.</p></li>
 <li><p>If you see the wrong files: stop server, relaunch in correct directory.</p></li>
@@ -1403,8 +1490,8 @@ Environment:
 <li><p>If execution hangs: interrupt; then restart if needed.</p></li>
 </ul>
 </section>
-<section id="quick-reference-ipython-conveniences" class="level2" data-number="16.16">
-<h2 data-number="16.16" class="anchored" data-anchor-id="quick-reference-ipython-conveniences"><span class="header-section-number">16.16</span> Quick reference: IPython conveniences</h2>
+<section id="quick-reference-ipython-conveniences" class="level2" data-number="16.17">
+<h2 data-number="16.17" class="anchored" data-anchor-id="quick-reference-ipython-conveniences"><span class="header-section-number">16.17</span> Quick reference: IPython conveniences</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1446,18 +1533,22 @@ Environment:
 <td>Run a small piece of code many times and report how long it takes</td>
 </tr>
 <tr class="even">
+<td><code>%prun -s cumulative f()</code></td>
+<td>Profile a call: how long each function it runs takes, slowest first</td>
+</tr>
+<tr class="odd">
 <td><code>%load_ext autoreload</code> then <code>%autoreload 2</code></td>
 <td>Reload your own modules (<code>src/</code>) when you edit them</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>%who</code></td>
 <td>List the variables defined in the kernel</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>%run script.py</code></td>
 <td>Run a script in the kernel, keeping its variables afterwards</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>%lsmagic</code></td>
 <td>List every magic command available</td>
 </tr>

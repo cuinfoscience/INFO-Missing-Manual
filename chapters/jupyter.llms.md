@@ -34,6 +34,8 @@ By the end of this chapter, you should be able to:
 
 9.  Work in a hosted notebook (Colab, Kaggle, or Codespaces) knowing what survives a session, where secrets go, and what data should not be uploaded.
 
+10. Find what makes code slow with `%timeit` and a profiler (`%prun`, `cProfile`) before changing it, and fix the biggest cost first.
+
 ## Running theme: notebooks are documents *and* programs
 
 A notebook should read like a report and execute like a program. The discipline is to ensure both.
@@ -221,7 +223,7 @@ A handful of magics cover almost everything a student will ever need, and all of
 - **`%env VAR=value`** sets an environment variable for the kernel, and `%env VAR` prints its current value. Useful for configuring things like `DATABASE_URL` without leaving the notebook.
 - **`%time statement`** runs a single statement and prints how long it took. Great for quick “is this line the slow one?” checks.
 - **`%%time`** (two percent signs) at the top of a cell times the whole cell instead of one line. Useful for measuring a full data-loading or modeling step.
-- **`%%timeit`** runs a cell many times and reports the best time, for benchmarking small pieces of code.
+- **`%%timeit`** runs a cell many times and reports the average time and how much it varied, for comparing small pieces of code (see “Finding what’s slow” below).
 - **`%load_ext autoreload`** followed by **`%autoreload 2`** sets up automatic reloading of imported modules, so edits to `src/` are picked up without restarting the kernel (see [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks)).
 - **`%matplotlib inline`** tells matplotlib to draw plots directly into the notebook instead of in a separate window. Most modern Jupyter installs do this by default, but it is occasionally needed as an explicit line at the top.
 
@@ -495,7 +497,105 @@ With a progress bar or a timer, “is it actually stuck?” becomes “how fast 
 
 The structural prevention is to **move expensive work out of notebooks and into scripts** whenever it is genuinely expensive. A model that takes four hours to train does not belong in a notebook cell where the slightest mistake costs you the whole run. Put the training in a script that writes the model to disk, then have the notebook load the saved artifact and analyze it. Notebooks are for interactive exploration; anything that takes longer than the time you are willing to sit and wait should live somewhere else.
 
-## 16.8 When to move from notebooks to scripts (and back)
+## 16.8 Finding what’s slow: measure, then profile
+
+A slow notebook tempts you to start rewriting whatever looks inefficient. Resist it: the slow part is rarely where you’d guess. The three-step pipeline below takes a minute on 200,000 rows of sales data, and the step that looks most suspicious isn’t the one to blame. The method is the same one [sec-debugging](#sec-debugging) teaches for bugs: measure first, change one thing, measure again.
+
+### Time one step: `%timeit`
+
+`%timeit` runs a line many times and reports how long it takes on average, which makes it the tool for comparing two ways of doing the same step. Here are two ways to turn a `revenue` column of strings like `"$3.95"` into numbers:
+
+``` python
+%timeit df["revenue"].apply(lambda s: float(s.replace("$", "")))
+%timeit df["revenue"].str.replace("$", "").astype(float)
+```
+
+``` text
+87.7 ms ± 2.5 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+44.7 ms ± 1.89 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+```
+
+Read each line as “the average time for one run, plus or minus how much it varied”: `%timeit` ran the line in 7 batches of 10 and averaged them. The second version is twice as fast, and it saves 43 milliseconds, which is not worth an afternoon. Whether a speedup matters depends on how much of the whole run the step takes, and for that you need a profiler.
+
+### Find where the time goes: a profiler
+
+A **profiler** runs your program and records how long each function takes, including everything the function calls. Python comes with one, `cProfile`. Here is the whole pipeline as a script, `clean.py`:
+
+``` python
+import pandas as pd
+
+
+def parse_revenue(df):
+    df["revenue"] = df["revenue"].apply(lambda s: float(s.replace("$", "")))
+    return df
+
+
+def add_month(df):
+    df["month"] = df["date"].apply(lambda d: pd.to_datetime(d).strftime("%Y-%m"))
+    return df
+
+
+def monthly_totals(df):
+    return df.groupby(["month", "store"])["revenue"].sum()
+
+
+def main():
+    df = pd.read_csv("sales.csv")
+    df = parse_revenue(df)
+    df = add_month(df)
+    print(monthly_totals(df).head(3))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Run it under the profiler, sorted by cumulative time, and look for the lines that name your own file:
+
+``` text
+$ python -m cProfile -s cumulative clean.py
+...
+         151048296 function calls (151035047 primitive calls) in 123.508 seconds
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  122.930  122.930 clean.py:18(main)
+        1    0.000    0.000  122.493  122.493 clean.py:9(add_month)
+   200000    2.419    0.000  122.189    0.001 clean.py:10(<lambda>)
+        1    0.000    0.000    0.217    0.217 readers.py:349(read_csv)
+        1    0.000    0.000    0.190    0.190 clean.py:4(parse_revenue)
+   200000    0.078    0.000    0.100    0.000 clean.py:5(<lambda>)
+        1    0.000    0.000    0.027    0.027 clean.py:14(monthly_totals)
+```
+
+(The full table lists hundreds of pandas’ own functions; these are the lines for `clean.py` and `read_csv`.) `cumtime` is the time spent in a function and everything it called, and `ncalls` is how many times it was called. The answer is plain: `add_month` takes 122 of the 123 seconds, and its `lambda` ran 200,000 times, once per row, each time calling `pd.to_datetime` on a single date. `parse_revenue`, which also uses `apply` on every row, takes 0.19 seconds. Rewriting it first, as the `%timeit` comparison tempted, would have saved almost nothing.
+
+Profiling slows a program down (this run took 123 seconds under `cProfile` and 62 without it), but the proportions hold, and the proportions are what you need. In a notebook, `%prun -s cumulative main()` gives the same table without leaving the cell.
+
+### Fix the biggest cost, then measure again
+
+The fix for `add_month` is to hand pandas the whole column at once, so it parses every date in one call instead of 200,000:
+
+``` python
+def add_month(df):
+    df["month"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m")
+    return df
+```
+
+With that change (and the same kind of change to `parse_revenue`), the script runs in 1.6 seconds instead of 62. `%timeit` shows where the difference comes from: the per-row version takes 300 ms for just 1,000 rows, about a minute for all 200,000, while the whole-column version does all 200,000 in 0.9 seconds.
+
+Then measure again, from the top. Once the biggest cost is gone, something else is the biggest; if the program is now fast enough for what you need, stop.
+
+### The usual suspects in pandas
+
+When a profile points at pandas code, the cause is usually one of these:
+
+- **Row-by-row work:** `apply` with a Python function, `iterrows()`, or a `for` loop over rows. Look for a method that works on the whole column: `.str` for text, `.dt` for dates, arithmetic and comparisons, `np.where` for if-else.
+- **Growing a DataFrame inside a loop.** Each `pd.concat` copies everything built so far, so the loop gets slower as it goes. Collect plain Python rows in a list and build the DataFrame once at the end: for 5,000 rows, growing took 1.8 seconds and collecting took 3.7 milliseconds.
+- **Reading more than you need, or the same file over and over.** Read only the columns you use, and save an expensive intermediate result to Parquet so the next run starts from it (see “Data bigger than memory” in [sec-data-file-formats](#sec-data-file-formats)).
+
+The timings here are from one computer, with pandas 3.0 in September 2026. Yours will differ; the order of the costs is what carries over.
+
+## 16.9 When to move from notebooks to scripts (and back)
 
 [sec-scripts-vs-notebooks](#sec-scripts-vs-notebooks) covers the scripting workflow in full; this section explains how notebooks and scripts fit together and when to use which.
 
@@ -535,7 +635,7 @@ scripts/
 
 The notebook and the script import the *same* functions from `src/`. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that “scales”: small student projects can start with just a notebook, grow to need `src/` as they get more complex, and grow again to include `scripts/` when they need automation — without ever having to rewrite from scratch.
 
-## 16.9 Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces
+## 16.10 Notebooks on someone else’s computer: Colab, Kaggle, and Codespaces
 
 Everything so far assumes Jupyter runs on your own computer. Often it doesn’t. A course hands out a Google Colab link, a dataset lives on Kaggle, or a project opens in a GitHub Codespace. The notebook looks the same, but the kernel runs on a machine you rent or borrow, and five things change: what survives when you leave, which packages are installed, where secrets go, what hardware you get, and who else can see your data.
 
@@ -602,7 +702,7 @@ A free GPU is the main reason many people open Colab or Kaggle. On Colab you ask
 
 Uploading a file to a hosted notebook copies it to a company’s servers. For public data, that’s fine. For interview transcripts, student records, health data, or anything under a data-use agreement or an ethics board’s approval (IRB), check before you upload: many agreements name where the data may be stored, and “a free notebook service” is rarely on the list. Your university may run its own JupyterHub for exactly this reason; ask your instructor or IT office. And remember that a shared notebook carries its outputs: every `df.head()` shows real rows to whoever opens the link.
 
-## 16.10 Stakes and politics
+## 16.11 Stakes and politics
 
 Notebooks are unusual in that they look like the most transparent computing artifact possible — code and output side by side, ready to read — but they have political dimensions that the appearance hides. Two things to notice. First, *the reproducibility theatre*. A notebook that displays a clean run from top to bottom can have been produced by any sequence of cell executions, with any history of variables in memory, against any version of any package. The very feature that makes notebooks teachable — you can see the answer right there — also makes them easy to share in a state nobody can rerun. “Reproducible” notebooks require explicit work that is not visible in the notebook itself: pinned environments, raw-data provenance, “Restart kernel and run all” before every save. Without that work, the notebook is closer to a screenshot than a program.
 
@@ -610,7 +710,7 @@ Second, *the data leak that comes free with `df.head()`*. Notebook cells routine
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before you share a notebook, ask whether someone could rerun it from scratch, and whether anything in its output should not have left your laptop.
 
-## 16.11 Worked examples
+## 16.12 Worked examples
 
 ### Launching Jupyter in the right place
 
@@ -660,7 +760,7 @@ Now the file browser shows the project, and the working-directory check cell fro
 
 A notebook that runs once but fails on a clean kernel is not really finished. Three habits make a notebook genuinely reproducible. The first is to give it a clear linear structure: a title in a markdown cell, a one-paragraph purpose statement, then an “imports and setup” code cell, then the analysis cells in execution order, then a “results” section. The second is to extract any logic that you might want to reuse into functions in `src/`, and import them rather than copy-pasting code between cells. The third is the discipline of **Restart Kernel and Run All** every time you finish a meaningful chunk of work — and *especially* before you commit the notebook to git or share it with anyone. If “Restart and Run All” produces an error that interactive use never did, you have just discovered a hidden-state bug, and now is the right time to fix it. Better to find it now than to ship a notebook that quietly does not reproduce.
 
-## 16.12 Templates
+## 16.13 Templates
 
 ### Template A: Notebook header block
 
@@ -690,7 +790,7 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
     # 4) run a small smoke test
 
-## 16.13 Exercises
+## 16.14 Exercises
 
 1.  Open a terminal in a project folder, launch JupyterLab from there, and confirm in the file browser that you can see the project’s files. Then launch it from your home folder and notice what changes.
 
@@ -702,7 +802,9 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 5.  Open a notebook in Google Colab. Write a small file to the virtual machine and another to your mounted Drive, choose *Runtime → Disconnect and delete runtime*, reconnect, and check which file is still there.
 
-## 16.14 One-page checklist
+6.  Profile the slowest notebook or script you have with `%prun -s cumulative` (or `python -m cProfile -s cumulative`). Write down which of your functions takes the most time before you change anything, fix only that one, and measure again.
+
+## 16.15 One-page checklist
 
 - I launch Jupyter from the correct project folder (or pass the correct directory).
 
@@ -722,7 +824,9 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 - On a hosted notebook, I save files somewhere that outlasts the session, keep keys in the platform’s secrets store, and check before uploading restricted data.
 
-## 16.15 Quick reference: common launch and debugging moves
+- When code is slow, I profile before I rewrite, and I replace row-by-row work with whole-column operations.
+
+## 16.16 Quick reference: common launch and debugging moves
 
 - Confirm working directory before launching.
 
@@ -732,7 +836,7 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 - If execution hangs: interrupt; then restart if needed.
 
-## 16.16 Quick reference: IPython conveniences
+## 16.17 Quick reference: IPython conveniences
 
 | Type this in a cell | What it does |
 |----|----|
@@ -743,6 +847,7 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 | `%env VAR` | Show an environment variable (`%env VAR=value` sets it) |
 | `%time expr`, `%%time` | Time one line, or the whole cell |
 | `%timeit expr`, `%%timeit` | Run a small piece of code many times and report how long it takes |
+| `%prun -s cumulative f()` | Profile a call: how long each function it runs takes, slowest first |
 | `%load_ext autoreload` then `%autoreload 2` | Reload your own modules (`src/`) when you edit them |
 | `%who` | List the variables defined in the kernel |
 | `%run script.py` | Run a script in the kernel, keeping its variables afterwards |
