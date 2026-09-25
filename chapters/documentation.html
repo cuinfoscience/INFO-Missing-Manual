@@ -133,6 +133,9 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../tools/chapter-meme/chapter-meme.css">
@@ -734,32 +737,39 @@ div.csl-indent {
   <li><a href="#document-intent-not-just-mechanics" id="toc-document-intent-not-just-mechanics" class="nav-link" data-scroll-target="#document-intent-not-just-mechanics">Document intent, not just mechanics</a></li>
   <li><a href="#use-examples-as-anchors" id="toc-use-examples-as-anchors" class="nav-link" data-scroll-target="#use-examples-as-anchors">Use examples as anchors</a></li>
   </ul></li>
-  <li><a href="#documentation-maintenance-as-a-habit" id="toc-documentation-maintenance-as-a-habit" class="nav-link" data-scroll-target="#documentation-maintenance-as-a-habit"><span class="header-section-number">3.8</span> Documentation maintenance as a habit</a>
+  <li><a href="#diagrams-reading-and-drawing-them" id="toc-diagrams-reading-and-drawing-them" class="nav-link" data-scroll-target="#diagrams-reading-and-drawing-them"><span class="header-section-number">3.8</span> Diagrams: reading and drawing them</a>
+  <ul class="collapse">
+  <li><a href="#flowcharts-what-happens-in-what-order" id="toc-flowcharts-what-happens-in-what-order" class="nav-link" data-scroll-target="#flowcharts-what-happens-in-what-order">Flowcharts: what happens, in what order</a></li>
+  <li><a href="#entity-relationship-diagrams-how-tables-connect" id="toc-entity-relationship-diagrams-how-tables-connect" class="nav-link" data-scroll-target="#entity-relationship-diagrams-how-tables-connect">Entity-relationship diagrams: how tables connect</a></li>
+  <li><a href="#sequence-diagrams-who-talks-to-whom" id="toc-sequence-diagrams-who-talks-to-whom" class="nav-link" data-scroll-target="#sequence-diagrams-who-talks-to-whom">Sequence diagrams: who talks to whom</a></li>
+  <li><a href="#drawing-your-own" id="toc-drawing-your-own" class="nav-link" data-scroll-target="#drawing-your-own">Drawing your own</a></li>
+  </ul></li>
+  <li><a href="#documentation-maintenance-as-a-habit" id="toc-documentation-maintenance-as-a-habit" class="nav-link" data-scroll-target="#documentation-maintenance-as-a-habit"><span class="header-section-number">3.9</span> Documentation maintenance as a habit</a>
   <ul class="collapse">
   <li><a href="#docs-are-part-of-done" id="toc-docs-are-part-of-done" class="nav-link" data-scroll-target="#docs-are-part-of-done">Docs are part of “done”</a></li>
   <li><a href="#when-docs-drift-treat-it-as-a-bug" id="toc-when-docs-drift-treat-it-as-a-bug" class="nav-link" data-scroll-target="#when-docs-drift-treat-it-as-a-bug">When docs drift, treat it as a bug</a></li>
   <li><a href="#decision-logs-and-why-we-chose-this" id="toc-decision-logs-and-why-we-chose-this" class="nav-link" data-scroll-target="#decision-logs-and-why-we-chose-this">Decision logs and “why we chose this”</a></li>
   </ul></li>
-  <li><a href="#ai-tools-in-documentation-workflows" id="toc-ai-tools-in-documentation-workflows" class="nav-link" data-scroll-target="#ai-tools-in-documentation-workflows"><span class="header-section-number">3.9</span> AI tools in documentation workflows</a>
+  <li><a href="#ai-tools-in-documentation-workflows" id="toc-ai-tools-in-documentation-workflows" class="nav-link" data-scroll-target="#ai-tools-in-documentation-workflows"><span class="header-section-number">3.10</span> AI tools in documentation workflows</a>
   <ul class="collapse">
   <li><a href="#high-value-uses" id="toc-high-value-uses" class="nav-link" data-scroll-target="#high-value-uses">High-value uses</a></li>
   <li><a href="#guardrails" id="toc-guardrails" class="nav-link" data-scroll-target="#guardrails">Guardrails</a></li>
   </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">3.10</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">3.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">3.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">3.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#turning-a-notebook-into-a-runnable-project" id="toc-turning-a-notebook-into-a-runnable-project" class="nav-link" data-scroll-target="#turning-a-notebook-into-a-runnable-project">Turning a notebook into a runnable project</a></li>
   <li><a href="#documenting-a-data-intake-pipeline" id="toc-documenting-a-data-intake-pipeline" class="nav-link" data-scroll-target="#documenting-a-data-intake-pipeline">Documenting a data intake pipeline</a></li>
   <li><a href="#writing-troubleshooting-notes" id="toc-writing-troubleshooting-notes" class="nav-link" data-scroll-target="#writing-troubleshooting-notes">Writing troubleshooting notes</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">3.12</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">3.13</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-how-to-guide" id="toc-template-a-how-to-guide" class="nav-link" data-scroll-target="#template-a-how-to-guide">Template A: How-to guide</a></li>
   <li><a href="#template-b-readme-skeleton-student-project" id="toc-template-b-readme-skeleton-student-project" class="nav-link" data-scroll-target="#template-b-readme-skeleton-student-project">Template B: README skeleton (student project)</a></li>
   <li><a href="#template-c-decision-log-entry" id="toc-template-c-decision-log-entry" class="nav-link" data-scroll-target="#template-c-decision-log-entry">Template C: Decision log entry</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">3.14</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">3.15</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/documentation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -822,6 +832,7 @@ div.csl-indent {
 <li><p>Write documentation that enables others to set up, run, and verify your work.</p></li>
 <li><p>Maintain documentation as an ongoing practice: update it when code changes and record decisions that affect reproducibility.</p></li>
 <li><p>Use AI tools to assist documentation work while maintaining verification, citations, and security hygiene.</p></li>
+<li><p>Read a flowchart, an entity-relationship diagram, and a sequence diagram, and draw simple ones as text with Mermaid.</p></li>
 </ol>
 </section>
 <section id="running-theme-documentation-is-an-interface" class="level2 unnumbered">
@@ -1069,8 +1080,120 @@ Chacon, Scott, and Ben Straub. 2014. <em>Pro Git</em>. 2nd ed. Apress. <a href="
 <p>Examples turn abstract descriptions into something testable.</p>
 </section>
 </section>
-<section id="documentation-maintenance-as-a-habit" class="level2 page-columns page-full" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="documentation-maintenance-as-a-habit"><span class="header-section-number">3.8</span> Documentation maintenance as a habit</h2>
+<section id="diagrams-reading-and-drawing-them" class="level2 page-columns page-full" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="diagrams-reading-and-drawing-them"><span class="header-section-number">3.8</span> Diagrams: reading and drawing them</h2>
+<p>Some things are hard to hold in your head from prose: which script reads which file, how two tables connect, who sends what to whom and in what order. A diagram shows that structure at once, and a reader who knows the three common kinds below can read most of the diagrams in documentation, papers, and design discussions.</p>
+<section id="flowcharts-what-happens-in-what-order" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="flowcharts-what-happens-in-what-order">Flowcharts: what happens, in what order</h3>
+<p>A <strong>flowchart</strong> (or pipeline diagram) shows steps as boxes and the order between them as arrows. <a href="#fig-diagram-pipeline" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> is the kind of project described in <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a>, drawn as one:</p>
+<div class="cell page-columns page-full" data-layout-align="default">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-diagram-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-diagram-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-diagram-pipeline">flowchart TD
+    accTitle: A data pipeline
+    accDescr: A flowchart. The file data/raw/sales.csv flows into the script clean.py, which the file data/dictionary.csv checks (a dotted arrow). clean.py writes data/processed/sales.parquet, which flows into analysis.ipynb, which writes reports/figures/.
+    raw[(data/raw/sales.csv)] --&gt; clean[clean.py]
+    dict[(data/dictionary.csv)] -. checks .-&gt; clean
+    clean --&gt; tidy[(data/processed/sales.parquet)]
+    tidy --&gt; nb[analysis.ipynb]
+    nb --&gt; figs[(reports/figures/)]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-diagram-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: A data pipeline as a flowchart. Cylinders are files; rectangles are code; the dotted arrow is a check, not a flow of data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Read it from the top, along the arrows. The shapes carry meaning (here, cylinders for stored data and rectangles for code), and a good diagram says what its shapes and line styles mean, in a caption or a legend.</p>
+</section>
+<section id="entity-relationship-diagrams-how-tables-connect" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="entity-relationship-diagrams-how-tables-connect">Entity-relationship diagrams: how tables connect</h3>
+<p>An <strong>entity-relationship (ER) diagram</strong> shows the tables in a database, their columns, and how their rows relate. <a href="#fig-diagram-er" class="quarto-xref">Figure&nbsp;<span>3.2</span></a> draws the two tables from <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>:</p>
+<div class="cell page-columns page-full" data-layout-align="default">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-diagram-er" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-diagram-er-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-diagram-er">erDiagram
+    accTitle: Customers and orders
+    accDescr: An ER diagram of two tables. CUSTOMERS has customer_id (primary key), name, and city. ORDERS has order_id (primary key), customer_id (foreign key), amount, and date. A line labeled places joins them, with two bars at the CUSTOMERS end and a circle and crow's foot at the ORDERS end.
+    CUSTOMERS ||--o{ ORDERS : places
+    CUSTOMERS {
+        int customer_id PK
+        string name
+        string city
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        float amount
+        date date
+    }
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-diagram-er-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: The customers and orders tables from the SQL chapter as an ER diagram. The line between them reads: one customer places zero or more orders.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The marks at each end of the line, called <strong>crow’s-foot notation</strong>, carry the relationship. Two bars (<code>||</code>) mean “exactly one,” a circle means “zero,” and the three-pronged crow’s foot means “many.” So the line reads, from each side: every order belongs to exactly one customer, and a customer places zero or more orders. <code>PK</code> marks a table’s primary key and <code>FK</code> a foreign key, the column that points to another table. When you join two tables, the ER diagram tells you which column to join on and whether a join can duplicate rows (the “many” end is where they multiply).</p>
+</section>
+<section id="sequence-diagrams-who-talks-to-whom" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sequence-diagrams-who-talks-to-whom">Sequence diagrams: who talks to whom</h3>
+<p>A <strong>sequence diagram</strong> shows messages between participants over time: each participant gets a vertical line, time runs downward, and each arrow is one message. <a href="#fig-diagram-sequence" class="quarto-xref">Figure&nbsp;<span>3.3</span></a> is a script calling a web API, as in <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a>:</p>
+<div class="cell page-columns page-full" data-layout-align="default">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-diagram-sequence" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-diagram-sequence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-diagram-sequence">sequenceDiagram
+    accTitle: Fetching from a web API
+    accDescr: A sequence diagram with two participants, fetch.py and GitHub API. fetch.py sends GET /repos/pandas-dev/pandas with User-Agent and token; the API answers 200 OK with a JSON body. fetch.py parses the JSON and saves it to data/raw/. It then requests the next page, and the API answers 429 Too Many Requests; a note says wait, then retry.
+    participant S as fetch.py
+    participant A as GitHub API
+    S-&gt;&gt;A: GET /repos/pandas-dev/pandas (with User-Agent and token)
+    A--&gt;&gt;S: 200 OK, JSON body
+    S-&gt;&gt;S: parse JSON, save to data/raw/
+    S-&gt;&gt;A: GET the next page
+    A--&gt;&gt;S: 429 Too Many Requests
+    Note over S: wait, then retry
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-diagram-sequence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: A script fetching data from a web API as a sequence diagram. Solid arrows are requests; dashed arrows are responses.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Sequence diagrams are how API documentation explains authentication and how people debug a conversation between programs: when something fails, you can point at the arrow where it went wrong.</p>
+</section>
+<section id="drawing-your-own" class="level3">
+<h3 class="anchored" data-anchor-id="drawing-your-own">Drawing your own</h3>
+<p>Most diagrams in a student project are informal <strong>architecture sketches</strong>: boxes for the pieces (your laptop, a server, a database, cloud storage), arrows for what moves between them, and labels on everything. A photo of a whiteboard is a fine start. For a diagram that will live in documentation, write it as text, the way the three above are written, in <a href="https://mermaid.js.org/">Mermaid</a>. A Mermaid diagram is a few lines in a fenced code block that GitHub, Quarto, and many other tools draw for you; because it is text, it lives in version control, shows up in diffs, and is easy to change when the project does. The <a href="https://mermaid.live/">Mermaid Live Editor</a> shows the drawing as you type. For diagrams Mermaid can’t lay out well, <a href="https://www.diagrams.net/">diagrams.net</a> is a free drawing tool whose files can also be kept in a repository.</p>
+<p>Whichever tool you use, a few habits make a diagram readable:</p>
+<ul>
+<li><strong>One idea per diagram.</strong> A diagram that shows the data flow, the database schema, and the deployment at once shows none of them clearly. Draw three.</li>
+<li><strong>Label the arrows</strong> with verbs (“reads,” “writes,” “checks”), and say what the shapes and line styles mean.</li>
+<li><strong>Keep one direction of flow,</strong> left to right or top to bottom, so the reader never has to hunt for where it starts.</li>
+<li><strong>Describe it in words too.</strong> A caption and the text around a diagram should say what it shows, for readers who can’t see it and for the moment the diagram falls out of date. In Mermaid, an <code>accTitle:</code> line and an <code>accDescr:</code> line inside the diagram give screen readers a title and a description; the three diagrams above have them.</li>
+</ul>
+</section>
+</section>
+<section id="documentation-maintenance-as-a-habit" class="level2 page-columns page-full" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="documentation-maintenance-as-a-habit"><span class="header-section-number">3.9</span> Documentation maintenance as a habit</h2>
 <p>Documentation is not a one-time deliverable. It is a living layer that must move with your code.</p>
 <section id="docs-are-part-of-done" class="level3">
 <h3 class="anchored" data-anchor-id="docs-are-part-of-done">Docs are part of “done”</h3>
@@ -1096,8 +1219,8 @@ The Turing Way Community. 2025. <em>The Turing Way: A Handbook for Reproducible,
 Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and Tracy K. Teal. 2017. <span>“Good Enough Practices in Scientific Computing.”</span> <em>PLOS Computational Biology</em> 13 (6): e1005510. <a href="https://doi.org/10.1371/journal.pcbi.1005510">https://doi.org/10.1371/journal.pcbi.1005510</a>.
 </div></div></section>
 </section>
-<section id="ai-tools-in-documentation-workflows" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="ai-tools-in-documentation-workflows"><span class="header-section-number">3.9</span> AI tools in documentation workflows</h2>
+<section id="ai-tools-in-documentation-workflows" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="ai-tools-in-documentation-workflows"><span class="header-section-number">3.10</span> AI tools in documentation workflows</h2>
 <p>AI tools can help with documentation, but they also introduce risks: hallucinated facts, mismatched versions, and accidental leakage of sensitive data. The goal is to use AI as an assistant for drafting and structuring, not as an authority.</p>
 <section id="high-value-uses" class="level3">
 <h3 class="anchored" data-anchor-id="high-value-uses">High-value uses</h3>
@@ -1122,14 +1245,14 @@ Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and
 <p>A practical rule: if the AI suggests a command that could be destructive (<code>rm</code>, <code>sudo</code>, permissions changes), stop and verify in official documentation or with an instructor.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="3.10">
-<h2 data-number="3.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">3.10</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">3.11</span> Stakes and politics</h2>
 <p>Documentation decides who can use a tool. Every “just run <code>pip install</code>” or “open a terminal” smuggles in assumptions: that you have administrator access on your machine, that your network does not block PyPI, that English is not a barrier, that your screen reader can navigate the docs site, and that you have unbroken time to follow a multi-step setup. When those assumptions are wrong, the tool is effectively unavailable — not because the technology cannot serve the reader, but because the documentation drew a boundary they could not cross. The professional shorthand “RTFM” treats this as the reader’s problem; the design habit you should be building treats it as the writer’s problem.</p>
 <p>Two decisions to notice. First, <em>whose problems the docs anticipate</em>: the example commands, the operating system shown, the network connection assumed, the device on which screenshots were taken. These choices encode an imagined user — usually English-speaking, on a recent laptop, with broadband — and a reader who does not match the imagined user pays the difference in time and frustration. Second, <em>whose labor maintains the docs</em>: most large open-source projects rely on a small group of unpaid contributors to keep documentation current, with predictable consequences for translations, accessibility features, and the edge cases that fall outside the contributors’ own situations. The docs are as inclusive as the people who write them have time and motivation to make them.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward when you write a README or a how-to: name your imagined reader explicitly, then add one sentence for the reader you assumed away.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="3.11">
-<h2 data-number="3.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">3.11</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">3.12</span> Worked examples</h2>
 <p>This section demonstrates how documentation practices appear in typical novice workflows.</p>
 <section id="turning-a-notebook-into-a-runnable-project" class="level3">
 <h3 class="anchored" data-anchor-id="turning-a-notebook-into-a-runnable-project">Turning a notebook into a runnable project</h3>
@@ -1176,8 +1299,8 @@ Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and
 </section>
 </section>
 </section>
-<section id="templates" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">3.12</span> Templates</h2>
+<section id="templates" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">3.13</span> Templates</h2>
 <section id="template-a-how-to-guide" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-how-to-guide">Template A: How-to guide</h3>
 <pre><code># Title: How to &lt;do a specific task&gt;
@@ -1242,18 +1365,19 @@ Rationale:
 Consequences / follow-ups:</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="3.13">
-<h2 data-number="3.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.14</span> Exercises</h2>
 <ol type="1">
 <li><p>Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.</p></li>
 <li><p>Write a one-page README for a class assignment repository. Swap with a classmate and attempt to run each other’s project using only the README. Record what was missing and revise.</p></li>
 <li><p>Take a confusing error you encountered and create a “troubleshooting note” that includes: symptom, likely cause, verification step, fix.</p></li>
 <li><p>Rewrite a set of rough notes into a how-to guide using Template A. Include a verification step that a reader can perform.</p></li>
 <li><p>Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.</p></li>
+<li><p>Draw your project’s pipeline as a Mermaid flowchart in its README, with an <code>accDescr:</code> line, and check that GitHub draws it. If the project uses more than one table, add an ER diagram of how they join.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="3.14">
-<h2 data-number="3.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">3.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">3.15</span> One-page checklist</h2>
 <ul>
 <li><p>I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.</p></li>
 <li><p>I can route from secondary sources to primary sources.</p></li>
@@ -1262,6 +1386,7 @@ Consequences / follow-ups:</code></pre>
 <li><p>My README contains purpose, setup, run instructions, and verification.</p></li>
 <li><p>I update docs when code changes affect usage.</p></li>
 <li><p>I keep a short decision log for consequential choices.</p></li>
+<li><p>Where structure is hard to follow in prose, I add a diagram as text (Mermaid) with one idea, labeled arrows, and a description.</p></li>
 <li><p>If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.</p></li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">

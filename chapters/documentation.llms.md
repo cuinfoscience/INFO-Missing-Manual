@@ -32,6 +32,8 @@ By the end of this chapter, you should be able to:
 
 7.  Use AI tools to assist documentation work while maintaining verification, citations, and security hygiene.
 
+8.  Read a flowchart, an entity-relationship diagram, and a sequence diagram, and draw simple ones as text with Mermaid.
+
 ## Running theme: documentation is an interface
 
 Documentation is an interface between *your intent* and *someone else’s understanding*. The “someone else” might be a teammate, a future version of you, or even a tool like a build system or continuous integration job. Good documentation lowers the cost of correct action and raises the cost of confusion.
@@ -306,7 +308,89 @@ For conceptual documentation, include one example that is fully worked:
 
 Examples turn abstract descriptions into something testable.
 
-## 3.8 Documentation maintenance as a habit
+## 3.8 Diagrams: reading and drawing them
+
+Some things are hard to hold in your head from prose: which script reads which file, how two tables connect, who sends what to whom and in what order. A diagram shows that structure at once, and a reader who knows the three common kinds below can read most of the diagrams in documentation, papers, and design discussions.
+
+### Flowcharts: what happens, in what order
+
+A **flowchart** (or pipeline diagram) shows steps as boxes and the order between them as arrows. [Figure fig-diagram-pipeline](#fig-diagram-pipeline) is the kind of project described in [sec-project-management](#sec-project-management), drawn as one:
+
+``` mermaid
+flowchart TD
+    accTitle: A data pipeline
+    accDescr: A flowchart. The file data/raw/sales.csv flows into the script clean.py, which the file data/dictionary.csv checks (a dotted arrow). clean.py writes data/processed/sales.parquet, which flows into analysis.ipynb, which writes reports/figures/.
+    raw[(data/raw/sales.csv)] --> clean[clean.py]
+    dict[(data/dictionary.csv)] -. checks .-> clean
+    clean --> tidy[(data/processed/sales.parquet)]
+    tidy --> nb[analysis.ipynb]
+    nb --> figs[(reports/figures/)]
+```
+
+Figure 3.1: A data pipeline as a flowchart. Cylinders are files; rectangles are code; the dotted arrow is a check, not a flow of data.
+
+Read it from the top, along the arrows. The shapes carry meaning (here, cylinders for stored data and rectangles for code), and a good diagram says what its shapes and line styles mean, in a caption or a legend.
+
+### Entity-relationship diagrams: how tables connect
+
+An **entity-relationship (ER) diagram** shows the tables in a database, their columns, and how their rows relate. [Figure fig-diagram-er](#fig-diagram-er) draws the two tables from [sec-sql-basics](#sec-sql-basics):
+
+``` mermaid
+erDiagram
+    accTitle: Customers and orders
+    accDescr: An ER diagram of two tables. CUSTOMERS has customer_id (primary key), name, and city. ORDERS has order_id (primary key), customer_id (foreign key), amount, and date. A line labeled places joins them, with two bars at the CUSTOMERS end and a circle and crow's foot at the ORDERS end.
+    CUSTOMERS ||--o{ ORDERS : places
+    CUSTOMERS {
+        int customer_id PK
+        string name
+        string city
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        float amount
+        date date
+    }
+```
+
+Figure 3.2: The customers and orders tables from the SQL chapter as an ER diagram. The line between them reads: one customer places zero or more orders.
+
+The marks at each end of the line, called **crow’s-foot notation**, carry the relationship. Two bars (`||`) mean “exactly one,” a circle means “zero,” and the three-pronged crow’s foot means “many.” So the line reads, from each side: every order belongs to exactly one customer, and a customer places zero or more orders. `PK` marks a table’s primary key and `FK` a foreign key, the column that points to another table. When you join two tables, the ER diagram tells you which column to join on and whether a join can duplicate rows (the “many” end is where they multiply).
+
+### Sequence diagrams: who talks to whom
+
+A **sequence diagram** shows messages between participants over time: each participant gets a vertical line, time runs downward, and each arrow is one message. [Figure fig-diagram-sequence](#fig-diagram-sequence) is a script calling a web API, as in [sec-http-apis](#sec-http-apis):
+
+``` mermaid
+sequenceDiagram
+    accTitle: Fetching from a web API
+    accDescr: A sequence diagram with two participants, fetch.py and GitHub API. fetch.py sends GET /repos/pandas-dev/pandas with User-Agent and token; the API answers 200 OK with a JSON body. fetch.py parses the JSON and saves it to data/raw/. It then requests the next page, and the API answers 429 Too Many Requests; a note says wait, then retry.
+    participant S as fetch.py
+    participant A as GitHub API
+    S->>A: GET /repos/pandas-dev/pandas (with User-Agent and token)
+    A-->>S: 200 OK, JSON body
+    S->>S: parse JSON, save to data/raw/
+    S->>A: GET the next page
+    A-->>S: 429 Too Many Requests
+    Note over S: wait, then retry
+```
+
+Figure 3.3: A script fetching data from a web API as a sequence diagram. Solid arrows are requests; dashed arrows are responses.
+
+Sequence diagrams are how API documentation explains authentication and how people debug a conversation between programs: when something fails, you can point at the arrow where it went wrong.
+
+### Drawing your own
+
+Most diagrams in a student project are informal **architecture sketches**: boxes for the pieces (your laptop, a server, a database, cloud storage), arrows for what moves between them, and labels on everything. A photo of a whiteboard is a fine start. For a diagram that will live in documentation, write it as text, the way the three above are written, in [Mermaid](https://mermaid.js.org/). A Mermaid diagram is a few lines in a fenced code block that GitHub, Quarto, and many other tools draw for you; because it is text, it lives in version control, shows up in diffs, and is easy to change when the project does. The [Mermaid Live Editor](https://mermaid.live/) shows the drawing as you type. For diagrams Mermaid can’t lay out well, [diagrams.net](https://www.diagrams.net/) is a free drawing tool whose files can also be kept in a repository.
+
+Whichever tool you use, a few habits make a diagram readable:
+
+- **One idea per diagram.** A diagram that shows the data flow, the database schema, and the deployment at once shows none of them clearly. Draw three.
+- **Label the arrows** with verbs (“reads,” “writes,” “checks”), and say what the shapes and line styles mean.
+- **Keep one direction of flow,** left to right or top to bottom, so the reader never has to hunt for where it starts.
+- **Describe it in words too.** A caption and the text around a diagram should say what it shows, for readers who can’t see it and for the moment the diagram falls out of date. In Mermaid, an `accTitle:` line and an `accDescr:` line inside the diagram give screen readers a title and a description; the three diagrams above have them.
+
+## 3.9 Documentation maintenance as a habit
 
 Documentation is not a one-time deliverable. It is a living layer that must move with your code.
 
@@ -332,7 +416,7 @@ Some choices are not obvious from code:
 
 A lightweight decision log prevents repeated debates and helps future readers interpret results. This practice aligns with reproducible project guidance ([The Turing Way Community 2025](#ref-turingway2025zenodo); [Wilson et al. 2017](#ref-wilson2017goodenough)).
 
-## 3.9 AI tools in documentation workflows
+## 3.10 AI tools in documentation workflows
 
 AI tools can help with documentation, but they also introduce risks: hallucinated facts, mismatched versions, and accidental leakage of sensitive data. The goal is to use AI as an assistant for drafting and structuring, not as an authority.
 
@@ -364,7 +448,7 @@ Use the following guardrails:
 
 A practical rule: if the AI suggests a command that could be destructive (`rm`, `sudo`, permissions changes), stop and verify in official documentation or with an instructor.
 
-## 3.10 Stakes and politics
+## 3.11 Stakes and politics
 
 Documentation decides who can use a tool. Every “just run `pip install`” or “open a terminal” smuggles in assumptions: that you have administrator access on your machine, that your network does not block PyPI, that English is not a barrier, that your screen reader can navigate the docs site, and that you have unbroken time to follow a multi-step setup. When those assumptions are wrong, the tool is effectively unavailable — not because the technology cannot serve the reader, but because the documentation drew a boundary they could not cross. The professional shorthand “RTFM” treats this as the reader’s problem; the design habit you should be building treats it as the writer’s problem.
 
@@ -372,7 +456,7 @@ Two decisions to notice. First, *whose problems the docs anticipate*: the exampl
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward when you write a README or a how-to: name your imagined reader explicitly, then add one sentence for the reader you assumed away.
 
-## 3.11 Worked examples
+## 3.12 Worked examples
 
 This section demonstrates how documentation practices appear in typical novice workflows.
 
@@ -432,7 +516,7 @@ Troubleshooting notes become valuable when they are specific. Compare:
 
 The “better” version specifies symptoms, a hypothesis, and a verification step.
 
-## 3.12 Templates
+## 3.13 Templates
 
 ### Template A: How-to guide
 
@@ -497,7 +581,7 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
     Rationale:
     Consequences / follow-ups:
 
-## 3.13 Exercises
+## 3.14 Exercises
 
 1.  Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.
 
@@ -509,7 +593,9 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
 
 5.  Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.
 
-## 3.14 One-page checklist
+6.  Draw your project’s pipeline as a Mermaid flowchart in its README, with an `accDescr:` line, and check that GitHub draws it. If the project uses more than one table, add an ER diagram of how they join.
+
+## 3.15 One-page checklist
 
 - I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.
 
@@ -524,6 +610,8 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
 - I update docs when code changes affect usage.
 
 - I keep a short decision log for consequential choices.
+
+- Where structure is hard to follow in prose, I add a diagram as text (Mermaid) with one idea, labeled arrows, and a description.
 
 - If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.
 
