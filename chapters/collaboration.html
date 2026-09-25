@@ -729,10 +729,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#documentation-drift" id="toc-documentation-drift" class="nav-link" data-scroll-target="#documentation-drift">Documentation drift</a></li>
   </ul></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">32.11</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">32.12</span> Worked examples (outline)</a>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">32.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#turn-a-chat-question-into-a-good-issue" id="toc-turn-a-chat-question-into-a-good-issue" class="nav-link" data-scroll-target="#turn-a-chat-question-into-a-good-issue">Turn a chat question into a good issue</a></li>
-  <li><a href="#author-a-reviewable-pr" id="toc-author-a-reviewable-pr" class="nav-link" data-scroll-target="#author-a-reviewable-pr">Author a reviewable PR</a></li>
+  <li><a href="#author-a-reviewable-pull-request" id="toc-author-a-reviewable-pull-request" class="nav-link" data-scroll-target="#author-a-reviewable-pull-request">Author a reviewable pull request</a></li>
   <li><a href="#perform-a-constructive-code-review" id="toc-perform-a-constructive-code-review" class="nav-link" data-scroll-target="#perform-a-constructive-code-review">Perform a constructive code review</a></li>
   <li><a href="#close-the-loop-after-merge" id="toc-close-the-loop-after-merge" class="nav-link" data-scroll-target="#close-the-loop-after-merge">Close the loop after merge</a></li>
   </ul></li>
@@ -1124,31 +1124,91 @@ Figure&nbsp;32.1: A resolved review thread on a pull request in this book’s ow
 <p>Two things to notice. First, <em>review style is cultural</em>. Comments that seem direct to one reviewer (“this is wrong”; “why would you do it that way?”) read as hostile to another, especially across language fluency, age, and seniority gaps. The literature on psychological safety and the experience of women, people of color, and non-native English speakers in code-review systems all converge on the same finding: the same comment, with the same content, is read very differently depending on who wrote it and who received it. Conventions like Conventional Comments exist precisely to make intent legible — to compensate for the fact that text strips out the cues a face-to-face conversation would carry. Second, <em>who can approve a merge is power</em>. The “code owner” who has to sign off, the senior engineer whose word ends a thread, the maintainer who can <code>LGTM</code> a PR into main — these are real authority relationships dressed up as technical machinery. When you contribute to an open-source project, you are entering somebody else’s review hierarchy; when you build one, you are deciding whose voices count.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.</p>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="32.12">
-<h2 data-number="32.12" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">32.12</span> Worked examples (outline)</h2>
+<section id="worked-examples" class="level2" data-number="32.12">
+<h2 data-number="32.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">32.12</span> Worked examples</h2>
+<p>These follow a three-person team cleaning and analyzing a course survey, the same project as the worked examples in <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>.</p>
 <section id="turn-a-chat-question-into-a-good-issue" class="level3">
 <h3 class="anchored" data-anchor-id="turn-a-chat-question-into-a-good-issue">Turn a chat question into a good issue</h3>
-<ul>
-<li>Convert vague request into context + definition of done.</li>
-</ul>
+<p>On Monday, the team’s group chat gets this:</p>
+<blockquote class="blockquote">
+<p>hey the response counts look off?? like the dashboard says 212 but qualtrics said more. can someone look</p>
+</blockquote>
+<p>It’s a real problem, but in this form nobody can act on it: which counts, how far off, off since when? And by Thursday it will have scrolled out of sight. Whoever reads it first turns it into an issue, using the shape from “Anatomy of a good issue” above:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>**Title:** Reconcile cleaned response count (212) with the survey export (231)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Context</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>The dashboard reports 212 responses. The raw Qualtrics export in</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>data/raw/ has 231 rows. clean.py drops some rows on purpose (staff</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>test responses, blank submissions), but we have never checked that</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>those two steps account for all 19.</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Definition of done</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each of the 19 dropped rows is explained by a documented rule.</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>clean.py logs how many rows each rule drops.</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If any drop is a bug, it is fixed and the dashboard is rerun.</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Evidence</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    $ python -c "import pandas as pd; print(len(pd.read_csv('data/raw/survey.csv')))"</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    231</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>**Labels:** <span class="in">`bug`</span>, <span class="in">`area: data`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then reply in the chat with a link to the issue, so the conversation moves there. The rewrite took five minutes, and it did most of the investigation’s thinking: the question is now “which rule drops which rows,” and anyone on the team can pick it up.</p>
 </section>
-<section id="author-a-reviewable-pr" class="level3">
-<h3 class="anchored" data-anchor-id="author-a-reviewable-pr">Author a reviewable PR</h3>
-<ul>
-<li>Create a small branch, open PR with testing steps, request review.</li>
-</ul>
+<section id="author-a-reviewable-pull-request" class="level3">
+<h3 class="anchored" data-anchor-id="author-a-reviewable-pull-request">Author a reviewable pull request</h3>
+<p>Working on that issue, you find the answer. Of the 19 missing rows, 11 are staff test accounts and 4 are blank submissions, both dropped on purpose; the other 4 are real responses with a blank email field, which the staff filter caught by mistake. Along the way you also added the per-rule logging, renamed some columns, and reformatted <code>clean.py</code>. The branch now touches 14 files. Before opening a pull request, split it: the reviewer’s job is to check that the fix is right, and every unrelated line makes that harder (see “Small PR discipline” above).</p>
+<ol type="1">
+<li><strong>The fix:</strong> a pull request that changes the one filter and nothing else.</li>
+<li><strong>The logging:</strong> a second, which finishes the issue’s definition of done.</li>
+<li><strong>The renames:</strong> a third, later, on their own. And the reformatting needs no pull request at all if everyone runs the same formatter (see <a href="linting.html" class="quarto-xref"><span>Chapter 19</span></a>).</li>
+</ol>
+<p>The first pull request’s description tells the reviewer what to check and how:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Keep responses with a blank email; drop only staff test accounts.</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Motivation</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>The staff filter matched blank emails too, dropping 4 real</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>responses. Restores 4 of the 19 missing rows in #12.</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to test</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    python clean.py</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>data/processed/survey.csv should have 216 rows (it had 212).</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Related</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>Part of #12.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>“Part of #12,” not “Closes #12”: the issue also asks for the logging, and it should stay open until that merges too. (A pull request whose description says “Closes #12” closes the issue automatically when it merges.)</p>
 </section>
 <section id="perform-a-constructive-code-review" class="level3">
 <h3 class="anchored" data-anchor-id="perform-a-constructive-code-review">Perform a constructive code review</h3>
-<ul>
-<li>Use the comment taxonomy; request one blocker and one suggestion.</li>
-</ul>
+<p>You’re reviewing a teammate’s pull request that adds a satisfaction score. One line in it computes the score, and the first comment that comes to mind is:</p>
+<blockquote class="blockquote">
+<p>this is wrong, you can’t average likert items like that</p>
+</blockquote>
+<p>It’s true and useless: it doesn’t say what is wrong, why it matters, or what to do, and its tone invites an argument rather than a fix. Rewritten with the taxonomy from “Comment taxonomy” above, the review becomes four comments, each on its own line of the diff:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>**Blocker**: line 31 averages the five satisfaction items, but</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>items 2 and 4 are reverse-coded (1 = very satisfied). As written,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>a very satisfied respondent scores near 3. Reverse items 2 and 4</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>(6 - value) before averaging; the codebook marks which ones.</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>**Question**: line 35 drops respondents who skipped any item.</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>Is that intended? It removes 23 people; averaging the items each</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>person answered would keep them.</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>**Suggestion**: the score could live in a function in src/ so the</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>dashboard and the notebook use the same definition. Non-blocking.</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>**Nit**: <span class="in">`sat_scr`</span> → <span class="in">`satisfaction_score`</span>. Non-blocking.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>End with something true and specific about what works (“the new tests for the score are exactly what this needed”), and approve once the blocker is fixed. The author now knows that one thing must change, one needs an answer, and two are optional.</p>
 </section>
 <section id="close-the-loop-after-merge" class="level3">
 <h3 class="anchored" data-anchor-id="close-the-loop-after-merge">Close the loop after merge</h3>
-<ul>
-<li>Update docs, close issue with summary, tag next steps.</li>
-</ul>
+<p>When the last pull request for issue #12 merges, three small things finish the job. <strong>Update the documentation</strong> the change affects: the README’s list of cleaning rules gains “blank submissions are kept.” <strong>Close the issue with a summary,</strong> so anyone who finds it later gets the answer without reading every pull request:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="an">All 19 rows accounted for:</span><span class="co"> 11 staff test accounts and 4 blank</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>submissions, dropped on purpose, and 4 real responses with a blank</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>email, dropped by mistake. Those 4 are restored (#14), and clean.py</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>now logs how many rows each rule drops (#15). Dashboard rerun:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>216 responses.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Open an issue for anything you found but didn’t fix,</strong> such as “the Qualtrics export includes preview responses; should we filter those?”, and link it from the summary. <a href="#fig-github-pr-review-comment" class="quarto-xref">Figure&nbsp;<span>32.1</span></a> shows the same habit at the scale of one comment: the reply says where the fix went, and the thread is resolved.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="32.13">
