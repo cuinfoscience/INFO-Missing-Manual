@@ -30,16 +30,15 @@ If that has happened to you, you're in good company: it happens to experienced a
 
 This chapter is about those habits: what shape a table should be in, how to clean one without damaging it, how to check it before you trust it, and the specific snags that eat the most student hours. It doesn't teach pandas syntax from scratch (that's @sec-pandas-basics) or SQL (@sec-sql-basics). The ideas here hold whichever tool you use, so they'll still be useful the next time you pick up a new one.
 
-## Learning objectives {.unnumbered}
+## Why read this chapter {.unnumbered}
 
-By the end of this chapter, you should be able to:
-
-1.  Tell wide data from tidy (long) data, and explain when you want each.
-2.  Explain the three rules of tidy data in your own words, with an example of each.
-3.  Keep raw data untouched, and turn it into clean data with a script you can rerun.
-4.  Walk through a cleaning pipeline in a sensible order, and say why the order matters.
-5.  Write a short block of checks (shape, columns, types, keys, values) that stops an analysis when the data isn't what you expected.
-6.  Recognize the seven snags that most often trip people up with a new dataset, and fix each one.
+-   You made a chart from a CSV, then found out later that half the rows were duplicated, and you'd rather never lose a week that way again.
+-   You summed a price column and got `'12.50$89.25'` instead of a number, and you can't see why pandas thinks prices are text.
+-   You merged two tables and ended up with more rows than you started with, and every total in your report quietly grew.
+-   Your data has one column per month or per survey question, and every analysis turns into a loop over column names.
+-   You fixed a file by hand in Excel, and now you can't say what you changed or redo it when the next version arrives.
+-   Your instructor keeps saying "tidy data," "validate," and "primary key," and you'd like to know what they mean in practice.
+-   You want a few lines of checks you can paste into any project, so bad data stops you at the start instead of at the end.
 
 ## Running theme: data you haven't checked is data you can't trust {.unnumbered}
 

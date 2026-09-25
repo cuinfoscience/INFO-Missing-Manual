@@ -11,6 +11,7 @@ Entries dated before September 2026 were reconstructed from commit messages, pul
 - **Every chapter gets a consistent voice:** informal, approachable, and welcoming to newcomers; honest about common confusion and frustration; narrative and persuasive rather than a list of facts; never academic or formal; and still authoritative. Link generously: official tutorials and documentation for tools, Wikipedia for concepts.
 - **Full rewrites are in scope,** voice, style, and structure, within the canonical chapter skeleton. Teaching sections become narrative; checklists, quick references, exercises, and templates stay as lists, because readers scan them.
 - **Rollout:** a pilot chapter first (`tabular-data`), then one pull request per part of the book.
+- **"Why read this chapter" replaces "Learning objectives"** (the maintainer's follow-up on the pilot: the objectives read as stodgy and academic): 5–8 sentence-length bullets, addressed to "you," grounded in the frustrations, snags, uses, and gaps that bring a novice-to-intermediate student to the chapter. Each chapter converts as part of its part's rewrite.
 
 **Why.** The maintainer's words, 2026-09-25. Measured before the pilot: about two outbound links per 1,000 words, 13 Wikipedia links in the whole book (10 in one chapter), and 30–55% of non-code lines in most chapters were list items.
 

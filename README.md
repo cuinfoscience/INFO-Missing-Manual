@@ -122,7 +122,7 @@ Contributions of every size are welcome, from a typo report to a new chapter, an
 
 The short version of the style:
 
-- Each content chapter follows the canonical 8-section structure (Purpose → Learning objectives → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
+- Each content chapter follows the canonical 8-section structure (Purpose → Why read this chapter → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
 - Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.
 - Tone: friendly guide, second-person ("you"), empathetic but rigorous.
 - Cross-references: `@sec-<slug>` (see the label table in `AGENTS.md`).
