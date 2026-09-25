@@ -24,248 +24,265 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-Text editors are the primary tool for writing code, configuring tools, inspecting logs, and fixing small problems quickly. For beginners, the main challenge is not typing---it is developing reliable workflows: opening the right file, editing safely, finding and replacing correctly, and understanding the trade-offs between terminal editors, GUI editors, and full IDEs.
+You find the bug, fix it, save, and run the script again. Same error. You fix it again, more carefully, and run it. Same error. Twenty minutes later you notice that the file in your editor lives in `Downloads/`, and the script you keep running reads a different copy in your project folder. Or it's the other classic: you type `git commit` on a lab server, land in a screen where typing does strange things, and can't find any way out.
 
-## Learning objectives {.unnumbered}
+Neither means you're bad at computers. Nobody showed you the habits around the tool: knowing which file you're editing, how to get out of an editor you didn't choose, and why a line that looks perfectly indented still breaks Python. You'll spend more hours in a [text editor](https://en.wikipedia.org/wiki/Text_editor) than in any other program in this book, so a few hours learning to drive one well pays back every week.
 
-By the end of this chapter, you should be able to:
+This chapter covers what an editor does to your files, how to pick one, the skills that carry across every editor, the file problems that trip students up most, enough `nano` and `vim` to survive a server, a minimal VS Code setup, and the habits that keep a bad edit from costing you an afternoon. It doesn't teach Python, and it won't try to convert you to any editor; the examples use VS Code because most students start there.
 
-1.  Explain what makes a file "text" (vs binary) and why encoding and line endings matter.
+## Why read this chapter {.unnumbered}
 
-2.  Use essential editor operations: open/save, undo/redo, find/replace, multi-file search, and navigation.
-
-3.  Debug common file problems: wrong path, wrong extension, hidden characters, encoding issues, and line-ending mismatches.
-
-4.  Choose an appropriate editor class for a task (terminal editor vs GUI editor vs IDE).
-
-5.  Use a GUI editor for simple scripting: run scripts, read errors, and iterate.
-
-6.  Apply safe refactoring habits with find/replace and version control.
-
-7.  Configure an editor minimally: indentation, formatting, linting, and extensions.
-8.  Edit faster with the command palette, language-aware rename, multiple cursors, and snippets.
+-   You saved your fix, reran the script, got exactly the same error, and started to doubt your own eyes.
+-   A `git commit` dropped you into a screen where typing did strange things, and nothing you tried would let you leave.
+-   Python says `TabError: inconsistent use of tabs and spaces in indentation` about a line that looks perfectly lined up.
+-   A file from a classmate shows `â€™` where the apostrophes should be, or a shell script dies with `$'\r': command not found`.
+-   You renamed a function with Replace All and broke three other things whose names happened to contain the old one.
+-   You need to change one line of a config file on a server that has no mouse and no VS Code, just a terminal.
+-   You've heard VS Code, PyCharm, vim, and "IDEs" all called editors, and you'd like to know which one to use and how much setup is enough.
+-   You type the same five lines at the top of every notebook and suspect the editor could type them for you.
 
 ## Running theme: editors are tools, not identities {.unnumbered}
 
-Choose an editor that fits the task, and build habits that transfer across editors: paths, file formats, search, safe edits, and reproducibility.
+Pick the editor that fits the job in front of you, and put your energy into the habits that carry across all of them: knowing where your files are, keeping them in a format every tool agrees on, searching well, and editing in a way you can undo.
 
-## A beginner mental model
+## What an editor is really doing
 
-A surprising amount of computing happens inside plain text files. Your code is plain text. Your configuration files (`.gitignore`, `pyproject.toml`, `_quarto.yml`, `requirements.txt`) are plain text. Your data, when it is in a friendly format like CSV or JSON, is plain text. Your logs are plain text. Your README is plain text. The text editor is the universal workbench you use to read and modify all of those, and learning to drive one well pays back across every other tool in this book.
+A surprising amount of computing happens in plain text: your Python scripts, your configuration files (`.gitignore`, `pyproject.toml`, `_quarto.yml`), your data when it's CSV or JSON, your logs, and your README. A text editor is the one workbench that opens all of them.
 
-What an editor actually *does* under the hood is conceptually simple. It reads bytes from disk and interprets them as characters using an **encoding** (usually UTF-8 in modern projects). It displays those characters on your screen with line breaks and whitespace where they belong, and it lets you change them. When you save, it writes the bytes back to disk in the same encoding. Most editor problems — strange characters, files that look fine in one tool and broken in another, mysterious "invalid syntax" errors — come from a mismatch somewhere in that pipeline: wrong encoding, wrong line endings, or invisible whitespace where the language did not expect it.
+That's also why a text editor is the wrong tool for some files. Open a Word document in VS Code and you get a screen of gibberish, because a `.docx` isn't text at all: it's a zip archive of XML files ([Office Open XML](https://en.wikipedia.org/wiki/Office_Open_XML)) that only makes sense to a program that knows how to unpack it. Images, Excel workbooks, and Parquet files are binary too. If a file opens as garbage, it's usually not broken, just not text.
 
-A small vocabulary will save you a lot of confusion. **Encoding** is the rule for turning raw bytes into characters; UTF-8 is the modern default and you should not save files in anything else unless you have a specific reason. **Line endings** are the invisible characters that mark the end of each line; macOS and Linux use a single newline (LF, byte `\n`), while Windows uses a carriage-return-then-newline pair (CRLF, bytes `\r\n`), and projects shared between OSes can produce noisy diffs and parser errors when they get mixed. **Whitespace** is the catch-all term for spaces, tabs, and newlines, and it matters more in some languages than others — Python, YAML, and Makefiles in particular treat whitespace as significant and will fail on tabs-vs-spaces confusion. **Syntax highlighting** is when an editor colors keywords, strings, and comments differently so the structure of the code is visually obvious. **Linting and formatting** are automated tools that check style and normalize it (see @sec-linting). And an **IDE** ("integrated development environment") is a heavier kind of editor that bundles a build system, a debugger, and language tooling into one package — useful for some ecosystems, overkill for others.
+For text files, an editor reads bytes from disk, turns them into characters using a [character encoding](https://en.wikipedia.org/wiki/Character_encoding) (the rulebook for which bytes mean which letters), lets you change them, and writes them back with the same rulebook when you save. Almost every mysterious editor problem (strange symbols, a file that looks fine in one program and broken in another, an "invalid syntax" error on a line that looks fine) comes from something going wrong in that round trip. Four words cover nearly all of it:
 
-## Choosing your tool: three editor classes
+**Encoding** is that rulebook. The modern default is [UTF-8](https://en.wikipedia.org/wiki/UTF-8), which can represent every language's characters and is what nearly every tool expects. Save everything as UTF-8 unless you have a specific reason not to.
 
-Editors come in three rough sizes, and it is worth knowing which size fits which job.
+**Line endings** are the invisible characters that mark where each line stops. macOS and Linux use one character, a line feed (LF, written `\n`); Windows uses two, a carriage return followed by a line feed (CRLF, `\r\n`). The [history of this split](https://en.wikipedia.org/wiki/Newline) goes back to teletype printers, and it still produces noisy diffs and broken scripts when a project moves between operating systems.
 
-The smallest are **terminal editors** like [`nano`](https://www.nano-editor.org/docs.php), [`vim`](https://www.vim.org/docs.php), and [`emacs`](https://www.gnu.org/software/emacs/documentation.html). They run inside a terminal window, so they work over SSH on any server you can log into, they have almost no startup time, and they are always available — even on the most stripped-down Linux box. Their downside is the learning curve: `vim`'s modal editing in particular feels alien for a few days before it clicks. Most students do not need to live in a terminal editor, but every student should learn enough `nano` to confidently open a file, change one line, and save and exit. That single skill turns "I have to fix one character on a remote server and I cannot do it" from an impasse into a thirty-second task.
+**Whitespace** is the family name for spaces, tabs, and newlines. Most languages don't care much about it, but Python, YAML, and Makefiles do: they read indentation as part of the meaning, so a tab where a space should be is a real error, not a style problem.
 
-The middle tier is **GUI code editors** — [VS Code](https://code.visualstudio.com/docs) is by far the most popular today, with [Sublime Text](https://www.sublimetext.com/docs/) and [Cursor](https://docs.cursor.com/) as alternatives.
+**Syntax highlighting, linting, and formatting** are the help an editor layers on top. [Syntax highlighting](https://en.wikipedia.org/wiki/Syntax_highlighting) colors keywords, strings, and comments differently so you can see the structure of code at a glance. Linters and formatters are separate tools, often run by the editor, that check your code for likely mistakes and rewrite its spacing to a consistent style (see @sec-linting).
 
-These run as desktop apps, give you a multi-tab interface with a file tree on the left, and combine the best of a text editor (fast, lightweight, language-agnostic) with the convenient parts of an IDE (find-across-files, an integrated terminal, formatting on save, linter integration, Git integration; see @fig-vscode-overview). For day-to-day coursework, scripting, notebooks, and lightweight projects, this is the right default. Pick one — almost everyone picks VS Code — and invest in learning it well.
+## Choosing your tool: three kinds of editor
+
+"Which editor should I use?" has no single right answer, whatever the internet says. A more useful question is which *kind* of editor fits the job, because editors come in roughly three sizes.
+
+The smallest are **terminal editors** like [`nano`](https://www.nano-editor.org/docs.php), [`vim`](https://www.vim.org/docs.php), and [`emacs`](https://www.gnu.org/software/emacs/documentation.html). They run inside a terminal window, so they work over SSH on any server you can log into, start instantly, and are installed almost everywhere, even on a bare-bones Linux machine. Their cost is the learning curve: `vim` in particular feels alien for the first few days. You don't need to live in one, but you should know enough `nano` to open a file, change a line, save, and leave. That one skill turns "I need to fix one character on a server and I can't" from a dead end into a thirty-second job.
+
+The middle size is **GUI code editors**. [VS Code](https://code.visualstudio.com/) is by far the most popular today, with [Sublime Text](https://www.sublimetext.com/docs/) and [Cursor](https://cursor.com/docs) (a VS Code offshoot built around AI assistance) as alternatives.
+
+They combine the speed of a plain editor with the handiest parts of a bigger tool: search across every file in a project, a terminal built into the window, formatting on save, linter warnings as you type, and Git integration (see @fig-vscode-overview). For coursework, scripts, notebooks, and small projects, this is the right default. Pick one (almost everyone picks VS Code) and learn it well.
 
 ![VS Code 1.138, as code-server runs it in a browser, in September 2026; the desktop app shows the same editor in its own window. The file tree is on the left, `analyze.py` is open in the editor with its Run button at the top right, and the integrated terminal below has just run the script from the project's activated `.venv`.](/graphics/text-editors/vscode-overview.png){#fig-vscode-overview .column-page-inset-right fig-alt="Screenshot of VS Code. The Explorer on the left lists a project with .venv, data, analyze.py (selected), lint_demo.py, pyproject.toml, and README.md. The editor shows analyze.py: it imports pandas, reads data/raw/sales.csv on line 12, and prints revenue per store. Below, the terminal prompt (.venv) Project $ runs python analyze.py, which prints units and revenue for Pearl St and University Hill."}
 
-The largest tier is **IDEs**: [Visual Studio](https://learn.microsoft.com/en-us/visualstudio/) for C# and .NET work, [IntelliJ](https://www.jetbrains.com/idea/) for Java, [Xcode](https://developer.apple.com/documentation/xcode) for Swift and iOS, [RStudio](https://posit.co/products/open-source/rstudio/) for R, and so on. IDEs win when you are working in an ecosystem with a heavy build system, a complicated project model, or specialized debugging needs. They are powerful but heavy, and their project configuration can be fragile in ways that occasionally eat hours of your day.
+The largest size is the **IDE**, or [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment): [Visual Studio](https://learn.microsoft.com/en-us/visualstudio/) for C# and .NET, [IntelliJ IDEA](https://www.jetbrains.com/idea/) for Java, [Xcode](https://developer.apple.com/documentation/xcode) for Swift and iOS apps, [RStudio](https://posit.co/products/open-source/rstudio/) for R, and PyCharm for Python. An IDE bundles an editor with a build system, a debugger, and deep knowledge of one language. It earns its weight in ecosystems with heavy build systems and complicated projects, and it can also eat an afternoon when its idea of your project drifts out of step with reality.
 
-The decision rule for a typical Python data student is straightforward. For a quick edit on a remote server, use `nano` (or `vim` if you are comfortable with it). For everything else — Python scripting, notebooks, small projects — use a GUI editor with an integrated terminal, defaulting to VS Code. Reach for a full IDE only if your course or project specifically requires it.
+For a typical student working in Python, the decision is short. For a quick edit on a remote server, use `nano` (or `vim` if you're comfortable with it). For everything else (scripts, notebooks, small projects), use a GUI editor with its built-in terminal, and default to VS Code. Reach for a full IDE when a course or project asks for one.
 
-## Essential editor skills (transfer across tools)
+## Skills that carry across every editor
 
-The operations in this section are the ones that transfer across every editor you will ever use. Learn them once, in whichever editor is your daily driver, and you will recognize their equivalents in `nano`, `vim`, VS Code, and any IDE a future job puts in front of you.
+Learn these once in your daily editor, and you'll recognize them in every other editor you ever use.
 
 ### Open, save, and "where did it go?"
 
-The single most common beginner confusion is not *how* to save, it is *where* a save went. A typical failure looks like this: you hit Save, you run the script, and the error you were fixing is still there. The problem is almost never the editor — it is that the file you edited is not the file your program loaded. Maybe you opened a copy from your Downloads folder instead of the project copy. Maybe you hit "Save As" and accidentally created a new file with a slightly different name. Maybe you were editing an older snapshot that your editor restored from a previous session.
+The most common beginner confusion isn't *how* to save; it's *where* the save went. You hit Save, run the script, and the error you just fixed is still there. The editor almost never lost your change. You edited a different file from the one your program runs: a copy in `Downloads`, a file you accidentally created with "Save As" under a slightly different name, or an old version your editor reopened from last week's session.
 
-The fix is a habit: every time you save a file for the first time in a session, read the file path in your editor's title bar and confirm it matches where you think you are. VS Code shows the full path in the tab's hover tooltip; most editors display the directory next to the filename in the window title. Learn the difference between **Save** (write to the existing file path) and **Save As** (write to a new path), and treat "Save As" as a deliberate rename — never as a substitute for Save. When you edit a file that the operating system considers read-only — a system config file, a file inside a protected directory — the editor will warn you and may prompt for an administrator password. Do not click through that prompt without thinking about why it appeared: you are being asked to modify something that normal users are not supposed to modify, and that is usually a sign you should double-check your plan.
+The fix is a habit. The first time you save a file in a session, check where it lives. In VS Code, hover over the file's tab to see its full path, or read the breadcrumbs above the code; most editors also show the folder next to the filename in the window title. Treat **Save** (write to the file you opened) and **Save As** (write a new file somewhere else) as different tools, and use Save As only when you mean to make a copy.
 
-### Undo/redo and safe experimentation
+If the editor warns that a file is read-only, or asks for an administrator password to save it, don't click through without thinking: you've probably opened a system file that ordinary users aren't meant to change.
 
-Undo (`Ctrl+Z` / `Cmd+Z`) is your first safety net. It lets you try something, see it fail, and back out immediately. Redo (`Ctrl+Y` / `Cmd+Shift+Z`) reverses an undo, which is useful when you hit Undo one step too many. Every editor has these, and you should reach for them without thinking.
+### Undo, redo, and the net under the net
 
-Undo has limits, though. It usually only spans the current session — close the file and reopen it, and your undo history is gone. It also does not help when a bad edit has already been overwritten by subsequent edits. That is where your *second* safety net comes in: version control. Commit small, focused changes as you work, and you can always `git diff` to see exactly what changed since the last commit, or `git checkout` a file to throw away the current changes and return to the committed version. See @sec-git-github for the mechanics. The habit to build is: commit before you start a risky change, so that if the change goes wrong, the worst case is losing a few minutes of work instead of an afternoon.
+Undo (`Ctrl+Z`, or `Cmd+Z` on macOS) is your first safety net: try something, watch it fail, back out. Redo reverses an undo when you went one step too far; it's `Ctrl+Y` on Windows, `Ctrl+Shift+Z` on Linux, and `Cmd+Shift+Z` on macOS in most editors, including VS Code.
+
+Undo has limits, though. Its history usually lasts only while the file is open, and once you've made twenty more edits on top of a mistake, backing out means losing the good ones too. That's what version control is for: commit before a risky change, and Git can show you exactly what changed and put the file back (see "Habits that prevent pain" below, and @sec-git-github).
 
 ### Indentation and whitespace
 
-Pick an indentation style for a project and stick to it. For Python, the community standard is four spaces per level; for YAML and most web files, two spaces is common. Whatever you pick, **do not mix tabs and spaces** — it is the most common cause of mysterious parser errors in Python and the single most common cause of broken YAML. Configure your editor to insert spaces when you hit the Tab key (in VS Code: `"editor.insertSpaces": true`), and to treat a file's existing indentation as the source of truth when you open it (`"editor.detectIndentation": true`).
+If Python has ever told you `TabError: inconsistent use of tabs and spaces in indentation` about a line that looks perfectly lined up, you've met the most frustrating kind of bug: one you can't see. A tab and four spaces look identical on screen, but they're different characters, and Python uses indentation to decide which lines belong to which block (the off-side rule). YAML is even stricter: it doesn't allow tabs for indentation at all.
 
-When a whitespace-related bug appears, turn on visible whitespace. In VS Code the command is `View → Render Whitespace → All`, and in most other editors it is labeled similarly. Once visible, spaces render as faint dots and tabs as faint arrows, and a line that *looks* correctly indented but is actually using a tab becomes immediately obvious:
+The cure is to make the invisible visible. In VS Code, run **View: Toggle Render Whitespace** from the command palette (or set `"editor.renderWhitespace": "all"`), and spaces appear as faint dots and tabs as faint arrows:
 
 ```text
 def greet(name):
-····print(f"hello, {name}")   ← spaces, correct
-——→ print(f"hello again")     ← tab, will break in Python
+····print(f"hello, {name}")   ← four spaces
+→   print(f"hello again")     ← a tab: Python raises TabError here
 ```
 
-Python cares about whitespace because the language uses indentation to delimit blocks — there are no curly braces, and a block ends when the indentation shrinks. If one line is four spaces and the next is a tab, Python sees two different indentation levels and raises `IndentationError: unindent does not match any outer indentation level`. YAML is the same story: a tab where the parser expected spaces breaks the file silently, and the error message rarely points at the tab itself.
+Once you can see the problem, the long-term fix is to pick one style per project and let the editor enforce it. For Python, the community standard is four spaces per level ([PEP 8](https://peps.python.org/pep-0008/#indentation)); YAML and most web files use two. VS Code already inserts spaces when you press Tab, four at a time, and it detects each file's existing indentation when you open it (the `"editor.insertSpaces"` and `"editor.detectIndentation"` settings, both on by default). The current file's style shows at the right of the status bar ("Spaces: 4"), and clicking it lets you convert a file between tabs and spaces in one step.
 
-### Find, replace, and refactoring safety
+### Find and replace without regret
 
-Find and replace is a power tool. Used carelessly, it can rewrite hundreds of lines across dozens of files in the time it takes to regret it. The safe protocol is always the same. **Find first, replace second:** start with a plain "Find" so you can see *every* match and confirm that each one is actually what you intended to change. A search for `mean` will also match `meaning`, `demean`, `mean_squared`, and every docstring that contains the word "mean" — if you jump straight to Replace, you will corrupt unrelated code.
+Find and replace is a power tool, and like any power tool it can do a lot of damage in one second. Here's how that looks. You want to rename the function `compute_mean` to `weighted_mean`, so you replace all. It works, and it also quietly renames a variable called `compute_mean_squared` to `weighted_mean_squared`, which three other files still use by its old name. Nothing complains until you run those files.
 
-Learn the difference between the **scopes** your editor offers:
+The safe way through is the same in every editor, and it's four steps. **Narrow the scope first.** Editors let you replace inside a selection, in the current file, or across the whole project, and the last is both the most useful and the most dangerous. Start small, and when you do go project-wide, look at the list of matching files before replacing anything. **Find before you replace.** Run a plain search and read every match: a search for `mean` also finds `meaning`, `demean`, `mean_squared`, and every comment that uses the word. The **Match Whole Word** and **Match Case** buttons in VS Code's search box (`Alt+W` and `Alt+C` on Windows) cut the false matches down. **Replace one at a time** for anything that matters. VS Code's project-wide [search panel](https://code.visualstudio.com/docs/editing/codebasics#_search-across-files) (`Ctrl+Shift+F`, or `Cmd+Shift+F` on macOS) groups matches by file and gives each one its own Replace button. **Commit before, and check after.** Make sure your last good state is committed, so a bad replace costs you one `git restore`; then rerun the script or the tests, because a replace that runs without errors can still be wrong.
 
-- **Current selection** — replace only inside the highlighted text. Useful when a function has one local variable you want to rename.
-- **Current file** — replace everywhere in the file you are editing. The default.
-- **Entire workspace / project** — replace across every file the editor is aware of. The most powerful and the most dangerous.
+Real find-and-replace jobs often need a pattern rather than exact text, and that's what regular expressions are for (see @sec-regex). A few pieces go a long way: `^` and `$` for the start and end of a line, `.` for any character and `.*` for any run of them, `\w+` for a word, and parentheses to capture text you want to reuse in the replacement as `$1`, `$2`, and so on. To turn every `print("foo: " + x)` into `print(f"foo: {x}")`, turn on regex mode (the `.*` button in the search box), search for `print\("foo: " \+ (\w+)\)`, and replace with `print(f"foo: {$1}")`, after reading the list of matches.
 
-For any nontrivial change, use "Replace with confirmation" (sometimes called "Replace one at a time"), which lets you step through each match and decide whether to apply the replacement. In VS Code, the workspace-wide search panel (`Cmd+Shift+F` / `Ctrl+Shift+F`) shows every match grouped by file, and each individual match has its own Replace button so you can rewrite them selectively.
+When you're renaming something in *code*, though, there's a better tool than find and replace: Rename Symbol (`F2`), which understands the language and only touches the thing you mean. "Editing faster" below shows it.
 
-Learn the basics of **regular expressions**, because many real find/replace jobs need them. At minimum, learn anchors (`^` for start of line, `$` for end of line), wildcards (`.` for any character, `.*` for any run of characters), and capture groups (`(...)` to capture text you want to reuse in the replacement as `$1`, `$2`, and so on). See @sec-regex for a fuller treatment. A concrete example: to rename every `print("foo: " + x)` to `print(f"foo: {x}")`, you can search for `print\("foo: " \+ (\w+)\)` and replace with `print(f"foo: {$1}")` — but only after confirming the matches look right.
+### Finding your way around a project
 
-After any replace, re-run the code or the tests. The whole point of the protocol is that you treat the change as experimental until you have verified it did not break anything.
+Once a project has more than a handful of files, you'll spend more time finding things than typing them. Three commands make most of the difference (VS Code's [code navigation guide](https://code.visualstudio.com/docs/editing/editingevolved) covers more). **Go to File** (`Ctrl+P`, or `Cmd+P` on macOS) jumps to a file when you type part of its name, which is much faster than clicking through folders. **Go to Line** (`Ctrl+G` on every platform) takes you straight to "line 147" when an error message names it. **Go to Definition** (`F12`, or `Ctrl`-click, `Cmd`-click on macOS) jumps from a function call to where the function is defined, even in another file. And project-wide search (`Ctrl+Shift+F`) finds every place a name or string appears.
 
-### Multi-file search and navigation
+All of these depend on one thing: opening the right folder. The **project root** is the folder that holds your `README.md`, `pyproject.toml`, or `.git/`. Open that folder in your editor (File → Open Folder in VS Code), not a single file and not the folder above it. Your file tree starts there, the built-in terminal starts there, and relative paths in your code are usually resolved from there. Open the wrong folder and searches quietly miss files and the terminal starts in the wrong place.
 
-A project of any size contains more files than you can hold in your head. Your editor's **workspace search** (`Cmd+Shift+F` / `Ctrl+Shift+F`) is how you find things across all of them — every mention of a function name, every occurrence of a string, every place a config variable is referenced. Get comfortable with it early; it is the single biggest productivity difference between students who spend time navigating projects and students who spend time getting lost in them.
+## The write-run-read loop
 
-Three navigation commands are worth learning on day one of any new editor:
+For your first year or two of coursework, most of what you do in an editor is one small loop, repeated hundreds of times a day. **Write or change a little code,** ten to fifty lines at a time. **Run it** in a terminal beside the editor. **Read the output,** especially any error, slowly and all the way to the end (@sec-tracebacks shows how). **Jump to the file and line** the error names. Then **make one change,** save, and run it again.
 
-- **Go to file** (`Cmd+P` / `Ctrl+P` in VS Code): type a fragment of a filename and jump straight there. Much faster than clicking through the file tree.
-- **Go to line** (`Ctrl+G` in VS Code): when an error message says "line 147," you want to get there in one keystroke.
-- **Go to definition** (`F12` in VS Code): click a function name and jump to where it is defined, even if it is in a different file. Especially powerful once a project has multiple modules.
+That last step is where most of the pain comes from. When something breaks, every student's instinct is to change three things at once ("maybe it's the import, maybe the type, maybe the path") and rerun. It's the fastest way to create new bugs while chasing the old one, because when the error changes you can't tell which edit changed it. If one change doesn't fix the problem, undo it and try a different one.
 
-Keep a clear mental model of the **project root** — the folder that contains your `README.md`, `pyproject.toml`, or `.git/` directory. Your editor's file tree starts here, your terminal commands usually run from here, and relative paths in your code are resolved from here. "Where is the root?" is one of the first questions to answer whenever you open a project; if the answer is unclear, open the editor on the wrong folder and half of your search and navigation commands will silently miss things that live outside the opened folder.
+Keep the terminal inside the editor so running is instant. In VS Code, `` Ctrl+` `` (Control and the backtick key, on macOS too) opens the [integrated terminal](https://code.visualstudio.com/docs/terminal/basics) at the bottom of the window, already sitting in your project folder:
 
-## Simple scripting workflows in an editor (novice level)
-
-### The write-run-read-repeat loop
-
-Most of what you do in an editor for the first year of coursework is the same tight loop, repeated hundreds of times a day:
-
-1. Write or change a small piece of code (usually 10–50 lines).
-2. Run it from an integrated terminal, side-by-side with the editor.
-3. Read the output — especially any error message — carefully, without skimming.
-4. Jump straight to the file and line the error mentions.
-5. Make **one** change, save, and re-run.
-
-The discipline that matters here is step 5: *one change at a time*. When something breaks, every student's instinct is to change three things at once — "maybe it's the import, maybe it's the type, maybe it's the path" — and re-run, hoping one of them works. This is the fastest known way to create new bugs while pretending to fix the old ones. If the first change does not fix the problem, undo it, think again, and try a different single change. Slow is fast; a minute of "did I actually change only what I intended?" beats an hour of backing out a tangled attempted-fix.
-
-Keep the integrated terminal visible while you work. In VS Code, `Ctrl+~` (or `Ctrl+\`` on US keyboards) opens a terminal docked at the bottom of the window, so the edit-run gap is under a second:
-
-```bash
+```text
 $ python analyze.py
 Traceback (most recent call last):
-  File "analyze.py", line 12, in <module>
+  File "/Users/you/project/analyze.py", line 12, in <module>
     df = pd.read_csv("data/raw/sales.csv")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ... (more lines from inside pandas) ...
 FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales.csv'
 ```
 
-The error tells you exactly which line and exactly what the problem is. `Cmd`-click (or `Ctrl`-click) the file path in the traceback and VS Code jumps to `analyze.py` line 12. Fix one thing (maybe you forgot to download the data, or the file is in `data/processed/` instead), save, and rerun. The goal of the integrated terminal is to make this cycle so fast that "try it and see" becomes a cheap question.
+The first `File` line is the one from your code, and the last line says what went wrong. `Ctrl`-click (`Cmd`-click on macOS) the path `analyze.py` in the terminal and VS Code opens the file at line 12. Fix one thing (maybe you never downloaded the data, or it lives in `data/processed/`), save, and rerun.
 
 ### Editor features that help beginners
 
-Modern GUI editors quietly do a lot of the work that beginners used to have to do by hand. Four of them are worth knowing by name so you can turn them on and rely on them:
+Modern editors quietly do a lot of checking you'd otherwise do by hand, because they understand the language you're writing. Four features are worth knowing by name.
 
-- **Syntax highlighting and bracket matching.** Keywords, strings, and comments are each colored differently, and when your cursor touches a bracket, the editor highlights its match. If you type an open paren and the editor does *not* highlight a matching close paren anywhere, you know you have an unbalanced expression before you even run the code.
-- **Auto-indentation and format-on-save.** Press Enter inside a Python `def` and the editor indents the next line for you. Save a file and a formatter like `black` can normalize the whitespace automatically, so you never have to argue with yourself about where to put a comma or a space. See @sec-linting.
-- **Linting messages as early warnings.** A linter runs as you type and underlines problems it finds — undefined variable, unused import, wrong number of arguments. Treat the squiggly underlines as a draft of the error messages you would have gotten at runtime, but delivered five seconds sooner.
-- **Inline documentation and jump-to-definition.** Hover over a function name and a tooltip shows its signature and docstring. Press `F12` on a function call and the editor jumps to where that function is defined. These two features turn "I wonder what this does" from a fifteen-minute side quest into a two-second lookup.
+**Syntax highlighting and bracket matching** catch typos before you run anything. Keywords, strings, and comments each get their own color, so a string you forgot to close turns the rest of the line the wrong color. When your cursor touches a bracket, the editor highlights its partner; if you put the cursor on an opening parenthesis and nothing lights up, it was never closed.
 
-None of these features are magic; they are all things you could do by hand. But each one removes a small source of friction, and the compound effect across a semester is enormous.
+**Auto-indentation and format-on-save** keep your whitespace honest. Press Enter after a `def` line and the editor indents the next line for you; save, and a formatter can tidy the whole file's spacing (see "Setting up a GUI editor" below and @sec-linting).
 
-### When a full debugger helps
+**Linter warnings** are the squiggly underlines under an undefined variable, an unused import, or a call with the wrong number of arguments. Think of them as the error messages you'd get when you run the code, delivered five seconds after you type instead of five minutes later.
 
-Most small bugs are fastest to find with `print()` statements: drop a line that prints the variable you suspect, re-run, and read the output. A full debugger is worth reaching for when `print` becomes awkward — you need to inspect a complicated nested data structure, step through a loop one iteration at a time, or see the state of several variables at once at a specific point in execution.
+**Hover documentation and Go to Definition** answer "what does this function take?" without leaving the file: hover over a name for its signature and docstring, or press `F12` to jump to its definition.
 
-The minimum debugger vocabulary is small. A **breakpoint** is a marker on a line that tells Python to stop *before* executing that line and hand control back to you. "Step over" runs the current line and moves to the next one. "Step into" dives inside a function call to see what it does. "Variable inspection" shows you the current value of every variable in the current scope. In VS Code, click the gutter to the left of a line number to set a breakpoint, press `F5` to run the file in the debugger, and use the debug panel to step through code and watch variables change. @sec-debugging shows the same moves with Python's built-in debugger, `pdb`, along with conditional breakpoints and debugging after a crash.
+### When a debugger helps
 
-Do not feel obligated to learn a debugger on day one. Plenty of professional data scientists go entire projects with just `print` and tests. Reach for the debugger when `print`-debugging has stopped feeling fast, not before.
+Most small bugs are fastest to find with `print()`. A debugger earns its keep when printing gets awkward: you need to look inside a big nested structure, walk through a loop one pass at a time, or see many variables at one exact moment.
 
-## Debugging files (common student failure modes)
+The vocabulary is small. A **[breakpoint](appendix-glossary.qmd#term-breakpoint)** is a marker on a line that tells the program to pause *before* running it and hand control to you. **Continue** runs until the next breakpoint. **Step over** runs the current line and stops at the next one. **Step into** follows a function call inside to see what it does, and **step out** finishes the current function and stops back where it was called. While you're paused, a variables panel shows every value in scope, a watch panel keeps an eye on the expressions you care about, and the call stack shows the chain of calls that got you here.
 
-### Wrong file, wrong place
+In VS Code, click in the gutter to the left of a line number to set a breakpoint (a red dot appears), then press `F5` to run the file [under the debugger](https://code.visualstudio.com/docs/python/debugging). `F10` steps over, `F11` steps into, `Shift+F11` steps out, and `F5` continues. @sec-debugging shows the same moves with Python's built-in `pdb`, plus conditional breakpoints and debugging after a crash.
 
-The most disorienting editor failure is when your edits seem to have no effect — you save, you rerun, and the program behaves as if you changed nothing. The cause is almost always one of two things: you edited a *different copy* of the file from the one your code is actually loading, or you ran the code from a directory where the file you edited does not live. Both are failures of "where am I" awareness rather than failures of the editor. The fix is to confirm your working directory (`pwd`), search the project for any duplicate filenames so you know which copy you are looking at, and — as a temporary diagnostic — switch to absolute paths in the failing code so the question of "which file?" is unambiguous. Once the bug is found, you can usually go back to relative paths.
+You don't need a debugger on day one; plenty of working data scientists get by with `print` and tests. Reach for it when printing stops feeling fast.
 
-### Wrong extension or hidden extension
+## When files misbehave
 
-A file that opens in the wrong program, or that "isn't a Python file" even though you saved it as Python, is almost always a victim of a hidden or wrong extension. The classic version: you save `script.py` in an editor that adds `.txt` for you, end up with `script.py.txt`, and your file manager's "hide extensions" setting makes it look identical to a real `script.py`. The fix is to turn on **show file extensions** in your file manager (see @sec-filesystem) and to look at the actual filename in your editor's title bar, which always shows the truth.
+Some problems look like bugs in your code but are really problems with the file, which is why they're maddening: the code on screen looks right. Here are the ones students hit most, by the symptom you'll notice first.
 
-### Encoding and invisible characters
+### Your edits have no effect
 
-When you see weird symbols (`â€™` where a curly apostrophe should be, or boxes where letters should be), parser errors that mention "invalid character," or sudden Python `SyntaxError`s on lines that look fine, the cause is almost always an encoding mismatch or an invisible character. The fix is to re-save the file explicitly as UTF-8 (every modern editor has a "Save with Encoding" or similar option), and to turn on visible whitespace so non-printing characters become visible. A common culprit is a non-breaking space (`U+00A0`) that crept in from a copy-paste — it looks like a space but Python treats it as something else entirely.
+You save, you rerun, and the program behaves as if you'd changed nothing. The cause is almost always one of two things: you're editing a different copy of the file from the one your code loads, or you ran the code from a folder (your working directory) where that file doesn't live. Both are "where am I?" problems, not editor problems. Check where you are with `pwd` in the terminal, search the project for duplicate filenames so you know which copy you have open, and, as a temporary test, switch the failing path in your code to an absolute one so there's no question which file it means. Once you've found the culprit, you can go back to relative paths (@sec-filesystem explains the difference).
 
-### Line endings (Windows/macOS collaboration)
+### The file is secretly `script.py.txt`
 
-When a project is shared between Windows and macOS or Linux developers, you can hit a class of bugs that show up as scripts failing with strange "command not found" errors, diffs that look enormous because every line "changed," or tools complaining about CRLF vs LF. The cause is the line-ending convention: Windows uses `\r\n` and Unix systems use `\n`, and tools that expect one and find the other will misbehave. The fix is to configure your editor to use a consistent style (LF is the cross-platform-friendly default), and to let Git normalize line endings on commit if your repository has a `.gitattributes` file — most well-set-up repositories do.
+A file that opens in the wrong program, or that Python refuses to recognize, is often the victim of a hidden filename extension. The classic version: a basic editor like TextEdit or Notepad saves your `script.py` as `script.py.txt`, and because your file manager hides extensions, it looks exactly like `script.py`. Turn on file extensions in your file manager (on macOS in [Finder's settings](https://support.apple.com/guide/mac-help/show-or-hide-filename-extensions-on-mac-mchlp2304/mac), on Windows in File Explorer's View menu; @sec-filesystem has the details), and check the name in your code editor's tab, which always shows the whole name.
 
-### Config files and indentation-sensitive formats
+### Strange symbols and invisible characters
 
-YAML, Python, and Makefiles all care about the difference between tabs and spaces, and YAML in particular breaks in subtle ways when you mix them. The symptom is usually a parser error pointing at a line that looks correct to your eyes. The fix is to turn on visible whitespace so you can *see* whether a line is using tabs or spaces, and to validate the file with the tool that reads it — `python -c "import yaml; yaml.safe_load(open('config.yml'))"` will tell you immediately whether your YAML is parseable.
+You open a file and see `â€™` where an apostrophe should be, or boxes where letters should be. That's [mojibake](https://en.wikipedia.org/wiki/Mojibake): a file written in one encoding and read in another. A curly apostrophe is three bytes in UTF-8, and a program that reads those bytes with an old Windows encoding shows each one as its own character, `â`, `€`, and `™`. In VS Code the file's encoding is shown in the status bar; click it to [reopen the file with a different encoding](https://code.visualstudio.com/docs/editing/codebasics#_file-encoding-support) until it reads correctly, and then save it as UTF-8 so it stays fixed.
+
+A cousin of this problem is the character you can't see at all. Code copied from a web page, a PDF, or a chat app sometimes carries a [non-breaking space](https://en.wikipedia.org/wiki/Non-breaking_space) that looks exactly like an ordinary space. Python won't accept it:
+
+```text
+  File "/Users/you/project/clean.py", line 3
+    y = 2
+     ^
+SyntaxError: invalid non-printable character U+00A0
+```
+
+The caret points at the gap after `y`, which looks empty. Delete the gap and type an ordinary space.
+
+### Line endings between Windows and Mac
+
+When a project moves between Windows and macOS or Linux, line endings cause a family of strange failures. A shell script written on Windows dies on a Mac or a server with an error like this, because bash reads the invisible carriage return as part of a command:
+
+```text
+$ bash setup.sh
+setup.sh: line 2: $'\r': command not found
+```
+
+A Python script with a `#!/usr/bin/env python3` first line fails with `/usr/bin/env: 'python3\r': No such file or directory` for the same reason, and a diff can claim that every line in a file changed when you edited only one. The fix is to agree on LF, which every tool understands. VS Code shows the current file's line ending (`LF` or `CRLF`) in the status bar, and clicking it converts the file; the setting `"files.eol": "\n"` makes LF the default for new files. For a shared repository, a `.gitattributes` file tells Git to normalize line endings for everyone ([GitHub's guide](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings) shows how).
+
+### Config files that won't load
+
+YAML, Python, and Makefiles all treat indentation as meaning, and YAML is the least forgiving: a single tab can stop a whole file from loading. The quickest way to find out whether a YAML file is the problem is to ask the tool that reads it. With [PyYAML](https://pyyaml.org/wiki/PyYAMLDocumentation) installed, this one-liner stays silent if the file is fine and names the line and column if it isn't:
+
+```bash
+python -c "import yaml; yaml.safe_load(open('config.yml'))"
+```
+
+The worked example below walks through it.
 
 ## Terminal editors: survival skills
 
-You do not need to become fluent in a terminal editor. You do need to know enough to open a file, change one line, and save and exit without calling a friend — because sooner or later you will SSH into a server and discover that a terminal editor is the only tool available. This section covers the minimum for each of the three most common terminal editors.
+You don't need to become fluent in a terminal editor, but you do need to open a file, change a line, and save and leave without calling a friend. Sooner or later you'll SSH into a server (see @sec-remote-computing) where a terminal editor is the only one there is, or Git will open one for a commit message. Here's the minimum for the three you're most likely to meet.
 
-### `nano` essentials (minimum viable)
+### `nano`: the friendly one
 
-`nano` is the friendliest terminal editor. It prints its common keystrokes at the bottom of the screen, uses arrow keys for navigation, and behaves mostly like a GUI editor's no-frills cousin. If you only learn one terminal editor, make it this one.
+GNU nano is the terminal editor for people who don't want to learn a terminal editor. It shows its most common keystrokes at the bottom of the screen, uses the arrow keys to move, and otherwise behaves like a stripped-down GUI editor: you type, and the text appears. If you learn only one terminal editor, make it this one.
+
+The only confusing part is the notation in that on-screen help. `^` means the Control key, so `^X Exit` means press `Ctrl+X`; `M-` means the Alt key (Option on a Mac, which may need "Use Option as Meta key" turned on in Terminal's settings), so `M-U Undo` means `Alt+U`.
 
 ```bash
-nano config.conf       # open (or create) config.conf
-# ...arrow keys to navigate, type to edit...
-# Ctrl+O   write out (save); nano prompts for confirmation, press Enter
-# Ctrl+X   exit nano (if unsaved changes, it will ask first)
+nano config.conf       # open config.conf (or create it if it doesn't exist)
+# arrow keys to move, then just type
+# Ctrl+O   write out (save); nano shows the filename, press Enter to confirm
+# Ctrl+X   exit (if there are unsaved changes, nano asks: Y to save, N to discard)
 # Ctrl+W   where is (search); type the text and press Enter
-# Ctrl+\   replace; type search text, then replacement text
-# Ctrl+_   go to line number
+# Ctrl+\   replace; type what to find, then what to replace it with
+# Ctrl+/   go to line number (older versions list it as Ctrl+_)
 ```
 
-The `^` character in the on-screen help means "Control key," so `^X` is `Ctrl+X`. That is the entire confusing-to-newcomers notation. Practice the open-save-exit sequence once on a throwaway file, and `nano` stops being scary forever.
+Recent versions also save with `Ctrl+S`, and `nano +42 config.conf` opens a file with the cursor already on line 42. Practice the open, change, save, exit sequence once on a throwaway file, and `nano` stops being scary for good.
 
-### `vim` essentials (minimum viable)
+### `vim`: the one that traps people
 
-`vim` is the editor that terrifies new users because it starts in **normal mode** — a mode where typing letters does *not* insert them into the file, but instead runs commands. This is the source of every "how do I exit vim?" meme. The survival rules are simple:
+Vim is the editor behind the meme at the top of this chapter, and it's the one you're most likely to land in by accident: on many systems it's what opens when Git needs a commit message. What makes it feel like a trap is that it's modal. It starts in **normal mode**, where letters aren't text but commands: typing `dd` deletes a line, `u` undoes, and a random burst of typing can do a surprising amount of editing. Once you know that, the escape route is short:
 
-- `vim file.txt` opens the file in normal mode.
-- Press `i` to enter **insert mode**; now typing works the way you expect.
-- Press `Esc` to return to **normal mode** from anywhere.
-- In normal mode, `:w` writes (saves), `:q` quits, and `:wq` does both.
-- If you panic and want to throw away your changes, type `:q!` to quit without saving.
+- Press `Esc` (once or twice) to make sure you're in normal mode.
+- Press `i` to enter **insert mode**, where typing works the way you'd expect; press `Esc` to go back to normal mode.
+- In normal mode, `:w` then Enter writes (saves), `:q` quits, and `:wq` does both.
+- If you've made a mess and want out without saving anything, `:q!` quits and throws your changes away.
 
-That is enough to edit a file. A couple more commands will cover almost every emergency:
+That's enough to edit a file. A few more commands cover most emergencies:
 
 ```text
 /pattern<Enter>      search forward for "pattern"
-n                    jump to next match
-:%s/old/new/gc       replace "old" with "new" everywhere, with confirmation for each match
+n                    jump to the next match
+:%s/old/new/gc       replace "old" with "new" everywhere, asking before each one
 :42                  jump to line 42
-u                    undo last change (in normal mode)
+u                    undo (in normal mode)
 Ctrl+r               redo
 ```
 
-Why do people love `vim` despite the learning curve? In normal mode, keystrokes compose like grammar: `d` means "delete," `w` means "word," so `dw` means "delete word." `3dw` deletes three words. `ci"` means "change inside double quotes" — it deletes the text between the next pair of quotes and drops you into insert mode to type the replacement. For users who live in terminals, this compositional model is genuinely faster than using a mouse. You do not need to learn any of it to survive `vim`; but if you find yourself in a terminal all day, it is worth investing a week.
+Why do people love it anyway? In normal mode, keystrokes combine like a little language. `d` means delete and `w` means word, so `dw` deletes a word and `3dw` deletes three. `ci"` means "change inside quotes": it deletes the text between the double quotes around the cursor (or the next pair on the line) and puts you in insert mode to type the replacement. For people who live in a terminal, that's faster than a mouse. If you're curious, run `vimtutor` in a terminal: it's a [built-in half-hour lesson](https://vimhelp.org/usr_01.txt.html) that installs along with Vim.
 
-### `emacs` essentials (minimum viable)
+### `emacs`: the one with chords
 
-`emacs` is `vim`'s philosophical opposite: instead of modes, it uses long `Ctrl`- and `Alt`-based key chords. The survival set is:
+Emacs is Vim's philosophical opposite: no modes, just typing, with commands on `Ctrl` and `Alt` key combinations, often two in a row. Emacs's own manual writes them compactly: `C-x C-s` means "hold Ctrl and press x, then hold Ctrl and press s." The survival set:
 
 ```text
-emacs file.txt       open file.txt (or start emacs and then Ctrl+x Ctrl+f)
+emacs file.txt       open file.txt (or, inside emacs, Ctrl+x Ctrl+f)
 Ctrl+x Ctrl+s        save
 Ctrl+x Ctrl+c        exit
-Ctrl+s               incremental search forward
-Ctrl+x b             switch buffer (between open files)
-Ctrl+x Ctrl+f        open another file
-Ctrl+g               cancel current operation (if you get stuck mid-command)
+Ctrl+s               search forward as you type
+Ctrl+x b             switch between open files ("buffers")
+Ctrl+g               cancel whatever half-typed command you're in
 ```
 
-The Emacs notation is `C-x C-s` for "hold Ctrl, press x, release, hold Ctrl, press s." Most tutorials use that form. As with `vim`, you do not need to be an Emacs power user; you need to be able to edit and save a file without panic.
+`Ctrl+g` is the one to remember: when Emacs seems to be waiting for something and you don't know what, it gets you back to normal.
 
-## GUI editors: practical configuration (keep it minimal)
+## Setting up a GUI editor (keep it minimal)
 
-Most GUI editors ship with hundreds of settings and thousands of available extensions. The temptation is to configure extensively; the right move is to configure *minimally*. A lightly configured editor is easier to reproduce on a new machine, easier to explain to a collaborator, and much less likely to break in confusing ways after an update.
+VS Code has hundreds of settings and thousands of extensions, and it's tempting to spend an evening tuning everything. Resist it. A lightly configured editor is easier to rebuild on a new laptop, easier to explain to a teammate, and less likely to break after an update.
 
-### The minimal settings that matter
+### The settings that matter
 
-Four settings genuinely earn their keep. The rest you can add later if you discover you want them.
+VS Code keeps your settings in a file called `settings.json`; run **Preferences: Open User Settings (JSON)** from the command palette to edit it directly, or use the searchable Settings editor (`Ctrl+,`, or `Cmd+,` on macOS). The official [settings guide](https://code.visualstudio.com/docs/configure/settings) explains both.
 
-**Indentation and visible whitespace.** Set your default indentation to match your project conventions (four spaces for Python) and enable visible whitespace so you can see tabs and trailing spaces at a glance. In VS Code, that looks like this in `settings.json`:
+**Start with whitespace.** These lines set Python-friendly indentation, show whitespace all the time, and fix two common causes of noisy diffs on every save (spaces left at the ends of lines, and a missing newline at the end of the file):
 
 ```json
 {
@@ -277,9 +294,7 @@ Four settings genuinely earn their keep. The rest you can add later if you disco
 }
 ```
 
-The last two lines (trim trailing whitespace on save, end files with a newline) fix two categories of "why is my diff noisy?" problems before they ever happen.
-
-**Format on save.** Install a formatter appropriate to the language — `black` or `ruff format` for Python, `prettier` for web files — and turn on "Format On Save." The formatter rewrites the file to a consistent style every time you save, so you never have to think about spacing, quote style, or line length again. See @sec-linting for the fuller discussion.
+**Then turn on format on save.** A formatter rewrites your file's spacing, quote style, and line breaks to one consistent style every time you save, so you never argue with yourself (or a teammate) about where a space goes. For Python that's [Black](https://black.readthedocs.io/en/stable/) or Ruff's formatter; for web files, Prettier. Install the formatter's extension and tell VS Code to use it, as its [Python formatting guide](https://code.visualstudio.com/docs/python/formatting) describes:
 
 ```json
 {
@@ -290,26 +305,24 @@ The last two lines (trim trailing whitespace on save, end files with a newline) 
 }
 ```
 
-**A linter for early feedback.** A linter marks problems with squiggly underlines as you type. For Python, `ruff` is the current community favorite — fast, opinionated, and nearly zero-config. Install its VS Code extension and you will get error feedback without running your code.
+**Add a linter for early warnings.** For Python, [Ruff](https://docs.astral.sh/ruff/) is the current community favorite: fast, sensible out of the box, and available as a VS Code extension. Once it's installed, problems show up as underlines while you type. @sec-linting covers what linters check and how to configure them.
 
-**An integrated terminal.** Not strictly a "setting" but worth emphasizing: use the editor's built-in terminal rather than a separate terminal window. It runs in the same working directory as your project, stays docked next to your code, and makes the write-run-read loop fast. In VS Code, `` Ctrl+` `` toggles it.
+**And use the built-in terminal.** It isn't a setting, but it belongs on this list: a terminal docked under your code, opened with `` Ctrl+` ``, starts in your project folder and keeps the write-run-read loop tight.
 
-### Extensions and plugins: a controlled approach
+### Extensions: install only what you can explain
 
-Every GUI editor has a plugin ecosystem, and every plugin ecosystem will happily sell you productivity you do not need. The rule to follow is: **install only what you can explain.** If you cannot say in one sentence why an extension is installed and what it does, uninstall it. Extensions are not free — they consume memory, slow down startup, occasionally interact badly with each other, and sometimes (rarely, but sometimes) introduce security issues.
+Every editor's marketplace will happily sell you productivity you don't need. The rule that keeps you out of trouble: **if you can't say in one sentence what an extension does and why it's installed, uninstall it.** Extensions aren't free. They use memory, slow startup, sometimes fight each other, and, since an extension runs with the [same permissions as VS Code itself](https://code.visualstudio.com/docs/configure/extensions/extension-runtime-security), a bad one can read any file you can.
 
-Prefer extensions that are widely used and actively maintained. In VS Code, the marketplace shows install counts and "last updated" dates; anything under a few thousand installs or not updated in over a year deserves extra scrutiny. Avoid installing two extensions that do the same thing — two linters for the same language, two formatters, two Git UIs — because they will fight each other in ways that waste your time.
+Prefer extensions that are widely used, actively maintained, and from a publisher you recognize; the [Extensions view](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace) shows install counts, update dates, and a check mark for verified publishers. Don't install two that do the same job (two Python formatters, two Git tools), because they'll fight over your files in ways that are hard to diagnose.
 
-For a typical Python data student, a reasonable starting set is: Python (Microsoft), Ruff, Jupyter, GitLens (optional), and a Quarto extension if you are writing Quarto documents. That is enough. You can add more as specific needs arise, but you do not need to start a project with a dozen extensions installed.
+For a student working in Python, a good starting set is short: Python (from Microsoft), Ruff, Jupyter, and the Quarto extension if you write Quarto documents, plus GitLens if you want richer Git history. Add others when a real need appears. Write your list down, even as a "Recommended extensions" section in a README, so you or a teammate can rebuild the setup on a new laptop in minutes.
 
-Record your essentials somewhere — even just in a `README` section titled "Recommended extensions" — so a collaborator or a future-you on a new laptop can reproduce the setup quickly.
+### Workspace settings vs. user settings
 
-### Workspace settings vs global settings
-
-Most editors distinguish between **global (user) settings**, which apply everywhere you open the editor, and **workspace (project) settings**, which only apply inside a specific folder. The rule is: keep global settings minimal and put project-specific behavior in workspace settings. In VS Code, workspace settings live in `.vscode/settings.json` inside the project root, and you can commit that file to version control so everyone working on the project gets the same behavior.
+VS Code, like most editors, keeps two layers of settings. **User settings** apply everywhere you open the editor. **Workspace settings** apply only inside one project folder and live in `.vscode/settings.json` at the project root, so you can commit them to Git and give everyone on the project the same behavior. When the two disagree, the workspace wins.
 
 ```json
-// .vscode/settings.json — committed to the repo
+// .vscode/settings.json, committed to the repository
 {
   "python.defaultInterpreterPath": "./.venv/bin/python",
   "editor.formatOnSave": true,
@@ -317,7 +330,7 @@ Most editors distinguish between **global (user) settings**, which apply everywh
 }
 ```
 
-This particular file tells VS Code to use the project's own virtual environment as the Python interpreter, to format files on save, and to draw a vertical ruler at column 88 (the `black` default). It does not say anything about your personal color theme or font size — those belong in your global settings, where they do not affect collaborators. Keeping global settings light is what makes your setup portable: when you borrow a friend's laptop for half an hour, you can install VS Code, open the project, and be productive in a few minutes.
+This file tells VS Code to use the project's own virtual environment for Python (see @sec-virtual-environments), to format on save, and to draw a faint vertical line at column 88, Black's default line length. Your color theme and font size are personal and belong in user settings. Keep project behavior in the project, and on a borrowed laptop you can install VS Code, open the project, and be working in minutes.
 
 ## Editing faster: the command palette, multiple cursors, and snippets
 
@@ -325,9 +338,9 @@ Once the settings above are in place, a few editor features turn repetitive edit
 
 ### The command palette: the one shortcut to learn
 
-Press **Ctrl+Shift+P** (Cmd+Shift+P on macOS) and start typing what you want: "format document," "toggle word wrap," "change language mode," "rename symbol." Every command the editor has is in this list, including the ones added by extensions, so you never need to remember which menu something lives in. The palette also shows each command's keyboard shortcut beside it, which makes it the best way to learn shortcuts: when you notice you have run the same command from the palette three times, learn its shortcut. **Ctrl+P** (Cmd+P) is its sibling for opening files by name.
+Press **Ctrl+Shift+P** (Cmd+Shift+P on macOS) and start typing what you want: "format document," "toggle word wrap," "change language mode," "rename symbol." Every command the editor has is in this list, including the ones added by extensions, so you never need to remember which menu something lives in. The palette also shows each command's keyboard shortcut beside it, which makes it the best way to learn shortcuts: when you notice you've run the same command from the palette three times, learn its shortcut. **Ctrl+P** (Cmd+P) is its sibling for opening files by name.
 
-A handful of shortcuts are worth learning early:
+A handful of shortcuts are worth learning early (VS Code's [keyboard shortcuts guide](https://code.visualstudio.com/docs/configure/keybindings) has printable lists for each operating system):
 
 | Windows / Linux | macOS | What it does |
 |---|---|---|
@@ -341,7 +354,7 @@ A handful of shortcuts are worth learning early:
 
 : A starter set of VS Code shortcuts. {#tbl-editor-shortcuts}
 
-**Rename (F2) is not find-and-replace.** It understands the language, so renaming the variable `df` doesn't touch `df_raw`, a string that happens to contain "df", or a `df` in an unrelated function. Use it whenever you rename something in code, and keep find-and-replace, with the protocol above, for text.
+**Rename (F2) is not find-and-replace.** It understands the language, so [renaming](https://code.visualstudio.com/docs/editing/editingevolved#_rename-symbol) the variable `df` doesn't touch `df_raw`, a string that happens to contain "df", or a `df` in an unrelated function. Use it whenever you rename something in code, and keep find-and-replace, with the four steps above, for text.
 
 ### Multiple cursors
 
@@ -353,13 +366,13 @@ store             →         "store",
 revenue                     "revenue",
 ```
 
-Put the cursor before `date`, then add a cursor on each line below: **Ctrl+Alt+Down** on Windows, **Option+Cmd+Down** on macOS (on Linux, find "Add Cursor Below" in the command palette, which shows its shortcut there). Or hold **Alt** (Option on macOS) and click where each cursor should go. Now type `"`, press **End** to jump every cursor to the end of its line, and type `",`. Press **Escape** to go back to one cursor. To place cursors in a straight column, hold **Shift+Alt** (Shift+Option on macOS) and drag.
+Put the cursor before `date`, then add a cursor on each line below: **Ctrl+Alt+Down** on Windows, **Option+Cmd+Down** on macOS, **Shift+Alt+Down** on Linux (the command palette's "Add Cursor Below" shows yours). Or hold **Alt** (Option on macOS) and click where each cursor should go. Now type `"`, press **End** to jump every cursor to the end of its line, and type `",`. Press **Escape** to go back to one cursor. To place cursors in a straight column, hold **Shift+Alt** (Shift+Option on macOS) and drag.
 
 **Ctrl+D** (Cmd+D) is the other half. Select a word, and each press adds the next place that word appears as another selection, so you can change several occurrences at once while seeing each one before you commit to it. **Ctrl+Shift+L** (Cmd+Shift+L) selects every occurrence in the file at once. Because you watch every change as you type it, multiple cursors are a safer way than a blind replace to edit a handful of similar lines.
 
 ### Snippets: text you type often
 
-A **snippet** is a template you insert by typing a short prefix and pressing Tab. Editors come with snippets for common code, and you can write your own for the blocks you retype: the header of every notebook, the lines you run after every `read_csv` (see @sec-data-file-formats). In VS Code, run **Snippets: Configure Snippets** from the command palette and choose Python; the editor opens a JSON file where each snippet has a prefix, a body, and a description:
+A **snippet** is a template you insert by typing a short prefix. Editors come with snippets for common code, and you can [write your own](https://code.visualstudio.com/docs/editing/userdefinedsnippets) for the blocks you retype: the header of every notebook, the lines you run after every `read_csv` (see @sec-data-file-formats). In VS Code, run **Snippets: Configure Snippets** from the command palette and choose Python; the editor opens a JSON file where each snippet has a prefix, a body, and a description:
 
 ```json
 {
@@ -375,112 +388,85 @@ A **snippet** is a template you insert by typing a short prefix and pressing Tab
 }
 ```
 
-Typing `inspect` and pressing Tab inserts the three lines with `df` selected. Type a different name, and it changes in all three places at once, because `$1` marks the same spot in each; press Tab again to jump to `$0`, where the cursor ends. For snippets the whole team should share, choose the option for the project folder instead: VS Code saves them in a `.code-snippets` file inside the project's `.vscode` folder, which you can commit alongside the workspace settings above.
+Type `inspect`, and when the snippet appears in the suggestion list, press Tab or Enter: the three lines appear with `df` selected. Type a different name, and it changes in all three places at once, because `$1` marks the same spot in each; press Tab again to jump to `$0`, where the cursor ends. For snippets the whole team should share, choose the option for the project folder instead: VS Code saves them in a `.code-snippets` file inside the project's `.vscode` folder, which you can commit alongside the workspace settings above.
 
 Learn these one at a time. A new shortcut is slower than the mouse for the first day; pick one a week, and use it until it's automatic.
 
-## IDEs: fundamentals without overwhelm
+## IDEs without the overwhelm
 
-A full IDE — IntelliJ, PyCharm, Visual Studio, Xcode, RStudio — is a heavier tool than a GUI code editor. It is worth understanding IDEs at a conceptual level even if you do not use one day-to-day, because eventually a course or a job will put you in front of one.
+Sooner or later a course or a job will put you in front of a full IDE: PyCharm or IntelliJ, Visual Studio, Xcode, RStudio. Knowing what's different about them explains both why people love them and why they occasionally lose an afternoon to one.
 
 ### The project model
 
-The biggest conceptual shift from a simple editor to an IDE is the **project model**. A GUI editor like VS Code treats "the project" as whatever folder you opened — the editor does not really care what is in it, and it reads files off disk when you ask. An IDE, in contrast, builds and maintains its own model of the project: what source files belong to it, how they depend on each other, which Python interpreter or JDK to use, which files are generated artifacts vs. hand-written source, and how to run the project from scratch. This model lives in hidden files inside the project (for example, `.idea/` for IntelliJ/PyCharm, `.Rproj` for RStudio, `.xcodeproj` for Xcode), and the IDE re-indexes the project whenever it detects a change.
+The big change from an editor to an IDE is the **project model**. VS Code treats "the project" as whatever folder you opened. An IDE builds and keeps its own picture of the project: which source files belong to it, how they depend on one another, which Python interpreter or Java version to use, which files are generated and which are written by hand, and how to build and run the whole thing. That picture lives in files in the project (`.idea/` for IntelliJ and PyCharm, an `.Rproj` file for RStudio, an `.xcodeproj` bundle for Xcode), and the IDE re-indexes the project whenever it notices a change.
 
-The upside is that the IDE can offer features a dumb editor cannot: precise "find all usages," safe rename-across-project, automatic import insertion, type-aware autocomplete, and so on. The downside is that the project model can drift out of sync with reality — you add a file outside the IDE, or you change a dependency, or a setting gets corrupted, and suddenly the IDE is showing errors that do not exist or missing files that do.
+The payoff is features a plain editor can't match: finding every use of a function precisely, renaming safely across a whole project, adding imports for you, and autocomplete that knows your types. The cost is that the IDE's picture can drift out of step with reality. You add a file outside the IDE, change a dependency, or a setting gets corrupted, and suddenly it reports errors that don't exist or can't find files that do.
 
-Two survival skills matter here. First, learn where your IDE stores its project settings and *do not edit those files by hand* unless you know what you are doing. Second, learn how to trigger a reset or reimport — "File → Invalidate Caches / Restart" in IntelliJ, "File → Reload Project" in many others — so that when the project model goes sideways you can get back to a clean state without deleting the whole project.
+Two survival skills cover most of that. Don't edit the IDE's project files by hand. And learn how to make it start over: in IntelliJ and PyCharm, **File → [Invalidate Caches](https://www.jetbrains.com/help/idea/invalidate-caches.html)**, then Invalidate and Restart, rebuilds the IDE's picture from what's on disk, and other IDEs have a similar reload command. It's the IDE's "turn it off and on again," and it fixes a surprising number of phantom errors.
 
-### Refactoring and code navigation
+### Refactoring and navigation
 
-IDE refactoring tools are the main reason some developers refuse to work without one. A rename refactor, done right, updates every reference to a symbol across the entire project — imports, function calls, type annotations, even docstrings — in a single atomic operation. An "extract method" refactor lifts a block of code into a new function and replaces the original block with a call to it. "Inline" does the opposite.
+IDE refactoring tools are the main reason some developers won't work without one. A rename, done by the IDE, updates every reference to a function or class across the whole project (imports, calls, type hints) in one step. "Extract method" lifts a block of code into a new function and replaces the block with a call to it; "inline" does the reverse.
 
-These tools are powerful and they can still go wrong. Refactors that cross module boundaries or touch dynamic code (reflection, string-based attribute access, plugin loading) can miss references or update things they should not. The habit to build is: **treat every refactor as a change that needs to be verified.** Run your tests immediately afterward. If you do not have tests, run the program end-to-end on a representative example. Commit before the refactor so that if something broke in a way you cannot see, you can roll back cleanly.
+They're powerful, and they can still go wrong. Code that looks up names at runtime (building an attribute name from a string, loading plugins by name) is invisible to the IDE, so a rename can miss it. Treat every refactor as a change that needs checking: commit before, run your tests after, and if you don't have tests, run the program on a real example.
 
-Code navigation in an IDE is the same story as in a GUI editor, just more precise: "go to definition" jumps to the declaration, "find usages" lists every call site, and "go to symbol" lets you jump to any function or class in the project by name. Learn the keyboard shortcuts for these three commands in whichever IDE you use — they will become some of the keys you press most often.
+Navigation works as in VS Code, only more precisely: go to definition, find usages (every place a function is called), and go to symbol (any function or class by name). Learn those three shortcuts in whichever IDE you use.
 
-### Debugging integration
+### Debugging in an IDE
 
-IDE debuggers are where the tool really shines. Setting a breakpoint is a single click in the gutter next to the line number. Running the file in debug mode pauses execution at the breakpoint, drops you into an interactive view of every variable in scope, and lets you step through the code one line at a time:
+An IDE's debugger is the same tool described in "When a debugger helps" above, usually with more polish: one-click breakpoints, a debug button (often `F5` or a bug icon), stepping, a watch panel, and a call stack. Most IDEs also let you change a variable's value while the program is paused, which is handy for asking "what if this list were empty here?" without starting over. When you need to understand a complicated object at one particular pass through a loop, it will save you hours.
 
-```text
-Run → Debug  (or F5 in most IDEs)
+## Habits that prevent pain
 
-[step over]  execute current line, move to the next line in the same function
-[step into]  execute current line, diving into any function call
-[step out]   run to the end of the current function and return to the caller
-[continue]   run until the next breakpoint (or end of program)
-```
+### A primary editor and a fallback
 
-A watch panel shows the values of variables you want to keep an eye on. A call stack panel shows the chain of function calls that led to the current line. Most IDEs also let you change a variable's value during a paused run, which is enormously useful when you want to test "what if this list were empty here?" without re-running from the start.
+Your **primary editor** is the one you live in: a GUI editor for most students, an IDE if a course requires one. Commit to it and learn its shortcuts, search, and settings. Fluency compounds, while hopping between editors keeps you at beginner speed everywhere.
 
-As with the GUI-editor debugger, you do not have to learn this on day one. Many students go through an entire intro sequence on `print`-debugging and tests alone, and that is fine. But when you hit the bug where you need to understand the state of a complicated object at a specific iteration of a loop, the debugger will save you hours and you should know it is there.
-
-## Best practices: habits that prevent pain
-
-The habits in this section are cheap to build and expensive to learn the hard way.
-
-### Pick a primary editor and a fallback
-
-Your **primary editor** is the one you live in day-to-day: a GUI editor for most students, an IDE if a course requires one. Commit to it. Learn its keyboard shortcuts, its search commands, its formatting settings. Editor fluency compounds — every week you spend in the same tool makes you faster in it forever, and jumping between editors constantly keeps you at beginner speed everywhere.
-
-Your **fallback editor** is for when you cannot use your primary. That almost always means "I'm SSH'd into a server and need to change one file." For this, learn just enough `nano` to open a file, edit it, save, and exit. Optionally learn just enough `vim` that if a server has `vim` but not `nano` you are not stranded. This is genuinely a ten-minute skill — practice it once and then occasionally refresh it, and you will always have a way to edit files on any machine you can reach.
+Your **fallback editor** is for when the primary isn't available, which almost always means you're on a server over SSH. `nano` is enough, and knowing how to get out of `vim` means you're never stranded on a machine that only has Vim. It's a ten-minute skill; practice it once and refresh it now and then.
 
 ```bash
 # On any Unix machine you log into:
-which nano    # is nano installed?
-which vim     # is vim installed?
-# whichever is present, you should know the basics of
+which nano    # prints nano's location if it's installed
+which vim     # same for vim
 ```
-
-### Treat find/replace as a power tool
-
-The find/replace protocol from earlier in this chapter deserves to be a habit, not a one-time lesson. Every large replace follows the same sequence:
-
-1. **Narrow scope.** Default to "in the current file" unless you explicitly need "in the entire workspace." When you do go workspace-wide, look at the list of matching files first — you may discover the scope is different from what you expected.
-2. **Preview changes.** Use "Replace with confirmation" or step through matches one at a time. Never trust a one-shot global replace for anything important.
-3. **Commit first.** Before a large replace, make sure your working tree is clean and that the last change you made is committed. If the replace goes wrong, `git checkout .` restores the files instantly and you lose nothing.
-4. **Verify after.** Run the tests, or re-run the script, or at minimum open a few of the edited files and glance at the diffs. A replace that compiled and ran successfully can still be semantically wrong in ways the compiler cannot see.
-
-The rule is: the blast radius of find/replace should always be matched by the strength of the safety net.
 
 ### Keep text files boring
 
-A "boring" text file is one that all your tools agree about. That means **UTF-8 encoded** (most modern editors default to UTF-8, but it is worth confirming in your settings); **Unix line endings (LF)** unless you have a specific reason to use CRLF; and **no trailing whitespace or stray tabs**. Configure your editor to enforce all three on save, and most cross-platform collaboration headaches disappear before they happen.
+A "boring" text file is one every tool agrees about: **UTF-8**, **LF line endings**, and **no trailing spaces or stray tabs**. The settings earlier in this chapter enforce all three, and most cross-platform headaches disappear with them.
 
-Avoid editing **generated files** by hand. If a file has a banner at the top that says `# This file was automatically generated by ...` or `# DO NOT EDIT`, take it seriously — your change will be overwritten the next time the generator runs, and in the meantime the file will be inconsistent with its source. The right move is to find and edit the *source* (a template, a schema, a script), then re-run the generator.
+Don't hand-edit **generated files**. If a file starts with something like `# This file was automatically generated by ...` or `# DO NOT EDIT`, take it at its word: the next time the generator runs, your change vanishes, and until then the file disagrees with its source. Find what generates it (a template, a schema, a script), change that, and run the generator again.
 
-Prefer putting configuration in version control rather than leaving it on individual laptops. Editor settings in `.vscode/settings.json`, linting rules in `pyproject.toml` or `.ruff.toml`, and formatting rules in the same place mean everyone on the project gets the same behavior and nobody has to debug "but it works on my machine."
+And commit configuration where collaborators can see it (editor settings in `.vscode/settings.json`, lint and format rules in `pyproject.toml`), so nobody has to debug "but it works on my machine."
 
-### Use version control as an editor safety net
+### Version control as an editor's safety net
 
-Version control is your backstop. When a risky edit is about to happen, commit first. When an experiment works, commit. When an experiment fails, `git diff` to see what you changed, `git checkout <file>` to throw away unwanted changes, or `git stash` to set changes aside temporarily while you try something else.
+Undo covers the last few minutes; Git can take you back to any commit you've made. So before any change that makes you nervous (a big replace, a refactor, an experiment), commit. If the change works, commit again. If it doesn't, you can see exactly what you changed, throw it away, or set it aside with `git stash` while you try something else.
 
 ```bash
-# Before a risky refactor:
-git status                      # are my working changes clean?
-git commit -am "before refactor"
+# Before a risky change:
+git status                        # anything uncommitted?
+git commit -am "Before renaming compute_mean"
 
-# Do the refactor in the editor. If it went wrong:
-git diff                        # what did I actually change?
-git checkout .                  # throw everything away; back to the commit
+# Make the change in the editor. If it went wrong:
+git diff                          # what did I actually change?
+git restore .                     # throw it all away; back to the last commit
 ```
 
-The habit to build: **commit small, commit often, and commit before anything that scares you.** Commits are cheap, and the safety they provide is enormous. See @sec-git-github for the mechanics and @sec-project-management for how commit hygiene fits into broader project discipline.
+Be sure before you run [`git restore`](https://git-scm.com/docs/git-restore): the changes it throws away don't go anywhere you can get them back from. The habit to build is **commit small, commit often, and commit before anything that scares you.** Commits are cheap, and the safety they buy is enormous. See @sec-git-github for the mechanics and @sec-project-management for how this fits into running a whole project.
 
 ## Stakes and politics
 
-Editors look like the most neutral tool in the kit, but the editor industry has consolidated dramatically in the last decade and the consequences are worth seeing. Visual Studio Code, the dominant editor for new programmers, is a Microsoft product; it ships with telemetry enabled by default, its Python extension is published by Microsoft, and the same company owns GitHub and a substantial stake in OpenAI. None of that makes VS Code a bad editor — it is, by most measures, an excellent one — but the situation in which the default editor, the default code host, and the default AI coding assistant are all owned by a single company is new, and it concentrates an unusual amount of influence over how programming gets taught and learned. The community fork VSCodium exists precisely because some users want the editor without the telemetry and proprietary marketplace.
+The first time you open a `.py` file in VS Code, a notice in the corner offers to install the recommended Python extension from Microsoft, and you click Install. That's a reasonable click. But notice what it does: it runs new code on your computer with the same permissions as the editor itself, which can read every file you can. The next click, on a free color theme from a publisher you've never heard of, is the same decision with far less reason to trust. In December 2025, Microsoft removed two extensions from its marketplace, one posing as a dark theme and one as an AI assistant, after researchers found that they [stole passwords, crypto wallets, and browser sessions](https://www.bleepingcomputer.com/news/security/malicious-vscode-extensions-on-microsofts-registry-drop-infostealers/).
 
-A second, sharper concern: editor extensions are code that runs with full access to your filesystem and your network. Installing a popular-looking extension from an unfamiliar publisher is the same shape of decision as installing a random binary from the internet, and the major extension marketplaces have repeatedly hosted malicious or compromised packages.
+The editor also comes with choices you didn't make. VS Code sends usage data to Microsoft unless you [turn telemetry off](https://code.visualstudio.com/docs/configure/telemetry). Microsoft also owns GitHub, where your code probably lives, and with it GitHub Copilot, the AI assistant built into VS Code; it also holds about a quarter of [OpenAI](https://en.wikipedia.org/wiki/OpenAI). None of that makes VS Code a bad editor (it's an excellent one), but one company now shapes the default editor, the default code host, and a leading AI assistant that new programmers learn with. The community build VSCodium exists for people who want the same editor without Microsoft's telemetry and marketplace.
 
-See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you choose an editor and its extensions, ask whose code is now running every time you open a file, and what defaults you have inherited without choosing.
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you choose an editor and its extensions, ask whose code now runs every time you open a file, and which defaults you inherited without choosing.
 
 ## Worked examples
 
 ### Writing and running a tiny script
 
-The simplest possible loop: write a small Python script in your editor, run it from the integrated terminal, and fix the first error you hit. Open VS Code (or your editor of choice) in your project folder, create a new file called `hello.py`, and type:
+Here's the whole write-run-read loop in miniature. Open VS Code on your project folder, create a file called `hello.py`, and type this, including the mistake (the `print` call is missing its closing parenthesis):
 
 ```python
 def greet(name):
@@ -489,149 +475,154 @@ def greet(name):
 greet("world")
 ```
 
-(Yes, the missing closing parenthesis on the `print` call is intentional.) Save the file and open the integrated terminal (`Ctrl+\`` in VS Code, or `View → Terminal`). Run it:
+Save, open the terminal with `` Ctrl+` `` (or **View → Terminal**), and run it:
 
-```bash
+```text
 $ python hello.py
-  File "hello.py", line 3
-    greet("world")
-    ^^^^^
+  File "/Users/you/project/hello.py", line 2
+    print(f"hello, {name}!"
+         ^
 SyntaxError: '(' was never closed
 ```
 
-The error message points at line 3, but it says "'(' was never closed" — Python is telling you that an open parenthesis somewhere *before* line 3 was never matched. Click on the file in your editor and look at line 2: there is the missing `)`. Add it, save, and rerun:
+Python points at line 2, and the caret sits under the parenthesis that was opened and never closed. Before you even ran it, the editor was hinting at the same thing: put your cursor on that `(` and no partner lights up. Add the `)`, save, and run again:
 
-```bash
+```text
 $ python hello.py
 hello, world!
 ```
 
-That is the entire write-run-read-fix loop. It will run thousands of times over the course of your degree, and the editor's job is to make each iteration as fast as possible.
+That's the loop you'll run thousands of times over your degree.
 
-### Debugging a broken config file
+### Fixing a config file that won't load
 
-A teammate sends you a `config.yml` and says "Quarto won't load it." You open it and it looks fine to your eyes. The problem is almost always invisible whitespace. Turn on visible whitespace in your editor (`View → Render Whitespace` in VS Code) and look again — now you can see whether each indentation step is a tab or a space. YAML requires spaces, and a single tab character can break the entire file. Fix the offending tabs by replacing them with the same number of spaces, save, and validate from the terminal:
+A teammate sends you `config.yml` and says Quarto won't read it. It looks fine, so ask the parser:
 
 ```bash
 python -c "import yaml; yaml.safe_load(open('config.yml'))"
 ```
 
-If the command produces no output, the YAML now parses. If it raises a `YAMLError`, the message will name the line and column of the next problem. Repeat until clean.
+After a long traceback from inside PyYAML, the last lines say exactly what and where:
 
-### A safe find/replace across a project
-
-You decide to rename a function from `compute_mean` to `weighted_mean` everywhere in your project. The unsafe version is to use a one-shot global replace and hope. The safe version is three steps. First, search for the old name across the project (`Cmd+Shift+F` in VS Code) and look at every match — confirm that they all really are references to the function, not, say, a variable named `compute_mean_squared`. Second, replace with confirmation: VS Code's search panel has a "Replace" button on each individual match, so you can step through them one at a time. Third, run your tests immediately afterward:
-
-```bash
-pytest tests/ -q
+```text
+yaml.scanner.ScannerError: while scanning for the next token
+found character '\t' that cannot start any token
+  in "config.yml", line 3, column 1
 ```
 
-If anything broke, the tests catch it while the change is still small enough to undo. The whole protocol takes longer than a one-shot replace by maybe a minute, and it has saved many people from very long days.
+`'\t'` is a tab. Go to line 3 (`Ctrl+G`), turn on visible whitespace, and there's the arrow where two spaces should be. Replace it with spaces, save, and run the check again. When the command prints nothing at all, the file parses. If it names another line, fix that one and repeat until it's silent.
 
-### A remote emergency edit over SSH
+### A safe rename across a project
 
-You SSH into a server and discover that one config file has a wrong value that is keeping a service from starting. You do not have time to set up a full remote-development workflow. The minimal sequence is:
+You want to rename the function `compute_mean` to `weighted_mean` everywhere. Because it's a function in your own code, the best tool is Rename Symbol: put the cursor on the name and press `F2`, type the new name, and VS Code updates the definition and every call it can find, across files.
+
+If the rename has to reach places the language tools can't see (a README, a config file, a string), use project-wide search, following the four steps from "Find and replace without regret." Commit first. Search for `compute_mean` across the project (`Ctrl+Shift+F`) with Match Whole Word turned on, and read every match; without that option, `compute_mean_squared` would match too. Replace the matches one at a time from the search panel. Then run your tests:
+
+```bash
+pytest -q
+```
+
+If anything broke, the tests catch it while the change is still small enough to undo with `git restore`. It takes a minute longer than Replace All, and it has saved many people from very long days.
+
+### An emergency edit over SSH
+
+A service on a server won't start because of one wrong value in its config file. The whole fix looks like this:
 
 ```bash
 ssh you@server
-nano /etc/myservice/config.conf
-# arrow keys to navigate; type the change; Ctrl+O to save; Ctrl+X to exit
+sudo nano /etc/myservice/config.conf   # system files need sudo to save
+# arrow keys to the line, make the change, Ctrl+O and Enter to save, Ctrl+X to exit
 sudo systemctl restart myservice
 exit
 ```
 
-The whole interaction is under a minute if you know the basic `nano` keystrokes. The reason the chapter recommended learning `nano` for emergencies is exactly this scenario: you want a tool that is already installed on every Unix box you might log into and that you can drive without a tutorial open in front of you.
+If you know the `nano` keys, that's under a minute, which is why this chapter keeps saying to learn them. (If `which nano` finds nothing, you're on a Vim-only machine: `sudo vim`, `i` to type, `Esc` then `:wq` to save and leave.)
 
 ## Templates
 
-### Template A: Editor setup checklist (first week)
+### Template A: editor setup checklist (first week)
 
-    Editor:
+```text
+Primary editor
+[ ] Installed and up to date
+[ ] Opens the project folder, not single files
+[ ] Default indentation set (4 spaces for Python)
+[ ] Visible whitespace: know how to turn it on
+[ ] Format on save configured (if your course uses a formatter)
+[ ] Linter installed (if your course uses one)
+[ ] Integrated terminal: know how to open it
 
-    * Installed and updated
-    * Default indentation configured
-    * Visible whitespace toggle known
-    * Format-on-save configured (if course uses it)
-    * Linter installed (if course uses it)
-    * Integrated terminal enabled
-      Fallback editor:
-    * nano basics practiced (open/save/exit/search)
+Fallback editor
+[ ] nano practiced: open, save, exit, search
+[ ] vim escape route known: Esc, then :q! or :wq
+```
 
-### Template B: Safe find/replace protocol
+### Template B: safe find/replace protocol
 
-    1. Search (no replace) and inspect matches
-    2. Narrow scope (file/selection/project)
-    3. Replace with confirmation
-    4. Save and review diff
-    5. Run tests or rerun script
-    6. Commit with a message describing the change
+```text
+1. Commit, so the last good state is saved
+2. Search (no replace) and read every match
+3. Narrow the scope (selection / file / project) and set Match Whole Word or Match Case
+4. Replace one at a time
+5. Save and review the diff (git diff)
+6. Run the tests or rerun the script
+7. Commit with a message describing the change
+```
 
 ## Exercises
 
-1.  Configure your editor to show line numbers and visible whitespace; explain what you changed.
-
-2.  Write a short script and fix two intentional errors using editor cues.
-
-3.  Perform a multi-file search in a small project; report where a function name appears.
-
-4.  Run a safe find/replace with confirmation and verify by running tests.
-
-5.  Open and edit a file in nano; save and exit confidently.
-
-6.  Optional: learn a minimal vim workflow (insert, save, quit, search).
-
+1.  Configure your editor to show line numbers and visible whitespace. Write down which settings you changed and where they live.
+2.  Write a short script with two deliberate errors (an unclosed parenthesis, a misspelled variable). Find each one using only the editor's cues (highlighting, bracket matching, linter underlines) before running it.
+3.  In a small project, use project-wide search to find every place one function name appears. How many files is it in? Did the search find anything you didn't expect?
+4.  Rename a variable with find-and-replace using the steps in Template B, then run the code or tests to confirm nothing broke. Next, rename a different variable with `F2` and compare the two experiences.
+5.  Open a throwaway file in `nano`, change a line, save, and exit. Then do the same in `vim`, including one exit with `:q!` that throws the change away.
+6.  Save a small text file with CRLF line endings (click `LF` in VS Code's status bar and choose `CRLF`), then run `git diff` or `file yourfile.txt` to see how the tools notice. Switch it back to LF.
 7.  Paste ten column names, one per line, into a new file and turn them into a Python list with multiple cursors, without retyping any name. Then write a snippet for a block of code you type often and use it three times.
 
 ## One-page checklist
 
--   I can open, save, and locate files reliably.
+-   I open the project folder, and I check which file I'm editing before I trust a save.
+-   I can use find and replace safely, including across many files, and I use `F2` to rename code.
+-   I can turn on visible whitespace, and my editor inserts spaces when I press Tab.
+-   My files are UTF-8 with LF line endings, and I know where the editor shows both.
+-   I can diagnose the common file problems: wrong copy, hidden extension, encoding, line endings, tabs in YAML.
+-   I know when to reach for a terminal editor, a GUI editor, or an IDE.
+-   My editor is minimally configured: indentation, format on save, a linter, and only extensions I can explain.
+-   I find commands in the command palette and learn one new shortcut at a time.
+-   I commit before risky edits and use `git diff` and `git restore` to recover.
+-   I can open, edit, save, and exit a file in `nano`, and get out of `vim`.
 
--   I can use find/replace safely, including across multiple files.
+## Quick reference: terminal editor survival commands
 
--   I can debug common file issues (paths, extensions, encoding, line endings).
+| Task | nano | vim |
+|---|---|---|
+| Open a file | `nano file` | `vim file` |
+| Start typing | just type | `i` (then `Esc` when done) |
+| Save | `Ctrl+O`, Enter | `:w` |
+| Save and quit | `Ctrl+O`, Enter, `Ctrl+X` | `:wq` |
+| Quit, discard changes | `Ctrl+X`, then `N` | `:q!` |
+| Search | `Ctrl+W` | `/text`, then `n` |
+| Replace | `Ctrl+\` | `:%s/old/new/gc` |
+| Go to line 42 | `Ctrl+/`, then `42` | `:42` |
+| Undo | `Alt+U` | `u` |
 
--   I understand when to use terminal editors vs GUI editors vs IDEs.
-
--   My editor is minimally configured (indentation, formatting, linting).
-
--   I find commands in the command palette, rename code with F2 rather than find-and-replace, and learn one new shortcut at a time.
-
--   I use version control to review and recover from editing mistakes.
-
--   I have a fallback editor skill for remote/emergency use.
-
-## Quick reference: terminal editor survival commands (optional handout)
-
-### nano
-
--   Open: `nano file`
-
--   Save: (document the keystroke)
-
--   Exit: (document the keystroke)
-
--   Find/replace: (document the keystroke)
-
-### vim
+In `emacs`: `Ctrl+x Ctrl+s` saves, `Ctrl+x Ctrl+c` exits, `Ctrl+s` searches, and `Ctrl+g` cancels.
 
 ## Quick reference: GUI/IDE search
 
--   Find in file, replace in file
-
--   Find in workspace, replace in workspace
-
--   Go to line, go to file, go to definition
-
--   Command palette (Ctrl+Shift+P, Cmd+Shift+P on macOS); more shortcuts in @tbl-editor-shortcuts
+-   Find / replace in the current file: `Ctrl+F` / `Ctrl+H` (macOS: `Cmd+F` / `Cmd+Option+F`)
+-   Find / replace across the project: `Ctrl+Shift+F` / `Ctrl+Shift+H` (macOS: `Cmd+Shift+F` / `Cmd+Shift+H`)
+-   Go to line: `Ctrl+G`; go to file: `Ctrl+P` (`Cmd+P`); go to definition: `F12`
+-   Command palette: `Ctrl+Shift+P` (`Cmd+Shift+P` on macOS); more shortcuts in @tbl-editor-shortcuts
 
 ::: {.callout-note}
 ## 📚 Further reading
 
-- Microsoft, [VS Code documentation](https://code.visualstudio.com/docs) — the official guide, including the Python extension walk-through.
-- Microsoft, [VS Code Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial) — a focused introduction to running and debugging Python in VS Code.
+- Microsoft, [VS Code documentation](https://code.visualstudio.com/docs) — the official guide to everything in this chapter's VS Code sections, from basic editing to debugging.
+- Microsoft, [VS Code Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial) — a short, hands-on walk through writing, running, and debugging Python in VS Code.
 - [VSCodium](https://vscodium.com/) — the community-maintained build of VS Code without Microsoft's telemetry and proprietary marketplace; useful when you want the editor and the freedoms separately.
 - Drew Neil, [*Practical Vim*](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) — the standard book for learning Vim well; pairs nicely with the built-in `vimtutor` for hands-on practice.
-- GNU, [Emacs Tutorial](https://www.gnu.org/software/emacs/tour/) — an interactive tour of Emacs, the other long-lived editor tradition; worth a half-hour even if you never adopt it, just to see the alternative model.
-- nano, [Cheat sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html) — every keystroke you need for quick edits over SSH.
-- JetBrains, [PyCharm documentation](https://www.jetbrains.com/help/pycharm/) — if you outgrow VS Code's built-in Python features, PyCharm is the canonical Python IDE; its educational edition is free for students.
+- GNU, [Emacs Tour](https://www.gnu.org/software/emacs/tour/) — a guided tour of Emacs, the other long-lived editor tradition; worth half an hour even if you never adopt it, just to see the alternative model.
+- nano, [Cheat sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html) — every keystroke you need for quick edits over SSH, on one page.
+- JetBrains, [PyCharm documentation](https://www.jetbrains.com/help/pycharm/) — if you outgrow VS Code's Python features, PyCharm is the best-known Python IDE, and JetBrains offers free educational licenses to students.
 :::

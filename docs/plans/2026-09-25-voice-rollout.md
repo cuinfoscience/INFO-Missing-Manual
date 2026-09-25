@@ -1,6 +1,6 @@
 # Plan: the book's new voice, part by part
 
-**Status:** in progress. The pilot (`tabular-data`, #61) and Part I (#62) are done; Parts II–VII, the appendices, the introduction, and the conclusion remain. Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
+**Status:** in progress. The pilot (`tabular-data`, #61) and Parts I (#62) and II (#63) are done; Parts III–VII, the appendices, the introduction, and the conclusion remain. Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
 
 ## What the maintainer asked for
 
@@ -16,11 +16,13 @@ One pull request per part, one commit per chapter. Part I was rewritten by one a
 2. Read Purpose, Why read this chapter, and Stakes and politics in full, and spot-check any factual claim the agent flagged as unverified. In Part I that caught a docstring typo attributed to the wrong function, a bullet promising something the chapter never discusses, and a Further reading link swapped out only because this session's proxy couldn't reach it (the proxy blocking a site is not evidence the link is dead; keep it).
 3. Render the whole book (zero warnings), then run `audit.py widths` (desktop widths), `audit.py toc`, and `audit.py widths --widths 390` to catch a new table that is too wide for a phone. Part I's rewrite of `debugging` added one; merging two of its columns fixed it.
 
-**What Part I taught:**
+**What Parts I and II taught:**
 
 - **The rewrites find errors.** Running every example and checking every fact turned up about thirty mistakes in seven chapters: examples that didn't fail the way the text said (pandas 3 reads `'N/A'` as missing, so two "error" examples raised nothing), a mangled `sep="\t"`, outdated error messages, wrong claims about YAML and Markdown, historical claims stronger than their sources, and Further reading items pointing at the wrong page. Budget for it; it's the most valuable part of the pass.
 - **Link counts land above the brief's 20–35 for long chapters** (40–50 in Part I, with 12–17 to Wikipedia; `artifacts-have-politics` has 41 to Wikipedia because it names many cases and laws). That's acceptable for chapters longer than the pilot; cut links that don't help a reader rather than to hit a number.
-- **Chapters grow** (20–60% more words), mostly from naming confusions and adding real output. Keep an eye on the checklists and quick references, which should stay short.
+- **Chapters grow** (20–60% more words in Part I), mostly from naming confusions and adding real output. Part II's brief asked long chapters not to grow, and all five came out the same length or shorter (`terminal` lost about 1,000 words) by merging advice repeated in several sections. Keep asking for that.
+- **Real tools beat memory.** Part II's agents ran OpenSSH and rsync unpacked into a scratch folder (`dpkg -x`, no install, no remote host), drove nano through a pseudo-terminal, and checked `~/.ssh/config` with `ssh -G`. That found wrong error text, an scp quoting form modern scp rejects, and a `rm "$DIR"/*` example described as safe when the variable is empty (it expands to `/*`).
+- **Illustrations can drift from the text.** Correcting `terminal`'s `ls -l` output left the generated macOS figure disagreeing with it; regenerate the figure in `tools/terminal-figures` in the same commit.
 
 ## The brief given to each agent
 
@@ -35,5 +37,7 @@ The brief below is what each Part I agent received, with its chapter named in th
 > **Don't change:** front matter; the H1 and every `{#…}` ID, cell label, and `@fig-`/`@tbl-` reference; the meme shortcode; the prerequisites callout's references; the canonical order; Stakes and politics' position, length, concrete opening, and closing sentence; glossary links, `@sec-` references, and citations; figures and their `fig-alt`; Further reading's position and format. No new margin content near the top. Blank lines around fenced code in list items.
 >
 > **Style:** plain punctuation (colons, commas, parentheses rather than chains of em dashes), American spelling, sentence-case headings, no emoji beyond 📚.
+>
+> **From Part II on, the brief also says:** don't let a long chapter grow (aim for the same length or shorter, and cut repetition); aim for 25–45 body links; keep tables to three short columns so they fit a phone; keep "At CU Boulder" facts and dates unless every fact is re-checked; run shell commands where safe and check platform-only commands against official docs; a link the session's proxy refuses (curl exit 56) isn't dead, so keep it; keep fenced examples that contain headings intact.
 >
 > **Report:** what changed by section; link counts before and after and confirmation each was checked; which code ran and what didn't work; factual claims corrected, softened, or unverifiable; anything the reviewer should look at.
