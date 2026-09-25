@@ -24,7 +24,7 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.
+Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices, followed by the "second week" tools for getting lost work back and reshaping a branch before review.
 
 ## Learning objectives {.unnumbered}
 
@@ -44,9 +44,11 @@ By the end of this chapter, you should be able to:
 
 7.  Resolve common merge conflicts with a disciplined playbook.
 
-8.  Use forks for contributing to projects you do not control.
+8.  Recover lost commits with the reflog, set unfinished work aside with `git stash`, copy a commit with `git cherry-pick`, and rebase or tidy a branch nobody else has pulled.
 
-9.  Write good commit messages and PR descriptions; comment constructively in reviews.
+9.  Use forks for contributing to projects you do not control.
+
+10. Write good commit messages and PR descriptions; comment constructively in reviews.
 
 ## Running theme: make changes small, reviewable, and reversible {.unnumbered}
 
@@ -219,7 +221,7 @@ The `-u` flag on your first push tells Git "from now on, this local branch is li
 
 When you are ready to integrate your branch with `main`, Git gives you two strategies. A **merge** creates a new commit — the *merge commit* — that ties the two branches together and preserves the full history of what each branch did in parallel. A **rebase** rewrites your branch's commits so they appear to have been created *on top of* the latest `main`, producing a linear history with no branch points. The result is cleaner-looking but the history is edited: the commit hashes change, and the original order of events is gone.
 
-For student work, use **merges** by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the "cluttered" history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (`git rebase` on a branch that other people have already pulled can destroy their work), and the handbook's advice is to defer that skill until a specific project policy asks for it. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.
+For student work, use **merges** by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the "cluttered" history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (`git rebase` on a branch that other people have already pulled can destroy their work), and the handbook's advice is to defer that skill until a specific project policy asks for it. When one does, "The second week" below shows how. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.
 
 ### Undo safely (intro)
 
@@ -348,6 +350,163 @@ git push origin main
 ```
 
 Once your local and forked `main` branches are current, you can branch off them with confidence. If you have a long-lived feature branch, merge the updated `main` into it the same day you see upstream has moved. Resolving a small conflict today is orders of magnitude easier than resolving a month's worth of accumulated drift when you are trying to get a PR over the finish line.
+
+## The second week: recover, set aside, copy, and replay
+
+Once the daily loop (edit, stage, commit, push) is second nature, a different set of problems shows up. You reset a branch and lose two commits you wanted. You need to switch branches in the middle of an edit. A fix you made on one branch is needed on another today. A project asks you to rebase your pull request. This section covers the four commands for those moments: `git reflog`, `git stash`, `git cherry-pick`, and `git rebase`.
+
+The transcripts below come from a small practice repository, `thesis-analysis`, with a `main` branch and a `plots` branch. Your commit hashes will differ.
+
+### The rule underneath all four
+
+Two of these commands, `cherry-pick` and `rebase`, make *new* commits that copy old ones, with new hashes. That is harmless on a branch only you have, and damaging on a branch someone else has already pulled, because their copy still has the old commits. The rule from "Undo safely" above applies to everything in this section: **rewrite only history that nobody else has.** A branch you pushed for a pull request that nobody else has checked out is still yours; `main` never is.
+
+### `git reflog`: the undo for your undos
+
+Git keeps a private diary of every place your branch has pointed: each commit, reset, switch, merge, and rebase. That diary is the **reflog**, and it is what makes most Git "disasters" recoverable. Suppose you meant to undo one commit and typed `HEAD~2` instead:
+
+```text
+$ git log --oneline
+b75f6dc Write cleaned data to CSV
+6f23bac Drop rows with missing age
+122cf4c Add cleaning script
+5970f03 Add README
+$ git reset --hard HEAD~2
+HEAD is now at 122cf4c Add cleaning script
+```
+
+The two newest commits are gone from `git log`, but not from the reflog:
+
+```text
+$ git reflog
+122cf4c HEAD@{0}: reset: moving to HEAD~2
+b75f6dc HEAD@{1}: commit: Write cleaned data to CSV
+6f23bac HEAD@{2}: commit: Drop rows with missing age
+122cf4c HEAD@{3}: commit: Add cleaning script
+5970f03 HEAD@{4}: commit (initial): Add README
+$ git reset --hard b75f6dc
+HEAD is now at b75f6dc Write cleaned data to CSV
+```
+
+Read the reflog from the top: the newest entry is the mistake, and the line below it is where you were just before. Resetting to that hash puts both commits back. If you'd rather look before you leap, `git switch -c rescue b75f6dc` makes a new branch at the lost commit and leaves your current branch alone.
+
+The reflog has limits worth knowing. It only records *commits*: edits you never committed aren't in it, which is one more reason to commit often. It lives only on your computer, so it isn't pushed and a fresh clone starts with an empty one. And Git eventually cleans it up; by default, a commit nothing else points to can be recovered for about a month.
+
+### `git stash`: set work aside without committing
+
+Git won't let you switch branches if the switch would overwrite changes you haven't committed:
+
+```text
+$ git switch main
+error: Your local changes to the following files would be overwritten by checkout:
+	plots.py
+Please commit your changes or stash them before you switch branches.
+Aborting
+```
+
+When the work isn't ready to commit, **stash** it: Git saves your uncommitted changes, cleans the working tree, and gives the changes back when you ask.
+
+```text
+$ git stash push -m "half-done axis labels"
+Saved working directory and index state On plots: half-done axis labels
+$ git stash list
+stash@{0}: On plots: half-done axis labels
+$ git switch main
+Switched to branch 'main'
+```
+
+Do what you needed to do on `main`, come back with `git switch plots`, and run `git stash pop` to get the changes back and remove them from the stash. Always add a message with `-m`, because a stash list of five entries named "WIP on plots" is no help a week later. And treat the stash as a coat check, not a closet: anything you mean to keep for more than a day belongs in a commit on a branch.
+
+### `git cherry-pick`: copy one commit to another branch
+
+Sometimes one commit on a branch is needed elsewhere right away. You're working on `plots` and fix a real bug in `clean.py` there (negative ages were getting through), and `main` needs the fix now, before `plots` is ready to merge. `git cherry-pick` copies a single commit onto the branch you're on:
+
+```text
+$ git log --oneline -1
+3543085 Drop negative ages
+$ git switch main
+Switched to branch 'main'
+$ git cherry-pick 3543085
+[main da9a91d] Drop negative ages
+ Date: Fri Sep 25 00:37:56 2026 +0000
+ 1 file changed, 1 insertion(+)
+```
+
+The copy on `main` has a new hash (`da9a91d`), because a commit's hash covers its parent too. If the copied change conflicts with `main`, resolve it with the same playbook as a merge conflict, then run `git cherry-pick --continue`, or `git cherry-pick --abort` to back out. Cherry-pick is for the occasional commit, not a habit: if you find yourself copying a series of commits between branches, the branches probably want to be merged.
+
+### `git rebase`: replay your branch on top of `main`
+
+While you worked on `plots`, `main` moved on. `git log --graph` shows the two lines of work:
+
+```text
+$ git log --oneline --graph --all
+* 41a3245 Document run order
+* da9a91d Drop negative ages
+| * 3543085 Drop negative ages
+| * 49de67a Label axes
+| * e441bb4 Start plotting script
+|/
+* b75f6dc Write cleaned data to CSV
+...
+```
+
+The chapter's default is to merge `main` into your branch (see "Merge vs rebase" above). When a project asks you to **rebase** instead, Git sets your branch's commits aside, moves the branch to the tip of `main`, and replays the commits there one at a time:
+
+```text
+$ git switch plots
+Switched to branch 'plots'
+$ git rebase main
+warning: skipped previously applied commit 3543085
+hint: use --reapply-cherry-picks to include skipped commits
+hint: Disable this message with "git config advice.skippedCherryPicks false"
+Successfully rebased and updated refs/heads/plots.
+$ git log --oneline -4
+15c9c7b Label axes
+2ad1d07 Start plotting script
+41a3245 Document run order
+da9a91d Drop negative ages
+```
+
+Your work now sits on top of the latest `main`, as if you had started it today, and the history is one straight line. Git noticed that "Drop negative ages" was already on `main` (the cherry-pick) and skipped it. Every replayed commit has a new hash. That is why rebasing a branch someone else has pulled causes trouble, and why pushing a rebased branch you'd already pushed needs `git push --force-with-lease`, the careful form of force-push from the warning above.
+
+If a replayed commit conflicts, the rebase stops at that commit:
+
+```text
+$ git rebase main
+...
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+error: could not apply 866f67a... Note plots order
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+```
+
+Fix the file as in the merge-conflict playbook below, `git add` it, and run `git rebase --continue`. A rebase can stop more than once, once per commit that conflicts. If it gets confusing, `git rebase --abort` puts everything back as it was before you started. If you've already finished and don't like the result, `git reset --hard ORIG_HEAD` undoes the whole rebase, because Git saves where your branch was in `ORIG_HEAD` before a rebase starts. The reflog has it too.
+
+### Tidy a branch before review: `git rebase -i`
+
+A branch often ends up with commits like "Add title", "fix typo", and "wip". Before you open a pull request, an **interactive rebase** lets you combine, reword, reorder, or drop commits that haven't been shared yet. `git rebase -i main` opens your editor with one line per commit on the branch, oldest first:
+
+```text
+pick d055f5b Start plotting script
+pick fb5670f Label axes
+pick 181ef6f Add title
+pick 0b5c740 fix typo
+pick 8831ba3 wip
+```
+
+Below those lines, the file lists every command it accepts. Change `pick` to `fixup` (or `f`) on the last two lines to fold them into "Add title", keeping only its message; `squash` does the same but lets you edit the combined message, `reword` changes one message, and `drop` deletes a commit. Save and close the editor, and Git replays the branch:
+
+```text
+$ git log --oneline -3
+afe7f31 Add title
+fb5670f Label axes
+d055f5b Start plotting script
+```
+
+Everything about rebasing applies here too: new hashes, `--force-with-lease` if the branch was already pushed, and `ORIG_HEAD` or the reflog if you want the old version back. Many projects squash a pull request's commits when they merge it anyway (see "PR merge strategies" above), so tidying is a courtesy to your reviewers, not a requirement. *Pro Git*'s chapter on [rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) covers the rest of what interactive rebase can do.
 
 ## Merge conflicts: a disciplined resolution playbook
 
@@ -486,6 +645,10 @@ See @sec-artifacts-politics for the broader framework. The concrete prompt to ca
 
 -   Fork, clone, add upstream, sync, open PR to upstream.
 
+### Recover from a bad reset
+
+-   Make three commits, run `git reset --hard HEAD~2`, find the lost commit in `git reflog`, and reset back to it (or branch from it).
+
 ## Templates
 
 ### Template A: Commit message
@@ -539,6 +702,8 @@ See @sec-artifacts-politics for the broader framework. The concrete prompt to ca
 
 5.  Fork a repository, add an upstream remote, sync it, and open a PR from your fork.
 
+6.  In a practice repository, lose two commits with `git reset --hard HEAD~2` and get them back with `git reflog`. Then make three small commits on a branch, fold them into one with `git rebase -i`, and undo the rebase with `git reset --hard ORIG_HEAD`.
+
 ## One-page checklist
 
 -   I understand working tree vs staging vs commits.
@@ -552,6 +717,8 @@ See @sec-artifacts-politics for the broader framework. The concrete prompt to ca
 -   I can use forks and keep them synchronized with upstream.
 
 -   I can resolve merge conflicts methodically.
+
+-   I know `git reflog` can recover commits I thought I lost, and I rewrite history (rebase, cherry-pick, force-push) only on branches nobody else has pulled.
 
 -   I follow hygiene: `.gitignore`, no secrets, controlled notebook diffs.
 
@@ -592,13 +759,25 @@ See @sec-artifacts-politics for the broader framework. The concrete prompt to ca
     git merge <branch>
     git merge --abort
 
+    # second week
+
+    git reflog
+    git stash push -m "..."
+    git stash pop
+    git cherry-pick <sha>
+    git rebase main
+    git rebase --continue
+    git rebase --abort
+    git rebase -i main
+    git push --force-with-lease
+
 ::: {.callout-note}
 ## 📚 Further reading
 
 - Scott Chacon and Ben Straub, [*Pro Git*](https://git-scm.com/book/en/v2) — the free, authoritative book on Git, written by one of its maintainers; chapters 1–3 cover the daily loop, chapters 4–7 cover collaboration and internals.
 - GitHub, [Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — beginner-friendly overview of Git concepts paired with GitHub features.
 - GitHub Education, [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — printable reference for everyday commands.
-- Julia Evans, [Oh shit, git!?!](https://ohshitgit.com/) — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.
+- Katie Sylor-Miller, [Oh shit, git!?!](https://ohshitgit.com/) — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.
 - [Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) — the chapter that demystifies the object database; the moment Git stops feeling like magic.
 - [GitLab](https://about.gitlab.com/) and [Codeberg](https://codeberg.org/) — open-core and non-profit alternatives to GitHub; useful to know exist when the "Stakes and politics" point about platform concentration above lands.
 - Software Carpentry, [Version Control with Git](https://swcarpentry.github.io/git-novice/) — a complete beginner workshop with exercises; pairs well with this chapter as a hands-on follow-up.
