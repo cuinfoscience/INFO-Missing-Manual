@@ -752,14 +752,14 @@ div.csl-indent {
   <li><a href="#automation-that-overwrites-important-artifacts" id="toc-automation-that-overwrites-important-artifacts" class="nav-link" data-scroll-target="#automation-that-overwrites-important-artifacts">Automation that overwrites important artifacts</a></li>
   </ul></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">33.12</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">33.13</span> Worked examples (outline)</a>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">33.13</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#turn-a-6-step-checklist-into-make-targets" id="toc-turn-a-6-step-checklist-into-make-targets" class="nav-link" data-scroll-target="#turn-a-6-step-checklist-into-make-targets">Turn a 6-step checklist into <code>make</code> targets</a></li>
   <li><a href="#schedule-a-daily-pipeline-run" id="toc-schedule-a-daily-pipeline-run" class="nav-link" data-scroll-target="#schedule-a-daily-pipeline-run">Schedule a daily pipeline run</a></li>
   <li><a href="#add-github-actions-ci" id="toc-add-github-actions-ci" class="nav-link" data-scroll-target="#add-github-actions-ci">Add GitHub Actions CI</a></li>
   <li><a href="#speed-up-ci-with-caching" id="toc-speed-up-ci-with-caching" class="nav-link" data-scroll-target="#speed-up-ci-with-caching">Speed up CI with caching</a></li>
-  <li><a href="#add-pre-commit-hooks-ci-enforcement" id="toc-add-pre-commit-hooks-ci-enforcement" class="nav-link" data-scroll-target="#add-pre-commit-hooks-ci-enforcement">Add pre-commit hooks + CI enforcement</a></li>
-  <li><a href="#use-ai-to-draft-a-workflow-then-validate" id="toc-use-ai-to-draft-a-workflow-then-validate" class="nav-link" data-scroll-target="#use-ai-to-draft-a-workflow-then-validate">Use AI to draft a workflow, then validate</a></li>
+  <li><a href="#add-pre-commit-hooks-and-ci-to-enforce-them" id="toc-add-pre-commit-hooks-and-ci-to-enforce-them" class="nav-link" data-scroll-target="#add-pre-commit-hooks-and-ci-to-enforce-them">Add pre-commit hooks, and CI to enforce them</a></li>
+  <li><a href="#use-ai-to-draft-a-workflow-then-validate-it" id="toc-use-ai-to-draft-a-workflow-then-validate-it" class="nav-link" data-scroll-target="#use-ai-to-draft-a-workflow-then-validate-it">Use AI to draft a workflow, then validate it</a></li>
   </ul></li>
   <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">33.14</span> Templates</a>
   <ul class="collapse">
@@ -1418,7 +1418,7 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <p>Then drop a <code>.pre-commit-config.yaml</code> at the repo root listing the checks you want. A reasonable starter set for a Python data-science project is just two upstream “repos”:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v4.6.0</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v6.0.0</span></span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> trailing-whitespace</span></span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> end-of-file-fixer</span></span>
@@ -1427,9 +1427,9 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> detect-private-key</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/astral-sh/ruff-pre-commit</span></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.5.7</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.16.9</span></span>
 <span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff-check</span></span>
 <span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">--fix</span><span class="kw">]</span></span>
 <span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff-format</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The first block catches the file-hygiene mistakes: trailing whitespace, missing final newlines, broken YAML, files larger than 500 KB, and private SSH keys that wandered into the repo. The second block runs <code>ruff</code> (your linter and formatter) on every staged Python file. Together they handle most of the small things that would otherwise show up in a code review.</p>
@@ -1437,12 +1437,12 @@ python src\pipeline.py &gt;&gt; logs\pipeline.log 2&gt;&amp;1</code></pre>
 <pre class="text"><code>$ git commit -m "Add cleaning helper"
 trim trailing whitespace.................................................Failed
 - files were modified by this hook
-ruff.....................................................................Passed
+ruff check...............................................................Passed
 
 $ git add src/cleaning.py
 $ git commit -m "Add cleaning helper"
 trim trailing whitespace.................................................Passed
-ruff.....................................................................Passed
+ruff check...............................................................Passed
 [main a1b2c3d] Add cleaning helper</code></pre>
 <p>This “commit twice” rhythm feels weird for a day, then becomes invisible. A few practical points worth knowing. <code>git commit --no-verify</code> skips the hooks entirely — treat it as an emergency exit, not a daily convenience. The config is versioned with the code, so when a teammate clones the repo they only need to run <code>pre-commit install</code> once and they pick up all the same checks. And you can run every hook against every file at any time with <code>pre-commit run --all-files</code>, which is what you want when you first add pre-commit to an existing project. Anything beyond that — debugging individual hooks, writing your own, wiring pre-commit into CI as a redundant check — you can pick up from the official documentation at <a href="https://pre-commit.com" class="uri">https://pre-commit.com</a> when the need arises.</p>
 </section>
@@ -1557,52 +1557,135 @@ distclean: clean
 <p>Second, <em>automation infrastructure is no longer free</em>. GitHub Actions, GitLab CI, AWS Lambda, Cloudflare Workers — the mechanisms most tutorials reach for ride on commercial cloud platforms, gated by free-tier limits that are generous for student projects and useless above that scale. The platform sets the price; the workflow is portable in principle and locked-in in practice. Self-hosted runners exist, and they are also a real maintenance commitment most teams correctly decide they cannot afford. Third, <em>“making the correct path the easy path” can become “removing the option to do it differently”</em>. A pre-commit hook that always rewrites your code, a CI gate that refuses to merge without a passing test, a scheduled job that runs whether anyone is watching — these are good defaults <em>and</em> they are constraints on the people who come after. When you automate, you are also legislating; deciding how strictly is part of the job.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, including the “hidden labor” framing. The concrete prompt to carry forward: every automation has an author, an operator, and a reader-of-the-logs, and those are often three different people.</p>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="33.13">
-<h2 data-number="33.13" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">33.13</span> Worked examples (outline)</h2>
+<section id="worked-examples" class="level2" data-number="33.13">
+<h2 data-number="33.13" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">33.13</span> Worked examples</h2>
+<p>These automate the <code>coffee-sales</code> project from the worked examples in <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a>: a cleaning script, a report script, and one test. The commands and output are from real runs in September 2026 (Linux, Python 3.11); the GitHub parts are described, since they run on GitHub’s computers, not yours.</p>
 <section id="turn-a-6-step-checklist-into-make-targets" class="level3">
 <h3 class="anchored" data-anchor-id="turn-a-6-step-checklist-into-make-targets">Turn a 6-step checklist into <code>make</code> targets</h3>
-<ul>
-<li><p>Create <code>make format</code>, <code>make test</code>, <code>make report</code>.</p></li>
-<li><p>Add a default target <code>make all</code>.</p></li>
-</ul>
+<p>The project’s README had grown a checklist: activate the environment, run <code>clean.py</code>, run <code>report.py</code>, run <code>ruff</code>, run the tests, and remember to rerun the report whenever the cleaning changes. The last step is the one people forget. A Makefile turns the checklist into targets, and states which file depends on which (see “Incremental builds for data pipelines” above):</p>
+<pre class="make"><code>.PHONY: all lint test clean
+
+all: reports/revenue_by_product.csv
+
+data/processed/sales.parquet: data/raw/sales-2026-04-10.csv src/clean.py
+    python src/clean.py
+
+reports/revenue_by_product.csv: data/processed/sales.parquet src/report.py
+    mkdir -p reports
+    python src/report.py
+
+lint:
+    ruff check src/ tests/
+
+test: data/processed/sales.parquet
+    pytest tests/ -q
+
+clean:
+    rm -rf data/processed/* reports/</code></pre>
+<p>Now <code>make</code> does exactly the work that is out of date:</p>
+<pre class="text"><code>$ make
+python src/clean.py
+wrote 8 rows to data/processed/sales.parquet
+mkdir -p reports
+python src/report.py
+...
+$ make
+make: Nothing to be done for 'all'.
+$ touch src/report.py
+$ make
+mkdir -p reports
+python src/report.py
+...</code></pre>
+<p>The second <code>make</code> does nothing, because nothing changed. After <code>report.py</code> changes, only the report is rebuilt; the cleaning step is skipped because its inputs are the same. The forgotten step on the checklist can’t be forgotten any more: change <code>clean.py</code>, and <code>make</code> reruns the report too.</p>
 </section>
 <section id="schedule-a-daily-pipeline-run" class="level3">
 <h3 class="anchored" data-anchor-id="schedule-a-daily-pipeline-run">Schedule a daily pipeline run</h3>
-<ul>
-<li><p>Create a script with logs.</p></li>
-<li><p>Add a cron entry (macOS/Linux) or Task Scheduler entry (Windows).</p></li>
-<li><p>Verify outputs and failure behavior.</p></li>
-</ul>
+<p>The cafés now send a new export every morning. A scheduled job has no terminal, no activated environment, and often a different starting folder, so the script it runs has to carry all of that itself:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$0</span><span class="st">"</span><span class="va">)</span><span class="st">"</span>                     <span class="co"># run from the project folder, wherever cron starts</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="va">log</span><span class="op">=</span><span class="st">"logs/run-</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d<span class="va">)</span><span class="st">.log"</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"start </span><span class="va">$(</span><span class="fu">date</span> <span class="st">'+%Y-%m-%d %H:%M:%S'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">.venv/bin/python</span> src/clean.py</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">.venv/bin/python</span> src/report.py</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"done  </span><span class="va">$(</span><span class="fu">date</span> <span class="st">'+%Y-%m-%d %H:%M:%S'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span> <span class="op">&gt;&gt;</span> <span class="st">"</span><span class="va">$log</span><span class="st">"</span> <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It moves to its own folder, calls the environment’s Python by its path instead of relying on <code>activate</code>, and appends everything, errors included, to a dated log. Before scheduling it, run it the way a scheduler will: from another folder, with an empty environment. <code>cd / &amp;&amp; env -i /bin/bash /path/to/coffee-sales/run_daily.sh</code> runs it with no <code>PATH</code> and no variables at all, and here it exited 0 with a log running from <code>start</code> to <code>done</code>. Then check the failure: with the raw file moved away, the script exited 1, and the log ended in the traceback, with no <code>done</code> line:</p>
+<pre class="text"><code>FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales-2026-04-10.csv'</code></pre>
+<p>Only then add the schedule: on macOS or Linux, <code>crontab -e</code> and a line such as <code>15 6 * * * /path/to/coffee-sales/run_daily.sh</code>, which runs it at 6:15 every morning; on Windows, a Task Scheduler task (see “Scheduling scripts” above). Check the log the next morning, and again after the first day something goes wrong.</p>
 </section>
 <section id="add-github-actions-ci" class="level3">
 <h3 class="anchored" data-anchor-id="add-github-actions-ci">Add GitHub Actions CI</h3>
-<ul>
-<li><p>Run on push and pull request.</p></li>
-<li><p>Install deps, run tests.</p></li>
-<li><p>Upload artifacts on failure.</p></li>
-</ul>
+<p>CI runs a list of commands on a fresh computer, so try those commands on a fresh copy of your project before you push the workflow. Clone the repository into a new folder, install from <code>requirements.txt</code>, and run the steps from “A minimal CI workflow” above. For this project, the tests failed:</p>
+<pre class="text"><code>$ pytest tests/ -q
+...
+FAILED tests/test_clean.py::test_processed_has_no_duplicates - FileNotFoundEr...
+1 failed in 0.46s</code></pre>
+<p>The test checks the processed file, and a fresh clone has none; <code>data/processed/</code> is ignored by Git. On your own computer the file was always there, which is why the test always passed. The fix is for CI to build what the test needs, which the Makefile already knows how to do: change the workflow’s test step from <code>pytest tests/ -q</code> to <code>make test</code>. In the fresh clone, <code>make test</code> runs <code>clean.py</code> first and then passes.</p>
+<p>Commit the workflow as <code>.github/workflows/ci.yml</code> and push. The pull request page shows a check beside each commit, and the Actions tab shows each step, as <a href="#fig-github-actions-run" class="quarto-xref">Figure&nbsp;<span>33.1</span></a> does for this book. When a step fails, open it, read the log from the bottom up, and reproduce the failure locally before changing anything.</p>
 </section>
 <section id="speed-up-ci-with-caching" class="level3">
 <h3 class="anchored" data-anchor-id="speed-up-ci-with-caching">Speed up CI with caching</h3>
-<ul>
-<li><p>Add dependency caching.</p></li>
-<li><p>Compare runtimes before/after.</p></li>
-</ul>
+<p>The minimal workflow already has the one line that matters most: <code>cache: pip</code> in the <code>setup-python</code> step. It saves the downloaded packages after a run, keyed on <code>requirements.txt</code>, and restores them on the next run, until <code>requirements.txt</code> changes. To see whether it helps, compare runs in the Actions tab, which lists each run’s duration. The first run after adding the cache is no faster, because it fills the cache; compare the second with a run from before. If the install step is only a few seconds either way, the project doesn’t need more caching, and a cache you don’t need is one more thing that can go stale.</p>
 </section>
-<section id="add-pre-commit-hooks-ci-enforcement" class="level3">
-<h3 class="anchored" data-anchor-id="add-pre-commit-hooks-ci-enforcement">Add pre-commit hooks + CI enforcement</h3>
-<ul>
-<li><p>Run lightweight checks before commit.</p></li>
-<li><p>Ensure CI runs the same checks.</p></li>
-</ul>
+<section id="add-pre-commit-hooks-and-ci-to-enforce-them" class="level3">
+<h3 class="anchored" data-anchor-id="add-pre-commit-hooks-and-ci-to-enforce-them">Add pre-commit hooks, and CI to enforce them</h3>
+<p>Install pre-commit with the configuration from “Local quality gates” above, then run <code>pre-commit autoupdate</code> before the first commit, so the hooks start at their current versions:</p>
+<pre class="text"><code>$ pre-commit autoupdate
+[https://github.com/pre-commit/pre-commit-hooks] updating v4.6.0 -&gt; v6.0.0
+[https://github.com/astral-sh/ruff-pre-commit] updating v0.5.7 -&gt; v0.16.9</code></pre>
+<p>Pinned versions go stale, so run it again every few months. When this example was first run, the project’s configuration pinned the older releases shown, and the old <code>pre-commit-hooks</code> printed a deprecation warning on every run; the update silenced it. In <code>ruff-pre-commit</code>’s current releases the lint hook is called <code>ruff-check</code>, as in the configuration above; the old name <code>ruff</code> still works but is marked a legacy alias. Now a commit with trailing spaces, an unused import, and unformatted code is stopped and fixed:</p>
+<pre class="text"><code>$ git commit -m "Add by-store helper"
+trim trailing whitespace.................................................Failed
+- hook id: trailing-whitespace
+- exit code: 1
+- files were modified by this hook
+
+Fixing src/by_store.py
+
+fix end of files.........................................................Passed
+check for added large files..............................................Passed
+ruff check...............................................................Failed
+- hook id: ruff-check
+- files were modified by this hook
+
+Found 1 error (1 fixed, 0 remaining).
+
+ruff format..............................................................Failed
+- hook id: ruff-format
+- files were modified by this hook
+
+1 file reformatted</code></pre>
+<p>Every hook fixed what it found, so <code>git add src/by_store.py</code> and the same commit command again succeeds, with every hook passing. Hooks run only on computers where someone ran <code>pre-commit install</code>, and <code>--no-verify</code> skips them, so add the same checks to CI as one more workflow step: <code>pre-commit run --all-files</code>.</p>
 </section>
-<section id="use-ai-to-draft-a-workflow-then-validate" class="level3">
-<h3 class="anchored" data-anchor-id="use-ai-to-draft-a-workflow-then-validate">Use AI to draft a workflow, then validate</h3>
-<ul>
-<li><p>Draft YAML with AI.</p></li>
-<li><p>Verify triggers/permissions.</p></li>
-<li><p>Run locally and via PR.</p></li>
-</ul>
+<section id="use-ai-to-draft-a-workflow-then-validate-it" class="level3">
+<h3 class="anchored" data-anchor-id="use-ai-to-draft-a-workflow-then-validate-it">Use AI to draft a workflow, then validate it</h3>
+<p>An AI assistant asked for “a GitHub Actions workflow that runs my tests” produced this, and it looks plausible:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span><span class="at"> push</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">permissions</span><span class="kw">:</span><span class="at"> write-all</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.10</span></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pip install -r requirements.txt</span></span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pytest tests/</span></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">API_KEY</span><span class="kw">:</span><span class="at"> ${{ secret.API_KEY }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Check it with a linter before you run it anywhere. <a href="https://github.com/rhysd/actionlint">actionlint</a> checks workflow files (it installs with <code>pip install actionlint-py</code>), and it found three problems:</p>
+<pre class="text"><code>$ actionlint
+.github/workflows/ci.yml:8:15: the runner of "actions/checkout@v2" action is too old to run on GitHub Actions. update the action's version to fix this issue [action]
+.github/workflows/ci.yml:9:15: the runner of "actions/setup-python@v2" action is too old to run on GitHub Actions. update the action's version to fix this issue [action]
+.github/workflows/ci.yml:15:24: undefined variable "secret". available variables are "env", "github", "inputs", "job", "matrix", "needs", "runner", "secrets", "steps", "strategy", "vars" [expression]</code></pre>
+<p>Then read it for what no linter checks. <code>python-version: 3.10</code> without quotes is the number 3.1 to YAML, so the job would ask for Python 3.1; write <code>"3.10"</code>. <code>on: push</code> never runs on pull requests, where review happens. <code>permissions: write-all</code> gives the job far more power than running tests needs; <code>permissions: contents: read</code> is enough (see “CI security basics” above). And <code>pytest tests/</code> has the missing-file problem from “Add GitHub Actions CI.” An AI draft saves typing; it doesn’t save you from reading every line, and a draft that looks finished is the one most worth checking.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="33.14">
