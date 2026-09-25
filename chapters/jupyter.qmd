@@ -47,6 +47,8 @@ By the end of this chapter, you should be able to:
 
 8.  Convert notebooks into scripts/reports when appropriate.
 
+9.  Work in a hosted notebook (Colab, Kaggle, or Codespaces) knowing what survives a session, where secrets go, and what data should not be uploaded.
+
 ## Running theme: notebooks are documents *and* programs {.unnumbered}
 
 A notebook should read like a report and execute like a program. The discipline is to ensure both.
@@ -548,6 +550,72 @@ scripts/
 
 The notebook and the script import the *same* functions from `src/`. When you improve a cleaning step, both the notebook and the script pick up the improvement automatically, because there is only one copy of the logic. This is the shape that "scales": small student projects can start with just a notebook, grow to need `src/` as they get more complex, and grow again to include `scripts/` when they need automation — without ever having to rewrite from scratch.
 
+## Notebooks on someone else's computer: Colab, Kaggle, and Codespaces
+
+Everything so far assumes Jupyter runs on your own computer. Often it doesn't. A course hands out a Google Colab link, a dataset lives on Kaggle, or a project opens in a GitHub Codespace. The notebook looks the same, but the kernel runs on a machine you rent or borrow, and five things change: what survives when you leave, which packages are installed, where secrets go, what hardware you get, and who else can see your data.
+
+| | Google Colab | Kaggle Notebooks | GitHub Codespaces |
+|---|---|---|---|
+| **What it is** | A Jupyter-style notebook on a Google virtual machine | A notebook next to Kaggle's datasets and competitions | A full development environment for one repository: VS Code in the browser, with notebooks, a terminal, and files |
+| **Where the notebook is saved** | Your Google Drive | Your Kaggle account, as saved versions | The repository, once you commit and push |
+| **What disappears** | Every file on the virtual machine, when the runtime is recycled | Everything but saved versions and their output | Nothing while the codespace exists; the codespace itself, after a period of disuse |
+| **Packages** | Many preinstalled; your installs last one session | Many preinstalled; your installs last one session | Whatever the repository's configuration installs, and anything you add |
+| **Secrets** | The Secrets panel (the key icon) | *Add-ons → Secrets* | Codespaces secrets in your GitHub settings, as environment variables |
+| **Good for** | Course notebooks, and trying a GPU | Working with Kaggle datasets and competitions | Projects in a repository, when your own computer can't run them |
+
+: Three hosted notebook platforms, and what changes on each. {#tbl-hosted-notebooks}
+
+Each platform changes its limits and prices often, so check its own documentation for the numbers: [Colab's FAQ](https://research.google.com/colaboratory/faq.html), [Kaggle's notebook docs](https://www.kaggle.com/docs/notebooks), and [GitHub's Codespaces docs](https://docs.github.com/en/codespaces). What follows is what holds even when the numbers change.
+
+### What survives when you leave
+
+The biggest surprise on a hosted platform is that the notebook survives and its files don't.
+
+- **Colab** saves the notebook to your Drive, but the code runs in a virtual machine that Google deletes when you have been idle for a while or when it reaches a maximum lifetime (as of September 2026, at most 12 hours on the free tier). Anything you downloaded or wrote there, such as `data.csv` or a trained model, goes with it. To keep files, mount your Drive and write there:
+
+    ```python
+    from google.colab import drive
+    drive.mount("/content/drive")
+    df.to_csv("/content/drive/MyDrive/thesis/clean.csv", index=False)
+    ```
+
+- **Kaggle** attaches datasets read-only under `/kaggle/input/`. Files you write to `/kaggle/working/` are kept as the notebook's output when you save a version (*Save Version*, then *Save & Run All*); everything else ends with the session.
+- **Codespaces** behave more like a computer of your own. A codespace stops after 30 minutes of inactivity by default and keeps your saved changes while stopped, but GitHub deletes an unused codespace after 30 days by default. Rebuilding one keeps only what is inside `/workspaces`. Treat `git push` as the save button: work that is only in a codespace is one deletion away from gone.
+
+On all three, the habit from "Reproducibility discipline" above matters more, not less: expect to start from a fresh machine, so make *Restart and Run All* work from the first cell.
+
+### The environment isn't yours
+
+Colab and Kaggle start every session from their own image, with hundreds of packages already installed, at versions the platform chose and changes without asking you. Two consequences. First, a package you install with `%pip install` lasts only until the session ends, so put the installs in the notebook's first cell rather than typing them once. Second, a notebook that works today can break when the image updates. Pin the versions that matter (`%pip install pandas==2.2.3`) and record the rest by printing versions in the notebook, as in "Environment capture" above. A Codespace instead builds its environment from the repository's own configuration, a `.devcontainer/devcontainer.json` file and usually a `requirements.txt`, which makes it the closest of the three to the virtual environments in @sec-virtual-environments.
+
+### Secrets go in the platform's secrets store
+
+Never paste an API key into a cell. Notebooks are made to be shared, and a key in a cell is shared with them, along with the outputs, which can print it too. Each platform has a secrets store that keeps the key outside the notebook:
+
+```python
+# Colab: add the key in the Secrets panel (key icon), then
+from google.colab import userdata
+api_key = userdata.get("WEATHER_API_KEY")
+
+# Kaggle: add it under Add-ons → Secrets, then
+from kaggle_secrets import UserSecretsClient
+api_key = UserSecretsClient().get_secret("WEATHER_API_KEY")
+
+# Codespaces: add it in GitHub's Codespaces settings; it arrives as an environment variable
+import os
+api_key = os.environ["WEATHER_API_KEY"]
+```
+
+The code differs, but the idea is the one in @sec-secrets: the notebook names the secret and never contains it.
+
+### GPUs: available, not promised
+
+A free GPU is the main reason many people open Colab or Kaggle. On Colab you ask for one under *Runtime → Change runtime type*; on Kaggle, under the notebook's *Accelerator* setting. Neither is guaranteed. Free GPU time is rationed, the hardware you get varies, and a busy day can mean none. Check what you actually got before starting a long job (`!nvidia-smi` prints the GPU, or an error if there is none), and save progress as you go, because a free session can end in the middle of a run. Codespaces is not a GPU platform for most students.
+
+### Before you upload data
+
+Uploading a file to a hosted notebook copies it to a company's servers. For public data, that's fine. For interview transcripts, student records, health data, or anything under a data-use agreement or an ethics board's approval (IRB), check before you upload: many agreements name where the data may be stored, and "a free notebook service" is rarely on the list. Your university may run its own JupyterHub for exactly this reason; ask your instructor or IT office. And remember that a shared notebook carries its outputs: every `df.head()` shows real rows to whoever opens the link.
+
 ## Stakes and politics
 
 Notebooks are unusual in that they look like the most transparent computing artifact possible — code and output side by side, ready to read — but they have political dimensions that the appearance hides. Two things to notice. First, *the reproducibility theatre*. A notebook that displays a clean run from top to bottom can have been produced by any sequence of cell executions, with any history of variables in memory, against any version of any package. The very feature that makes notebooks teachable — you can see the answer right there — also makes them easy to share in a state nobody can rerun. "Reproducible" notebooks require explicit work that is not visible in the notebook itself: pinned environments, raw-data provenance, "Restart kernel and run all" before every save. Without that work, the notebook is closer to a screenshot than a program.
@@ -638,6 +706,16 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 
 ## Exercises
 
+1.  Open a terminal in a project folder, launch JupyterLab from there, and confirm in the file browser that you can see the project's files. Then launch it from your home folder and notice what changes.
+
+2.  In a new notebook, define a variable in cell 3, use it in cell 2, and run the cells out of order so the notebook "works." Then run *Restart Kernel and Run All Cells* and fix what breaks.
+
+3.  Add a first cell to one of your notebooks that prints the Python executable, the versions of the packages you import, and the date, as in "Environment capture" above.
+
+4.  Take a notebook that does the same cleaning in two places, move that code into a function in `src/`, and import it in the notebook.
+
+5.  Open a notebook in Google Colab. Write a small file to the virtual machine and another to your mounted Drive, choose *Runtime → Disconnect and delete runtime*, reconnect, and check which file is still there.
+
 ## One-page checklist
 
 -   I launch Jupyter from the correct project folder (or pass the correct directory).
@@ -655,6 +733,8 @@ A notebook that runs once but fails on a clean kernel is not really finished. Th
 -   I record environment details and keep data provenance explicit.
 
 -   I keep outputs controlled and store large artifacts outside the notebook.
+
+-   On a hosted notebook, I save files somewhere that outlasts the session, keep keys in the platform's secrets store, and check before uploading restricted data.
 
 ## Quick reference: common launch and debugging moves
 
