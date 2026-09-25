@@ -1,29 +1,29 @@
 # Peer review of the whole book, September 2026
 
-**What this is.** Ten reviews of *The Missing Manual for Information Scientists*, written on 2026-09-25, right after the voice rewrite (#61–#68). **They are simulated.** Each was written by an AI agent playing a fictional persona, at the maintainer's request, to stress-test the book from the perspectives of the fields it serves before a revision. The personas are not real people, and the reviews are not endorsements or real peer review. The plan built from them is [`plans/2026-09-25-peer-review-revisions.md`](../plans/2026-09-25-peer-review-revisions.md).
+**What this is.** Ten reviews of *The Missing Manual for Information Scientists*, written on 2026-09-25, right after the voice rewrite (#61–#68). **They are simulated.** Each was written by an AI agent playing an anonymous reviewer, identified only by role, at the maintainer's request, to stress-test the book from the perspectives of the fields it serves before a revision. The reviewers are not real people, and the reviews are not endorsements or real peer review. The plan built from them is [`plans/2026-09-25-peer-review-revisions.md`](../plans/2026-09-25-peer-review-revisions.md).
 
-**How they were made.** Every agent got the same brief: read `AGENTS.md`'s overview and style guide, the introduction, and its persona's primary chapters in full; skim the "Why read this chapter" bullets and headings of every other chapter; then write 300–600 words, in the book's own conversational voice, that are mostly generative critique (what to add, cut, restructure, or rethink, tied to named chapters and sections), with at most a sentence or two of praise. Each agent checked its claims about the book by grepping the chapters, and edited nothing.
+**How they were made.** Every agent got the same brief: read `AGENTS.md`'s overview and style guide, the introduction, and its reviewer's primary chapters in full; skim the "Why read this chapter" bullets and headings of every other chapter; then write 300–600 words, in the book's own conversational voice, that are mostly generative critique (what to add, cut, restructure, or rethink, tied to named chapters and sections), with at most a sentence or two of praise. Each agent checked its claims about the book by grepping the chapters, and edited nothing.
 
 **Who reviewed what.** Three reviewers from computer science education, three from library and information science, two from the quantitative social sciences, and two from project management. Between them, every chapter, both appendices, the introduction, and the conclusion were read in full by at least one reviewer, and every reviewer also commented on the book as a whole.
 
-| # | Persona | Field | Primary chapters |
+| # | Reviewer | Field | Primary chapters |
 |---|---|---|---|
-| 1 | Dana Okafor, community-college CS1 instructor | CS education | operating-system, file-system, terminal, text-editors, debugging, tracebacks |
-| 2 | Priya Raman, computing-education researcher | CS education | introduction, questions, documentation, reading-docs, regex, conclusion; exercises and checklists book-wide |
-| 3 | Marco Delgado, coding-workshop instructor for researchers | CS education | package-management, virtual-environments, jupyter, scripting, linting, remote |
-| 4 | Helen Park, research data management librarian | Library and information science | data-file-formats, tabular-data, project-management, secrets, glossary |
-| 5 | Tomás Rivera, teaching and learning librarian | Library and information science | reading-scholarship, writing-manuscripts, writing-thesis, ai-llm, AI disclosure |
-| 6 | Aisha Bello, digital humanities librarian and archivist | Library and information science | common-formats, latex, presenting, artifacts-have-politics; every Stakes section |
-| 7 | Jordan Whitfield, computational social scientist | Quantitative social sciences | pandas-basics, sql-basics, http-apis, evaluating-ai |
-| 8 | Ruth Lindqvist, quantitative methods professor (sociology) | Quantitative social sciences | llm-internals, ai-agents, evaluating-ai; tabular-data's validation |
-| 9 | Sam Nakamura, research-lab project manager | Project management | project-management, version-control, collaboration, automation |
-| 10 | Grace Mensah, technical program manager, nonprofit data team | Project management | version-control, collaboration, automation, secrets, remote |
+| 1 | Community-college CS1 instructor | CS education | operating-system, file-system, terminal, text-editors, debugging, tracebacks |
+| 2 | Computing-education researcher | CS education | introduction, questions, documentation, reading-docs, regex, conclusion; exercises and checklists book-wide |
+| 3 | Coding-workshop instructor for researchers | CS education | package-management, virtual-environments, jupyter, scripting, linting, remote |
+| 4 | Research data management librarian | Library and information science | data-file-formats, tabular-data, project-management, secrets, glossary |
+| 5 | Teaching and learning librarian | Library and information science | reading-scholarship, writing-manuscripts, writing-thesis, ai-llm, AI disclosure |
+| 6 | Digital humanities librarian and archivist | Library and information science | common-formats, latex, presenting, artifacts-have-politics; every Stakes section |
+| 7 | Computational social scientist | Quantitative social sciences | pandas-basics, sql-basics, http-apis, evaluating-ai |
+| 8 | Quantitative methods professor (sociology) | Quantitative social sciences | llm-internals, ai-agents, evaluating-ai; tabular-data's validation |
+| 9 | Research-lab project manager | Project management | project-management, version-control, collaboration, automation |
+| 10 | Technical program manager, nonprofit data team | Project management | version-control, collaboration, automation, secrets, remote |
 
 **Editor's notes.** The reviews are reproduced as written. Before using them, the maintainer's agent re-checked their claims against the book; one needs a correction. Review 9 says IRB "comes up exactly once in the whole book"; it appears in four chapters (`ai-llm`, `jupyter`, `remote`, and `writing-thesis`), though none of them explains what an IRB review involves or how long it takes, which is the reviewer's real point. Other book-wide claims were confirmed: no chapter mentions plagiarism, installs Python from python.org, shows PowerShell's "is not recognized" error, or names the FAIR principles.
 
 ---
 
-## Review 1: Dana Okafor, community-college CS1 instructor
+## Review 1: Community-college CS1 instructor
 
 *Primary chapters: operating-system, file-system, terminal, text-editors, debugging, tracebacks*
 
@@ -46,7 +46,7 @@ Last, the exercises. Debugging's "Take a recent error you ran into" assumes a ne
 
 ---
 
-## Review 2: Priya Raman, computing-education researcher
+## Review 2: Computing-education researcher
 
 *Primary chapters: index, questions, documentation, reading-docs, regex, conclusion*
 
@@ -67,7 +67,7 @@ Finally, the checklists. About a dozen chapters (questions, documentation, termi
 
 ---
 
-## Review 3: Marco Delgado, workshop instructor and trainer for hands-on coding workshops for researchers
+## Review 3: Workshop instructor and trainer for hands-on coding workshops for researchers
 
 *Primary chapters: package-management, virtual-environments, jupyter, scripting, linting, remote*
 
@@ -86,7 +86,7 @@ Across the whole book, the "Why read this chapter" bullets in all seven parts re
 
 ---
 
-## Review 4: Helen Park, research data management librarian at a university library
+## Review 4: Research data management librarian at a university library
 
 *Primary chapters: data-file-formats, tabular-data, project-management, secrets, appendix-glossary*
 
@@ -107,7 +107,7 @@ The glossary's 39 terms leave out the stewardship vocabulary the chapters use: p
 
 ---
 
-## Review 5: Tomás Rivera, teaching and learning librarian
+## Review 5: Teaching and learning librarian
 
 *Primary chapters: reading-scholarship, writing-manuscripts, writing-thesis, ai-llm, appendix-ai-disclosure*
 
@@ -126,7 +126,7 @@ Keep "Getting a copy without paying for it" and the retraction check in "Is this
 
 ---
 
-## Review 6: Aisha Bello, digital humanities librarian and archivist
+## Review 6: Digital humanities librarian and archivist
 
 *Primary chapters: common-formats, latex, presenting, artifacts-have-politics*
 
@@ -143,7 +143,7 @@ The book says it's for humanities students, but I looked for mine (encoding lett
 
 ---
 
-## Review 7: Jordan Whitfield, assistant professor of computational social science
+## Review 7: Assistant professor of computational social science
 
 *Primary chapters: pandas-basics, sql-basics, http-apis, evaluating-ai*
 
@@ -162,7 +162,7 @@ I'd assign these four chapters tomorrow, and the MENA "Stakes and politics" sect
 
 ---
 
-## Review 8: Ruth Lindqvist, professor of quantitative methods in a sociology department
+## Review 8: Professor of quantitative methods in a sociology department
 
 *Primary chapters: llm-internals, ai-agents, evaluating-ai (plus tabular-data's validation sections)*
 
@@ -183,7 +183,7 @@ I'll say the kind thing once: "Score the model, with honest uncertainty" is bett
 
 ---
 
-## Review 9: Sam Nakamura, research project manager for a university research lab
+## Review 9: Research project manager for a university research lab
 
 *Primary chapters: project-management, version-control, collaboration, automation*
 
@@ -204,7 +204,7 @@ Two smaller points. `collaboration`'s "Why read" promises to explain what open-s
 
 ---
 
-## Review 10: Grace Mensah, technical program manager for a nonprofit data team
+## Review 10: Technical program manager for a nonprofit data team
 
 *Primary chapters: version-control, collaboration, automation, secrets, remote*
 
