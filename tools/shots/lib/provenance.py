@@ -13,7 +13,7 @@ BEGIN = ("<!-- shots:begin: generated from provenance.json by tools/shots;"
          " edits between these markers are replaced -->")
 END = "<!-- shots:end -->"
 KEEP = ("file", "kind", "url", "final_url", "status", "captured", "by", "method", "browser",
-        "user_agent", "window", "scale", "javascript", "crop", "clip", "size",
+        "user_agent", "window", "scale", "javascript", "crop", "blur", "clip", "size",
         "recipe_sha256", "image_sha256", "note", "text", "parts")
 
 

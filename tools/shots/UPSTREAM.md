@@ -46,6 +46,11 @@ The first commit that added this folder is the upstream code, byte for byte; eve
 - `lib/steps.py`: `type: 'text'` works in headless takes too, through Playwright's keyboard; headed takes keep their real key events (`lib/headed.py`). `lib/recipes.py` moves `type` from the headed-only steps to the page steps. The editor screenshots type a command into VS Code's terminal.
 - `selftest.py` adds one check (typing into a page that echoes its input), for 70 in all.
 
+**Blurring (2026-09-25)**
+
+- `lib/blur.py`, and a figure key `blur:` (a list of CSS selectors): each match gets a CSS blur before the screenshot, and a selector that matches nothing fails the take. `lib/capture.py` applies it in headless takes; `lib/recipes.py` validates it and rejects it on headed figures; the take and `provenance.json` record it. The review-thread figures in `version-control` and `collaboration` needed it, to blur GitHub usernames and avatars.
+- `selftest.py` adds two checks (a blurred heading has almost no dark pixels left; a selector that matches nothing fails the take), for 72 in all.
+
 **A hand capture's maker (2026-09-24)**
 
 - `lib/provenance.py` `from_legacy()`: a `legacy:` block may say `by:`, who made the image ("hand capture by the maintainer"). Upstream always records "hand-run script, before tools/shots", which misdescribes a new hand capture.
@@ -60,7 +65,8 @@ These fix or extend behavior that *Web Data Science* shares:
 2. The relaxed tier, if that book wants it; its column is wider (778), so a 1024-pixel figure keeps 76% of its text size there, against 66% here.
 3. `figure_block()` accepting the leading slash, if that book's chapters ever move into a folder.
 4. The headless `between` crop with its selftest check; at the least, a recipe check that rejects `between` on a headless figure instead of ignoring it.
-5. The JupyterLab lessons in "Patterns and pitfalls" (saved layout and `?reset`, deferred navigation, hidden tabs, inner scrolling, the active cell's border, the file browser's selection, kernels that outlive captures), if that book ever captures JupyterLab.
+5. `blur:`, with its fail-on-no-match guard, for any figure with people's names in it.
+6. The JupyterLab lessons in "Patterns and pitfalls" (saved layout and `?reset`, deferred navigation, hidden tabs, inner scrolling, the active cell's border, the file browser's selection, kernels that outlive captures), if that book ever captures JupyterLab.
 
 ## Syncing with upstream
 

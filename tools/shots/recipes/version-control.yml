@@ -20,3 +20,28 @@ figures:
     expect: {selector: ["nav[aria-label='Repository']"]}
     drifts: true
     notes: "This book's repository, signed out. Commit messages and times change with every push; the caption dates the capture."
+  - id: github-pr-diff
+    kind: capture
+    section: "Reviews and commenting best practices"
+    # A real review comment on this book's own merged pull request #47, written by Claude Code
+    # from the maintainer's account (docs/decisions.md, 2026-09-25). The Conversation tab shows
+    # the diff lines the comment is anchored to, the comment, and GitHub's "Suggested change"
+    # box in one thread; the Files changed tab would need a tall crop to get the same.
+    # The thread has since been replied to and resolved (collaboration.yml shows all of it), so
+    # the crop stops at the bottom of the first comment. Opened by its permalink, GitHub expands
+    # the resolved thread; the header then reads "Hide resolved".
+    url: "https://github.com/cuinfoscience/INFO-Missing-Manual/pull/47#discussion_r4100343519"
+    # At 800 px the right sidebar squeezes the thread to 376 px; at 1024 it is about 520 px,
+    # which the body column shows at full size.
+    window: [1024, 900]
+    steps:
+      - wait: {selector: "review-thread-collapsible .js-suggested-changes-blob"}
+      # Just below the sticky "Merged" bar (about 60 px), so the crop has nothing laid over it.
+      - scroll: {selector: "review-thread-collapsible", offset: 72}
+      - settle: 1
+    crop: {between: ["review-thread-collapsible", "#discussion_r4100343519"], pad: 8}
+    # The thread is the maintainer's account; usernames and avatars are blurred all the same.
+    blur: ["review-thread-collapsible img.avatar", "review-thread-collapsible a.author"]
+    expect: {text: ["Suggested change"]}
+    drifts: true
+    notes: "A review thread on this book's own pull request #47, written by Claude Code; signed out. GitHub's interface changes; the caption dates the capture."

@@ -19,7 +19,7 @@ from urllib.parse import urlparse
 
 from PIL import Image, ImageDraw, ImageFont
 
-from . import crop, guards, measure, steps
+from . import blur, crop, guards, measure, steps
 from .env import OUT, ROOT, rel
 from .recipes import part_figure
 
@@ -132,6 +132,8 @@ def _headless(browser, fig, png):
             steps.run(page, fig, result["steps"])
         except steps.StepError as e:
             problems.append(str(e))
+        if fig.get("blur"):
+            problems += blur.apply(page, fig["blur"])
         time.sleep(fig["settle"])
         text = page.evaluate("() => document.body ? document.body.innerText : ''")
         issues, result["temporary"] = guards.page_problems(status, page.title(), text, fig.get("expect") or {})
@@ -227,7 +229,7 @@ def _log(fig, png, problems, status, final_url, label, clip, attempts):
         "by": "tools/shots", "browser": label, "user_agent": fig["user_agent"],
         "window": fig["window"], "scale": fig["scale"], "javascript": fig["javascript"],
         "mode": fig["mode"], "devtools": fig.get("devtools"),
-        "crop": fig.get("crop") or {"window": True}, "clip": clip, "size": size,
+        "crop": fig.get("crop") or {"window": True}, "blur": fig.get("blur"), "clip": clip, "size": size,
         "recipe_sha256": fig["recipe_sha256"], "image": rel(png), "image_sha256": sha256(png),
         "attempts": attempts,
     }
