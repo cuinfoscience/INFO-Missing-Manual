@@ -25,7 +25,8 @@ By the end of this chapter, you should be able to:
 5.  Read an Excel file, select a specific sheet, and handle merged cells and multi-level headers.
 6.  Explain when Parquet is the right choice and how to read/write it with `pd.read_parquet` / `df.to_parquet`.
 7.  Recognize text encoding errors (`UnicodeDecodeError`) and recover from them.
-8.  Follow a short checklist to validate that a file was loaded correctly before you start analysis.
+8.  Work with a file too big for memory: estimate what it needs, read less or in chunks, and hand the question to DuckDB or Polars.
+9.  Follow a short checklist to validate that a file was loaded correctly before you start analysis.
 
 ## Running theme: never trust a file you just read
 
@@ -163,18 +164,7 @@ df = pd.read_csv("export.csv", skiprows=3)       # skip 3 lines, then header
 
 ### Large files: do not read what you do not need
 
-If a CSV is bigger than your RAM, do not read it all at once.
-
-``` python
-# Read only the columns you need
-df = pd.read_csv("huge.csv", usecols=["date", "store", "revenue"])
-
-# Read in chunks
-for chunk in pd.read_csv("huge.csv", chunksize=100_000):
-    process(chunk)
-```
-
-For files bigger than ~1 GB, also consider Parquet (see section 5) — it is faster and smaller.
+If a CSV is too big to load comfortably, don’t read all of it. Read only the columns you need (`usecols=`), read it in pieces (`chunksize=`), convert it to Parquet once, or let DuckDB or Polars answer the question without loading the whole file. “Data bigger than memory” below walks through each, with measurements.
 
 ## 20.2 TSV and other delimited formats
 
@@ -337,7 +327,122 @@ raw.to_parquet("intermediate/sales.parquet")
 df = pd.read_parquet("intermediate/sales.parquet")
 ```
 
-## 20.6 Text encoding in general
+## 20.6 Data bigger than memory
+
+Sooner or later a file is too big for the tools above. In a notebook, the cell runs for a while and then Jupyter says *“The kernel appears to have died. It will restart automatically.”* In a script, you get a `MemoryError`, or your whole computer slows to a crawl as it starts using the disk as memory. The file isn’t broken. It just doesn’t fit, and the fix is to change how you read it, not to buy a new laptop.
+
+### How much memory a file needs
+
+A DataFrame usually takes more memory than the file it came from, and how much more depends on your pandas version. To find out, we loaded a 184 MB CSV of five million sales records (date, store, product, quantity, revenue, and a short note):
+
+``` python
+import pandas as pd
+
+df = pd.read_csv("sales.csv")
+print(pd.__version__)
+print(f"{df.memory_usage(deep=True).sum() / 1e6:.0f} MB in memory")
+```
+
+With pandas 3.0 (the current release in September 2026), the DataFrame took 368 MB, twice the file, and the Python process peaked at about 680 MB while reading it. With pandas 2.3, which stores text as general Python objects, the same DataFrame took 1,241 MB, nearly seven times the file. So if your laptop has 8 GB of memory, a 1 GB CSV can be comfortable, tight, or impossible depending on its columns and your pandas version. Check `pd.__version__`, measure with `memory_usage(deep=True)` on a sample, and work up the steps below in order, stopping at the first one that fits.
+
+### Step 1: read less
+
+Most analyses use a few columns of a wide file. Read only those, and tell pandas when a text column repeats a small set of values, so it can store each value once:
+
+``` python
+df = pd.read_csv(
+    "sales.csv",
+    usecols=["date", "store", "revenue"],
+    dtype={"store": "category"},
+    parse_dates=["date"],
+)
+```
+
+That DataFrame took 90 MB instead of 368. Before any of this, `pd.read_csv("sales.csv", nrows=1000)` reads just the first thousand rows, which is enough to see the columns and choose.
+
+### Step 2: read in chunks
+
+When even the columns you need won’t fit, read the file a piece at a time. With `chunksize`, `read_csv` hands you one ordinary DataFrame of that many rows at a time, and you keep only a small summary of each:
+
+``` python
+parts = []
+for chunk in pd.read_csv("sales.csv", usecols=["store", "revenue"], chunksize=500_000):
+    parts.append(chunk.groupby("store")["revenue"].agg(["sum", "count"]))
+
+totals = pd.concat(parts).groupby(level=0).sum()
+mean_revenue = totals["sum"] / totals["count"]
+```
+
+Notice what each chunk keeps: a sum and a count, not a mean. Sums and counts can be added up across chunks; means can’t. Averaging the chunk averages here gives answers off by up to 0.004, which is small enough to miss and wrong all the same. When you summarize in chunks, keep pieces that combine by adding: sums, counts, minimums, and maximums.
+
+Line-delimited JSON (see “Newline-delimited JSON” above) reads in chunks the same way: `pd.read_json("events.jsonl", lines=True, chunksize=100_000)` gives you a reader to loop over inside a `with` block.
+
+### Step 3: convert to Parquet once
+
+If you will read the same large file again and again, convert it to Parquet once (see “Parquet” above) and read from that. The 184 MB CSV became a 24 MB Parquet file, and `pd.read_parquet("sales.parquet", columns=["store", "revenue"])` reads only the two columns it names from disk.
+
+### Step 4: let a query engine do the work
+
+Two libraries answer questions about a large file without loading all of it into a DataFrame. They read only the columns a question needs, process the file in pieces, and use every core of your computer. You install them like any other package (`python -m pip install duckdb polars`).
+
+[DuckDB](https://duckdb.org/docs/) runs SQL directly on a CSV or Parquet file and gives you back a small pandas DataFrame:
+
+``` python
+import duckdb
+
+result = duckdb.sql("""
+    SELECT store, avg(revenue) AS mean_revenue, count(*) AS n
+    FROM 'sales.csv'
+    GROUP BY store
+    ORDER BY store
+""").df()
+```
+
+``` text
+       store  mean_revenue      n
+0  store-000     11.963152  24984
+1  store-001     11.919008  25150
+2  store-002     11.985570  24942
+...
+```
+
+[Polars](https://docs.pola.rs/user-guide/) is a DataFrame library in the spirit of pandas. Its `scan_csv` builds a plan instead of reading the file, and `collect()` runs the plan, reading only what the plan needs:
+
+``` python
+import polars as pl
+
+result = (
+    pl.scan_csv("sales.csv")
+    .group_by("store")
+    .agg(pl.col("revenue").mean().alias("mean_revenue"), pl.len().alias("n"))
+    .sort("store")
+    .collect()
+)
+```
+
+Both gave the same means as the chunked pandas code above. Pick DuckDB if you know SQL or want to learn it (see [sec-sql-basics](#sec-sql-basics)); pick Polars if you’d rather stay in Python method chains. Either way, the result is usually small, and `.df()` (DuckDB) or `.to_pandas()` (Polars) turns it into a pandas DataFrame for plotting and the rest of your analysis.
+
+### What each step cost
+
+Here is what computing the mean revenue for each store took on one computer, a four-core Linux machine with 16 GB of memory. Peak memory is for the whole Python process, libraries included. Your numbers will differ; the pattern is what to take away.
+
+| Approach                                   | Time  | Peak memory |
+|--------------------------------------------|-------|-------------|
+| pandas, whole file                         | 8.4 s | 680 MB      |
+| pandas, two columns, `store` as a category | 2.4 s | 235 MB      |
+| pandas, chunks of 500,000 rows             | 2.9 s | 205 MB      |
+| pandas, two columns from Parquet           | 1.7 s | 445 MB      |
+| DuckDB, on the CSV                         | 1.0 s | 245 MB      |
+| DuckDB, on the Parquet file                | 0.5 s | 150 MB      |
+| Polars, lazy scan of the CSV               | 0.5 s | 390 MB      |
+
+Table 20.1: Computing mean revenue per store from a 184 MB CSV of five million rows, in September 2026 (pandas 3.0, DuckDB 1.5, Polars 1.44).
+
+### When none of this is enough
+
+If a question still doesn’t fit, work on a sample while you figure out what you’re asking. DuckDB can draw one as it reads (`SELECT * FROM 'sales.csv' USING SAMPLE 1%` returns roughly 1% of the rows). Then run the final version on a bigger computer: your university’s research computing cluster or a cloud machine (see [sec-remote-computing](#sec-remote-computing)).
+
+## 20.7 Text encoding in general
 
 If you remember only one thing about encoding, remember this: **encoding is the rule for turning bytes into characters.** UTF-8 is the standard for modern text and should be your default. Files that are not UTF-8 are usually Latin-1 (or `cp1252` on Windows), which covers Western European characters but not Greek, Cyrillic, Chinese, etc.
 
@@ -363,7 +468,7 @@ When you write a file yourself, always write UTF-8:
 df.to_csv("out.csv", index=False, encoding="utf-8")
 ```
 
-## 20.7 Stakes and politics
+## 20.8 Stakes and politics
 
 Data file formats look like neutral containers, but each one encodes a worldview about what data is and who it is for. Three things to notice. First, *what counts as “tabular.”* CSV, Excel, and Parquet all assume your data fits naturally into rows and columns of fixed width — the worldview of accountants, statisticians, and relational databases. JSON and XML allow nesting and so admit shapes (trees, graphs, ragged records) the tabular formats cannot represent without flattening. Whichever format you pick, you are pre-committing to a shape, and information that does not fit gets lost or distorted in the conversion.
 
@@ -371,7 +476,7 @@ Second, *whose languages and characters were the spec written for*. CSV’s RFC 
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data shapes it serves cleanly and whose it forces you to mangle.
 
-## 20.8 Worked examples
+## 20.9 Worked examples
 
 ### A “normal” CSV that is not normal
 
@@ -443,7 +548,7 @@ df = pd.read_excel(
 )
 ```
 
-## 20.9 Templates
+## 20.10 Templates
 
 **A defensive `read_csv` that handles most of the common quirks:**
 
@@ -469,7 +574,7 @@ print("nulls per column:")
 print(df.isna().sum())
 ```
 
-## 20.10 Exercises
+## 20.11 Exercises
 
 1.  Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor, note the delimiter, the header row, and any obviously-missing-value sentinels. Then load it with `pd.read_csv`, passing the correct parameters the first time.
 2.  Deliberately save a CSV with `encoding="latin-1"` (e.g., a file with accented characters). Try to read it with the default UTF-8 and observe the `UnicodeDecodeError`. Then read it correctly.
@@ -477,9 +582,10 @@ print(df.isna().sum())
 4.  Load a nested JSON file (e.g., a GitHub API response or a tweet dump). Use `pd.json_normalize` to flatten the records you care about.
 5.  Load an Excel file with multiple sheets. Use `sheet_name=None` to get a dict, then loop over it to print the shape of each sheet.
 6.  Convert a CSV you use often into Parquet. Compare file sizes and load times (`%time df = pd.read_csv(...)` vs `%time df = pd.read_parquet(...)`).
-7.  Write the “validate after load” snippet from section 8 as a reusable function `validate(df)` that prints the report. Put it in a module you can import from any notebook.
+7.  Take the largest CSV you have (or make one by repeating a small file many times). Measure its memory with `df.memory_usage(deep=True).sum()`, then compute one grouped mean three ways: pandas on the whole file, pandas in chunks, and DuckDB. Check that the answers match.
+8.  Turn the validation snippet in Templates into a reusable function `validate(df)` that prints the report. Put it in a module you can import from any notebook.
 
-## 20.11 One-page checklist
+## 20.12 One-page checklist
 
 - Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.
 - Default to UTF-8 encoding; fall back to Latin-1 / cp1252 only when needed.
@@ -488,6 +594,7 @@ print(df.isna().sum())
 - Check `df.shape`, `df.columns`, `df.dtypes`, and `df.head()` in the cell right after every `read_*`.
 - If a numeric column shows up as `object`, you have hidden strings. Use `pd.to_numeric(..., errors="coerce")` to find them.
 - Use Parquet for intermediate files and anything over ~100 MB.
+- If a file won’t fit in memory: read fewer columns, read in chunks (keeping sums and counts, not means), or query it with DuckDB or Polars.
 - Always pass `index=False` when writing a CSV or Excel file unless you want the row index as a column.
 - When in doubt, `df.head()` and `df.tail()` and trust your eyes over your assumptions.
 
