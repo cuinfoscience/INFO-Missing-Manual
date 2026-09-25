@@ -10,77 +10,85 @@
 
 ![Inigo Meme: You keep calling this reproducible, I do not think it means what you think it means.](../graphics/memes/collaboration.png)
 
-Collaboration is not a vague soft skill. It is a set of repeatable mechanics that make work legible, reviewable, and safe to change. In computing and data science, effective collaboration relies on shared artifacts (docs, issues, pull requests), disciplined communication (clear requests and responses), and predictable workflows (review, merge, release). This chapter teaches novice-friendly practices for working with other people without creating confusion, duplication, or fragile “tribal knowledge.”
+It’s the Thursday before your group project is due. The dashboard says 212 survey responses, and someone is sure the survey had more. The team decided something about test responses, but that was in the group chat three weeks ago, buried under memes. Two of you fixed the same bug on different branches. And the one teammate who knows how to run the cleaning script is at a job interview until tonight.
 
-## Learning objectives
+Nobody here was lazy. This is what happens by default when several people work on the same files: what changed, and why, lives in people’s heads and private messages, where nobody else can find it. Teams that work well aren’t made of smarter people. They have a few repeatable habits that put the work where everyone can see it, in small pieces that are easy to check.
 
-By the end of this chapter, you should be able to:
+This chapter is about those habits: documentation that lets someone else run your work, issues that track what needs doing, pull requests a reviewer can actually review, comments that help instead of sting, and the small rituals that keep a team in step. It doesn’t teach Git itself (branches, commits, and opening a pull request are in [sec-git-github](#sec-git-github)), and it only touches on a project’s folders and README, which [sec-project-management](#sec-project-management) covers.
 
-1.  Explain why collaboration depends on shared artifacts (docs, issues, PRs) rather than private messages.
+## Why read this chapter
 
-2.  Write project documentation that supports onboarding and reproduction.
-
-3.  Participate in code review as an author and reviewer using a respectful, actionable style.
-
-4.  Use comment threads to clarify intent, document decisions, and close the loop.
-
-5.  Propose and follow a lightweight workflow for tasks, reviews, and merges.
-
-6.  Maintain collaboration hygiene: small changes, clear ownership, explicit decisions, and visible status.
+- An important decision about your group project lives in someone’s DMs, and now nobody remembers why the team dropped that column.
+- Your pull request has sat unreviewed for two weeks, and it might be because it touches 40 files.
+- A reviewer left twelve comments, and you can’t tell which ones you must fix before merging and which are just opinions.
+- You have to review a classmate’s code and don’t know what to look for, or how to say “this is wrong” without starting a fight.
+- The only teammate who could run the pipeline got sick the week of the deadline.
+- Every time someone reruns a notebook, the diff is 2,000 lines long and nobody can see what changed.
+- “Let’s divide up the work” turned into four people each assuming someone else was writing the conclusion.
+- You’d like to contribute to an open-source project and wonder what its maintainers expect from you.
 
 ## Running theme: make work visible, small, and easy to review
 
-If teammates can understand what changed, why it changed, and how to verify it, collaboration scales.
+If your teammates can see what changed, why, and how to check it without asking you, the work survives any one person’s bad week.
 
-## 32.1 A beginner mental model: collaboration surfaces
+## 32.1 Where team work happens
 
-Effective collaboration on a software or data-science project happens across several distinct **surfaces**, and a healthy team uses each one for what it is good at. The **repository** holds the code, notebooks, and documentation — it is the canonical source of what the project actually *is*. **Issues** are where tasks, bugs, questions, and decision records live — anything that needs to be tracked over time but is not itself code. **Pull requests** are where proposed changes get reviewed and discussed before they become part of the repository. **Code review comments** are tied to specific lines of a diff and capture the back-and-forth that produced the merged version. **Project boards or milestones** show the overall status: what is in progress, what is blocked, what is done. And **chat and meetings** are the lightweight coordination layer — useful for unblocking each other quickly, but explicitly *not* the system of record. If a decision happens in chat, write it down somewhere persistent before the conversation scrolls off.
+The first time you join a project on GitHub, it can feel like there are too many places to look: the code, the issues, the pull requests and their comments, maybe a project board, and the group chat on top. Which one is the real one? Each has its own job, and most collaboration trouble starts when a team uses one for another’s job: decisions made in chat, tasks tracked in someone’s memory, changes that skip review.
 
-The **core collaboration loop** that ties these surfaces together is short and repeatable: plan in issues → implement on a branch → open a PR → review and comment → revise → merge → document the outcome → repeat. Every healthy collaborative project works some variant of this loop, and the rituals you build around it (PR templates, review checklists, definition of done) all exist to make the loop itself reliable.
+| Surface | What it’s for |
+|----|----|
+| Repository | The code, notebooks, and docs: what the project actually *is* |
+| Issues | Tasks, bugs, questions, and decisions that need tracking over time |
+| Pull requests | Proposed changes, reviewed and discussed before they land |
+| Review comments | The back-and-forth on specific lines that shaped the final version |
+| Project board or milestones | Status at a glance: in progress, blocked, done |
+| Chat and meetings | Quick coordination and unblocking, but *not* the record |
 
-Three roles show up in almost every collaboration. The **author** proposes a change, provides the context a reviewer needs to evaluate it, and responds to feedback. The **reviewer** protects quality, asks clarifying questions when intent is unclear, and mentors less-experienced authors through the process. The **maintainer** or **lead** sets the policies (which branches are protected, which merge strategy is used, who can approve), arbitrates decisions when reviewers disagree, and makes sure things actually get followed through to completion. On a small student project, one person may play all three roles at different times; on a larger team, they are usually different people.
+That last row is the one teams get wrong most often. Why does writing things down matter so much for a team of four? Because the number of conversations grows faster than the team: four people make six pairs who need to stay in sync, five make ten, and six make fifteen. That growth is one reason for [Brooks’s law](https://en.wikipedia.org/wiki/Brooks%27s_law), from Fred Brooks’s 1975 book *The Mythical Man-Month*: adding people to a late software project makes it later. Shared, written artifacts spare a team most of those conversations.
+
+The surfaces fit together in one short, repeatable loop: **plan in an issue, work on a branch, open a pull request, review and comment, revise, merge, record the outcome, and repeat.** Nearly every healthy project runs some version of it, and the rituals in this chapter exist to make it reliable.
+
+Three roles show up in almost every collaboration. The **author** proposes a change, gives the reviewer the context they need, and responds to feedback. The **reviewer** protects quality, asks questions, and helps less experienced authors learn. The **maintainer** (or lead) sets policies, such as who can approve a merge, breaks ties, and makes sure work gets finished. On a student project, you might play all three in one week.
 
 ## 32.2 Documentation as collaboration infrastructure
 
-### What documentation is for (student framing)
+It’s tempting to treat documentation as a polish pass you do at the end, if there’s time. That gets it backwards. Documentation is what lets other people (and you, three months from now) use the work at all; without it, even a perfect project is a black box only its author can run. Software people call knowledge that lives only in someone’s head [tribal knowledge](https://en.wikipedia.org/wiki/Tribal_knowledge), and the number of teammates who’d have to vanish before a project stalls its [bus factor](https://en.wikipedia.org/wiki/Bus_factor). A student project with a bus factor of one is one bad week away from missing its deadline.
 
-Documentation is often treated as something you write at the end of a project if you have time, like a polish pass. That framing is backwards. Documentation is *infrastructure* — the scaffolding that lets other people (and future-you) actually use the work you have done. Without it, even a technically perfect project is a black box that only its original author can run.
+Good documentation does four jobs. It **onboards** a new collaborator, from `git clone` to “I ran the analysis and got the expected output” in under an hour, not an afternoon of messages to the author. It makes the work **reproducible**: how to recreate your environment, data, and results. It keeps a **decision trace**: why you chose one library over another, why a column was dropped, why the analysis stops at a certain date, none of which the code shows. And it covers **operations**: how to build, run, and test the project without guessing.
 
-A healthy project’s documentation does four jobs. **Onboarding**: when a new collaborator joins, the docs are how they go from `git clone` to “I ran the analysis and got the expected output” in under an hour. Without good docs, onboarding is an afternoon of chat messages asking the original author what to do. **Reproducibility**: the docs tell a reader exactly how to recreate your environment, your data, and your results, so the project’s claims are verifiable. **Decision trace**: the docs explain *why* the project is structured the way it is — why you chose one library over another, why a column was dropped, why the analysis was restricted to a date range. These decisions are invisible in the code, and they are what reviewers and future-you care about most. **Operations**: the docs tell a reader how to build, run, and test the project end-to-end without guessing.
+### A minimum set of files
 
-### Minimum viable documentation set
+A useful student project ships with a handful of standard files, each with one job. Most need the first and last; the others earn their place as a team grows.
 
-A useful student project ships with a short list of standard files, each with a specific job:
+- **`README.md`** is the front door: what the project is, how to install it, how to run it, and what outputs to expect. If you write only one file, write this one; [sec-project-management](#sec-project-management) has a skeleton.
+- **`CONTRIBUTING.md`** tells collaborators how to work with you: branch names, pull requests, style rules, review, and where to ask questions. GitHub [links to it](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) when someone opens an issue or pull request.
+- **`CODE_OF_CONDUCT.md`** matters once a project has outside contributors: it sets expectations for respectful collaboration and says how to raise a problem. Many projects [adopt an existing one](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project), such as the [Contributor Covenant](https://www.contributor-covenant.org/).
+- **`DECISIONS.md`**, or a folder of [architecture decision records](https://adr.github.io/), captures consequential choices (“we switched from mean to median imputation because…”) so the reasoning outlives the conversation.
+- **A [data dictionary](https://en.wikipedia.org/wiki/Data_dictionary) or codebook** documents every column: its meaning, units, source, and transformations. For a data project, it’s the most useful document after the README.
 
-- **`README.md`** is the front door. It states the project’s purpose, how to install dependencies, how to run the code, and what outputs to expect. If only one file gets written, it should be the README.
-- **`CONTRIBUTING.md`** tells collaborators how you want them to work: branch naming conventions, how to open PRs, what style/linting rules apply, how reviews happen, and where to ask questions.
-- **`CODE_OF_CONDUCT.md`** is appropriate for projects with external contributors or a public presence — it sets expectations for respectful collaboration and explains how to escalate problems.
-- **`DECISIONS.md`** (or an `adr/` folder with Architecture Decision Records) captures consequential decisions — *“we switched from mean to median imputation because…”* — so the rationale survives the moment.
-- **A data dictionary or codebook** documents every column in every dataset: its meaning, its units, its source, and any transformations you applied. For a data-science project, this is the single most useful doc after the README.
+### Write for a smart stranger
 
-### Writing for your audience
+Picture your reader as a competent peer who has never seen your project. They know Python and Git; they don’t know your file paths, your course, or the lab server’s name. That picture alone stops you from writing “activate the environment” and pushes you toward “run `conda activate sales-report`.”
 
-The reader you are writing for is a competent peer who has never seen your project before. They know Python and Git; they do not know your local file paths, your course context, or the name of the lab server. That framing alone will improve your documentation, because it stops you from writing instructions like “activate the environment” and pushes you toward “run `conda activate housing-audit`.”
+Put the most common task first. Someone opening your README wants to know how to run the thing, not the project’s history. Start with a one-paragraph description, then a “Quick start” block that goes from `git clone` to a finished run in a few commands, then the reference material. Make every command copy-paste runnable, with no hand-waving, and show the output a reader should expect so they can tell they’re on track. [sec-documentation](#sec-documentation) goes deeper.
 
-Put the most common tasks first. A reader who opens your README wants to know *how to run the thing*, not the history of the project or a list of acknowledgments. Lead with a one-paragraph description, then a copy-paste “Quick start” block that takes the reader from `git clone` to `make run` with minimal ceremony, then the longer reference material underneath. Every command you give should be **copy-paste runnable** — no placeholders, no “configure your environment” handwaving — and every command should be paired with the *expected output* so a reader can verify they are on track.
+### Keep it from going stale
 
-### Documentation upkeep: avoid staleness
+Here’s the frustrating part: documentation drifts out of date almost immediately. Errors force you to change the code; nothing forces you to change the docs, so after a few weeks the README is quietly lying. Stale documentation is worse than none, because a reader trusts it.
 
-Stale documentation is worse than no documentation, because it actively misleads. The only way to keep docs accurate is to treat them as part of the code: if a PR changes how the project runs, the same PR updates the README. If a PR adds a new column to a dataset, the same PR updates the data dictionary. Treat “docs updated” as part of your definition of done for every change, and reviewers should push back on PRs that change behavior without updating the relevant docs.
+The fix that works is to treat docs as part of the change. If a pull request changes how the project runs, the same pull request updates the README; if it adds a column, it updates the data dictionary. Put “docs updated” on your pull request checklist, and as a reviewer, treat missing doc updates as a blocker. When you find a gap you can’t fix now, **file an issue**: a tracked issue is a promise to come back, and a gap in your head is not. And once per milestone, clone the repository into a fresh folder, follow the README step by step, and file an issue for every place it’s wrong or unclear. An hour of that a month keeps the docs honest.
 
-When documentation is missing or outdated and you do not have time to fix it in the moment, **file an issue** rather than leaving the problem invisible. A tracked issue is a promise to come back; an undocumented gap in your head is not.
+## 32.3 Issues: plan work where everyone can see it
 
-## 32.3 Work planning mechanics: issues and task decomposition
+Chat is great for “what’s the path to the data?” and terrible for tracking work. Messages scroll away, and decisions made in DMs are invisible to anyone who wasn’t there. Two weeks later nobody remembers why a column was dropped or which model the team chose.
 
-### Why issues beat chat threads
+[Issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) fix that because they’re **persistent, searchable, and linkable.** Every decision gets a stable URL you can point to, and every question gets a title you can search for six months later. When a teammate asks “didn’t we talk about this?”, you point them to issue \#42 and its whole history: the problem, the options, and why the team chose the one it did. Issues can also be assigned, labeled, and grouped into milestones or boards, which makes them the backbone of lightweight planning: what are we working on this week, and who owns it?
 
-Chat is a great place to unblock each other quickly and a terrible place to track work. Messages scroll off, threads get buried, and decisions made in DMs are invisible to anyone who was not in the conversation at the time. Issues solve these problems because they are **persistent, searchable, and linkable** — every decision has a stable URL you can point at, and every question has a title you can search for six months later.
+So make it a team rule: any decision that affects the whole project moves into an issue, a pull request comment, or `DECISIONS.md` before the conversation counts as closed. The phrase to practice is “Let me capture this in issue \#X so we don’t lose it.”
 
-Issues also establish a **shared memory** for the project. When a teammate asks “didn’t we talk about this?”, you can point them at issue \#42 and they can read the whole history — the original motivation, the options that were considered, the rationale for the chosen path. Without issues, “shared memory” is whoever happens to remember. And because issues can be assigned, labeled, and sorted into milestones or boards, they are the foundation of lightweight prioritization: *what are we actually working on this week, and who owns it?*
+### What a good issue contains
 
-### Anatomy of a good issue
-
-A well-written issue has five ingredients. A **clear title** that reads as a verb plus an object — *“Fix date parser off-by-one on leap years”*, not *“date bug”* — so a reader skimming the issue list knows what it is about without clicking. **Context** explaining why the issue matters, what the user (or analysis) experiences, and any background a future reader would need. A **definition of done** — the explicit criteria that let someone close the issue with confidence, usually a sentence or two like “The parser correctly handles Feb 29 and returns the right ISO date.” **Evidence**: a link to the failing test, a paste of the stack trace, a screenshot, a row of data that triggers the bug — something concrete a reviewer can reproduce. And **labels**: a `bug`/`task`/`question` type, a priority marker if your team uses one, and an area label (`data`, `code`, `docs`) so issues can be filtered.
+A useful issue has five ingredients. The **title** reads as a verb plus an object, “Fix date parser off-by-one on leap years” rather than “date bug”, so someone skimming the list knows what it’s about without clicking. The **context** says why it matters, what goes wrong, and any background a future reader will need. The **definition of done** gives the criteria that let someone close the issue with confidence. The **evidence** is something a reviewer can reproduce: the failing test, the error message, a screenshot, the row of data that triggers the bug. And **labels** mark its type (`bug`, `task`, `question`), its priority if your team uses one, and its area (`data`, `code`, `docs`), so issues can be filtered; GitHub’s docs explain [managing labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels).
 
 ``` markdown
 **Title:** Fix date parser off-by-one on leap years
@@ -98,66 +106,74 @@ weekly rollup in notebook `03-aggregate.ipynb`.
 - `03-aggregate.ipynb` re-runs cleanly with the fix applied.
 
 ## Evidence
-Stack trace from `pytest -k leap`:
+From `pytest -k leap` (trimmed):
 
-    tests/test_parsers.py::test_leap_year FAILED
-    assert datetime(2024, 3, 1) == datetime(2024, 2, 29)
+    E        +  where datetime.datetime(2024, 3, 1, 0, 0) = parse_date('2024-02-29')
+    FAILED tests/test_parsers.py::test_leap_year - AssertionError: assert datetim...
 
 **Labels:** `bug`, `priority: high`, `area: data`
 ```
 
-That shape — title, context, done, evidence, labels — works for bugs, features, and tasks with only minor tweaks, and it means any teammate can pick up the issue without asking clarifying questions.
+That shape works for bugs, features, and tasks alike, and any teammate can pick up the issue without asking you anything first. If your team keeps forgetting a part, [issue templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository) can pre-fill it.
 
-### Decomposition patterns (novice-friendly)
+### Break big work into reviewable pieces
 
-Big tasks do not fit in small PRs, and small PRs are what review works on. The skill you want is breaking a multi-day goal into half-day issues that each produce something reviewable. Three patterns cover most situations.
+Big tasks don’t fit in small pull requests, and small pull requests are what review works on. The skill is turning a multi-day goal into half-day issues that each produce something reviewable. Three ways of splitting cover most cases.
 
-**Split by artifact.** A data-science project naturally breaks along its pipeline stages: data ingestion, cleaning, analysis, visualization, write-up. Each stage is its own issue, its own branch, and (ideally) its own PR. This is the default, and it usually produces the clearest decomposition.
+**Split by artifact.** A data project breaks naturally along its pipeline: ingestion, cleaning, analysis, visualization, write-up. Each stage gets its own issue, branch, and pull request. This is the default, and usually the clearest split.
 
-**Split by risk.** Do the uncertain work first. If one step of the plan depends on whether a specific library supports a specific feature, spin that out as its own early spike-issue so you know the answer before you commit to the larger plan. Risk early, execution later.
+**Split by risk.** Do the uncertain part first. If the whole plan depends on whether a library supports some feature, make finding out its own small early issue (agile teams call this a [spike](https://en.wikipedia.org/wiki/Spike_(software_development))), so you know the answer before you commit to the larger plan.
 
-**Split by reviewability.** Sometimes a natural split by artifact produces chunks that are still too big to review. In that case, split further on a purely mechanical basis: “add the function signature and a stub test” as one issue, “implement the function body” as a second, “wire it into the pipeline” as a third. Each fits in a small PR even if the underlying task is large.
+**Split by reviewability.** Sometimes a stage is still too big to review. Then split it mechanically: “add the function signature and a stub test,” then “implement the function body,” then “wire it into the pipeline.” Each fits in a small pull request, even when the task behind them is large.
 
-## 32.4 Code review fundamentals (what it is and why it works)
+## 32.4 What code review is for
 
-### Goals of review
+If you’ve never reviewed anyone’s code, the request can feel strange: who are you to judge? And as the author, having someone comb through your work line by line can feel like being graded. Both feelings are normal, and both fade once you see what [code review](https://en.wikipedia.org/wiki/Code_review) is for.
 
-Code review has four jobs running at once. The most obvious is to improve **correctness, readability, and maintainability** — to catch the bug, the unclear name, the function that is doing too much. The second is to **catch edge cases** the author may not have considered, since fresh eyes see the empty list, the missing key, the off-by-one. The third is to **transfer knowledge across the team**: the reviewer learns what the author has been working on, the author learns what the reviewer cares about, and the project’s collective understanding grows with every PR. The fourth is to **align changes with project standards** — the conventions, the architecture, the things “we always do this way” — so that the codebase stays coherent over time.
+It does four jobs at once. It improves **correctness and readability**: catching the bug, the unclear name, the function doing too much. It **catches edge cases**, because fresh eyes see the empty list, the missing key, and the off-by-one. It **spreads knowledge**: the reviewer learns what the author built, and the author learns what the reviewer cares about. And it **keeps changes consistent** with the project’s conventions as more people touch the code. A less experienced reviewer still helps: you don’t need to be an expert to notice that you can’t follow something.
 
-### What review is not
+It helps just as much to know what review is *not*. It isn’t a **personal critique**: comments are about the code, not the author. It isn’t a **substitute for running the code**: “two reviewers approved” doesn’t mean “it works.” And it isn’t the place to **redesign the whole system**: if the approach is fundamentally wrong, that conversation belongs in an issue before the code is written. (Nor is review the only way to get a second pair of eyes: in [pair programming](https://en.wikipedia.org/wiki/Pair_programming), two people write the code together and review it as they go.)
 
-Equally important is what review is *not*. It is **not a personal critique**: the comments are about the code, not the author. It is **not a substitute for verification**: a reviewer cannot manually run every code path, and “two reviewers approved” does not mean “the code works.” Running the change is how you know it works. And it is **not a place to redesign the whole system in one comment** — if the PR’s approach is fundamentally wrong, that conversation belongs in an issue *before* the code is written, not buried in line-by-line comments after.
+### What to look for
 
-### Review checklists (student baseline)
+When you sit down to review, walk through six questions, roughly in this order:
 
-When you sit down to review a PR, walk through six questions in roughly this order. **Correctness and clarity:** does the code actually do what its description says it does, and is the intent obvious? **Verification steps:** how does the author know it works? Did they include a clear “how to test” section in the PR description, with commands a reviewer can run? **Reproducibility:** could someone else clone the repo and run the change end to end? **Documentation:** are the README, docstrings, and inline comments updated to match the new behavior? **Data impacts:** if the change touches data — new schema, renamed columns, new file paths, new assumptions — are those changes documented? **Security and privacy:** are there any new secrets accidentally committed, any new ways for sensitive data to leak, any commands that need elevated privileges?
+- **Correctness and clarity:** does the code do what the description says, and is the intent obvious?
+- **Verification:** how does the author know it works? Is there a “how to test” section with commands you can run?
+- **Reproducibility:** could someone else clone the repository and run the change from start to finish?
+- **Documentation:** do the README, docstrings, and comments match the new behavior?
+- **Data impacts:** if the change touches data (a new schema, renamed columns, new paths, new assumptions), is that written down?
+- **Security and privacy:** any secrets committed by accident, new ways for sensitive data to leak, or commands that need elevated privileges?
 
-Most PRs only need one or two of those checks to be substantive — but knowing the full list keeps you from missing the kind of issue that is easy to spot if you remember to look.
+Most pull requests need only one or two of these in earnest, but running down the list keeps you from missing the problem that’s easy to spot once you remember to look. Google’s guide to [what to look for in a code review](https://google.github.io/eng-practices/review/reviewer/looking-for.html) is a longer version.
 
-## 32.5 Authoring reviewable changes
+## 32.5 Making your changes easy to review
 
-### Small PR discipline
+### One purpose per pull request
 
-The biggest single factor in how quickly a PR gets merged is how small it is. Reviewers have a fixed attention budget, and a PR that touches 40 files across three unrelated changes exceeds it — the reviewer will skim, rubber-stamp, or quietly procrastinate until the PR goes stale. A PR that touches five files for one clear purpose gets read carefully and merged within a day.
+The biggest thing that decides how fast your pull request gets merged is how small it is. Reviewers have a limited supply of attention, and a pull request that touches 40 files across three unrelated changes blows through it: the reviewer skims and rubber-stamps, or puts it off until it goes stale. One that touches five files for one clear purpose gets read carefully and merged within a day. Google’s guide makes the same case for [small changes](https://google.github.io/eng-practices/review/developer/small-cls.html): they’re reviewed faster and more thoroughly, and they’re less likely to introduce bugs.
 
-“Small” means **one purpose per PR**. If you have a bug fix and an unrelated refactor and a new feature, that is three PRs, not one. Do not mix refactors with new behavior: the reviewer cannot tell which changes are “just moving things around” and which ones actually change what the code does, and bugs introduced by the refactor will hide inside the new-feature diff. And when you find dead code or leftover debugging output, remove it in its own small commit or PR — not bundled into the change that brought you to that file.
+“Small” means **one purpose per pull request**. A bug fix, an unrelated cleanup, and a new feature are three pull requests, not one. Above all, don’t mix a [refactor](https://en.wikipedia.org/wiki/Code_refactoring) (reorganizing code without changing what it does) with new behavior: the reviewer can’t tell which lines just move things around and which change the results, and a bug the refactor introduced hides in the feature’s diff. Deleting dead code or debugging output gets its own small commit or pull request too.
+
+Each purpose gets its own branch, started from `main` ([sec-git-github](#sec-git-github) covers branches and opening pull requests):
 
 ``` bash
-# Instead of one PR with everything:
-# * fix date parser
-# * rename helper functions
-# * add leap-year tests
-# * delete old debug prints
-#
-# Open three PRs:
-git switch -c fix-date-parser     # bug fix + its regression test
-git switch -c rename-parsers      # pure refactor
-git switch -c cleanup-debug       # delete dead code
+# Instead of one branch with everything:
+#   fix date parser, rename helper functions,
+#   add leap-year tests, delete old debug prints
+# start three branches, each from main:
+git switch -c fix-date-parser main     # bug fix + its regression test
+git switch -c rename-parsers main      # pure refactor
+git switch -c cleanup-debug main       # delete dead code
 ```
 
-### PR descriptions that help reviewers
+The `main` at the end of each line matters. Without it, `git switch -c` starts the new branch from whichever branch you’re on, so the second branch would quietly include the first one’s work.
 
-Treat the PR description as the reviewer’s guided tour. A good description has five ingredients: a **summary** that says what changed in one or two sentences; a **motivation** that explains why the change is needed (or links to the issue that does); a **how-to-test** section that lists the exact commands a reviewer can run to verify the fix; any **screenshots or figures** for visible changes; and **links** to related issues, background docs, or prior discussion.
+Already opened the giant pull request? Close it and reopen it as several smaller ones. It feels like going backward, but it’s usually the fastest way to get anything merged.
+
+### A description that guides the reviewer
+
+Think of the description as a guided tour, in five parts: a **summary** of what changed; the **motivation**, or a link to the issue that explains it; **how to test**, the exact commands a reviewer can run; **screenshots** for anything visible; and **links** to related issues or discussion. GitHub’s page on [helping others review your changes](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/helping-others-review-your-changes) has more.
 
 ``` markdown
 ## Summary
@@ -179,27 +195,27 @@ Both should pass. The notebook's week-9 row should show 387 entries
 Closes #42.
 ```
 
-The “how to test” block is the single most valuable section. It turns a vague review into a concrete verification: the reviewer copy-pastes the commands, sees the same result you saw, and knows the claim in the summary is true.
+The “How to test” block is the most valuable part: the reviewer pastes the commands, sees the result you saw, and knows the summary is true. The last line matters too. “Closes \#42” (or “Fixes” or “Resolves”) [links the pull request to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue), and GitHub closes the issue automatically when the pull request merges into the default branch. A [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository) fills in these headings for you.
 
-### Pre-review self-check
+### Review your own work first
 
-Before you request a review, walk through a short self-review of your own PR. **Re-read your own diff** on the GitHub PR page, not just in your editor — the side-by-side rendering often surfaces things that looked fine locally, like a debugging `print` you meant to delete or an accidental change to an unrelated file. **Run a smoke test**: execute the code, run the relevant tests, re-run the notebook. If you cannot demonstrate that the change works, the reviewer certainly cannot. **Confirm that docs are updated** in the same PR — README, docstrings, data dictionary, whatever the change affects. And **check for accidental inclusions**: no secrets, no API keys, no large binary files, no committed `.venv/` directories. A 30-second scan of `git status` and the PR’s file list catches almost all of these.
+Before you ask anyone else to look, spend five minutes reviewing yourself. **Reread your diff on the pull request page,** not just in your editor: seeing it as the reviewer will often surfaces a stray debugging `print` or an accidental change to an unrelated file. **Run a [smoke test](https://en.wikipedia.org/wiki/Smoke_testing_(software)):** run the code, the relevant tests, and the notebook. If you can’t show the change works, the reviewer certainly can’t. **Check that the docs are updated** in the same pull request. And **look for things that shouldn’t be there:** secrets, API keys, large data files, a committed `.venv/` folder. A thirty-second look at `git status` and the pull request’s file list catches nearly all of them.
 
-## 32.6 Reviewing and commenting mechanics
+## 32.6 Reviewing, commenting, and responding
 
-### Comment taxonomy (so feedback is legible)
+### Say what kind of comment it is
 
-Review comments do different kinds of work, and mixing them together is a recipe for confusion. A reviewer who writes six comments without marking which ones are mandatory leaves the author guessing: must I fix all of these before merging, or are some just opinions? A tiny four-word taxonomy prefix solves this.
+Here’s a situation that frustrates almost every new author: a reviewer leaves twelve comments and doesn’t say which ones matter. Must you fix all twelve, or are some just the reviewer’s taste? A one-word prefix on each comment solves it.
 
-**Blocker** marks a comment that must be fixed before the PR can merge. Correctness bugs, security issues, broken reproducibility, and crashes all qualify. **Suggestion** proposes a better way to do something but explicitly does not block merge; the author can take it or leave it. **Question** asks the author to clarify intent before the reviewer can finish evaluating — “is this function supposed to handle null inputs?” The author’s answer often resolves the thread without any code change. **Nit** (short for *nitpick*) flags a minor style or naming point that the reviewer noticed but would never block a PR over — comma placement, a variable name that could be clearer, an unused import. Nits are optional and the author is free to ignore them.
+**Blocker** marks something that must be fixed before the merge: a correctness bug, a security problem, broken reproducibility, a crash. **Suggestion** proposes a better way but doesn’t block; the author can take it or leave it. **Question** asks the author to explain the intent before the reviewer can finish (“Is this function supposed to handle missing values?”), and the answer often settles the thread with no code change at all. **Nit** (short for *nitpick*) flags a small style or naming point the reviewer would never hold a merge over; the author is free to ignore it.
 
-Using these four labels as a prefix on every comment makes reviews legible at a glance. The author can scan a PR with 15 comments and immediately see “okay, there are 2 blockers, 4 suggestions, 3 questions, and 6 nits” and plan accordingly.
+With those prefixes, an author can scan fifteen comments, see two blockers, four suggestions, three questions, and six nits, and plan accordingly. Google’s guide to [writing review comments](https://google.github.io/eng-practices/review/reviewer/comments.html) recommends labeling severity too, because without labels “authors may interpret all comments as mandatory.”
 
-### Writing effective comments
+### Write comments someone can act on
 
-A good review comment has three ingredients: it points to a specific line, it explains *why*, and it proposes a concrete direction. “This is wrong” is useless — the author has no way to act on it. “This will crash if the CSV has a BOM at the start of the file; could you strip it in the reader, or open the file with `encoding='utf-8-sig'`?” is actionable, because it names the problem, explains the consequence, and gives the author a concrete choice.
+A good comment points at a specific line, explains *why*, and suggests a direction. “This is wrong” is useless, because the author can’t act on it. Compare: “This raises `KeyError: 'id'` if the CSV starts with a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark), because `csv.DictReader` names the first column `'\ufeffid'`. Could you open the file with `encoding='utf-8-sig'`?” That one names the problem, its consequence, and a fix.
 
-Tie every comment to a goal — correctness, clarity, consistency with the rest of the codebase, reproducibility, security. When the author can see *what the reviewer is protecting*, even disagreements are productive, because both sides are arguing about the goal rather than about taste. When intent is unclear, prefer a **question** over a prescription: “what is this branch of the `if` supposed to do?” is much more useful than “this is confusing,” because it gives the author a concrete prompt to explain or rewrite (see [sec-asking-questions](#sec-asking-questions) for how to frame a well-structured technical question).
+Tie each comment to what you’re protecting: correctness, clarity, consistency, reproducibility, security. When the author can see the goal, even a disagreement stays productive, because you’re arguing about the goal rather than about taste. When the intent is unclear, ask rather than prescribe. “What is this branch of the `if` supposed to do?” helps far more than “this is confusing,” because it gives the author something concrete to explain or rewrite ([sec-asking-questions](#sec-asking-questions) has more on framing a good technical question).
 
 ``` markdown
 **Blocker**: `src/parsers.py` line 47 — this `dropna()` removes any row
@@ -220,44 +236,54 @@ error when `df` is empty?
 Non-blocking.
 ```
 
-### Tone and collaboration hygiene
+On GitHub you attach a comment to a line by clicking beside it in the pull request’s *Files changed* tab, and you can send all your comments at once as a single review ([reviewing proposed changes](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request)). When you know the exact fix, a *suggested change* carries the replacement text, and the author can accept it with one click ([incorporating feedback](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request); [sec-git-github](#sec-git-github) shows one).
 
-Code review is emotionally loaded even when nobody intends it to be, because criticism of code feels like criticism of the author. Defuse that by design. **Assume good intent** — the author had a reason for writing what they wrote, even if you cannot see it yet; ask before you conclude. **Critique the code, not the person**: say “this function could be simpler” rather than “you wrote an overcomplicated function.” The difference looks small on paper and feels enormous to the recipient. **Use neutral language and skip sarcasm**: jokes that read as friendly in chat often read as sneering in written review comments. And **acknowledge good work**: a quick “nice refactor here” or “I like how you structured the tests” costs nothing and makes future reviews feel collaborative rather than adversarial.
+### Tone: critique the code, not the person
 
-### Thread management
+Review is emotionally loaded even when nobody means it to be, because criticism of your code feels like criticism of you. Defuse it on purpose. **Assume good intent:** the author had a reason, even if you can’t see it yet, so ask before you conclude. **Talk about the code, not the author:** “this function could be simpler,” not “you overcomplicated this.” The difference looks tiny on the page and feels enormous to the person reading it. **Skip the sarcasm:** a joke that sounds friendly out loud reads as a sneer in writing. And **say what’s good:** “nice refactor here” costs nothing and makes the next review feel like teamwork rather than a trial.
 
-Keep **one issue per thread**: if you have two concerns about the same function, post them as two separate comments so each can be resolved independently. **Resolve threads when they are addressed**, so the PR’s “unresolved conversations” count actually means something. If a thread produces a consequential decision — “we’re going to keep the old behavior because of backward compatibility” — **summarize that decision in the PR description or in `DECISIONS.md`**, because threads on closed PRs are hard to find later. The PR description is the canonical summary of the PR; use it that way.
+### Keep threads tidy, and close every loop
 
-### Responding to reviews as an author
+Put **one concern per thread**, so each can be resolved on its own, and **resolve a thread once it’s addressed**, so the count of unresolved conversations means something (the pull request’s author or anyone with write access can [resolve a conversation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/commenting-on-a-pull-request)). When a thread produces a real decision (“we’ll keep the old behavior for backward compatibility”), **summarize it in the pull request description or `DECISIONS.md`**, because threads on closed pull requests are hard to find.
 
-When reviewers leave comments, your job as the author is to close each loop explicitly. **Reply to every thread**, even the small ones — either “Fixed in commit abc123” or “Kept as-is because…” or “Good catch, thanks.” Silence on a thread makes the reviewer wonder whether you saw the comment at all.
+As the author, close each loop out loud. **Reply to every thread:** “Fixed in commit abc123,” “Kept as is because…,” or just “Good catch, thanks.” Silence leaves the reviewer wondering whether you saw the comment. If you **disagree**, say so, give your reason, and offer an alternative: “I’d rather not rename this, since it matches the upstream API. Would a comment explaining the mapping help?” Disagreement is fine; quietly ignoring a comment is not. And **resist drive-by changes:** fix an unrelated bug you spot during review in a second pull request, or the reviewer can’t tell whether you addressed their comment or added something new.
 
-If you **disagree** with a comment, say so with your reasoning, and propose an alternative: “I don’t think we should rename this — the current name matches the upstream API. Would it help if I added a comment explaining the mapping?” Disagreement is fine; silent reversals are not. And **avoid drive-by changes** — if during the review you notice an unrelated bug and are tempted to fix it in the same branch, resist. Open a second PR. Drive-by changes confuse the reviewer (“wait, did they address the comment or add new stuff?”) and slow the merge.
-
-[Figure fig-github-pr-review-comment](#fig-github-pr-review-comment) shows a whole loop on one small thread: a line comment with a suggested change, a reply that says where the fix went, and the thread resolved. Notice one thing it doesn’t do: the comment carries no label from the taxonomy above. The *Suggested change* box hints at what kind of comment this is, but a “**Suggestion**:” prefix would have said so outright.
+[Figure fig-github-pr-review-comment](#fig-github-pr-review-comment) shows a whole loop on one small thread: a line comment with a suggested change, a reply that says where the fix went, and the thread resolved. Notice one thing it doesn’t do: the comment carries none of the labels above. The *Suggested change* box hints at what kind of comment this is, but a “**Suggestion**:” prefix would have said so outright.
 
 ![Screenshot of a resolved GitHub review thread on chapters/version-control.qmd, with a Hide resolved button in its header. Diff lines 763 to 766 end in git stash pop. A blurred reviewer suggests adding git stash list to the quick reference, with a Suggested change box. A blurred author replies: Agreed. This pull request is already merged, so I've added git stash list in a follow-up pull request instead.](../graphics/collaboration/github-pr-review-comment.png)
 
 Figure 32.1: A resolved review thread on a pull request in this book’s own repository, signed out, in September 2026. The reviewer’s comment proposes a change in GitHub’s *Suggested change* box; the author’s reply says where the fix went, because the pull request had already merged; and *Hide resolved* in the header means the thread has been marked resolved and is shown expanded. Claude Code wrote both sides from the maintainer’s account; names and avatars are blurred.
 
-## 32.7 Merging, ownership, and handoffs
+### When review turns into ping-pong
 
-### Definition of done (team agreement)
+Sometimes a pull request bounces back and forth for a week, and now there are 40 threads and no momentum. Usually nothing was labeled, so every comment felt mandatory and the author is worn out. Labels often turn it into “five blockers to fix; everything else is optional,” and it moves again.
 
-“Done” is not a single moment; it is a checklist. A shared, explicit definition of done is what prevents the kind of half-finished work that a reviewer approves, merges, and then discovers nobody updated the docs and a test was silently skipped. Agree on the list as a team and apply it to every PR:
+When one disagreement has gone three rounds, stop trading comments and propose a decision: “Let’s go with option A because of X; can we merge and revisit if it causes problems?” Put a time limit on the debate. A tie-breaker from the lead or the instructor beats a pull request that rots for a week. Google’s guide has a page on [handling pushback](https://google.github.io/eng-practices/review/reviewer/pushback.html) from the reviewer’s side.
 
-- **Review approvals obtained** — at least one reviewer (or however many your project requires) has said “approve,” not just “looks good.”
-- **Tests and smoke checks pass** — CI is green; if your project doesn’t have CI, the author has manually run the test suite and the smoke test and can say so.
-- **Documentation updated** — README, docstrings, data dictionary, and any other affected docs reflect the new behavior.
-- **Issue linked and closed** — the PR references the issue it resolves with `Closes #42`, so merging the PR auto-closes the issue with a summary of what changed.
+## 32.7 Ownership, “done,” and handoffs
 
-Post the definition somewhere visible (CONTRIBUTING.md, a pinned issue, or the PR template) so every author and reviewer can see it, and treat PRs that skip any item as incomplete.
+### Who owns this?
+
+When nobody is assigned to an issue, everyone assumes someone else has it. You’ve probably seen it: an issue labeled “urgent” that sits open for three weeks because it was never clear whose job it was.
+
+The fix is simple and slightly uncomfortable: [assign](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users) every non-trivial issue to exactly one person. A milestone or feature gets a named **driver**, whose job is to notice when the work is stuck and do something about it. Others can write code for it; the driver keeps it moving.
+
+Larger projects write some of this into settings. A [CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) file names who owns which files, and GitHub requests their review whenever a pull request touches them. [Protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) let a maintainer require approvals, or passing checks, before anything merges into `main`.
+
+### A shared definition of done
+
+“Done” isn’t a moment; it’s a checklist. Without a shared one, a pull request merges and only later does someone notice that the docs weren’t updated and a test was skipped. Agree on the list as a team, and apply it to every pull request:
+
+- **Review approvals obtained:** at least one reviewer (or however many your project requires) has actually approved, not just said “looks good.”
+- **Tests and smoke checks pass:** automated checks are green; if your project has none, the author has run the tests and the smoke test by hand and says so.
+- **Documentation updated:** the README, docstrings, data dictionary, and anything else affected describe the new behavior.
+- **Issue linked and closed:** the pull request says `Closes #42`, so merging it closes the issue, and the issue records what changed.
+
+Post the list where everyone sees it (`CONTRIBUTING.md`, a pinned issue, or the pull request template), and treat a pull request that skips an item as unfinished.
 
 ### Handoff notes
 
-Long-running work eventually gets handed off — end of a semester, a contributor goes on vacation, the person who owned the cleaning step moves on to the analysis step. Without a handoff note, the next person has to reconstruct where things are from commit messages and guesswork. That is expensive and frustrating.
-
-A useful handoff note is short and structured: what was done, what is in progress, what is blocked, and what the next one or two steps should be. Leave it in the relevant issue or in a pinned comment on the PR.
+Long-running work eventually changes hands: the semester ends, someone goes on vacation, the person who owned cleaning moves on to analysis. Without a note, the next person rebuilds the picture from commit messages and guesswork. A handoff note is short and structured: what’s done, what’s in progress, what’s blocked, and the next one or two steps. Leave it in the relevant issue or as a pinned comment on the pull request.
 
 ``` markdown
 **Handoff — 2025-04-10, Alice → Bob**
@@ -280,34 +306,34 @@ before I can pin the `date` column's expected format.
 3. Start on the 2024 slice.
 ```
 
-A two-minute handoff note at the end of a work session saves the next person an hour of archaeology.
+Two minutes on a note at the end of a work session saves the next person an hour of archaeology. It also raises your project’s bus factor, which is the whole point.
 
-## 32.8 Collaboration practices for data science artifacts
+## 32.8 Collaborating on notebooks and data
 
 ### Notebooks and noisy diffs
 
-Jupyter notebooks collaborate poorly by default. They are JSON files with cell outputs — images, tables, large printed values — embedded in them, and every time you re-run a cell the diff changes even if the code did not. On a team, that means a PR that should be “I changed one function” shows up as a 2,000-line diff because the outputs churned.
+If you’ve changed one line of a notebook and seen a diff thousands of lines long, you’ve met the problem. A [Jupyter](https://jupyter.org/) notebook is a JSON file with its outputs (images, tables, printed values) stored inside, so rerunning a cell changes the file even when the code didn’t, and “I changed one function” shows up as a wall of churn nobody can review.
 
-Three practices keep notebooks collaborator-friendly. **Keep outputs small** — avoid cells that print thousands of rows or dump a gigantic repr, since those go straight into the committed file. **Clear unnecessary outputs before you commit** — either manually (“Restart & Clear Outputs” in Jupyter) or automatically with `nbstripout` configured as a pre-commit hook (see [sec-automation](#sec-automation)). And follow the pattern of **notebook as narrative, code in `src/`**: notebooks should tell a story — load, clean, analyze, visualize, explain — while the actual reusable logic lives in importable Python modules. That separation keeps notebook diffs focused on the narrative and moves code review onto the `.py` files that diff cleanly.
+Three habits keep notebooks friendly to collaborators. **Keep outputs small:** a cell that prints thousands of rows puts all of them in the committed file. **Clear outputs before you commit,** either by hand (in JupyterLab, *Kernel \> Restart Kernel and Clear Outputs of All Cells*) or automatically with [nbstripout](https://pypi.org/project/nbstripout/) set up as a pre-commit hook (see [sec-automation](#sec-automation)). And **let the notebook tell the story while reusable code lives in `src/`,** in Python modules the notebook imports; code review then happens on `.py` files that diff cleanly. [sec-git-github](#sec-git-github) and [sec-jupyter](#sec-jupyter) have more.
 
-### Data and model artifacts
+### Data and model files
 
-Large raw datasets do not belong in Git — see [sec-git-github](#sec-git-github) for the detailed argument. For collaboration purposes, the rule is: **do not commit large datasets unless your course or policy explicitly requires it**, and document the retrieval process so another collaborator can get the same data. A short `scripts/download_data.py` or a `make data` target beats a committed 500 MB CSV every time.
+Large raw datasets don’t belong in Git ([sec-git-github](#sec-git-github) explains why). **Don’t commit them unless your course or a policy requires it,** and document how to get the data so a collaborator ends up with the same copy. A short `scripts/download_data.py` or a `make data` target beats a committed 500 MB CSV every time.
 
-Model artifacts — trained models, computed embeddings, cached features — follow the same rule. If the artifact can be reproduced from the code, the code is what gets versioned and the artifact lives in a `models/` or `data/processed/` directory that is listed in `.gitignore`. When an artifact is expensive to reproduce (hours of training, API costs), store it in cloud storage with a documented retrieval path. And **link any output used in a report** — figures, tables, numbers — back to the specific code and data that produced it, so a reader can trace the claim in the write-up to the code that generated it.
+Trained models, embeddings, and cached features follow the same rule. If the code can rebuild a file, version the code and keep the file in a folder listed in `.gitignore`, such as `models/` or `data/processed/`. If it’s expensive to rebuild (hours of training, or API costs), store it in cloud storage and document how to fetch it. And **trace every figure, table, and number in a report** back to the code and data that produced it.
 
-### Reproducibility check as a collaboration contract
+### Reproducibility as the team’s contract
 
-The test of a reproducible project is simple: **a collaborator should be able to clone the repo, set up the environment, run the pipeline, and get the same outputs you got, without asking you any questions**. If that is not true, the project is not really collaborative — it is a private workspace with a shared URL.
+The test of a collaborative project is simple: **a teammate can clone the repository, set up the environment, run the pipeline, and get the same outputs you got, without asking you anything.** If that isn’t true, the project isn’t really shared; it’s a private workspace with a shared URL. (That’s this chapter’s meme: calling a project [reproducible](https://en.wikipedia.org/wiki/Reproducibility) doesn’t make it so until someone else has reproduced it.)
 
-Make the reproducibility check part of the PR process. Every PR that touches how the project runs should include a “How to reproduce” section in its description, listing the exact commands the reviewer needs to run to verify the change. The reviewer then runs those commands and either confirms the output matches or flags the discrepancy. That simple contract catches most of the “works on my machine” bugs before they land.
+Build that check into your pull requests. Every pull request that changes how the project runs lists the exact commands under “How to reproduce,” and the reviewer runs them and confirms the output matches, or says where it didn’t. That small contract catches most “works on my machine” bugs before they land.
 
 ``` markdown
 ## How to reproduce
-    git clone <repo>
-    cd <repo>
+    git clone https://github.com/your-team/sales-report.git
+    cd sales-report
     make env
-    conda activate housing-audit
+    conda activate sales-report
     make clean-data
     jupyter execute notebooks/03-aggregate.ipynb
 
@@ -315,17 +341,17 @@ Expected: notebook runs to completion with no errors, week-9
 row in the summary table shows 387 entries.
 ```
 
-## 32.9 Cadences and rituals (lightweight, student-friendly)
+## 32.9 Team rhythms that don’t eat your week
 
 ### Weekly planning
 
-A weekly planning ritual — 20 minutes on Monday, no more — keeps a student project from drifting. The job of the meeting is to look at the open issue list, decide what actually matters this week, assign owners, and identify anything that is blocked on external input. It is not a status report (status lives in issues and PRs) and it is not a design discussion (design happens in issue threads with more context and fewer time pressures). It is triage.
+Twenty minutes of planning on Monday, no more, keeps a student project from drifting. Its job is triage: look at the open issues, decide what matters this week, give each an owner, and spot anything blocked on someone outside the team. It isn’t a status report (status lives in issues and pull requests) or a design discussion (that goes better in an issue thread, with more context and less time pressure).
 
-A useful format is to walk the issue board from “in progress” to “ready” to “backlog,” ask three questions for each issue — *is this still the right thing? who owns it this week? is it blocked?* — and end with a one-paragraph summary posted in the project’s pinned issue or chat. That summary becomes the shared memory for the week.
+One format that works: walk the board (GitHub [Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) or [milestones](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones) both work) from “in progress” to “ready” to “backlog,” and ask three questions of each issue: *Is this still the right thing? Who owns it this week? Is it blocked?* End by posting a one-paragraph summary in the project’s pinned issue or chat. That summary becomes the team’s memory of the week.
 
-### Daily/async updates
+### Short written updates
 
-For small student teams, daily stand-up meetings are overkill; a three-line async update is almost as useful and costs far less. Each person posts, once a day, what they did yesterday, what they plan to do today, and what is blocking them. The “blocked” line is the most important — it is how the rest of the team knows to help.
+Software teams often hold a daily [stand-up meeting](https://en.wikipedia.org/wiki/Stand-up_meeting). For a small student team that’s overkill; a three-line written update does most of the job at a fraction of the cost. Once a day, each person posts what they did, what they’ll do next, and what’s blocking them. The “blocked” line matters most, because it’s how everyone else knows to help.
 
 ``` markdown
 **Alice — 2025-04-10**
@@ -334,55 +360,23 @@ For small student teams, daily stand-up meetings are overkill; a three-line asyn
 - Blocked: waiting on schema sign-off in #91 before I can pin dates.
 ```
 
-Post updates directly in the relevant issue or PR when they affect others — that keeps the information linked to the work it describes instead of scrolling off in a chat log.
+When an update affects someone else’s work, post it in the relevant issue or pull request, so it stays attached to the work it describes instead of scrolling away in chat.
 
-### Retrospectives (optional)
+### Retrospectives
 
-At the end of a project (or milestone, or semester), a short retrospective helps convert pain into improvement. Three questions: *what went well*, *what was painful*, *what should we change next time*. Keep it to 30 minutes, let everyone speak, and do not let the discussion become about blame — the point is the pattern, not the person.
+At the end of a project, a milestone, or a semester, a short [retrospective](https://en.wikipedia.org/wiki/Retrospective#Software_development) turns pain into improvement. Ask three questions: *What went well? What was painful? What should we change next time?* Keep it to thirty minutes, let everyone speak, and don’t let it turn into blame: the point is the pattern, not the person.
 
-The one rule that makes retrospectives actually useful is that **every pain point becomes an issue or a documentation update**. “The environment kept breaking” turns into an issue to pin dependencies; “I never knew what was in progress” turns into a commitment to the weekly planning ritual. A retrospective with no concrete follow-ups is a gripe session. A retrospective that closes three issues and updates the README is how teams get better.
+What makes one worth the time is that **every pain point becomes an issue or a documentation change.** “The environment kept breaking” becomes an issue to pin dependencies; “I never knew what was in progress” becomes a commitment to weekly planning. A retrospective with no follow-ups is a gripe session; one that ends with three issues filed is how a team gets better.
 
-## 32.10 Common failure modes and fixes
+## 32.10 Stakes and politics
 
-### Work hidden in private messages
+In 2017, Josh Terrell and colleagues published a [large study of pull requests on GitHub](https://doi.org/10.7717/peerj-cs.111) that compared how often contributions from women and from men were accepted. Overall, women’s pull requests were accepted more often than men’s. But among outsiders to a project whose gender a reviewer could identify, men’s were accepted more often.
 
-The most common collaboration failure on student projects is that important decisions, rationales, and designs live in private chat messages or DMs that nobody else can see. Two weeks later, nobody remembers why a column was dropped or which model was chosen, and the answer is buried in a scrolled-off chat thread.
-
-**Fix:** establish a rule that any decision with project-level consequences moves into an issue, a PR comment, or `DECISIONS.md` before the conversation is considered closed. Chat is fine for quick unblockers — “what’s the path to the data?” — but as soon as a conversation produces a choice, write it down somewhere persistent and link the chat message to it. The phrase to practice is: “Let me capture this in issue \#X so we don’t lose it.”
-
-### Mega-PRs that no one can review
-
-A PR that touches 40 files across three unrelated changes will sit unreviewed for days, because no reviewer can find the time to work through it carefully. When the review finally happens, it will either be a rubber-stamp or an overwhelming list of comments that the author cannot triage.
-
-**Fix:** split. If you already have a mega-PR open, close it and re-open it as several smaller PRs, each with one clear purpose. If you are about to create one, stop and ask whether the refactor really belongs in the same PR as the new feature — it almost never does. Stage pure refactors separately from behavior changes so reviewers can evaluate “did anything change?” and “does the new thing work?” independently.
-
-### Review ping-pong and stalled progress
-
-Sometimes a PR bounces between reviewer and author indefinitely — the reviewer leaves comments, the author addresses them, the reviewer leaves more comments, and after a week the PR has 40 threads and no momentum. Usually the problem is that blockers and suggestions were not separated: the reviewer made 40 comments that all felt equally mandatory, and the author is exhausted.
-
-**Fix:** label every comment as Blocker, Suggestion, Question, or Nit (see `Comment taxonomy` above). If only the blockers and questions have to be resolved before merge, a 40-comment review suddenly becomes “five blockers to fix, everything else optional,” and the PR moves. When a specific debate has gone three rounds without progress, propose a decision (“let’s go with option A because X; can we merge this and revisit if it causes problems?”) and **time-box** the debate. A tie-breaker from the lead or instructor is better than a PR that rots for a week.
-
-### Unclear ownership
-
-When nobody is explicitly assigned to an issue, everybody assumes someone else is handling it, and nothing gets done. You can see this on student teams in the form of issues tagged “urgent” that sit open for weeks because it was never clear whose job they were.
-
-**Fix:** assign every non-trivial issue to exactly one person. Milestones and features get a named **driver** — the person responsible for keeping the work moving, even if other people contribute code to it. Driver ≠ sole implementer; it means “the person whose job it is to notice when the work is stuck and do something about it.”
-
-### Documentation drift
-
-Documentation drifts out of sync with the code almost immediately, because changing code is mandatory (the tests force it) and changing docs is optional (nothing enforces it). After a few weeks, the README is lying to you.
-
-**Fix:** include a “docs updated” checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, **file an issue** — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.
-
-## 32.11 Stakes and politics
-
-Code review is one of the most concentrated cultural moments in software collaboration: a senior person reads a junior person’s work and decides whether it is acceptable, and the language of that decision shapes how the junior person feels about their work for the rest of the week. The mechanics in this chapter — small PRs, focused comments, asynchronous review — are good practices, and they are also not the whole story.
-
-Two things to notice. First, *review style is cultural*. Comments that seem direct to one reviewer (“this is wrong”; “why would you do it that way?”) read as hostile to another, especially across language fluency, age, and seniority gaps. The literature on psychological safety and the experience of women, people of color, and non-native English speakers in code-review systems all converge on the same finding: the same comment, with the same content, is read very differently depending on who wrote it and who received it. Conventions like Conventional Comments exist precisely to make intent legible — to compensate for the fact that text strips out the cues a face-to-face conversation would carry. Second, *who can approve a merge is power*. The “code owner” who has to sign off, the senior engineer whose word ends a thread, the maintainer who can `LGTM` a PR into main — these are real authority relationships dressed up as technical machinery. When you contribute to an open-source project, you are entering somebody else’s review hierarchy; when you build one, you are deciding whose voices count.
+Review is where one person decides whether another’s work is good enough, so it carries more weight than its mechanics suggest. Review style is cultural: a comment one reviewer thinks of as direct (“this is wrong”; “why would you do it that way?”) reads as hostile to another, especially across gaps in seniority, age, and English fluency, and written text strips out the tone a face-to-face conversation would carry. That’s why teams that care about [psychological safety](https://en.wikipedia.org/wiki/Psychological_safety) make intent explicit with conventions like the comment labels in this chapter. And who can approve a merge is power. The code owner who must sign off, the senior engineer whose word ends a thread, the maintainer who can approve a pull request into `main`: these are real authority relationships in the form of repository settings. Join an open-source project and you enter someone else’s review hierarchy; set up your own, and you decide whose voices count.
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.
 
-## 32.12 Worked examples
+## 32.11 Worked examples
 
 These follow a three-person team cleaning and analyzing a course survey, the same project as the worked examples in [sec-git-github](#sec-git-github).
 
@@ -392,7 +386,7 @@ On Monday, the team’s group chat gets this:
 
 > hey the response counts look off?? like the dashboard says 212 but qualtrics said more. can someone look
 
-It’s a real problem, but in this form nobody can act on it: which counts, how far off, off since when? And by Thursday it will have scrolled out of sight. Whoever reads it first turns it into an issue, using the shape from “Anatomy of a good issue” above:
+It’s a real problem, but in this form nobody can act on it: which counts, how far off, off since when? And by Thursday it will have scrolled out of sight. Whoever reads it first turns it into an issue, using the shape from “What a good issue contains” above:
 
 ``` markdown
 **Title:** Reconcile cleaned response count (212) with the survey export (231)
@@ -419,7 +413,7 @@ Then reply in the chat with a link to the issue, so the conversation moves there
 
 ### Author a reviewable pull request
 
-Working on that issue, you find the answer. Of the 19 missing rows, 11 are staff test accounts and 4 are blank submissions, both dropped on purpose; the other 4 are real responses with a blank email field, which the staff filter caught by mistake. Along the way you also added the per-rule logging, renamed some columns, and reformatted `clean.py`. The branch now touches 14 files. Before opening a pull request, split it: the reviewer’s job is to check that the fix is right, and every unrelated line makes that harder (see “Small PR discipline” above).
+Working on that issue, you find the answer. Of the 19 missing rows, 11 are staff test accounts and 4 are blank submissions, both dropped on purpose; the other 4 are real responses with a blank email field, which the staff filter caught by mistake. Along the way you also added the per-rule logging, renamed some columns, and reformatted `clean.py`. The branch now touches 14 files. Before opening a pull request, split it: the reviewer’s job is to check that the fix is right, and every unrelated line makes that harder (see “One purpose per pull request” above).
 
 1.  **The fix:** a pull request that changes the one filter and nothing else.
 2.  **The logging:** a second, which finishes the issue’s definition of done.
@@ -451,13 +445,13 @@ You’re reviewing a teammate’s pull request that adds a satisfaction score. O
 
 > this is wrong, you can’t average likert items like that
 
-It’s true and useless: it doesn’t say what is wrong, why it matters, or what to do, and its tone invites an argument rather than a fix. Rewritten with the taxonomy from “Comment taxonomy” above, the review becomes four comments, each on its own line of the diff:
+It’s true and useless: it doesn’t say what is wrong, why it matters, or what to do, and its tone invites an argument rather than a fix. Rewritten with the labels from “Say what kind of comment it is” above, the review becomes four comments, each on its own line of the diff:
 
 ``` markdown
 **Blocker**: line 31 averages the five satisfaction items, but
 items 2 and 4 are reverse-coded (1 = very satisfied). As written,
-a very satisfied respondent scores near 3. Reverse items 2 and 4
-(6 - value) before averaging; the codebook marks which ones.
+a very satisfied respondent scores 3.4 instead of 5. Reverse items
+2 and 4 (6 - value) before averaging; the codebook marks which ones.
 
 **Question**: line 35 drops respondents who skipped any item.
 Is that intended? It removes 23 people; averaging the items each
@@ -469,11 +463,11 @@ dashboard and the notebook use the same definition. Non-blocking.
 **Nit**: `sat_scr` → `satisfaction_score`. Non-blocking.
 ```
 
-End with something true and specific about what works (“the new tests for the score are exactly what this needed”), and approve once the blocker is fixed. The author now knows that one thing must change, one needs an answer, and two are optional.
+(Reverse-coded items are common in [Likert scales](https://en.wikipedia.org/wiki/Likert_scale): some questions are worded the other way round, so that a respondent who agrees with everything doesn’t push the score up.) End with something true and specific about what works (“the new tests for the score are exactly what this needed”), and approve once the blocker is fixed. The author now knows that one thing must change, one needs an answer, and two are optional.
 
 ### Close the loop after merge
 
-When the last pull request for issue \#12 merges, three small things finish the job. **Update the documentation** the change affects: the README’s list of cleaning rules gains “blank submissions are kept.” **Close the issue with a summary,** so anyone who finds it later gets the answer without reading every pull request:
+When the last pull request for issue \#12 merges, three small things finish the job. **Update the documentation** the change affects: the README’s list of cleaning rules gains “responses with a blank email are kept.” **Close the issue with a summary,** so anyone who finds it later gets the answer without reading every pull request:
 
 ``` markdown
 All 19 rows accounted for: 11 staff test accounts and 4 blank
@@ -485,7 +479,7 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
 
 **Open an issue for anything you found but didn’t fix,** such as “the Qualtrics export includes preview responses; should we filter those?”, and link it from the summary. [Figure fig-github-pr-review-comment](#fig-github-pr-review-comment) shows the same habit at the scale of one comment: the reply says where the fix went, and the thread is resolved.
 
-## 32.13 Templates
+## 32.12 Templates
 
 ### Template A: PR checklist
 
@@ -523,33 +517,33 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
     * Style/testing expectations
     * Where to ask questions
 
-## 32.14 Exercises
+## 32.13 Exercises
 
-1.  Write a README for a small class project that a classmate can run.
+1.  Write a README for a small class project, then hand it to a classmate and watch (silently) while they try to run the project from it. Fix every place they got stuck.
 
-2.  Turn three vague tasks into well-scoped issues with a definition of done.
+2.  Turn three vague tasks from a group chat or a to-do list into well-scoped issues, each with a definition of done.
 
-3.  Open a PR with a strong description and testing steps.
+3.  Open a pull request with a clear description and a “How to test” section a reviewer can paste.
 
-4.  Review a peer’s PR using the taxonomy; request one change and one clarification.
+4.  Review a peer’s pull request using the four labels; request one change and ask one clarifying question.
 
-5.  Close an issue by summarizing what changed, what remains, and how to reproduce.
+5.  Close an issue with a summary of what changed, what remains, and how to reproduce the result.
 
-## 32.15 One-page checklist
+## 32.14 One-page checklist
 
-- Work is tracked in issues/PRs, not only chat.
+- Work is tracked in issues and pull requests, not only in chat.
 
-- Documentation exists and is updated with code changes.
+- Documentation exists and changes in the same pull request as the code.
 
-- PRs are small and include “how to test”.
+- Pull requests are small, have one purpose, and include “how to test.”
 
-- Reviews are respectful, actionable, and categorized.
+- Reviews are respectful, actionable, and labeled.
 
-- Decisions are recorded and threads are resolved.
+- Every issue has one owner; decisions are recorded and threads are resolved.
 
 - After merge, issues are closed with a clear summary and links.
 
-## 32.16 Quick reference: collaboration norms
+## 32.15 Quick reference: collaboration norms
 
 - Prefer artifacts over memory.
 
@@ -557,14 +551,14 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
 
 - Prefer small, reversible changes.
 
-- Ask questions early; document decisions.
+- Ask questions early; write decisions down.
 
 > **NOTE:**
 >
-> - GitHub, [About pull requests](https://docs.github.com/en/pull-requests) — the canonical reference for opening, reviewing, and merging PRs.
-> - Google, [Engineering Practices: Code Review](https://google.github.io/eng-practices/review/) — Google’s public guide to what reviewers should look for and how fast they should respond; the closest thing to a textbook for code review.
-> - [Conventional Comments](https://conventionalcomments.org/) — a lightweight convention for labelling review comments (e.g., `praise:`, `nitpick:`, `suggestion:`) so their intent is obvious.
-> - Amy Edmondson, [The Fearless Organization](https://fearlessorganization.com/) — the standard book on psychological safety; the empirical backbone for the “review style is cultural” framing in “Stakes and politics” above.
-> - The Recurse Center, [Social rules](https://www.recurse.com/social-rules) — short, explicit conversational norms (“no feigning surprise,” “no well-actually’s”) that improve the climate around technical collaboration.
-> - Camille Fournier, [*The Manager’s Path*](https://www.oreilly.com/library/view/the-managers-path/9781491973882/) — a durable book on engineering management; especially good on how senior engineers build healthy review and mentorship cultures.
-> - David A. Wheeler, [Why Open Source Software](https://dwheeler.com/oss_fs_why.html) and Karl Fogel, [*Producing Open Source Software*](https://producingoss.com/) — two free, durable references on running open-source projects, including the maintainer/contributor relationship.
+> - **GitHub Docs**, [Pull requests](https://docs.github.com/en/pull-requests) — the official guides to opening, reviewing, and merging pull requests, with a quickstart for each.
+> - **Google**, [Engineering Practices: Code Review](https://google.github.io/eng-practices/review/) — Google’s public guide to what reviewers should look for and how fast they should respond; the closest thing to a textbook for code review.
+> - **Conventional Comments**, [Conventional Comments](https://conventionalcomments.org/) — a lightweight convention for labeling review comments (`praise:`, `nitpick:`, `suggestion:`, and more) so their intent is obvious.
+> - **Amy Edmondson**, [*The Fearless Organization*](https://fearlessorganization.com/) — the standard book on psychological safety; the research behind the “review style is cultural” point in “Stakes and politics” above.
+> - **The Recurse Center**, [Social rules](https://www.recurse.com/social-rules) — short, explicit conversational norms (“no feigned surprise,” “no well-actually’s”) that improve the climate around technical collaboration.
+> - **Camille Fournier**, [*The Manager’s Path*](https://www.oreilly.com/library/view/the-managers-path/9781491973882/) — a durable book on engineering management; especially good on how senior engineers build healthy review and mentorship cultures.
+> - **David A. Wheeler**, [Why Open Source Software](https://dwheeler.com/oss_fs_why.html), and **Karl Fogel**, [*Producing Open Source Software*](https://producingoss.com/) — two free, durable references on open-source projects, including the relationship between maintainers and contributors.
