@@ -24,7 +24,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 ### 2. Cloud notebooks and data too big for memory
 
 - [x] **Cloud notebooks (Colab, Kaggle, Codespaces)** — added to `jupyter.qmd` in September 2026 as "Notebooks on someone else's computer": a comparison table, then persistence, environments, secrets (each platform's own store), GPUs, and what not to upload; `remote.qmd` points to it. The same pull request filled `jupyter`'s empty Exercises heading. Limits were checked against each platform's docs in September 2026; re-check them when the chapter is next reviewed.
-- [x] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — added to `data-file-formats.qmd` in September 2026 as "Data bigger than memory": how much memory a file needs (measured in pandas 3.0 and 2.2), then read less, read in chunks, convert to Parquet, and DuckDB or Polars, with a table of measured time and memory.
+- [x] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — added to `data-file-formats.qmd` in September 2026 as "Data bigger than memory": how much memory a file needs (measured in pandas 3.0 and 2.3), then read less, read in chunks, convert to Parquet, and DuckDB or Polars, with a table of measured time and memory.
 
 ### 3. Documenting and licensing data
 

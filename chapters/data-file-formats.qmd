@@ -358,7 +358,7 @@ print(pd.__version__)
 print(f"{df.memory_usage(deep=True).sum() / 1e6:.0f} MB in memory")
 ```
 
-With pandas 3.0 (the current release in September 2026), the DataFrame took 368 MB, twice the file, and the Python process peaked at about 680 MB while reading it. With pandas 2.2, which stores text as general Python objects, the same DataFrame took 1,241 MB, nearly seven times the file. So if your laptop has 8 GB of memory, a 1 GB CSV can be comfortable, tight, or impossible depending on its columns and your pandas version. Check `pd.__version__`, measure with `memory_usage(deep=True)` on a sample, and work up the steps below in order, stopping at the first one that fits.
+With pandas 3.0 (the current release in September 2026), the DataFrame took 368 MB, twice the file, and the Python process peaked at about 680 MB while reading it. With pandas 2.3, which stores text as general Python objects, the same DataFrame took 1,241 MB, nearly seven times the file. So if your laptop has 8 GB of memory, a 1 GB CSV can be comfortable, tight, or impossible depending on its columns and your pandas version. Check `pd.__version__`, measure with `memory_usage(deep=True)` on a sample, and work up the steps below in order, stopping at the first one that fits.
 
 ### Step 1: read less
 
