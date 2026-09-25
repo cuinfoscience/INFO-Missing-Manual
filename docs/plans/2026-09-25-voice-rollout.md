@@ -1,6 +1,6 @@
 # Plan: the book's new voice, part by part
 
-**Status:** in progress. The pilot (`tabular-data`, #61) and Part I (#62) are done; Parts II–VII, the appendices, the introduction, and the conclusion remain. Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
+**Status:** in progress. The pilot (`tabular-data`, #61) and Part I (#62) are done, and Part II is under way; Parts III–VII, the appendices, the introduction, and the conclusion remain. Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
 
 ## What the maintainer asked for
 
@@ -35,5 +35,7 @@ The brief below is what each Part I agent received, with its chapter named in th
 > **Don't change:** front matter; the H1 and every `{#…}` ID, cell label, and `@fig-`/`@tbl-` reference; the meme shortcode; the prerequisites callout's references; the canonical order; Stakes and politics' position, length, concrete opening, and closing sentence; glossary links, `@sec-` references, and citations; figures and their `fig-alt`; Further reading's position and format. No new margin content near the top. Blank lines around fenced code in list items.
 >
 > **Style:** plain punctuation (colons, commas, parentheses rather than chains of em dashes), American spelling, sentence-case headings, no emoji beyond 📚.
+>
+> **From Part II on, the brief also says:** don't let a long chapter grow (aim for the same length or shorter, and cut repetition); aim for 25–45 body links; keep tables to three short columns so they fit a phone; keep "At CU Boulder" facts and dates unless every fact is re-checked; run shell commands where safe and check platform-only commands against official docs; a link the session's proxy refuses (curl exit 56) isn't dead, so keep it; keep fenced examples that contain headings intact.
 >
 > **Report:** what changed by section; link counts before and after and confirmation each was checked; which code ran and what didn't work; factual claims corrected, softened, or unverifiable; anything the reviewer should look at.
