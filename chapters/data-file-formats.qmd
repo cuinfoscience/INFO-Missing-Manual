@@ -292,13 +292,17 @@ When you pass `sheet_name=None`, you get a dict mapping sheet name to DataFrame.
 Excel files are often designed for humans, not computers. Common issues:
 
 -   **Header rows buried below a title and blank rows.** Use `skiprows=`:
+
     ```python
     df = pd.read_excel("report.xlsx", skiprows=4)
     ```
+
 -   **Multi-level column headers** (two header rows for grouped columns):
+
     ```python
     df = pd.read_excel("report.xlsx", header=[0, 1])
     ```
+
 -   **Merged cells.** pandas unmerges them and fills only the top-left cell with the value; other cells become `NaN`. You may need to forward-fill: `df["group"] = df["group"].ffill()`.
 -   **Formulas.** pandas reads the last-computed *value* of a formula cell, not the formula. If Excel did not compute the formulas before saving, you get `NaN`.
 
