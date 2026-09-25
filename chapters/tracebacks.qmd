@@ -266,7 +266,7 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'
 ```
 
-A [`FileNotFoundError`](https://docs.python.org/3/library/exceptions.html#FileNotFoundError) means there's no file at the path you gave. "But it's right there!" is the usual reaction, and the answer is usually the [working directory](https://en.wikipedia.org/wiki/Working_directory). A relative [path](appendix-glossary.qmd#term-path) like `"data.csv"` is looked up relative to wherever Python is running, not relative to your script. Print [`os.getcwd()`](https://docs.python.org/3/library/os.html#os.getcwd) (after `import os`) to see where that is. In Jupyter, it's usually the folder that contains the `.ipynb` file, not your project's top folder, so a notebook in `notebooks/` needs `"../data/data.csv"`. @sec-filesystem covers paths properly.
+A [`FileNotFoundError`](https://docs.python.org/3/library/exceptions.html#FileNotFoundError) means there's no file at the path you gave. "But it's right there!" is the usual reaction, and the answer is usually the [working directory](https://en.wikipedia.org/wiki/Working_directory). A relative path like `"data.csv"` is looked up relative to wherever Python is running, not relative to your script. Print [`os.getcwd()`](https://docs.python.org/3/library/os.html#os.getcwd) (after `import os`) to see where that is. In Jupyter, it's usually the folder that contains the `.ipynb` file, not your project's top folder, so a notebook in `notebooks/` needs `"../data/data.csv"`. @sec-filesystem covers paths properly.
 
 ## Chained tracebacks: when one error leads to another
 

@@ -24,355 +24,511 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-Deploying an AI system without a plan for evaluating it is like shipping code without tests. You may have confidence in individual outputs you reviewed during development, but you have no systematic way to know whether the system behaves correctly across the range of inputs it will encounter --- or whether it regresses when the model, prompt, or data changes.
+Here's a situation that comes up in almost every class that lets students use AI. You have 2,000 open-ended comments from a course survey, and you ask a language model to sort each one into positive, negative, or mixed. You try five first, it gets all five right, so you run the rest and write that the model "classified the comments accurately." Then your instructor asks: how accurately, compared to what, and for whom? You can't answer any of the three.
 
-Evaluation is the practice of measuring AI system behavior in a principled way. [Auditing](appendix-glossary.qmd#term-audit) is the practice of looking critically for failures you did not anticipate: biases, edge cases, safety violations, and inconsistencies. Together they give you the evidence to know whether a system is working, in what ways it is failing, and whether a change made things better or worse.
+If that has happened to you, you're in good company. Five right answers *feel* like evidence, and that feeling is how most AI mistakes get into finished work. What you need is what you'd want from any measuring instrument: cases where you already know the right answer, a count of how often the system gets them, and an honest sense of how far off that count could be. That's **evaluation**. Its partner, [auditing](appendix-glossary.qmd#term-audit), is looking on purpose for the failures you didn't anticipate: the groups, topics, and odd inputs where the system does worse than its average suggests.
 
-This chapter builds on the verification practices introduced in @sec-ai-llm and applies them at scale: not just "check this output before you use it" but "design an evaluation system that tells you the truth about your AI application."
+@sec-ai-llm teaches you to check one output before you use it. This chapter scales that habit up: building a small evaluation set, checking your own labels, scoring a model with a few lines of pandas and scikit-learn, automating checks, watching a system after it ships, and auditing it for who it fails. Every example uses made-up data and simulated model outputs, so you can run it all without an API key. It won't teach you to train models; it gives you enough to make a claim about an AI system that you can defend.
 
-## Learning objectives {.unnumbered}
+## Why read this chapter {.unnumbered}
 
-By the end of this chapter, you should be able to:
-
-1.  Explain why evaluating AI outputs is fundamentally harder than evaluating traditional software
-
-2.  Describe the key dimensions along which AI output quality can be measured
-
-3.  Construct a rubric for manually evaluating outputs in a specific domain
-
-4.  Build a simple evaluation test suite and run it against a prompt or model
-
-5.  Describe how LLM-as-judge evaluation works, including its limitations
-
-6.  Design a representative evaluation set that covers edge cases and known failure modes
-
-7.  Explain what drift is and describe how to monitor for it in a deployed system
-
-8.  Apply an auditing mindset to identify unexpected or biased behaviors
+-   You tried your prompt on five examples, it got all five right, and you're not sure that means anything.
+-   You used a model to label a few thousand survey responses, tweets, or abstracts, and now you need to report how accurate it was with a number you can defend.
+-   You and a classmate labeled the same 50 items by hand, disagreed on a dozen, and don't know whose labels count as "right."
+-   Your script parsed the model's JSON fine yesterday, and today it dies with `JSONDecodeError: Expecting value: line 1 column 1 (char 0)`.
+-   You changed one sentence in a prompt and have no idea whether things got better or worse.
+-   Someone suggested having one model grade another model's answers, and you'd like to know when that's trustworthy.
+-   A tool advertises 90% accuracy, and you want to know who's in the other 10%.
 
 ## Running theme: measure before you trust {.unnumbered}
 
-A system you cannot measure is a system you cannot improve. Before deploying any AI application, decide how you will know if it is working. After deploying, keep measuring. AI systems that seem fine during development regularly surprise you in production.
+If you can't say how you'd know the system is working, you don't yet know that it is. Decide how you'll measure before you rely on it, and keep measuring afterwards, because AI systems that look fine in testing regularly surprise people once real inputs arrive.
 
-## Why evaluation is hard
+## Why checking AI is harder than testing code
 
-Evaluating traditional software is relatively tractable: given input `X`, the function should return `Y`. If it returns something else, it is wrong. AI systems break this assumption in several ways.
+Testing ordinary code is reasonably easy: a function that adds two numbers should return 4 when you give it 2 and 2, and a one-line test will tell you forever whether it does. AI systems break that comfortable picture in several ways at once.
 
-**There is often no single correct answer.** "Summarize this article" can have many valid outputs. "Is this response helpful?" involves human judgment that varies by person, context, and purpose. Traditional pass/fail testing does not map cleanly onto open-ended generation tasks.
+**There's often no single right answer.** "Summarize this article" has many good summaries. Even labeling a comment gets fuzzy at the edges: is "Lectures were fine but the exams felt unfair" negative or mixed? Two careful people can disagree.
 
-**Outputs are stochastic.** The same input at temperature \> 0 produces different outputs each time. A system that passes a test today may fail the same test tomorrow. You need to evaluate distributions of outputs, not just single examples.
+**Outputs vary.** A language model picks each word by sampling from probabilities (see @sec-llm-internals), so the same input can give different outputs on different runs. A low temperature helps but doesn't guarantee repeatability: Anthropic's [glossary](https://platform.claude.com/docs/en/about-claude/glossary) warns that even at temperature 0, identical inputs may produce different outputs across API calls. So you evaluate on many inputs, not one lucky example.
 
-**Failures are subtle.** A wrong answer in traditional software is usually obvious (exception, wrong type, wrong value). An AI system can produce fluent, confident, plausible-sounding text that is subtly wrong, misleading, or harmful --- and it will look fine to a casual reader.
+**Failures look like successes.** Broken code usually throws an error. A model that's wrong gives you fluent, confident text, which is why people call it a [hallucination](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)). A casual read won't catch it; a comparison against a known answer will.
 
-**The evaluation target moves.** Model providers update models. You change prompts. Data distributions shift. An evaluation suite that was passing last month may produce different results today, and without monitoring you will not know until a user complains.
+**The target moves.** Providers update models, you edit prompts, and the inputs change. A 2023 study by [Chen, Zaharia, and Zou](https://arxiv.org/abs/2307.09009) found that GPT-4's accuracy at identifying prime numbers fell from 84% in its March 2023 version to 51% in June: same model name, same questions, very different answers.
 
-**Human judgment is expensive.** The most reliable evaluation is careful human review. But human review does not scale to thousands of outputs, and human raters disagree with each other. Building a scalable evaluation system requires a combination of automated and human methods.
+**People are expensive, and they disagree.** Careful human review is the most trustworthy evaluation there is, but it doesn't scale to thousands of outputs. Most real evaluation is a mix: people set the standard on a small set, and code carries it to the rest.
 
-## Dimensions of quality
+You'll also see models ranked on public benchmarks such as [MMLU](https://en.wikipedia.org/wiki/MMLU) (multiple-choice questions across 57 subjects) or Stanford's [HELM](https://crfm.stanford.edu/helm/), which scores calibration, fairness, bias, toxicity, and efficiency as well as accuracy. They're useful for comparing models in general, but they measure the benchmark's task, not yours. Because the questions are public, some can end up in the text models are trained on, and once everyone competes on a number, people tune for the number: [Goodhart's law](https://en.wikipedia.org/wiki/Goodhart%27s_law), "when a measure becomes a target, it ceases to be a good measure." The only evaluation that tells you whether a model works for *your* task is one built from your task.
 
-Before you can measure quality, you need to decide what quality means for your specific application. Different tasks call for different dimensions.
+## Decide what "good" means
 
-**Correctness.** Does the output contain accurate information? For factual tasks (Q&A, data extraction, code generation), this is often the primary dimension. Correctness is usually verified by comparing to a reference answer or running the output (in the case of code).
+"Is this output good?" is too vague to score, and it's where many projects skip ahead too fast. Break "good" into dimensions, each asking a question you could actually answer:
 
-**Completeness.** Does the output include all the required information? A summary that omits a key finding is incomplete even if everything it says is accurate.
+| Dimension | The question it asks |
+|---|---|
+| Correctness | Is the information accurate? Does the code run and pass tests? |
+| Completeness | Is everything required there? A summary that skips the key finding fails even if every sentence is true. |
+| Consistency | Do rephrasings of the same question get the same answer? |
+| Relevance | Does it answer the question that was asked? |
+| Safety | Does it avoid harmful, offensive, or inappropriate content? |
+| Format | Does it follow the structure you asked for? Format failures break the code downstream. |
+| Tone and style | Does it suit the audience, at the right length? |
 
-**Consistency.** Does the system produce the same answer when the same question is asked in different ways? Inconsistency is a sign that the model is sensitive to phrasing rather than reasoning about the underlying question.
+You don't need all seven. A classifier mostly needs correctness and consistency; a public chatbot needs relevance, safety, and tone; an extraction pipeline lives or dies on format. Pick two or three and write them down *before* you look at outputs. Choose afterwards, and you'll tend to pick the ones your system already does well on.
 
-**Relevance.** Does the output address what was asked? A model that answers a different question than the one posed may be technically accurate about something you did not ask.
+## Match your effort to the stakes
 
-**Safety.** Does the output avoid harmful, offensive, or inappropriate content? Safety evaluation is required for any consumer-facing or sensitive application.
+@sec-ai-llm introduced a risk-based policy for single outputs. The same idea decides how much evaluation a whole system needs, and it saves you from both extremes: hand-checking every output of a harmless tool, or trusting a consequential one on vibes.
 
-**Format compliance.** If you specified a format (JSON, numbered list, specific fields), does the output follow it? Format failures break downstream code.
+**For low-stakes bulk work** (summarizing your own notes, sorting records for a first look), automate cheap checks such as length and format, and read a small random sample. **For medium-stakes work** (labels that feed a paper, answers other people will read), build an evaluation set with known answers and rerun it on every prompt change or model update. **For high-stakes work** (anything medical, legal, financial, or affecting people's access to jobs, housing, or services), plan for a person to review every output and make the final decision, however good the scores look.
 
-**Tone and style.** For user-facing content, does the tone match the intended audience? Is it too formal, too casual, too long, or too terse?
+For the formal version, see the U.S. National Institute of Standards and Technology's [AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) (January 2023), which organizes this thinking into four functions: govern, map, measure, and manage.
 
-Not every dimension matters for every application. A classification system needs correctness and consistency. A customer-facing chatbot needs relevance, safety, and tone. Decide which dimensions matter for your task before designing your evaluation.
+## Build a small evaluation set
 
-## Verification workflows at scale
+An **evaluation set** is a collection of inputs where you already know what a good output looks like. Everything else in this chapter depends on it, and it's less work than it sounds: twenty examples that probe where the system might stumble tell you more than fifty easy ones that all pass.
 
-@sec-ai-llm introduced a risk-based verification policy for individual outputs: low-risk outputs get a quick sanity check; high-risk outputs get careful verification against authoritative sources. The same principle scales to evaluation systems.
+**Start from real inputs,** with names and personal details removed. Toy examples you write yourself are cleaner and easier than the real thing. If inputs come in kinds (short and long, one language and another), sample from each on purpose, which is [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling), so rare kinds aren't left out.
 
-**For low-stakes bulk processing** (summarizing internal documents, classifying records, generating draft content): automate evaluation with simple heuristics (length, format compliance, keyword presence) and sample a small fraction for human review.
+**Add the edges,** the inputs you suspect will be hard:
 
-**For medium-stakes applications** (customer-facing responses, research assistance, code review): build a structured evaluation suite with representative test cases, run it on every prompt change and model update, and review failures before deploying.
+-   very short inputs, and very long ones near the context limit
+-   unusual formatting: emoji, accented characters, code, tables
+-   writing in another language, or in more than one
+-   ambiguous inputs that could honestly be read two ways
+-   inputs outside what the system is meant to handle
 
-**For high-stakes applications** (medical, legal, financial, safety-critical): manual review of every output may be necessary. AI systems in these domains typically require human in the loop for the final decision regardless of how good the model is.
+**Add every failure you find,** so the same mistake can't come back unnoticed. **And keep the set like raw data** (see @sec-tabular-data): save it as a CSV, commit it, note where each example came from, and never quietly edit an answer to make a new prompt look better.
 
-## Manual evaluation and auditing
+Here's the set this chapter uses: sixteen invented course-survey comments. Two people labeled each one independently (`rater_a`, `rater_b`), then talked through their disagreements and settled a final answer (`gold`). The `model` column is simulated for this chapter, not a real model's output. The `english` column records whether the writer said English was their first language or an additional one, which you'll need for auditing.
 
-Manual evaluation is slower than automation but more reliable. It is your ground truth, and it is necessary for building and calibrating automated evaluators.
+```text
+id,english,comment,rater_a,rater_b,gold,model
+1,first,"Loved the weekly labs, best class this term.",positive,positive,positive,positive
+2,first,"Lectures were fine but the exams felt unfair.",mixed,negative,mixed,negative
+3,first,"Too much reading and never enough time to do it.",negative,negative,negative,negative
+4,first,"Honestly the group project was the best part.",positive,positive,positive,positive
+5,first,"Grading was slow and nobody answered emails.",negative,negative,negative,negative
+6,first,"Pretty good overall, although the textbook cost a fortune.",mixed,mixed,mixed,mixed
+7,first,"Labs were useful. Lectures, not so much.",mixed,mixed,mixed,mixed
+8,first,"Nothing to complain about.",positive,mixed,positive,positive
+9,additional,"The TA office hours saved my grade.",positive,positive,positive,positive
+10,additional,"Professor is very kind but homework is too much for me.",mixed,mixed,mixed,negative
+11,additional,"I not understand the slides many times.",negative,negative,negative,negative
+12,additional,"Class is good, projects are hard but I learn a lot.",positive,mixed,positive,negative
+13,additional,"The exam was too long, we had no time to finish.",negative,negative,negative,negative
+14,additional,"Very helpful course, I recommend to my friends.",positive,positive,positive,mixed
+15,additional,"Sometimes the lecture is fast, but the notes help me.",mixed,mixed,mixed,mixed
+16,additional,"Teacher explain very clear, I like it.",positive,positive,positive,positive
+```
 
-### Rubrics
+Save it as `eval_set.csv` and load it with pandas (see @sec-pandas-basics):
 
-A rubric is a structured scoring guide. Rather than asking "is this good?", a rubric asks specific, answerable questions:
+```python
+import pandas as pd
 
-    Correctness (0-2):
-      0 = Contains factual errors
-      1 = Mostly correct but missing key details
-      2 = Fully accurate and complete
+df = pd.read_csv("eval_set.csv")
+print(df.shape)
+print(df["gold"].value_counts())
+```
 
-    Format (0-1):
-      0 = Does not follow required JSON structure
-      1 = Valid JSON with all required fields
+```text
+(16, 7)
+gold
+positive    7
+mixed       5
+negative    4
+Name: count, dtype: int64
+```
 
-    Tone (0-1):
-      0 = Too technical for the intended audience
-      1 = Appropriate for a non-specialist reader
+Sixteen rows is tiny on purpose: small enough to read in one sitting, and the next sections show exactly how much (and how little) it can tell you.
 
-Rubrics make evaluation faster, more consistent across raters, and easier to aggregate into metrics. When building a rubric, pilot it on 10--20 examples before scaling up: if two raters consistently disagree on a dimension, the dimension is underspecified.
+## Check your human labels first
 
-### Spot-checking
+It's tempting to skip straight to scoring the model. But your gold labels are the ruler you'll measure it with, and if two careful people can't agree on them, the ruler is bent. So measure the people first.
 
-For large-scale outputs, systematically sampling and reviewing a fraction is often more informative than exhaustive review of a small set. Sample *stratified by input type*: if your system handles different kinds of queries, make sure your sample includes all types, not just the most common.
+### Write a rubric
 
-Review failures with as much context as possible: the original input, the full output, and the expected output. Understanding why a failure occurred is as important as knowing that it occurred.
+A rubric replaces "is this good?" with specific questions that have specific answers. For open-ended outputs such as summaries, it might look like this:
 
-### Red-teaming and adversarial prompting
+```text
+Correctness (0-2):
+  0 = Contains factual errors
+  1 = Mostly correct but missing key details
+  2 = Fully accurate and complete
 
-Red-teaming is the practice of deliberately trying to break your system. Write inputs designed to:
+Format (0-1):
+  0 = Does not follow the required JSON structure
+  1 = Valid JSON with all required fields
 
--   Trigger harmful or policy-violating outputs
+Tone (0-1):
+  0 = Too technical for the intended audience
+  1 = Appropriate for a non-specialist reader
+```
 
--   Confuse the model about what is being asked
+For a labeling task, the rubric is a definition of each label with an example of the hard cases ("mixed means the comment praises one thing and criticizes another"). Rubrics make scoring faster and raters more consistent. Before using one at scale, pilot it on 10 to 20 examples with two raters.
 
--   Cause the model to ignore your system prompt instructions
+### Measure how often the raters agree
 
--   Produce incorrect outputs by exploiting the model's biases
+The obvious measure is the share of items both raters labeled the same way. The catch is that some agreement happens by luck: two people guessing among three labels would still match now and then. **Cohen's kappa** corrects for that, comparing the agreement you saw with what chance alone would give, so that 1 means perfect agreement and 0 means no better than chance. It's the standard first measure of [inter-rater reliability](https://en.wikipedia.org/wiki/Inter-rater_reliability), and [scikit-learn](https://scikit-learn.org/stable/install.html) computes it (`pip install scikit-learn`):
 
--   Elicit confidential information (system prompt leakage)
+```python
+from sklearn.metrics import cohen_kappa_score
 
-Red-teaming is most useful when done by someone other than the system's author. You are too close to the system to imagine all the ways a user might misuse or confuse it.
+agree = (df["rater_a"] == df["rater_b"]).mean()
+kappa = cohen_kappa_score(df["rater_a"], df["rater_b"])
+print(f"Raw agreement: {agree:.2f}")
+print(f"Cohen's kappa: {kappa:.2f}")
+```
 
-## Automated evaluation
+```text
+Raw agreement: 0.81
+Cohen's kappa: 0.72
+```
 
-Manual evaluation does not scale. Once you have calibrated your rubric against human judgments, you can automate significant parts of evaluation.
+If that feels like a black box, compute it yourself once. Chance agreement comes from how often each rater used each label:
 
-### Regression test suites
+```python
+p_a = df["rater_a"].value_counts(normalize=True)
+p_b = df["rater_b"].value_counts(normalize=True)
+chance = (p_a * p_b).sum()
+print(f"Chance agreement: {chance:.2f}")
+print(f"Kappa by hand:    {(agree - chance) / (1 - chance):.2f}")
+```
 
-A regression test suite is a collection of (input, expected output) pairs that you run against your system on every change. Unlike unit tests for traditional software, AI regression tests are rarely exact-match: you test properties of the output rather than the exact string.
+```text
+Chance agreement: 0.33
+Kappa by hand:    0.72
+```
 
-    def test_json_output():
-        response = call_model(EXTRACTION_PROMPT, SAMPLE_DOCUMENT)
+Is 0.72 good? You'll often see the Landis and Koch (1977) scale, which calls 0.61 to 0.80 "substantial," but the [Wikipedia article on Cohen's kappa](https://en.wikipedia.org/wiki/Cohen%27s_kappa) notes those cutoffs rest on opinion, not evidence. More useful is reading the disagreements. All three (comments 2, 8, and 12) involve "mixed," so the rubric's definition of mixed needs work. Every disagreement is a small bug report about your rubric: fix the wording, relabel, and measure again.
+
+### Spot-check what you can't label
+
+When a system produces far more output than you could ever label, read a sample of it, drawn from every kind of input and not only the common ones. Look at each output beside its input so you can see *why* it went wrong. A spot-check won't give you a precise number, but it's how you find failure modes you didn't know to put in the set.
+
+## Score the model, with honest uncertainty
+
+With gold labels you trust, you can ask how the model did. The scikit-learn [user guide on metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) covers dozens of measures; three get you a long way.
+
+### Accuracy, and where the errors went
+
+**Accuracy** is the share of items the model got right:
+
+```python
+df["correct"] = df["model"] == df["gold"]
+print(f"Accuracy: {df['correct'].mean():.2f}")
+```
+
+```text
+Accuracy: 0.75
+```
+
+Seventy-five percent hides *which* mistakes the model makes. A [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix) shows them, with one row per true label, one column per label the model gave, and a count in every cell. pandas makes one with [`crosstab`](https://pandas.pydata.org/docs/reference/api/pandas.crosstab.html):
+
+```python
+print(pd.crosstab(df["gold"], df["model"]))
+```
+
+```text
+model     mixed  negative  positive
+gold
+mixed         3         2         0
+negative      0         4         0
+positive      1         1         5
+```
+
+The diagonal holds the correct answers (3 + 4 + 5 = 12); everything else is an error. The pattern is plain once you look: the model never missed a negative comment, but it called three comments negative that weren't. It's too quick to see criticism.
+
+### Precision and recall
+
+That pattern has names. For one label, **precision** asks "when the model said *negative*, how often was it right?" and **recall** asks "of the truly negative comments, how many did it find?" (Wikipedia's [precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall) article has good pictures.) scikit-learn's [`classification_report`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html) prints both for every label:
+
+```python
+from sklearn.metrics import classification_report
+
+print(classification_report(df["gold"], df["model"]))
+```
+
+```text
+              precision    recall  f1-score   support
+
+       mixed       0.75      0.60      0.67         5
+    negative       0.57      1.00      0.73         4
+    positive       1.00      0.71      0.83         7
+
+    accuracy                           0.75        16
+   macro avg       0.77      0.77      0.74        16
+weighted avg       0.81      0.75      0.75        16
+```
+
+Negative has perfect recall and poor precision: the confusion matrix's story in two numbers. Which matters more depends on your purpose. If you're flagging complaints for a person to follow up, a miss is worse than a false alarm. If you're reporting what share of comments were negative, the false alarms inflate your number. F1 balances the two, and "support" is how many true examples of each label there were.
+
+### How sure can you be?
+
+Here's the question almost everyone skips: if the model got 75% of *these* sixteen right, what would it get on the other 1,984? A [confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) puts a range around the number, and the easiest way to get one is the [bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)): treat your evaluation set as the population, draw thousands of same-sized sets from it with replacement, score each, and see how far the scores spread. NumPy's [random generator](https://numpy.org/doc/stable/reference/random/index.html) does the drawing:
+
+```python
+import numpy as np
+
+correct = df["correct"].to_numpy()
+rng = np.random.default_rng(42)
+scores = [rng.choice(correct, size=len(correct)).mean() for _ in range(10_000)]
+
+low, high = np.percentile(scores, [2.5, 97.5])
+print(f"Accuracy {correct.mean():.2f}, 95% interval {low:.2f} to {high:.2f}")
+```
+
+```text
+Accuracy 0.75, 95% interval 0.50 to 0.94
+```
+
+Honest, and humbling: on this evidence the real accuracy could be anything from a coin flip to excellent. The fix is more examples. The same bootstrap on larger sets, each 75% correct, gives:
+
+| Items in the set | 95% interval around 75% |
+|---|---|
+| 16 | 0.50 to 0.94 |
+| 50 | 0.62 to 0.86 |
+| 200 | 0.69 to 0.81 |
+| 1,000 | 0.72 to 0.78 |
+
+Two hundred labeled examples turns "somewhere between a coin flip and excellent" into "about 75%, give or take six points." Report the interval (or at least the number of examples) beside every score. And when two prompts' intervals overlap a lot, the "better" one may just have been luckier.
+
+## Automated checks that run on every change
+
+Once people have set the standard, you can hand parts of it to code. Automated checks run in seconds, so you can run them after every prompt edit or model update, which is exactly when [regressions](https://en.wikipedia.org/wiki/Regression_testing) sneak in.
+
+### Regression checks
+
+AI checks are rarely exact-match, because the wording changes from run to run. Instead, check *properties* the output must have: it parses, the required fields are there, and nothing forbidden appears. Here's a check for a model that extracts a title and a date as JSON, using Python's [`json` module](https://docs.python.org/3/library/json.html):
+
+```python
+import json
+
+FORBIDDEN = ["John Smith", "555-1234"]   # details that must never reach the output
+
+def check_extraction(response: str) -> list[str]:
+    """Return the problems with one model response; an empty list means it passed."""
+    try:
         parsed = json.loads(response)
-        assert "title" in parsed
-        assert "date" in parsed
-        assert isinstance(parsed["date"], str)
-        assert len(parsed["title"]) > 0
+    except json.JSONDecodeError as err:
+        return [f"not valid JSON ({err})"]
+    problems = []
+    for field in ["title", "date"]:
+        if not parsed.get(field):
+            problems.append(f"missing or empty {field!r}")
+    for secret in FORBIDDEN:
+        if secret in response:
+            problems.append(f"leaked {secret!r}")
+    return problems
 
-    def test_does_not_include_pii():
-        response = call_model(SUMMARY_PROMPT, DOCUMENT_WITH_NAMES)
-        assert "John Smith" not in response
-        assert "555-1234" not in response
+good = '{"title": "Budget hearing", "date": "2026-03-04"}'
+fenced = '```json\n{"title": "Budget hearing", "date": "2026-03-04"}\n```'
+leaky = '{"title": "Call John Smith at 555-1234", "date": ""}'
 
-Structure your regression tests around behaviors that must hold, not around specific wording. Run them after any prompt change, model upgrade, or configuration change.
+for name, response in [("good", good), ("fenced", fenced), ("leaky", leaky)]:
+    print(name, check_extraction(response))
+```
 
-### LLM-as-judge
+```text
+good []
+fenced ['not valid JSON (Expecting value: line 1 column 1 (char 0))']
+leaky ["missing or empty 'date'", "leaked 'John Smith'", "leaked '555-1234'"]
+```
 
-You can use a language model to evaluate another model's outputs. The evaluator model receives a rubric, the original input, and the output to evaluate, and returns a structured score.
+The `fenced` case is one of the most common snags there is. The model returned good JSON wrapped in a Markdown code fence, and `json.loads` gives up on the first character. If your script has died with `Expecting value: line 1 column 1 (char 0)` on output that looked fine, this is almost certainly why: tighten the prompt, or strip the fence before parsing. Run checks like these over the whole evaluation set after every change; [pytest](https://docs.pytest.org/en/stable/getting-started.html) can run them for you as tests.
 
-    JUDGE_PROMPT = """
-    You are evaluating the quality of an AI assistant response.
+### Using a model as the judge
 
-    Input to the assistant: {input}
-    Assistant response: {response}
+Tone, helpfulness, or whether a summary caught the main point are hard to check with code. A common workaround is **LLM-as-judge**: give a second model a rubric, the input, and the output, and ask for a score.
 
-    Rate the response on correctness (0-2) and relevance (0-2).
-    Respond in JSON: {"correctness": <score>, "relevance": <score>,
-      "reasoning": "<brief explanation>"}
-    """
+```python
+JUDGE_PROMPT = """
+You are evaluating the quality of an AI assistant response.
 
-LLM-as-judge is useful for evaluating dimensions like tone, helpfulness, and coherence that are hard to check programmatically. Its limitations:
+Input to the assistant: {input}
+Assistant response: {response}
 
--   The evaluator model has its own biases; it may prefer verbose responses, favor its own style, or miss subtle factual errors.
+Rate the response on correctness (0-2) and relevance (0-2).
+Respond in JSON: {{"correctness": <score>, "relevance": <score>,
+  "reasoning": "<brief explanation>"}}
+"""
 
--   Agreement with human judgments varies by task. Always validate your LLM judge against human ratings on a sample before relying on it.
+print(JUDGE_PROMPT.format(input="What is 2 + 2?", response="4"))
+```
 
--   LLM-as-judge is itself a model call: it costs tokens, has non-zero failure rates, and can hallucinate scores.
+Notice the doubled braces around the JSON example. Python's [`str.format`](https://docs.python.org/3/library/string.html#format-string-syntax) treats every `{...}` as a slot to fill, so with single braces the call fails with `KeyError: '"correctness"'`, which is baffling the first time. A doubled brace means a literal one, and the printed prompt shows single braces.
 
-Use LLM-as-judge for scalable first-pass evaluation, not as a replacement for human review of high-stakes outputs.
+Judges are useful, with known weaknesses. A 2023 study by [Zheng and colleagues](https://arxiv.org/abs/2306.05685) found that GPT-4 as a judge agreed with human preferences over 80% of the time, about as often as humans agreed with each other, and also documented *position bias* (favoring the answer shown first), *verbosity bias* (favoring longer answers), and *self-enhancement bias* (favoring its own answers). A judge is also another model call: it costs money, sometimes fails, and can make up a score.
 
-### Reference-based scoring
+So validate the judge the way you validated your raters: have a person and the judge score the same sample, and compare. Here are ten simulated pairs of 0 to 2 scores:
 
-When you have a ground-truth reference answer (a correct summary, the right extraction, the expected classification), you can compare the model's output to the reference using similarity metrics:
+```python
+scores = pd.DataFrame({
+    "human": [2, 1, 2, 0, 2, 1, 1, 2, 0, 2],
+    "judge": [2, 2, 2, 1, 2, 1, 2, 2, 0, 2],
+})
+print(scores.mean())
+print(f"Exact agreement: {(scores['human'] == scores['judge']).mean():.2f}")
+print(f"Kappa:           {cohen_kappa_score(scores['human'], scores['judge']):.2f}")
+print(f"Weighted kappa:  {cohen_kappa_score(scores['human'], scores['judge'], weights='quadratic'):.2f}")
+```
 
--   **Exact match**: for short classifications, slot-filling, or constrained outputs.
+```text
+human    1.3
+judge    1.6
+dtype: float64
+Exact agreement: 0.70
+Kappa:           0.47
+Weighted kappa:  0.74
+```
 
--   **ROUGE / BLEU**: overlap-based metrics commonly used for summarization. Useful as a rough signal; not reliable as a sole metric.
+Because the scores are ordered, *weighted* kappa gives partial credit when the judge is off by one rather than two, which is why it's higher. But the most useful line is the first: in all three disagreements, the judge was more generous. A lenient judge makes every version of your prompt look better than it is. Catching that takes ten minutes of scoring by hand. Use a validated judge for fast first-pass scoring, and keep people in charge of anything high-stakes.
 
--   **Semantic similarity**: embed both the reference and the output and compare vector similarity. More robust to paraphrase than exact or overlap metrics.
+### Comparing against a reference answer
 
-No automated metric perfectly captures quality. Treat automated scores as signals that require human interpretation, especially when making deployment decisions.
+When you have a correct reference for each input, you can score by comparison. **Exact match** works for short outputs such as labels, which is what the survey example does. For longer text, overlap scores count shared words and phrases: [ROUGE](https://en.wikipedia.org/wiki/ROUGE_(metric)) for summaries, [BLEU](https://en.wikipedia.org/wiki/BLEU) for translation. They're rough, since a summary can share most of its words with the reference and still miss the point. **Semantic similarity** compares embeddings of the two texts (see @sec-llm-internals), which copes better with paraphrase. No automatic score captures quality alone; use them to spot changes, then read what they flag.
 
-## Building an evaluation set
+## Try to break it
 
-Your evaluation set is only as good as its coverage. A set of 50 easy examples that all succeed gives you false confidence; a set of 20 well-chosen examples that probe known failure modes is more informative.
+Everything so far measures the system on inputs you expect. **Red-teaming**, named after the [red teams](https://en.wikipedia.org/wiki/Red_team) that play the attacker in security exercises, is deliberately trying to make it fail. Write inputs designed to:
 
-### Representative inputs
+-   produce harmful or policy-violating output
+-   confuse the model about what's being asked
+-   get it to ignore your instructions ([prompt injection](https://en.wikipedia.org/wiki/Prompt_injection))
+-   exploit a bias to get a wrong answer
+-   make it reveal its system prompt or other confidential details
 
-Start with a sample of real inputs your system will encounter. If you are building a customer support bot, collect real support messages (anonymized). If you are building a data extraction tool, collect real documents. Distribution matters: the system that works on toy examples may fail on real ones.
+The [OWASP Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/) is a good checklist of what attackers try. Red-teaming works best when someone other than the builder does it, since you're too close to imagine every way a stranger might misuse your system, so trade with a classmate. If your system is an agent that takes actions, @sec-ai-agents covers what to add. Every successful attack becomes a new row in your evaluation set.
 
-### Edge cases and boundary conditions
+## Keep measuring after you ship
 
-Deliberately include inputs at the boundaries of your system's expected behavior:
+Evaluation doesn't end at launch. Inputs change, models change, and you'll change the prompt; the only way to notice what that does is to keep records and keep checking.
 
--   Very short inputs (one word, one sentence)
+**Log everything.** Without logs you can't explain a failure after the fact, notice a slow decline, or build new test cases from real use. At a minimum, record:
 
--   Very long inputs (near the context limit)
+-   the timestamp
+-   the full input, including which system prompt version was used
+-   the full output
+-   the model version and settings such as temperature and maximum tokens
+-   token counts, response time, and any error codes
 
--   Inputs with unusual formatting (non-ASCII characters, code blocks, tables)
+Real inputs often contain personal information, so mask names and identifying details unless you have explicit permission to keep them, and store logs somewhere private.
 
--   Inputs in a language other than the primary one
+**Watch for drift.** The inputs people send can shift away from what you evaluated on ([concept drift](https://en.wikipedia.org/wiki/Concept_drift)), and the model underneath can change, as the GPT-4 study showed. Rerun your evaluation on a sample of real traffic on a schedule, and look for falling scores, new kinds of failure, and changes in output length, format compliance, or error rate. Alert when a score drops below a threshold, not only when something crashes: the dangerous failures are the quiet ones.
 
--   Ambiguous inputs that could be interpreted multiple ways
+**Rerun the evaluation after every change** (prompt, model version, tool definition, retrieval settings) before you redeploy. Where your provider allows it, name a specific dated model version rather than an alias that moves to newer models. And keep a changelog of every change and every score, so that when something gets worse you can line it up with what changed and roll back.
 
--   Inputs that fall outside the system's intended scope
+## Auditing: who does the system fail?
 
-### Known failure modes
+An accuracy score is an average, and averages hide things. **Auditing** asks where the errors land: whether some users, groups, or topics get systematically worse results. This is how [algorithmic bias](https://en.wikipedia.org/wiki/Algorithmic_bias) gets found in practice.
 
-Include examples specifically designed to probe failures you have already observed or can anticipate. If the system has previously hallucinated a specific fact, include a test for that fact. If the system has failed on a particular phrasing, add that phrasing. An evaluation set should grow as you discover new failure modes.
+The classic example is Joy Buolamwini and Timnit Gebru's 2018 study [*Gender Shades*](https://proceedings.mlr.press/v81/buolamwini18a.html) (@sec-artifacts-politics tells how it started). Three commercial systems that guessed gender from photos had overall accuracies between about 88% and 94%, which sounds respectable. Broken down by skin type and gender, error rates for darker-skinned women reached 34.7%, against at most 0.8% for lighter-skinned men. The overall number was accurate and said almost nothing about who the systems failed.
 
-### Maintaining and versioning the evaluation set
+### Break your scores down by group
 
-Treat your evaluation set like code: version it, document the rationale for each example, and review it when the system's requirements change. Remove examples that are no longer relevant; add examples that cover new functionality.
+You can do the same with your evaluation set in one line, using a pandas [group-by](https://pandas.pydata.org/docs/user_guide/groupby.html):
 
-## Managing outputs at scale
+```python
+print(df.groupby("english")["correct"].agg(["mean", "size"]))
+```
 
-Evaluation does not end at deployment. Production systems change in ways that are hard to predict.
+```text
+             mean  size
+english
+additional  0.625     8
+first       0.875     8
+```
 
-### Logging
+The model got 7 of 8 right for writers whose first language is English and 5 of 8 for everyone else, and looking back at the comments you can guess why: "Very helpful course, I recommend to my friends" is plainly positive, and the model misread it. Before announcing a finding, though, bootstrap the gap:
 
-Log every input and output your system produces in production. Without logs, you cannot diagnose failures after the fact, monitor for drift, or build evaluation sets from real usage.
+```python
+first = df.loc[df["english"] == "first", "correct"].to_numpy()
+additional = df.loc[df["english"] == "additional", "correct"].to_numpy()
 
-At minimum, log:
+rng = np.random.default_rng(42)
+gaps = [rng.choice(first, len(first)).mean() - rng.choice(additional, len(additional)).mean()
+        for _ in range(10_000)]
+print(np.percentile(gaps, [2.5, 97.5]))
+```
 
--   Timestamp
+```text
+[-0.125  0.625]
+```
 
--   Full input (including system prompt version)
+With eight comments per group, the interval runs from slightly below zero to a very large gap, so you can't yet tell a real disparity from bad luck. That's not a reason to drop it; it's a lead. Collect more comments from writers whose first language isn't English, and measure again. A disparity that shows up in a small audit and gets waved away is how systems like the ones in *Gender Shades* reach the public.
 
--   Full output
+Group gaps come in several forms, and it helps to know what you're looking for. **Demographic disparities** show up when a system does worse for names, dialects, or topics associated with particular groups. **Topic sensitivity** shows up as inconsistency: refusing harmless questions on some subjects, answering harmful ones on others. **Style sensitivity** penalizes nonstandard grammar or non-native English, which is what the survey example hints at. And **stereotype reinforcement** ties roles or traits to particular groups in ways that echo social biases.
 
--   Token count
+### Counterfactual tests
 
--   Model version and parameters (temperature, max tokens)
+To test a disparity directly, write **counterfactual pairs**: inputs identical except for the one detail that signals a group. It's the design of the [audit studies](https://en.wikipedia.org/wiki/Audit_study) social scientists use to measure discrimination in hiring and housing, where matched applicants differ in only one characteristic. The names below echo the best-known one, Bertrand and Mullainathan's ["Are Emily and Greg More Employable than Lakisha and Jamal?"](https://www.nber.org/papers/w9873), which sent otherwise identical résumés to employers.
 
--   Any error codes or latency information
+```text
+A: "Summarize the qualifications of candidate Emily Walsh: five years of
+    data analysis experience, SQL and Python, led a team of three..."
+B: "Summarize the qualifications of candidate Lakisha Washington: five years of
+    data analysis experience, SQL and Python, led a team of three..."
+```
 
-Store logs in a way that preserves privacy: redact or omit personally identifying information unless you have explicit authorization to store it.
+Change one thing at a time: if the swapped name signals both a different gender and a different race, you won't know which one caused a difference. Run each pair several times (outputs vary), record the label or score, the length, and whether the framing is positive or negative, and compare across many pairs, not one. If outputs differ systematically when only the name changes, write it down and act: change the prompt, change the design, narrow what the system is used for, or don't use it.
 
-### Monitoring and drift detection
-
-After deployment, run your evaluation suite periodically on samples of real production traffic. Watch for:
-
--   Declining scores on your key metrics
-
--   New failure modes that were not in your original evaluation set
-
--   Changes in output length, format compliance, or response patterns
-
--   Increases in latency, error rates, or token usage
-
-Model providers silently update models. Prompt behavior that was consistent may change when the underlying model is updated. Set up alerts when evaluation scores drop below a threshold, not just when errors occur.
-
-### Rerunning evaluations after changes
-
-Treat any change to the system --- prompt, model version, tool definition, retrieval parameters --- as requiring a fresh evaluation run before redeployment. Track evaluation scores across versions so you can compare and roll back if a change causes regression.
-
-## Auditing for bias and unexpected behaviors
-
-Beyond measuring performance on intended inputs, auditing looks for systematic patterns in how a system fails --- particularly patterns that affect some users or groups differently.
-
-### What to look for
-
--   **Demographic disparities**: Does the system perform differently for names, dialects, or topics associated with different groups? A system that classifies job applications may score resumes with certain names lower.
-
--   **Topic sensitivity**: Are there topics the system handles inconsistently (over-refuses benign requests, under-refuses harmful ones, produces different quality answers)?
-
--   **Style sensitivity**: Does the system penalize non-standard grammar or non-native English in ways that disadvantage some users?
-
--   **Stereotype reinforcement**: Does the system associate roles, traits, or behaviors with particular groups in ways that reflect and amplify social biases?
-
-### Structured bias testing
-
-To test for demographic disparities, use counterfactual inputs: identical prompts with only the group-identifying information changed.
-
-    # Test 1: Identical prompts with different names
-    prompt_a = "Summarize the qualifications of candidate Alice Chen..."
-    prompt_b = "Summarize the qualifications of candidate Bob Johnson..."
-
-    # Run both; compare tone, length, positive/negative framing
-
-If outputs differ systematically when only names change, the system may be amplifying training data biases. Document findings; address them by adjusting the prompt, the system design, or the scope of the application.
-
-### Sensitivity checks
-
-Test how the system responds to sensitive topics: political subjects, medical advice, legal guidance, crisis situations. Verify that the system's handling matches your intended policy. A customer support bot should not be giving legal advice; a research assistant should express appropriate uncertainty about medical claims.
+Finally, test the topics where a wrong answer does real damage (politics, medical and legal advice, people in crisis) against what the system *should* do: a course-help bot shouldn't give legal advice. Document what you find either way; "we looked, and here's what we found" makes the next audit cheaper.
 
 ## Stakes and politics
 
-In 2016, ProPublica and the company that sold COMPAS, a risk-assessment tool used in US criminal courts, looked at the same scores for the same defendants and reached opposite conclusions. ProPublica found that Black defendants who did not reoffend were about twice as likely as white defendants to have been labeled high risk. The company answered that a given score meant the same chance of reoffending whatever a defendant's race. Both were right. They were measuring different things, and deciding which one counts as "working well" is deciding whose errors the system is allowed to make.
+In 2016, ProPublica and the company that sold COMPAS, a [risk-assessment tool](https://en.wikipedia.org/wiki/COMPAS_(software)) used in some US criminal courts, looked at the same scores for the same defendants and reached opposite conclusions. ProPublica's [analysis](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm) found that Black defendants who didn't go on to reoffend were nearly twice as likely as white defendants to have been labeled higher risk (45 percent against 23 percent). The company answered that a given score meant the same chance of reoffending whatever a defendant's race. Both were right. They were measuring different things, and deciding which one counts as "working well" is deciding whose errors the system is allowed to make.
 
-First, *fairness has incompatible mathematical definitions*. The COMPAS dispute was not a quirk of one dataset (see @sec-artifacts-politics): common notions of fairness in classification — equal false-positive rates, equal false-negative rates, equal calibration — are mathematically incompatible whenever group base rates differ. You cannot satisfy them all simultaneously; you have to *choose* which kind of fairness you prioritize. That choice is a political decision dressed as a technical one, and the audit's job is to make the choice visible, not to disappear it. Second, *audits can launder more than they expose*. A "we ran a bias audit" line in a deployment announcement reads as accountability and is sometimes the substance of accountability and sometimes its replacement. An audit that tests only the metrics the system was already optimized for, or only on the demographic slices the development team thought to consider, is consistent with very large remaining disparities. The presence of an audit is not the same as the audit having teeth.
+It wasn't a quirk of one dataset. Common definitions of [fairness in classification](https://en.wikipedia.org/wiki/Fairness_(machine_learning)), such as equal false-positive rates, equal false-negative rates, and equal calibration, can't all hold at once when groups have different base rates, unless predictions are perfect. Every audit has to choose, and a good one makes the choice visible. Audits can also launder more than they expose: one that tests only the metrics the system was tuned for, or only the groups its builders thought of, can leave large disparities in place while "we ran a bias audit" reads as accountability. And who runs it matters. A vendor auditing its own product, an organization checking a tool it bought, and an independent group with reason to dig are different things. Most audits are the first kind, and the independent ecosystem (researchers, groups like AI Now and the Algorithmic Justice League, newsrooms like ProPublica and The Markup) is small next to the scale of deployment.
 
-Third, *who runs the audit matters*. A first-party audit run by the system's vendor is structurally different from a second-party audit run by the deploying organization, which is structurally different from a third-party audit run by an independent group with the access and incentive to find problems. Most "audits" in practice are first-party. The independent-audit ecosystem (academic researchers, civil-society organizations like AI Now and the Algorithmic Justice League, journalism in the *ProPublica*/*Markup* mold) is small and underfunded relative to the deployment scale.
-
-See @sec-artifacts-politics for the broader framework, @sec-llm-internals for the model-level biases your audit will be measuring, and @sec-ai-agents for what changes when the system is taking autonomous actions instead of returning text. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you design or read an audit, ask whose definition of fairness it operationalizes, whose data it measures, and who could have run it differently.
 
 ## Worked examples
 
 ### Building an evaluation suite for a summarization system
 
-You want to know whether your summarization prompt is actually any good — and whether it gets better or worse when you change it. Start by collecting **20 real documents** from the domain your system will be summarizing. Toy examples are tempting, but they will mislead you about real performance. Then write a **rubric** with three concrete dimensions — say, completeness (does it include the key findings?), accuracy (no fabrications?), and conciseness (no padding?), each scored 0–2. Have **two human raters** independently score 10 summaries with the rubric and **compute inter-rater agreement**. Wherever the raters disagree, the rubric is underspecified — revise the question until the raters land on the same score. The final 10 rated examples become your **calibration set**, the ground truth against which you can test automated evaluators. Now build an LLM judge using the calibrated rubric, run it on the same 10 examples, and compare its scores to the human ratings. If they agree closely, you have a scalable evaluator. If not, refine the judge's prompt or fall back to human review for the dimensions it cannot score reliably. Run the validated suite on the full set of 20 documents to establish a **baseline**, and rerun it after every prompt change so you can see whether you are making things better or worse.
+You want to know whether your summarization prompt is any good, and whether a change makes it better or worse. **Collect 20 real documents** from the domain it will summarize; toy documents will mislead you. **Write a rubric** with three dimensions, say completeness, accuracy (nothing made up), and conciseness, each scored 0 to 2. **Have two people score 10 summaries independently** and compute kappa for each dimension; wherever they disagree, reword the rubric until they don't. Those 10 settled examples are your **calibration set**. **Build an LLM judge from the rubric,** score the same 10, and compare with the human scores, checking both kappa and whether the judge runs high; refine it, or keep people on the dimensions it can't score. Then **run the suite on all 20** to set a baseline with a bootstrap interval, and rerun it after every prompt change so you can tell whether a change helped by more than the noise.
 
 ### Auditing a classification system for demographic disparities
 
-You suspect your classification system might treat different groups inconsistently, and you want concrete evidence one way or the other. Begin by identifying the **group-identifying signals** in typical inputs — names, locations, writing styles, dialects, anything that might serve as a demographic proxy. Then construct **paired counterfactual examples**: identical inputs that differ only in the group signal (a resume with the same qualifications but a different name, a complaint with the same content but a different location). Run the system on each pair and record the classification, the model's confidence, and any qualitative differences you notice in the response. Aggregate the results: pass rates broken down by group, score distributions, false-positive and false-negative rates. **Flag any dimension** where the difference is large enough to be statistically meaningful, and follow up with deeper investigation. Document the findings *whether or not they indicate a problem* — a clean audit is itself a valuable artifact, and the trail of "we looked and here is what we found" is what makes future audits cheaper.
+You suspect a classifier treats groups differently and want evidence either way. **Identify the group signals** in typical inputs: names, locations, writing style, dialect. **Write counterfactual pairs** that differ in only one signal, such as the same résumé with a different name. **Run each pair several times** and record the label, any confidence score, and anything odd in the wording. **Aggregate by group** (accuracy, false-positive and false-negative rates), each with a bootstrap interval so you can tell a real gap from noise. **Follow up on any gap that holds up** with more examples, and **document the findings whether or not they show a problem**; a clean audit is a useful record too.
 
 ### Setting up production monitoring for an AI application
 
-You have shipped an AI feature and you want to know if it is silently degrading in the wild. The first step is **instrumentation**: log every input, every output, the metadata (model version, temperature, prompt version), and any user feedback signals (thumbs up, thumbs down, escalation to human). Then define **key metrics** that map to the dimensions you care about — format compliance rate (what percentage of outputs parse as valid JSON?), the average rubric score on sampled evaluations, the explicit error rate. Set **alert thresholds** that match the stakes of your application (alert if format compliance drops below 95%, alert if error rate exceeds 1%, alert if user satisfaction signals degrade by more than X%). Schedule a **weekly evaluation run** on a stratified sample of production traffic so you can compare current behavior to your baseline. Maintain a **changelog** that records every model update, every prompt change, every configuration change — this is what lets you correlate degradations with specific changes. Review alerts on a regular cadence and investigate every metric that crosses a threshold *before* you ship the next change, not after.
+You've shipped an AI feature and want to know if it's quietly getting worse. **Log every input and output** with its metadata (model version, temperature, prompt version) and any feedback users give. **Define a few metrics** that match your dimensions: the share of outputs that parse as valid JSON, the average rubric score on a sample, the error rate. **Set alert thresholds** that fit the stakes, such as format compliance below 95% or errors above 1%. **Run the evaluation on a stratified sample of real traffic** every week and compare with your baseline. **Keep a changelog** of every model, prompt, and configuration change, and look into every alert *before* you ship the next change, not after.
 
 ## Exercises
 
-1.  Choose a simple AI task (classify sentiment, extract named entities, summarize a paragraph). Write a rubric with three dimensions, each scored 0--2. Write three test cases that would each score differently on at least one dimension. Explain your scoring.
-
-2.  Write three automated test assertions for an AI system that extracts structured data from job postings (company name, location, salary range). Each assertion should test a property of the output rather than exact text match.
-
-3.  Design a 10-example evaluation set for a Q&A system about Python programming. Include at least: two easy cases, two edge cases, and one adversarial case. For each example, write the input, the expected behavior, and the dimension being tested.
-
-4.  Choose an AI-powered tool you use regularly (a code assistant, a writing tool, a search feature). Describe one way you would test it for inconsistency across paraphrased inputs, and one way you would test it for demographic bias. You do not need to run the tests; just design them.
-
-5.  You deploy a summarization tool and after two weeks notice that user complaints have increased but your evaluation scores look the same. List three possible explanations and describe what log data you would examine to distinguish between them.
+1.  Choose a simple AI task (classify sentiment, extract names, summarize a paragraph). Write a rubric with three dimensions scored 0 to 2, and three test cases that would each score differently on at least one dimension.
+2.  Save this chapter's `eval_set.csv` and run every code block in order. Then edit the `model` column so it makes the same number of mistakes, all on first-language writers. Which numbers change, and which don't?
+3.  With a classmate, label the same 30 short texts (reviews, headlines, comments) independently with three labels. Compute raw agreement and Cohen's kappa, rewrite your label definitions to fix the disagreements, then label 30 new texts and measure again.
+4.  Write three automated checks for a system that extracts company name, location, and salary range from job postings. Each should test a property of the output, not exact text.
+5.  Design a 10-example evaluation set for a question-answering system about Python, with at least two easy cases, two edge cases, and one adversarial case. For each, write the input, the expected behavior, and the dimension it tests.
+6.  Choose an AI tool you use regularly. Design one test for inconsistency across paraphrased inputs and one counterfactual test for demographic bias, precisely enough that a classmate could run them.
+7.  Two weeks after you deploy a summarization tool, user complaints are up but your evaluation scores haven't moved. List three possible explanations, and the log data you'd examine to tell them apart.
 
 ## One-page checklist
 
--   Define which quality dimensions matter for your specific task before building evaluation
-
--   Write a rubric with specific, answerable questions rather than holistic "is this good?" judgments
-
--   Build your evaluation set from real inputs, not just toy examples; include edge cases and known failures
-
--   Validate any automated evaluator (including LLM-as-judge) against human ratings before relying on it
-
--   Run evaluation after every prompt change, model update, or configuration change before redeploying
-
--   Log all inputs, outputs, and metadata in production; treat logs as a source for future evaluation sets
-
--   Set monitoring alerts for metric degradation, not just for explicit errors
-
--   Test for demographic disparities using counterfactual inputs that hold content constant while varying group signals
-
--   Document evaluation results and audit findings, whether or not they indicate a problem
-
--   Treat evaluation rigor as proportional to stakes: more scrutiny for higher-risk applications
+-   Decide which quality dimensions matter before you look at outputs.
+-   Write a rubric with specific, answerable questions.
+-   Build the evaluation set from real inputs, with edge cases and every failure you find, and version it.
+-   Measure agreement between two human raters (Cohen's kappa) before trusting gold labels.
+-   Report accuracy with a confusion matrix, and precision and recall for the labels that matter.
+-   Put a bootstrap interval, or at least the number of examples, beside every score.
+-   Validate any automated scorer, including an LLM judge, against human scores, and check whether it runs high.
+-   Rerun the evaluation after every prompt, model, or configuration change, before redeploying.
+-   Log inputs, outputs, and metadata with personal details removed, and alert on falling scores, not only errors.
+-   Break scores down by group, and test with counterfactual pairs that change one thing at a time.
+-   Document audit findings whether or not they show a problem, and scale the rigor to the stakes.
 
 ::: {.callout-note}
 ## 📚 Further reading
 
-- Hugging Face, [Evaluate library](https://huggingface.co/docs/evaluate/index) — a toolkit for benchmarking models against many standard metrics; the entry point for "what metric should I use?"
-- Anthropic, [Evaluating outputs](https://docs.anthropic.com/en/docs/test-and-evaluate/overview) — practical guidance on designing prompt evaluations and test sets.
-- OpenAI, [Evals framework](https://github.com/openai/evals) — an open-source framework for writing and running LLM evaluations; pairs well with the Anthropic guide.
-- Solon Barocas, Moritz Hardt, and Arvind Narayanan, [*Fairness and Machine Learning: Limitations and Opportunities*](https://fairmlbook.org/) — the standard textbook on the technical and political dimensions of fairness; chapters 2 and 3 cover the incompatibility result discussed in "Stakes and politics" above.
-- Margaret Mitchell et al., [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03677) (FAT* 2019) — proposes a documentation standard for the intended use, training data, and evaluation results of every released model; lightweight to apply to your own systems.
-- Inioluwa Deborah Raji and Joy Buolamwini, [Actionable Auditing](https://dl.acm.org/doi/10.1145/3306618.3314244) (AIES 2019) — the *Gender Shades* follow-up showing how third-party audits drove measurable improvements in commercial face APIs; the canonical example of audits with teeth.
-- AI Now Institute, [Reports](https://ainowinstitute.org/publications) and Algorithmic Justice League, [Reports](https://www.ajl.org/library/research) — ongoing independent research and advocacy on AI auditing; the third-party-audit ecosystem named in "Stakes and politics" above.
+- **Hugging Face**, [Evaluate library](https://huggingface.co/docs/evaluate/index) — a toolkit of standard metrics with a helpful guide to choosing one; for evaluating language models, its docs now point to the more actively maintained LightEval.
+- **Anthropic**, [Define success criteria and build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) — practical guidance on writing success criteria and building evaluations, from exact-match checks to model-based grading.
+- **OpenAI**, [Evals framework](https://github.com/openai/evals) — an open-source framework for writing and running evaluations of language models, with many examples to copy from.
+- **Solon Barocas, Moritz Hardt, and Arvind Narayanan**, [*Fairness and Machine Learning: Limitations and Opportunities*](https://fairmlbook.org/) — the standard free textbook on the technical and political sides of fairness, including the incompatibility result in "Stakes and politics."
+- **Margaret Mitchell et al.**, [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03993) (FAT* 2019) — a short documentation standard for a model's intended use, training data, and evaluation results, including results broken down by group.
+- **Inioluwa Deborah Raji and Joy Buolamwini**, [Actionable Auditing](https://doi.org/10.1145/3306618.3314244) (AIES 2019) — the *Gender Shades* follow-up: within seven months, all three audited companies released new versions that reduced their disparities, the clearest example of an audit with teeth.
+- **AI Now Institute**, [Publications](https://ainowinstitute.org/publications), and **Algorithmic Justice League**, [Research](https://www.ajl.org/library/research) — ongoing independent research and advocacy on AI accountability; the third-party audit ecosystem named in "Stakes and politics."
 :::
