@@ -1,14 +1,14 @@
 # Hand-off note
 
-**Updated 2026-09-24,** after #44 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
+**Updated 2026-09-24,** after #45 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
 
 ## Where things stand
 
 - **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings.
 - **Merged 2026-09-24:** #35 (`AGENTS.md`, `docs/`, `tools/`, `CONTRIBUTING.md`), #36 (cloud storage; closed #34), #37 (the meme above the table of contents, closing #30; the JupyterLab screenshot pilot), and #38 (the repository-page screenshot, the contact-address User-Agent, the issue-forms check in CI, "Illustration:" captions). Each deploy passed.
 - **Order of work** ([`decisions.md`](decisions.md)): the screenshots first, then polish of the existing chapters, then new sections in the roadmap's new priority order. One pull request at a time; the maintainer merges.
-- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), and #44 (the glossary terms linked on first use).
-- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** the last polish pull request: new Stakes openings in `package-management`, `version-control`, and `evaluating-ai` (the maintainer's option (a), in [`decisions.md`](decisions.md)), and the rule for new chapters in `AGENTS.md`.
+- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), #44 (the glossary terms linked on first use), and #45 (three Stakes openings rewritten). The polish of existing chapters is done.
+- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** the first new section, interactive debuggers in `debugging` (with a *breakpoint* glossary entry).
 
 ## Waiting on the maintainer
 
@@ -40,7 +40,6 @@
 ## Next, when work resumes
 
 1. **Screenshots, when the maintainer is ready:** the `version-control` diff and `collaboration` (after the review comment on a merged pull request), and the operating-system panels (hand captures on macOS and Windows, recorded with `adopt`). M6, a CI check for screenshots, can come any time.
-2. **Polish** is done once the open pull request merges; every review follow-up in [`roadmap.md`](roadmap.md) is ticked.
-3. **New sections, next for agents,** in the roadmap's order, one pull request each: interactive debuggers (`debugging`), then second-week Git (`version-control`).
-4. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
-5. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall.
+2. **New sections, next for agents,** in the roadmap's order, one pull request each: second-week Git (rebase, cherry-pick, reflog) in `version-control`, then cloud notebooks and out-of-memory data.
+3. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
+4. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall.

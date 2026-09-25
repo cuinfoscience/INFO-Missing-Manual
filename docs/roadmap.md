@@ -18,7 +18,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 
 ### 1. Debugging and Git, the next level
 
-- [ ] **Interactive debuggers (`pdb`, IDE breakpoints)** — extend `debugging.qmd` with a section on stepping through code interactively rather than relying solely on print statements.
+- [x] **Interactive debuggers (`pdb`, IDE breakpoints)** — added to `debugging.qmd` in September 2026: `breakpoint()` with a real `pdb` session, the commands, post-mortem debugging (`python -m pdb`, `%debug`), conditional breakpoints and logpoints, and keeping breakpoints out of commits (Ruff's `T100`). A glossary entry for *breakpoint*.
 - [ ] **Second-week Git (rebase, cherry-pick, reflog)** — extend `version-control.qmd` with the operations that show up in real collaboration once the basic add/commit/push loop is fluent.
 
 ### 2. Cloud notebooks and data too big for memory
