@@ -394,23 +394,108 @@ Two things to notice. First, *review style is cultural*. Comments that seem dire
 
 See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.
 
-## Worked examples (outline)
+## Worked examples
+
+These follow a three-person team cleaning and analyzing a course survey, the same project as the worked examples in @sec-git-github.
 
 ### Turn a chat question into a good issue
 
--   Convert vague request into context + definition of done.
+On Monday, the team's group chat gets this:
 
-### Author a reviewable PR
+> hey the response counts look off?? like the dashboard says 212 but qualtrics said more. can someone look
 
--   Create a small branch, open PR with testing steps, request review.
+It's a real problem, but in this form nobody can act on it: which counts, how far off, off since when? And by Thursday it will have scrolled out of sight. Whoever reads it first turns it into an issue, using the shape from "Anatomy of a good issue" above:
+
+```markdown
+**Title:** Reconcile cleaned response count (212) with the survey export (231)
+
+## Context
+The dashboard reports 212 responses. The raw Qualtrics export in
+data/raw/ has 231 rows. clean.py drops some rows on purpose (staff
+test responses, blank submissions), but we have never checked that
+those two steps account for all 19.
+
+## Definition of done
+- Each of the 19 dropped rows is explained by a documented rule.
+- clean.py logs how many rows each rule drops.
+- If any drop is a bug, it is fixed and the dashboard is rerun.
+
+## Evidence
+    $ python -c "import pandas as pd; print(len(pd.read_csv('data/raw/survey.csv')))"
+    231
+
+**Labels:** `bug`, `area: data`
+```
+
+Then reply in the chat with a link to the issue, so the conversation moves there. The rewrite took five minutes, and it did most of the investigation's thinking: the question is now "which rule drops which rows," and anyone on the team can pick it up.
+
+### Author a reviewable pull request
+
+Working on that issue, you find the answer. Of the 19 missing rows, 11 are staff test accounts and 4 are blank submissions, both dropped on purpose; the other 4 are real responses with a blank email field, which the staff filter caught by mistake. Along the way you also added the per-rule logging, renamed some columns, and reformatted `clean.py`. The branch now touches 14 files. Before opening a pull request, split it: the reviewer's job is to check that the fix is right, and every unrelated line makes that harder (see "Small PR discipline" above).
+
+1.  **The fix:** a pull request that changes the one filter and nothing else.
+2.  **The logging:** a second, which finishes the issue's definition of done.
+3.  **The renames:** a third, later, on their own. And the reformatting needs no pull request at all if everyone runs the same formatter (see @sec-linting).
+
+The first pull request's description tells the reviewer what to check and how:
+
+```markdown
+## Summary
+Keep responses with a blank email; drop only staff test accounts.
+
+## Motivation
+The staff filter matched blank emails too, dropping 4 real
+responses. Restores 4 of the 19 missing rows in #12.
+
+## How to test
+    python clean.py
+data/processed/survey.csv should have 216 rows (it had 212).
+
+## Related
+Part of #12.
+```
+
+"Part of #12," not "Closes #12": the issue also asks for the logging, and it should stay open until that merges too. (A pull request whose description says "Closes #12" closes the issue automatically when it merges.)
 
 ### Perform a constructive code review
 
--   Use the comment taxonomy; request one blocker and one suggestion.
+You're reviewing a teammate's pull request that adds a satisfaction score. One line in it computes the score, and the first comment that comes to mind is:
+
+> this is wrong, you can't average likert items like that
+
+It's true and useless: it doesn't say what is wrong, why it matters, or what to do, and its tone invites an argument rather than a fix. Rewritten with the taxonomy from "Comment taxonomy" above, the review becomes four comments, each on its own line of the diff:
+
+```markdown
+**Blocker**: line 31 averages the five satisfaction items, but
+items 2 and 4 are reverse-coded (1 = very satisfied). As written,
+a very satisfied respondent scores near 3. Reverse items 2 and 4
+(6 - value) before averaging; the codebook marks which ones.
+
+**Question**: line 35 drops respondents who skipped any item.
+Is that intended? It removes 23 people; averaging the items each
+person answered would keep them.
+
+**Suggestion**: the score could live in a function in src/ so the
+dashboard and the notebook use the same definition. Non-blocking.
+
+**Nit**: `sat_scr` → `satisfaction_score`. Non-blocking.
+```
+
+End with something true and specific about what works ("the new tests for the score are exactly what this needed"), and approve once the blocker is fixed. The author now knows that one thing must change, one needs an answer, and two are optional.
 
 ### Close the loop after merge
 
--   Update docs, close issue with summary, tag next steps.
+When the last pull request for issue #12 merges, three small things finish the job. **Update the documentation** the change affects: the README's list of cleaning rules gains "blank submissions are kept." **Close the issue with a summary,** so anyone who finds it later gets the answer without reading every pull request:
+
+```markdown
+All 19 rows accounted for: 11 staff test accounts and 4 blank
+submissions, dropped on purpose, and 4 real responses with a blank
+email, dropped by mistake. Those 4 are restored (#14), and clean.py
+now logs how many rows each rule drops (#15). Dashboard rerun:
+216 responses.
+```
+
+**Open an issue for anything you found but didn't fix,** such as "the Qualtrics export includes preview responses; should we filter those?", and link it from the summary. @fig-github-pr-review-comment shows the same habit at the scale of one comment: the reply says where the fix went, and the thread is resolved.
 
 ## Templates
 
