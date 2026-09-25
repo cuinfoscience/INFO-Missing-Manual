@@ -24,60 +24,42 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-Version control is the safety system for technical work. [Git](https://git-scm.com/doc) records a history of changes so you can recover, compare, and collaborate without overwriting each other. [GitHub](https://docs.github.com/en) adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices, followed by the "second week" tools for getting lost work back and reshaping a branch before review.
+You know this folder. It has `analysis.ipynb`, `analysis_v2.ipynb`, `analysis_final.ipynb`, and `analysis_final_REAL.ipynb`, and the night before the deadline you can't say which one made the figure in your report. Or a teammate emailed you "the latest version," and pasting it in quietly erased an hour of your changes. None of this means you're disorganized. It means you've been doing [version control](https://en.wikipedia.org/wiki/Version_control) by hand, with file names and email, and that stops working at about the third version.
 
-## Learning objectives {.unnumbered}
+[Git](https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F) does the same job properly. It records a history of your project that you can rewind, compare, and share without anyone overwriting anyone else. [GitHub](https://docs.github.com/en/get-started/start-your-journey/hello-world) hosts that history online and adds the tools teams use to discuss changes: pull requests, reviews, and issues. Git's reputation for being confusing is partly earned (terse messages, odd vocabulary, commands that seem to eat your work), but you need only a small part of it to get nearly all the benefit, and almost nothing you do in it is truly irreversible.
 
-By the end of this chapter, you should be able to:
+This chapter covers that part: how Git thinks, the daily loop, branches and merges, pull requests and forks, conflicts, and the "second week" tools for getting lost work back and tidying a branch before review. Team process (reviews, issues, working agreements) is in @sec-collaboration, automated checks on every push in @sec-automation, and leaked passwords in @sec-secrets.
 
-1.  Explain what version control is and why Git is "distributed."
+## Why read this chapter {.unnumbered}
 
-2.  Create or clone a repository and make clean commits.
-
-3.  Understand the working tree, staging area, and commit history.
-
-4.  Use branches for features/fixes and merge changes safely.
-
-5.  Work with remotes (`origin`, `upstream`) and synchronize using fetch/pull/push.
-
-6.  Use GitHub to open a pull request, respond to feedback, and merge.
-
-7.  Resolve common merge conflicts with a disciplined playbook.
-
-8.  Recover lost commits with the reflog, set unfinished work aside with `git stash`, copy a commit with `git cherry-pick`, and rebase or tidy a branch nobody else has pulled.
-
-9.  Use forks for contributing to projects you do not control.
-
-10. Write good commit messages and PR descriptions; comment constructively in reviews.
+-   You have `analysis_final.ipynb` and `analysis_final_REAL.ipynb`, and you're no longer sure which one made the figure in your paper.
+-   You typed `git push`, Git answered `! [rejected]` and `failed to push some refs`, and you're afraid any fix you try will make it worse.
+-   Git asked for your password, you typed your GitHub password, and it still wouldn't let you push.
+-   A `git pull` stopped with `CONFLICT (content): Merge conflict in README.md`, and now your file is full of `<<<<<<<` lines.
+-   You ran `git reset --hard`, two commits vanished from the log, and you'd like to know they aren't really gone.
+-   Your instructor wants a pull request from a fork, and you're not sure how that differs from uploading files.
+-   You committed a 400 MB CSV or a file with an API key in it, and you want to know why that's a problem and how to avoid it next time.
 
 ## Running theme: make changes small, reviewable, and reversible {.unnumbered}
 
-A healthy Git workflow favors small commits, small pull requests, clear messages, and frequent synchronization.
+Small commits with clear messages, small pull requests, and frequent syncing make every mistake cheap to spot and cheap to undo.
 
-## Mental models and vocabulary
+## How Git thinks about your project
 
-A **repository** is your project folder plus a hidden `.git` directory inside it. Everything Git knows about your project — every commit, every branch, every author, every file at every point in time — is stored in `.git`. Delete the directory, and you have a regular folder with no version control. Keep it, and you have a complete history you can rewind to.
+Most Git confusion comes from not having a picture of what Git is doing, so start with the picture.
 
-A **commit** is a snapshot of every tracked file in the repository at a specific moment, plus a small bundle of metadata: the author, the time, the commit message you wrote, and a unique identifier (the SHA hash) that names this specific snapshot forever. Commits are the unit of history. They are how you say "this is the state of the project right now, save it."
+A **repository** is your project folder plus a hidden `.git` folder inside it. Everything Git knows (every saved version, branch, author, and date) lives in `.git`. Delete it and you have an ordinary folder again.
 
-```bash
+A **[commit](https://en.wikipedia.org/wiki/Commit_(version_control))** is a snapshot of every tracked file at one moment, plus a little metadata: who made it, when, a message saying why, and an ID. The ID is a [hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function) computed from the snapshot and its history, usually shown by its first seven characters. `git log` lists commits, newest first:
+
+```text
 $ git log --oneline -3
-8b73ab1 Part I: convert outline bullets to narrative prose
-185d03f Part II: convert outline bullets to narrative prose
-c127108 Merge pre-commit chapter into automation
+83ac980 Explain why test responses are dropped
+de5b3ad Drop test responses from staff accounts
+24c42fc Add run instructions to README
 ```
 
-::: {.callout-warning collapse="true"}
-## If `git push` is rejected
-
-A rejection almost always means **the remote has commits you do not have locally** — someone else pushed to the same branch before you. Run `git fetch origin` to see what changed, then `git pull --rebase origin <branch>` to replay your commits on top of theirs. If that produces conflicts, resolve them in the marked files, `git add` the resolved files, and continue the rebase with `git rebase --continue`. Once the rebase finishes cleanly, `git push` will work.
-
-If you see "non-fast-forward" on a branch no one else should be pushing to, check that you are on the right branch (`git branch` shows the current one with an asterisk) and that you are pushing to the right remote (`git remote -v`). Never "fix" a rejection with `git push --force` unless you understand exactly which commits you are about to overwrite. See @sec-asking-questions if you need help.
-:::
-
-Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.
-
-There are three zones any file moves through on its way into history. The **working tree** is the version of the file as it exists on disk right now — what you see when you open it in your editor. The **staging area** (also called the *index*) is the set of changes you have explicitly told Git you intend to include in your next commit. And the **commit** is the saved snapshot in history once you actually run `git commit`. Edits land in the working tree first; `git add` promotes them to staging; `git commit` turns staging into a commit.
+Between editing a file and committing it, a change passes through three places, and this is what trips people up first. The **working tree** is the files on your disk. The **staging area** (also called the *index*) holds the changes you've told Git to put in the next commit. The **history** is the commits themselves. `git add` copies a change from the working tree into staging; `git commit` turns everything staged into a commit (*Pro Git*'s chapter on [recording changes](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) has pictures).
 
 ```text
 edit file        →  working tree
@@ -85,33 +67,64 @@ git add file     →  staging area
 git commit       →  history
 ```
 
-A **branch** is a movable pointer that names one specific commit (and, by extension, the entire history leading up to it). Branches are cheap — creating one is essentially free, since Git just records "the name `feature-x` points at this commit." That cheapness is what enables the standard workflow of "make a branch for every change, no matter how small." Use branches; they are not heavy ceremony.
+The middle step lets you choose: if you fixed a bug and also renamed a variable, you can commit the two separately. It also explains a puzzle almost everyone hits. After `git add`, plain `git diff` shows nothing, because it compares the working tree with staging; `git diff --staged` shows what's about to be committed.
 
-A **remote** is another copy of the repository hosted somewhere else — usually on GitHub. The conventional name for the default remote is **origin**, which is just a short label for "the GitHub repository this clone came from." When you also have a fork relationship, you typically add a second remote called **upstream** that points at the original repository you forked. The local copy on your computer can talk to multiple remotes, and `git push`, `git pull`, and `git fetch` all take a remote name as an (often implicit) argument.
+A **branch** is just a name that points at one commit and moves forward each time you commit on it ([Branches in a Nutshell](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)). That's why branches are nearly free, and why the habit is a new branch for every change. Because branches split off and join back together, history isn't a line but a graph, which `git log --oneline --graph` draws. Picture a graph of commits with name tags on some of them, and most Git commands start to make sense.
 
-A **pull request** (PR, sometimes called a *merge request* on GitLab) is GitHub's mechanism for proposing that one branch be merged into another. A PR is not a Git concept — it is a GitHub feature layered on top of Git — but it is where most collaborative decisions actually happen: you push a branch, open a PR, your teammates comment on the diff, you respond and revise, and eventually someone clicks Merge. PRs are how teams make changes *visible* before they land.
+A **remote** is another copy of the repository somewhere else, usually on GitHub. The one you cloned from is called `origin`; if you forked a project, you'll add a second, `upstream`, for the original. `git push`, `git pull`, and `git fetch` move commits between your copy and a remote ([Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)).
 
-## Why version control matters for student data work
+And a **pull request** (PR, or *merge request* on GitLab) is a GitHub proposal to merge one branch into another. It isn't part of Git: it's a web page where teammates read the changes, comment, and eventually click Merge ([About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)), which makes a change visible before it lands.
 
-### Use cases
+## Why bother, and what belongs in Git
 
-The most immediate payoff of version control is **recovery from mistakes**. You delete a file by accident, or you rewrite a function and realize two hours later that the old version was right. Without Git, those mistakes are permanent — or at least they cost you however long it takes to retype everything. With Git, you run `git checkout` or `git restore` and the old version comes back exactly as it was. That safety net alone is worth learning the tool, even for solo projects.
+The first payoff shows up even when you work alone: **you can undo almost anything**. Delete a file by accident, or rewrite a function and realize two hours later that the old one was right, and Git gives the old version back (`git restore --source=<commit> file` pulls one file from any past commit). That alone is worth the learning curve.
 
-Beyond recovery, version control gives you a clear answer to *"what changed, and when?"*. Every commit has an author, a timestamp, and a message explaining why the change was made. A week from now, when you open a file and wonder why on earth a certain line looks the way it does, `git log` and `git blame` tell you exactly who wrote it and what commit introduced it. On a team, this is how you avoid silently trampling each other's work: everyone's edits live in tracked history instead of whatever version happened to be emailed around last.
+The second is an answer to *what changed, and when?* When a line of code puzzles you a month from now, `git log` and [`git blame`](https://git-scm.com/docs/git-blame) say which commit introduced it and why. On a team, everyone's edits live in one tracked history instead of whichever copy was emailed around last.
 
-The third reason, which matters most for coursework and research, is **audit trail**. Your commit history is a record of decisions — *"switched from mean to median imputation here, see issue #42"*, *"fixed the off-by-one error in the date parser"*. Six weeks later, when you are writing up your results or answering a reviewer's question, that history is how you reconstruct what you did and why. It is also how you *prove* to a collaborator, instructor, or future employer that your work is yours.
+The third matters most for coursework and research: the history is a **record of your decisions**. Messages like *"Switch from mean to median imputation (see #42)"* or *"Fix off-by-one in the date parser"* let you reconstruct what you did when you write up results or answer a reviewer.
 
-### What to version and what not to version
+That record only helps if the right things are in it. **Version what's small, text, and written by people:** code, notebooks (with the care in "Notebooks in Git" below), Markdown, configuration such as `requirements.txt` and [`.gitignore`](https://git-scm.com/docs/gitignore), and small reference data your scripts read. Those files *are* the project.
 
-As a rule, version everything that is **small, textual, and authored by you or your team**: source code, notebooks (with the discipline described in the data-science section below), Markdown documentation, configuration files like `requirements.txt` and [`.gitignore`](https://git-scm.com/docs/gitignore), and small reference data that your scripts read. These files are the project — if you lost them, you would have to rewrite them. Git's line-by-line diffing works beautifully on text, and the storage cost is negligible.
+**Keep four kinds of thing out.** *Secrets* (API keys, passwords, `.env` files) must never be committed: once pushed, they stay in the history even after you delete the file, and anyone with a copy can find them (@sec-secrets says what to do if it happens). *Large data* belongs in cloud storage, fetched by a script. *Generated files* (caches, `__pycache__/`, rendered HTML) can be rebuilt from your code. And *environment folders* such as `.venv/` are huge and tied to one computer; commit the recipe (`requirements.txt` or `environment.yml`) instead. "Data science projects" below explains each and has a starter `.gitignore`.
 
-Do **not** version a short, specific list of things. **Secrets and credentials** — API keys, database passwords, `.env` files — should never be committed; once they land in history they are effectively published, even if you delete the file later (see @sec-secrets for why, and how to recover if it happens). **Large raw datasets** — anything bigger than a few megabytes — belong in cloud storage or a shared drive with a clear retrieval script, not inside your repository; Git is not a data store, and a multi-gigabyte CSV will make every `git clone` slow forever. **Generated artifacts** — compiled binaries, cached model files, HTML output, `__pycache__` directories — should be reproducible from your code, which means they do not need to be versioned; `.gitignore` is where you list them. And **environment folders** — `.venv/`, conda env directories — are enormous, machine-specific, and should never be committed; the environment spec (`requirements.txt`, `environment.yml`) is the thing that goes in Git.
+## Getting started: install, set up, create or clone
 
-## Getting started: create or clone
+### Install Git and tell it who you are
 
-### Initialize a repository (local)
+Run `git --version` in a terminal to see whether you have Git. On a Mac, if it's missing, that command offers to install Apple's Command Line Tools, which include it. On Windows, install Git for Windows, which also gives you Git Bash (see @sec-terminal). On Linux, use your distribution's package manager. *Pro Git*'s [Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) covers all three.
 
-When you are starting a project from scratch — a blank folder, no code yet — `git init` turns that folder into a Git repository. Run it inside the directory you want to track, and Git creates the hidden `.git/` folder that stores all your history. Before your first commit, add two files that every project should have from day one: a `README.md` that explains what the project is, and a `.gitignore` that tells Git which files to *never* track (see `Special considerations for data science projects` below for a starter `.gitignore`).
+Git stamps your name and email on every commit, so tell it both before your first commit on a new computer. Skip this, and the commit stops with a message that looks alarming but isn't:
+
+```text
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'you@laptop.(none)')
+```
+
+Four settings, run once per computer, cover it:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.edu"
+git config --global init.defaultBranch main
+git config --global pull.rebase false
+```
+
+Use the email on your GitHub account, so GitHub links your commits to you (it can [keep that address private](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)). The third line names every new repository's first branch `main`, as GitHub does; without it, each `git init` prints a ten-line hint about the name `master`. The fourth tells [`git pull`](https://git-scm.com/docs/git-pull) to combine your work with a teammate's by merging, this chapter's default; without it, recent Git stops the first time both sides have new commits and asks you to choose ("Remotes" below shows the message). The settings live in `.gitconfig` in your home folder ([first-time setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) in *Pro Git*).
+
+### Start a new repository
+
+For a new project, make a folder and run `git init` inside it to create the hidden `.git` folder. Make your first commit two files: a `README.md` that says what the project is, and a `.gitignore` that lists what Git should never track.
 
 ```bash
 mkdir housing-audit && cd housing-audit
@@ -121,84 +134,59 @@ git add README.md .gitignore
 git commit -m "Initialize repository"
 ```
 
-Making those two files your *first* commit matters more than it sounds. It establishes the project's intent in writing, and it ensures the `.gitignore` is active before you accidentally commit a `.venv/` folder or a 2 GB dataset. Do not skip this step with the promise of "I'll add the README later" — later never comes, and by the time you remember, your commit history is cluttered with junk.
+Why those two first? The README puts the project's purpose in writing on day one, and the `.gitignore` is in place before you can accidentally commit a `.venv/` folder or a 2 GB dataset. "I'll add the README later" is rarely kept.
 
-### Clone an existing repository
+### Clone an existing one
 
-When a course, lab, or open-source project gives you starter code, you do not initialize — you **clone**. `git clone` downloads the entire repository, including every commit in its history, into a new folder on your computer.
+When a course, lab, or open-source project gives you starter code, you don't `init`; you **clone**:
 
 ```bash
 git clone https://github.com/course-org/ds101-starter.git
 cd ds101-starter
 ```
 
-What you get is a *full* copy, not just a snapshot of the current state. That is what "distributed version control" means: your clone is a complete, self-contained repository with the entire history, not a thin reference to a server. You can work offline, inspect old commits, create branches, and even reconstruct the project if the server disappears. The trade-off is that cloning a repository with a lot of history (or a lot of committed binary files) can be slow and take real disk space — which is one more reason not to commit large files.
+A clone is a full copy of the repository, every commit included, not just the latest files. That's what makes Git a [distributed version control system](https://en.wikipedia.org/wiki/Distributed_version_control): your copy is complete on its own, so you can work offline, browse old commits, and branch without asking a server. The trade-off is that a long history, or big files committed to it, makes a repository slow to clone.
 
-### First-time setup (identity and defaults)
+### When GitHub asks for a password
 
-Before your first commit on a new machine, tell Git who you are. Git stamps every commit with an author name and email, and if you skip this step you will either get an error on your first commit or — worse — end up with a history full of commits attributed to `root@your-laptop`.
+The first time you push to GitHub over HTTPS, Git asks for a username and password, and nearly everyone falls into the same trap: your GitHub password doesn't work, because GitHub [removed password sign-in for Git](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github). Let a tool handle it instead. GitHub recommends the GitHub CLI (`gh auth login`, which signs you in through your browser) or Git Credential Manager (included with Git for Windows); both remember the credential afterward ([caching your GitHub credentials](https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git)). Or create a personal access token on GitHub and paste it where Git asks for your password.
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.edu"
-git config --global init.defaultBranch main
-```
+## The daily loop
 
-Use the same email address you use on GitHub (or the email your course instructor expects), so commits made locally are correctly associated with your online account. The `init.defaultBranch main` line sets the name of the default branch in every new repository you create; `main` is the modern convention and matches what almost every course and open-source project uses today. These settings live in `~/.gitconfig` and only need to be run once per machine.
+Day to day, Git is the same handful of commands: see what changed, stage what you mean to keep, commit it with a clear message, and sync. Once that loop is automatic, the rest of Git is much less intimidating. The first worked example below shows one full turn with real output.
 
-## Daily Git workflow (the minimum viable loop)
+**Start by looking.** `git status` lists the files you've changed since the last commit, with hints about what to do next; it's never wrong to run it. `git diff` shows the changed lines (a [diff](https://en.wikipedia.org/wiki/Diff), `+` for added and `-` for removed). Read both before every commit: skipping the diff is how a debugging `print` or a hard-coded password slips into history.
 
-The healthy daily loop is the same handful of commands repeated over and over: see what changed, stage what you want, commit it with a clear message, and sync with the remote. Once this loop is automatic, the rest of Git becomes much less intimidating.
+**Then stage on purpose.** The right size for a commit is one idea: a bug fix, a new check, a renamed function. `git add <file>` stages a whole file, and `git add -p` walks through each changed chunk and asks whether to stage it, the easiest way to split a messy afternoon into clean commits. Typing `git add .` every time is tempting, but then you stop noticing what you commit.
 
-The first move when you sit down to commit is always to check **what changed** since your last commit. `git status` tells you which files have been modified, added, or deleted. `git diff` shows the actual line-by-line changes inside those files. Read both before you commit anything — committing without looking at the diff is how you accidentally include debugging print statements, hard-coded passwords, or unrelated experiments.
-
-```bash
-$ git status
-On branch main
-Changes not staged for commit:
-  modified:   src/cleaning.py
-  modified:   notebooks/analysis.ipynb
-
-$ git diff src/cleaning.py
-@@ -12,7 +12,7 @@ def clean_sales(df):
--    df = df.dropna()
-+    df = df.dropna(subset=["customer_id"])
-```
-
-Once you have decided what you want to commit, **stage it intentionally**. The smallest coherent change is the right unit — one logical idea per commit. If your working tree contains both a bug fix and an unrelated rename, stage them as two separate commits, not one. The tool for this is `git add` (or `git add -p` for the interactive "stage this hunk, skip this hunk" experience), and the discipline is to think about each file before you stage it rather than reflexively running `git add .`.
-
-Then **commit with a meaningful message**. A good commit message is a short summary line in the imperative mood — *"Add data intake checks"*, not *"Added data intake checks"* and not *"changes"*. If the change deserves more explanation, leave a blank line after the summary and then a paragraph or two of context: what the change does, why it was needed, and any subtleties a reader might miss.
+**Commit with a message that says why.** The convention is a short summary line, around 50 characters, in the [imperative mood](https://en.wikipedia.org/wiki/Imperative_mood): *"Add data intake checks,"* not *"Added data intake checks"* and certainly not *"changes."* A good test: it should complete "If applied, this commit will…". When the change needs explaining, add a blank line and a paragraph on what and why. Chris Beams's [How to Write a Git Commit Message](https://cbea.ms/git-commit/) is the classic guide.
 
 ```bash
 git commit -m "Add data intake checks for missing customer_id"
 ```
 
-Finally, **sync with the remote**. Push your work so it is backed up to GitHub and visible to your collaborators. Pull (or `git fetch` followed by `git merge`) before you start a new piece of work, so your local copy reflects whatever your teammates have been doing. Frequent small pushes and pulls are dramatically less painful than one giant sync at the end of the week.
+Without `-m`, `git commit` opens an editor for the message (so does a `git pull` that makes a merge commit), and it's often Vim, which is disorienting the first time; @sec-text-editors shows how to get out.
+
+**Finally, sync.** `git push` sends your commits to GitHub, where they're backed up and visible to teammates. `git pull` brings in theirs; run it before you start new work.
 
 ```bash
 git push                # send your commits to origin
-git pull                # fetch and merge the remote into your branch
+git pull                # fetch the remote's commits and merge them into your branch
 ```
 
-That is the entire daily loop: status, diff, add, commit, push, pull. Master those six and you have most of what version control gives you.
+Status, diff, add, commit, push, pull: those six are most of what you'll type.
 
-## Branches and merges (collaboration without chaos)
+## Branches and merges
 
 ### Why branches
 
-Branches exist so that work in progress does not contaminate the version of the project that everyone else depends on. The idea is simple: `main` is the branch that always works. Every new feature, every bug fix, every experiment, happens on its own short-lived branch. You make your changes, you test them, you open a pull request, it gets reviewed, and only then does the work land on `main`. Anyone who clones the project at any time gets a working copy — no half-written functions, no broken imports.
+Branches solve a simple problem: you want to try something without breaking the version everyone depends on. So `main` is kept working, always, and each feature, fix, or experiment happens on its own short-lived branch, reaching `main` only after review. Anyone who clones the project gets code that runs, not your half-finished function.
 
-The second reason branches matter is **isolation**. Two people can work on two different features simultaneously without stepping on each other's toes, because their commits live on separate branches. When both are ready, Git merges them together — and if they touched the same lines, Git tells you about the conflict instead of silently choosing a winner. Without branches, parallel work on a shared file is a recipe for lost changes. Branches also let you experiment safely: create a branch called `try-new-parser`, make a mess, and if it does not pan out, just delete the branch. Nothing on `main` was ever at risk.
+Branches also keep people out of each other's way. Two teammates can work on two features at once, and Git [merges](https://en.wikipedia.org/wiki/Merge_(version_control)) them when both are ready; if they changed the same lines, Git stops and asks rather than silently picking a winner. And experiments are free: make a branch called `try-new-parser`, make a mess, and if it doesn't work out, delete the branch.
 
-### A standard branch workflow
+### The branch workflow
 
-The workflow for almost every change, from a one-line typo fix to a multi-day feature, is the same five-step loop:
-
-1.  **Update `main`** with `git switch main && git pull` so you start from the latest version.
-2.  **Create a new branch** with a descriptive name — `fix-date-parser`, `add-missing-tests`, `issue-42-cleanup-nulls` — so teammates (and future-you) can tell what is in it.
-3.  **Make commits on that branch**, one logical change at a time, following the daily Git loop above.
-4.  **Open a pull request** on GitHub as soon as there is something to discuss, even if the work is not finished (draft PRs are for exactly this).
-5.  **Merge after review**, once at least one other person has looked at the diff and tests pass.
+Almost every change, from a typo fix to a week-long feature, goes the same way. **Update `main` first.** **Make a branch whose name says what's in it,** such as `fix-date-parser` or `issue-42-cleanup-nulls`. **Commit on it,** one idea at a time. **Push it and open a pull request** as soon as there's something to discuss (a *draft* PR says "not ready, but look"). **Merge after review,** once someone else has read the diff and the tests pass.
 
 ```bash
 git switch main
@@ -208,86 +196,116 @@ git switch -c fix-date-parser
 git add src/parsers.py tests/test_parsers.py
 git commit -m "Fix date parser off-by-one for February"
 git push -u origin fix-date-parser
-# Then open a PR on GitHub.
+# Then open a pull request on GitHub.
 ```
 
-The `-u` flag on your first push tells Git "from now on, this local branch is linked to this remote branch", so subsequent `git push` and `git pull` commands do not need the branch name.
+`git switch -c` creates a branch and moves onto it. The `-u` on the first push links your branch to the one on GitHub, so later a plain `git push` or `git pull` works. *Pro Git*'s [Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) walks through the same cycle.
 
-### Merge vs rebase (novice policy)
+### Merge or rebase?
 
-When you are ready to integrate your branch with `main`, Git gives you two strategies. A **merge** creates a new commit — the *merge commit* — that ties the two branches together and preserves the full history of what each branch did in parallel. A **rebase** rewrites your branch's commits so they appear to have been created *on top of* the latest `main`, producing a linear history with no branch points. The result is cleaner-looking but the history is edited: the commit hashes change, and the original order of events is gone.
+Sooner or later someone tells you to "rebase," so it helps to know the choice. A **merge** joins two lines of work with a new *merge commit*, leaving both histories as they happened. A **rebase** replays your branch's commits on top of the latest `main`, as if you'd started today, for a straight-line history. The catch is that replayed commits are new commits, with new hashes.
 
-For student work, use **merges** by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the "cluttered" history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (`git rebase` on a branch that other people have already pulled can destroy their work), and the handbook's advice is to defer that skill until a specific project policy asks for it. When one does, "The second week" below shows how. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.
+For student work, **merge by default.** Merges never rewrite commits someone else may have, and the branchy history they leave is an honest record, not clutter. Rebase is a good tool with one sharp edge: rebasing a branch others have pulled leaves their copies full of commits that no longer exist in yours ([the perils of rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing), in *Pro Git*'s words). If a project asks for rebase, follow its policy; "The second week" below shows how.
 
-### Undo safely (intro)
+### Undo safely
 
-Git gives you several "undo" commands, and the important thing is that they undo different things at different stages. If you edited a file and have not staged or committed it, you want `git restore <file>` to throw away the unsaved edits and bring back the last committed version. If you already staged a change with `git add` but want to unstage it, `git restore --staged <file>` puts it back into the working tree without losing your edits. If you already committed something and want to undo the commit while keeping the changes around, `git reset --soft HEAD~1` moves the branch pointer back one commit and leaves your work in the staging area.
+Which "undo" you need depends on which of the three zones the change is in. **An edit you haven't staged:** `git restore <file>` throws it away and brings back the last committed version; be sure, because Git never saved those edits and can't get them back. **A change you staged by mistake:** `git restore --staged <file>` unstages it and keeps your edits. **A commit you want to redo:** `git reset --soft HEAD~1` removes the last commit but keeps its changes staged. *Pro Git*'s [Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things) has more cases.
 
 ```bash
 git restore src/broken.py            # throw away unstaged edits
 git restore --staged src/broken.py   # unstage without losing edits
-git reset --soft HEAD~1               # undo last commit, keep changes
+git reset --soft HEAD~1              # undo the last commit, keep its changes
 ```
 
-The rule that matters most when you are undoing things is this: **prefer "make a new commit that fixes it" over "rewrite history."** If the problematic commit has already been pushed to a shared remote, rewriting history with `git reset --hard`, `git rebase`, or `git push --force` can delete work that your teammates have already pulled. Instead, write a new commit that reverses the mistake (`git revert <sha>` does this for you automatically), push it normally, and leave the original in the history. It is uglier but safe. History rewriting is a tool for branches no one else is looking at yet.
+The rule that matters most: **once a commit is pushed to a branch others use, fix it with a new commit, not by rewriting history.** `git reset --hard`, `git rebase`, and `git push --force` on a shared branch can delete work your teammates already have. [`git revert <commit>`](https://git-scm.com/docs/git-revert) makes a new commit that undoes an old one, and you push it like any other; the mistake stays visible in the history, which is fine.
 
 ::: {.callout-warning}
-Never run `git push --force` on `main` or any branch your teammates share. If you genuinely need to rewrite history on your own feature branch, use `git push --force-with-lease`, which refuses to overwrite if someone else has pushed in the meantime. On a shared branch, force-pushing is how you erase a collaborator's work.
+Never run `git push --force` on `main` or on any branch your teammates share. If you need to rewrite history on your own feature branch, use `git push --force-with-lease`, which refuses to overwrite the remote if someone else has pushed there since you last fetched. On a shared branch, force-pushing is how you erase a collaborator's work.
 :::
 
-## Remotes: fetch, pull, push
+## Remotes: fetch, pull, and push
 
-### What these commands do conceptually
+### What each one does
 
-Three commands move work between your local repository and a remote one, and it helps to understand exactly what each one does. `git fetch` downloads the latest commits from the remote into your local copy, but it **does not change the files in your working tree**. It is the safest of the three: fetch, look at what came in, then decide what to do with it. After a fetch, you can run `git log main..origin/main` to see exactly which new commits the remote has that you do not.
+The difference between fetch and pull confuses nearly everyone. `git fetch` downloads new commits from the remote but **doesn't touch your files or your branch**: fetch, look at what came in, then decide. After a fetch, `git log main..origin/main` lists the commits the remote has that your `main` doesn't (`origin/main` is Git's memory of where `main` was on GitHub when you last checked).
 
-`git pull` is `git fetch` followed by a merge into your current branch. It is the convenient one-stop command you will use most of the time, but it is not magic — if the remote has changes that conflict with yours, `pull` will drop you into a merge conflict just like any other merge. `git push` goes the other direction: it uploads your local commits to the remote so other people can see them and so your work is backed up. Push only affects the branch you are currently on, and only uploads commits the remote does not already have.
+`git pull` is a fetch followed by a merge into your current branch. It's the one you'll use most, and if the incoming commits changed the same lines you did, it stops with a merge conflict like any other merge. `git push` goes the other way, uploading your branch's new commits.
 
 ```bash
-git fetch origin               # see what is on the remote without merging
-git pull                       # fetch + merge into current branch
-git push                       # upload current branch's commits to origin
+git fetch origin               # see what's on the remote without merging
+git pull                       # fetch + merge into the current branch
+git push                       # upload the current branch's commits to origin
 ```
 
-### The drift problem
+::: {.callout-warning collapse="true"}
+## If `git push` is rejected
 
-On a team, multiple people are pushing to `main` every day. If you branched off `main` on Monday and do not look at it again until Friday, your local copy is now four days behind the world. This is "drift," and the longer you let it accumulate, the worse your eventual merge conflict becomes. Someone renamed the function you depend on; someone else restructured a file you were about to edit; the test you were writing now depends on an API that no longer exists.
+A rejected push looks frightening but almost always means something ordinary: **the remote has commits you don't have yet**, usually because a teammate pushed first.
 
-The habit that prevents drift is simple: **pull before you start new work, and push small, complete units often**. Specifically, run `git pull` on `main` before every new branch, rebase or merge `main` into your long-lived feature branch at least once a day, and push your commits as soon as they are coherent. Small, frequent synchronizations mean every conflict is small. A once-a-week "catch-up" sync is where the scary merge conflicts live.
+```text
+$ git push
+To ...
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to '...'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+(`(non-fast-forward)` instead means you've fetched their commits but not combined them with yours; same fix.) Do what the hint says and run `git pull`. If you never set `pull.rebase` (see "Install Git and tell it who you are"), Git won't guess how to combine the two and stops:
+
+```text
+hint: You have divergent branches and need to specify how to reconcile them.
+...
+fatal: Need to specify how to reconcile divergent branches.
+```
+
+Nothing has happened yet. Run `git pull --no-rebase` to merge, or `git pull --rebase` to replay your new commits on top of theirs (safe, since nobody else has them yet). If you both edited the same lines, resolve the conflict with the playbook below, `git add` the fixed files, and run `git commit` after a merge or `git rebase --continue` after a rebase. Then `git push` will work.
+
+On a branch nobody else should be pushing to, check that you're on the branch you think (`git branch` marks it with `*`) and pushing to the remote you think (`git remote -v`). Don't "fix" a rejection with `git push --force` unless you know exactly which commits you'd overwrite. If you're stuck, @sec-asking-questions shows how to ask for help.
+:::
+
+### Drift: why small, frequent syncs win
+
+On a team, people push to `main` every day. Branch off on Monday and ignore `main` until Friday, and you're four days behind: someone renamed the function you call, someone reorganized the file you're editing, and your merge conflict has been growing all week. That's drift.
+
+The habit that prevents it is dull and works: **pull before you start anything new, and push small, finished pieces often.** Pull `main` before every new branch, bring `main` into any branch that lives more than a day or two, and push commits as soon as they stand on their own. Frequent small syncs mean small conflicts; the once-a-week catch-up is where the scary ones live.
 
 ## GitHub fundamentals
 
-### Repository anatomy on GitHub
+### Finding your way around a repository
 
-A GitHub repository page has several tabs, and each one is a different surface your team uses for a different job. **Code** is the file browser — the current state of the default branch, with a rendering of the README at the bottom (@fig-github-repo). **Issues** is where bugs, tasks, and open questions live; it is the project's to-do list and discussion forum. **Pull Requests** is where proposed changes are reviewed and merged. **Actions** is where automated workflows run on every push (@sec-automation covers GitHub Actions and CI in depth). **Releases** is where you publish tagged, named versions of your project that other people can download and cite.
+A repository's page on GitHub has a row of tabs, each for a different kind of work (@fig-github-repo). **Code** is the file browser for the default branch, with the README rendered below the file list. **Issues** is the project's to-do list and discussion board. **Pull requests** is where proposed changes are reviewed and merged. **Actions** runs automated checks on every push (@sec-automation covers it). And **Releases**, on the right-hand side of the Code tab, holds named versions people can download and cite.
 
 ![This book's own repository on GitHub, signed out, in September 2026. The tabs along the top are the repository's working surfaces; the Code tab, open here, lists the files and folders on the default branch, `main`, each beside the last commit that changed it. The README is rendered below the list, out of view.](/graphics/version-control/github-repo.png){#fig-github-repo fig-alt="Screenshot of the GitHub page for cuinfoscience/INFO-Missing-Manual, marked Public. A row of tabs reads Code (selected), Issues, Pull requests, Actions, Projects, and Security. Below, a branch menu shows main. The latest commit, by brianckeegan, is a merged pull request with 121 commits in all. The file list shows folders .github, chapters, docs, graphics, and tools, then files such as AGENTS.md and CONTRIBUTING.md."}
 
-The single most important file in any repository is the **README**, because it is the front door. When someone lands on your repository for the first time — a classmate, a reviewer, a potential employer, or future-you — the README is what tells them what the project is, how to install it, and how to run it. If the README is missing or stale, every other tab is less useful because readers have no orientation. Invest in the README first and maintain it as part of the work (see @sec-project-management for what a good README contains).
+The most important file in any repository is the **README**, because it's the front door: a classmate, a grader, an employer, or you in six months will read it first to learn what the project is and how to run it. Write it first and keep it current (@sec-project-management says what a good one contains).
 
-### Pull requests: the core collaboration primitive
+### Pull requests
 
-A pull request is a proposal: "I would like these commits from this branch to become part of this other branch." Mechanically, a PR bundles together three things — the commits you made, the file-level diff those commits produce, and the discussion thread where reviewers and the author work out whether the change should merge. All three live on the same page, which is why PRs are the natural place for code review.
+A pull request says: "I'd like the commits on this branch to become part of that one." It puts the commits, the diff they produce, and a discussion thread on one page, which is what makes it the natural place for review.
 
-Two habits make PRs actually work. First, **open a draft PR early**, even before the code is finished, if you want feedback on the approach. A draft PR signals "do not merge this yet, but please comment." Second, **keep PRs small and focused on a single idea**. A PR that touches 30 files across three unrelated changes is almost impossible to review meaningfully — reviewers will skim and rubber-stamp, or they will refuse. A PR that touches five files for one clear purpose gets read carefully and merged quickly.
+Two habits make PRs work. **Open a draft PR early** when you want feedback on the approach; it says "don't merge yet, but please comment." And **keep each PR to one idea.** A PR touching thirty files for three unrelated reasons can't really be reviewed, so reviewers skim and approve or put it off. One that touches five files for one reason gets read carefully and merged quickly.
 
-### PR merge strategies (team policy)
+### How a pull request merges
 
-GitHub offers three ways to merge a PR, and each produces slightly different history. **Merge commit** preserves every commit on the branch and adds a merge commit tying them into `main` — the most honest record of how the work happened. **Squash-and-merge** flattens all the PR's commits into a single commit on `main`, which keeps `main`'s history linear and clean but loses the fine-grained steps. **Rebase-and-merge** replays each commit onto `main` as if they had been written there directly, producing a linear history with the original commits preserved but without a merge commit.
+GitHub offers [three ways to merge a PR](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github), and each leaves different history on `main`. **Create a merge commit** keeps every commit from the branch and adds a merge commit, the most faithful record. **Squash and merge** combines the PR's commits into one new commit on `main`: tidy, but the individual steps are gone. **Rebase and merge** replays each commit onto `main`, keeping the commits but not the merge commit.
 
-There is no "best" strategy — each has trade-offs. The important thing is to **pick one and be consistent within a repository**. Mixing strategies across PRs makes the history confusing. For student projects, squash-and-merge is a reasonable default because it means sloppy work-in-progress commits on a branch become a single clean commit on `main`. Whatever the policy is, you usually configure it once in the repository settings on GitHub, and then every PR uses it.
+None is best; what matters is picking one per repository (its owner can limit the choices in its settings) and sticking with it. Squash and merge is a sensible default for student projects, since a branch full of "wip" and "fix typo" commits becomes one clean commit. One side effect catches people out: after a squash merge, `git branch -d` refuses to delete your local branch with `error: the branch '…' is not fully merged`, because its original commits never reached `main`. Once GitHub shows the PR as merged, `git branch -D` deletes it.
 
-### Reviews and commenting best practices
+### Reviews and comments
 
-Good review comments share three traits: they point to a specific line or region, they explain the *why*, and they propose a concrete direction. "This is wrong" is useless; "This assumes the column is never null, but the source data has about 3% nulls, so this line will crash on real input — consider adding a dropna or fillna before this step" is actionable. Aim for that level of specificity on every comment you leave. On GitHub you attach a comment to a line by clicking beside it in the pull request's diff, and a *suggestion* goes one step further: it carries the exact replacement text, which the author can accept with one click (@fig-github-pr-diff).
+A good [code review](https://en.wikipedia.org/wiki/Code_review) comment points at a specific line, explains why, and suggests a direction. "This is wrong" helps no one. "This assumes the column is never null, but about 3% of rows in the source data are null, so this line will crash on real input; consider a `dropna` or `fillna` first" can be acted on. On GitHub you comment on a line by clicking beside it in the PR's diff, and a *suggestion* goes one step further: it carries the exact replacement text, which the author can apply with one click (@fig-github-pr-diff; GitHub's guide to [commenting on a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/commenting-on-a-pull-request) shows how).
 
 ![A review comment on a pull request in this book's own repository, signed out, in September 2026. The green lines are the end of the diff the comment is attached to. The comment proposes a change in GitHub's *Suggested change* box, which shows the line it would replace in red and the replacement in green. Claude Code wrote the comment from the maintainer's account; the name and avatar are blurred.](/graphics/version-control/github-pr-diff.png){#fig-github-pr-diff fig-alt="Screenshot of a GitHub review thread on chapters/version-control.qmd. Diff lines 763 to 766 are green additions ending in git stash pop. Below, a comment by a blurred user, marked Collaborator and Author, reads: The new section uses git stash list too, but the quick reference leaves it out. A Suggested change box replaces line 766 with git stash list and git stash pop. The comment ends: Generated by Claude Code."}
 
-It also helps reviewers and authors to tag the *kind* of feedback a comment is. A simple taxonomy — **Blocker** (must fix before merge, correctness or security), **Suggestion** (a better alternative, non-blocking), **Question** (asking the author to clarify intent), **Nit** (a minor style or naming point, explicitly non-blocking) — lets the author know what actually has to change before the PR can merge versus what is opinion. When you are the author responding to reviews, always reply to each thread explicitly: either "changed in commit abc123" or "kept as-is because..." so the reviewer can see the loop closed. @sec-collaboration has more on this.
+It also helps to label each comment's *kind*, so the author knows what must change and what's taste: **Blocker** (must fix before merging: correctness or security), **Suggestion** (a better way, not required), **Question** (please explain the intent), and **Nit** (a small style point, explicitly optional). As the author, reply to every thread, "Changed in abc123" or "Kept as is, because…", so the reviewer sees each point closed. @sec-collaboration has much more on reviewing.
 
-### Linking work: issues $\leftrightarrow$ PRs
+### Linking pull requests and issues
 
-GitHub notices when you reference an issue number in a PR description, a commit message, or another issue's comments, and it automatically creates a link between them. Take advantage of this: every PR should reference the issue(s) it addresses, and every issue should be closed with a summary that links to the PR that resolved it. That cross-referencing turns the repository into a searchable, navigable history of *why* changes were made, not just *what* they were.
+GitHub links an issue automatically when you mention its number (`#42`) in a PR description, a commit message, or a comment. Every PR should name the issue it addresses, so the repository becomes a searchable record of *why* each change was made.
 
 ```markdown
 ## Summary
@@ -296,49 +314,40 @@ Fix the off-by-one in the date parser so February rolls over correctly.
 Closes #42.
 ```
 
-The magic words — `Closes #42`, `Fixes #42`, or `Resolves #42` — will cause GitHub to automatically close issue #42 when the PR is merged. That single line is how you keep the issue tracker honest without any manual bookkeeping.
+`Closes #42`, `Fixes #42`, or `Resolves #42` in a PR description goes further: it [closes issue #42 automatically](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue) when the PR merges into the default branch, which keeps the issue list honest without any bookkeeping.
 
-## Forking workflow (contributing without direct write access)
+## Forking workflow
 
-### Fork vs clone
+### Fork or clone?
 
-Forking and cloning sound similar but do different things. **Cloning** downloads a repository to your computer — it is a local-vs-remote operation. **Forking** creates a personal copy of someone else's repository on GitHub, under your own account — it is a GitHub-to-GitHub operation. You fork when you do not have permission to push directly to the original repository, which is the normal situation for open-source projects and for most course repositories you did not create yourself.
+The two words sound alike, and mixing them up is one of the most common beginner questions. **Cloning** copies a repository from GitHub to your computer. **[Forking](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)** copies someone else's repository to your own GitHub account. You fork when you can't push to the original, the usual case for open-source projects and course repositories you didn't create. (The word comes from a [fork](https://en.wikipedia.org/wiki/Fork_(software_development)) in the older sense, a project splitting in two; most GitHub forks exist only to send changes back.)
 
-The standard pattern is to fork *and* clone: fork the repo on GitHub to get `github.com/your-name/project`, then clone your fork to your laptop to get a working copy you can actually edit. From there, the fork is the remote you have write access to (`origin`), and the original project is a second read-only remote (`upstream`) you use to stay in sync.
+So you do both: fork to get `github.com/your-name/project`, then clone *your fork*. Your fork is the remote you can push to (`origin`); the original is a read-only second remote (`upstream`) you pull updates from.
 
-### The standard fork contribution flow
+### Contributing through a fork
 
-The full six-step workflow for contributing to a repository you do not own:
-
-1.  **Fork** the repository on GitHub by clicking the Fork button. You now own a copy at `github.com/your-name/project`.
-2.  **Clone** *your fork* (not the original) to your computer.
-3.  **Add `upstream`** as a second remote so you can pull updates from the original project.
-4.  **Create a feature branch** for your change (never work directly on your fork's `main`).
-5.  **Push** the feature branch to your fork.
-6.  **Open a PR** from your fork's feature branch *to the original repository's* `main`.
+**Fork** the repository with GitHub's Fork button. **Clone your fork,** not the original, and **add the original as `upstream`.** **Make a branch** for your change, keeping your fork's `main` a match for the original's. **Push the branch to your fork,** and **open a pull request** from it to the original's `main`.
 
 ```bash
 # After forking on GitHub:
 git clone https://github.com/your-name/project.git
 cd project
 git remote add upstream https://github.com/original-owner/project.git
-git remote -v
-# origin    https://github.com/your-name/project.git  (fetch/push)
-# upstream  https://github.com/original-owner/project.git (fetch/push)
+git remote -v                      # shows origin (your fork) and upstream (the original)
 
 git switch -c fix-typo-in-readme
-# ... make changes ...
+# ... make changes, commit ...
 git push -u origin fix-typo-in-readme
-# Then open a PR on GitHub targeting original-owner/project main.
+# Then open a pull request on GitHub, targeting original-owner/project's main.
 ```
 
-The one subtle point is that your PR goes from your fork's feature branch *into* the original repository's `main`. GitHub's PR creation page handles this automatically once both sides exist — you just confirm the source branch (yours) and the target branch (theirs).
+The subtle part is the direction: the PR goes *from* your fork's branch *into* the original's `main`. GitHub usually fills in both sides; check that the base is the original repository and the source is your branch.
 
-### Keeping your fork up to date
+### Keeping a fork up to date
 
-Forks get stale. While you are working on your feature, the original project continues to receive commits, and your fork's `main` branch will fall behind. If you let the drift get too large before you sync, your eventual PR will conflict with recent changes and reviewers will ask you to rebase.
+Forks go stale. The original keeps getting commits while you work, and if your fork's `main` falls too far behind, your PR will conflict with recent changes.
 
-The fix is to periodically pull from `upstream` into your local `main`, then push the updated `main` to your fork. Do this before you start any new branch:
+So bring `upstream`'s `main` into your local `main` now and then, especially before a new branch, and push it to your fork:
 
 ```bash
 git switch main
@@ -347,21 +356,21 @@ git merge upstream/main
 git push origin main
 ```
 
-Once your local and forked `main` branches are current, you can branch off them with confidence. If you have a long-lived feature branch, merge the updated `main` into it the same day you see upstream has moved. Resolving a small conflict today is orders of magnitude easier than resolving a month's worth of accumulated drift when you are trying to get a PR over the finish line.
+GitHub's **Sync fork** button, above your fork's file list, does the same from the web ([Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)). Then bring the updated `main` into any branch you're still working on: a small conflict today beats a month of drift.
 
 ## The second week: recover, set aside, copy, and replay
 
-Once the daily loop (edit, stage, commit, push) is second nature, a different set of problems shows up. You reset a branch and lose two commits you wanted. You need to switch branches in the middle of an edit. A fix you made on one branch is needed on another today. A project asks you to rebase your pull request. This section covers the four commands for those moments: `git reflog`, `git stash`, `git cherry-pick`, and `git rebase`.
+Once the daily loop is second nature, new problems show up. You reset a branch and lose two commits you wanted. You need to switch branches mid-edit. A fix on one branch is needed on another today. A project asks you to rebase your pull request. Four commands handle those moments: `git reflog`, `git stash`, `git cherry-pick`, and `git rebase`.
 
-The transcripts below come from a small practice repository, `thesis-analysis`, with a `main` branch and a `plots` branch. Your commit hashes will differ.
+The transcripts come from a small practice repository, `thesis-analysis`, with a `main` branch and a `plots` branch. Your hashes will differ.
 
 ### The rule underneath all four
 
-Two of these commands, `cherry-pick` and `rebase`, make *new* commits that copy old ones, with new hashes. That is harmless on a branch only you have, and damaging on a branch someone else has already pulled, because their copy still has the old commits. The rule from "Undo safely" above applies to everything in this section: **rewrite only history that nobody else has.** A branch you pushed for a pull request that nobody else has checked out is still yours; `main` never is.
+`cherry-pick` and `rebase` make *new* commits that copy old ones, with new hashes. That's harmless on a branch only you have, and damaging on one someone else has pulled, because their copy still has the old commits. So the rule from "Undo safely" covers everything here: **rewrite only history that nobody else has.** A branch you pushed for a pull request that nobody else has checked out is still yours; `main` never is.
 
 ### `git reflog`: the undo for your undos
 
-Git keeps a private diary of every place your branch has pointed: each commit, reset, switch, merge, and rebase. That diary is the **reflog**, and it is what makes most Git "disasters" recoverable. Suppose you meant to undo one commit and typed `HEAD~2` instead:
+This command turns most Git "disasters" into a two-minute fix. Git keeps a private diary of everywhere your branch has pointed (each commit, reset, switch, merge, and rebase), the **[reflog](https://git-scm.com/docs/git-reflog)**. Suppose you meant to undo one commit and typed `HEAD~2`:
 
 ```text
 $ git log --oneline
@@ -373,7 +382,7 @@ $ git reset --hard HEAD~2
 HEAD is now at 122cf4c Add cleaning script
 ```
 
-The two newest commits are gone from `git log`, but not from the reflog:
+The two newest commits are gone from `git log`, and your stomach drops. But they're still in the reflog:
 
 ```text
 $ git reflog
@@ -388,11 +397,11 @@ HEAD is now at b75f6dc Write cleaned data to CSV
 
 Read the reflog from the top: the newest entry is the mistake, and the line below it is where you were just before. Resetting to that hash puts both commits back. If you'd rather look before you leap, `git switch -c rescue b75f6dc` makes a new branch at the lost commit and leaves your current branch alone.
 
-The reflog has limits worth knowing. It only records *commits*: edits you never committed aren't in it, which is one more reason to commit often. It lives only on your computer, so it isn't pushed and a fresh clone starts with an empty one. And Git eventually cleans it up; by default, a commit nothing else points to can be recovered for about a month.
+The reflog has limits. It records only *commits*, so edits you never committed aren't in it (one more reason to commit often). It lives only on your computer; a fresh clone starts with an empty one. And Git cleans it up: by default, a commit nothing else points to stays recoverable for about a month.
 
 ### `git stash`: set work aside without committing
 
-Git won't let you switch branches if the switch would overwrite changes you haven't committed:
+You'll meet this message in your first week of branches. Git won't switch if that would overwrite changes you haven't committed:
 
 ```text
 $ git switch main
@@ -402,7 +411,7 @@ Please commit your changes or stash them before you switch branches.
 Aborting
 ```
 
-When the work isn't ready to commit, **stash** it: Git saves your uncommitted changes, cleans the working tree, and gives the changes back when you ask.
+When the work isn't ready to commit, **stash** it: Git saves your uncommitted changes, cleans the working tree, and gives the changes back when you ask ([Stashing and Cleaning](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning) in *Pro Git*).
 
 ```text
 $ git stash push -m "half-done axis labels"
@@ -413,11 +422,11 @@ $ git switch main
 Switched to branch 'main'
 ```
 
-Do what you needed to do on `main`, come back with `git switch plots`, and run `git stash pop` to get the changes back and remove them from the stash. Always add a message with `-m`, because a stash list of five entries named "WIP on plots" is no help a week later. And treat the stash as a coat check, not a closet: anything you mean to keep for more than a day belongs in a commit on a branch.
+Do what you needed on `main`, come back with `git switch plots`, and run `git stash pop` to get the changes back. Always add a message with `-m`: five entries all named "WIP on plots" are no help a week later. And treat the stash as a coat check, not a closet; anything you'll keep for more than a day belongs in a commit.
 
 ### `git cherry-pick`: copy one commit to another branch
 
-Sometimes one commit on a branch is needed elsewhere right away. You're working on `plots` and fix a real bug in `clean.py` there (negative ages were getting through), and `main` needs the fix now, before `plots` is ready to merge. `git cherry-pick` copies a single commit onto the branch you're on:
+Sometimes one commit is needed elsewhere right away. On `plots`, you fix a real bug in `clean.py` (negative ages were getting through), and `main` needs the fix now, before `plots` is ready. [`git cherry-pick`](https://git-scm.com/docs/git-cherry-pick) copies a single commit onto the branch you're on:
 
 ```text
 $ git log --oneline -1
@@ -430,7 +439,7 @@ $ git cherry-pick 3543085
  1 file changed, 1 insertion(+)
 ```
 
-The copy on `main` has a new hash (`da9a91d`), because a commit's hash covers its parent too. If the copied change conflicts with `main`, resolve it with the same playbook as a merge conflict, then run `git cherry-pick --continue`, or `git cherry-pick --abort` to back out. Cherry-pick is for the occasional commit, not a habit: if you find yourself copying a series of commits between branches, the branches probably want to be merged.
+The copy on `main` has a new hash (`da9a91d`), because a commit's hash covers its parent too. If the copied change conflicts with `main`, resolve it with the merge-conflict playbook below and run `git cherry-pick --continue`, or back out with `git cherry-pick --abort`. Cherry-pick is for the occasional commit; if you're copying a series of them, the branches probably want to be merged.
 
 ### `git rebase`: replay your branch on top of `main`
 
@@ -448,7 +457,7 @@ $ git log --oneline --graph --all
 ...
 ```
 
-The chapter's default is to merge `main` into your branch (see "Merge vs rebase" above). When a project asks you to **rebase** instead, Git sets your branch's commits aside, moves the branch to the tip of `main`, and replays the commits there one at a time:
+This chapter's default is to merge `main` into your branch ("Merge or rebase?" above). When a project asks you to **rebase** instead, Git sets your branch's commits aside, moves the branch to the tip of `main`, and replays the commits there one at a time:
 
 ```text
 $ git switch plots
@@ -465,13 +474,12 @@ $ git log --oneline -4
 da9a91d Drop negative ages
 ```
 
-Your work now sits on top of the latest `main`, as if you had started it today, and the history is one straight line. Git noticed that "Drop negative ages" was already on `main` (the cherry-pick) and skipped it. Every replayed commit has a new hash. That is why rebasing a branch someone else has pulled causes trouble, and why pushing a rebased branch you'd already pushed needs `git push --force-with-lease`, the careful form of force-push from the warning above.
+Your work now sits on top of the latest `main`, in one straight line, and Git skipped "Drop negative ages" because it was already on `main` (the cherry-pick). Every replayed commit has a new hash, which is why rebasing a branch someone else has pulled causes trouble, and why pushing a rebased branch you'd already pushed needs `git push --force-with-lease`, the careful force-push from the warning above.
 
 If a replayed commit conflicts, the rebase stops at that commit:
 
 ```text
 $ git rebase main
-...
 Auto-merging README.md
 CONFLICT (content): Merge conflict in README.md
 error: could not apply 866f67a... Note plots order
@@ -479,13 +487,14 @@ hint: Resolve all conflicts manually, mark them as resolved with
 hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
 hint: You can instead skip this commit: run "git rebase --skip".
 hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+Could not apply 866f67a... Note plots order
 ```
 
-Fix the file as in the merge-conflict playbook below, `git add` it, and run `git rebase --continue`. A rebase can stop more than once, once per commit that conflicts. If it gets confusing, `git rebase --abort` puts everything back as it was before you started. If you've already finished and don't like the result, `git reset --hard ORIG_HEAD` undoes the whole rebase, because Git saves where your branch was in `ORIG_HEAD` before a rebase starts. The reflog has it too.
+Fix the file as in the merge-conflict playbook below, `git add` it, and run `git rebase --continue`; a rebase can stop once for each commit that conflicts. If it gets confusing, `git rebase --abort` puts everything back as it was. And if you've finished and don't like the result, `git reset --hard ORIG_HEAD` undoes the whole rebase, because Git saves where your branch was in `ORIG_HEAD` before a rebase starts (the reflog has it too).
 
 ### Tidy a branch before review: `git rebase -i`
 
-A branch often ends up with commits like "Add title", "fix typo", and "wip". Before you open a pull request, an **interactive rebase** lets you combine, reword, reorder, or drop commits that haven't been shared yet. `git rebase -i main` opens your editor with one line per commit on the branch, oldest first:
+A branch often ends up with commits like "Add title," "fix typo," and "wip." Before you open a pull request, an **interactive rebase** lets you combine, reword, reorder, or drop commits that haven't been shared yet. `git rebase -i main` opens your editor with one line per commit on the branch, oldest first:
 
 ```text
 pick d055f5b Start plotting script
@@ -495,7 +504,7 @@ pick 0b5c740 fix typo
 pick 8831ba3 wip
 ```
 
-Below those lines, the file lists every command it accepts. Change `pick` to `fixup` (or `f`) on the last two lines to fold them into "Add title", keeping only its message; `squash` does the same but lets you edit the combined message, `reword` changes one message, and `drop` deletes a commit. Save and close the editor, and Git replays the branch:
+Below those lines, the file lists every command it accepts. Change `pick` to `fixup` (or `f`) on the last two lines to fold them into "Add title," keeping only its message; `squash` does the same but lets you edit the combined message, `reword` changes one message, and `drop` deletes a commit. Save and close the editor, and Git replays the branch:
 
 ```text
 $ git log --oneline -3
@@ -504,17 +513,17 @@ fb5670f Label axes
 d055f5b Start plotting script
 ```
 
-Everything about rebasing applies here too: new hashes, `--force-with-lease` if the branch was already pushed, and `ORIG_HEAD` or the reflog if you want the old version back. Many projects squash a pull request's commits when they merge it anyway (see "PR merge strategies" above), so tidying is a courtesy to your reviewers, not a requirement. *Pro Git*'s chapter on [rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) covers the rest of what interactive rebase can do.
+Everything about rebasing applies here too: new hashes, `--force-with-lease` if the branch was already pushed, and `ORIG_HEAD` or the reflog to get the old version back. Many projects squash a PR's commits when they merge it anyway ("How a pull request merges" above), so tidying is a courtesy to reviewers, not a requirement. *Pro Git*'s chapter on [rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) covers the rest of what interactive rebase can do.
 
-## Merge conflicts: a disciplined resolution playbook
+## Merge conflicts: a calm playbook
 
 ### What a conflict is
 
-A merge conflict is what happens when two branches both changed the same lines of the same file in incompatible ways, and Git cannot tell which change you want to keep. Conflicts are not a sign that something has gone wrong — they are a normal part of any collaboration where two people edit the same area of the codebase. The right response is "okay, time to resolve this," not panic.
+Your first merge conflict usually arrives the night before something is due, and a file suddenly full of `<<<<<<<` and `>>>>>>>` looks like damage. It isn't. A [merge conflict](https://en.wikipedia.org/wiki/Edit_conflict) just means two branches changed the same lines in different ways, and Git, rather than guess, has stopped to ask you. Conflicts are a normal part of working with anyone, including yourself on two branches. The right reaction is "okay, time to resolve this," not panic.
 
-### The safe sequence
+### The playbook
 
-When `git pull` or `git merge` reports a conflict, work through this sequence in order. **First, stop and read the error.** Git tells you exactly which files conflicted; do not skip past that text.
+**First, read what Git said.** It names every file that conflicted; don't scroll past it.
 
 ```text
 Auto-merging src/cleaning.py
@@ -522,7 +531,23 @@ CONFLICT (content): Merge conflict in src/cleaning.py
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-**Second, run `git status`** to confirm the list of conflicted files, then open each one in your editor. Conflicted files contain little markers that show you both versions of every contested region:
+**Second, run `git status`** for the full list, under "Unmerged paths." It also shows the way out: `git merge --abort` puts everything back as it was before the merge.
+
+```text
+$ git status
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   src/cleaning.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+**Third, open each file and find the markers.** Git has written both versions of every contested region into the file:
 
 ```python
 <<<<<<< HEAD
@@ -532,29 +557,23 @@ Automatic merge failed; fix conflicts and then commit the result.
 >>>>>>> feature-strict-cleaning
 ```
 
-The lines between `<<<<<<< HEAD` and `=======` are the version that was on your branch; the lines between `=======` and `>>>>>>> feature-strict-cleaning` are the version coming in from the other branch. **Third, decide the correct combined content** — and "correct" almost never means "pick one side wholesale." Read both versions, understand what each was trying to do, and write the merged version that preserves both intents:
+Between `<<<<<<< HEAD` and `=======` is the version on your current branch; between `=======` and `>>>>>>> feature-strict-cleaning` is the version coming in. **Fourth, write the combined version you actually want.** That rarely means picking one side wholesale: work out what each was trying to do, and keep both intentions:
 
 ```python
     df = df.dropna(subset=["customer_id", "date"])
 ```
 
-Delete the conflict markers when you are done — they are not valid code and Git will not magically remove them for you.
+Then delete all three marker lines; Git won't, and a leftover marker is a syntax error waiting to happen. Editors such as VS Code highlight conflicts and offer "accept current," "accept incoming," and "accept both" buttons, which are handy as long as you still read the result.
 
-**Fourth, stage the resolved files** with `git add`. Git uses staging as the signal that "I have finished resolving this file." **Fifth, run `git commit`** (or `git merge --continue`) to finalize the merge. Git produces a default commit message describing the merge; you can usually accept it. **Sixth and most important, run a smoke test** — execute the code, run any tests, open the notebook — to confirm that your manually-merged version actually works. A "successful" merge that produces broken code is the most common way for conflicts to silently introduce bugs.
+**Fifth, stage each resolved file** with `git add`, which tells Git it's done. **Sixth, finish the merge** with `git commit` (or `git merge --continue`), accepting the suggested message. **Last, and most important, test it:** run the code, the tests, the notebook. A merge Git accepts can still be broken code, and that's how conflicts most often sneak bugs in.
 
-### When to ask for help
+Ask for help when you can't explain what each side was trying to do, or when the conflict is in a data file or a notebook. Notebook conflicts are raw JSON and hard to read; a notebook-aware tool such as [nbdime](https://nbdime.readthedocs.io/en/latest/) helps. There's no shame in `git merge --abort` and a talk with whoever wrote the other side.
 
--   If you cannot explain what each side of a conflict represents.
-
--   If conflicts involve data files or notebooks that are difficult to merge.
-
-## Special considerations for data science projects
+## Data science projects: ignore files, notebooks, and big data
 
 ### `.gitignore` hygiene
 
-Data science projects accumulate files that *should not* be in Git — environment folders, caches, temporary outputs, secrets — and the tool for keeping them out is `.gitignore`. The file sits at the root of your repository and lists patterns that Git will refuse to track. Add it as one of your first commits, and adjust it as the project grows.
-
-A reasonable starter `.gitignore` for a Python data-science project looks like this:
+Data projects pile up files that shouldn't be in Git (environments, caches, outputs, secrets). `.gitignore`, at the top of the repository, lists patterns Git won't track. Commit it early and add to it as the project grows. A reasonable starter for a Python data project:
 
 ```text
 # Python bytecode and caches
@@ -588,46 +607,44 @@ data/processed/
 !.vscode/settings.json
 ```
 
-The `!` prefix means "un-ignore this" — it is how you exclude a pattern from a broader rule. The block above ignores every `*.csv` except the ones under `data/examples/`, which is a useful trick when you want most data out of Git but a small fixture committed as test input. The `.vscode/*` / `!.vscode/settings.json` pair does the same for a shared editor config.
+A leading `!` means "don't ignore this after all," an exception to a broader rule. Here every `*.csv` is ignored except those in `data/examples/`, so a tiny sample can be committed for tests; the `.vscode/*` and `!.vscode/settings.json` pair does the same for a shared editor setting. One surprise to know about: `.gitignore` only affects files Git isn't already tracking. If you committed `.env` before adding it here, Git keeps tracking it until you run `git rm --cached .env`, and the old copy is still in the history.
 
 ### Notebooks in Git
 
-Jupyter notebooks are JSON files, not plain text. They contain your code, your markdown, *and* your cell outputs (including any figures, tables, and printed values) all in one big structured blob. Git can diff them, but the diffs are noisy, hard to read in a PR, and prone to spurious changes that appear every time you re-run a cell.
+Jupyter notebooks are JSON files holding your code, your Markdown, *and* every output (plots included, as long strings of encoded image data). Git can track them, but their diffs are noisy and full of changes nobody made on purpose, since rerunning a cell changes its output and execution count (@sec-jupyter has more).
 
-Three practices keep notebooks manageable in Git. **First, clear outputs before committing** — either manually via "Restart & Clear Outputs" in Jupyter, or automatically with a pre-commit hook using `nbstripout` (@sec-automation covers pre-commit hooks). The resulting notebook diffs capture only the code and prose you actually changed. **Second, keep cells in execution order** from top to bottom — a notebook with cells executed `[3]`, `[1]`, `[5]` is confusing for reviewers and unreliable when rerun. **Third, treat notebooks as narrative and keep heavy code in `src/`** — import helper functions from versioned Python modules rather than redefining them in every notebook. That way notebook diffs stay small and the code that really matters lives in files Git can review cleanly.
+Three habits keep notebooks manageable. **Clear outputs before you commit,** by hand (Clear Outputs of All Cells) or automatically with [nbstripout](https://pypi.org/project/nbstripout/), which can run as a pre-commit hook (@sec-automation covers those); then a diff shows only the code and prose you changed. **Keep cells in order:** a notebook whose cells ran `[3]`, `[1]`, `[5]` is confusing to review and unreliable to rerun. And **keep heavy code in `.py` files** that the notebook imports, so the code that matters lives where Git can review it cleanly.
 
 ### Large files and datasets
 
-Do not commit large raw datasets to Git. Git was designed for source code — thousands of small text files — and it does not compress or handle multi-megabyte binary files well. A committed 500 MB CSV makes every `git clone` slow forever, because Git keeps the file in history even if you delete it later. A committed 2 GB model file can push your repository past GitHub's size limits.
+Git was built for small text files, and it handles big ones badly. Every committed version stays in the history, so a 500 MB CSV committed once makes every clone slow forever, even after you delete it. GitHub also [blocks files larger than 100 MiB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github): the push is rejected, and deleting the file in a later commit doesn't help, because it's still in an earlier one.
 
-The right pattern is to **store raw data outside the repository** — in a cloud bucket, a shared drive, a course-provided URL, or a dedicated data-storage service — and commit only the *retrieval script* that downloads it into your local `data/raw/` folder. That way the code to reproduce the dataset is versioned, the dataset itself is not, and a new collaborator can run `make data` or `python scripts/download_data.py` to populate their local copy. If you really do need to version large files inside a repository, look into **Git LFS** (Large File Storage), which is a separate system that stores big blobs alongside Git instead of inside it — but it is an advanced tool and overkill for most student projects.
+The fix is to **keep raw data outside the repository** (a cloud bucket, a shared drive, a course URL, a data archive) and commit the *script that downloads it* into `data/raw/`. The recipe is versioned, the data isn't, and a new collaborator runs `python scripts/download_data.py` (or `make data`) to get a copy. If you truly need big files in a repository, [Git LFS](https://git-lfs.com/) (Large File Storage) keeps them alongside Git rather than inside it, but that's more machinery than most student projects need.
 
-### Releases and tags (optional)
+### Tags and releases (optional)
 
-A **tag** is a name you attach to a specific commit that does not move as you continue to commit. Branches move; tags do not. Git tags are how you mark "this is the exact version of the project I submitted for the midterm" or "this is the version of the code used in the published figure," so that you — or anyone else — can come back months later and reproduce exactly that state:
+A **tag** is a name stuck to one commit that, unlike a branch, never moves. Tags mark "the version I submitted for the midterm" or "the code that made Figure 3," so anyone can get exactly that state months later ([Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging) in *Pro Git*):
 
 ```bash
-git tag -a v1.0-midterm -m "Midterm submission, 2025-03-10"
+git tag -a v1.0-midterm -m "Midterm submission, 2026-03-10"
 git push origin v1.0-midterm
 ```
 
-On GitHub, you can promote a tag to a **release**, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference `v1.0-midterm` and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.
+On GitHub a tag can become a **release**, with notes and optional downloads such as a data snapshot or a PDF. Releases make code citable: a report can point at `v1.0-midterm`, and a reader can click through to the code behind the results. Connect the repository to the archive Zenodo, and each release also gets a DOI, a permanent identifier ([referencing and citing content](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content)). You won't need releases day to day, but they're cheap when the moment comes.
 
 ## Stakes and politics
 
-Almost everyone who learns Git has a story about "ruining" a repository with a force-push or a rebase they didn't understand. Git is worth that trouble; it is one of the most useful skills in this handbook. But the trouble falls unevenly, and so does the power behind the one platform most people use Git through.
+Almost everyone who learns Git has a story about "ruining" a repository: a force-push that erased a teammate's afternoon, a rebase that seemed to swallow a week of commits. Git is worth that trouble, but the trouble doesn't fall evenly. Git's model, a branching graph of hashed snapshots, rewards one particular way of thinking, and it asks far more of a newcomer than the revision history in Google Docs or track changes in Word. Fluency in Git is a real skill, and it also works as a credential that sorts people who had someone to show them from people who didn't.
 
-First, *Git's mental model is its own gatekeeper*. The distributed, branching, hash-tagged commit graph rewards one particular way of thinking and punishes everything else, and those horror stories reflect a real cognitive load that more visual tools (Google Docs's revision history, Word's track changes) impose far less. Fluency with Git is a real skill, and it is also a credentialing mechanism.
+The platform matters as much as the tool. Git is open and decentralized; GitHub is one company's service, which [Microsoft bought in 2018](https://news.microsoft.com/2018/06/04/microsoft-to-acquire-github-for-7-5-billion/). Microsoft also makes VS Code and GitHub Copilot and is a major investor in OpenAI, so a student's editor, code host, and AI assistant can all belong to one firm. "If it's not on GitHub, it doesn't exist" is true in many job markets and false in important ones, and moving so much open-source work onto a single corporate host concentrates a kind of infrastructural power that's uncomfortable to depend on. GitLab, Codeberg, and self-hosted [Gitea](https://about.gitea.com/) exist so that Git the protocol doesn't collapse into one company's product.
 
-Second, *GitHub is not Git*. Git is open and decentralized; GitHub is a single private platform now owned by Microsoft, which also owns the dominant editor (VS Code), substantial chunks of the LLM ecosystem (Copilot, OpenAI partnership), and the messaging tool many teams use for code review (Teams). The sentence "if it's not on GitHub, it doesn't exist" is true in many job markets and false in important ones, and the migration of open-source projects to a single corporate host concentrates a kind of infrastructural power that is uncomfortable to depend on. GitLab, Codeberg, and self-hosted Gitea exist precisely so that Git the protocol does not collapse into one company's product.
+And "if it's not in Git, it didn't happen" is a handy slogan that quietly leaves out work Git can't represent: curating a dataset, the conversation that settled a design, mentoring a new teammate. As with project management, the visible work gets the credit.
 
-Third, *"if it's not in Git, it didn't happen"* is a useful slogan that quietly excludes work that does not fit Git's model: dataset curation, oral knowledge, design conversations, mentoring labor. As with project management, the visible kind of work gets credit; the rest does not.
-
-See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when a tutorial says "host it on GitHub," ask what changes if the platform does — and which work is still real even when Git cannot represent it.
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when a tutorial says "host it on GitHub," ask what changes if the platform does, and which work is still real even when Git can't represent it.
 
 ## Worked examples
 
-The examples follow one small project, `survey-analysis`, a script and a README that clean a course survey. The transcripts are real; your hashes will differ, and where `git push` names the remote, the address is shortened to `...`.
+The examples follow one small project, `survey-analysis`, a script and a README that clean a course survey. The transcripts are real; your hashes will differ, and where Git prints the remote's address, it's shortened to `...`.
 
 ### The daily loop
 
@@ -666,17 +683,21 @@ To ...
    27194ea..24c42fc  main -> main
 ```
 
-`git status` says which files changed; `git diff` shows the changed lines, with `+` for added and `-` for removed. Reading the diff before every commit is the habit that catches the stray debugging line or the file you didn't mean to touch. The last line of `git push` says your branch moved from one commit to the next on the remote.
+`git status` says which files changed, and its indented hints say what you can do next. `git diff` shows the lines, with `+` for added and `-` for removed; the `@@ -1,3 +1,7 @@` line means "lines 1 to 3 of the old file became lines 1 to 7 of the new one." Reading the diff before every commit is the habit that catches the stray debugging line. The last line of `git push` says `main` on the remote moved from one commit to the next.
 
 ### Branch and pull request
 
-A change that someone should review goes on its own branch. Here, two commits drop test responses that staff entered while checking the survey:
+A change someone should review goes on its own branch. Here, two commits drop test responses that staff entered while checking the survey:
 
 ```text
 $ git switch -c drop-test-responses
 Switched to a new branch 'drop-test-responses'
 $ git commit -am "Drop test responses from staff accounts"
+[drop-test-responses de5b3ad] Drop test responses from staff accounts
+ 1 file changed, 1 insertion(+)
 $ git commit -am "Explain why test responses are dropped"
+[drop-test-responses 83ac980] Explain why test responses are dropped
+ 1 file changed, 1 insertion(+)
 $ git push -u origin drop-test-responses
 To ...
  * [new branch]      drop-test-responses -> drop-test-responses
@@ -688,7 +709,7 @@ $ git log --oneline --graph
 * 27194ea Start the project
 ```
 
-Then open a pull request on GitHub (it offers a button for a branch you just pushed), and describe what the change does and how to check it (see Template B below). When a reviewer asks for a change, make it as a new commit on the same branch and `git push` again; the pull request updates itself, and the review history stays readable. After it merges, update your own `main` and delete the branch: `git switch main`, `git pull`, `git branch -d drop-test-responses`.
+(`git commit -am` stages every tracked file you've changed and commits in one step. It's a handy shortcut once you've read the diff, and it never picks up brand-new files.) Then open a pull request on GitHub, which offers a button for a branch you've just pushed, and describe what the change does and how to check it (Template B below). When a reviewer asks for a change, make it as a new commit on the same branch and `git push` again; the PR updates itself, and the review history stays readable. After it merges, update your own `main` and delete the branch: `git switch main`, `git pull`, `git branch -d drop-test-responses` (or `-D` after a squash merge, as "How a pull request merges" explains).
 
 ### Resolve a merge conflict
 
@@ -720,6 +741,7 @@ Cleans the spring 2026 course survey and drops test responses.
 ```text
 $ git add README.md
 $ git commit -m "Merge main into drop-test-responses"
+[drop-test-responses 40a3ee8] Merge main into drop-test-responses
 $ git log --oneline --graph -6
 *   40a3ee8 Merge main into drop-test-responses
 |\
@@ -731,7 +753,7 @@ $ git log --oneline --graph -6
 * 24c42fc Add run instructions to README
 ```
 
-Then run the code, or at least open the file, before you push: a merge that Git accepts can still leave a broken file if a marker line survived.
+The graph shows the two lines of work and the merge commit that joins them. Then run the code, or at least open the file, before you push: a merge Git accepts can still leave a broken file if a marker line survived.
 
 ### Contribute through a fork
 
@@ -746,17 +768,21 @@ upstream	https://github.com/cuinfoscience/INFO-Missing-Manual.git (fetch)
 upstream	https://github.com/cuinfoscience/INFO-Missing-Manual.git (push)
 ```
 
-`origin` is your copy, which you can push to; `upstream` is the project, which you only read from. Bring your `main` up to date (`git fetch upstream`, then `git merge upstream/main`), make a branch, commit, push the branch to `origin`, and open a pull request from your fork to the project. "Forking workflow" above has each command. `CONTRIBUTING.md` in this book's repository walks through the same steps for a first contribution.
+`origin` is your copy, which you can push to; `upstream` is the project, which you only read from. Bring your `main` up to date (`git fetch upstream`, then `git merge upstream/main`), make a branch, commit, push the branch to `origin`, and open a pull request from your fork to the project. "Forking workflow" above has each command, and `CONTRIBUTING.md` in this book's repository walks through the same steps for a first contribution.
 
 ### Move a commit you made on the wrong branch
 
-You meant to start a branch, but you committed on `main`. As long as you haven't pushed it, you can move the commit: make a branch where you are, move `main` back to match the remote, and switch to the new branch.
+You meant to start a branch, but you committed on `main`. It happens to everyone, and as long as you haven't pushed, it's a quick fix: make a branch where you are, move `main` back to match the remote, and switch to the new branch. Check first which commits will move:
 
 ```text
 $ git status
 On branch main
 Your branch is ahead of 'origin/main' by 1 commit.
   (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+$ git log --oneline origin/main..main
+5c6be3a Write the cleaned survey to data/processed
 $ git branch save-output
 $ git reset --hard origin/main
 HEAD is now at 6776b0f Say which survey
@@ -767,139 +793,148 @@ $ git log --oneline -2
 6776b0f Say which survey
 ```
 
-The commit is safe on `save-output` before `reset --hard` moves `main`, and the reflog has it if anything goes wrong (see "The second week" above). Read the status line first: "ahead by 1 commit" means one commit moves. When this example was first run, `main` was ahead by 2, because an earlier commit had never been pushed, and both moved to the new branch. `git log origin/main..main` lists exactly which commits will move.
+Start from a clean state ("nothing to commit, working tree clean"), because `reset --hard` also throws away uncommitted edits; commit or stash them first. The commit is safe on `save-output` before `reset --hard` moves `main`, and the reflog has it if anything goes wrong ("The second week" above). Read the "ahead by" count before you move anything: when this example was first run, `main` was ahead by 2, because an earlier commit had never been pushed, and both moved to the new branch. `git log origin/main..main` lists exactly the commits that will move.
 
 ## Templates
 
 ### Template A: Commit message
 
-     <Short summary in imperative mood>
+```text
+<Short summary in the imperative mood>
 
-    Why:
+Why:
 
-    * ...
+* ...
 
-    What changed:
+What changed:
 
-    * ...
+* ...
+```
 
 ### Template B: Pull request description
 
-    ## Summary
+```markdown
+## Summary
 
-    ## Why
+## Why
 
-    ## What changed
+## What changed
 
-    *
+*
 
-    ## How to test
+## How to test
 
-    *
+*
 
-    ## Screenshots/outputs (if relevant)
+## Screenshots/outputs (if relevant)
 
-    ## Related issues
+## Related issues
 
-    Closes #
+Closes #
+```
 
 ### Template C: Review comment taxonomy
 
-    Blocker: correctness, security, reproducibility
-    Suggestion: improvement, alternative approach
-    Question: clarify intent, edge cases
-    Nit: formatting, naming (non-blocking)
+```text
+Blocker: correctness, security, reproducibility
+Suggestion: improvement, alternative approach
+Question: clarify intent, edge cases
+Nit: formatting, naming (non-blocking)
+```
 
 ## Exercises
 
-1.  Initialize a repo, add a README and `.gitignore`, and make three meaningful commits.
+1.  Initialize a repository, add a README and `.gitignore`, and make three meaningful commits. Read `git diff` before each one.
 
-2.  Create a branch, make changes, push it, and open a PR.
+2.  Create a branch, make changes, push it, and open a pull request.
 
-3.  Review a classmate's PR using the comment taxonomy; request one change and approve after revision.
+3.  Review a classmate's pull request using the comment taxonomy; request one change, and approve after they revise.
 
-4.  Create a merge conflict deliberately and resolve it using the playbook.
+4.  Create a merge conflict on purpose (change the same line on two branches) and resolve it with the playbook.
 
-5.  Fork a repository, add an upstream remote, sync it, and open a PR from your fork.
+5.  Fork a repository, add an `upstream` remote, sync it, and open a pull request from your fork.
 
 6.  In a practice repository, lose two commits with `git reset --hard HEAD~2` and get them back with `git reflog`. Then make three small commits on a branch, fold them into one with `git rebase -i`, and undo the rebase with `git reset --hard ORIG_HEAD`.
 
 ## One-page checklist
 
--   I understand working tree vs staging vs commits.
+-   I can explain the working tree, the staging area, and commits.
 
--   I can create branches and keep `main` stable.
+-   I read `git status` and `git diff` before every commit.
 
--   I can fetch/pull/push and explain what each does.
+-   I make a branch for each change and keep `main` working.
+
+-   I can fetch, pull, and push, and say what each does.
 
 -   I can open, review, and merge pull requests.
 
--   I can use forks and keep them synchronized with upstream.
+-   I can use forks and keep them in sync with `upstream`.
 
--   I can resolve merge conflicts methodically.
+-   I can resolve merge conflicts calmly, and I test after every merge.
 
--   I know `git reflog` can recover commits I thought I lost, and I rewrite history (rebase, cherry-pick, force-push) only on branches nobody else has pulled.
+-   I know `git reflog` can recover commits I thought I'd lost, and I rewrite history (rebase, cherry-pick, force-push) only on branches nobody else has pulled.
 
--   I follow hygiene: `.gitignore`, no secrets, controlled notebook diffs.
+-   I keep secrets, environments, and large data out of Git with `.gitignore`, and I strip notebook outputs.
 
-## Quick reference: common commands (student set)
+## Quick reference: common commands
 
-    # create/clone
+```bash
+# create or clone
+git init
+git clone <url>
 
-    git init
-    git clone <url>
+# inspect
+git status
+git diff
+git diff --staged
+git log --oneline --graph --decorate
 
-    # inspect
+# stage and commit
+git add <file>
+git add -p
+git commit -m "..."
 
-    git status
-    git diff
-    git log --oneline --graph --decorate
+# branches
+git branch
+git switch -c <name>
+git switch <name>
 
-    # stage/commit
+# remotes
+git remote -v
+git fetch
+git pull
+git push -u origin <branch>
 
-    git add <file>
-    git add -p
-    git commit -m "..."
+# undo
+git restore <file>
+git restore --staged <file>
+git revert <sha>
 
-    # branches
+# merges and conflicts
+git merge <branch>
+git merge --abort
 
-    git branch
-    git switch -c <name>
-    git switch <name>
-
-    # remotes
-
-    git remote -v
-    git fetch
-    git pull
-    git push -u origin <branch>
-
-    # merge/conflicts
-
-    git merge <branch>
-    git merge --abort
-
-    # second week
-
-    git reflog
-    git stash push -m "..."
-    git stash list
-    git stash pop
-    git cherry-pick <sha>
-    git rebase main
-    git rebase --continue
-    git rebase --abort
-    git rebase -i main
-    git push --force-with-lease
+# second week
+git reflog
+git stash push -m "..."
+git stash list
+git stash pop
+git cherry-pick <sha>
+git rebase main
+git rebase --continue
+git rebase --abort
+git rebase -i main
+git push --force-with-lease
+```
 
 ::: {.callout-note}
 ## 📚 Further reading
 
-- Scott Chacon and Ben Straub, [*Pro Git*](https://git-scm.com/book/en/v2) — the free, authoritative book on Git, written by one of its maintainers; chapters 1–3 cover the daily loop, chapters 4–7 cover collaboration and internals.
-- GitHub, [Getting started with Git](https://docs.github.com/en/get-started/using-git/about-git) — beginner-friendly overview of Git concepts paired with GitHub features.
-- GitHub Education, [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — printable reference for everyday commands.
-- Katie Sylor-Miller, [Oh shit, git!?!](https://ohshitgit.com/) — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.
-- [Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) — the chapter that demystifies the object database; the moment Git stops feeling like magic.
-- [GitLab](https://about.gitlab.com/) and [Codeberg](https://codeberg.org/) — open-core and non-profit alternatives to GitHub; useful to know exist when the "Stakes and politics" point about platform concentration above lands.
-- Software Carpentry, [Version Control with Git](https://swcarpentry.github.io/git-novice/) — a complete beginner workshop with exercises; pairs well with this chapter as a hands-on follow-up.
+- **Scott Chacon and Ben Straub**, [*Pro Git*](https://git-scm.com/book/en/v2) — the free, thorough book on Git; chapters 1–3 cover the daily loop and branching, 5–6 working with others and GitHub, and 7 advanced tools such as stashing and rewriting history.
+- **GitHub**, [About Git](https://docs.github.com/en/get-started/using-git/about-git) — a beginner-friendly overview of Git's ideas, paired with how GitHub uses them.
+- **GitHub Education**, [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf) — a printable reference for everyday commands.
+- **Katie Sylor-Miller**, [Oh shit, git!?!](https://ohshitgit.com/) — short, blunt recipes for the moments when Git seems to have eaten your work; bookmark it before you need it.
+- **Pro Git**, [Git Internals](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) — the chapter that explains how Git stores everything; read it when you're ready for Git to stop feeling like magic.
+- **[GitLab](https://about.gitlab.com/) and [Codeberg](https://codeberg.org/)** — an open-core and a nonprofit alternative to GitHub, worth knowing about after the "Stakes and politics" point on platform concentration.
+- **Software Carpentry**, [Version Control with Git](https://swcarpentry.github.io/git-novice/) — a complete beginner workshop with exercises; a good hands-on follow-up to this chapter.
 :::
