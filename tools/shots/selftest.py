@@ -213,6 +213,8 @@ figures:
   - {{id: wide, kind: capture, url: "{base}/ok", window: [1000, 500]}}
   - {{id: fits, kind: capture, url: "{base}/ok", window: [{soft_w}, {soft_h}]}}
   - {{id: between, kind: capture, url: "{base}/marks", crop: {{between: ['#title', '#box'], pad: 4}}}}
+  - {{id: blurred, kind: capture, url: "{base}/marks", blur: ['#title']}}
+  - {{id: blur-miss, kind: capture, url: "{base}/marks", blur: ['#title', '#nope']}}
   - {{id: typed, kind: capture, url: "{base}/type", steps: [{{click: {{selector: '#q'}}}}, {{type: 'typed here'}}, {{wait: {{text: '^typed here$'}}}}]}}
   - {{id: relaxed-ok, kind: capture, url: "{base}/ok", window: [960, 720], relaxed: "a test of a clearer view"}}
   - {{id: relaxed-small, kind: capture, url: "{base}/ok", window: [{relaxed_w}, {relaxed_h}], relaxed: "a test"}}
@@ -328,7 +330,7 @@ figures:
     print("anchors, markers, legibility, composites")
     code, out = captured = shots("capture", "ch-99", "--only", "marks", "marks-2x", "small-text", "joined",
                                  "wide", "wide-allowed", "fits", "relaxed-ok", "relaxed-small", "relaxed-column",
-                                 "relaxed-too-big", "between", "typed")
+                                 "relaxed-too-big", "between", "typed", "blurred", "blur-miss")
     marks, marks2, small, joined = newest("marks"), newest("marks-2x"), newest("small-text"), newest("joined")
     said = sections(out)
     over = (f"shows 1000×500 CSS pixels, over the {soft_w}×{soft_h} soft limit; "
@@ -370,6 +372,23 @@ figures:
     typed = newest("typed")
     expect("a headless `type` step types into the element that has focus",
            typed.get("ok") is True, str(typed.get("problems")))
+    blurred, missed = newest("blurred"), newest("blur-miss")
+
+    def dark(take):
+        # Pixels in the title's box darker than mid-grey: sharp text has many, blurred text almost none.
+        from PIL import Image
+        with Image.open(tmp / "out" / "ch-99" / take["figure"] / Path(take["image"]).name) as img:
+            s = take.get("size", [1, 1])[0] // 800 or 1
+            region = img.convert("L").crop((40 * s, 30 * s, 260 * s, 70 * s))
+            return sum(1 for v in region.getdata() if v < 100)
+    sharp = dark(marks) if marks.get("image") else 0
+    soft = dark(blurred) if blurred.get("image") else sharp
+    expect("`blur:` blurs what its selectors match, and the take records the selectors",
+           blurred.get("ok") is True and blurred.get("blur") == ["#title"] and sharp > 200 and soft < sharp / 10,
+           f"dark pixels sharp {sharp}, blurred {soft}; {blurred.get('problems')}")
+    expect("...and a selector that matches nothing fails the take, so nothing it should hide slips through",
+           missed.get("ok") is False and any("`#nope` matched nothing" in p for p in missed.get("problems") or []),
+           str(missed.get("problems")))
     tex_tools = all(shutil.which(t) for t in ("pdflatex", "pdftocairo"))
     if tex_tools:
         stem = tmp / "out" / "ch-99" / "marks" / (Path(marks.get("image", "x.png")).name.removesuffix(".png") + ".annotated")

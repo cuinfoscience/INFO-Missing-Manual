@@ -22,7 +22,7 @@ DEVTOOLS_LAYOUTS = {"side-by-side", "stacked", "auto"}
 FIGURE_KEYS = {"id", "file", "kind", "section", "url", "mode", "engine", "steps", "expect", "crop",
                "javascript", "drifts", "legacy", "notes", "devtools", "window", "scale",
                "user_agent", "pause", "settle", "timeout", "retries",
-               "annotate", "targets", "legibility", "parts", "layout", "oversize", "relaxed"}
+               "annotate", "targets", "legibility", "parts", "layout", "oversize", "relaxed", "blur"}
 ENGINES = {"playwright", "selenium", "codegen"}
 # Annotation (lib/annotate.py): marks placed from what the browser measured.
 ANNOTATE = {"width_in", "size", "border", "marks"}
@@ -115,6 +115,11 @@ def _problems(chapter, raw):
         if "relaxed" in f and not (isinstance(f["relaxed"], str) and f["relaxed"].strip()):
             out.append(f"{where}: `relaxed` is the reason a view up to {RELAXED_LIMIT[0]}×{RELAXED_LIMIT[1]} "
                        "is less cluttered, as a sentence")
+        if "blur" in f:
+            if not (isinstance(f["blur"], list) and f["blur"] and all(isinstance(s, str) and s.strip() for s in f["blur"])):
+                out.append(f"{where}: `blur` is a list of CSS selectors")
+            if f.get("mode", "headless") != "headless":
+                out.append(f"{where}: `blur` works in headless takes only")
         book = (f.get("targets") or {}).get("book")
         if isinstance(book, dict) and "column" in book and book["column"] not in COLUMNS:
             out.append(f"{where}: the book target's `column` is one of {sorted(COLUMNS)}")

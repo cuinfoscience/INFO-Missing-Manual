@@ -1,0 +1,27 @@
+# Screenshots for chapters/collaboration.qmd: a review thread on this book's own repository,
+# signed out.
+chapter: collaboration
+figures:
+  - id: github-pr-review-comment
+    kind: capture
+    section: "Responding to reviews as an author"
+    # The same thread as version-control.yml's github-pr-diff, after it was replied to and
+    # resolved: a line comment with a suggested change, the author's reply, and GitHub's
+    # "Hide resolved" control, which a resolved thread shows once it is expanded. Written by
+    # Claude Code from the maintainer's account (docs/decisions.md, 2026-09-25).
+    # Opened by its permalink, GitHub expands the resolved thread; from the plain pull
+    # request URL it stays collapsed to one line.
+    url: "https://github.com/cuinfoscience/INFO-Missing-Manual/pull/47#discussion_r4100343519"
+    window: [1024, 900]
+    steps:
+      - wait: {selector: "review-thread-collapsible[data-resolved='true'] .js-suggested-changes-blob"}
+      - wait: {text: "^Hide resolved$"}
+      # Just below the sticky "Merged" bar (about 60 px), so all of the thread fits.
+      - scroll: {selector: "review-thread-collapsible", offset: 72}
+      - settle: 1
+    crop: {selector: "review-thread-collapsible", pad: 8}
+    relaxed: "The whole thread is the subject, from the resolved control through the suggestion to the reply; at about 540x690 it is taller than 600 but no wider than the body column."
+    blur: ["review-thread-collapsible img.avatar", "review-thread-collapsible a.author"]
+    expect: {text: ["Suggested change", "Hide resolved"]}
+    drifts: true
+    notes: "A resolved review thread on this book's own pull request #47, written by Claude Code; signed out. GitHub's interface changes; the caption dates the capture."
