@@ -965,7 +965,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="numeric-columns-read-as-strings" class="level3">
 <h3 class="anchored" data-anchor-id="numeric-columns-read-as-strings">2. Numeric columns read as strings</h3>
 <p><strong>Symptom:</strong> <code>df["price"].sum()</code> concatenates strings instead of adding numbers.</p>
-<p><strong>Fix:</strong> one bad value somewhere (a <code>"N/A"</code> or a <code>"$"</code> or a stray footnote) is making pandas treat the whole column as <code>object</code>. Use <code>pd.to_numeric(..., errors="coerce")</code> to convert and flag the culprits:</p>
+<p><strong>Fix:</strong> one bad value somewhere (a <code>"N/A"</code> or a <code>"$"</code> or a stray footnote) is making pandas treat the whole column as text (<code>str</code> in pandas 3, <code>object</code> in pandas 2). Use <code>pd.to_numeric(..., errors="coerce")</code> to convert and flag the culprits:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price_num"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"price"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bad <span class="op">=</span> df[df[<span class="st">"price_num"</span>].isna() <span class="op">&amp;</span> df[<span class="st">"price"</span>].notna()]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unconvertible prices: </span><span class="sc">{</span><span class="bu">len</span>(bad)<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -1005,7 +1005,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="mixed-types-in-a-numeric-column" class="level3">
 <h3 class="anchored" data-anchor-id="mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</h3>
-<p><strong>Symptom:</strong> a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as <code>object</code>. Operations are slow and error-prone.</p>
+<p><strong>Symptom:</strong> a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as text (<code>str</code>, or <code>object</code> in pandas 2). Operations are slow and error-prone.</p>
 <p><strong>Fix:</strong> <code>pd.to_numeric(..., errors="coerce")</code> as in problem 2, then decide what to do with the NaNs. Do not silently <code>.dropna()</code> — that is the row you should be investigating.</p>
 </section>
 </section>

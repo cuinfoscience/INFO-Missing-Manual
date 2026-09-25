@@ -102,7 +102,11 @@ df = pd.read_csv("survey.csv", na_values=["-", "--", "999", "n/a", "unknown"])
 
 ### Dtypes: the “everything is a string” trap
 
-If a single “bad” cell sneaks into a numeric column — maybe a footnote or an accidental space — pandas will read the entire column as `object` (string). You discover this later when `df["revenue"].sum()` concatenates strings instead of adding numbers.
+If a single “bad” cell sneaks into a numeric column — maybe a footnote, a `$`, or an accidental space — pandas will read the entire column as text. You discover this later when `df["revenue"].sum()` concatenates strings instead of adding numbers: a column holding `12.50`, `$8`, and `9.25` sums to `'12.50$89.25'`.
+
+> **NOTE:**
+>
+> pandas 3.0 and later read a text column as `str`; pandas 2 and earlier read it as `object`. Tutorials and answers written for older versions say `object`, so check which version you have with `pd.__version__`. To ask whether a column is numeric in either version, ask directly: `pd.api.types.is_numeric_dtype(df["revenue"])` returns `False` for the column above in both.
 
 Two fixes:
 
@@ -122,7 +126,7 @@ Always check dtypes after loading:
 df.dtypes
 ```
 
-If a column you expect to be numeric shows as `object`, you have a hidden non-number somewhere.
+If a column you expect to be numeric shows as `str` (or `object` in pandas 2), you have a hidden non-number somewhere.
 
 ### Dates
 
@@ -592,7 +596,7 @@ print(df.isna().sum())
 - Pass `na_values=` liberally; domain data has its own missing-value sentinels.
 - Use `parse_dates=` at read time instead of converting later.
 - Check `df.shape`, `df.columns`, `df.dtypes`, and `df.head()` in the cell right after every `read_*`.
-- If a numeric column shows up as `object`, you have hidden strings. Use `pd.to_numeric(..., errors="coerce")` to find them.
+- If a numeric column shows up as `str` (pandas 3) or `object` (pandas 2), you have hidden strings. Use `pd.to_numeric(..., errors="coerce")` to find them.
 - Use Parquet for intermediate files and anything over ~100 MB.
 - If a file won’t fit in memory: read fewer columns, read in chunks (keeping sums and counts, not means), or query it with DuckDB or Polars.
 - Always pass `index=False` when writing a CSV or Excel file unless you want the row index as a column.
