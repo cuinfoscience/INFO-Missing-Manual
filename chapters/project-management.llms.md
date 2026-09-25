@@ -71,7 +71,7 @@ That whole brief is one page and it answers most of the questions a future revie
 Once you have a brief, break the work into a small number of **milestones** — chunks of work large enough to be meaningful but small enough to finish in a week or two. Four is usually about right for a course project; more than six starts to feel bureaucratic and less than three leaves too much ambiguity. A reasonable pattern for a data-analysis project is:
 
 1.  **Data acquisition and intake note.** Get the data, record its provenance, document what you received. The milestone is “I have the raw data on disk and I can explain where it came from.”
-2.  **Cleaning and data dictionary.** Turn the raw data into a clean, documented dataset. The milestone is “every column is typed correctly, missingness is explicitly handled, and a data dictionary explains what each column means.”
+2.  **Cleaning and data dictionary.** Turn the raw data into a clean, documented dataset. The milestone is “every column is typed correctly, missingness is explicitly handled, and a [data dictionary](../chapters/appendix-glossary.llms.md#term-data-dictionary) explains what each column means.”
 3.  **Analysis and validation.** Do the actual analysis and check that the results are plausible. The milestone is “I have answers to the questions in the brief, and I have at least one sanity check on each result.”
 4.  **Outputs, narrative, and reproducibility check.** Produce the final deliverables and verify that they regenerate from a clean state. The milestone is “someone else could `git clone` this repo, run one command, and get the same outputs.”
 
@@ -179,9 +179,108 @@ Treat raw data as evidence: never modify it in place. If you discover an obvious
 
 For every dataset you load, maintain a small **data dictionary**: a one-table reference that lists each variable’s name, its type (numeric, string, date, categorical), its meaning in plain English, its units if applicable, the range or set of allowable values, and any sentinel values used for missingness (`-999`, `"unknown"`, blank). The data dictionary is what makes a dataset usable by someone other than the person who created it — and it is what you will reach for when you come back to the project six months later and cannot remember what `qty_alt2` meant. Record any transformations the same way: derived columns, recodes, joins, every change from raw to clean.
 
+**Keep it as a file beside the data, in a format code can read.** A CSV with one row per column is enough. Here is `data/dictionary.csv` for a small sales export, `data/raw/sales-2026-04-10.csv`. Each row describes one column, and a list of allowed values is separated by `|`:
+
+``` text
+column,type,description,units,allowed,missing
+date,date,Day of the sale (store's local time),,,never
+store,text,Store where the sale was rung up,,north|south|campus,never
+product,text,Product category,,coffee|tea|pastry|sandwich|juice,never
+quantity,integer,Items in the sale,items,1 or more,never
+revenue,number,Amount paid after discounts,US dollars,0 or more,never
+note,text,Discount code applied at the register,,promo|loyalty,blank means none
+```
+
+**Draft it from the data, then write what only a person knows.** pandas can list each column’s name, type, missing count, and an example value in a few lines:
+
+``` python
+import pandas as pd
+
+df = pd.read_csv("data/raw/sales-2026-04-10.csv", parse_dates=["date"])
+
+draft = pd.DataFrame({
+    "column": df.columns,
+    "type": df.dtypes.astype(str).values,
+    "missing": df.isna().sum().values,
+    "distinct": df.nunique().values,
+    "example": [df[c].dropna().iloc[0] if df[c].notna().any() else "" for c in df.columns],
+})
+draft["description"] = ""
+draft["units"] = ""
+draft["allowed"] = ""
+draft.to_csv("data/dictionary.csv", index=False)
+```
+
+``` text
+  column           type  missing  distinct             example description units allowed
+    date datetime64[us]        0         3 2026-04-01 00:00:00
+   store            str        0         3               north
+ product            str        0         5              coffee
+quantity          int64        0         4                   2
+ revenue        float64        0         8                 7.5
+    note            str        5         2               promo
+```
+
+The draft is the easy half. No code can tell you that `revenue` is after discounts, that dates are in the store’s local time, or that a blank `note` means “no discount” rather than “unknown.” Fill in the empty columns by hand, from the source’s documentation or by asking whoever produced the data, and replace pandas’ type names with plain words (date, text, integer, number), which don’t change between pandas versions.
+
+A **codebook** is the survey-research version of the same idea. It adds what a survey variable needs: the exact question wording, what each response code means (`1` = “strongly disagree”), and who was asked (the respondents a skip pattern routed to the question). If your data comes from a survey, look for the codebook before anything else; if you are collecting survey data, write one.
+
+**Let the dictionary check the data.** A dictionary that code can read can also catch data that has stopped matching it. This short script compares a file’s columns with the dictionary, checks that number columns really are numbers, and checks the values of any column whose `allowed` entry is a list separated by `|`:
+
+``` python
+import sys
+
+import pandas as pd
+
+dictionary = pd.read_csv("data/dictionary.csv", keep_default_na=False)
+df = pd.read_csv(sys.argv[1])
+
+problems = []
+expected = list(dictionary["column"])
+if list(df.columns) != expected:
+    problems.append(f"columns: expected {expected}, got {list(df.columns)}")
+for row in dictionary.itertuples():
+    if row.column not in df.columns:
+        continue
+    col = df[row.column]
+    if row.type in ("integer", "number") and not pd.api.types.is_numeric_dtype(col):
+        problems.append(f"{row.column}: should be a {row.type}, but pandas read it as {col.dtype}")
+    if "|" in row.allowed:
+        unexpected = set(col.dropna().astype(str)) - set(row.allowed.split("|"))
+        if unexpected:
+            problems.append(f"{row.column}: values not in the dictionary: {sorted(unexpected)}")
+
+if problems:
+    sys.exit("Data doesn't match data/dictionary.csv:\n  " + "\n  ".join(problems))
+print("Data matches data/dictionary.csv")
+```
+
+Saved as `check_data.py`, it passes the April export. The May export looks the same at a glance, but the check finds three changes:
+
+``` text
+$ python check_data.py data/raw/sales-2026-05-10.csv
+Data doesn't match data/dictionary.csv:
+  columns: expected ['date', 'store', 'product', 'quantity', 'revenue', 'note'], got ['date', 'store', 'product', 'quantity', 'revenue', 'notes']
+  product: values not in the dictionary: ['cold brew']
+  revenue: should be a number, but pandas read it as str
+```
+
+The vendor renamed a column, the stores started selling cold brew, and one row’s revenue has a `$` in it. Each of those would have gone through a pipeline without an error and changed its results. Run the check first in your pipeline (see “Silent data drift” below). When you outgrow a script like this, the same idea comes in libraries such as pandera (see [sec-tabular-data](#sec-tabular-data)), and in [Table Schema](https://specs.frictionlessdata.io/table-schema/), a standard JSON format for a data dictionary that tools in several languages can read.
+
 ### Versioning data
 
 When the dataset itself changes — a new monthly export, a corrected version, a rerun of an upstream process — do not just overwrite. Create a dated snapshot (`sales-2026-04-10.csv`) or tag the version, and write down what changed: new rows? new columns? schema shifts? renamed values? Recording the file size or a checksum alongside it gives you a way to detect silent corruption later. None of this needs to be fancy; a `data/raw/CHANGELOG.md` with one paragraph per snapshot is plenty.
+
+When the check above fails on a new snapshot, decide for each change whether the data or the dictionary should give way. A `$` in a number column is a problem to fix in your cleaning code; a new product is a fact the dictionary should learn. Change the dictionary in the same commit as the code that handles the change, and add an entry to the changelog:
+
+``` markdown
+## 2026-05-10 export
+- `note` is now called `notes`; clean.py renames it back.
+- New product `cold brew`; added to the dictionary's allowed values.
+- One `revenue` value has a `$`; clean.py strips it before converting.
+```
+
+Because the dictionary is a file in your repository, its history is your schema’s history: `git log -p data/dictionary.csv` shows every change to it, with the date and the commit message that explains why (see [sec-git-github](#sec-git-github)).
 
 ### Sensitive data hygiene (baseline)
 
@@ -628,7 +727,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
 1.  Create a new project folder using the template and write a README that someone else could follow.
 
-2.  Intake a dataset: place it in `data/raw`, write provenance notes, and draft a data dictionary.
+2.  Intake a dataset: place it in `data/raw`, write provenance notes, and draft a data dictionary. Generate the draft with pandas, fill in the descriptions by hand, then adapt `check_data.py` from “Data dictionary and codebook” and confirm it passes. Change one value in a copy of the file and confirm it fails.
 
 3.  Create five issues that decompose the project into milestones and tasks; label and prioritize them.
 
@@ -644,7 +743,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
 - Raw data are immutable and provenance is recorded.
 
-- I maintain a data dictionary and transformation notes.
+- I maintain a data dictionary and transformation notes, and new data is checked against the dictionary before I use it.
 
 - My README explains setup, run, and outputs.
 
@@ -661,6 +760,8 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 - Record environment.
 
 - Intake data with provenance.
+
+- Draft a data dictionary from the data; check every new snapshot against it.
 
 - Track work in issues.
 

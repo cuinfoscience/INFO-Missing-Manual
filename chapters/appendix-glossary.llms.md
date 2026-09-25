@@ -28,6 +28,10 @@ The most direct method for interacting with a computer’s operating and file sy
 
 A plain-text file format for tabular data where each row is a line and each column is separated by a delimiter (traditionally a comma, sometimes a tab or semicolon). See [sec-data-file-formats](#sec-data-file-formats) for the quirks of reading CSVs reliably.
 
+### Data dictionary
+
+A table that documents a dataset one column at a time: each column’s name, type, meaning in plain words, units, allowed values, and how missing values are coded. Kept as a file beside the data, it lets someone else (or you, months later) use the data correctly, and a short script can check new data against it. A *codebook* is the survey-research version, adding each question’s wording and what its response codes mean. See [sec-project-management](#sec-project-management).
+
 ### Driver
 
 Software that interfaces between hardware and software (for example, allowing an operating system to receive information from your mouse and keyboard) or between software programs (for example, allowing your web browser to combine network packets into a complete data request). Your operating system will typically keep drivers for hardware like video cards, sound, and networking up-to-date.

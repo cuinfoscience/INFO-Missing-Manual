@@ -835,7 +835,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Once you have a brief, break the work into a small number of <strong>milestones</strong> — chunks of work large enough to be meaningful but small enough to finish in a week or two. Four is usually about right for a course project; more than six starts to feel bureaucratic and less than three leaves too much ambiguity. A reasonable pattern for a data-analysis project is:</p>
 <ol type="1">
 <li><strong>Data acquisition and intake note.</strong> Get the data, record its provenance, document what you received. The milestone is “I have the raw data on disk and I can explain where it came from.”</li>
-<li><strong>Cleaning and data dictionary.</strong> Turn the raw data into a clean, documented dataset. The milestone is “every column is typed correctly, missingness is explicitly handled, and a data dictionary explains what each column means.”</li>
+<li><strong>Cleaning and data dictionary.</strong> Turn the raw data into a clean, documented dataset. The milestone is “every column is typed correctly, missingness is explicitly handled, and a <a href="../chapters/appendix-glossary.html#term-data-dictionary">data dictionary</a> explains what each column means.”</li>
 <li><strong>Analysis and validation.</strong> Do the actual analysis and check that the results are plausible. The milestone is “I have answers to the questions in the brief, and I have at least one sanity check on each result.”</li>
 <li><strong>Outputs, narrative, and reproducibility check.</strong> Produce the final deliverables and verify that they regenerate from a clean state. The milestone is “someone else could <code>git clone</code> this repo, run one command, and get the same outputs.”</li>
 </ol>
@@ -932,10 +932,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-dictionary-and-codebook" class="level3">
 <h3 class="anchored" data-anchor-id="data-dictionary-and-codebook">Data dictionary and codebook</h3>
 <p>For every dataset you load, maintain a small <strong>data dictionary</strong>: a one-table reference that lists each variable’s name, its type (numeric, string, date, categorical), its meaning in plain English, its units if applicable, the range or set of allowable values, and any sentinel values used for missingness (<code>-999</code>, <code>"unknown"</code>, blank). The data dictionary is what makes a dataset usable by someone other than the person who created it — and it is what you will reach for when you come back to the project six months later and cannot remember what <code>qty_alt2</code> meant. Record any transformations the same way: derived columns, recodes, joins, every change from raw to clean.</p>
+<p><strong>Keep it as a file beside the data, in a format code can read.</strong> A CSV with one row per column is enough. Here is <code>data/dictionary.csv</code> for a small sales export, <code>data/raw/sales-2026-04-10.csv</code>. Each row describes one column, and a list of allowed values is separated by <code>|</code>:</p>
+<pre class="text"><code>column,type,description,units,allowed,missing
+date,date,Day of the sale (store's local time),,,never
+store,text,Store where the sale was rung up,,north|south|campus,never
+product,text,Product category,,coffee|tea|pastry|sandwich|juice,never
+quantity,integer,Items in the sale,items,1 or more,never
+revenue,number,Amount paid after discounts,US dollars,0 or more,never
+note,text,Discount code applied at the register,,promo|loyalty,blank means none</code></pre>
+<p><strong>Draft it from the data, then write what only a person knows.</strong> pandas can list each column’s name, type, missing count, and an example value in a few lines:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/sales-2026-04-10.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>draft <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column"</span>: df.columns,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: df.dtypes.astype(<span class="bu">str</span>).values,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"missing"</span>: df.isna().<span class="bu">sum</span>().values,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distinct"</span>: df.nunique().values,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"example"</span>: [df[c].dropna().iloc[<span class="dv">0</span>] <span class="cf">if</span> df[c].notna().<span class="bu">any</span>() <span class="cf">else</span> <span class="st">""</span> <span class="cf">for</span> c <span class="kw">in</span> df.columns],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>draft[<span class="st">"description"</span>] <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>draft[<span class="st">"units"</span>] <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>draft[<span class="st">"allowed"</span>] <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>draft.to_csv(<span class="st">"data/dictionary.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>  column           type  missing  distinct             example description units allowed
+    date datetime64[us]        0         3 2026-04-01 00:00:00
+   store            str        0         3               north
+ product            str        0         5              coffee
+quantity          int64        0         4                   2
+ revenue        float64        0         8                 7.5
+    note            str        5         2               promo</code></pre>
+<p>The draft is the easy half. No code can tell you that <code>revenue</code> is after discounts, that dates are in the store’s local time, or that a blank <code>note</code> means “no discount” rather than “unknown.” Fill in the empty columns by hand, from the source’s documentation or by asking whoever produced the data, and replace pandas’ type names with plain words (date, text, integer, number), which don’t change between pandas versions.</p>
+<p>A <strong>codebook</strong> is the survey-research version of the same idea. It adds what a survey variable needs: the exact question wording, what each response code means (<code>1</code> = “strongly disagree”), and who was asked (the respondents a skip pattern routed to the question). If your data comes from a survey, look for the codebook before anything else; if you are collecting survey data, write one.</p>
+<p><strong>Let the dictionary check the data.</strong> A dictionary that code can read can also catch data that has stopped matching it. This short script compares a file’s columns with the dictionary, checks that number columns really are numbers, and checks the values of any column whose <code>allowed</code> entry is a list separated by <code>|</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>dictionary <span class="op">=</span> pd.read_csv(<span class="st">"data/dictionary.csv"</span>, keep_default_na<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(sys.argv[<span class="dv">1</span>])</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>problems <span class="op">=</span> []</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>expected <span class="op">=</span> <span class="bu">list</span>(dictionary[<span class="st">"column"</span>])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">list</span>(df.columns) <span class="op">!=</span> expected:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    problems.append(<span class="ss">f"columns: expected </span><span class="sc">{</span>expected<span class="sc">}</span><span class="ss">, got </span><span class="sc">{</span><span class="bu">list</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> dictionary.itertuples():</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row.column <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> df[row.column]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row.<span class="bu">type</span> <span class="kw">in</span> (<span class="st">"integer"</span>, <span class="st">"number"</span>) <span class="kw">and</span> <span class="kw">not</span> pd.api.types.is_numeric_dtype(col):</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        problems.append(<span class="ss">f"</span><span class="sc">{</span>row<span class="sc">.</span>column<span class="sc">}</span><span class="ss">: should be a </span><span class="sc">{</span>row<span class="sc">.</span><span class="bu">type</span><span class="sc">}</span><span class="ss">, but pandas read it as </span><span class="sc">{</span>col<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"|"</span> <span class="kw">in</span> row.allowed:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        unexpected <span class="op">=</span> <span class="bu">set</span>(col.dropna().astype(<span class="bu">str</span>)) <span class="op">-</span> <span class="bu">set</span>(row.allowed.split(<span class="st">"|"</span>))</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> unexpected:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            problems.append(<span class="ss">f"</span><span class="sc">{</span>row<span class="sc">.</span>column<span class="sc">}</span><span class="ss">: values not in the dictionary: </span><span class="sc">{</span><span class="bu">sorted</span>(unexpected)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> problems:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    sys.exit(<span class="st">"Data doesn't match data/dictionary.csv:</span><span class="ch">\n</span><span class="st">  "</span> <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">  "</span>.join(problems))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Data matches data/dictionary.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Saved as <code>check_data.py</code>, it passes the April export. The May export looks the same at a glance, but the check finds three changes:</p>
+<pre class="text"><code>$ python check_data.py data/raw/sales-2026-05-10.csv
+Data doesn't match data/dictionary.csv:
+  columns: expected ['date', 'store', 'product', 'quantity', 'revenue', 'note'], got ['date', 'store', 'product', 'quantity', 'revenue', 'notes']
+  product: values not in the dictionary: ['cold brew']
+  revenue: should be a number, but pandas read it as str</code></pre>
+<p>The vendor renamed a column, the stores started selling cold brew, and one row’s revenue has a <code>$</code> in it. Each of those would have gone through a pipeline without an error and changed its results. Run the check first in your pipeline (see “Silent data drift” below). When you outgrow a script like this, the same idea comes in libraries such as pandera (see <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a>), and in <a href="https://specs.frictionlessdata.io/table-schema/">Table Schema</a>, a standard JSON format for a data dictionary that tools in several languages can read.</p>
 </section>
 <section id="versioning-data" class="level3">
 <h3 class="anchored" data-anchor-id="versioning-data">Versioning data</h3>
 <p>When the dataset itself changes — a new monthly export, a corrected version, a rerun of an upstream process — do not just overwrite. Create a dated snapshot (<code>sales-2026-04-10.csv</code>) or tag the version, and write down what changed: new rows? new columns? schema shifts? renamed values? Recording the file size or a checksum alongside it gives you a way to detect silent corruption later. None of this needs to be fancy; a <code>data/raw/CHANGELOG.md</code> with one paragraph per snapshot is plenty.</p>
+<p>When the check above fails on a new snapshot, decide for each change whether the data or the dictionary should give way. A <code>$</code> in a number column is a problem to fix in your cleaning code; a new product is a fact the dictionary should learn. Change the dictionary in the same commit as the code that handles the change, and add an entry to the changelog:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-05-10 export</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`note`</span> is now called <span class="in">`notes`</span>; clean.py renames it back.</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>New product <span class="in">`cold brew`</span>; added to the dictionary's allowed values.</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One <span class="in">`revenue`</span> value has a <span class="in">`$`</span>; clean.py strips it before converting.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Because the dictionary is a file in your repository, its history is your schema’s history: <code>git log -p data/dictionary.csv</code> shows every change to it, with the date and the commit message that explains why (see <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>).</p>
 </section>
 <section id="sensitive-data-hygiene-baseline" class="level3">
 <h3 class="anchored" data-anchor-id="sensitive-data-hygiene-baseline">Sensitive data hygiene (baseline)</h3>
@@ -953,33 +1025,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>How to set up the environment.</strong> The exact commands to create a virtual environment and install dependencies. Not a prose description — actual commands the reader can copy and paste. See <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a> for the underlying patterns.</p>
 <p><strong>One copy-paste command to reproduce the core outputs.</strong> The single command that runs the pipeline end-to-end. Ideally a Makefile target: <code>make run</code>. The point is that the reader should not have to read the rest of the README to produce the core outputs; they should be able to see this line, run it, and get something.</p>
 <p><strong>How to interpret the outputs.</strong> After <code>make run</code> finishes, what will the reader find and where? “The main figures are in <code>reports/figures/</code>; the memo is in <code>reports/q3-memo.pdf</code>; the cleaned dataset is in <code>data/processed/sales.parquet</code>.” This is the map from “I ran the code” to “I understand what I’m looking at.”</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Q3 Sales Trend Analysis</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Analyzes Q3 2026 sales to identify which product categories drove revenue</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>growth. Final deliverable is a 3-page memo with two supporting figures.</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`data/raw/sales-q3-2026.csv`</span> — public release from example.org,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  retrieved 2026-04-10. See <span class="in">`data/raw/provenance.md`</span>.</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="in">    python -m venv .venv</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="in">    source .venv/bin/activate</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="in">    pip install -r requirements.txt</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="in">    make run              # rebuilds cleaned data and report</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="in">    make clean run        # rebuilds everything from scratch</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Outputs</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/q3-memo.pdf`</span> — the memo</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/figures/revenue-by-category.png`</span> — Figure 1</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/figures/top-10-skus.png`</span>          — Figure 2</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`data/processed/sales.parquet`</span>             — cleaned data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Q3 Sales Trend Analysis</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Analyzes Q3 2026 sales to identify which product categories drove revenue</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>growth. Final deliverable is a 3-page memo with two supporting figures.</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`data/raw/sales-q3-2026.csv`</span> — public release from example.org,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  retrieved 2026-04-10. See <span class="in">`data/raw/provenance.md`</span>.</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="in">    python -m venv .venv</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="in">    source .venv/bin/activate</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="in">    pip install -r requirements.txt</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Run</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="in">    make run              # rebuilds cleaned data and report</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="in">    make clean run        # rebuilds everything from scratch</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Outputs</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/q3-memo.pdf`</span> — the memo</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/figures/revenue-by-category.png`</span> — Figure 1</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`reports/figures/top-10-skus.png`</span>          — Figure 2</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`data/processed/sales.parquet`</span>             — cleaned data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A README that looks like this is short, honest, and immediately actionable. It is also easier to maintain than a long one, which matters because the README that is out of date is the README that lies to people.</p>
 </section>
 <section id="decision-log" class="level3">
@@ -988,53 +1060,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Keep a <strong>decision log</strong> that records the consequential decisions as they are made. The format does not matter much — what matters is that the log exists and is searchable. Two workable options:</p>
 <p><strong>Option 1: record decisions in issues.</strong> If your project uses GitHub Issues or similar, open an issue for each meaningful decision. Title it with the question (“How should we handle missing timestamps?”), describe the alternatives, and then close the issue with a summary of the choice and the reason. This is ideal when the decision requires discussion or approval from others.</p>
 <p><strong>Option 2: maintain a dedicated <code>DECISIONS.md</code>.</strong> A flat file at the project root with one section per decision, each dated, looking like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Decisions log</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-08 — Missing timestamps</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>**Context.** 3.2% of rows in the raw data have null <span class="in">`transaction_timestamp`</span>.</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>**Decision.** Drop these rows during cleaning; they are concentrated in a</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>single store ID that had a logging outage, and imputing them would bias</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>our time-series results.</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>**Impact.** Row count drops from 124,531 to 120,522.</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-09 — Category labels</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>**Context.** The <span class="in">`category`</span> column uses inconsistent casing ("electronics",</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>"Electronics", "ELECTRONICS").</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>**Decision.** Normalize to title case during cleaning.</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>**Impact.** 14 category values collapse to 9.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Decisions log</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-08 — Missing timestamps</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>**Context.** 3.2% of rows in the raw data have null <span class="in">`transaction_timestamp`</span>.</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>**Decision.** Drop these rows during cleaning; they are concentrated in a</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>single store ID that had a logging outage, and imputing them would bias</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>our time-series results.</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>**Impact.** Row count drops from 124,531 to 120,522.</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-09 — Category labels</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>**Context.** The <span class="in">`category`</span> column uses inconsistent casing ("electronics",</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>"Electronics", "ELECTRONICS").</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>**Decision.** Normalize to title case during cleaning.</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>**Impact.** 14 category values collapse to 9.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pick the option that fits how your project is run. The worst version is no log at all, where you look at a mysterious anomaly in your results six weeks later and have no idea whether it was a deliberate choice or a bug.</p>
 </section>
 <section id="docstrings-and-inline-comments-just-enough" class="level3">
 <h3 class="anchored" data-anchor-id="docstrings-and-inline-comments-just-enough">Docstrings and inline comments — just enough</h3>
 <p>Code comments and docstrings exist to capture things that the code itself cannot express. That is a narrower role than “explain what the code does line by line.” The code already says what it does; your job is to say <em>why</em>.</p>
 <p>Good docstrings tell the reader what a function is for, what its inputs and outputs look like, and what assumptions it relies on:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> winsorize_outliers(series, n_sigma<span class="op">=</span><span class="dv">3</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cap extreme values at n_sigma standard deviations from the mean.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Used to limit the influence of outliers without dropping them entirely.</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    See DECISIONS.md (2026-04-10) for why we prefer winsorizing over</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">    dropping in this project.</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">    series : pd.Series of numeric values</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">    n_sigma : float, default 3</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">        Values beyond ±n_sigma * std from the mean are capped.</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.Series of the same length, with outliers capped.</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> winsorize_outliers(series, n_sigma<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cap extreme values at n_sigma standard deviations from the mean.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Used to limit the influence of outliers without dropping them entirely.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    See DECISIONS.md (2026-04-10) for why we prefer winsorizing over</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    dropping in this project.</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">    series : pd.Series of numeric values</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    n_sigma : float, default 3</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">        Values beyond ±n_sigma * std from the mean are capped.</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">    pd.Series of the same length, with outliers capped.</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Good inline comments call out the non-obvious:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The dataset has duplicate rows where only the timestamp differs by &lt;1s;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># treat these as the same event and keep the earliest.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"sku"</span>], keep<span class="op">=</span><span class="st">"first"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The dataset has duplicate rows where only the timestamp differs by &lt;1s;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># treat these as the same event and keep the earliest.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"sku"</span>], keep<span class="op">=</span><span class="st">"first"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Bad inline comments restate the code:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop over the rows</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> df.itertuples():</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the customer_id</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    customer_id <span class="op">=</span> row.customer_id   <span class="co"># Don't do this.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop over the rows</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> df.itertuples():</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get the customer_id</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    customer_id <span class="op">=</span> row.customer_id   <span class="co"># Don't do this.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The rule of thumb: if a comment would make sense written as “because…”, it is probably worth writing. If a comment is just the code translated into English, delete it.</p>
 </section>
 <section id="reproducibility-notes" class="level3">
@@ -1065,19 +1137,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A good issue is short and unambiguous. Four components cover almost every case.</p>
 <p><strong>A clear title: action plus object.</strong> Not “Sales bug” but “Fix category label normalization in clean.py.” Not “Data problem” but “Raw sales file is missing the <code>price</code> column for store 14.” A well-titled issue can be understood from the issue list alone, without opening it.</p>
 <p><strong>A description with context, objective, and definition of done.</strong> The <em>context</em> is what the reader needs to understand why this matters. The <em>objective</em> is what outcome you want. The <em>definition of done</em> is how you will know it is finished. This last part is the most often skipped and the most valuable — “what specifically is true when this issue can be closed?” is the question that prevents issues from lingering for weeks.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fix category label normalization in clean.py</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>**Context.** The raw data has inconsistent casing in the <span class="in">`category`</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>column ("electronics", "Electronics", "ELECTRONICS"). Our current</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>cleaning step treats these as distinct, inflating the category count</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>from 9 to 14 and breaking the group-by in analyze.py.</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>**Objective.** Normalize category labels to title case during cleaning.</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>**Definition of done.**</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`clean.py`</span> produces exactly 9 unique category values.</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`tests/test_clean.py::test_category_count`</span> test passes.</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`DECISIONS.md`</span> has a new entry for this choice.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fix category label normalization in clean.py</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>**Context.** The raw data has inconsistent casing in the <span class="in">`category`</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>column ("electronics", "Electronics", "ELECTRONICS"). Our current</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>cleaning step treats these as distinct, inflating the category count</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>from 9 to 14 and breaking the group-by in analyze.py.</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>**Objective.** Normalize category labels to title case during cleaning.</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>**Definition of done.**</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`clean.py`</span> produces exactly 9 unique category values.</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`tests/test_clean.py::test_category_count`</span> test passes.</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`DECISIONS.md`</span> has a new entry for this choice.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Evidence.</strong> When the issue is about something that went wrong, paste the actual error message, the actual line of code, a screenshot of the unexpected output. “It’s broken” is a bad bug report; “Running <code>make clean-data</code> produces this traceback: …” is a good one.</p>
 <p><strong>Labels.</strong> Tags that let you filter and prioritize: <strong>type</strong> (<code>bug</code>, <code>task</code>, <code>question</code>, <code>decision</code>), <strong>priority</strong> (<code>p0</code> blocking, <code>p1</code> important, <code>p2</code> nice-to-have), <strong>area</strong> (<code>data</code>, <code>code</code>, <code>docs</code>, <code>infra</code>). Labels feel fussy for a small project; they become essential as the number of open issues grows past a dozen.</p>
 </section>
@@ -1104,51 +1176,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="the-reproducibility-check">The reproducibility check</h3>
 <p>The single most valuable quality gate is: <strong>does the whole thing run, from nothing, on a clean environment?</strong> This is the check that separates “works on my machine” from “actually reproducible.” You should run it at least once before handing in the project, and ideally once a week if the project is active.</p>
 <p>The recipe is the same on every project. Delete every derivative (the processed data, the reports, the notebook outputs). Throw away your virtual environment. Then run the setup and build commands from the README, from scratch, and confirm the outputs match what you expected.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fresh reproducibility check</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean                    <span class="co"># delete processed data, reports, caches</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .venv/                 <span class="co"># throw away the environment entirely</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Start over from the README</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the pipeline</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare the outputs to the last committed versions</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                    <span class="co"># any unexpected changes?</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff reports/             <span class="co"># do the regenerated reports match?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fresh reproducibility check</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean                    <span class="co"># delete processed data, reports, caches</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .venv/                 <span class="co"># throw away the environment entirely</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Start over from the README</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the pipeline</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare the outputs to the last committed versions</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                    <span class="co"># any unexpected changes?</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff reports/             <span class="co"># do the regenerated reports match?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three things can happen. Best case: the rebuild succeeds and the outputs are byte-identical to what was committed. This is the “fully reproducible” state you are aiming for. Middle case: the rebuild succeeds but produces slightly different outputs — maybe a timestamp embedded in a report, maybe nondeterministic sorting. Investigate: either fix the nondeterminism or accept it and document why. Worst case: the rebuild fails. This is exactly the bug you wanted to catch <em>before</em> submission, and now you know about it.</p>
 <p>Do this check the day before your deadline, not an hour before. If it surfaces a problem, you want time to fix it.</p>
 </section>
 <section id="data-checks" class="level3">
 <h3 class="anchored" data-anchor-id="data-checks">Data checks</h3>
 <p>Every time you load a dataset, run a short set of sanity checks and make sure the results match your mental model. These are the checks that catch “the data changed upstream and I did not notice” and “my cleaning step accidentally dropped half the rows.”</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Shape: how many rows and columns?</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">100_000</span>, <span class="st">"too few rows; upstream data changed?"</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Missingness: are nulls where you expect them?</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isnull().<span class="bu">sum</span>())</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"price"</span>].isnull().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"price should never be null"</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Value ranges: are numbers in plausible bounds?</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"price"</span>].between(<span class="dv">0</span>, <span class="dv">10_000</span>).<span class="bu">all</span>(), <span class="st">"implausible price values"</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_date"</span>].<span class="bu">min</span>() <span class="op">&gt;=</span> pd.Timestamp(<span class="st">"2026-07-01"</span>)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_date"</span>].<span class="bu">max</span>() <span class="op">&lt;=</span> pd.Timestamp(<span class="st">"2026-09-30"</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Key uniqueness: are the keys you expect to be unique actually unique?</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_id"</span>].is_unique, <span class="st">"duplicate transaction IDs!"</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Join coverage: after a join, did every row find a match?</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>products <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/products.parquet"</span>)</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>joined <span class="op">=</span> df.merge(products, on<span class="op">=</span><span class="st">"sku"</span>, how<span class="op">=</span><span class="st">"left"</span>, indicator<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (joined[<span class="st">"_merge"</span>] <span class="op">==</span> <span class="st">"both"</span>).<span class="bu">all</span>(), <span class="st">"some sales have no matching product"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Shape: how many rows and columns?</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">100_000</span>, <span class="st">"too few rows; upstream data changed?"</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Missingness: are nulls where you expect them?</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isnull().<span class="bu">sum</span>())</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"price"</span>].isnull().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"price should never be null"</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Value ranges: are numbers in plausible bounds?</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"price"</span>].between(<span class="dv">0</span>, <span class="dv">10_000</span>).<span class="bu">all</span>(), <span class="st">"implausible price values"</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_date"</span>].<span class="bu">min</span>() <span class="op">&gt;=</span> pd.Timestamp(<span class="st">"2026-07-01"</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_date"</span>].<span class="bu">max</span>() <span class="op">&lt;=</span> pd.Timestamp(<span class="st">"2026-09-30"</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Key uniqueness: are the keys you expect to be unique actually unique?</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"transaction_id"</span>].is_unique, <span class="st">"duplicate transaction IDs!"</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Join coverage: after a join, did every row find a match?</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>products <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/products.parquet"</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>joined <span class="op">=</span> df.merge(products, on<span class="op">=</span><span class="st">"sku"</span>, how<span class="op">=</span><span class="st">"left"</span>, indicator<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (joined[<span class="st">"_merge"</span>] <span class="op">==</span> <span class="st">"both"</span>).<span class="bu">all</span>(), <span class="st">"some sales have no matching product"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Each of those assertions is a tripwire. When the upstream data changes, or when your cleaning code has a subtle bug, one of them fails loudly instead of letting corrupt data flow silently into your analysis. See <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> for the fuller treatment of validation patterns and why they matter.</p>
 </section>
 <section id="output-checks" class="level3">
@@ -1190,11 +1262,11 @@ For the narrative:
 <h3 class="anchored" data-anchor-id="silent-data-drift">Silent data drift</h3>
 <p><strong>Symptom.</strong> A pipeline that worked last week produces different answers today, with no code changes. Or worse: it produces the same <em>shape</em> of output but with wrong numbers, and you do not notice until the final report is embarrassing.</p>
 <p><strong>Prevention.</strong> Treat the raw data as a versioned artifact, not a live feed. When you download a dataset, snapshot it with a date in the filename (<code>sales-2026-04-10.csv</code>), record the retrieval date and source URL in a <code>provenance.md</code>, and note the file size or a checksum so you can detect silent changes later:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record a checksum at intake</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sha256sum</span> data/raw/sales-2026-04-10.csv <span class="op">&gt;&gt;</span> data/raw/checksums.txt</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Later: verify the file is still what you think it is</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sha256sum</span> <span class="at">-c</span> data/raw/checksums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record a checksum at intake</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sha256sum</span> data/raw/sales-2026-04-10.csv <span class="op">&gt;&gt;</span> data/raw/checksums.txt</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Later: verify the file is still what you think it is</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sha256sum</span> <span class="at">-c</span> data/raw/checksums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Detection.</strong> Run schema and summary-stats checks as part of your pipeline, and compare them to the previous run. If the row count dropped by 30%, or a column type changed, or a value that used to be in <code>{0, 1}</code> suddenly contains <code>2</code>, fail loudly. Drift that is caught immediately is a minor annoyance; drift that rides along for three weeks becomes a trust problem.</p>
 </section>
 <section id="undocumented-assumptions" class="level3">
@@ -1309,7 +1381,7 @@ Definition of done:</code></pre>
 <h2 data-number="30.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">30.12</span> Exercises</h2>
 <ol type="1">
 <li><p>Create a new project folder using the template and write a README that someone else could follow.</p></li>
-<li><p>Intake a dataset: place it in <code>data/raw</code>, write provenance notes, and draft a data dictionary.</p></li>
+<li><p>Intake a dataset: place it in <code>data/raw</code>, write provenance notes, and draft a data dictionary. Generate the draft with pandas, fill in the descriptions by hand, then adapt <code>check_data.py</code> from “Data dictionary and codebook” and confirm it passes. Change one value in a copy of the file and confirm it fails.</p></li>
 <li><p>Create five issues that decompose the project into milestones and tasks; label and prioritize them.</p></li>
 <li><p>Implement one task and close its issue with a short “what changed” summary.</p></li>
 <li><p>Perform a reproducibility check by recreating your environment and rerunning the pipeline.</p></li>
@@ -1321,7 +1393,7 @@ Definition of done:</code></pre>
 <li><p>I have a clear project goal and definition of done.</p></li>
 <li><p>My project folder has a reproducible structure.</p></li>
 <li><p>Raw data are immutable and provenance is recorded.</p></li>
-<li><p>I maintain a data dictionary and transformation notes.</p></li>
+<li><p>I maintain a data dictionary and transformation notes, and new data is checked against the dictionary before I use it.</p></li>
 <li><p>My README explains setup, run, and outputs.</p></li>
 <li><p>Work is tracked in issues with labels and clear closure notes.</p></li>
 <li><p>I can reproduce results from a clean environment.</p></li>
@@ -1334,6 +1406,7 @@ Definition of done:</code></pre>
 <li><p>Write README.</p></li>
 <li><p>Record environment.</p></li>
 <li><p>Intake data with provenance.</p></li>
+<li><p>Draft a data dictionary from the data; check every new snapshot against it.</p></li>
 <li><p>Track work in issues.</p></li>
 <li><p>Reproduce end-to-end before delivery.</p></li>
 </ul>
