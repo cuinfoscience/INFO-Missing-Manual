@@ -2,24 +2,36 @@
 
 ## Looking back {.unnumbered}
 
-Throughout this handbook we have peeled back the layers of the "hidden curriculum" in computing. We began by demystifying the practice of technical work---how to ask good questions, read and write documentation, debug systematically, and collaborate with human and artificial assistants. We then walked down the stack to your computing environment, learning how to tend your operating system, manage files, use the terminal and text editors, keep your data safe, and connect to remote resources. With those foundations in place, we explored how to manage Python environments, leverage Jupyter Notebook and JupyterLab effectively, and decide when to write scripts versus notebooks. Finally, we zoomed out to project management, version control, collaboration, and automation so that your work scales beyond a single assignment and survives beyond a single day.
+If you've made it here, whether by reading straight through or by landing on a dozen chapters over a semester, you've seen most of the hidden curriculum laid out in the open. We started with the human side of technical work: asking questions someone can answer, reading and writing documentation, debugging one change at a time, and reading a traceback from the bottom up. We walked down to your computing environment, from your operating system and file system to the terminal, your editor, and machines on the other end of an SSH connection. We untangled Python's packages and environments, notebooks and scripts. We cleaned, checked, queried, and fetched data, and we covered the scholarly writing, talks, and LaTeX that turn that work into something other people read. Then we zoomed out to projects and teams, with Git, code review, automation, and secrets kept out of your code, and finished with the AI tools that now sit inside nearly all of it: how to use them, how they work, and how to check what they tell you.
+
+That's a lot. Nobody learns it all at once, and nobody is expected to.
 
 ## Key takeaways {.unnumbered}
 
--   **Hidden skills matter.** Tools and practices that live "between the lines" of curricula---like organizing files, pinning dependencies, writing READMEs, or filing issues---often determine whether a project succeeds. Investing a little time to learn them yields disproportionate benefits.
+-   **Hidden skills matter.** The practices that live between the lines of a syllabus, like organizing files, pinning dependencies, writing a README, or filing an issue, often decide whether a project succeeds. A little time spent learning them pays off for years.
 
--   **Make work legible.** A reproducible environment, a clear project structure, descriptive names, and small commits make it easier for others (and future you) to understand and build on your work.
+-   **See before you act.** Most of the disasters in this book, from a deleted folder to a doubled merge, start with acting on an assumption. Check where you are, which Python is running, and what's really in the file before you change anything.
 
--   **Automate and verify.** Turn repeated actions into scripts or Makefile targets, schedule jobs when appropriate, and let continuous integration enforce your quality gates. Automation saves time only when it is paired with verification and logging.
+-   **Check before you trust.** A file that opens without an error isn't necessarily right, and neither is a confident answer from a search result or an AI assistant. A few lines of checks, a quick look at the official docs, or a small experiment costs minutes; a week of wrong results costs a week.
 
--   **Collaboration is a skill.** Effective collaboration is not accidental; it emerges from shared artifacts, respectful reviews, and explicit decisions. By using issues, pull requests, and decision logs, you create a shared memory that outlives any one contributor.
+-   **Make work legible.** A reproducible environment, a clear folder layout, descriptive names, small commits, and a written record of your decisions make it easier for other people, and for future you, to understand and build on your work.
 
--   **Curiosity and humility.** No one knows everything. Ask questions early, consult documentation, experiment in a safe space, and share what you learn. The computing community thrives on people who document their pitfalls and successes for others.
+-   **Automate, then verify.** Turn the steps you repeat into scripts, `make` targets, or scheduled jobs, and let continuous integration and pre-commit hooks catch mistakes before they spread. Automation saves time only when you can tell it did the right thing.
+
+-   **Collaboration is a skill.** Good teamwork isn't luck. It comes from shared documents, small pull requests, reviews that help instead of sting, and decisions written down where everyone can find them, so the project's memory outlives any one person's.
+
+-   **Tools have politics.** Every default, format, and platform makes some things easy and others hard, for some people more than others. Asking what a tool does besides its job is part of doing the job well.
+
+-   **Stay curious, and stay humble.** No one knows everything. Ask early, read the docs, experiment somewhere safe, and share what you learn. The computing community runs on people who write down their mistakes so the next person doesn't have to repeat them.
 
 ## Continuing your journey {.unnumbered}
 
-Paratechnical skills are not a finite checklist but a mindset. The tools and technologies will evolve, but the principles endure: manage complexity by organizing your work, make your steps explicit and repeatable, and communicate with your collaborators. As you tackle larger projects, consider exploring topics like containerization (Docker), infrastructure as code, advanced testing frameworks, and ethical considerations in data science. Stay curious, and remember that every frustration you overcome today becomes experience you can share tomorrow.
+These skills aren't a checklist you finish; they're habits you keep. The tools will change, and some of the commands in this book will look old in a few years, but the principles last: organize your work so it has a place, make your steps explicit and repeatable, and keep the people you work with in the loop.
+
+When you're ready for more, a few directions follow naturally from here. Containers, which @sec-virtual-environments introduces, package nearly a whole environment so a project runs the same way anywhere; Docker's [getting started guide](https://docs.docker.com/get-started/) is a friendly first step. Testing, which @sec-debugging starts, grows into full test suites with tools like [pytest](https://docs.pytest.org/en/stable/getting-started.html). [Infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) applies the same version-and-automate habits to servers and cloud resources. For more of the hidden curriculum, [The Carpentries](https://carpentries.org/) publish free, open lessons on many of these skills and run hands-on workshops, MIT's [Missing Semester](https://missing.csail.mit.edu/) goes deeper on the shell, editors, and Git, and [Good Enough Practices in Scientific Computing](https://doi.org/10.1371/journal.pcbi.1005510) is a practical paper worth rereading at the start of every project.
+
+And remember that every frustration you work through today becomes experience you can share tomorrow. If a chapter here tripped you up, left something out, or has a command that didn't work for you, tell us: every chapter page has a **Report an issue** link, and the book's [contributing guide](https://github.com/cuinfoscience/INFO-Missing-Manual/blob/main/CONTRIBUTING.md) shows how to suggest a fix yourself, right in your browser. The next student to open that chapter will be glad you did.
 
 ## Acknowledgements {.unnumbered}
 
-We gratefully acknowledge the students and instructors whose questions and feedback shaped this handbook, as well as the open-source communities and educators whose documentation and tutorials we learned from along the way.
+We're grateful to the students and instructors whose questions and feedback shaped this handbook, and to the open-source communities and educators whose documentation and tutorials we learned from along the way.
