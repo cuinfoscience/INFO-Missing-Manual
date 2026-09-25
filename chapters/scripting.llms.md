@@ -10,64 +10,63 @@
 
 ![Pigeon Meme: Me, A 47-Cell Notebook, Is This A Script?](../graphics/memes/scripting.png)
 
-As students progress, the limiting factor is rarely “can you write code”; it is whether your work can be reused, rerun, and explained. Scripts complement notebooks by making work *repeatable* from the command line and easier to automate, test, and share. This chapter teaches how to write simple scripts, import your own code into notebooks, translate notebooks into scripts, pass parameters from the command line, and make deliberate notebook-versus-script choices.
+It’s week ten. The notebook that started as a quick look at the data is now 47 cells long, and your instructor asks you to rerun it on the updated file. You click Run All, and cell 31 fails: it uses a variable you defined in a cell you deleted weeks ago. You scroll up, find two nearly identical copies of your cleaning code, and can’t remember which one is the right one. The notebook worked yesterday. It worked because of the order you happened to run things in, and nobody, including you, can say what that order was.
 
-## Learning objectives
+If that sounds familiar, you’re not doing anything unusual. Notebooks are wonderful for thinking, and they make it very easy to build something that only runs once. The way out isn’t to give up notebooks. It’s to move the parts that do the work into plain Python files, where they can be run from the terminal, imported into any notebook, and fixed in one place.
 
-By the end of this chapter, you should be able to:
+This chapter shows you how: writing a [script](../chapters/appendix-glossary.llms.md#term-script) that also works as a module, organizing your functions into a small `src/` package, importing that package into a notebook (and picking up your edits without restarting), passing options from the command line, converting notebooks to scripts and back, and deciding which tool fits which job. It assumes you’ve used Jupyter ([sec-jupyter](#sec-jupyter)) and can make a virtual environment ([sec-virtual-environments](#sec-virtual-environments)). Scheduling scripts to run on their own is [sec-automation](#sec-automation), and keeping them tidy is [sec-linting](#sec-linting).
 
-1.  Write a [Python](https://docs.python.org/3/) script that can be run from the command line and imported as a module.
+## Why read this chapter
 
-2.  Organize reusable code into functions and (optionally) a small `src/` module.
-
-3.  Import custom scripts into a Jupyter notebook and reload changes during iteration.
-
-4.  Convert notebooks to scripts (and scripts to notebooks) using standard tools.
-
-5.  Pass parameters into scripts using a command-line interface (CLI) pattern.
-
-6.  Explain trade-offs: when a notebook is the right tool and when a script is.
-
-7.  Use a “notebook as narrative, script as engine” pattern to keep work reproducible.
+- You ran `python scripts/run_cleaning.py` and got `ModuleNotFoundError: No module named 'src'`, even though the `src` folder is right there.
+- You fixed a function in a `.py` file, re-ran the notebook cell that calls it, and the old version ran anyway.
+- The same cleaning code lives in four notebook cells, and you just fixed a bug in only three of them.
+- Your analysis works for one month of data, and now you need it for twelve months, or every Monday, without clicking through the notebook each time.
+- You converted a notebook with `jupyter nbconvert` and the script died on its first line with `NameError: name 'get_ipython' is not defined`.
+- A teammate’s notebook reads `/Users/alex/Downloads/survey.csv` and fails on every computer except Alex’s.
+- Your notebook’s Git diff is a wall of unreadable text, and nobody on your team can review it.
+- You’d like a clear answer to “should this be a notebook or a script?” instead of a vague feeling that notebooks aren’t professional.
 
 ## Running theme: separate *logic* from *presentation*
 
-The logic (data loading, cleaning, analysis) should live in importable functions. The notebook (or script) should orchestrate and explain.
+The code that does the work (loading, cleaning, analyzing) belongs in importable functions; the notebook or script around it just calls those functions in order and explains what they found.
 
-## 17.1 Mental models and vocabulary
+## 17.1 Scripts, modules, and packages
 
-### Script, module, package
+Python has three words for “a file with Python code in it,” and people use them loosely enough that it’s easy to think they’re the same thing. They’re really three *roles*. A **script** is a file you *run* from the command line, like `python analyze.py`. A **module** is a file you *import* from other code, like `import analysis` (the [Python tutorial’s chapter on modules](https://docs.python.org/3/tutorial/modules.html) is a friendly introduction). A **[package](../chapters/appendix-glossary.llms.md#term-package)** is a folder of modules imported as a unit, usually marked by an `__init__.py` file inside it.
 
-Python has three words for “a file with Python code in it,” and they are not interchangeable — each describes a different role the same file can play. A **script** is a file you *run* from the command line, like `python analyze.py`. A **module** is a file you *import* from other code, like `import analysis`. A **package** is a directory of modules that can be imported as a unit, usually with an `__init__.py` file inside it that tells Python “this folder is importable.”
+The part that surprises people is that one `.py` file can play all three roles. A `cleaning.py` with a few functions is a module when you write `from cleaning import clean_sales`, a script when you type `python cleaning.py`, and part of a package when it sits in a folder with an `__init__.py`. You don’t have to choose. That’s what lets you build a small library of functions that also works as a command-line tool.
 
-The subtle part is that the same `.py` file can be all three at once. A file called `cleaning.py` that has a few functions and a `if __name__ == "__main__":` block at the bottom is a *module* when you import it (`from cleaning import clean_sales`), a *script* when you run it (`python cleaning.py`), and part of a *package* if you put it inside a folder with an `__init__.py`. Understanding this is what lets you build a small library of reusable functions that also happen to work as command-line tools — you do not have to choose.
-
-``` text
-my-project/
-├── cleaning.py           # a script (runnable) AND a module (importable)
-├── src/
-│   ├── __init__.py       # makes src/ a package
-│   ├── loader.py         # module inside the package
-│   └── plotting.py       # another module inside the package
-└── notebooks/
-    └── exploration.ipynb
-```
-
-From a notebook or another script, you can then `from src.loader import load_csv` or `from src.plotting import make_histogram`, and the shared functions live in exactly one place.
-
-### Entry point vs library code
-
-Inside any non-trivial script or package, it is worth separating two kinds of code: **library code** and **entry-point code**. Library code is the functions and classes that actually do the work — `clean_sales(df)`, `train_model(x, y)`, `plot_distribution(values)`. Each one takes some inputs and returns some outputs, and each one is testable, importable, and reusable in isolation. It knows nothing about where its inputs came from or what the user asked for on the command line.
-
-Entry-point code is the glue that connects library code to the outside world. It reads command-line arguments, opens files, calls the library functions in the right order, and writes the outputs somewhere. The entry-point code is the *only* place that should know things like “the user typed `--input data/raw/survey.csv`” or “the output goes to `data/processed/`.” If you keep this boundary clean, swapping a new entry point (like a web API or a batch job) onto the same library is almost free.
+The trick that makes it work is the line you’ve probably seen at the bottom of other people’s files and copied without knowing why:
 
 ``` python
-# Library code (reusable, testable, zero knowledge of the command line)
+if __name__ == "__main__":
+    main()
+```
+
+Every module has a variable called `__name__`. When you *run* a file, Python sets it to the string `"__main__"`. When you *import* the file, Python sets it to the module’s name instead. You can watch this happen with a two-line file that prints its own name:
+
+``` text
+$ python clean.py
+__name__ is '__main__'
+running main()
+
+$ python -c "from clean import clean"
+__name__ is 'clean'
+```
+
+So the `if` block runs when you use the file as a script and stays quiet when a notebook imports a function from it. Without that guard, importing one function would also run the whole analysis, which is exactly as confusing as it sounds.
+
+That leads to the most useful distinction in this chapter: **library code** versus **entry-point code**. Library code is the functions that do the work, like `clean_sales(df)` or `plot_distribution(values)`. Each one takes inputs as arguments, returns outputs, and knows nothing about where its data came from. Entry-point code is the glue: it reads [command-line arguments](https://en.wikipedia.org/wiki/Command-line_argument), opens files, calls library functions in the right order, and writes results somewhere. Programmers call keeping these apart [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns), and it pays off quickly.
+
+``` python
+# Library code: reusable, testable, knows nothing about the command line
 def clean_sales(df):
+    df = df.copy()
     df.columns = df.columns.str.strip().str.lower()
     return df.dropna(subset=["customer_id"])
 
-# Entry point (argparse, file paths, orchestration)
+# Entry point: arguments, file paths, and the order of operations
 def main():
     args = parse_args()
     df = pd.read_csv(args.input)
@@ -75,40 +74,29 @@ def main():
     cleaned.to_csv(args.output, index=False)
 ```
 
-The heuristic is: if a function depends on `sys.argv`, on a hardcoded path, or on the user’s working directory, it is entry-point code. If it takes its inputs as arguments and returns its outputs as return values, it is library code. Keep them in separate functions, even inside the same file.
+A quick test for which kind you’re looking at: if a function depends on `sys.argv`, on a hardcoded path, or on which folder you launched Python from, it’s entry-point code. If it takes its inputs as arguments and hands back its result, it’s library code. Keep them in separate functions, even in the same file, and you can later put a different front end (a notebook, a scheduled job, a web page) on the same library without rewriting it.
 
-### Working directory and paths
+## 17.2 Writing your first script
 
-The single most surprising thing about moving code between a script and a notebook is that **the meaning of a relative path depends on where you launched Python from**. A script that reads `data/raw/survey.csv` works fine when you run `python src/clean.py` from the project root, and then fails with `FileNotFoundError` the moment you run the same file from inside the `src/` folder. The path did not change; the working directory did.
-
-The habit that makes this a non-issue is to **always run your code from the project root** and write every path relative to that root. The project root is the folder that contains `README.md`, `data/`, `src/`, `notebooks/` — the one that looks, from the outside, like “the project.” As long as you `cd` there before running anything, the same relative paths behave the same way everywhere.
-
-``` bash
-$ cd ~/Courses/INFO-3010/Project     # project root
-$ python src/clean.py                 # data/raw/... resolves correctly
-$ jupyter lab                          # notebooks also see data/raw/...
-```
-
-For scripts that need to be runnable from anywhere (for example, scheduled jobs), the trick from [sec-filesystem](#sec-filesystem) still applies: `Path(__file__).resolve().parent.parent` gives you the script’s own folder, and from there you can walk up to the project root without depending on the caller’s CWD. The general principle is the same either way: **pick an anchor once, and resolve every path relative to it.**
-
-## 17.2 Writing scripts: the essentials
-
-A minimal Python script has a predictable shape: imports at the top, then constants and configuration, then the functions that do the work, then a `main()` function that orchestrates them, and finally the `if __name__ == "__main__":` block at the bottom that runs `main()` when the file is executed as a script.
+A [scripting language](https://en.wikipedia.org/wiki/Scripting_language) like Python lets you write a useful program in a dozen lines, and most good scripts share the same shape: imports at the top, then constants, then the functions that do the work, then a `main()` that calls them in order, and finally the `__name__` guard.
 
 ``` python
 """Clean and summarize the Q3 sales CSV."""
 
-import sys
 from pathlib import Path
+
 import pandas as pd
 
 INPUT = Path("data/raw/sales.csv")
 OUTPUT = Path("data/processed/sales_clean.csv")
 
+
 def clean(df):
+    df = df.copy()
     df.columns = df.columns.str.strip().str.lower()
     df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
     return df.dropna(subset=["amount"])
+
 
 def main():
     df = pd.read_csv(INPUT)
@@ -116,18 +104,25 @@ def main():
     cleaned.to_csv(OUTPUT, index=False)
     print(f"wrote {len(cleaned):,} rows to {OUTPUT}")
 
+
 if __name__ == "__main__":
     main()
 ```
 
-The reason that little `if __name__ == "__main__":` line at the bottom matters is that it lets the same file work as *both* a script and an importable module. When you run `python clean.py` from the command line, Python sets the special variable `__name__` to `"__main__"` and the body of the `if` runs — calling `main()`, doing the work. When some other file does `from clean import clean` to import just the function, Python sets `__name__` to `"clean"` and the `main()` call does *not* run. This pattern is the difference between a script that you can only run one way and a script that other people (and your future notebooks) can also import the useful pieces of.
+Run it from the project folder and it does its job:
 
-Inside `main()`, the script’s job is to take some inputs (file paths, URLs, parameters) and produce some outputs (cleaned CSVs, figures, summaries, logs). A good habit is to write outputs to predictable folders — `data/processed/` for cleaned tables, `figures/` for plots, `reports/` for finished artifacts — so your collaborators (and future you) always know where to look.
+``` text
+$ python scripts/clean_q3.py
+wrote 6 rows to data/processed/sales_clean.csv
+```
 
-For small status messages while a script is running, `print()` is fine — “loaded 42,103 rows,” “starting cleaning step.” For longer-lived scripts, especially anything that runs on a schedule or that you want to debug after the fact, switch to the standard library `logging` module instead. Logging gives you levels (INFO, WARNING, ERROR), timestamps, and the ability to send output to a file. The simplest possible setup is:
+Inside `main()`, the script’s whole job is to take some inputs and produce some outputs. Send those outputs to predictable places (`data/processed/` for cleaned tables, `figures/` for plots, `reports/` for finished documents) so collaborators, and future you, always know where to look. The [`pathlib`](https://docs.python.org/3/library/pathlib.html) module’s `Path` objects, used above, make paths work the same way on macOS, Linux, and Windows.
+
+For progress messages, `print()` is fine (“loaded 42,103 rows”). Once a script runs unattended, or other people depend on it, switch to the standard library’s `logging` module, which adds timestamps and levels (INFO, WARNING, ERROR) and can write to a file. The [logging HOWTO](https://docs.python.org/3/howto/logging.html) walks through it; the smallest useful setup is three lines:
 
 ``` python
 import logging
+
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -135,18 +130,18 @@ log = logging.getLogger(__name__)
 log.info("loaded %d rows", len(df))
 ```
 
-Stick with `print` for course assignments; reach for logging when you start writing scripts that other people will depend on or that run unattended.
+which prints lines like `2026-09-25 18:02:48,068 INFO loaded 7 rows`. For course assignments, `print` is plenty.
 
-## 17.3 Organizing reusable code: from one file to `src/`
+## 17.3 From one long notebook to functions in `src/`
 
-### From monolith to functions
+### From copy-paste to functions
 
-Most student code starts life as a single long notebook or script where every line runs in order. That is fine for the first week of a project — the fastest way to understand a new dataset is to write straight-line code and watch what happens. But once the same block starts appearing in two cells, or in two scripts, you are paying for the duplication in ways that compound over time: every bug has to be fixed twice, every improvement has to be applied twice, and any divergence between the two copies becomes a mystery that eats an afternoon.
+Nearly every project starts as straight-line code in one notebook, and that’s the right way to start: the fastest way to understand a new dataset is to poke at it and watch what happens. The trouble begins when the same block shows up in a second cell, then a third. Now every bug has to be fixed in three places, and sooner or later you fix it in two. The copies drift apart, and one afternoon disappears into figuring out why two charts disagree.
 
-The fix is to notice the duplication and extract it into a function. A block that lowercases column names and drops missing rows can become a `clean_columns(df)` function. A block that loads a CSV and parses dates can become a `load_sales(path)` function. Each extraction is a tiny refactor, and each one replaces many lines of repeated code with a single call.
+The fix is to pull the repeated block out into a function, a small [refactoring](https://en.wikipedia.org/wiki/Code_refactoring) that programmers sum up as [don’t repeat yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). Six lines that appear in three cells become one function you call three times:
 
 ``` python
-# Before: the same six lines appear in three cells and one script
+# Before: the same lines appear in three cells and one script
 df.columns = df.columns.str.strip().str.lower()
 df["date"] = pd.to_datetime(df["date"], errors="coerce")
 df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
@@ -156,6 +151,7 @@ df = df.reset_index(drop=True)
 
 # After: one function, called from anywhere that needs it
 def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()  # leave the caller's DataFrame alone
     df.columns = df.columns.str.strip().str.lower()
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
     df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
@@ -164,163 +160,225 @@ def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
     return df.reset_index(drop=True)
 ```
 
-The second piece of advice is to make each extracted function **pure** whenever you can: inputs come in through parameters, outputs go out through the return value, and the function does not read or modify any global state. A pure function is easy to test (just pass it inputs and check the output), easy to reuse (the answer depends only on what you passed in), and easy to reason about (there is no hidden context to track). Not every function can be pure — some have to read a file or write a plot — but the closer you get, the more pleasant the code is to work with.
+Notice the first line of the function. Without [`df.copy()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.copy.html), renaming the columns and converting the dates would also change the DataFrame you passed in: after calling `clean_sales(raw)`, your `raw` table would suddenly have lowercase column names, and a later cell that expects `"Date"` would fail. That’s the case for making functions **pure** where you can. A [pure function](https://en.wikipedia.org/wiki/Pure_function) gets its inputs through parameters, hands back its result, and doesn’t change anything else along the way. It’s easy to test (pass it a small table and check what comes back), easy to reuse, and it never surprises you. Not every function can be pure, since something has to read the file and save the plot, but the closer you get, the fewer mysteries you’ll chase.
 
-### A simple project layout
+### A layout with a place for everything
 
-Once you have a handful of extracted functions, they need a home. A standard layout has emerged for data-focused Python projects, and adopting it early saves you from the “where does this go?” tax every time you add a new file:
+Once you have a handful of functions, they need a home. A common layout for data projects, and the one this chapter uses throughout, looks like this:
 
 ``` text
-my-project/
+sales-project/
 ├── README.md              # what, why, and how to run it
-├── notebooks/             # narrative exploration (one per question)
+├── pyproject.toml         # makes src/sales installable (see below)
+├── notebooks/             # narrative exploration, one per question
 │   └── 01-explore.ipynb
-├── src/                   # reusable Python modules
-│   ├── __init__.py
-│   ├── cleaning.py
-│   └── plotting.py
-├── scripts/               # CLI entry points that import from src/
+├── src/
+│   └── sales/             # your package: import it as `sales`
+│       ├── __init__.py
+│       ├── cleaning.py
+│       ├── paths.py
+│       └── plotting.py
+├── scripts/               # command-line entry points that import sales
 │   └── run_cleaning.py
 ├── data/
-│   ├── raw/               # immutable inputs
-│   └── processed/         # rebuildable outputs
+│   ├── raw/               # the files you were given; never edited
+│   └── processed/         # made by your code; safe to delete and rebuild
 └── figures/               # generated plots
 ```
 
-Each folder has one job. `notebooks/` is for exploration and narrative — the messy cells where you think out loud. `src/` is for functions that more than one notebook or script depends on — the pure logic. `scripts/` is for command-line entry points that orchestrate `src/` functions, the stuff you actually run on a schedule or against a batch of files. `data/raw/` is read-only, `data/processed/` is rebuildable, and `figures/` collects the plots you want to share. The `README.md` at the top explains what the project does and how to run it.
+Each folder has one job. `notebooks/` is where you think out loud. `src/sales/` holds the functions more than one notebook or script depends on. `scripts/` holds the command-line entry points you actually run, on a schedule or against a batch of files. `data/raw/` is read-only, `data/processed/` can always be rebuilt, and the README says how to run everything ([sec-project-management](#sec-project-management) covers the whole-project view). The payoff is that nobody has to ask where anything is. Where’s the cleaning logic? `src/sales/cleaning.py`. How do I run it? `scripts/run_cleaning.py`. Where did the output go? `data/processed/`.
 
-The power of this layout is that it tells a reader — including future you — where to look for every kind of content without having to ask. “Where’s the cleaning logic?” `src/cleaning.py`. “How do I run it from the command line?” `scripts/run_cleaning.py`. “Where are the results?” `data/processed/`. The answers are never in doubt.
+Why a `sales` folder *inside* `src/`, rather than putting modules straight into `src/`? Because `src` is a terrible name to import (every project would have one), and because the extra folder is what lets you install your code as a real package, which, as the next section shows, is what makes imports stop hurting. The Python Packaging Authority calls this the “src layout.”
 
-### Import paths without pain (student-safe guidance)
+## 17.4 Paths and imports: why it works here and not there
 
-Imports cause more suffering for beginners than almost anything else in Python, and the reason is almost always the same: people try to run scripts and notebooks from wherever they happen to be, instead of from a single predictable place. The single habit that eliminates almost every import error is **always run your code from the project root**, the folder that contains `src/`, `notebooks/`, `data/`, and `README.md`.
+### The working directory decides what a relative path means
 
-When you run `python scripts/run_cleaning.py` *from the project root*, Python adds the current directory to the front of its search path for imports, which means `from src.cleaning import clean_sales` just works — `src/` is visible because it lives right there in the current directory. When you run the same file from inside `scripts/`, `src/` is no longer visible from the working directory, and the import fails. Same code, same file, different place you were standing — different result.
+Here’s the single most confusing thing about moving code between scripts and notebooks: **a relative path like `data/raw/sales.csv` is relative to wherever Python is running, not to where the file lives.** That place is the [working directory](https://en.wikipedia.org/wiki/Working_directory). Run the script above from the project folder and it works. Run the same file from inside `scripts/` and it fails:
 
-``` bash
-# Works: project root is on the Python path
-$ cd ~/Courses/INFO-3010/Project
+``` text
+$ cd scripts
+$ python clean_q3.py
+...
+FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales.csv'
+```
+
+The code didn’t change; the folder you were standing in did. Notebooks add a twist that catches almost everyone: **JupyterLab starts each notebook’s kernel in the notebook’s own folder**, not in the folder you launched `jupyter lab` from. A notebook in `notebooks/` is standing in `notebooks/`, so `data/raw/sales.csv` isn’t there for it either. Run `import os; print(os.getcwd())` in a notebook and in a terminal, and you’ll see two different answers.
+
+The dependable fix is to stop relying on the working directory at all. **Pick one anchor, the project root, and build every path from it.** A module can find its own location through the special variable `__file__`, and from there walk up to the root (the same trick [sec-filesystem](#sec-filesystem) describes). Put that in one file and import it everywhere:
+
+``` python
+# src/sales/paths.py: one place for every path the project uses
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # sales/ -> src/ -> project root
+DATA_RAW = PROJECT_ROOT / "data" / "raw"
+DATA_CLEAN = PROJECT_ROOT / "data" / "processed"
+FIGURES = PROJECT_ROOT / "figures"
+```
+
+Now a notebook, a script, and a scheduled job can all write `pd.read_csv(DATA_RAW / "sales.csv")` and get the same file, whatever folder they started in. The one thing never to do is [hardcode](https://en.wikipedia.org/wiki/Hard_coding) an absolute path such as `pd.read_csv("/Users/alex/Downloads/survey.csv")`. It works on exactly one machine, until the day Alex moves the file, and everyone else gets a `FileNotFoundError` the moment they try it.
+
+### Why `from src.cleaning import ...` fails, and the fix
+
+Imports have the same problem as paths, and they’re even more confusing because the error doesn’t mention folders at all. Suppose `scripts/run_cleaning.py` starts with `from src.cleaning import clean_sales`. You run it from the project root, where `src/` is plainly sitting there, and get:
+
+``` text
 $ python scripts/run_cleaning.py
-
-# Fails: src/ is no longer visible
-$ cd ~/Courses/INFO-3010/Project/scripts
-$ python run_cleaning.py
+Traceback (most recent call last):
+  File "/Users/you/sales-project/scripts/run_cleaning.py", line 6, in <module>
+    from src.cleaning import clean_sales
 ModuleNotFoundError: No module named 'src'
 ```
 
-The second habit is to **stop copy-pasting code between notebooks**. Every time you find yourself opening two notebooks side-by-side to copy the same cleaning cell from one into the other, that is a function begging to be extracted into `src/` and imported from both places. The copy-paste feels faster in the moment, but it costs you every time one of the copies needs to change — and since you are the one doing the copying, you are the one who pays the cost.
+If this has happened to you, it isn’t your fault; lots of tutorials say it should work. Python looks for imports in a list of folders called `sys.path`, and when you run a script, the first entry is [the folder that contains the script](https://docs.python.org/3/library/sys_path_init.html), not the folder you’re standing in. So `python scripts/run_cleaning.py` searches `scripts/`, finds no `src` there, and gives up. (The interactive `python` prompt and `python -c` *do* search the current folder, which is why the same import works when you try it by hand.) In a notebook the kernel searches the notebook’s folder, `notebooks/`, with the same result. [sec-tracebacks](#sec-tracebacks) has more on reading errors like this one.
 
-The third is a mindset shift: when imports are confusing, **treat it as a project-structure problem, not a magic-command problem**. The temptation is to reach for `sys.path.insert(0, "../..")` or `%load_ext autoreload` or other incantations to force imports to work in the current layout. These sometimes help, but they are almost always patching a symptom. If you find yourself doing them, step back and ask whether the project layout matches the one above — whether you have a clean project root you are running from, whether `src/` is a real folder with an `__init__.py`, whether you are launching your notebook server from the root. Nine times out of ten, the fix is a structural one, and the magic commands become unnecessary.
+People reach for three fixes, and they’re not equally good.
 
-## 17.4 Loading custom scripts into notebooks
+**Install your package in editable mode (recommended).** Add a small `pyproject.toml` at the project root:
 
-### The basic pattern: import your code
+``` toml
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
 
-Once your reusable logic lives in `src/`, a notebook can pull it in with a normal Python import. The workflow is almost boring in its simplicity: launch Jupyter from the project root, open a notebook, and import your functions the same way you would import anything from the standard library.
+[project]
+name = "sales"
+version = "0.1.0"
+dependencies = ["pandas"]
+```
+
+Then, with your project’s virtual environment active, run this once from the project root:
+
+``` bash
+pip install -e .
+```
+
+The `-e` stands for *editable*: instead of copying your code somewhere, pip points the environment at your `src/` folder ([pip’s guide to local installs](https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs) explains the details). From then on, `from sales.cleaning import clean_sales` works in every script, notebook, and terminal that uses that environment, from any folder, and edits to your `.py` files take effect without reinstalling. You only rerun `pip install -e .` when you change `pyproject.toml` itself, say to add a dependency. The Packaging User Guide’s [tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/) and its guide to [writing `pyproject.toml`](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) go further when you’re ready.
+
+**Patch `sys.path` by hand (a quick fix for one notebook).** At the top of a notebook in `notebooks/`, you can tell Python where to look:
+
+``` python
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path.cwd().parent / "src"))  # notebooks/ -> project root -> src/
+from sales.cleaning import clean_sales
+```
+
+This works, and you’ll see it in plenty of course notebooks. Its weakness is that it depends on the working directory again: move the notebook one folder deeper and it silently points at the wrong place. Treat it as a stopgap until you set up the install.
+
+**Run scripts as modules with `python -m`.** From the project root, [`python -m scripts.run_cleaning`](https://docs.python.org/3/using/cmdline.html#cmdoption-m) puts the current folder first on `sys.path`, so imports from the root work. It helps for scripts but does nothing for notebooks, and you have to remember the unusual command every time.
+
+When imports get confusing, resist piling on more `sys.path` lines. It’s almost always a project-structure problem: check that you have one project root, that your code is a real package under `src/`, and that it’s installed in the environment your kernel uses. Fix the structure and the workarounds become unnecessary.
+
+## 17.5 Using your own code in a notebook
+
+### Import it, then tell the story around it
+
+Once your functions live in `src/sales/` and the package is installed, a notebook pulls them in with a normal import, the same as pandas:
 
 ``` python
 # notebooks/01-explore.ipynb, first code cell
-from pathlib import Path
 import pandas as pd
 
-from src.cleaning import clean_sales
-from src.plotting import plot_monthly_revenue
+from sales.cleaning import clean_sales
+from sales.paths import DATA_RAW
+from sales.plotting import plot_monthly_revenue
 
-df = pd.read_csv("data/raw/sales.csv")
-cleaned = clean_sales(df)
-plot_monthly_revenue(cleaned)
+df = clean_sales(pd.read_csv(DATA_RAW / "sales.csv"))
+plot_monthly_revenue(df)
 ```
 
-Notice what the notebook is doing and what it is *not* doing. It orchestrates the work — loads the data, calls the cleaning function, calls the plotting function — and it provides the narrative around those calls (markdown cells explaining what you are looking at and why). What it does not contain is the ten-line body of `clean_sales` or the fifteen-line body of `plot_monthly_revenue`. Those live in `src/`, where they can be reused, tested, and improved in one place.
+Look at what the notebook does and doesn’t do. It loads the data, calls the cleaning function, calls the plotting function, and surrounds those calls with Markdown cells explaining what you’re looking at and why. What it doesn’t contain is the body of `clean_sales` or `plot_monthly_revenue`; those live in `src/`, where there’s exactly one copy. A useful rule of thumb: if a code cell grows past ten or fifteen lines, it’s usually hiding a function that wants to move to `src/`.
 
-The rule of thumb for a well-structured notebook is that no single code cell should be more than ten or fifteen lines. If a cell is growing past that, it is usually hiding a function that wants to be extracted. Move the logic to `src/`, import it back, and the notebook becomes easier to read and dramatically easier to reuse.
+### Why your edits don’t show up, and autoreload
 
-### Iterating on imported code: reloading
+The first time you fix a function in `src/sales/cleaning.py` and re-run the notebook cell that calls it, the *old* version runs. You haven’t done anything wrong. Python loads a module once per session and keeps it in memory; importing it again just hands back the copy it already has, so your edits on disk don’t reach the running [kernel](../chapters/appendix-glossary.llms.md#term-kernel). Running `from sales.cleaning import clean_sales` a second time changes nothing.
 
-The first time you edit a function in `src/cleaning.py` and then re-run the notebook cell that calls it, you will notice something surprising: the cell still runs the *old* version of the function. This is not a bug; it is how Python imports work. When the notebook imports `clean_sales`, Python loads `src/cleaning.py` once and caches the result in memory. Subsequent imports of the same module return the cached version, so your edits to the source file do not automatically appear in the running kernel.
-
-There are two ways to deal with this, and both have their place. The heavy-handed option is to **restart the kernel** (Kernel → Restart) and re-run all cells. This is the most reliable — you are guaranteed to pick up the latest version of every module — but you lose any state you had built up in the notebook, which can be annoying if the data load was slow. The lightweight option is to ask Python to reload the specific module you just edited:
+You have three ways out. The sure one is to **restart the kernel** (Kernel → Restart Kernel…) and run your cells again. It always picks up the latest code, but you lose everything in memory, which hurts if loading the data took five minutes. The targeted one is [`importlib.reload`](https://docs.python.org/3/library/importlib.html#importlib.reload), which re-reads one module:
 
 ``` python
 import importlib
-from src import cleaning
 
-importlib.reload(cleaning)          # pick up edits to src/cleaning.py
-from src.cleaning import clean_sales  # re-import the updated function
+import sales.cleaning
 
-df = clean_sales(pd.read_csv("data/raw/sales.csv"))
+importlib.reload(sales.cleaning)             # re-read src/sales/cleaning.py
+from sales.cleaning import clean_sales       # grab the new version of the function
 ```
 
-Jupyter also offers a convenience called **autoreload** that does this for you automatically. In the first cell of a notebook, run:
+The convenient one, and the right default while you’re going back and forth between a `.py` file and a notebook, is IPython’s [autoreload extension](https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html). Put this in the first cell:
 
 ``` python
 %load_ext autoreload
 %autoreload 2
 ```
 
-From then on, every time you run a cell, Jupyter checks whether any imported modules have changed on disk and reloads them before running your code. This is the right setup for an exploratory notebook where you are iterating rapidly between editing `src/` and trying things out. One caveat: autoreload occasionally gets confused when you rename a function or change its signature, and the fix is to restart the kernel and re-run. Do not over-rely on autoreload in a notebook you are about to hand in — run it one last time with a clean kernel before you submit.
+From then on, before every cell runs, IPython checks whether any imported module changed on disk and reloads it. Edit `cleaning.py`, save, re-run the cell, and the new code runs. The IPython docs are honest that reloading can’t always be done cleanly (changing a class’s structure, for example, can confuse it), so if something behaves strangely after an edit, restart the kernel. And before you hand a notebook in, restart and run everything from the top once with a fresh kernel, so you know it works without any reloading tricks.
 
-### Alternative: run a script from a notebook
+### Running a script from a notebook instead
 
-Sometimes you do not want to *import* a script — you want to *run* it as an external process, the same way you would from the terminal. Jupyter makes this easy with the `!` prefix, which hands the line off to the shell:
+Sometimes you want to *run* a script rather than import from it, exactly as you would in the terminal. A `!` at the start of a line hands it to the shell:
 
 ``` python
 !python scripts/run_cleaning.py --input data/raw/sales.csv --output data/processed/sales_clean.csv
 !ls -lh data/processed/
 ```
 
-This is occasionally the right tool — for example, when you want to demonstrate a complete end-to-end run of a pipeline inside a notebook narrative, or when the script is written in a language other than Python. But it comes with a trade-off worth understanding: the script runs in a *separate process*, so anything it computes is not available to the notebook’s Python kernel. If `run_cleaning.py` builds a DataFrame and then exits, that DataFrame is gone — the only way to get the results is to read the output file the script wrote.
+That’s handy for showing a whole pipeline run inside a notebook, or for a script written in another language. But the script runs as a separate program, so nothing it computes is available to your notebook afterward: if it builds a DataFrame and exits, that DataFrame is gone, and the only way to see the results is to read the file it wrote. (Remember too that the shell starts in the notebook’s folder, so these relative paths need adjusting if your notebook lives in `notebooks/`.) For exploratory work, importing the functions and calling them directly is almost always simpler: one program, one memory space, no surprises.
 
-The consequence is that running a script from a notebook can create confusing state splits, where the notebook has variables that exist only in the kernel and the script has variables that exist only in its own process, and the two never see each other. For exploratory work, it is almost always cleaner to import the script’s functions into the notebook and call them directly — the result is a single Python process, a single memory space, and no state surprises.
+### A smoke-test cell
 
-### Notebook “smoke test” cell
-
-A habit worth adopting for any notebook that depends on imported code is a **smoke test cell** near the top — a small diagnostic block that runs before any real work and confirms the environment is sane. The goal is to catch the common setup problems (wrong kernel, wrong working directory, missing data, missing module) immediately, with a clear message, before they show up as confusing errors five cells later.
+A quick check at the top of a notebook, a [smoke test](https://en.wikipedia.org/wiki/Smoke_testing_(software)) in testing jargon, catches the usual setup problems (wrong kernel, missing data, a package that isn’t installed) with a clear message, before they show up as a baffling error five cells later:
 
 ``` python
 # Smoke test: run this cell first
-import sys, os
-from pathlib import Path
+import os
+import sys
 
-print("python:  ", sys.executable)
-print("cwd:     ", os.getcwd())
-print("project: ", Path.cwd().name)
-
-# Check required files exist
-for rel in ["data/raw/sales.csv", "src/cleaning.py"]:
-    p = Path(rel)
-    print(f"{'OK' if p.exists() else 'MISSING':8s} {rel}")
-
-# Import key modules and print versions
 import pandas as pd
-from src import cleaning
-print("pandas:  ", pd.__version__)
-print("cleaning module:", cleaning.__file__)
+
+import sales
+from sales.paths import DATA_RAW
+
+print("python: ", sys.executable)
+print("cwd:    ", os.getcwd())
+print("sales:  ", sales.__file__)
+print("pandas: ", pd.__version__)
+
+for name in ["sales.csv"]:
+    path = DATA_RAW / name
+    print("OK     " if path.exists() else "MISSING", path)
 ```
 
-When the smoke test prints the path of a Python interpreter that is not your project’s virtual environment, you know the kernel is wrong. When `cwd` is not the project root, you know the notebook was launched from the wrong place. When a required file shows up as `MISSING`, you know to download it before running the analysis. Each of these is a thirty-seconds fix when you catch it here and a half-hour detour when you catch it later. Make the smoke test cell the first cell of every notebook that depends on `src/`, and you will save yourself the detours.
+In the scratch project used to check this chapter, it printed:
 
-## 17.5 Passing parameters from the command line
+``` text
+python:  /Users/you/sales-project/.venv/bin/python
+cwd:     /Users/you/sales-project/notebooks
+sales:   /Users/you/sales-project/src/sales/__init__.py
+pandas:  3.0.6
+OK      /Users/you/sales-project/data/raw/sales.csv
+```
 
-### Why parameterize scripts
+Each line answers one question. If `python` isn’t inside your project’s `.venv`, the notebook is using the wrong kernel (see [sec-jupyter](#sec-jupyter)). If `import sales` fails, the package isn’t installed in that environment. If a file says `MISSING`, you know to fetch it before the analysis. Each is a thirty-second fix here and a half-hour detour later.
 
-- Make the same analysis run on different datasets or time ranges.
+## 17.6 Passing parameters from the command line
 
-- Enable automation (scheduled runs, batch processing).
+### Why bother with parameters
 
-- Reduce copy/paste “variant” scripts.
+Sooner or later you’ll want to run the same analysis on a different file: next quarter’s data, another city, a different random seed. The tempting move is to copy the script and change one line, and within a month you have `clean_q3.py`, `clean_q4.py`, and `clean_q4_fixed.py`, each slightly different. Parameters fix that. The same script runs on any input, and it becomes something you can automate: run it from a [cron](https://en.wikipedia.org/wiki/Cron) job, loop it over a folder of files, or call it from a pipeline ([sec-automation](#sec-automation)).
 
-### Three levels of parameterization
+Parameters come in three levels, and it’s fine to start at the first. **Constants at the top of the script**, like `INPUT = Path("data/raw/sales.csv")`, are quick and fine for one-off work, but every change means editing code. **A [configuration file](https://en.wikipedia.org/wiki/Configuration_file)** (a small `.yml` or `.toml` the script reads at startup) suits settings several teammates adjust without touching code. **Command-line arguments** are the most flexible: you pass values when you run the script, which is exactly what automation needs.
 
-Parameterization comes in three flavors that scale with how serious the project is. The simplest level is **constants in the script itself**: you put `INPUT = "data/q3.csv"` near the top and edit it whenever you need a different dataset. This is fast and fine for one-off work; it does not scale to running the same script against many inputs without becoming a copy-paste mess. The next level is **a config file** — a small `.yml` or `.toml` file that holds parameters and that the script reads at startup. Config files are good when several teammates need to adjust parameters without editing code. The most flexible level is **command-line arguments**, where parameters are passed when the script is invoked. CLI scripts are the right shape for automation, scheduled runs, and any workflow where the same code needs to run with different inputs.
+### Command-line arguments with `argparse`
 
-### The CLI pattern
-
-The standard way to give a Python script command-line arguments is the built-in [`argparse`](https://docs.python.org/3/library/argparse.html) module. You define each argument once, with a description and (where appropriate) a default value, and `argparse` handles parsing the user’s input, generating a `--help` message, and rejecting invalid arguments before your code ever runs.
+Python’s built-in [`argparse`](https://docs.python.org/3/library/argparse.html) module handles the fiddly parts for you. You describe each argument once, with a help message and maybe a default, and `argparse` reads what the user typed, converts types, rejects bad input, and writes a `--help` page:
 
 ``` python
 import argparse
 from pathlib import Path
+
 
 def parse_args():
     p = argparse.ArgumentParser(description="Clean a sales CSV.")
@@ -333,11 +391,36 @@ def parse_args():
     return p.parse_args()
 ```
 
-Now `python clean.py --input data/raw/q3.csv --output data/processed/q3_clean.csv` works, and `python clean.py --help` prints a friendly summary of every option.
+That’s enough to give your script a real [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface). Here’s what Python 3.11 prints for `--help`:
 
-### Validating inputs
+``` text
+$ python scripts/clean.py --help
+usage: clean.py [-h] --input INPUT --output OUTPUT [--seed SEED]
 
-A good habit is to *fail fast* when an input is wrong, with a message that tells the user what to do. Check that input paths exist before you try to read from them. Validate that numeric parameters are in sensible ranges (a sample size cannot be negative, a percentage must be between 0 and 100). And produce clear error messages, not stack traces — `argparse.ArgumentTypeError` is the canonical way to do this:
+Clean a sales CSV.
+
+options:
+  -h, --help       show this help message and exit
+  --input INPUT    path to the raw CSV
+  --output OUTPUT  where to write the cleaned CSV
+  --seed SEED      random seed for reproducibility
+```
+
+And here’s what happens when someone forgets an argument, or types a word where a number belongs. `argparse` stops before any of your code runs:
+
+``` text
+$ python scripts/clean.py
+usage: clean.py [-h] --input INPUT --output OUTPUT [--seed SEED]
+clean.py: error: the following arguments are required: --input, --output
+
+$ python scripts/clean.py --input data/raw/sales.csv --output out.csv --seed ten
+usage: clean.py [-h] --input INPUT --output OUTPUT [--seed SEED]
+clean.py: error: argument --seed: invalid int value: 'ten'
+```
+
+### Check inputs early, and say what you ran
+
+`argparse` can check that `--seed` is a number, but not that the input file exists or that the seed makes sense for your analysis. Check those yourself at the start of `main()`, following the [fail-fast](https://en.wikipedia.org/wiki/Fail-fast_system) idea: stop immediately with a clear message rather than running for ten minutes and crashing on a missing file. `raise SystemExit("message")` prints the message and ends the script with a nonzero [exit status](https://en.wikipedia.org/wiki/Exit_status), which is how other programs (and your automation) know it failed:
 
 ``` python
 def main():
@@ -346,73 +429,80 @@ def main():
         raise SystemExit(f"input not found: {args.input}")
     if args.seed < 0:
         raise SystemExit(f"seed must be non-negative, got {args.seed}")
-    ...
-```
-
-The script aborts immediately with a one-line message instead of running for ten minutes and then crashing on a missing file.
-
-### Reproducibility and auditability
-
-Every parameterized script should print or log its resolved parameters at startup, so that anyone reading the output later can tell exactly what configuration produced it. The same goes for outputs: write them to a path that includes the relevant parameters (a date, a seed, an input filename) so you can tell two runs apart at a glance. And record the *exact command used to run the script* in a `README.md` or a metadata file alongside the output, so someone can reproduce the run six months from now without guessing.
-
-``` python
-def main():
-    args = parse_args()
     print(f"INPUT={args.input}  OUTPUT={args.output}  SEED={args.seed}")
     ...
 ```
 
-Three small habits, almost no extra effort, and your work is dramatically more reproducible.
+``` text
+$ python scripts/clean.py --input data/raw/q4.csv --output out.csv
+input not found: data/raw/q4.csv
+```
 
-## 17.6 Translating notebooks into scripts (and vice versa)
+That last `print` in `main()` is worth keeping too. When a script announces the settings it’s running with, anyone reading its output later can tell exactly which configuration produced a result. Two more habits finish the job: put the settings that matter (a date, a seed, the input’s name) into output file names so you can tell two runs apart, and write the exact command you ran into the README next to the output, so you can repeat it six months from now without guessing.
+
+## 17.7 Turning notebooks into scripts (and back)
 
 ### Why convert
 
-Once a notebook has grown past the exploration stage and the analysis has stabilized, there are three good reasons to turn it into a script (or into a pair of script + thinner notebook). The first is **automation**: scripts are trivial to run unattended, from a shell, from a scheduled job, from a CI pipeline. You do not need a browser or a running kernel to execute a `.py` file. If the same analysis needs to run every Monday morning or against every new data drop, it needs to be a script.
+Once an analysis settles down, there are good reasons to move it out of the notebook. The first is **automation**: a `.py` file runs from a shell, a scheduled job, or [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) without a browser or a running kernel. If it needs to run every Monday, it needs to be a script.
 
-The second is **version control hygiene**. Notebooks serialize as JSON, with every cell output — including large images — embedded in the file. A simple edit that changes the order of two plots can produce a 4,000-line diff in the raw `.ipynb` file, most of which is base64-encoded PNG data. Scripts, being plain text, produce diffs that match what a human actually changed. Code reviewers can actually read them. Merge conflicts in scripts are normal three-way merges; merge conflicts in notebooks are usually insoluble without special tools. ([sec-git-github](#sec-git-github) has more on this.)
+The second is **version control**. A notebook is saved as [JSON](https://en.wikipedia.org/wiki/JSON), and every output is stored inside it: each plot becomes a single line of [Base64](https://en.wikipedia.org/wiki/Base64) text thousands of characters long, and every rerun changes the execution counts. So a [diff](https://en.wikipedia.org/wiki/Diff) of a notebook mixes the one line you changed with screens of noise, and merge conflicts in the raw JSON are miserable to resolve by hand (tools like [nbdime](https://nbdime.readthedocs.io/en/latest/) help). A script’s diff shows only what a person changed. [sec-git-github](#sec-git-github) has more.
 
-The third reason is diagnostic. **Converting a notebook to a script is one of the best ways to surface hidden-state problems** — cells that depend on a variable defined in another cell that is no longer in the notebook, cells that rely on being run in a specific order, cells that only work after a manually-run setup step. A script runs top to bottom, with no cached kernel state to rescue it, so any dependency that was only working by accident will fail loudly. The first pass of turning a messy notebook into a script is sometimes the first honest test of whether the notebook actually does what it claims.
+The third reason is the most interesting: **converting a notebook is an honest test of whether it works.** A script runs top to bottom with no leftover memory to rescue it, so a cell that depends on a variable from a deleted cell, or on being run out of order, fails loudly. The first run of a converted notebook is sometimes the first time anyone learns what it really depends on.
 
-### One-way conversion: notebook to script
+### Notebook to script with `nbconvert`
 
-The standard tool for turning an `.ipynb` into a `.py` is `jupyter nbconvert`, which ships with Jupyter itself. One command produces a script:
-
-``` bash
-jupyter nbconvert --to script notebooks/analysis.ipynb \
-                  --output-dir scripts/
-```
-
-The result is a file called `scripts/analysis.py` that contains every code cell from the notebook, concatenated in order, with markdown cells converted to `# Title`-style comments. That file is almost never a finished script on its own. It still has the `df.head()` calls you only ran to peek at the data, the commented-out experiments that were there just in case, and the long block of imports that used to be spread across ten different cells. Treat the conversion as a *starting point*, not a deliverable:
+[`jupyter nbconvert`](https://nbconvert.readthedocs.io/en/latest/usage.html) comes with Jupyter and does the conversion in one command:
 
 ``` bash
-# 1. Convert
 jupyter nbconvert --to script notebooks/analysis.ipynb --output-dir scripts/
-
-# 2. Open the result and refactor
-#    - delete interactive inspection calls (df.head(), df.info())
-#    - extract repeated blocks into functions
-#    - wrap the main flow in a main() function
-#    - add a if __name__ == "__main__": guard
-#    - add argparse if you want CLI parameters
-
-# 3. Run it end-to-end from a clean shell to confirm it still works
-python scripts/analysis.py
 ```
 
-By the end, you have a script that does the same thing the notebook did, but as a single reliable artifact that can be scheduled, tested, and version-controlled cleanly. The original notebook stays in `notebooks/` if you want to keep it as narrative; the script is what you actually run.
+It writes `scripts/analysis.py`, with every code cell in order and Markdown cells turned into comments. Here’s the start of what it produced for a small notebook that used autoreload:
 
-### Round-trip conversion: paired notebooks
+``` python
+#!/usr/bin/env python
+# coding: utf-8
 
-Sometimes you want the narrative affordance of a notebook *and* the version-control cleanliness of a script, without maintaining two separate files. The tool for that job is **Jupytext**, which lets you pair any notebook with a plain-text representation — typically a `.py` file in “percent” format — and keeps the two in sync automatically whenever you save either one.
+# # Sales analysis
+# Exploration of Q3 sales data.
+
+# In[1]:
+
+
+get_ipython().run_line_magic('load_ext', 'autoreload')
+get_ipython().run_line_magic('autoreload', '2')
+
+
+# In[2]:
+
+
+import pandas as pd
+from sales.cleaning import clean_sales
+```
+
+(The first line is a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)), which lets macOS and Linux run the file directly once it’s marked executable.) Now try running it with plain Python, and it dies on the first real line:
 
 ``` text
-notebooks/
-├── analysis.ipynb     # the rendered notebook (outputs, plots)
-└── analysis.py        # the paired text version (editable in any editor)
+$ python scripts/analysis.py
+Traceback (most recent call last):
+  File "/Users/you/sales-project/scripts/analysis.py", line 10, in <module>
+    get_ipython().run_line_magic('load_ext', 'autoreload')
+    ^^^^^^^^^^^
+NameError: name 'get_ipython' is not defined
 ```
 
-The `.py` version is a regular Python file with special comments marking where each cell starts:
+Magics like `%autoreload` and shell lines like `!ls` only mean something inside Jupyter, so nbconvert translates them into calls to `get_ipython()`, a function that exists only there. That’s the clue to how to treat the result: **the converted file is a starting point, not a finished script.** It still has the `df.head()` calls you ran to peek at the data, the commented-out experiments, and imports scattered through the file. Tidy it in a few passes: delete the magics and the inspection calls, move repeated blocks into functions in `src/`, wrap the main flow in `main()` with the `__name__` guard, add `argparse` if you want options, and finally run it from a fresh terminal to confirm it still does what the notebook did.
+
+### Keeping a notebook and a script in sync with Jupytext
+
+Sometimes you want both: a notebook to work in and a plain-text file to review. [Jupytext](https://jupytext.org/using/paired-notebooks/) pairs a notebook with a `.py` file in “percent” format, where special comments mark each cell. Install it (`pip install jupytext`) and pair a notebook once:
+
+``` bash
+jupytext --set-formats ipynb,py:percent notebooks/analysis.ipynb
+```
+
+The paired `notebooks/analysis.py` is ordinary Python:
 
 ``` python
 # %% [markdown]
@@ -420,23 +510,19 @@ The `.py` version is a regular Python file with special comments marking where e
 # Exploration of Q3 sales data.
 
 # %%
-import pandas as pd
-from src.cleaning import clean_sales
+# %load_ext autoreload
+# %autoreload 2
 
 # %%
-df = pd.read_csv("data/raw/sales.csv")
-cleaned = clean_sales(df)
+import pandas as pd
+from sales.cleaning import clean_sales
 ```
 
-You get clean git diffs (edit the `.py`, the notebook follows), better merge behavior, and the option to edit cells in VS Code or Vim when that is more convenient than the browser. Meanwhile the `.ipynb` is still a real notebook you can open in Jupyter and use for narrative work. Commit both files to version control, or commit only the `.py` and regenerate the `.ipynb` when needed — either works.
+Notice that Jupytext comments out the magics, so the file even runs with plain `python`. When you save the notebook in Jupyter, both files are updated. When you edit the `.py` in another editor, the notebook catches up the next time you open or reload it in Jupyter, or right away if you run `jupytext --sync notebooks/analysis.py`. Reviewers read the `.py`, you keep working in the notebook, and you can commit both files or only the `.py` and regenerate the other. For a project that uses notebooks heavily and gets code review, it’s a small setup cost for a big payoff.
 
-Jupytext is an install (`pip install jupytext`) and a one-time pair command per notebook, and then it just runs in the background. For any project that both uses notebooks heavily and cares about code review, it is a small cost for a large payoff.
+### Running one notebook with different parameters: Papermill
 
-### Parameterizing notebooks (bridge to automation)
-
-There is a middle path between “notebook forever” and “convert to a script”: keep the notebook, but run it programmatically with different parameters each time. This is how you generate a monthly report from a single template, or produce the same analysis for fifty different cities, without maintaining fifty copies. The tool is **Papermill**, which executes a notebook from the command line with parameters injected into a designated cell.
-
-The setup is a two-step ritual. First, tag a code cell in your notebook with the tag `parameters` (in Jupyter Lab: click the gear icon in the right sidebar, then Cell Tags, then add `parameters`). That cell should contain the default values for any parameter you want to override:
+There’s also a middle path: keep the notebook, but run it from the command line with different values each time, to make one report per month or the same analysis for fifty cities from a single template. [Papermill](https://papermill.readthedocs.io/en/latest/usage-parameterize.html) does this. First, give one cell the tag `parameters` (in JupyterLab, select the cell, open the Property Inspector with the gear icon in the right sidebar, and type `parameters` in the Add Tag box). That cell holds the defaults:
 
 ``` python
 # Cell tagged `parameters`
@@ -445,7 +531,7 @@ output_file = "data/processed/summary.csv"
 start_date = "2026-01-01"
 ```
 
-Then run the notebook with Papermill, passing new values on the command line:
+Then run it with new values:
 
 ``` bash
 papermill notebooks/analysis.ipynb outputs/analysis_q3.ipynb \
@@ -454,70 +540,31 @@ papermill notebooks/analysis.ipynb outputs/analysis_q3.ipynb \
     -p start_date 2026-07-01
 ```
 
-Papermill runs the notebook end-to-end, injects your parameters as if they had been typed into the parameters cell, and writes a new executed notebook with the results and outputs baked in. This is the right tool when the final artifact is *supposed* to be a human-readable notebook — a monthly report, a per-experiment writeup, a gallery of results — and what changes between runs is only a handful of inputs. For pipelines where the output is pure data, a plain script is usually the better choice.
+Papermill adds a new cell, tagged `injected-parameters`, right after yours, so your values override the defaults, then runs the whole notebook and saves a new copy with every output in it. One snag: unlike JupyterLab, Papermill starts the kernel in the folder you ran the command from (here, the project root), unless you pass `--cwd`; paths built from `sales.paths` sidestep the question. Use Papermill when the thing you want at the end is a readable notebook and only a few inputs change between runs. When the output is just data, a plain script is simpler.
 
-## 17.7 Notebook versus script: trade-offs and decision rules
+## 17.8 Notebook or script? Choosing on purpose
 
-### Notebooks are best for
+### What each is good at
 
-Notebooks shine when the primary goal is exploration, learning, or communication. They are the right tool when you are still figuring out what your data looks like, when you want to iterate rapidly between code and visualization, and when the final artifact is a narrative analysis with plots and commentary that someone else will read. The mix of code, prose, and inline output is what makes a notebook a *document*, and that is what scripts cannot do well.
+Notebooks shine when the goal is exploring, learning, or explaining: when you’re still finding out what the data looks like, when you want to go back and forth between code and charts, and when the finished product is a story with plots and commentary that someone will read. Mixing code, prose, and output in one document is an old idea called [literate programming](https://en.wikipedia.org/wiki/Literate_programming), and it’s something scripts can’t do.
 
-### Scripts are best for
+Scripts shine when the goal is running the same thing again: many inputs, on a schedule, with no one watching, with predictable output in predictable places. Anything that should run at 3 a.m., on every push to GitHub, or over a hundred files should be a script. Scripts also make clean diffs, which makes them easy to review.
 
-Scripts shine when the primary goal is repeatable execution. The same code, applied to many inputs, on a schedule, possibly in CI, with predictable logs and outputs that go to predictable locations. Anything that needs to run unattended — at 3 AM as a cron job, on every push to GitHub, in a batch over a hundred files — should be a script. Scripts also produce dramatically cleaner diffs in version control than notebooks (which serialize as JSON with embedded outputs), which makes them easier to code review.
+In a real project the best answer is usually both, in layers. The reusable logic lives in `src/sales/` as plain modules. Command-line entry points in `scripts/` import from it. Notebooks in `notebooks/` import from it too and tell the story. The notebook is the story, the scripts are the engine, and `src/` is the shared library underneath, so the cleaning function you run interactively is the very same one your pipeline runs overnight.
 
-### A common hybrid pattern
+The signs that a notebook should become (or call) a script are easy to spot. You keep rerunning it with small changes to a few values. It takes long enough that you’d like to run it overnight. It needs to run on a schedule or in a pipeline. You wish it had proper logs or consistent output files. The signs that it should stay a notebook are just as clear: the point is interpretation or communication, the analysis is still changing fast, or you’re teaching or documenting your reasoning. Notebooks are the wrong tool for a production pipeline and the right tool for thinking; don’t let “scripts are more professional” push you out of a notebook when a notebook is what you need.
 
-In practice the right shape for a serious project is usually neither pure-notebook nor pure-script, but a layered hybrid. The reusable computational logic — cleaning functions, modeling utilities, plot helpers — lives in `src/` as plain Python modules with no notebook ceremony. CLI entry points for batch runs live in `scripts/`, importing from `src/`. And one or more notebooks in `notebooks/` orchestrate the analysis and provide the narrative, *also* importing from `src/`. The notebook is the story; the scripts are the engine; `src/` is the shared library that both depend on. With this structure, the same cleaning function gets exercised both in the interactive notebook and in the unattended pipeline, so you do not have two slightly-different copies that drift apart.
+### Keep hidden state out
 
-### When to move from a notebook to a script
+Hidden state is the reason a notebook “works on my machine” and nowhere else: it quietly depends on something that happened earlier in your session, like a variable from a cell you’ve since deleted, a cell run out of order, or a file that exists on your laptop but not in the repository. The defense in a notebook is the **restart-and-run-all check**. Before you hand a notebook in or share it, choose Kernel → Restart Kernel and Run All Cells…, and confirm every cell runs top to bottom without errors and gives the results you expect. If it only works when you run cells in a special order, this is where you find out.
 
-There are clear smells that signal “this notebook should become (or call) a script.” If you find yourself manually rerunning the same notebook with small parameter changes, you want a script with arguments. If the notebook takes long enough that you want to run it overnight, you want a script. If the work needs to happen on a schedule, in CI, or as a step in a pipeline, you want a script. And if you find yourself wishing for proper logs, retries, or consistent file outputs, that is the moment to extract the logic.
+The defense in a script is the design from earlier in the chapter: pure functions, inputs passed in through `argparse`, outputs written to paths given on the command line. Every dependency is visible in the command that ran it. Avoid global variables that change as the script runs, avoid reading environment variables scattered through the code, and resist “I’ll just hardcode this one thing for now.”
 
-The complementary smells say “this should stay in a notebook”: the primary goal is interpretation or communication, the analysis is still exploratory and changing quickly, or you are teaching or documenting reasoning rather than producing a deliverable. Notebooks are the wrong tool for production but the right tool for thinking; do not let “scripts are more professional” push you out of a notebook when a notebook is what you actually need.
+### Write down how to run it
 
-## 17.8 Best practices: making scripts and notebooks play well together
+Any project someone else might run, including future you, deserves a “How to run” section in its `README.md` with the exact commands, in order, that a fresh reader on a fresh machine would type. Not “activate the environment and run the analysis,” but the actual commands:
 
-### Make data and paths explicit
-
-The rule that protects every other rule is: **never hardcode an absolute path in code that other people will read or run.** A line like `df = pd.read_csv("/Users/alex/Downloads/survey.csv")` works on exactly one machine, until the day Alex moves the file. Any collaborator — including you on a new laptop six months from now — gets a `FileNotFoundError` the moment they try to run it.
-
-The alternative is a stable project root and consistent relative paths inside it. Pick one directory that contains `data/`, `src/`, `notebooks/`, and a `README.md`; treat that directory as the canonical “project root”; and write every data-reading line as a path relative to that root. Both your notebooks and your scripts should assume they are being run from the root, and both should read the same files from the same locations.
-
-``` python
-# src/paths.py — one place for every path the project uses
-from pathlib import Path
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATA_RAW     = PROJECT_ROOT / "data" / "raw"
-DATA_CLEAN   = PROJECT_ROOT / "data" / "processed"
-FIGURES      = PROJECT_ROOT / "figures"
-```
-
-Now any script or notebook can `from src.paths import DATA_RAW` and use `DATA_RAW / "survey.csv"` without ever writing an absolute path by hand. If the project moves, the only thing that needs to change is the one file that defines the root. The rest of the code is automatically portable.
-
-A small supporting habit: write a tiny `check_paths()` function that asserts the expected files exist and call it at the top of every script and the top of every notebook. If anything is missing, you see a clear error immediately, instead of fifteen minutes into a run.
-
-### Minimize hidden state
-
-Hidden state is the phenomenon where your code works for you but fails for everyone else because it secretly depends on something that happened earlier in the session — a variable you defined in a cell you since deleted, an environment variable set in one terminal but not another, a file that exists on your laptop but not in the repository. Hidden state is the single biggest reason a notebook “works on my machine” and nowhere else.
-
-The defense in a notebook is the **restart-and-run-all check**: before you hand in a notebook, restart the kernel (Kernel → Restart), then run every cell from the top, then confirm you get the expected output. If the notebook only works when cells are run out of order, or only after a specific debugging step, restart-and-run-all exposes it immediately.
-
-``` text
-# The ritual every notebook should pass before submission
-Kernel → Restart → Run All
-→ Every cell should run in order, top to bottom, with no errors,
-  and produce the same output you expect.
-```
-
-The defense in a script is **pure functions with explicit parameters**. A script that takes its inputs via `argparse`, uses the imported library code to do its work, and writes its outputs to paths specified on the command line has almost no hidden state — every dependency is visible in the invocation. Avoid module-level globals that get mutated, avoid reading environment variables scattered throughout the code, and resist the temptation to “just hardcode this one thing for now.”
-
-### Document how to run
-
-Any project that anyone else might need to run, including future you, deserves a section in `README.md` titled “How to run it” that contains an exact, copy-pasteable recipe. Not “activate the environment and run the analysis” — the actual commands, in order, that a fresh reader on a fresh machine would need to execute.
-
-``` markdown
+```` markdown
 ## How to run
 
 1. Create and activate the environment:
@@ -526,83 +573,87 @@ Any project that anyone else might need to run, including future you, deserves a
    python -m venv .venv
    source .venv/bin/activate        # on Windows: .venv\Scripts\activate
    pip install -r requirements.txt
-```
+   ```
 
-2.  Place the raw data at `data/raw/sales.csv` (download link: …).
+2. Place the raw data at `data/raw/sales.csv` (download link: ...).
 
-3.  Run the cleaning pipeline:
+3. Run the cleaning pipeline:
 
-    ``` bash
-    python scripts/run_cleaning.py \
-        --input data/raw/sales.csv \
-        --output data/processed/sales_clean.csv
-    ```
+   ```bash
+   python scripts/run_cleaning.py \
+       --input data/raw/sales.csv \
+       --output data/processed/sales_clean.csv
+   ```
 
-4.  Open the analysis notebook:
+4. Open the analysis notebook:
 
-    ``` bash
-    jupyter lab notebooks/01-explore.ipynb
-    ```
+   ```bash
+   jupyter lab notebooks/01-explore.ipynb
+   ```
 
-Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook. Expected outputs: `data/processed/sales_clean.csv` (~5 MB).
+Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook.
+Expected outputs: `data/processed/sales_clean.csv` (~5 MB).
+````
 
-    The exact commands protect you from the classic "I just have to type this thing I remember from last month" failure mode. The expected runtime and outputs give the reader a sanity check: if the cleaning step takes five minutes instead of thirty seconds, or the output is 50 KB instead of 5 MB, something is wrong. A good "how to run" section is often the highest-leverage documentation you can write — it is what gets other people unblocked without asking you a question.
+(If your project uses the `src/sales` package from this chapter, add `pip install -e .` to step 1.) The exact commands save everyone from “I just have to type that thing I remember from last month.” The expected runtime and output size are a sanity check: if cleaning takes five minutes instead of thirty seconds, or the file is 50 KB instead of 5 MB, something’s wrong. A good “How to run” section gets people unblocked without having to ask you a single question.
 
-    ### Version control discipline
+### Keep notebooks friendly to version control
 
-    Notebooks are a known pain point in version control (see @sec-git-github), and a few small habits keep them from taking over your repository. First, **clear cell outputs before committing.** A notebook with 200 inline plots serializes to a file that is mostly base64 PNGs, which bloats the repo and makes diffs unreadable. Most editors can be configured to clear outputs on save; at the very least, run **Cell → All Output → Clear** before you commit a notebook you are checking in for other people to review.
+A few habits keep notebooks from taking over your repository ([sec-git-github](#sec-git-github)). **Clear outputs before you commit** a notebook for others to review (Edit → Clear Outputs of All Cells), or let a tool like [nbstripout](https://pypi.org/project/nbstripout/) strip them automatically on every commit; a notebook full of plots is mostly Base64 and bloats the repository. **Don’t dump whole datasets into cell outputs:** a cell that ends with a bare `df` on a 50 MB table saves a big chunk of it into the notebook, so show `df.head()`, `df.shape`, or `df.describe()` instead, and keep raw data in `data/`. And **for anything that gets code review, pair with Jupytext or convert to a script**, so reviewers read plain text. For a notebook handed in once and never reviewed, that’s overkill; for one in a shared project, it’s worth the few minutes.
 
-    Second, **avoid embedding large data into the notebook itself.** A cell that reads a 50 MB CSV and then does `df` on a line by itself will embed every row into the notebook's output. Either slice the output (`df.head()`, `df.sample(10)`) or print a summary (`df.shape`, `df.describe()`) instead. Raw data belongs in `data/`, not in `notebooks/`.
+## 17.9 Stakes and politics
 
-    Third, **prefer Jupytext pairing or script conversion for anything code-reviewed.** If a reviewer has to compare two versions of a notebook, they almost certainly want to see a plain-text diff, not a JSON blob. Pairing with Jupytext gives them the best of both worlds: the reviewer reads the `.py`, the analyst keeps using the `.ipynb`, and the two stay in sync automatically. For notebooks that are handed in once and never reviewed, this is overkill; for notebooks that are part of a shared project, it is almost always worth the small setup cost.
+In 2019, a team of researchers collected 1.4 million Jupyter notebooks from GitHub and tried to run the Python ones again. Of the notebooks they attempted, about 24% ran without an error, and about 4% produced the same results they had shown when they were saved ([Pimentel et al., 2019](https://leomurta.github.io/papers/pimentel2019a.pdf)). The most common reasons were the ones this chapter is about: missing dependencies, hidden state and cells run out of order, and data files that weren’t where the code expected. A notebook that won’t rerun isn’t only its author’s problem. When it backs a published figure, a policy memo, or a class project someone else builds on, the cost lands on whoever tries to check or extend the work, often a student or reviewer with less time and less help than the author had.
 
-    ## Stakes and politics
+The fixes carry their own politics. The habits that make work rerunnable (packages, command-line entry points, a README with exact commands) come from software engineering, and they’re mostly learned informally, from a mentor or a job, not in a methods course. People who picked them up that way find reproducibility easy and can read notebook-only work as unserious; people who didn’t pay for the gap in time, in hiring conversations, and in how their work is judged. The default of “it ran on my laptop” quietly shifts the work of reproduction onto everyone downstream.
 
-    The choice between a notebook and a script is presented in this chapter as a technical trade-off, and it is. It is also a cultural one. Notebooks are the dominant idiom in academic data science, scientific computing, and teaching; scripts are the dominant idiom in software engineering, production systems, and any code that runs without a human watching. Two consequences worth naming.
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before you share an analysis, ask who will try to rerun it, and whether they could do it from your repository alone, without asking you anything.
 
-    First, *what counts as "professional" code*. Hiring panels for data-engineer or ML-engineer roles often treat notebook-only portfolios as a yellow flag, even when the analytical work is excellent — the implicit norm is that "real" code is `.py` files in a Git repo with tests and a `main()`. The norm is not arbitrary (scripts are easier to review, schedule, and reuse), but it does mean that the same skill applied in two formats reads as two different levels of seriousness. Second, *which community gets to claim a piece of work*. A study published as a clean notebook with figures inline reads as a research artifact; the same code restructured into `src/` with command-line flags reads as software. Funders, reviewers, and tenure committees treat the two differently, and the conversion has costs — time, learning curve, infrastructure access — that fall unequally on early-career researchers, students, and people without a software-engineering mentor.
+## 17.10 Worked examples
 
-    See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when you choose between a notebook and a script, name who the audience is and what they will read your code as — and when you review someone else's, do the same.
+### Turning notebook code into importable functions
 
-    ## Worked examples
-
-    ### Turning notebook code into importable functions
-
-    Your notebook has the same five lines of cleaning code in three different cells: lower-case the column names, parse the date column, drop rows with no customer id. Time to extract them.
-
-    Create `src/cleaning.py`:
-
-    ```python
-    # src/cleaning.py
-    import pandas as pd
-
-    def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
-        df.columns = df.columns.str.strip().str.lower()
-        df["date"] = pd.to_datetime(df["date"], errors="coerce")
-        return df.dropna(subset=["customer_id", "date"])
-
-In the notebook, replace those three repeated cells with a single import and call:
+Your notebook has the same cleaning lines in three cells: lowercase the column names, parse the dates, drop rows with no customer id. Time to move them out. Create `src/sales/cleaning.py`:
 
 ``` python
-from src.cleaning import clean_sales
-df = clean_sales(pd.read_csv("data/raw/sales.csv"))
+# src/sales/cleaning.py
+import pandas as pd
+
+
+def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df.columns = df.columns.str.strip().str.lower()
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    return df.dropna(subset=["customer_id", "date"])
 ```
 
-Now there is exactly one place where the cleaning logic lives. Improvements to it apply everywhere automatically.
+With the package installed (`pip install -e .`, once), replace the three cells in the notebook with one import and one call:
 
-### Writing a CLI script around your functions
+``` python
+from sales.cleaning import clean_sales
+from sales.paths import DATA_RAW
 
-Now turn the same cleaning logic into something you can run from the command line on any input file:
+df = clean_sales(pd.read_csv(DATA_RAW / "sales.csv"))
+```
+
+Now the cleaning logic lives in exactly one place, and an improvement there reaches every notebook and script that uses it.
+
+### Writing a command-line script around your functions
+
+Next, make the same logic something you can run on any file from the terminal:
 
 ``` python
 # scripts/run_cleaning.py
 import argparse
 from pathlib import Path
+
 import pandas as pd
-from src.cleaning import clean_sales
+
+from sales.cleaning import clean_sales
+
 
 def main():
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(description="Clean a sales CSV.")
     p.add_argument("--input", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     args = p.parse_args()
@@ -612,156 +663,158 @@ def main():
     cleaned.to_csv(args.output, index=False)
     print(f"wrote {len(cleaned):,} rows to {args.output}")
 
+
 if __name__ == "__main__":
     main()
 ```
 
-Run it like any script:
-
-``` bash
-python scripts/run_cleaning.py \
+``` text
+$ python scripts/run_cleaning.py \
     --input data/raw/sales.csv \
     --output data/processed/sales_clean.csv
+wrote 3 rows to data/processed/sales_clean.csv
 ```
 
-The cleaning function is unchanged, the notebook is unchanged, and you now have a third way to invoke the same logic. Parameter changes are command-line flags rather than code edits.
+The cleaning function didn’t change, the notebook didn’t change, and you now have a third way to use the same logic. Changing the input is a flag, not a code edit.
 
-### Debugging “it imports in the terminal but not in the notebook”
+### “It imports in the terminal but not in the notebook”
 
-You can `from src.cleaning import clean_sales` from `python` at the terminal, but the same line in your notebook fails with `ModuleNotFoundError: No module named 'src'`. The cause is one of two things, and the diagnostic is one cell:
+`from sales.cleaning import clean_sales` works when you type it at the `python` prompt, but the same line in your notebook fails with `ModuleNotFoundError: No module named 'sales'`. One cell tells you which of the two usual causes you have:
 
 ``` python
-import sys, os
+import os
+import sys
+
 print("python:", sys.executable)
 print("cwd:   ", os.getcwd())
-print("path[0]:", sys.path[0])
 ```
 
-If `python` is not your project’s venv interpreter, the kernel is wrong — switch kernels or register a new one (see [sec-jupyter](#sec-jupyter)). If `cwd` is not the project root, you are running the notebook from a subdirectory and Python cannot find `src/` from there — move the notebook, or `cd` into the project root before launching Jupyter, or add the project root to `sys.path` explicitly. Either way, the diagnostic cell tells you which problem you have within seconds.
+If `python` isn’t the interpreter inside your project’s `.venv`, the notebook is running a different kernel, one where your package was never installed. Switch kernels, or register your environment as a kernel (see [sec-jupyter](#sec-jupyter)). If the interpreter is right, check how the terminal import succeeded: if you never ran `pip install -e .`, it only worked because the terminal was sitting in `src/`, and the notebook’s folder is `notebooks/`. Install the package into that environment and the import works everywhere.
 
-### Converting a notebook to a script and refactoring
+### Cleaning up a converted notebook
 
-The standard tool for this is `jupyter nbconvert`, which produces a `.py` file from a notebook in one command:
+You’ve run `jupyter nbconvert --to script notebooks/analysis.ipynb --output-dir scripts/` and have a 120-line `scripts/analysis.py`. Work through it in order. Delete every `get_ipython()` line (the old magics and `!` commands) and every bare `df.head()` or `df.info()` left over from exploring. Move the imports to the top. Move repeated blocks into functions in `src/sales/`, and replace them with calls. Wrap what’s left in `main()`, add the `if __name__ == "__main__":` guard, and swap the hardcoded file names for `argparse` options. Then run it from a fresh terminal. Whatever breaks now (usually a variable that was only defined in a cell you deleted) is hidden state the notebook had been hiding from you. Fix it here, and the notebook that stays behind in `notebooks/` can go back to telling the story.
 
-``` bash
-jupyter nbconvert --to script notebooks/analysis.ipynb \
-                  --output ../scripts/analysis
-```
-
-The result is rarely a clean script on its own — it has every cell concatenated, including the interactive `df.head()` calls that were just for inspection, the cells you wrote and then commented out, and any markdown cells (which become code comments). The conversion is the *starting point* of a refactor, not the finished product. From there, walk through the file and remove anything that was only there for interactive inspection, extract repeated logic into functions, and wrap the whole thing in a `main()` and `if __name__ == "__main__":` block. The end product is a real script you can run unattended; the original notebook stays for narrative use.
-
-### Parameterizing a notebook with `papermill`
-
-Sometimes you want the *notebook* to be parameterized rather than rewriting it as a script. The `papermill` tool lets you tag a cell as the “parameters” cell and then execute the notebook from the command line with different values injected. In the notebook, put a code cell at the top with the cell tag `parameters`:
-
-``` python
-# parameters
-input_file = "data/raw/sales.csv"
-output_file = "data/processed/sales_clean.csv"
-```
-
-Then from the command line, execute the notebook with whatever parameters you like:
-
-``` bash
-papermill notebooks/analysis.ipynb outputs/analysis_q3.ipynb \
-    -p input_file data/raw/sales_q3.csv \
-    -p output_file data/processed/sales_q3_clean.csv
-```
-
-`papermill` writes a new copy of the notebook with the executed outputs and the new parameter values baked in. This is the right tool when you want to keep the notebook narrative form but run it many times — for example, generating one report per month from the same template.
-
-## 17.9 Templates
+## 17.11 Templates
 
 ### Template A: Minimal script skeleton
 
-    """One-sentence purpose.
+``` python
+"""One-sentence purpose.
 
-    Inputs:
-    Outputs:
-    How to run:
-    """
+Inputs:
+Outputs:
+How to run:
+"""
 
-    from pathlib import Path
+from pathlib import Path
 
-    def main(...):
+
+def main():
     ...
 
-    if **name** == "**main**":
-    main(...)
 
-### Template B: Minimal CLI skeleton (conceptual)
+if __name__ == "__main__":
+    main()
+```
 
-    import argparse
+### Template B: Minimal command-line script
 
-    def parse_args():
-    p = argparse.ArgumentParser(...)
-    p.add_argument("--input", required=True)
-    p.add_argument("--output", required=True)
+``` python
+import argparse
+from pathlib import Path
+
+
+def parse_args():
+    p = argparse.ArgumentParser(description="What this script does.")
+    p.add_argument("--input", type=Path, required=True, help="input file")
+    p.add_argument("--output", type=Path, required=True, help="output file")
     return p.parse_args()
 
-    def main():
+
+def main():
     args = parse_args()
+    if not args.input.exists():
+        raise SystemExit(f"input not found: {args.input}")
+    print(f"INPUT={args.input}  OUTPUT={args.output}")
     ...
 
-    if **name** == "**main**":
+
+if __name__ == "__main__":
     main()
+```
 
-### Template C: Notebook that calls scriptable functions
+### Template C: Minimal `pyproject.toml` for a `src/` package
 
-    # 1) Purpose + imports
+``` toml
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
 
-    # 2) Parameters (as variables)
+[project]
+name = "yourpackage"          # matches the folder src/yourpackage/
+version = "0.1.0"
+dependencies = ["pandas"]
+```
 
-    # 3) Call functions from src/
+### Template D: A notebook that calls functions from `src/`
 
-    # 4) Save outputs
+``` text
+# 1) Purpose, imports, %load_ext autoreload / %autoreload 2
+# 2) Smoke test (interpreter, package location, data files)
+# 3) Parameters (as variables)
+# 4) Call functions from src/
+# 5) Save outputs
+# 6) Interpretation (Markdown)
+# 7) Restart-and-run-all before sharing
+```
 
-    # 5) Interpretation
+## 17.12 Exercises
 
-    # 6) Restart-and-run-all proof
+1.  Write a script that loads a CSV and prints a short summary (rows, columns, missing values per column).
 
-## 17.10 Exercises
+2.  Refactor the script so the summary logic is a function and the rest is only an entry point, with an `if __name__ == "__main__":` guard.
 
-1.  Write a script that loads a CSV and prints a short summary (rows, columns, missingness).
+3.  Move that function into a `src/` package, install it with `pip install -e .`, and use it from a notebook on two different datasets.
 
-2.  Refactor the script so the summary logic is in a function and the script is only an entry point.
+4.  Add a command-line interface with `--input` and `--output` flags, and paste its `--help` output into your README.
 
-3.  Import that function into a notebook and use it on two datasets.
+5.  Convert one of your notebooks to a script with `nbconvert`, get it running from a fresh terminal, and list at least three hidden-state problems you had to fix.
 
-4.  Add a CLI with `–input` and `–output` flags.
+6.  Write a short paragraph explaining whether your current project should be a notebook, a script, or a hybrid, and why.
 
-5.  Convert a notebook to a script and identify at least three hidden-state problems you had to fix.
+## 17.13 One-page checklist
 
-6.  Write a short paragraph explaining whether your project should be a notebook, a script, or a hybrid—and why.
+- My script has a `main()` and an `if __name__ == "__main__":` guard, so importing it doesn’t run the analysis.
+- Reusable logic lives in functions in a `src/` package, not copied between notebook cells.
+- My package is installed in the project environment with `pip install -e .`, so imports work from any folder.
+- Paths are built from one anchor (`PROJECT_ROOT`), not the working directory, and never hardcoded to my laptop.
+- Notebooks that import my code start with `%load_ext autoreload` and `%autoreload 2` and a smoke-test cell.
+- My script takes its inputs from the command line, checks them early, and prints the settings it ran with.
+- Every notebook I share passes Restart Kernel and Run All Cells.
+- The README has a “How to run” section with exact commands.
+- I choose notebooks for exploring and explaining, and scripts for running things again.
 
-## 17.11 One-page checklist
+## 17.14 Quick reference: commands
 
-- My script has a `main()` and does not run heavy work on import.
-
-- Reusable logic lives in importable functions/modules.
-
-- I can import my own code into notebooks and reload changes when iterating.
-
-- I can run the same analysis via a CLI with parameters.
-
-- I know how to convert notebooks to scripts and use conversion to improve reproducibility.
-
-- I choose notebooks for narrative/exploration and scripts for repeatable/automated runs.
-
-## 17.12 Quick reference: common tools (conceptual)
-
-- Notebook conversion to scripts and reports.
-
-- Paired notebook formats for better diffs.
-
-- Parameterized execution of notebooks for batch runs.
+| Task | Command |
+|----|----|
+| Run a script | `python scripts/run_cleaning.py --input ... --output ...` |
+| See a script’s options | `python scripts/run_cleaning.py --help` |
+| Make `src/` importable everywhere | `pip install -e .` (once, from the project root) |
+| Reload edited modules in a notebook | `%load_ext autoreload` then `%autoreload 2` |
+| Find where an import comes from | `print(module.__file__)` |
+| Notebook to script | `jupyter nbconvert --to script nb.ipynb --output-dir scripts/` |
+| Pair a notebook with a `.py` | `jupytext --set-formats ipynb,py:percent nb.ipynb` |
+| Update the pair after editing the `.py` | `jupytext --sync nb.py` |
+| Run a notebook with parameters | `papermill in.ipynb out.ipynb -p name value` |
 
 > **NOTE:**
 >
-> - Python docs, [`argparse` tutorial](https://docs.python.org/3/howto/argparse.html) — the canonical walk-through for building command-line interfaces in the standard library.
-> - Python docs, [`if __name__ == "__main__"`](https://docs.python.org/3/library/__main__.html) — the official explanation of the import-vs-script entry point pattern.
-> - Pallets, [Click documentation](https://click.palletsprojects.com/) — the most widely used third-party CLI framework; useful when `argparse` starts to feel verbose.
-> - Sebastián Ramírez, [Typer documentation](https://typer.tiangolo.com/) — a modern alternative to Click built on Python type hints; the lowest-friction way to add a CLI to an existing function.
-> - Real Python, [Command-Line Interfaces in Python](https://realpython.com/command-line-interfaces-python-argparse/) — a longer-form treatment with subcommands, validation, and worked examples.
-> - [Jupytext documentation](https://jupytext.readthedocs.io/en/latest/) — the canonical tool for keeping a `.ipynb` and a `.py` in sync, which makes notebooks reviewable in plain text.
-> - Python Packaging Authority, [Packaging Python projects: src vs flat layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) — the standard discussion of how to organize a project once `src/` enters the picture.
+> - **Python docs**, [`argparse` tutorial](https://docs.python.org/3/howto/argparse.html) — the official walk-through for building command-line interfaces with the standard library, from one argument to many.
+> - **Python docs**, [`__main__`: top-level code environment](https://docs.python.org/3/library/__main__.html) — the full story behind `if __name__ == "__main__":`, including `__main__.py` files in packages.
+> - **Pallets**, [Click documentation](https://click.palletsprojects.com/) — the most widely used third-party library for command-line tools; worth a look when `argparse` starts to feel verbose.
+> - **Sebastián Ramírez**, [Typer documentation](https://typer.tiangolo.com/) — a modern alternative to Click that reads your options from Python type hints; about the least effort it takes to turn an existing function into a command.
+> - **Real Python**, [Build Command-Line Interfaces With Python’s argparse](https://realpython.com/command-line-interfaces-python-argparse/) — a longer tutorial with subcommands, validation, and worked examples.
+> - **Jupytext**, [Jupytext documentation](https://jupytext.org/) — everything about pairing notebooks with text files, including the other text formats and editor integrations.
+> - **Python Packaging Authority**, [src layout vs flat layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) — why the `src/` layout used in this chapter prevents a class of import mistakes.

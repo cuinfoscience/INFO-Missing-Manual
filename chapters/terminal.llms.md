@@ -584,50 +584,50 @@ The `cd` puts you at the project root, so every relative path resolves the same 
 
 After a command works, write down what you ran. That sounds like overkill until you try to recreate a result three weeks later and realize Tuesday’s command isn’t quite Wednesday’s, which had a slightly different flag. Keep a plain-text record of the commands behind each result that matters, in the project’s `README.md` or a `notes.txt` beside the output:
 
-``` markdown
+```` markdown
 ## How to reproduce data/processed/cleaned.csv
 
 1. Ensure the virtual environment is active:
    ```bash
    source .venv/bin/activate
-```
+   ```
 
-2.  Confirm raw input exists:
+2. Confirm raw input exists:
+   ```bash
+   ls data/raw/survey.csv
+   ```
 
-    ``` bash
-    ls data/raw/survey.csv
-    ```
-
-3.  Run the cleaning script:
-
-    ``` bash
-    python src/clean.py --input data/raw/survey.csv --output data/processed/cleaned.csv
-    ```
+3. Run the cleaning script:
+   ```bash
+   python src/clean.py --input data/raw/survey.csv --output data/processed/cleaned.csv
+   ```
 
 Produces: `data/processed/cleaned.csv` (expected ~5 MB, ~18,000 rows).
+````
 
-    A useful log records the **inputs** (which files, which environment), the **command itself** with every flag, and the **outputs** (what should exist afterward, and roughly how big). With those, anyone, including future you, can retrace the work. Keep it in version control next to the code, because a script is only as reproducible as the instructions for running it.
+A useful log records the **inputs** (which files, which environment), the **command itself** with every flag, and the **outputs** (what should exist afterward, and roughly how big). With those, anyone, including future you, can retrace the work. Keep it in version control next to the code, because a script is only as reproducible as the instructions for running it.
 
-    ### Pattern 3: safe cleanup
+### Pattern 3: safe cleanup
 
-    Cleanup is where command-line disasters cluster, because it combines "I'm about to delete something" with "I'm not completely sure what." The safe way splits those apart:
+Cleanup is where command-line disasters cluster, because it combines “I’m about to delete something” with “I’m not completely sure what.” The safe way splits those apart:
 
-    ```bash
-    # 1. Preview: what would be removed?
-    $ find . -name "*.tmp" -type f
-    ./notebooks/draft.tmp
-    ./data/processed/intermediate.tmp
+``` bash
+# 1. Preview: what would be removed?
+$ find . -name "*.tmp" -type f
+./notebooks/draft.tmp
+./data/processed/intermediate.tmp
 
-    # 2. Archive, outside the folder you're cleaning
-    $ mkdir -p ~/archive/2026-04-10
-    $ cp notebooks/draft.tmp data/processed/intermediate.tmp ~/archive/2026-04-10/
+# 2. Archive, outside the folder you're cleaning
+$ mkdir -p ~/archive/2026-04-10
+$ cp notebooks/draft.tmp data/processed/intermediate.tmp ~/archive/2026-04-10/
 
-    # 3. Delete, with exactly the test from step 1
-    $ find . -name "*.tmp" -type f -delete
+# 3. Delete, with exactly the test from step 1
+$ find . -name "*.tmp" -type f -delete
 
-    # 4. Verify: run the preview again
-    $ find . -name "*.tmp" -type f
-    $                   # no output: the .tmp files are gone
+# 4. Verify: run the preview again
+$ find . -name "*.tmp" -type f
+$                   # no output: the .tmp files are gone
+```
 
 **Preview first,** with `ls`, `find`, or `echo` on a glob, so you see the targets before anything irreversible happens. **Archive next,** into a dated folder *outside* the one you’re cleaning: an `archive/` inside the project would be searched by step 3’s `find` too, and your safety copies would be deleted with the originals. **Delete** using exactly the preview’s test. Then **verify** by running the preview again. Do this even for “obvious” cleanups, and the worst outcome of a mistake is fishing a file out of the archive.
 

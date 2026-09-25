@@ -668,7 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-activate-early-verify-always" id="toc-running-theme-activate-early-verify-always" class="nav-link" data-scroll-target="#running-theme-activate-early-verify-always">Running theme: activate early, verify always</a></li>
   <li><a href="#what-a-virtual-environment-actually-is" id="toc-what-a-virtual-environment-actually-is" class="nav-link" data-scroll-target="#what-a-virtual-environment-actually-is"><span class="header-section-number">15.1</span> What a virtual environment actually is</a></li>
   <li><a href="#creating-and-activating-a-venv" id="toc-creating-and-activating-a-venv" class="nav-link" data-scroll-target="#creating-and-activating-a-venv"><span class="header-section-number">15.2</span> Creating and activating a venv</a></li>
@@ -740,48 +740,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/virtual-environments.png" class="img-fluid" alt="Galaxy Brain Meme: Install Packages with sudo pip, Use a venv, Use conda, Install Python from Scratch."></p>
 </div>
-<p>The single most common source of the “it worked yesterday” bug in Python data science is a confused <a href="../chapters/appendix-glossary.html#term-environment">environment</a>. You install a package, try to import it, and Python says “no such module.” You upgrade <code>pandas</code> for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.</p>
-<p>A <a href="../chapters/appendix-glossary.html#term-virtual-environment">virtual environment</a> is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you “activate” it, your shell and your tools point at that project’s Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.</p>
-<p>This chapter explains what a venv is (and is not), how to create and activate one with <a href="https://docs.python.org/3/library/venv.html"><code>python -m venv</code></a>, how this compares to <a href="https://docs.conda.io/en/latest/"><code>conda</code></a>, how to diagnose the “which Python is running?” question on any machine, and how to make sure <a href="https://jupyter.org/documentation">Jupyter</a> and <a href="https://code.visualstudio.com/docs">VS Code</a> are using the environment you think they are. <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> covers <code>conda</code> in depth; this chapter focuses on <code>venv</code> and on the diagnostic skills that apply to both.</p>
+<p>You type <code>pip install pandas</code> and see <code>Successfully installed pandas</code>. Then you run your notebook, and the first cell says <code>ModuleNotFoundError: No module named 'pandas'</code>. You install it again; it’s “already satisfied.” The notebook still can’t find it. Or it goes the other way: you upgrade a package for this week’s assignment, and last semester’s project falls over with errors you’ve never seen.</p>
+<p>If that has happened to you, nothing is wrong with you or your computer. Almost every computer has several copies of Python, each with its own installed packages, and nothing on the screen tells you which one is running. pip put pandas into one Python; your notebook is running another. Confusion about your <a href="../chapters/appendix-glossary.html#term-environment">environment</a> is behind a large share of Python’s “it worked yesterday” bugs.</p>
+<p>A <a href="../chapters/appendix-glossary.html#term-virtual-environment">virtual environment</a>, or <strong>venv</strong>, is the fix: a private Python for one project, with its own packages, that you switch on while you work on it. This chapter shows you how to make one with Python’s built-in <a href="https://docs.python.org/3/tutorial/venv.html"><code>venv</code> module</a>, how to answer “which Python is running?” on any machine, how to get <a href="https://jupyter.org/documentation">Jupyter</a> and <a href="https://code.visualstudio.com/docs">VS Code</a> to use the environment you meant, how <code>venv</code> compares with <a href="https://docs.conda.io/en/latest/"><code>conda</code></a>, and when you need a container instead. Conda’s own commands and untangling version conflicts are in <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>, though the diagnostic habits here work for conda too.</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Explain what a virtual environment is, what problem it solves, and why every real project should have one.</li>
-<li>Create a venv with <code>python -m venv .venv</code>, activate it on macOS/Linux and Windows, and deactivate it.</li>
-<li>Install packages into the active venv with <code>pip install</code> and freeze them into <code>requirements.txt</code>.</li>
-<li>Diagnose “which Python is running?” using <code>which python</code>, <code>python -c "import sys; print(sys.executable)"</code>, and <code>pip show &lt;pkg&gt;</code>.</li>
-<li>Compare <code>venv</code> and <code>conda</code> and pick the right one for a project.</li>
-<li>Make Jupyter and VS Code use your project’s venv by registering a kernel and setting the interpreter.</li>
-<li>Recognize and fix the three most common venv failure modes: not activated, wrong interpreter, stale activation in a new shell.</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You ran <code>pip install pandas</code>, it said <code>Successfully installed</code>, and your code still says <code>ModuleNotFoundError: No module named 'pandas'</code>.</li>
+<li>pip refused to install anything with <code>error: externally-managed-environment</code>, and the internet’s suggestions (<code>sudo</code>, <code>--break-system-packages</code>) sound like a bad idea, because they are.</li>
+<li>Upgrading a package for one course broke a project from another course, and you’d like the two to stop interfering.</li>
+<li>Your prompt says <code>(.venv)</code>, yet the code is clearly running some other Python, or Jupyter and VS Code each seem to have picked a Python of their own.</li>
+<li>On Windows, activating an environment fails with <code>running scripts is disabled on this system</code>, and you’re not sure what’s safe to change.</li>
+<li>A classmate sent you their project, and you want it running on your laptop in five minutes rather than an afternoon.</li>
+<li>Your instructor mentioned conda, Docker, or containers, and you want to know whether you need them yet (usually not).</li>
+</ul>
 </section>
 <section id="running-theme-activate-early-verify-always" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-activate-early-verify-always">Running theme: activate early, verify always</h2>
-<p>A venv that is not activated is not helping you. Make activation the first thing you do when you open a terminal for a project, and verify with a one-liner that the right Python is in use before you install anything.</p>
+<p>A venv that isn’t switched on isn’t helping you, so make activating it the first thing you do in a new terminal, and spend two seconds checking which Python is running before you install anything.</p>
 </section>
 <section id="what-a-virtual-environment-actually-is" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="what-a-virtual-environment-actually-is"><span class="header-section-number">15.1</span> What a virtual environment actually is</h2>
-<p>A venv is, mechanically, a directory on disk (typically named <code>.venv</code> or <code>venv</code> inside your project folder) that contains:</p>
+<p>Start with why your computer has more than one Python. A Mac may have Apple’s <code>python3</code> from the developer tools, another from <a href="https://docs.brew.sh/Language-Runtimes-and-Packages">Homebrew</a>, another from python.org, and another inside Anaconda or Miniforge; Windows machines collect copies the same way. Each has its own installed packages, and when you type <code>python</code>, your shell runs whichever copy it finds first on your <a href="../chapters/appendix-glossary.html#term-path"><code>PATH</code></a> (see <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>). Install with one Python, run with another, and you get <code>ModuleNotFoundError</code> for a package you <em>know</em> you installed.</p>
+<p>Even with one Python, there’s a second problem. Say last semester’s project needs pandas 2 and this semester’s course uses pandas 3. One Python holds one version of pandas at a time, so every upgrade for one project is a risk to the other. Programmers call this tangle <a href="https://en.wikipedia.org/wiki/Dependency_hell">dependency hell</a>.</p>
+<p>A virtual environment solves both, and it’s less magical than it sounds. It’s a folder, usually <code>.venv</code> inside your project, holding three things:</p>
 <ul>
-<li>A copy or symlink of a Python interpreter (for example <code>.venv/bin/python</code> on macOS/Linux, <code>.venv\Scripts\python.exe</code> on Windows).</li>
-<li>A <code>lib/python3.11/site-packages/</code> directory where packages installed into this environment live.</li>
-<li>A small <code>activate</code> script that, when sourced, modifies the shell’s <code>PATH</code> so that typing <code>python</code> runs the venv’s interpreter instead of the system one.</li>
+<li>A <code>python</code> command that points at one of your existing Pythons (a <a href="https://en.wikipedia.org/wiki/Symbolic_link">symbolic link</a> at <code>.venv/bin/python</code> on macOS and Linux; <code>.venv\Scripts\python.exe</code> on Windows).</li>
+<li>Its own <code>site-packages</code> folder (<code>.venv/lib/python3.11/site-packages</code>, or <code>.venv\Lib\site-packages</code> on Windows), where everything you install goes.</li>
+<li>A few <code>activate</code> scripts that put the venv’s commands at the front of your <code>PATH</code>.</li>
 </ul>
-<p>That is the whole trick. There is no sandboxing and no virtualization. The venv’s Python is just a different binary on disk; “activating” just puts it at the front of <code>PATH</code>. When you <code>pip install pandas</code> inside an activated venv, pip looks up which <code>python</code> is first on the <code>PATH</code>, finds the venv’s interpreter, and installs <code>pandas</code> into <em>its</em> <code>site-packages</code>. Your system-wide Python is untouched.</p>
-<p>The benefits are enormous:</p>
-<ul>
-<li><strong>Isolation.</strong> One project’s <code>pandas==1.5</code> does not collide with another project’s <code>pandas==2.2</code>.</li>
-<li><strong>Reproducibility.</strong> You can record exactly which packages your project needs in a <code>requirements.txt</code> file and a collaborator can recreate the same environment in 30 seconds.</li>
-<li><strong>Cleanup.</strong> If an environment gets corrupted, you delete the directory and make a new one. No system-wide uninstalls.</li>
-</ul>
+<p>That’s the whole trick. There’s no <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandbox</a> and no virtual machine: “activating” just means that when you type <code>python</code> or <code>pip</code>, the shell finds the venv’s copy first. Each venv has its own <code>site-packages</code>, so the pandas 2 project and the pandas 3 project each get their own pandas.</p>
+<p>Three things follow. <strong>Isolation:</strong> breaking packages in one venv can’t touch another project, or the Python your operating system relies on. <strong>Reproducibility:</strong> a <code>requirements.txt</code> file records what’s installed, and a collaborator rebuilds the environment with one command. <strong>Disposability:</strong> the official <code>venv</code> documentation calls environments “disposable,” and means it as advice: if one gets into a strange state, delete <code>.venv</code> and make a new one.</p>
+<p>One consequence surprises people: a venv remembers the full path it was made at, so it can’t be moved or copied. When we renamed a project folder after making its venv, activating still put <code>(.venv)</code> in the prompt, but <code>which python</code> pointed at the system Python. If you rename or move a project, recreate its <code>.venv</code>, and keep venvs out of synced folders (see <a href="file-system.html#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>).</p>
 </section>
 <section id="creating-and-activating-a-venv" class="level2 page-columns page-full" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="creating-and-activating-a-venv"><span class="header-section-number">15.2</span> Creating and activating a venv</h2>
-<p>The standard Python library ships with the <code>venv</code> module. There is no install step; if you have Python 3, you have venv.</p>
-<p><strong>Create a venv</strong> in the current project directory:</p>
+<p><code>venv</code> comes with Python 3, so there’s nothing to install first. In a terminal, go to your project folder and run:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-m venv</code> means “run Python’s <code>venv</code> module,” and <code>.venv</code> is the folder to create (the name VS Code and most tutorials expect). It prints nothing when it works; the new folder is the sign of success.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -794,62 +791,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The most common failure is <strong><code>python</code> is not on your PATH</strong>, which shows up as <code>command not found</code> or as your terminal launching the wrong interpreter. On macOS and Linux, try <code>python3 -m venv .venv</code> instead — some systems ship <code>python3</code> without a plain <code>python</code>. On Windows, if <code>python</code> opens the Microsoft Store, go to Settings → Apps → Advanced app settings → App execution aliases and turn off the <code>python.exe</code> and <code>python3.exe</code> aliases, then reinstall Python from <a href="https://www.python.org/downloads/">python.org</a>.</p>
-<p>If the command runs but creates an empty folder, check that the directory is writable (<code>ls -la</code> on macOS/Linux, right-click → Properties on Windows). Venv creation silently fails on synced cloud folders where Python cannot write fast enough — move the project off OneDrive or iCloud Drive and try again.</p>
+<p><strong><code>python: command not found</code> on a Mac or Linux.</strong> Some systems have only <code>python3</code>. Run <code>python3 -m venv .venv</code> instead; once the venv is active, plain <code>python</code> works, because every venv includes one.</p>
+<p><strong>On Windows, <code>python</code> opens the Microsoft Store or isn’t found.</strong> Windows can put a placeholder <code>python</code> on your <code>PATH</code> that sends you to the Store. The <a href="https://docs.python.org/3/using/windows.html#troubleshooting">Python docs’ troubleshooting table</a> walks through the fix, starting with “Manage app execution aliases” in the Start menu. If you installed Python from python.org, <code>py -m venv .venv</code> often works when <code>python</code> doesn’t.</p>
+<p><strong><code>The virtual environment was not created successfully because ensurepip is not available</code>.</strong> On Ubuntu, Debian, and WSL, <code>venv</code> ships in a separate system package. The error names the command that installs it (something like <code>apt install python3.12-venv</code>), which needs <code>sudo</code>.</p>
+<p><strong>A <code>PermissionError</code>, or a venv that acts strangely later.</strong> Work in a folder you own under your home directory, and not one that OneDrive, iCloud Drive, or Dropbox syncs (a <a href="../chapters/appendix-glossary.html#term-sync-client">sync client</a> can fight with a venv’s thousands of small files).</p>
 <p>Still stuck? See <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a> for how to gather the evidence a helper will need.</p>
 </div>
 </div>
 </div>
-<p>This creates a <code>.venv/</code> folder. Add <code>.venv/</code> to your <code>.gitignore</code> — you never commit a venv to git. See <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>.</p>
-<p><strong>Activate it</strong> (the command differs by OS and shell):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS / Linux, bash or zsh</span></span>
+<p>Keep the venv out of git: it’s big, tied to your computer, and easy to rebuild. Add <code>.venv/</code> to your project’s <a href="https://git-scm.com/docs/gitignore"><code>.gitignore</code></a> (see <a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>). Since Python 3.13, <code>venv</code> also puts a tiny <code>.gitignore</code> inside <code>.venv</code>, but the line costs nothing and covers older Pythons.</p>
+<p><strong>Activate it.</strong> The command depends on your operating system and shell, which is why a command from a tutorial may not work for you. The <code>venv</code> documentation (in Further reading) has the full table; these are the ones you’re likely to need:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS or Linux (bash or zsh)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows, PowerShell</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\Activate.ps1</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows, cmd</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate.bat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>After activation your shell prompt usually changes to show the env name, e.g.&nbsp;<code>(.venv) you@host:~/project$</code>. If you don’t see it, that is a hint something is off.</p>
-<div id="fig-venv-prompt" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows, Command Prompt (cmd)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate.bat</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows, Git Bash</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/Scripts/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(For the fish shell, it’s <code>source .venv/bin/activate.fish</code>.) Activation prints nothing either. What changes is your prompt, which now starts with the environment’s name in parentheses, and what <code>python</code> means (<a href="#fig-venv-prompt" class="quarto-xref">Figure&nbsp;<span>15.1</span></a>).</p>
+<div id="fig-venv-prompt" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python3' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python3' prints '/Users/you/Project/.venv/bin/python3'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-venv-prompt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../graphics/venv-prompt.png" class="img-fluid figure-img" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
+<img src="../graphics/venv-prompt.png" class="img-fluid figure-img" alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python3' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python3' prints '/Users/you/Project/.venv/bin/python3'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards.">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-venv-prompt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15.1: Illustration: A prompt before and after activating a virtual environment. The <code>(.venv)</code> prefix is the visible signal, and <code>which python</code> is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.
+Figure&nbsp;15.1: Illustration: A prompt before and after activating a virtual environment. The <code>(.venv)</code> prefix is the visible signal, and <code>which python3</code> is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.
 </figcaption>
 </figure>
 </div>
-<p><strong>Install packages</strong> into the active venv:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas numpy matplotlib</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://pip.pypa.io/en/stable/cli/pip_install/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Using <code>python -m pip</code> (rather than just <code>pip</code>) is a small but valuable habit — it guarantees you are installing into the same Python that <code>python</code> runs. If <code>pip</code> and <code>python</code> ever get out of sync (a classic source of confusion), <code>python -m pip</code> sidesteps the problem entirely.</p>
-<p><strong>Record your dependencies</strong> so others can reproduce the environment:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Commit <code>requirements.txt</code> to git. A collaborator then recreates the env with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Deactivate</strong> when you are done:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">deactivate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Deactivation just removes the venv from your <code>PATH</code>; it does not touch the files.</p>
+<p>On Windows, PowerShell may refuse to run the script, with a red error that says, in part, <code>Activate.ps1 cannot be loaded because running scripts is disabled on this system</code>. Nothing is broken. That’s PowerShell’s <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies">execution policy</a>, a safety setting that blocks scripts by default on Windows desktops. The Python docs suggest allowing local scripts for your own account, which doesn’t need administrator rights:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>ExecutionPolicy RemoteSigned <span class="op">-</span>Scope CurrentUser</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you’d rather not (or a school-managed laptop won’t let you), <code>Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process</code> allows scripts in the current window only, or you can use <code>.venv\Scripts\activate.bat</code> from Command Prompt.</p>
+<p>Strictly, you don’t <em>have</em> to activate: <code>.venv/bin/python analysis.py</code> (or <code>.venv\Scripts\python analysis.py</code>) uses the venv directly. Activation just lets you type plain <code>python</code>, and it’s the step people forget, which is why the next section’s checks matter.</p>
+<p><strong>Install packages</strong> with the venv active:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas numpy matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Why <code>python -m pip</code> rather than plain <code>pip</code>? <code>python</code> and <code>pip</code> are separate commands that your shell looks up separately, and they don’t always belong to the same Python. <code>python -m pip</code> means “the pip that belongs to this <code>python</code>,” so the package lands where <code>python</code> will look for it. It’s what the <a href="https://pip.pypa.io/en/stable/getting-started/">pip documentation</a> recommends.</p>
+<p>If you forget to activate and try to install into the system Python, a recent Mac (with Homebrew’s Python) or Ubuntu may stop you. Ubuntu’s version of the message looks like this (trimmed):</p>
+<pre class="text"><code>error: externally-managed-environment
+
+× This environment is externally managed
+╰─&gt; To install Python packages system-wide, try apt install
+    python3-xyz, where xyz is the package you are trying to
+    install.
+
+    If you wish to install a non-Debian-packaged Python package,
+    create a virtual environment using python3 -m venv path/to/venv.
+    ...
+note: ... You can override this, at the risk of breaking your
+Python installation or OS, by passing --break-system-packages.</code></pre>
+<p>That’s <a href="https://peps.python.org/pep-0668/">PEP 668</a> at work: the operating system’s Python belongs to the operating system, and it’s telling you to use a venv. It’s right. <code>--break-system-packages</code> means what it says, and <code>sudo pip install</code> (the first panel of this chapter’s meme) risks the same damage. Activate your venv and install there.</p>
+<p><strong>Record your dependencies</strong> so anyone, including you on another computer, can rebuild the environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="https://pip.pypa.io/en/stable/cli/pip_freeze/"><code>pip freeze</code></a> lists every package in the venv with its exact version, including the packages your packages depend on, so don’t be alarmed by the length: pandas, matplotlib, Jupyter, and ipykernel in a fresh venv in September 2026 came to 106 lines. Commit that file to git, and anyone can rebuild the environment with <code>python -m pip install -r requirements.txt</code> (the last worked example shows the whole sequence).</p>
+<p><strong>Deactivate</strong> when you’re done, or just close the terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">deactivate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That takes the venv off your <code>PATH</code> and restores your prompt, without touching its files. Every new terminal window or tab starts out <em>un</em>activated, which is the most common reason a venv that worked an hour ago “stopped working.”</p>
 </section>
 <section id="which-python-am-i-running" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="which-python-am-i-running"><span class="header-section-number">15.3</span> Which Python am I running?</h2>
-<p>This is the single most valuable diagnostic in this chapter. Paste it into your shell any time you are confused:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python          <span class="co"># macOS/Linux</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">where</span> python          <span class="co"># Windows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or, cross-platform, ask Python itself:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The output should be the path to your venv’s interpreter (for example <code>/home/you/project/.venv/bin/python</code>). If instead you see something like <code>/usr/bin/python3</code> or <code>/opt/homebrew/bin/python3</code>, your venv is <strong>not</strong> active and the next <code>pip install</code> will pollute your system Python.</p>
-<p>You can also ask which Python a specific package is installed into:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Look at the <code>Location:</code> line. If it says <code>.../.venv/lib/python3.11/site-packages</code>, pandas lives in your venv. If it says <code>.../.local/lib/python3.11/site-packages</code> or <code>/usr/lib/python3/dist-packages</code>, the install leaked out of the venv.</p>
+<p>This is the most useful question in the chapter, and answering it takes one line. Ask your shell which <code>python</code> it will run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python                  <span class="co"># macOS, Linux, Git Bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">where.exe</span> python              <span class="co"># Windows (Command Prompt or PowerShell)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(Plain <code>where python</code> silently does nothing in PowerShell, where <code>where</code> means something else; <code>where.exe</code> or <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-command"><code>Get-Command python</code></a> works.) Or ask Python itself, which works everywhere:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="https://docs.python.org/3/library/sys.html#sys.executable"><code>sys.executable</code></a> is the full path of the running Python. With the venv active, it should be inside your project, like <code>/Users/you/project/.venv/bin/python</code>. If you see something like <code>/usr/bin/python3</code>, <code>/opt/homebrew/bin/python3</code>, or a path in <code>miniforge3</code> or <code>anaconda3</code>, the venv isn’t active, and the next <code>pip install</code> will land outside your project. (On a Mac with no plain <code>python</code>, <code>which python</code> may say <code>python not found</code> until you activate.) For a yes-or-no answer, compare <a href="https://docs.python.org/3/library/sys.html#sys.prefix"><code>sys.prefix</code></a>, which points at the venv when one is running, with <code>sys.base_prefix</code>, the Python the venv was made from:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.prefix != sys.base_prefix)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That prints <code>True</code> inside a venv and <code>False</code> outside one.</p>
+<p>The other half of the question is where a <em>package</em> is installed. <a href="https://pip.pypa.io/en/stable/cli/pip_show/"><code>pip show</code></a> tells you:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>pandas prints its entire license in the middle of the output, so scroll past it to the <code>Location:</code> line (trimmed here):</p>
+<pre class="text"><code>Name: pandas
+Version: 3.0.6
+...
+Location: /Users/you/project/.venv/lib/python3.11/site-packages
+Requires: numpy, python-dateutil</code></pre>
+<p>A <code>Location:</code> inside <code>.venv</code> means the package is in your venv; <code>~/.local/lib/python3.11/site-packages</code> or <code>/usr/lib/python3/dist-packages</code> means it landed outside. And <code>WARNING: Package(s) not found: pandas</code> means this Python doesn’t have it at all, which may be your whole answer.</p>
 </section>
 <section id="venv-vs.-conda" class="level2" data-number="15.4">
 <h2 data-number="15.4" class="anchored" data-anchor-id="venv-vs.-conda"><span class="header-section-number">15.4</span> <code>venv</code> vs.&nbsp;<code>conda</code></h2>
-<p>Both <code>venv</code> and <code>conda</code> create isolated environments. They differ in a few important ways:</p>
+<p>Sooner or later a course or lab will hand you a conda environment, and you may wonder whether you’ve been doing it wrong. You haven’t. Both make isolated environments; they differ in what they install and where they keep it.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -858,212 +882,230 @@ Figure&nbsp;15.1: Illustration: A prompt before and after activating a virtual e
 </colgroup>
 <thead>
 <tr class="header">
-<th>Feature</th>
+<th></th>
 <th><code>venv</code> + <code>pip</code></th>
 <th><code>conda</code></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Ships with Python</td>
+<td>Comes with Python</td>
 <td>yes</td>
-<td>no (install Miniconda or Anaconda)</td>
+<td>no (install Miniforge or Miniconda)</td>
 </tr>
 <tr class="even">
-<td>Manages non-Python packages</td>
+<td>Installs non-Python software</td>
 <td>no</td>
-<td>yes (e.g., CUDA, R, compilers)</td>
+<td>yes (CUDA, GDAL, R, compilers)</td>
 </tr>
 <tr class="odd">
-<td>Package source</td>
+<td>Packages come from</td>
 <td>PyPI</td>
-<td>conda-forge, bioconda, defaults, PyPI</td>
+<td>conda channels such as conda-forge</td>
 </tr>
 <tr class="even">
-<td>Environment directory</td>
-<td>inside project (<code>.venv/</code>)</td>
-<td>centralized (<code>~/miniconda3/envs/name/</code>)</td>
+<td>Environment lives</td>
+<td>in the project (<code>.venv/</code>)</td>
+<td>in a central <code>envs</code> folder, by default</td>
 </tr>
 <tr class="odd">
-<td>Good for</td>
-<td>web/data science with pure-Python deps</td>
-<td>data science with heavy native deps, cross-language stacks</td>
+<td>Best for</td>
+<td>most coursework and pure-Python projects</td>
+<td>heavy compiled dependencies, mixed-language stacks</td>
 </tr>
 </tbody>
 </table>
-<p>As a rough rule: <strong>start with <code>venv</code> for most projects</strong>. It is simpler, ships with Python, keeps the environment next to the code, and works identically everywhere. <strong>Use <code>conda</code> when</strong> you need compiled packages that are hard to install via pip (CUDA-enabled PyTorch, GDAL, certain bioinformatics tools) or when a course or collaborator has standardized on it. Mixing conda and pip in the same environment works most of the time but is a source of occasional pain — see <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> for the rules.</p>
-<p>You can have both on the same machine — they do not conflict. Just do not try to “activate” a venv while a conda env is also active. Activate one or the other.</p>
+<p>For most projects, <strong>start with <code>venv</code></strong>: it’s already on your computer, keeps the environment next to the code, and works the same everywhere. <strong>Reach for conda</strong> when you need compiled software that’s painful to install with pip (GPU builds of PyTorch, GDAL for geographic data, many bioinformatics tools), or when your course has standardized on it. You can pip-install PyPI packages into a conda environment, but mixing the two has rules (see <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>). The community’s <a href="https://conda-forge.org/download/">Miniforge installer</a> sets conda up with conda-forge as the default channel, and conda’s guide to <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">managing environments</a> covers the commands.</p>
+<p>Both can live on one computer; just don’t stack them. If conda activates <code>base</code> in every new terminal (you’ll see <code>(base)</code> in your prompt), run <code>conda deactivate</code> before activating a venv, so one environment is in charge. You may also meet <a href="https://docs.astral.sh/uv/pip/environments/">uv</a>, a much faster installer; it makes the same kind of <code>.venv</code> folder, so this chapter still applies.</p>
 </section>
 <section id="jupyter-and-venvs" class="level2" data-number="15.5">
 <h2 data-number="15.5" class="anchored" data-anchor-id="jupyter-and-venvs"><span class="header-section-number">15.5</span> Jupyter and venvs</h2>
-<p>Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a <a href="../chapters/appendix-glossary.html#term-kernel">kernel</a>, and by default it may be pointed at your system Python. This causes the classic bug: you <code>pip install pandas</code> in your venv, open a notebook, and <code>import pandas</code> fails.</p>
-<p>The fix is to register your venv as a Jupyter kernel. From inside the activated venv:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install ipykernel</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> project-venv <span class="at">--display-name</span> <span class="st">"Python (project-venv)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Now when you open a notebook in Jupyter Lab or VS Code, you can pick <strong>Python (project-venv)</strong> from the kernel dropdown. Inside the notebook, verify you are on the right kernel by running:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sys.executable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If that path points at your <code>.venv/bin/python</code>, you are good. If it points at <code>/usr/bin/python3</code>, switch the kernel. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> for more on kernel management.</p>
+<p>Here’s the classic trap: you activate your venv, install pandas, start Jupyter, and <code>import pandas</code> fails anyway. A notebook doesn’t run code with “the terminal’s Python.” It uses a <a href="../chapters/appendix-glossary.html#term-kernel">kernel</a>, a separate Python process that Jupyter starts, and the kernel may belong to a different Python from the one you installed into.</p>
+<p>The fix is to register your venv as a kernel. With the venv active, install <a href="https://ipython.readthedocs.io/en/stable/install/kernel_install.html">ipykernel</a> and register it under a name you’ll recognize:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install ipykernel</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> project-venv <span class="at">--display-name</span> <span class="st">"Python (project-venv)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The second command answers with a line like this (the folder differs on macOS and Windows):</p>
+<pre class="text"><code>Installed kernelspec project-venv in /home/you/.local/share/jupyter/kernels/project-venv</code></pre>
+<p><code>--name</code> is Jupyter’s internal label; <code>--display-name</code> is what menus show. In JupyterLab or VS Code, pick <strong>Python (project-venv)</strong> as the kernel, then check in the first cell that the notebook really runs your venv:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sys.executable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the path ends in <code>.venv/bin/python</code> (or <code>.venv\Scripts\python.exe</code>), you’re set; otherwise, switch kernels. <code>jupyter kernelspec list</code> shows every kernel Jupyter knows about, and <code>jupyter kernelspec uninstall project-venv</code> removes one. A kernel remembers the full path to the venv’s Python, so it survives recreating <code>.venv</code> in place, but if you move the project, register it again.</p>
+<p>In a notebook that needs one more package, <a href="https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-pip"><code>%pip install seaborn</code></a> in a cell installs into the kernel’s Python, exactly where you want it. <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> has more on kernels.</p>
 </section>
 <section id="vs-code-and-venvs" class="level2" data-number="15.6">
 <h2 data-number="15.6" class="anchored" data-anchor-id="vs-code-and-venvs"><span class="header-section-number">15.6</span> VS Code and venvs</h2>
-<p>VS Code auto-detects venvs in your project directory. When you open a workspace with a <code>.venv/</code> folder inside, VS Code prompts: <em>“We noticed a new virtual environment. Would you like to select it?”</em> Click yes and VS Code will use that interpreter for IntelliSense, linting, and the integrated terminal.</p>
-<p>If it does not auto-detect, you can pick manually:</p>
-<ol type="1">
-<li>Press <code>Ctrl+Shift+P</code> (or <code>Cmd+Shift+P</code> on macOS) to open the Command Palette.</li>
-<li>Type “Python: Select Interpreter” and press Enter.</li>
-<li>Pick the entry whose path contains your project’s <code>.venv</code>.</li>
-</ol>
-<p>The selected interpreter shows in the bottom-right of the VS Code status bar. Click it any time to switch.</p>
+<p>VS Code chooses a Python too, without asking your terminal, and it usually chooses well. According to <a href="https://code.visualstudio.com/docs/python/environments">VS Code’s Python environments guide</a>, when you haven’t picked one, it prefers a <code>.venv</code> or <code>venv</code> folder in the project over the system Python, uses it to run and debug code and for autocomplete, and activates it in new terminals.</p>
+<p>The chosen environment’s Python version shows in the status bar at the bottom of the window. If it’s wrong, or VS Code missed a venv you just made, click it, or open the Command Palette (<code>Ctrl+Shift+P</code>, or <code>Cmd+Shift+P</code> on a Mac), run <strong>Python: Select Interpreter</strong>, and pick the entry whose path contains your project’s <code>.venv</code>. Terminals opened <em>before</em> the switch keep the old environment, so open a new one and check with <code>which python</code>.</p>
+<p>Notebooks in VS Code pick their kernel separately, from the picker at the notebook’s top right (see VS Code’s <a href="https://code.visualstudio.com/docs/datascience/jupyter-kernel-management">kernel management guide</a>); choose your venv there, and run the <code>sys.executable</code> check once.</p>
 </section>
 <section id="when-venvs-are-not-enough-containers" class="level2" data-number="15.7">
 <h2 data-number="15.7" class="anchored" data-anchor-id="when-venvs-are-not-enough-containers"><span class="header-section-number">15.7</span> When venvs are not enough: containers</h2>
-<p>A venv solves one specific problem: isolating Python <em>packages</em> across projects. It does not isolate the Python interpreter version itself reliably across machines, it does not isolate non-Python system libraries, and it does not isolate services your code depends on like Postgres or Redis. For most coursework, that is fine — a <code>requirements.txt</code> plus the right Python version on every collaborator’s laptop is enough. For projects that touch native libraries, span operating systems, or need to deploy somewhere other than your own machine, you eventually need something stronger: a <a href="https://www.docker.com/resources/what-container/">container</a>.</p>
-<p>A container is a packaged operating-system environment that runs the same way everywhere. Conceptually, a venv pins your Python packages; a container pins your <em>entire</em> userspace — the OS distribution, the system libraries, the Python interpreter, the installed packages, and the project code. A container that runs on your MacBook also runs on your collaborator’s Windows laptop, on a Linux server, and on a cloud platform, byte-for-byte the same. The most common implementation you will encounter as a student is <a href="https://docs.docker.com/get-started/">Docker</a>.</p>
+<p>A venv isolates your project’s Python packages, and nothing else: not Python itself, the operating system, or the non-Python software some packages need, like the geographic libraries under GeoPandas or a database. For most coursework that’s fine. But you may meet a project that works on your machine and fails on a teammate’s because the difference is below Python. That’s what a <strong>container</strong> solves.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Containerization_(computing)">container</a> packages a whole user-space environment: a minimal Linux system, its libraries, a Python interpreter, your packages, and your code. If a venv pins your packages, a container pins nearly everything above the operating system’s <a href="https://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a>, which it shares with the machine it runs on. The same image runs the same way on your laptop, a teammate’s, a university server, or a cloud service, with two caveats. On a Mac or Windows laptop, Docker Desktop runs Linux containers inside a <a href="https://docs.docker.com/desktop/features/vmm/">small virtual machine</a>. And because containers share the host’s kernel, an image built for one processor needs emulation or a <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform build</a> to run on another (say, from an Apple silicon Mac to a typical <code>amd64</code> server). The tool you’ll meet most is Docker, whose explanation of <a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/">what a container is</a> is a good first read.</p>
 <section id="a-minimal-dockerfile" class="level3">
 <h3 class="anchored" data-anchor-id="a-minimal-dockerfile">A minimal Dockerfile</h3>
-<p>A <code>Dockerfile</code> is a recipe — a text file at the project root that describes how to build the image. For a simple Python project it is short:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.11-slim</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"src/pipeline.py"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Five lines do real work: <code>FROM</code> picks a base image (Python 3.11 on a minimal Debian); <code>WORKDIR</code> sets the in-container directory; the first <code>COPY</code> and <code>RUN</code> install dependencies; the second <code>COPY</code> brings in your code; <code>CMD</code> says what to run when the container starts.</p>
-<p>Build the image and run it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-project .</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> my-project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>--rm</code> flag deletes the container after it exits, which is what you want for one-shot runs. To get a shell inside the container instead — the rough equivalent of “activating” the environment — add <code>-it</code> and override the command:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> my-project bash</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Two patterns matter for development. To <strong>edit code on your host and run it inside the container</strong>, mount your project directory as a volume so changes show up live: <code>docker run --rm -it -v "$PWD":/app my-project bash</code>. To <strong>expose a port</strong> (for a Jupyter server, a Flask app, a database), add <code>-p host:container</code>: <code>docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0</code>.</p>
+<p>A container runs from an <em>image</em>, built from a recipe called a <code>Dockerfile</code> at the root of your project. For a simple Python project it’s short:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.11-slim</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"src/pipeline.py"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each of the six instructions does one job. <code>FROM</code> picks a starting image, here the <a href="https://hub.docker.com/_/python">official Python image</a> with Python 3.11 on a minimal Debian Linux. <code>WORKDIR</code> sets the folder inside the container. The first <code>COPY</code> brings in just <code>requirements.txt</code>, and <code>RUN</code> installs the packages. The second <code>COPY</code> brings in your code, and <code>CMD</code> says what to run at start. Copying <code>requirements.txt</code> first isn’t fussiness: Docker <a href="https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/">caches each step</a>, so when only your code changes, the next build skips the slow install. The <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile reference</a> documents every instruction.</p>
+<p>Build the image, give it a name with <code>-t</code>, and run it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-project .</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> my-project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>--rm</code> deletes the container when it exits, which suits one-off runs. For a shell <em>inside</em> the container, the rough equivalent of activating an environment, add <code>-it</code> and ask for <code>bash</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> my-project bash</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two more options come up constantly. To <strong>edit code on your computer and run it in the container</strong>, mount your project folder with a <a href="https://docs.docker.com/engine/storage/bind-mounts/">bind mount</a>: <code>docker run --rm -it -v "$PWD":/app my-project bash</code>. To <strong>reach a server in the container</strong>, such as JupyterLab, <a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publish its port</a> with <code>-p host:container</code>: <code>docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0 --allow-root</code> (JupyterLab must be in <code>requirements.txt</code>, and it refuses to run as <code>root</code>, this image’s default user, without <code>--allow-root</code>).</p>
 </section>
 <section id="docker-compose-for-multi-service-projects" class="level3">
 <h3 class="anchored" data-anchor-id="docker-compose-for-multi-service-projects">Docker Compose for multi-service projects</h3>
-<p>Most non-trivial projects need more than just Python. They need a database, maybe a message queue, sometimes a separate worker process. <a href="https://docs.docker.com/compose/">Docker Compose</a> lets you describe all of those services in one <code>docker-compose.yml</code> and start them together with <code>docker compose up</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">db</span><span class="kw">]</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DATABASE_URL</span><span class="kw">:</span><span class="at"> postgres://user:pass@db:5432/app</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres:16</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_USER</span><span class="kw">:</span><span class="at"> user</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_PASSWORD</span><span class="kw">:</span><span class="at"> pass</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_DB</span><span class="kw">:</span><span class="at"> app</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Two services start, the app waits for the database, and the whole pipeline reproduces on any machine that has Docker installed. This is genuinely magical the first time it works on a teammate’s laptop with no setup other than <code>docker compose up</code>.</p>
+<p>Some projects need several programs running at once, such as your code plus a database. <a href="https://docs.docker.com/compose/">Docker Compose</a> describes them in one file, <code>compose.yaml</code>, and starts them together with <code>docker compose up</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">condition</span><span class="kw">:</span><span class="at"> service_healthy</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">DATABASE_URL</span><span class="kw">:</span><span class="at"> postgres://user:pass@db:5432/app</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres:16</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_USER</span><span class="kw">:</span><span class="at"> user</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_PASSWORD</span><span class="kw">:</span><span class="at"> pass</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">POSTGRES_DB</span><span class="kw">:</span><span class="at"> app</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">healthcheck</span><span class="kw">:</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">test</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"CMD-SHELL"</span><span class="kw">,</span><span class="at"> </span><span class="st">"pg_isready -U user -d app"</span><span class="kw">]</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">interval</span><span class="kw">:</span><span class="at"> 5s</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">retries</span><span class="kw">:</span><span class="at"> </span><span class="dv">5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>app</code> is built from your Dockerfile, and <code>db</code> is the official PostgreSQL image. Services reach each other <a href="https://docs.docker.com/compose/how-tos/networking/">by service name</a>, which is why the database’s address is simply <code>db</code>. The <code>healthcheck</code> and <code>condition: service_healthy</code> lines are easy to leave out and matter: plain <code>depends_on</code> only <em>starts</em> the database first and doesn’t wait until it accepts connections, so your app can crash on its first query (<a href="https://docs.docker.com/compose/how-tos/startup-order/">startup order</a> explains). These passwords are fine for a practice database on your laptop; for anything real, keep them out of the file (see <a href="secrets.html" class="quarto-xref"><span>Chapter 34</span></a>). Older tutorials name the file <code>docker-compose.yml</code>, which Compose still reads.</p>
+<p>The first time a teammate clones your project, types <code>docker compose up</code>, and has everything running with no other setup, it feels like magic.</p>
 </section>
 <section id="when-to-actually-reach-for-a-container" class="level3">
 <h3 class="anchored" data-anchor-id="when-to-actually-reach-for-a-container">When to actually reach for a container</h3>
-<p>Containers are powerful but they are also a layer of complexity, and reaching for them too early creates more friction than it removes. A useful checklist of “yes, you actually need a container”:</p>
+<p>Containers are one more layer to learn and debug, and reaching for them too early creates more friction than it removes. You probably need one when:</p>
 <ul>
-<li><strong>You need to reproduce the exact same environment on a different operating system</strong> — venv pins Python packages but not the OS or system libraries beneath them, and some packages behave differently on macOS vs Linux.</li>
-<li><strong>Your code depends on system-level binaries</strong> that are tedious to install — PostGIS, FFmpeg, headless Chromium for scraping, specific CUDA versions for GPU work.</li>
-<li><strong>You need to run alongside a database or queue</strong> that should be reproducible on every machine.</li>
-<li><strong>You are deploying to a cloud target</strong> — every major cloud platform runs containers natively, so packaging your project as a container is the lingua franca of “ship this somewhere.”</li>
+<li><strong>The same environment has to run on different operating systems,</strong> and the differences are below Python, in system libraries a venv doesn’t pin.</li>
+<li><strong>Your code depends on system software that’s tedious to install:</strong> PostGIS, FFmpeg, headless Chromium for scraping, a specific CUDA version for GPU work.</li>
+<li><strong>Your code runs alongside a database or queue</strong> that every teammate should get the same way.</li>
+<li><strong>You’re deploying to a server or the cloud,</strong> where containers are the common format for “run this somewhere.”</li>
 </ul>
-<p>A useful checklist of “no, a venv is fine”:</p>
+<p>A venv is plenty for:</p>
 <ul>
-<li><strong>Pure-Python coursework</strong> with a small <code>requirements.txt</code>.</li>
-<li><strong>Notebooks for analysis</strong> that read local files and produce figures.</li>
+<li><strong>Pure-Python coursework</strong> with a short <code>requirements.txt</code>.</li>
+<li><strong>Analysis notebooks</strong> that read local files and make figures.</li>
 <li><strong>Anything you only ever run on your own laptop</strong> for one semester.</li>
 </ul>
-<p>If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.</p>
+<p>If you’re not sure, start with a venv. You can add a Dockerfile later; taking the complexity back out is harder.</p>
 </section>
 </section>
 <section id="stakes-and-politics" class="level2" data-number="15.8">
 <h2 data-number="15.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">15.8</span> Stakes and politics</h2>
-<p>Virtual environments solve a real and unavoidable problem: different projects need different versions of the same package, and “the system Python” cannot serve them all at once. The political dimension is what the alternatives — and the absence of alternatives — look like for different students.</p>
-<p>Two things to notice. First, <em>what venvs assume about your machine</em>. Creating, activating, and populating a venv from a <code>requirements.txt</code> requires an unmetered internet connection (the first install can be hundreds of megabytes), an editor that can be pointed at a custom interpreter, and a working <code>python</code> command on a system where you have write access to your home folder. Students using shared lab workstations, Chromebooks locked down by a school district, or capped mobile data plans hit different walls at different points in that workflow. Second, <em>what containers concentrate</em>. Docker, the dominant container runtime, is now owned by Docker, Inc.&nbsp;and gated by Docker Desktop’s commercial terms for larger organizations; the underlying open standards (OCI) exist, but the convenient tooling is increasingly behind a corporate license. Adopting containers as the default isolation layer trades “skill that runs on your laptop” for “infrastructure dependency on a third party.”</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “just create a venv” or “just run it in a container,” ask which prerequisites — bandwidth, disk, admin rights, paid licenses — that <em>just</em> is hiding.</p>
+<p>In September 2026, this chapter’s first worked example (pandas, matplotlib, and Jupyter in a fresh venv) came to 106 packages and about 500 MB on disk. On a laptop with campus Wi-Fi, that’s a coffee break. On a capped phone hotspot, a shared lab computer where you can’t install software, or a school-managed <a href="https://en.wikipedia.org/wiki/Chromebook">Chromebook</a> where you can’t install Python at all, it’s a wall. “Just make a venv” quietly assumes a machine you control, disk space to spare, and a <a href="https://en.wikipedia.org/wiki/Data_cap">data connection nobody meters</a>.</p>
+<p>Containers move the question from your laptop to a company. Docker Engine is open source, and container images follow the vendor-neutral <a href="https://en.wikipedia.org/wiki/Open_Container_Initiative">Open Container Initiative</a> standards. But the easy on-ramp for Mac and Windows users, Docker Desktop, is licensed by Docker, Inc.: <a href="https://docs.docker.com/subscription-billing/desktop-license/">free</a> for personal use, education, and small businesses, and a paid subscription for larger companies and government agencies. A workflow you learn for free in a course can come with a license question at your first job, which is exactly why it’s worth knowing the standard is open and that alternatives such as <a href="https://podman.io/">Podman</a> exist.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “just create a venv” or “just run it in a container,” ask which prerequisites (bandwidth, disk, admin rights, a paid license) that <em>just</em> is hiding.</p>
 </section>
 <section id="worked-examples" class="level2" data-number="15.9">
 <h2 data-number="15.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">15.9</span> Worked examples</h2>
 <section id="starting-a-new-project-from-scratch" class="level3">
 <h3 class="anchored" data-anchor-id="starting-a-new-project-from-scratch">Starting a new project from scratch</h3>
-<p>You are starting a term project that will use pandas and matplotlib.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> term-project <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> term-project</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate      <span class="co"># or .venv\Scripts\Activate.ps1 on Windows</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas matplotlib jupyter ipykernel</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">".venv/"</span> <span class="op">&gt;&gt;</span> .gitignore</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="kw">&amp;&amp;</span> <span class="fu">git</span> add requirements.txt .gitignore</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial environment"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Register the kernel so Jupyter can find it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> term-project <span class="at">--display-name</span> <span class="st">"Python (term-project)"</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In Jupyter, the new kernel appears in the launcher. Open a notebook with it and you are good to go.</p>
+<p>You’re starting a term project with pandas and matplotlib in notebooks. The order matters: make the venv, activate it, and only then install.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> term-project <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> term-project</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate      <span class="co"># or .venv\Scripts\Activate.ps1 on Windows</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pandas matplotlib jupyter ipykernel</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip freeze <span class="op">&gt;</span> requirements.txt</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">".venv/"</span> <span class="op">&gt;&gt;</span> .gitignore</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init <span class="kw">&amp;&amp;</span> <span class="fu">git</span> add requirements.txt .gitignore</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial environment"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then register the venv as a kernel and start JupyterLab from inside it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> term-project <span class="at">--display-name</span> <span class="st">"Python (term-project)"</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The new kernel appears in JupyterLab’s launcher. Open a notebook with it, run the <code>sys.executable</code> check once, and you’re ready.</p>
 </section>
 <section id="diagnosing-it-worked-yesterday" class="level3">
 <h3 class="anchored" data-anchor-id="diagnosing-it-worked-yesterday">Diagnosing “it worked yesterday”</h3>
-<p>You open your terminal the next morning, run <code>python analysis.py</code>, and get:</p>
-<pre><code>ModuleNotFoundError: No module named 'pandas'</code></pre>
-<p><strong>Step 1: check whether the venv is active.</strong> Look at your shell prompt. Does it show <code>(.venv)</code>? No? Activate it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Rerun your script. Usually this fixes it — you forgot to activate.</p>
-<p><strong>Step 2: if still failing, check which Python.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If the path does not contain <code>.venv</code>, activation silently failed (rare but happens with nested shells, tmux, or VS Code’s integrated terminal on certain configurations). Deactivate, re-activate, and recheck.</p>
-<p><strong>Step 3: confirm the package is installed in this venv.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If this says <code>WARNING: Package(s) not found: pandas</code>, reinstall:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You open a terminal the next morning, run <code>python analysis.py</code>, and get:</p>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/term-project/analysis.py", line 1, in &lt;module&gt;
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'</code></pre>
+<p>You installed pandas yesterday, so this feels like gaslighting. It isn’t; work through three checks in order.</p>
+<p><strong>First, is the venv active?</strong> No <code>(.venv)</code> at the start of your prompt means a new terminal nobody activated. Run <code>source .venv/bin/activate</code> and try again. Usually, that’s the whole story.</p>
+<p><strong>Second, if the prompt says <code>(.venv)</code> and it still fails, ask which Python is running:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the path doesn’t contain your project’s <code>.venv</code>, activation isn’t doing what the prompt claims. Perhaps the project folder was renamed or moved after the venv was made: run <code>deactivate</code>, delete <code>.venv</code>, recreate it, and reinstall from <code>requirements.txt</code>. Or this terminal was opened before you selected the venv in VS Code; open a new one.</p>
+<p><strong>Third, if the right Python is running, ask whether it has pandas:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip show pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If it says <code>WARNING: Package(s) not found: pandas</code>, yesterday’s install went into a different Python, probably from a terminal where the venv wasn’t active. Install into this one:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="a-collaborator-clones-your-project" class="level3">
 <h3 class="anchored" data-anchor-id="a-collaborator-clones-your-project">A collaborator clones your project</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/you/term-project.git</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> term-project</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.</p>
+<p>Because you committed <code>requirements.txt</code> and not <code>.venv/</code>, a teammate rebuilds the environment on their own machine:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/you/term-project.git</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> term-project</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Five commands, and their venv has exactly the versions you committed: when we tried it with the term project above, <code>pip freeze</code> in the new venv matched <code>requirements.txt</code> line for line.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="15.10">
 <h2 data-number="15.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">15.10</span> Templates</h2>
 <p><strong><code>.gitignore</code> entries for a venv project:</strong></p>
-<pre><code>.venv/
+<pre class="text"><code>.venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .pytest_cache/</code></pre>
-<p><strong><code>requirements.txt</code> (generated by <code>pip freeze</code>):</strong></p>
-<pre><code>matplotlib==3.8.3
-numpy==1.26.4
-pandas==2.2.1</code></pre>
-<p>A version-pinned <code>requirements.txt</code> is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (<code>pandas&gt;=2.0</code>). For application projects (your course work), prefer pins.</p>
+<p><strong><code>requirements.txt</code></strong>, as <code>pip freeze</code> wrote it after installing pandas and matplotlib into a fresh venv in September 2026 (the other ten are what those two need):</p>
+<pre class="text"><code>contourpy==1.3.3
+cycler==0.12.1
+fonttools==4.66.0
+kiwisolver==1.5.1
+matplotlib==3.11.2
+numpy==2.4.6
+packaging==26.3
+pandas==3.0.6
+pillow==12.3.0
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+six==1.17.0</code></pre>
+<p>Exact pins are reproducible but brittle: they may not install on a much newer Python. For coursework and analysis, pin, because you want the same results next month. For a library others will install alongside their own packages, use looser constraints such as <code>pandas&gt;=2.0</code>. pip’s <a href="https://pip.pypa.io/en/stable/reference/requirements-file-format/">requirements file format</a> guide lists everything a line can say.</p>
 </section>
 <section id="exercises" class="level2" data-number="15.11">
 <h2 data-number="15.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.11</span> Exercises</h2>
 <ol type="1">
-<li>Create a fresh venv in an empty directory, activate it, and install <code>pandas</code>. Run <code>python -m pip show pandas</code> and confirm the <code>Location:</code> line is inside your venv.</li>
-<li>Write down the output of <code>which python</code> (or <code>where python</code>) before and after activating a venv. Notice the path change.</li>
-<li>Deliberately break the “which Python?” question: open a new terminal (do not activate the venv) and run <code>python -c "import pandas"</code>. Read the traceback (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). Then activate the venv and run it again.</li>
-<li>Pick an existing project of yours that does not use a venv. Create one, pip-install everything it needs, and freeze a <code>requirements.txt</code>. Commit to git.</li>
-<li>Register a Jupyter kernel for a venv, open a notebook, and verify with <code>import sys; print(sys.executable)</code> that the notebook is running your venv’s Python and not the system one.</li>
-<li>Clone a classmate’s project (or your own on another machine) and get it running from scratch using only <code>git clone</code>, <code>python -m venv</code>, <code>activate</code>, and <code>pip install -r requirements.txt</code>. Time yourself — it should take under two minutes.</li>
-<li>Delete your <code>.venv/</code> directory and recreate it from <code>requirements.txt</code>. Confirm the project still runs. This is the key reproducibility test.</li>
+<li>Create a fresh venv in an empty folder, activate it, and install <code>pandas</code>. Run <code>python -m pip show pandas</code> and confirm the <code>Location:</code> line is inside your venv.</li>
+<li>Write down the output of <code>which python</code> (or <code>where.exe python</code> on Windows) before and after activating a venv. What changed, and why?</li>
+<li>Break it on purpose: open a new terminal, don’t activate the venv, and run <code>python -c "import pandas"</code>. Read the traceback (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). Then activate the venv and run it again.</li>
+<li>Pick an existing project of yours that doesn’t use a venv. Create one, install everything the project needs, freeze a <code>requirements.txt</code>, and commit it to git.</li>
+<li>Register a Jupyter kernel for a venv, open a notebook with it, and confirm with <code>import sys; print(sys.executable)</code> that the notebook is running your venv’s Python and not the system one. Then find it in <code>jupyter kernelspec list</code>.</li>
+<li>Clone a classmate’s project (or your own, on another computer) and get it running using only <code>git clone</code>, <code>python -m venv</code>, activation, and <code>pip install -r requirements.txt</code>. Time yourself: once the packages download, it should take a few minutes.</li>
+<li>Delete your <code>.venv/</code> folder and recreate it from <code>requirements.txt</code>. Confirm the project still runs. This is the real test of whether your project is reproducible.</li>
 </ol>
 </section>
 <section id="one-page-checklist" class="level2" data-number="15.12">
 <h2 data-number="15.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">15.12</span> One-page checklist</h2>
 <ul>
-<li>Every project gets its own venv: <code>python -m venv .venv</code> at the project root.</li>
+<li>Every project gets its own venv: <code>python -m venv .venv</code> in the project folder.</li>
 <li>Add <code>.venv/</code> to <code>.gitignore</code>. Never commit a venv.</li>
-<li>Activate before installing anything: <code>source .venv/bin/activate</code> (or the Windows equivalent).</li>
-<li>Verify with <code>which python</code> or <code>python -c "import sys; print(sys.executable)"</code> before any <code>pip install</code>.</li>
-<li>Use <code>python -m pip install</code> instead of bare <code>pip install</code>.</li>
+<li>Activate in every new terminal: <code>source .venv/bin/activate</code> (or <code>.venv\Scripts\Activate.ps1</code> on Windows).</li>
+<li>Check with <code>which python</code> or <code>python -c "import sys; print(sys.executable)"</code> before any <code>pip install</code>.</li>
+<li>Use <code>python -m pip install</code>, not bare <code>pip install</code>, and never <code>sudo pip</code>.</li>
 <li>Freeze dependencies to <code>requirements.txt</code> and commit that file.</li>
-<li>Register the venv as a Jupyter kernel if you will use notebooks.</li>
-<li>Point your editor (VS Code, PyCharm, etc.) at the venv interpreter.</li>
-<li>If something is weird, the first diagnostic is <em>always</em> “which Python is running?”</li>
+<li>Moved or renamed the project? Delete <code>.venv</code> and recreate it.</li>
+<li>Register the venv as a Jupyter kernel if you use notebooks.</li>
+<li>Point VS Code (or your editor) at the venv’s interpreter.</li>
+<li>When something is weird, the first question is <em>always</em> “which Python is running?”</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1076,13 +1118,13 @@ pandas==2.2.1</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Python docs, <a href="https://docs.python.org/3/library/venv.html"><code>venv</code> — Creation of virtual environments</a> — the official module reference and command-line usage.</li>
-<li>Python Packaging Authority, <a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">Installing packages using pip and virtual environments</a> — a tutorial-style walk-through, including pip usage inside a venv.</li>
-<li>pyenv, <a href="https://github.com/pyenv/pyenv">Simple Python Version Management</a> — the standard tool for managing multiple Python interpreters on one machine; pairs naturally with venv when you need both isolation and a non-default Python version.</li>
-<li><a href="https://realpython.com/python-virtual-environments-a-primer/">Real Python: Python Virtual Environments — A Primer</a> — extended discussion of venv internals, common pitfalls, and alternatives.</li>
-<li>Docker, Inc., <a href="https://docs.docker.com/get-started/">Get started</a> — the official walkthrough for building, running, and sharing containers.</li>
-<li><a href="https://opencontainers.org/">Open Container Initiative</a> — the vendor-neutral standard underneath Docker; useful to know exists when you wonder whether containerization requires Docker specifically (it does not).</li>
-<li><a href="https://labs.play-with-docker.com/">Play with Docker</a> — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.</li>
+<li><strong>Python docs</strong>, <a href="https://docs.python.org/3/library/venv.html"><code>venv</code>: Creation of virtual environments</a> — the official reference, including the table of activation commands for every shell and a clear explanation of how venvs work.</li>
+<li><strong>Python Packaging User Guide</strong>, <a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">Install packages in a virtual environment using pip and venv</a> — a step-by-step tutorial with macOS, Linux, and Windows commands side by side.</li>
+<li><strong>pyenv</strong>, <a href="https://github.com/pyenv/pyenv">Simple Python Version Management</a> — the standard tool for installing several Python versions on one machine; pairs naturally with venv when a project needs a Python other than your default.</li>
+<li><strong>Real Python</strong>, <a href="https://realpython.com/python-virtual-environments-a-primer/">Python Virtual Environments: A Primer</a> — a longer tour of venv internals, common pitfalls, and alternatives.</li>
+<li><strong>Docker</strong>, <a href="https://docs.docker.com/get-started/">Get started</a> — the official walkthrough for building, running, and sharing containers.</li>
+<li><strong>Open Container Initiative</strong>, <a href="https://opencontainers.org/">opencontainers.org</a> — the vendor-neutral standard underneath Docker; worth knowing about when you wonder whether containers require Docker specifically (they don’t).</li>
+<li><strong>Play with Docker</strong>, <a href="https://labs.play-with-docker.com/">labs.play-with-docker.com</a> — a browser sandbox that gives you a temporary Docker host, so you can experiment without installing anything.</li>
 </ul>
 </div>
 </div>

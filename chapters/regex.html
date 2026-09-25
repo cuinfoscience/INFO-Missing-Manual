@@ -668,29 +668,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-match-shapes-not-meaning" id="toc-running-theme-match-shapes-not-meaning" class="nav-link" data-scroll-target="#running-theme-match-shapes-not-meaning">Running theme: match shapes, not meaning</a></li>
-  <li><a href="#the-seven-metacharacters-you-actually-need" id="toc-the-seven-metacharacters-you-actually-need" class="nav-link" data-scroll-target="#the-seven-metacharacters-you-actually-need"><span class="header-section-number">18.1</span> The seven metacharacters you actually need</a></li>
-  <li><a href="#character-classes-the-shortcut-for-one-of-these" id="toc-character-classes-the-shortcut-for-one-of-these" class="nav-link" data-scroll-target="#character-classes-the-shortcut-for-one-of-these"><span class="header-section-number">18.2</span> Character classes: the shortcut for “one of these”</a></li>
-  <li><a href="#anchors-where-in-the-string" id="toc-anchors-where-in-the-string" class="nav-link" data-scroll-target="#anchors-where-in-the-string"><span class="header-section-number">18.3</span> Anchors: where in the string</a></li>
-  <li><a href="#pythons-re-module" id="toc-pythons-re-module" class="nav-link" data-scroll-target="#pythons-re-module"><span class="header-section-number">18.4</span> Python’s <code>re</code> module</a>
+  <li><a href="#the-characters-that-dont-mean-themselves" id="toc-the-characters-that-dont-mean-themselves" class="nav-link" data-scroll-target="#the-characters-that-dont-mean-themselves"><span class="header-section-number">18.1</span> The characters that don’t mean themselves</a></li>
+  <li><a href="#character-classes-one-character-from-a-set" id="toc-character-classes-one-character-from-a-set" class="nav-link" data-scroll-target="#character-classes-one-character-from-a-set"><span class="header-section-number">18.2</span> Character classes: one character from a set</a></li>
+  <li><a href="#anchors-and-word-boundaries" id="toc-anchors-and-word-boundaries" class="nav-link" data-scroll-target="#anchors-and-word-boundaries"><span class="header-section-number">18.3</span> Anchors and word boundaries</a></li>
+  <li><a href="#greedy-and-lazy-why-.-eats-too-much" id="toc-greedy-and-lazy-why-.-eats-too-much" class="nav-link" data-scroll-target="#greedy-and-lazy-why-.-eats-too-much"><span class="header-section-number">18.4</span> Greedy and lazy: why <code>.*</code> eats too much</a></li>
+  <li><a href="#pythons-re-module" id="toc-pythons-re-module" class="nav-link" data-scroll-target="#pythons-re-module"><span class="header-section-number">18.5</span> Python’s <code>re</code> module</a>
   <ul class="collapse">
+  <li><a href="#search-match-or-fullmatch" id="toc-search-match-or-fullmatch" class="nav-link" data-scroll-target="#search-match-or-fullmatch">search, match, or fullmatch?</a></li>
+  <li><a href="#raw-strings-always" id="toc-raw-strings-always" class="nav-link" data-scroll-target="#raw-strings-always">Raw strings, always</a></li>
   <li><a href="#flags" id="toc-flags" class="nav-link" data-scroll-target="#flags">Flags</a></li>
   </ul></li>
-  <li><a href="#capture-groups-extracting-parts-of-a-match" id="toc-capture-groups-extracting-parts-of-a-match" class="nav-link" data-scroll-target="#capture-groups-extracting-parts-of-a-match"><span class="header-section-number">18.5</span> Capture groups: extracting parts of a match</a></li>
-  <li><a href="#regex-in-pandas" id="toc-regex-in-pandas" class="nav-link" data-scroll-target="#regex-in-pandas"><span class="header-section-number">18.6</span> Regex in pandas</a></li>
-  <li><a href="#when-not-to-use-regex" id="toc-when-not-to-use-regex" class="nav-link" data-scroll-target="#when-not-to-use-regex"><span class="header-section-number">18.7</span> When not to use regex</a></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">18.8</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">18.9</span> Worked examples</a>
+  <li><a href="#capture-groups-pulling-out-the-parts" id="toc-capture-groups-pulling-out-the-parts" class="nav-link" data-scroll-target="#capture-groups-pulling-out-the-parts"><span class="header-section-number">18.6</span> Capture groups: pulling out the parts</a></li>
+  <li><a href="#regex-in-pandas" id="toc-regex-in-pandas" class="nav-link" data-scroll-target="#regex-in-pandas"><span class="header-section-number">18.7</span> Regex in pandas</a></li>
+  <li><a href="#same-idea-different-dialects" id="toc-same-idea-different-dialects" class="nav-link" data-scroll-target="#same-idea-different-dialects"><span class="header-section-number">18.8</span> Same idea, different dialects</a></li>
+  <li><a href="#when-not-to-use-regex" id="toc-when-not-to-use-regex" class="nav-link" data-scroll-target="#when-not-to-use-regex"><span class="header-section-number">18.9</span> When not to use regex</a></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">18.10</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">18.11</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#extracting-order-ids-from-free-text-notes" id="toc-extracting-order-ids-from-free-text-notes" class="nav-link" data-scroll-target="#extracting-order-ids-from-free-text-notes">Extracting order IDs from free-text notes</a></li>
   <li><a href="#normalizing-phone-numbers" id="toc-normalizing-phone-numbers" class="nav-link" data-scroll-target="#normalizing-phone-numbers">Normalizing phone numbers</a></li>
   <li><a href="#simple-validation-with-re.fullmatch" id="toc-simple-validation-with-re.fullmatch" class="nav-link" data-scroll-target="#simple-validation-with-re.fullmatch">Simple validation with <code>re.fullmatch</code></a></li>
-  <li><a href="#grep-from-the-terminal" id="toc-grep-from-the-terminal" class="nav-link" data-scroll-target="#grep-from-the-terminal">Grep from the terminal</a></li>
+  <li><a href="#grep-from-the-terminal" id="toc-grep-from-the-terminal" class="nav-link" data-scroll-target="#grep-from-the-terminal">grep from the terminal</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">18.10</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.11</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">18.12</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">18.12</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">18.14</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/regex.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -739,29 +743,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/regex.png" class="img-fluid" alt="Headaches Meme: Writing Regex."></p>
 </div>
-<p>Sooner or later you will need to extract phone numbers from free-text notes, find every file name that matches a pattern, strip junk out of a column, or validate that a user-entered email address at least <em>looks</em> like one. These are all jobs for regular expressions — a small pattern language that matches shapes in text.</p>
-<p>Regex has a reputation for being write-once, read-never code. That reputation is earned when people try to express overly clever patterns. For the 90% case you will actually use in data work — finding specific words, extracting substrings, matching digits, cleaning whitespace — regex is a modest, learnable tool. This chapter teaches you enough to use it confidently in pandas, Python scripts, text editors, and the terminal without reaching for a cheat sheet every time.</p>
+<p>Your supervisor hands you 3,000 customer-service notes and asks for a column of the order numbers mentioned in them. The notes say things like “Customer called about Order #4829, refund requested,” but no two are worded alike, so you can’t split on a comma or slice off the first ten characters. You could read all 3,000. Or you could describe what an order number <em>looks like</em>, a <code>#</code> followed by digits, and let the computer find every one in under a second.</p>
+<p>That description is a <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>, or regex: a small pattern language for matching shapes in text. It has a reputation as write-once, read-never line noise, and if you’ve ever stared at <code>^\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}$</code> and felt your eyes slide off it, that’s fair. But the patterns you’ll need for data work are short, and each piece means one simple thing.</p>
+<p>This chapter teaches that working core in Python, pandas, and grep, along with the snags that trip almost everyone at first. It skips the theory and rarer features such as lookarounds; Further reading points you to both.</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Explain what a regular expression is and name three situations where it is the right tool.</li>
-<li>Read a short regex and predict what it will match.</li>
-<li>Use literal characters, the seven core metacharacters, character classes, and anchors to write patterns.</li>
-<li>Use <a href="https://docs.python.org/3/library/re.html#re.search"><code>re.search</code></a>, <code>re.match</code>, <code>re.findall</code>, and <code>re.sub</code> in <a href="https://docs.python.org/3/library/re.html">Python’s <code>re</code> module</a> with sensible defaults.</li>
-<li>Use capture groups to extract parts of a match.</li>
-<li>Use <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.contains.html"><code>pandas.Series.str.contains</code></a>, <code>.str.extract</code>, and <code>.str.replace</code> for regex on DataFrames.</li>
-<li>Recognize when a regex is becoming too clever and reach for a real parser instead.</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You ran <code>re.match(r"\d+", "Order 42")</code>, got <code>None</code>, and stared at the screen, because there’s obviously a 42 right there.</li>
+<li>You tried to grab one quoted phrase with <code>".*"</code> and got everything from the first quote on the line to the last.</li>
+<li>You searched a column for <code>3.5</code> and got <code>Room 305</code> back too, or searched for <code>C++</code> and pandas threw an error.</li>
+<li>You have phone numbers typed five different ways, or order numbers buried in free-text notes, and you need them in a clean column today.</li>
+<li>You pasted a pattern that works in Python into grep or your editor, and it quietly found nothing.</li>
+<li>Python printed <code>SyntaxWarning: invalid escape sequence '\d'</code>, and you’re not sure whether to care.</li>
+<li>Someone told you never to parse HTML with regex, and you’d like to know why, and what to use instead.</li>
+</ul>
 </section>
 <section id="running-theme-match-shapes-not-meaning" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-match-shapes-not-meaning">Running theme: match shapes, not meaning</h2>
-<p>Regex matches the <em>shape</em> of text — three digits, a dot, four digits — not its meaning. If your problem requires understanding what the text <em>means</em> (parsing HTML, real emails, code, dates with validation), regex is the wrong tool. If it requires finding a pattern of characters, regex is perfect.</p>
+<p>A regex matches the <em>shape</em> of text (three digits, a dot, four digits), never what it means, so it’s perfect for finding patterns of characters and the wrong tool when you need to understand structure, like HTML, real email addresses, or whether a date exists.</p>
 </section>
-<section id="the-seven-metacharacters-you-actually-need" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="the-seven-metacharacters-you-actually-need"><span class="header-section-number">18.1</span> The seven metacharacters you actually need</h2>
-<p>The entire language is built from a small set of special characters that mean “not themselves.” Here are the ones you will use constantly:</p>
+<section id="the-characters-that-dont-mean-themselves" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="the-characters-that-dont-mean-themselves"><span class="header-section-number">18.1</span> The characters that don’t mean themselves</h2>
+<p>Most characters in a regex match themselves: the pattern <code>cat</code> finds c, a, t in a row. The rest of the language comes from a few <a href="https://en.wikipedia.org/wiki/Metacharacter">metacharacters</a> that mean something else (the <code>*</code>, for instance, has a name: the <a href="https://en.wikipedia.org/wiki/Kleene_star">Kleene star</a>). Learn these seven and you can read most patterns you’ll meet:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -800,12 +804,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Plus these two for grouping and escaping:</p>
+<p>Two more handle grouping and escaping:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Symbol</th>
@@ -815,19 +815,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>(...)</code></td>
-<td>capture group — saves what matched for later extraction</td>
+<td>capture group: saves what matched for later extraction</td>
 </tr>
 <tr class="even">
 <td><code>\</code></td>
-<td>escape — <code>\.</code> means a literal dot, <code>\\</code> means a literal backslash</td>
+<td>escape: <code>\.</code> means a literal dot, <code>\\</code> a literal backslash</td>
 </tr>
 </tbody>
 </table>
-<p>That is most of what you need to know to read 90% of the regexes you encounter in the wild.</p>
+<p>The one that catches everyone is <code>.</code>. You search for version <code>3.5</code> and get <code>Room 305</code> too, because an unescaped <code>.</code> means “any character,” and <code>0</code> is a character. To match a real dot, put a backslash in front of it, and do the same for any metacharacter you mean literally: <code>\$</code>, <code>\(</code>, <code>\+</code>. For a whole string you want matched exactly, <a href="https://docs.python.org/3/library/re.html#re.escape"><code>re.escape</code></a> adds the backslashes for you: <code>re.escape("$5.00")</code> gives <code>\$5\.00</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="st">"3.5"</span>, <span class="st">"Room 305, version 3.5"</span>)     <span class="co"># ['305', '3.5']</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"3</span><span class="ch">\.</span><span class="vs">5"</span>, <span class="st">"Room 305, version 3.5"</span>)   <span class="co"># ['3.5']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="character-classes-the-shortcut-for-one-of-these" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="character-classes-the-shortcut-for-one-of-these"><span class="header-section-number">18.2</span> Character classes: the shortcut for “one of these”</h2>
-<p>A character class matches exactly one character from a set:</p>
+<section id="character-classes-one-character-from-a-set" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="character-classes-one-character-from-a-set"><span class="header-section-number">18.2</span> Character classes: one character from a set</h2>
+<p>Often you know only the <em>kind</em> of character you want: a digit, a letter, some whitespace. A <strong>character class</strong> matches exactly one character from a set:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -842,11 +846,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>[a-z]</code></td>
-<td>any lowercase letter</td>
+<td>any lowercase ASCII letter</td>
 </tr>
 <tr class="odd">
 <td><code>[A-Za-z0-9]</code></td>
-<td>any alphanumeric character</td>
+<td>any ASCII letter or digit</td>
 </tr>
 <tr class="even">
 <td><code>[^abc]</code></td>
@@ -854,11 +858,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>\d</code></td>
-<td>any digit (equivalent to <code>[0-9]</code>)</td>
+<td>any digit</td>
 </tr>
 <tr class="even">
 <td><code>\w</code></td>
-<td>any “word” character (<code>[A-Za-z0-9_]</code>)</td>
+<td>any “word” character: letters, digits, and <code>_</code></td>
 </tr>
 <tr class="odd">
 <td><code>\s</code></td>
@@ -866,11 +870,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>\D</code>, <code>\W</code>, <code>\S</code></td>
-<td>the negations</td>
+<td>the opposites</td>
 </tr>
 </tbody>
 </table>
-<p>Combine with <code>+</code>, <code>*</code>, <code>?</code>, or <code>{n,m}</code> to repeat:</p>
+<p>Notice that <code>^</code> does two unrelated jobs: at the start of square brackets it means “not,” and outside them it means “start of the string.” It confuses nearly everyone once.</p>
+<p>Tutorials often say <code>\d</code> equals <code>[0-9]</code> and <code>\w</code> equals <code>[A-Za-z0-9_]</code>. That’s true for <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>, but in Python 3 these classes cover all of <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a>: <code>\w</code> matches <code>é</code> and <code>李</code>, and <code>\d</code> matches the <a href="https://en.wikipedia.org/wiki/Eastern_Arabic_numerals">Eastern Arabic digits</a> in <code>٣٤٥</code>. That’s usually what you want. For only 0 to 9, write <code>[0-9]</code> or pass the <a href="https://docs.python.org/3/library/re.html#re.ASCII"><code>re.ASCII</code></a> flag:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"Room ٣٤٥ and 42"</span>)      <span class="co"># ['٣٤٥', '42']</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"</span><span class="pp">[0-9]</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"Room ٣٤٥ and 42"</span>)   <span class="co"># ['42']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A class matches one character; a quantifier after it says how many:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -898,13 +906,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="anchors-where-in-the-string" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="anchors-where-in-the-string"><span class="header-section-number">18.3</span> Anchors: where in the string</h2>
+<section id="anchors-and-word-boundaries" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="anchors-and-word-boundaries"><span class="header-section-number">18.3</span> Anchors and word boundaries</h2>
+<p>Anchors pin a match to a position. They match a <em>place</em> between characters, not a character:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Syntax</th>
@@ -922,173 +927,203 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>\bfoo\b</code></td>
-<td>word boundary: <code>foo</code> as a whole word, not <code>food</code> or <code>tofoo</code></td>
+<td><code>foo</code> as a whole word, not <code>food</code> or <code>tofoo</code></td>
 </tr>
 </tbody>
 </table>
-<p>Word boundaries (<code>\b</code>) are the most underused regex feature for data work. They are the difference between matching <code>cat</code> in <code>"the cat sat"</code> (what you want) and also matching it in <code>"concatenate"</code> (what you do not).</p>
+<p>The word boundary <code>\b</code> is the most underused feature in data work. It’s the difference between finding <code>cat</code> in <code>"the cat sat"</code> and also in <code>"concatenate"</code>. If a search returns suspiciously many hits, wrapping the word in <code>\b</code> is often the whole fix.</p>
 </section>
-<section id="pythons-re-module" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="pythons-re-module"><span class="header-section-number">18.4</span> Python’s <code>re</code> module</h2>
-<p>Import once at the top of your script or notebook:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The four functions you will use most:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>re.search(pattern, text)           <span class="co"># find first match anywhere, or None</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>re.match(pattern, text)            <span class="co"># match only at the start of text</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>re.findall(pattern, text)          <span class="co"># list of all non-overlapping matches</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>re.sub(pattern, replacement, text) <span class="co"># replace all matches</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Always use raw string literals for patterns.</strong> Python strings interpret backslashes (<code>\n</code> is a newline), and regex uses backslashes for its own special meanings. The raw-string prefix <code>r""</code> tells Python not to interpret them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>re.search(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"order #42"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad: Python sees \d as an invalid escape (or silently a literal 'd')</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>re.search(<span class="st">"</span><span class="er">\</span><span class="st">d+"</span>, <span class="st">"order #42"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Make raw strings a reflex.</p>
+<section id="greedy-and-lazy-why-.-eats-too-much" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="greedy-and-lazy-why-.-eats-too-much"><span class="header-section-number">18.4</span> Greedy and lazy: why <code>.*</code> eats too much</h2>
+<p>Nearly everyone hits this in their first week. You want every quoted phrase in a line, so you write a quote, anything, a quote, and get one long match instead of two:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> <span class="st">'She said "hi" and then "bye"'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r'"</span><span class="dv">.</span><span class="op">*</span><span class="vs">"'</span>, line)      <span class="co"># ['"hi" and then "bye"']</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r'"</span><span class="dv">.</span><span class="op">*?</span><span class="vs">"'</span>, line)     <span class="co"># ['"hi"', '"bye"']</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r'"</span><span class="pp">[^"]</span><span class="op">*</span><span class="vs">"'</span>, line)   <span class="co"># ['"hi"', '"bye"']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nothing is broken. Quantifiers are <strong>greedy</strong>: <code>.*</code> takes as much as it can and gives back only enough for the rest of the pattern to match, so it runs to the <em>last</em> quote. A <code>?</code> after a quantifier (<code>*?</code>, <code>+?</code>) makes it <strong>lazy</strong>, taking as little as it can. The third version is usually the better habit, because it says exactly what may appear between the quotes. The HOWTO covers this in <a href="https://docs.python.org/3/howto/regex.html#greedy-versus-non-greedy">Greedy versus non-greedy</a>.</p>
+<p>Greed has a darker side. When a match fails, the engine <a href="https://en.wikipedia.org/wiki/Backtracking">backtracks</a> to try other ways of dividing the text among the quantifiers, and with one quantifier nested inside another, like <code>(a+)+b</code>, the ways multiply: on the machine this chapter was tested on, <code>re.fullmatch(r"(a+)+b", "a" * 24)</code> took nearly a second to fail, roughly doubling with each extra <code>a</code>. That’s how a <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a> attack works, and how one firewall regex <a href="https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/">took down much of Cloudflare for 27 minutes</a> in July 2019. So don’t nest quantifiers, and prefer <code>[^"]*</code> to <code>.*</code>.</p>
+</section>
+<section id="pythons-re-module" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="pythons-re-module"><span class="header-section-number">18.5</span> Python’s <code>re</code> module</h2>
+<p>In Python, regex lives in the standard library’s <code>re</code> module. Import it once at the top of a script or notebook; these five functions cover nearly everything:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>re.search(pattern, text)            <span class="co"># first match anywhere, or None</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>re.match(pattern, text)             <span class="co"># a match only at the very start, or None</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>re.fullmatch(pattern, text)         <span class="co"># a match only if the pattern covers all of text</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>re.findall(pattern, text)           <span class="co"># list of all non-overlapping matches</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>re.sub(pattern, replacement, text)  <span class="co"># replace every match</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="search-match-or-fullmatch" class="level3">
+<h3 class="anchored" data-anchor-id="search-match-or-fullmatch">search, match, or fullmatch?</h3>
+<p>The name <code>match</code> sounds like “does this match anywhere?”, but <a href="https://docs.python.org/3/library/re.html#re.match"><code>re.match</code></a> only looks at the <em>start</em> of the string:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>re.match(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"Order 42"</span>)              <span class="co"># None</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>re.search(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"Order 42"</span>)             <span class="co"># &lt;re.Match object; span=(6, 8), match='42'&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>re.fullmatch(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"42 is the answer"</span>)  <span class="co"># None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use <a href="https://docs.python.org/3/library/re.html#re.search"><code>re.search</code></a> to find something, <a href="https://docs.python.org/3/library/re.html#re.fullmatch"><code>re.fullmatch</code></a> to check that a whole string has the right shape, and <code>re.match</code> rarely. The docs explain the difference in <a href="https://docs.python.org/3/library/re.html#search-vs-match">search() vs.&nbsp;match()</a>.</p>
+</section>
+<section id="raw-strings-always" class="level3">
+<h3 class="anchored" data-anchor-id="raw-strings-always">Raw strings, always</h3>
+<p>Python strings have their own backslash codes, like <code>\n</code> for newline, and Python processes them <em>before</em> the regex engine sees your pattern. Often you get lucky: <code>"\d"</code> isn’t a Python escape, so the backslash survives and the pattern works. Python 3.12 and later grumble with <code>SyntaxWarning: invalid escape sequence '\d'</code>; older versions say nothing. The unlucky case is <code>\b</code>, which <em>is</em> a Python escape, meaning backspace, so <code>"\bcat\b"</code> silently matches nothing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>re.search(<span class="st">"</span><span class="ch">\b</span><span class="st">cat</span><span class="ch">\b</span><span class="st">"</span>, <span class="st">"the cat sat"</span>)     <span class="co"># None</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>re.search(<span class="vs">r"</span><span class="dv">\b</span><span class="vs">cat</span><span class="dv">\b</span><span class="vs">"</span>, <span class="st">"the cat sat"</span>)    <span class="co"># &lt;re.Match object; span=(4, 7), match='cat'&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>r</code> prefix makes a <a href="https://docs.python.org/3/reference/lexical_analysis.html#raw-strings">raw string</a>, in which a backslash is just a backslash. Put <code>r</code> in front of every pattern and this whole class of bug (the HOWTO calls it <a href="https://docs.python.org/3/howto/regex.html#the-backslash-plague">the backslash plague</a>) disappears.</p>
+</section>
 <section id="flags" class="level3">
 <h3 class="anchored" data-anchor-id="flags">Flags</h3>
-<p>Two flags come up constantly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>re.search(<span class="vs">r"python"</span>, <span class="st">"Python"</span>, re.IGNORECASE)   <span class="co"># case-insensitive</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"</span><span class="dv">^\w</span><span class="op">+</span><span class="vs">"</span>, big_text, re.MULTILINE)     <span class="co"># ^ matches each line</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>You can combine them: <code>re.IGNORECASE | re.MULTILINE</code>.</p>
+<p><a href="https://docs.python.org/3/library/re.html#flags">Flags</a> change how a whole pattern behaves. Two come up constantly, and you can combine them with <code>|</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"alpha one</span><span class="ch">\n</span><span class="st">beta two</span><span class="ch">\n</span><span class="st">gamma three"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"</span><span class="dv">^\w</span><span class="op">+</span><span class="vs">"</span>, text)                       <span class="co"># ['alpha']</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>re.findall(<span class="vs">r"</span><span class="dv">^\w</span><span class="op">+</span><span class="vs">"</span>, text, re.MULTILINE)         <span class="co"># ['alpha', 'beta', 'gamma']</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>re.search(<span class="vs">r"python"</span>, <span class="st">"Python"</span>, re.IGNORECASE)   <span class="co"># matches 'Python'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="capture-groups-extracting-parts-of-a-match" class="level2" data-number="18.5">
-<h2 data-number="18.5" class="anchored" data-anchor-id="capture-groups-extracting-parts-of-a-match"><span class="header-section-number">18.5</span> Capture groups: extracting parts of a match</h2>
-<p>Parentheses do two jobs: they group a sub-pattern and they <em>capture</em> what matched so you can pull it out later.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"Order placed on 2024-03-15 for $29.99"</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>match <span class="op">=</span> re.search(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>, text)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> match:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    year, month, day <span class="op">=</span> match.group(<span class="dv">1</span>), match.group(<span class="dv">2</span>), match.group(<span class="dv">3</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(year, month, day)    <span class="co"># 2024 03 15</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>You can also reference groups in the replacement string of <code>re.sub</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>re.sub(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\w</span><span class="op">+</span><span class="kw">)</span><span class="vs">@</span><span class="kw">(</span><span class="dv">\w</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>, <span class="vs">r"</span><span class="ch">\2</span><span class="dv">.</span><span class="ch">\1</span><span class="vs">"</span>, <span class="st">"alice@example"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'example.alice'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>And you can give groups names for readability:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> re.search(<span class="vs">r"</span><span class="kw">(</span><span class="fu">?P&lt;year&gt;</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;month&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;day&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>, text)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>m.group(<span class="st">"year"</span>)   <span class="co"># '2024'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="capture-groups-pulling-out-the-parts" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="capture-groups-pulling-out-the-parts"><span class="header-section-number">18.6</span> Capture groups: pulling out the parts</h2>
+<p>Finding a date is nice; getting its year, month, and day separately is usually the point. Parentheses group part of a pattern and <em>capture</em> what it matched:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"Order placed on 2024-03-15 for $29.99"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>match <span class="op">=</span> re.search(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>, text)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> match:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    year, month, day <span class="op">=</span> match.group(<span class="dv">1</span>), match.group(<span class="dv">2</span>), match.group(<span class="dv">3</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(year, month, day)    <span class="co"># 2024 03 15</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Keep the <code>if match:</code>. When nothing matches, <code>re.search</code> returns <code>None</code>, and calling <code>.group()</code> on it gives <code>AttributeError: 'NoneType' object has no attribute 'group'</code>, one of the most common regex errors there is.</p>
+<p>In a <a href="https://docs.python.org/3/library/re.html#re.sub"><code>re.sub</code></a> replacement, <code>\1</code> means “whatever group 1 matched”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>re.sub(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\w</span><span class="op">+</span><span class="kw">)</span><span class="vs">@</span><span class="kw">(</span><span class="dv">\w</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>, <span class="vs">r"</span><span class="ch">\2</span><span class="dv">.</span><span class="ch">\1</span><span class="vs">"</span>, <span class="st">"alice@example"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'example.alice'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once a pattern has several groups, name them, so you don’t have to count parentheses later:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> re.search(<span class="vs">r"</span><span class="kw">(</span><span class="fu">?P&lt;year&gt;</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;month&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;day&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>, text)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m.group(<span class="st">"year"</span>)   <span class="co"># '2024'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="regex-in-pandas" class="level2" data-number="18.6">
-<h2 data-number="18.6" class="anchored" data-anchor-id="regex-in-pandas"><span class="header-section-number">18.6</span> Regex in pandas</h2>
-<p>pandas has regex built into its string methods. Three you will reach for constantly:</p>
-<p><strong><code>.str.contains(pattern)</code></strong> — boolean mask for rows that match:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> df[<span class="st">"note"</span>].<span class="bu">str</span>.contains(<span class="vs">r"refund</span><span class="cf">|</span><span class="vs">chargeback"</span>, case<span class="op">=</span><span class="va">False</span>, na<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df[mask]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Always pass <code>na=False</code> unless you specifically want <code>NaN</code> to propagate; otherwise a missing value becomes a missing mask and the row filter breaks.</p>
-<p><strong><code>.str.extract(pattern)</code></strong> — pull capture groups into new columns:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the order number from a free-text note column</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"order_id"</span>] <span class="op">=</span> df[<span class="st">"note"</span>].<span class="bu">str</span>.extract(<span class="vs">r"Order #</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If your pattern has multiple groups, you get a DataFrame:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> df[<span class="st">"date"</span>].<span class="bu">str</span>.extract(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>parts.columns <span class="op">=</span> [<span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong><code>.str.replace(pattern, repl, regex=True)</code></strong> — substitute matches:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"phone"</span>] <span class="op">=</span> df[<span class="st">"phone"</span>].<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\d</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>, regex<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That last example strips every non-digit character, normalizing <code>(303) 555-1212</code> and <code>303.555.1212</code> both to <code>3035551212</code>.</p>
+<section id="regex-in-pandas" class="level2" data-number="18.7">
+<h2 data-number="18.7" class="anchored" data-anchor-id="regex-in-pandas"><span class="header-section-number">18.7</span> Regex in pandas</h2>
+<p>Your text usually lives in a DataFrame column, and pandas’ <a href="https://pandas.pydata.org/docs/user_guide/text.html">string methods</a> take patterns directly, with a few defaults that surprise people.</p>
+<p><strong><a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.contains.html"><code>.str.contains</code></a></strong> gives a True/False mask for filtering rows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> df[<span class="st">"note"</span>].<span class="bu">str</span>.contains(<span class="vs">r"refund</span><span class="cf">|</span><span class="vs">chargeback"</span>, case<span class="op">=</span><span class="va">False</span>, na<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df[mask]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The surprise is that it treats your search text as a regex <em>by default</em>. That’s why <code>3.5</code> also finds <code>Room 305</code>, and why, with PyArrow installed, searching a skills column for <code>C++</code> fails with <code>ArrowInvalid: Invalid regular expression: bad repetition operator: ++</code>. For literal text, say so with <code>regex=False</code> (or use <code>re.escape</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>skills.<span class="bu">str</span>.contains(<span class="st">"C++"</span>, regex<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Keep <code>na=False</code>, too. pandas 3 already gives <code>False</code> for missing text, but in a mixed-type <code>object</code> column (or older pandas) a missing value stays missing, and the filter fails with <code>ValueError: Cannot mask with non-boolean array containing NA / NaN values</code>.</p>
+<p><strong><a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.extract.html"><code>.str.extract</code></a></strong> pulls capture groups into columns. It returns a DataFrame, even for one group; pass <code>expand=False</code> for a plain column, and name groups to name the columns:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"order_id"</span>] <span class="op">=</span> df[<span class="st">"note"</span>].<span class="bu">str</span>.extract(<span class="vs">r"Order #</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>, expand<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> df[<span class="st">"date"</span>].<span class="bu">str</span>.extract(<span class="vs">r"</span><span class="kw">(</span><span class="fu">?P&lt;year&gt;</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;month&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">-</span><span class="kw">(</span><span class="fu">?P&lt;day&gt;</span><span class="dv">\d</span><span class="op">{2}</span><span class="kw">)</span><span class="vs">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What comes back is text (<code>'4829'</code>, not <code>4829</code>), so use <code>pd.to_numeric</code> before doing arithmetic. Rows with no match get <code>NaN</code>, and only the <em>first</em> match counts; <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.findall.html"><code>.str.findall</code></a> returns every match as a list.</p>
+<p><strong><a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.replace.html"><code>.str.replace</code></a></strong> flips the default: since pandas 2.0 it treats the pattern as plain text unless you pass <code>regex=True</code>. Forget it and the column comes back unchanged, with no error:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"phone"</span>] <span class="op">=</span> df[<span class="st">"phone"</span>].<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\d</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>, regex<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That strips every non-digit, turning both <code>(303) 555-1212</code> and <code>303.555.1212</code> into <code>3035551212</code>.</p>
 </section>
-<section id="when-not-to-use-regex" class="level2" data-number="18.7">
-<h2 data-number="18.7" class="anchored" data-anchor-id="when-not-to-use-regex"><span class="header-section-number">18.7</span> When not to use regex</h2>
-<p>Regex is a hammer. It is not the right tool for:</p>
+<section id="same-idea-different-dialects" class="level2" data-number="18.8">
+<h2 data-number="18.8" class="anchored" data-anchor-id="same-idea-different-dialects"><span class="header-section-number">18.8</span> Same idea, different dialects</h2>
+<p>Regex is a family of dialects, or <em>flavors</em>, that agree on the basics and differ in the details (<a href="https://en.wikipedia.org/wiki/Comparison_of_regular_expression_engines">Wikipedia compares many of them</a>). That’s why a pattern tested in Python can find nothing somewhere else.</p>
+<p><strong>grep</strong> (see <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>) uses <em>basic</em> syntax by default, where <code>|</code>, <code>+</code>, <code>?</code>, and parentheses are ordinary characters unless backslashed, so <code>grep -rn 'TODO|FIXME' src/</code> looks for the literal text <code>TODO|FIXME</code>. Add <code>-E</code> for <em>extended</em> syntax, close to this chapter’s. Neither knows <code>\d</code>: GNU grep reads <code>grep -E '\d+'</code> as a plain <code>d</code>, matching <code>odd</code> and skipping <code>42</code>. Use <code>[0-9]</code> or <code>[[:digit:]]</code>, or <code>-P</code> on GNU grep. The <a href="https://www.gnu.org/software/grep/manual/grep.html#Basic-vs-Extended">GNU grep manual</a> lists the differences. macOS ships a BSD grep with its own quirks; POSIX classes like <code>[[:digit:]]</code> and <code>[[:space:]]</code> work in both.</p>
+<p><strong>pandas 3</strong>, when PyArrow is installed, stores text with PyArrow and sends most patterns to its engine, Google’s RE2 (<a href="https://arrow.apache.org/docs/cpp/compute.html">per Arrow’s docs</a>), falling back to <code>re</code> for features RE2 lacks. Everyday patterns behave the same, with exceptions: <code>C++</code> is legal in Python 3.11 and later but an error in RE2, and RE2’s <code>\w</code> and <code>\d</code> match only ASCII.</p>
+<p><strong>Editors and spreadsheets</strong> vary too: a <a href="https://code.visualstudio.com/docs/editing/codebasics#_search-and-replace">VS Code regex replace</a> writes a group as <code>$1</code>, not <code>\1</code>, and Google Sheets’ <a href="https://support.google.com/docs/answer/3098292"><code>REGEXMATCH</code></a> uses RE2.</p>
+<p>When a pattern misbehaves, paste it into <a href="https://regex101.com/">regex101</a>, pick your tool’s flavor (Python is one), and it explains every piece.</p>
+</section>
+<section id="when-not-to-use-regex" class="level2" data-number="18.9">
+<h2 data-number="18.9" class="anchored" data-anchor-id="when-not-to-use-regex"><span class="header-section-number">18.9</span> When not to use regex</h2>
+<p>Regex is a hammer, and some jobs aren’t nails:</p>
 <ul>
-<li><strong>Parsing HTML or XML.</strong> Use <code>BeautifulSoup</code> or <code>lxml</code>. HTML is not regular, and regex on it is a well-known anti-pattern with many famous rants about it.</li>
-<li><strong>Parsing JSON.</strong> Use the <code>json</code> module. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</li>
-<li><strong>Validating real email addresses or URLs.</strong> The official email regex is thousands of characters long. Use a dedicated library (<code>email-validator</code>, <code>urllib.parse</code>) or a simple “contains an @ and a dot” sanity check.</li>
-<li><strong>Anything where you need to understand structure, not match shape.</strong> If the text has nested elements, recursion, or balanced brackets, regex will frustrate you. Reach for a real parser.</li>
+<li><strong>Parsing HTML or XML.</strong> Use <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">Beautiful Soup</a> or <a href="https://lxml.de/">lxml</a>. HTML nests tags to any depth, which a true regular expression can’t track (it isn’t a <a href="https://en.wikipedia.org/wiki/Regular_language">regular language</a>).</li>
+<li><strong>Parsing JSON.</strong> Use the <a href="https://docs.python.org/3/library/json.html"><code>json</code></a> module. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</li>
+<li><strong>Validating real email addresses or URLs.</strong> A regex that follows the old email standard (RFC 822) <a href="https://pdw.ex-parrot.com/Mail-RFC822-Address.html">runs past 6,000 characters</a> and still can’t handle everything the standard allows. Use a library such as <a href="https://pypi.org/project/email-validator/">email-validator</a>, split URLs with <a href="https://docs.python.org/3/library/urllib.parse.html"><code>urllib.parse</code></a>, or settle for “contains an <code>@</code> and a dot.”</li>
+<li><strong>Anything where you need structure, not shape.</strong> Nested elements, balanced brackets, and recursion call for a real <a href="https://en.wikipedia.org/wiki/Parsing">parser</a>.</li>
 </ul>
-<p>A good rule of thumb: if your regex is longer than one line or contains more than three <code>(...)</code> groups, reconsider.</p>
+<p>A good rule of thumb: if your regex is longer than one line or has more than three groups, reconsider. Write plain Python instead, or at least use the <a href="https://docs.python.org/3/library/re.html#re.VERBOSE"><code>re.VERBOSE</code></a> flag, which lets you spread a pattern over several lines with a comment on each piece.</p>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="18.8">
-<h2 data-number="18.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">18.8</span> Stakes and politics</h2>
-<p>Regular expressions are syntactic plumbing, but the plumbing has a cultural assumption baked in: matching is <em>about ASCII</em>. The character classes most tutorials introduce — <code>\w</code> for “word character,” <code>\d</code> for “digit,” <code>[A-Za-z]</code> for “letter” — were defined for an English-letter, Arabic-numeral world, and they quietly do the wrong thing in any other one. <code>\d</code> matches <code>0</code>–<code>9</code> but not Arabic-Indic or Devanagari digits unless you opt into Unicode mode; <code>\w</code> matches <code>[A-Za-z0-9_]</code> and excludes accented letters, Cyrillic, Han characters, and combining marks. A “validate this name” regex written in the default English-centric way silently rejects names containing characters that two-thirds of the world’s people use.</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you write a regex over real text, ask whose alphabets it implicitly assumes — and decide deliberately whether that assumption is right for your data, or whether you should pass <code>re.UNICODE</code> (or, in pandas, work with <code>.str</code> methods that handle Unicode by default).</p>
+<section id="stakes-and-politics" class="level2" data-number="18.10">
+<h2 data-number="18.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">18.10</span> Stakes and politics</h2>
+<p>If a web form has ever told you your name contains invalid characters, you’ve met a regex written by someone whose name it fits. Often the culprit is a pattern like <code>^[A-Za-z]+$</code>, which accepts Smith and rejects José, Nguyễn, O’Brien, Mary-Jane, and 李, leaving each of those people to misspell their own name to get through. Python’s <code>\w</code> is kinder, counting accented letters and Chinese characters as word characters, but that depends on the engine. With pandas 3.0.6 and PyArrow, <code>re.fullmatch(r"\w+", "José")</code> succeeds, while <code>.str.fullmatch(r"\w+")</code> on a column holding the same name returns <code>False</code>, because PyArrow’s engine treats <code>\w</code> as ASCII only.</p>
+<p>The politics sits in the defaults. Which alphabet counts as “letters” was decided by whoever wrote the class or built the engine, and the cost falls on the people it leaves out, who rarely see the pattern that turned them away.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you validate or filter text that people write about themselves, test your pattern on names from outside your own alphabet, and ask whether you need to validate them at all.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="18.9">
-<h2 data-number="18.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">18.9</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="18.11">
+<h2 data-number="18.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">18.11</span> Worked examples</h2>
 <section id="extracting-order-ids-from-free-text-notes" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-order-ids-from-free-text-notes">Extracting order IDs from free-text notes</h3>
-<p>You have a column of customer service notes and you need the order ID mentioned in each one.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>notes <span class="op">=</span> pd.Series([</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Customer called about Order #4829, refund requested"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Order #1337 shipped late"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No order mentioned"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Orders #9999 and #1000, dispute"</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> notes.<span class="bu">str</span>.extract(<span class="vs">r"Order #</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(orders)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You have a column of customer-service notes and need the order ID in each one.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>notes <span class="op">=</span> pd.Series([</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Customer called about Order #4829, refund requested"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Order #1337 shipped late"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"No order mentioned"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Orders #9999 and #1000, dispute"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> notes.<span class="bu">str</span>.extract(<span class="vs">r"Order #</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(orders)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Output:</p>
 <pre><code>      0
 0  4829
 1  1337
 2   NaN
-3  9999</code></pre>
-<p>Note that row 3 only extracted the first match. If you need all matches per row, use <code>.str.findall(r"Order #(\d+)")</code> instead and deal with the list.</p>
+3   NaN</code></pre>
+<p>Row 3 came back empty, though it plainly mentions two orders: the pattern wants <code>Order #</code>, and row 3 says <code>Orders #</code>. A regex does what you wrote, not what you meant, so look at the <code>NaN</code> rows before you trust an extraction. <code>r"Orders? #(\d+)"</code> fixes it, returning <code>9999</code> for row 3, but <code>.str.extract</code> still takes only the first match. For every order in every row, <code>notes.str.findall(r"#(\d+)")</code> gives a list per row, with <code>['9999', '1000']</code> for row 3.</p>
 </section>
 <section id="normalizing-phone-numbers" class="level3">
 <h3 class="anchored" data-anchor-id="normalizing-phone-numbers">Normalizing phone numbers</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>phones <span class="op">=</span> [<span class="st">"(303) 555-1212"</span>, <span class="st">"303.555.1212"</span>, <span class="st">"+1 303 555 1212"</span>, <span class="st">"3035551212"</span>]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cleaned <span class="op">=</span> [re.sub(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\d</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>, p) <span class="cf">for</span> p <span class="kw">in</span> phones]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ['3035551212', '3035551212', '13035551212', '3035551212']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Now you can compare them (modulo the country code).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>phones <span class="op">=</span> [<span class="st">"(303) 555-1212"</span>, <span class="st">"303.555.1212"</span>, <span class="st">"+1 303 555 1212"</span>, <span class="st">"3035551212"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cleaned <span class="op">=</span> [re.sub(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\d</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>, p) <span class="cf">for</span> p <span class="kw">in</span> phones]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ['3035551212', '3035551212', '13035551212', '3035551212']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>[^\d]</code> means “anything that isn’t a digit” (so does <code>\D</code>). Now you can compare the numbers, once you decide what to do about the leading country code on the third.</p>
 </section>
 <section id="simple-validation-with-re.fullmatch" class="level3">
 <h3 class="anchored" data-anchor-id="simple-validation-with-re.fullmatch">Simple validation with <code>re.fullmatch</code></h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> looks_like_us_zip(s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">bool</span>(re.fullmatch(<span class="vs">r"</span><span class="dv">\d</span><span class="op">{5}</span><span class="kw">(</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="op">?</span><span class="vs">"</span>, s))</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301"</span>)         <span class="co"># True</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301-1234"</span>)    <span class="co"># True</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"803011"</span>)        <span class="co"># False</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301 "</span>)        <span class="co"># False (trailing space)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>re.fullmatch</code> requires the pattern to cover the <em>entire</em> string — much safer than <code>re.match</code> for validation.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> looks_like_us_zip(s: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">bool</span>(re.fullmatch(<span class="vs">r"</span><span class="dv">\d</span><span class="op">{5}</span><span class="kw">(</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="op">?</span><span class="vs">"</span>, s))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301"</span>)         <span class="co"># True</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301-1234"</span>)    <span class="co"># True</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"803011"</span>)        <span class="co"># False</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>looks_like_us_zip(<span class="st">"80301 "</span>)        <span class="co"># False (trailing space)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>re.fullmatch</code> requires the pattern to cover the <em>entire</em> string. With <code>re.match</code>, <code>"803011"</code> would pass, because its first five characters look fine.</p>
 </section>
 <section id="grep-from-the-terminal" class="level3">
-<h3 class="anchored" data-anchor-id="grep-from-the-terminal">Grep from the terminal</h3>
-<p>The <code>grep</code> command uses regex too. From <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^def \w+'</span> src/<span class="pp">*</span>.py          <span class="co"># every function definition</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-rn</span> <span class="st">'TODO|FIXME'</span> src/           <span class="co"># all </span><span class="al">TODO</span><span class="co"> / </span><span class="al">FIXME</span><span class="co"> markers</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vE</span> <span class="st">'^\s*#'</span> config.cfg          <span class="co"># strip comment lines</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Your regex skill transfers directly.</p>
+<h3 class="anchored" data-anchor-id="grep-from-the-terminal">grep from the terminal</h3>
+<p>The same patterns work in the terminal (<a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>), minding the dialect differences above:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^def [a-z_]+'</span> src/<span class="pp">*</span>.py        <span class="co"># every top-level function definition</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-rnE</span> <span class="st">'TODO|FIXME'</span> src/            <span class="co"># every </span><span class="al">TODO</span><span class="co"> or </span><span class="al">FIXME</span><span class="co">, with line numbers</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vE</span> <span class="st">'^[[:space:]]*#'</span> config.cfg   <span class="co"># the file without its comment lines</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Without the <code>-E</code> in the second line, grep would look for the literal text <code>TODO|FIXME</code>.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="18.10">
-<h2 data-number="18.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">18.10</span> Templates</h2>
-<p><strong>A cheat-sheet for the patterns you will reuse most often:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d+"</span>              <span class="co"># one or more digits</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{3}-</span><span class="er">\</span><span class="co">d{4}"</span>      <span class="co"># 3 digits, dash, 4 digits</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">r"[A-Za-z]+"</span>        <span class="co"># one or more letters</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">s+"</span>              <span class="co"># whitespace run (use for splitting or cleanup)</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">r"^</span><span class="er">\</span><span class="co">s+|</span><span class="er">\</span><span class="co">s+$"</span>        <span class="co"># leading or trailing whitespace (alt to .strip())</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="ch">\b</span><span class="er">\</span><span class="co">w+</span><span class="ch">\b</span><span class="co">"</span>          <span class="co"># whole words</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">r"[A-Z][a-z]+"</span>      <span class="co"># a capitalized word (names, usually)</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">r"#</span><span class="er">\</span><span class="co">w+"</span>             <span class="co"># hashtag</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">r"@</span><span class="er">\</span><span class="co">w+"</span>             <span class="co"># mention / username</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{4}-</span><span class="er">\</span><span class="co">d{2}-</span><span class="er">\</span><span class="co">d{2}"# ISO-ish date (shape only, not validation)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="templates" class="level2" data-number="18.12">
+<h2 data-number="18.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">18.12</span> Templates</h2>
+<p><strong>A cheat sheet for the patterns you’ll reuse most often:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d+"</span>                  <span class="co"># one or more digits</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{3}-</span><span class="er">\</span><span class="co">d{4}"</span>          <span class="co"># 3 digits, dash, 4 digits</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">r"[A-Za-z]+"</span>            <span class="co"># one or more ASCII letters (misses é, ñ, 李)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">s+"</span>                  <span class="co"># a run of whitespace (for splitting or cleanup)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">r"^</span><span class="er">\</span><span class="co">s+|</span><span class="er">\</span><span class="co">s+$"</span>            <span class="co"># leading or trailing whitespace (an alternative to .strip())</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="ch">\b</span><span class="er">\</span><span class="co">w+</span><span class="ch">\b</span><span class="co">"</span>              <span class="co"># whole words</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">r"[A-Z][a-z]+"</span>          <span class="co"># a capitalized ASCII word</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">r"#</span><span class="er">\</span><span class="co">w+"</span>                 <span class="co"># hashtag</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">r"@</span><span class="er">\</span><span class="co">w+"</span>                 <span class="co"># mention or username</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">r"</span><span class="er">\</span><span class="co">d{4}-</span><span class="er">\</span><span class="co">d{2}-</span><span class="er">\</span><span class="co">d{2}"</span>    <span class="co"># ISO 8601-style date (shape only, not validation)</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">r'"[^"]*"'</span>              <span class="co"># a double-quoted phrase that stops at the closing quote</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="18.11">
-<h2 data-number="18.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.11</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="18.13">
+<h2 data-number="18.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.13</span> Exercises</h2>
 <ol type="1">
 <li>Write a regex that matches a US phone number written as <code>(xxx) xxx-xxxx</code>, <code>xxx-xxx-xxxx</code>, or <code>xxx.xxx.xxxx</code>. Test it on five variations.</li>
 <li>You have a log file with lines like <code>2024-03-15 14:22:03 ERROR Failed to connect</code>. Write a regex with capture groups that extracts the date, time, level, and message.</li>
 <li>Given a pandas Series of URLs, use <code>.str.extract</code> to pull out the domain (the part between <code>://</code> and the next <code>/</code>).</li>
 <li>Write a regex that matches words of 4–7 letters from a block of English text. Use <code>\b</code>. Find a short paragraph to test on.</li>
 <li>Use <code>re.sub</code> to redact credit card numbers from a string, replacing any 16-digit run with <code>XXXX-XXXX-XXXX-XXXX</code>.</li>
-<li>Using the terminal, run <code>grep -E</code> with a regex to find every line in your Python source files that starts with <code>def</code> or <code>class</code> — a quick index of your API.</li>
-<li>Take a regex you find confusing and rewrite it on paper, breaking it into pieces and explaining each. If you cannot, it is probably too clever and a simpler approach exists.</li>
+<li>Using the terminal, run <code>grep -E</code> with a regex to find every line in your Python source files that starts with <code>def</code> or <code>class</code>: a quick index of your code.</li>
+<li>Take a regex you find confusing and rewrite it on paper, breaking it into pieces and explaining each. If you can’t, it’s probably too clever, and a simpler approach exists.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="18.12">
-<h2 data-number="18.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">18.12</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="18.14">
+<h2 data-number="18.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">18.14</span> One-page checklist</h2>
 <ul>
 <li>Use raw strings (<code>r"..."</code>) for every Python regex.</li>
-<li>Start with the simplest thing that matches what you want; only add complexity when it fails.</li>
+<li>Escape metacharacters you mean literally (<code>\.</code>, <code>\$</code>), or use <code>re.escape</code>.</li>
+<li>Start simple; add complexity only when a test fails.</li>
 <li>Anchor with <code>\b</code>, <code>^</code>, or <code>$</code> when you want exact boundaries.</li>
-<li>Use character classes (<code>\d</code>, <code>\w</code>, <code>\s</code>) rather than long bracket groups.</li>
-<li>Use <code>re.fullmatch</code> for validation, <code>re.search</code> for extraction, <code>re.findall</code> for all matches, <code>re.sub</code> for replacement.</li>
-<li>In pandas, use <code>.str.contains(..., na=False)</code>, <code>.str.extract</code>, and <code>.str.replace(..., regex=True)</code>.</li>
-<li>Test your regex on at least one “expected” and one “unexpected” input before trusting it.</li>
-<li>Reach for a parser (BeautifulSoup, json, etc.) when the text has structure.</li>
-<li>If your regex is over one line or has lots of groups, consider rewriting in Python code.</li>
+<li>Prefer a specific class like <code>[^"]*</code> to <code>.*</code>, and don’t nest quantifiers.</li>
+<li>Use <code>re.fullmatch</code> to validate, <code>re.search</code> to find, <code>re.findall</code> for all matches, <code>re.sub</code> to replace.</li>
+<li>In pandas: <code>regex=False</code> for literal text in <code>.str.contains</code>, <code>na=False</code> for filtering, <code>regex=True</code> in <code>.str.replace</code>.</li>
+<li>Test on input that should match and input that shouldn’t, and look at the rows that came back empty.</li>
+<li>Moving a pattern to grep, an editor, or a spreadsheet? Check its flavor.</li>
+<li>Reach for a parser (Beautiful Soup, <code>json</code>) when the text has structure.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1102,11 +1137,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <ul>
 <li>Python docs, <a href="https://docs.python.org/3/library/re.html"><code>re</code> module reference</a> — the authoritative list of pattern syntax and functions in Python’s regex engine.</li>
-<li>Python docs, <a href="https://docs.python.org/3/howto/regex.html">Regular Expression HOWTO</a> — a longer-form tutorial that builds intuition before you reach for the reference.</li>
-<li><a href="https://regex101.com/">regex101</a> — an interactive tester that explains every part of a pattern as you type; switch the flavor to “Python” and your local results match what <code>re</code> will do.</li>
-<li>Jeffrey Friedl, <a href="https://www.oreilly.com/library/view/mastering-regular-expressions/0596528124/"><em>Mastering Regular Expressions</em></a> — the standard book on regex internals across languages; worth knowing exists when a complex pattern is fighting you.</li>
-<li>Unicode Consortium, <a href="https://www.unicode.org/reports/tr18/">UTS #18: Unicode Regular Expressions</a> — the technical standard for what “regex over Unicode” should mean; useful context for the ASCII-bias issue raised in “Stakes and politics” above.</li>
-<li>Steven Levithan and Jan Goyvaerts, <a href="https://www.regular-expressions.info/">Regular-Expressions.info</a> — a deep, language-agnostic reference for regex syntax and engine behaviors.</li>
+<li>Python docs, <a href="https://docs.python.org/3/howto/regex.html">Regular Expression HOWTO</a> — a friendly, longer tutorial that builds intuition before you reach for the reference.</li>
+<li>Jeffrey Friedl, <a href="https://www.oreilly.com/library/view/mastering-regular-expressions/0596528124/"><em>Mastering Regular Expressions</em></a> — the standard book on regex internals across languages; worth knowing about when a complex pattern is fighting you.</li>
+<li>Unicode Consortium, <a href="https://www.unicode.org/reports/tr18/">UTS #18: Unicode Regular Expressions</a> — the technical standard for what “regex over Unicode” should mean; useful context for the alphabet question in “Stakes and politics” above.</li>
+<li>Patrick McKenzie, <a href="https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/">Falsehoods Programmers Believe About Names</a> — a short, much-cited list of assumptions about names that validation code gets wrong.</li>
+<li>Steven Levithan and Jan Goyvaerts, <a href="https://www.regular-expressions.info/">Regular-Expressions.info</a> — a deep, language-agnostic reference for regex syntax and how the flavors differ.</li>
 </ul>
 </div>
 </div>
