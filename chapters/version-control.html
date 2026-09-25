@@ -760,13 +760,13 @@ window.Quarto = {
   <li><a href="#releases-and-tags-optional" id="toc-releases-and-tags-optional" class="nav-link" data-scroll-target="#releases-and-tags-optional">Releases and tags (optional)</a></li>
   </ul></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">31.12</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">31.13</span> Worked examples (outline)</a>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">31.13</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#the-daily-loop" id="toc-the-daily-loop" class="nav-link" data-scroll-target="#the-daily-loop">The daily loop</a></li>
-  <li><a href="#branch-pr-workflow" id="toc-branch-pr-workflow" class="nav-link" data-scroll-target="#branch-pr-workflow">Branch + PR workflow</a></li>
+  <li><a href="#branch-and-pull-request" id="toc-branch-and-pull-request" class="nav-link" data-scroll-target="#branch-and-pull-request">Branch and pull request</a></li>
   <li><a href="#resolve-a-merge-conflict" id="toc-resolve-a-merge-conflict" class="nav-link" data-scroll-target="#resolve-a-merge-conflict">Resolve a merge conflict</a></li>
-  <li><a href="#fork-contribution" id="toc-fork-contribution" class="nav-link" data-scroll-target="#fork-contribution">Fork contribution</a></li>
-  <li><a href="#recover-from-a-bad-reset" id="toc-recover-from-a-bad-reset" class="nav-link" data-scroll-target="#recover-from-a-bad-reset">Recover from a bad reset</a></li>
+  <li><a href="#contribute-through-a-fork" id="toc-contribute-through-a-fork" class="nav-link" data-scroll-target="#contribute-through-a-fork">Contribute through a fork</a></li>
+  <li><a href="#move-a-commit-you-made-on-the-wrong-branch" id="toc-move-a-commit-you-made-on-the-wrong-branch" class="nav-link" data-scroll-target="#move-a-commit-you-made-on-the-wrong-branch">Move a commit you made on the wrong branch</a></li>
   </ul></li>
   <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">31.14</span> Templates</a>
   <ul class="collapse">
@@ -1318,37 +1318,117 @@ data/processed/
 <p>Third, <em>“if it’s not in Git, it didn’t happen”</em> is a useful slogan that quietly excludes work that does not fit Git’s model: dataset curation, oral knowledge, design conversations, mentoring labor. As with project management, the visible kind of work gets credit; the rest does not.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “host it on GitHub,” ask what changes if the platform does — and which work is still real even when Git cannot represent it.</p>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="31.13">
-<h2 data-number="31.13" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">31.13</span> Worked examples (outline)</h2>
+<section id="worked-examples" class="level2" data-number="31.13">
+<h2 data-number="31.13" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">31.13</span> Worked examples</h2>
+<p>The examples follow one small project, <code>survey-analysis</code>, a script and a README that clean a course survey. The transcripts are real; your hashes will differ, and where <code>git push</code> names the remote, the address is shortened to <code>...</code>.</p>
 <section id="the-daily-loop" class="level3">
 <h3 class="anchored" data-anchor-id="the-daily-loop">The daily loop</h3>
-<ul>
-<li>Edit file, check status/diff, stage, commit, push.</li>
-</ul>
+<p>You added run instructions to the README. Before you commit, look at what changed, then stage, commit, and push:</p>
+<pre class="text"><code>$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+    modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ git diff
+diff --git a/README.md b/README.md
+index d7c8cce..ce4321f 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,7 @@
+ # Survey analysis
+
+ Cleans and summarizes the spring survey.
++
++## Run
++
++    python clean.py
+$ git add README.md
+$ git commit -m "Add run instructions to README"
+[main 24c42fc] Add run instructions to README
+ 1 file changed, 4 insertions(+)
+$ git push
+To ...
+   27194ea..24c42fc  main -&gt; main</code></pre>
+<p><code>git status</code> says which files changed; <code>git diff</code> shows the changed lines, with <code>+</code> for added and <code>-</code> for removed. Reading the diff before every commit is the habit that catches the stray debugging line or the file you didn’t mean to touch. The last line of <code>git push</code> says your branch moved from one commit to the next on the remote.</p>
 </section>
-<section id="branch-pr-workflow" class="level3">
-<h3 class="anchored" data-anchor-id="branch-pr-workflow">Branch + PR workflow</h3>
-<ul>
-<li>Create feature branch, commit in small steps, open PR, respond to review, merge.</li>
-</ul>
+<section id="branch-and-pull-request" class="level3">
+<h3 class="anchored" data-anchor-id="branch-and-pull-request">Branch and pull request</h3>
+<p>A change that someone should review goes on its own branch. Here, two commits drop test responses that staff entered while checking the survey:</p>
+<pre class="text"><code>$ git switch -c drop-test-responses
+Switched to a new branch 'drop-test-responses'
+$ git commit -am "Drop test responses from staff accounts"
+$ git commit -am "Explain why test responses are dropped"
+$ git push -u origin drop-test-responses
+To ...
+ * [new branch]      drop-test-responses -&gt; drop-test-responses
+branch 'drop-test-responses' set up to track 'origin/drop-test-responses'.
+$ git log --oneline --graph
+* 83ac980 Explain why test responses are dropped
+* de5b3ad Drop test responses from staff accounts
+* 24c42fc Add run instructions to README
+* 27194ea Start the project</code></pre>
+<p>Then open a pull request on GitHub (it offers a button for a branch you just pushed), and describe what the change does and how to check it (see Template B below). When a reviewer asks for a change, make it as a new commit on the same branch and <code>git push</code> again; the pull request updates itself, and the review history stays readable. After it merges, update your own <code>main</code> and delete the branch: <code>git switch main</code>, <code>git pull</code>, <code>git branch -d drop-test-responses</code>.</p>
 </section>
 <section id="resolve-a-merge-conflict" class="level3">
 <h3 class="anchored" data-anchor-id="resolve-a-merge-conflict">Resolve a merge conflict</h3>
-<ul>
-<li>Create an intentional conflict, resolve using the playbook, run a smoke test.</li>
-</ul>
+<p>While the branch waited for review, someone changed the same line of the README on <code>main</code>. Bringing <code>main</code> into the branch stops with a conflict:</p>
+<pre class="text"><code>$ git merge main
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+<p>Git has written both versions into the file, between markers:</p>
+<pre class="text"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Cleans the spring survey and drops test responses.
+=======
+Cleans and summarizes the spring 2026 course survey.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</code></pre>
+<p>The part above <code>=======</code> is your branch (<code>HEAD</code>); the part below is <code>main</code>. Neither is simply right: one names the survey, the other mentions the new step. Write the line you want, delete all three marker lines, and finish the merge:</p>
+<pre class="text"><code>Cleans the spring 2026 course survey and drops test responses.</code></pre>
+<pre class="text"><code>$ git add README.md
+$ git commit -m "Merge main into drop-test-responses"
+$ git log --oneline --graph -6
+*   40a3ee8 Merge main into drop-test-responses
+|\
+| * 6776b0f Say which survey
+* | ba12f45 Mention test responses in README
+* | 83ac980 Explain why test responses are dropped
+* | de5b3ad Drop test responses from staff accounts
+|/
+* 24c42fc Add run instructions to README</code></pre>
+<p>Then run the code, or at least open the file, before you push: a merge that Git accepts can still leave a broken file if a marker line survived.</p>
 </section>
-<section id="fork-contribution" class="level3">
-<h3 class="anchored" data-anchor-id="fork-contribution">Fork contribution</h3>
-<ul>
-<li>Fork, clone, add upstream, sync, open PR to upstream.</li>
-</ul>
+<section id="contribute-through-a-fork" class="level3">
+<h3 class="anchored" data-anchor-id="contribute-through-a-fork">Contribute through a fork</h3>
+<p>To suggest a fix to a project you can’t push to, such as this book, fork it on GitHub, clone your fork, and add the original as a second remote called <code>upstream</code>:</p>
+<pre class="text"><code>$ git remote add upstream https://github.com/cuinfoscience/INFO-Missing-Manual.git
+$ git remote -v
+origin  https://github.com/YOUR-USERNAME/INFO-Missing-Manual.git (fetch)
+origin  https://github.com/YOUR-USERNAME/INFO-Missing-Manual.git (push)
+upstream    https://github.com/cuinfoscience/INFO-Missing-Manual.git (fetch)
+upstream    https://github.com/cuinfoscience/INFO-Missing-Manual.git (push)</code></pre>
+<p><code>origin</code> is your copy, which you can push to; <code>upstream</code> is the project, which you only read from. Bring your <code>main</code> up to date (<code>git fetch upstream</code>, then <code>git merge upstream/main</code>), make a branch, commit, push the branch to <code>origin</code>, and open a pull request from your fork to the project. “Forking workflow” above has each command. <code>CONTRIBUTING.md</code> in this book’s repository walks through the same steps for a first contribution.</p>
 </section>
-<section id="recover-from-a-bad-reset" class="level3">
-<h3 class="anchored" data-anchor-id="recover-from-a-bad-reset">Recover from a bad reset</h3>
-<ul>
-<li>Make three commits, run <code>git reset --hard HEAD~2</code>, find the lost commit in <code>git reflog</code>, and reset back to it (or branch from it).</li>
-</ul>
+<section id="move-a-commit-you-made-on-the-wrong-branch" class="level3">
+<h3 class="anchored" data-anchor-id="move-a-commit-you-made-on-the-wrong-branch">Move a commit you made on the wrong branch</h3>
+<p>You meant to start a branch, but you committed on <code>main</code>. As long as you haven’t pushed it, you can move the commit: make a branch where you are, move <code>main</code> back to match the remote, and switch to the new branch.</p>
+<pre class="text"><code>$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+$ git branch save-output
+$ git reset --hard origin/main
+HEAD is now at 6776b0f Say which survey
+$ git switch save-output
+Switched to branch 'save-output'
+$ git log --oneline -2
+5c6be3a Write the cleaned survey to data/processed
+6776b0f Say which survey</code></pre>
+<p>The commit is safe on <code>save-output</code> before <code>reset --hard</code> moves <code>main</code>, and the reflog has it if anything goes wrong (see “The second week” above). Read the status line first: “ahead by 1 commit” means one commit moves. When this example was first run, <code>main</code> was ahead by 2, because an earlier commit had never been pushed, and both moved to the new branch. <code>git log origin/main..main</code> lists exactly which commits will move.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="31.14">
