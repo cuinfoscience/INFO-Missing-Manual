@@ -17,6 +17,7 @@
 | Data ethics and licensing | Say where it goes: a section in `artifacts-have-politics`, or a new chapter. The roadmap leaves it open. |
 | Two hand captures | The Windows and macOS About panels for `operating-system`, on real machines; crop out the serial number and device name, and record each with `tools/shots/run adopt` and a `legacy:` block. |
 | The open pull request | Review and merge (agents don't merge unless asked). |
+| The peer-review revision plan | Make the eight decisions at the top of [`plans/2026-09-25-peer-review-revisions.md`](plans/2026-09-25-peer-review-revisions.md) (chapter order, the default setup path, new chapters, a running project and practice repository, where exercise answers go, a humanities thread, the disclosure wording, a length budget). Phase 1 doesn't depend on them and can start any time. |
 | The AI-disclosure appendix | Confirm or reword the claims about human review: #68 scoped "every paragraph was read by a human author" and "code checked by humans" to work before September 2026, and says the September rewrite came to you as pull requests you merged. Say how you reviewed the rewrite if you want that stated. |
 | Community files | A `CODE_OF_CONDUCT.md` (for example, the Contributor Covenant). |
 
@@ -43,6 +44,6 @@
 ## Next, when work resumes
 
 1. **Screenshots, when the maintainer is ready:** the operating-system panels (hand captures on macOS and Windows, recorded with `adopt`). M6, a CI check for screenshots, can come any time.
-2. **The voice rewrite is done** once #68 merges; [`aar/AAR_INFO-Missing-Manual_2026-09-25.md`](aar/AAR_INFO-Missing-Manual_2026-09-25.md) reviews it. Next for agents: update the book's own CI to the GitHub Actions versions `automation` teaches (roadmap), then a yearly re-run of every chapter's examples, since tool changes caused many of the rewrite's fixes.
+2. **The voice rewrite is done** once #68 merges; [`aar/AAR_INFO-Missing-Manual_2026-09-25.md`](aar/AAR_INFO-Missing-Manual_2026-09-25.md) reviews it. Then the peer review ([`aar/2026-09-25-peer-review.md`](aar/2026-09-25-peer-review.md)) and its revision plan: Phase 1 can start now; the rest waits on the maintainer's decisions. Also next for agents: update the book's own CI to the GitHub Actions versions `automation` teaches (roadmap), then a yearly re-run of every chapter's examples, since tool changes caused many of the rewrite's fixes.
 3. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
 4. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall, and the hosted-notebook limits in `jupyter` (Colab, Kaggle, Codespaces) against their docs.

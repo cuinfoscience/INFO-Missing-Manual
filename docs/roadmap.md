@@ -22,6 +22,14 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
     - [x] Part VI — Project Management (#67)
     - [x] Part VII — Algorithmic Systems, and the appendices, introduction, and conclusion (#68). The rollout is done; [`aar/AAR_INFO-Missing-Manual_2026-09-25.md`](aar/AAR_INFO-Missing-Manual_2026-09-25.md) reviews it.
 
+- [ ] **Revise the book after the September 2026 peer review** ([`plans/2026-09-25-peer-review-revisions.md`](plans/2026-09-25-peer-review-revisions.md), from [`aar/2026-09-25-peer-review.md`](aar/2026-09-25-peer-review.md)). Waiting on the maintainer's eight decisions; then:
+    - [ ] Phase 1: corrections and small fixes
+    - [ ] Phase 2: order, prerequisites, repetition, reading paths
+    - [ ] Phase 3: a Day zero setup appendix, one running project, a practice repository
+    - [ ] Phase 4: gaps, one theme per pull request (Windows and Chromebooks; data lifecycle; measurement; social science and R; information literacy; AI for research; humanities; the cornerstone; workplace readiness)
+    - [ ] Phase 5: new chapters, as approved (charts and figures; sharing, archiving, and data ethics; writing at work)
+    - [ ] Phase 6: practice you can check, part by part
+
 ## Chapter and section candidates
 
 In the maintainer's order of priority (September 2026). All of them come after the screenshots and the polish of existing chapters (see "Order of work" in [`decisions.md`](decisions.md)).
