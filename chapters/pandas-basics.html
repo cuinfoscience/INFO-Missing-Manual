@@ -668,27 +668,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops" id="toc-running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops" class="nav-link" data-scroll-target="#running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops">Running theme: pandas rewards vectorized thinking, and punishes loops</a></li>
   <li><a href="#the-two-data-structures" id="toc-the-two-data-structures" class="nav-link" data-scroll-target="#the-two-data-structures"><span class="header-section-number">22.1</span> The two data structures</a>
   <ul class="collapse">
-  <li><a href="#series-a-labeled-1-d-array" id="toc-series-a-labeled-1-d-array" class="nav-link" data-scroll-target="#series-a-labeled-1-d-array">Series: a labeled 1-D array</a></li>
-  <li><a href="#dataframe-a-labeled-2-d-table" id="toc-dataframe-a-labeled-2-d-table" class="nav-link" data-scroll-target="#dataframe-a-labeled-2-d-table">DataFrame: a labeled 2-D table</a></li>
+  <li><a href="#series-a-labeled-column" id="toc-series-a-labeled-column" class="nav-link" data-scroll-target="#series-a-labeled-column">Series: a labeled column</a></li>
+  <li><a href="#dataframe-a-labeled-table" id="toc-dataframe-a-labeled-table" class="nav-link" data-scroll-target="#dataframe-a-labeled-table">DataFrame: a labeled table</a></li>
   </ul></li>
   <li><a href="#creating-a-dataframe" id="toc-creating-a-dataframe" class="nav-link" data-scroll-target="#creating-a-dataframe"><span class="header-section-number">22.2</span> Creating a DataFrame</a></li>
   <li><a href="#inspecting-a-new-dataframe" id="toc-inspecting-a-new-dataframe" class="nav-link" data-scroll-target="#inspecting-a-new-dataframe"><span class="header-section-number">22.3</span> Inspecting a new DataFrame</a></li>
   <li><a href="#selecting-columns-and-rows" id="toc-selecting-columns-and-rows" class="nav-link" data-scroll-target="#selecting-columns-and-rows"><span class="header-section-number">22.4</span> Selecting columns and rows</a>
   <ul class="collapse">
   <li><a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns">Columns</a></li>
-  <li><a href="#rows-.loc-vs-.iloc" id="toc-rows-.loc-vs-.iloc" class="nav-link" data-scroll-target="#rows-.loc-vs-.iloc">Rows: <code>.loc</code> vs <code>.iloc</code></a></li>
+  <li><a href="#rows-.loc-and-.iloc" id="toc-rows-.loc-and-.iloc" class="nav-link" data-scroll-target="#rows-.loc-and-.iloc">Rows: <code>.loc</code> and <code>.iloc</code></a></li>
   <li><a href="#boolean-masks" id="toc-boolean-masks" class="nav-link" data-scroll-target="#boolean-masks">Boolean masks</a></li>
   </ul></li>
   <li><a href="#adding-modifying-and-dropping-columns" id="toc-adding-modifying-and-dropping-columns" class="nav-link" data-scroll-target="#adding-modifying-and-dropping-columns"><span class="header-section-number">22.5</span> Adding, modifying, and dropping columns</a></li>
   <li><a href="#the-classic-novice-traps" id="toc-the-classic-novice-traps" class="nav-link" data-scroll-target="#the-classic-novice-traps"><span class="header-section-number">22.6</span> The classic novice traps</a>
   <ul class="collapse">
-  <li><a href="#chained-assignment-and-settingwithcopywarning" id="toc-chained-assignment-and-settingwithcopywarning" class="nav-link" data-scroll-target="#chained-assignment-and-settingwithcopywarning">Chained assignment and <code>SettingWithCopyWarning</code></a></li>
-  <li><a href="#forgetting-that-most-methods-return-a-copy" id="toc-forgetting-that-most-methods-return-a-copy" class="nav-link" data-scroll-target="#forgetting-that-most-methods-return-a-copy">Forgetting that most methods return a copy</a></li>
-  <li><a href="#mutating-while-iterating" id="toc-mutating-while-iterating" class="nav-link" data-scroll-target="#mutating-while-iterating">Mutating while iterating</a></li>
+  <li><a href="#chained-assignment" id="toc-chained-assignment" class="nav-link" data-scroll-target="#chained-assignment">Chained assignment</a></li>
+  <li><a href="#inplacetrue-and-methods-that-return-a-copy" id="toc-inplacetrue-and-methods-that-return-a-copy" class="nav-link" data-scroll-target="#inplacetrue-and-methods-that-return-a-copy"><code>inplace=True</code>, and methods that return a copy</a></li>
+  <li><a href="#and-where-you-meant" id="toc-and-where-you-meant" class="nav-link" data-scroll-target="#and-where-you-meant"><code>and</code> where you meant <code>&amp;</code></a></li>
+  <li><a href="#is-where-you-meant" id="toc-is-where-you-meant" class="nav-link" data-scroll-target="#is-where-you-meant"><code>is</code> where you meant <code>==</code></a></li>
+  <li><a href="#loc-where-you-meant-.iloc" id="toc-loc-where-you-meant-.iloc" class="nav-link" data-scroll-target="#loc-where-you-meant-.iloc"><code>.loc</code> where you meant <code>.iloc</code></a></li>
+  <li><a href="#looping-over-rows" id="toc-looping-over-rows" class="nav-link" data-scroll-target="#looping-over-rows">Looping over rows</a></li>
   </ul></li>
   <li><a href="#aggregation-and-group-by" id="toc-aggregation-and-group-by" class="nav-link" data-scroll-target="#aggregation-and-group-by"><span class="header-section-number">22.7</span> Aggregation and group-by</a></li>
   <li><a href="#merging-joining-dataframes" id="toc-merging-joining-dataframes" class="nav-link" data-scroll-target="#merging-joining-dataframes"><span class="header-section-number">22.8</span> Merging (joining) DataFrames</a></li>
@@ -702,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">22.11</span> Stakes and politics</a></li>
   <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">22.12</span> Worked examples</a>
   <ul class="collapse">
-  <li><a href="#a-one-minute-exploration-of-a-new-dataset" id="toc-a-one-minute-exploration-of-a-new-dataset" class="nav-link" data-scroll-target="#a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</a></li>
+  <li><a href="#a-one-minute-look-at-a-new-dataset" id="toc-a-one-minute-look-at-a-new-dataset" class="nav-link" data-scroll-target="#a-one-minute-look-at-a-new-dataset">A one-minute look at a new dataset</a></li>
   <li><a href="#filter-sort-derive-aggregate" id="toc-filter-sort-derive-aggregate" class="nav-link" data-scroll-target="#filter-sort-derive-aggregate">Filter, sort, derive, aggregate</a></li>
   <li><a href="#a-join-with-validation" id="toc-a-join-with-validation" class="nav-link" data-scroll-target="#a-join-with-validation">A join with validation</a></li>
   </ul></li>
@@ -757,34 +760,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/pandas-basics.png" class="img-fluid" alt="Bihw Meme: pd.read_csv(), It Ain’t Much But It’s Honest Work."></p>
 </div>
-<p><a href="https://pandas.pydata.org/docs/"><code>pandas</code></a> is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, <code>pandas</code> is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.</p>
-<p>This chapter is an orientation for students who have literally never used <code>pandas</code> — or who have copied notebook cells from an instructor but never sat down to understand the pieces. The goal is not to teach every method (there are thousands, and the official reference in <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a> is where you look them up). The goal is to give you the vocabulary and the mental model: what a Series and a DataFrame actually are, how indexing and selection work, how the common operations compose, and how to avoid the classic novice traps.</p>
-<p>If you know SQL, several sections will feel like translation. That is a feature — once you see pandas as “SQL against an in-memory table,” a lot of it clicks. See <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a> for the SQL side.</p>
+<p>Your instructor’s notebook ran perfectly in class. You copy a cell into your own project, point it at your own file, and pandas answers with a wall of red text. Or worse, with nothing at all: you set some values, print the table, and it hasn’t changed.</p>
+<p>That doesn’t mean you’re bad at this. <a href="https://pandas.pydata.org/docs/">pandas</a> is how Python loads a table of data, pokes at it, reshapes it, and summarizes it. It’s usable on the first day, which is why so many people use it for months without a picture of what’s going on underneath. With that picture, most of its error messages stop being mysterious.</p>
+<p>This chapter gives you the picture: what a Series and a DataFrame are, how selecting rows and columns works, how the everyday operations fit together, and the traps that catch nearly every beginner, with the messages pandas 3 actually prints. It skips most of pandas’ hundreds of methods (<a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a> shows how to look them up) and leaves cleaning and checking data to <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a>. If you know SQL, think of pandas as SQL against a table in memory (<a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>).</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Explain what a Series and a DataFrame are, and how the index relates to them.</li>
-<li>Create a DataFrame from a dict, a list of dicts, or a file.</li>
-<li>Select rows and columns using <code>[]</code>, <code>.loc</code>, <code>.iloc</code>, and boolean masks — and know when to use each.</li>
-<li>Use <code>.head</code>, <code>.tail</code>, <code>.info</code>, <code>.describe</code>, <code>.shape</code>, and <code>.dtypes</code> to inspect a new dataset in under a minute.</li>
-<li>Apply the core data operations: filter, sort, add a column, aggregate, group-by, and join (merge).</li>
-<li>Recognize and avoid the three classic pandas gotchas: chained assignment, <code>SettingWithCopyWarning</code>, and forgetting that most operations return a copy.</li>
-<li>Know when to vectorize vs.&nbsp;when to write a Python loop (almost always vectorize).</li>
-<li>Make random steps (sampling, splits, bootstraps) repeatable with one seeded generator passed through the analysis.</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You’ve been copying pandas cells from an instructor’s notebook, and they work, but you couldn’t explain what <code>df.loc[df["price"] &gt; 10, "in_stock"]</code> actually says.</li>
+<li>You changed some values in a filtered table, pandas printed <code>ChainedAssignmentError</code>, and your DataFrame came out exactly the way it went in.</li>
+<li>You wrote <code>df = df.dropna(inplace=True)</code>, and the next line failed with <code>AttributeError: 'NoneType' object has no attribute 'head'</code>.</li>
+<li>You joined two conditions with <code>and</code> and got <code>ValueError: The truth value of a Series is ambiguous</code>, which doesn’t say what to write instead.</li>
+<li>You sorted a table, asked for row <code>0</code>, and got a row that’s plainly not the first one.</li>
+<li>Your notebook loops over every row of a big table, and you go make coffee every time you run it.</li>
+<li>You ran a random train/test split twice, got two different answers, and don’t know which one to report.</li>
+</ul>
 </section>
 <section id="running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops">Running theme: pandas rewards vectorized thinking, and punishes loops</h2>
-<p>Almost every pandas operation is a set-wise verb: “filter these rows,” “add this column to all rows,” “group by this and take the mean.” When you find yourself writing <code>for row in df.itertuples()</code>, stop and think about the vectorized equivalent. Your code will be shorter, faster, and easier to read.</p>
+<p>Almost everything you do in pandas is a verb applied to a whole set at once: filter these rows, add this column to every row, group by this and take the mean. When you catch yourself writing <code>for row in df.itertuples()</code>, stop and look for the whole-column version; it’ll be shorter, faster, and easier to read.</p>
 </section>
 <section id="the-two-data-structures" class="level2 page-columns page-full" data-number="22.1">
 <h2 data-number="22.1" class="anchored" data-anchor-id="the-two-data-structures"><span class="header-section-number">22.1</span> The two data structures</h2>
-<p>Everything in pandas is built on two data structures.</p>
-<section id="series-a-labeled-1-d-array" class="level3">
-<h3 class="anchored" data-anchor-id="series-a-labeled-1-d-array">Series: a labeled 1-D array</h3>
-<p>A <strong>Series</strong> is like a Python list, except every element has a label (the index). Think of it as a single column in a spreadsheet.</p>
+<p>Everything in pandas is built on two structures, and many confusing error messages make sense once you know which one you’re holding. (For a quick tour alongside this chapter, try pandas’ own <a href="https://pandas.pydata.org/docs/user_guide/10min.html">10 minutes to pandas</a>.)</p>
+<section id="series-a-labeled-column" class="level3">
+<h3 class="anchored" data-anchor-id="series-a-labeled-column">Series: a labeled column</h3>
+<p>A <strong>Series</strong> is like a Python list in which every value has a label. Think of it as one column of a spreadsheet, with the row names attached:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>prices <span class="op">=</span> pd.Series(</span>
@@ -798,11 +799,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># milk       7.25</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># cheese    22.00</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Name: price, dtype: float64</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>You access values by label: <code>prices["bread"]</code> returns <code>14.50</code>. You also get vectorized operations for free: <code>prices * 1.1</code> returns a new Series with every price marked up 10%, without a loop.</p>
+<p>You get a value by its label: <code>prices["bread"]</code> gives <code>14.5</code>. And arithmetic works on the whole Series at once: <code>prices * 1.1</code> marks every price up 10% and returns a new Series, with no loop in sight. Writing one operation that applies to every element is called <a href="https://en.wikipedia.org/wiki/Array_programming">array programming</a>, or <em>vectorization</em>, and this chapter keeps coming back to it.</p>
 </section>
-<section id="dataframe-a-labeled-2-d-table" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="dataframe-a-labeled-2-d-table">DataFrame: a labeled 2-D table</h3>
-<p>A <strong>DataFrame</strong> is a dict of Series that share an index. Every column is a Series; every row is identified by the shared index.</p>
+<section id="dataframe-a-labeled-table" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="dataframe-a-labeled-table">DataFrame: a labeled table</h3>
+<p>A <strong>DataFrame</strong> is a table: a set of Series that share one set of row labels, the <strong>index</strong>. The idea came to Python from R, which is why you’ll hear about <a href="https://en.wikipedia.org/wiki/Dataframe">data frames</a> in general, not just pandas ones.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"price"</span>:    [<span class="fl">9.99</span>, <span class="fl">14.50</span>, <span class="fl">7.25</span>, <span class="fl">22.00</span>],</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantity"</span>: [<span class="dv">3</span>,    <span class="dv">1</span>,     <span class="dv">2</span>,    <span class="dv">5</span>],</span>
@@ -826,301 +827,359 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 </figcaption>
 </figure>
 </div>
-<p>The <code>index</code> is <em>not</em> a column — it’s the row labels, and it is carried through most operations. You can always reset it to a default integer index with <code>df.reset_index()</code>, and promote a column to the index with <code>df.set_index("column_name")</code>.</p>
+<p>Here’s where newcomers most often get lost: <strong>the index is not a column.</strong> It’s the row labels, so <code>df.columns</code> doesn’t list it. It travels with each row through filtering and sorting, which is what makes it useful, and what makes <code>.loc</code> and <code>.iloc</code> disagree once you’ve sorted (see the traps below). <code>df.reset_index()</code> turns the labels into an ordinary column and gives a fresh 0, 1, 2, … index; <code>df.set_index("column_name")</code> promotes a column to be the index. The guide to <a href="https://pandas.pydata.org/docs/user_guide/dsintro.html">pandas’ data structures</a> goes deeper.</p>
 </section>
 </section>
 <section id="creating-a-dataframe" class="level2" data-number="22.2">
 <h2 data-number="22.2" class="anchored" data-anchor-id="creating-a-dataframe"><span class="header-section-number">22.2</span> Creating a DataFrame</h2>
-<p>Four common ways, in rough order of frequency:</p>
-<p><strong>From a file</strong> (the most common):</p>
+<p>Most DataFrames arrive from a file, and the <a href="https://pandas.pydata.org/docs/user_guide/io.html">IO tools guide</a> lists a reader for nearly every format (<a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> covers their quirks):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"sales.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="st">"Q4"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for the quirks.</p>
-<p><strong>From a dict of columns:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"name"</span>: [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>],</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>:  [<span class="dv">30</span>, <span class="dv">25</span>, <span class="dv">35</span>],</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>From a list of dicts (one per row):</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame([</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"age"</span>: <span class="dv">30</span>},</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Bob"</span>,   <span class="st">"age"</span>: <span class="dv">25</span>},</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Carol"</span>, <span class="st">"age"</span>: <span class="dv">35</span>},</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is what you usually get from a JSON API response (see <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a>).</p>
-<p><strong>From a list of lists, plus column names:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="st">"Alice"</span>, <span class="dv">30</span>], [<span class="st">"Bob"</span>, <span class="dv">25</span>]],</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"name"</span>, <span class="st">"age"</span>],</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The Excel line catches almost everyone once: pandas needs a separate package, <a href="https://openpyxl.readthedocs.io/en/stable/">openpyxl</a>, to read <code>.xlsx</code>, so the first try stops with <code>ImportError: `Import openpyxl` failed.</code> Your file is fine. Install openpyxl into the environment your notebook uses (see <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>) and rerun the cell.</p>
+<p>To build a small table by hand, to test an idea or share a problem others can run, use <strong>a dict of columns</strong> (easiest to type), <strong>a list of dicts, one per row</strong> (the shape a <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> web API usually hands you, as <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a> shows; any missing key becomes <code>NaN</code>), or <strong>a list of lists</strong> plus the column names:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"name"</span>: [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>], <span class="st">"age"</span>: [<span class="dv">30</span>, <span class="dv">25</span>, <span class="dv">35</span>]})</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"age"</span>: <span class="dv">30</span>},</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Bob"</span>,   <span class="st">"age"</span>: <span class="dv">25</span>},</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Carol"</span>, <span class="st">"age"</span>: <span class="dv">35</span>},</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame([[<span class="st">"Alice"</span>, <span class="dv">30</span>], [<span class="st">"Bob"</span>, <span class="dv">25</span>]], columns<span class="op">=</span>[<span class="st">"name"</span>, <span class="st">"age"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="inspecting-a-new-dataframe" class="level2" data-number="22.3">
 <h2 data-number="22.3" class="anchored" data-anchor-id="inspecting-a-new-dataframe"><span class="header-section-number">22.3</span> Inspecting a new DataFrame</h2>
-<p>The first thing you should do with any new DataFrame is run these six commands, in a cell by themselves:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.shape        <span class="co"># (rows, columns) — is it the size you expected?</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.columns      <span class="co"># column names</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df.dtypes       <span class="co"># inferred types per column — any surprises?</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df.head()       <span class="co"># first 5 rows</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df.tail()       <span class="co"># last 5 rows</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df.info()       <span class="co"># summary: counts, dtypes, memory usage</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df.describe()   <span class="co"># summary statistics for numeric columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This takes ten seconds and catches 90% of “why is my analysis wrong?” bugs. See <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> for why validation is so important.</p>
+<p>The first thing to do with any new DataFrame is look at it, before you’ve formed opinions about what’s in it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.shape        <span class="co"># (rows, columns): is it the size you expected?</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df.columns      <span class="co"># column names</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df.dtypes       <span class="co"># the type pandas guessed for each column: any surprises?</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>df.head()       <span class="co"># first 5 rows</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>df.tail()       <span class="co"># last 5 rows</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>df.info()       <span class="co"># row count, non-missing counts, types, memory</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>df.describe()   <span class="co"># summary statistics for the numeric columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(A notebook cell displays only its last value, so run these one per cell or wrap them in <code>print()</code>.)</p>
+<p>Each line answers a question you’d otherwise answer the hard way, hours later. <code>dtypes</code> is where surprises hide: text shows up as <code>str</code> in pandas 3 (<code>object</code> in pandas 2), so a price column listed as <code>str</code> has something in it that isn’t a number. <code>tail()</code> is where a stray “Total” row lurks, and <code>describe()</code> makes an age of 999 jump out. It takes a minute and heads off a surprising share of “why is my analysis wrong?” bugs; <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> turns it into checks that run every time.</p>
 </section>
 <section id="selecting-columns-and-rows" class="level2" data-number="22.4">
 <h2 data-number="22.4" class="anchored" data-anchor-id="selecting-columns-and-rows"><span class="header-section-number">22.4</span> Selecting columns and rows</h2>
+<p>Selection is where pandas code looks most like line noise: single brackets, double brackets, <code>.loc</code>, <code>.iloc</code>, and comparisons inside brackets inside brackets. There’s a logic to it, though, and the <a href="https://pandas.pydata.org/docs/user_guide/indexing.html">indexing guide</a> has the full story.</p>
 <section id="columns" class="level3">
 <h3 class="anchored" data-anchor-id="columns">Columns</h3>
-<p>Select a single column by name. The result is a Series.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price"</span>]             <span class="co"># Series of prices</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df.price                <span class="co"># same (attribute access — works only for simple names)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Select multiple columns with a list. The result is a DataFrame.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"price"</span>, <span class="st">"quantity"</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Gotcha:</strong> <code>df["price", "quantity"]</code> (no inner list) raises <code>KeyError</code>. The single brackets need a list for multiple columns.</p>
+<p>One column name gives you a Series; a <em>list</em> of names gives you a DataFrame:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price"</span>]                 <span class="co"># a Series</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"price"</span>, <span class="st">"quantity"</span>]]   <span class="co"># a DataFrame</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The double brackets aren’t a typo: the outer pair selects, and the inner pair is an ordinary Python list. Leave it out, as in <code>df["price", "quantity"]</code>, and pandas looks for one column named <code>("price", "quantity")</code> and says <code>KeyError: ('price', 'quantity')</code>.</p>
+<p>You’ll also see <code>df.price</code>. It’s fine for a quick look, but it fails for names with spaces, loses to a method of the same name (a column called <code>count</code> gives you <code>df.count</code>), and can’t create a column. In code you keep, use brackets.</p>
 </section>
-<section id="rows-.loc-vs-.iloc" class="level3">
-<h3 class="anchored" data-anchor-id="rows-.loc-vs-.iloc">Rows: <code>.loc</code> vs <code>.iloc</code></h3>
-<p><code>.loc</code> selects by <strong>label</strong> (the index). <code>.iloc</code> selects by <strong>integer position</strong> (0-based).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"bread"</span>]          <span class="co"># row labeled "bread"</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">1</span>]               <span class="co"># second row, regardless of label</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Both can take a range:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>:<span class="st">"milk"</span>]   <span class="co"># inclusive of both endpoints</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">0</span>:<span class="dv">3</span>]             <span class="co"># Python slice, excludes index 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Both can take a list:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df.loc[[<span class="st">"apple"</span>, <span class="st">"cheese"</span>]]</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df.iloc[[<span class="dv">0</span>, <span class="dv">3</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Both accept a second argument for columns:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>, <span class="st">"price"</span>]              <span class="co"># single cell, by label</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>:<span class="st">"milk"</span>, <span class="st">"price"</span>]       <span class="co"># a Series</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df.loc[:, [<span class="st">"price"</span>, <span class="st">"quantity"</span>]]      <span class="co"># all rows, two columns</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">0</span>, <span class="dv">1</span>]                         <span class="co"># single cell, by position</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Rule of thumb: <strong>use <code>.loc</code> almost always</strong>, because your index is usually meaningful and labels survive sorting and filtering. Use <code>.iloc</code> when you genuinely need the first/last N rows or you are working with an unlabeled integer index.</p>
+<section id="rows-.loc-and-.iloc" class="level3">
+<h3 class="anchored" data-anchor-id="rows-.loc-and-.iloc">Rows: <code>.loc</code> and <code>.iloc</code></h3>
+<p>For rows there are two tools. <strong><code>.loc</code> selects by label</strong> (the index); <strong><code>.iloc</code> selects by integer position</strong>, counting from zero like the rest of Python (<a href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero-based numbering</a>). Both take a row, a range, or a list, plus an optional second argument for columns:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"bread"</span>]                     <span class="co"># the row labeled "bread"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">1</span>]                          <span class="co"># the second row, whatever its label</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>:<span class="st">"milk"</span>]              <span class="co"># label range: includes BOTH ends (3 rows)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">0</span>:<span class="dv">3</span>]                        <span class="co"># position range: stops before 3 (3 rows)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df.loc[[<span class="st">"apple"</span>, <span class="st">"cheese"</span>]]         <span class="co"># a list of labels</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df.iloc[[<span class="dv">0</span>, <span class="dv">3</span>]]                     <span class="co"># a list of positions</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>, <span class="st">"price"</span>]            <span class="co"># one cell, by label: 9.99</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df.loc[<span class="st">"apple"</span>:<span class="st">"milk"</span>, <span class="st">"price"</span>]     <span class="co"># three rows of one column: a Series</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df.loc[:, [<span class="st">"price"</span>, <span class="st">"quantity"</span>]]    <span class="co"># every row, two columns</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df.iloc[<span class="dv">0</span>, <span class="dv">1</span>]                       <span class="co"># one cell, by position: 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice the ranges: “from apple to milk” includes milk, while a position range stops just before its end, like any Python slice. The rule of thumb is to <strong>use <code>.loc</code> almost always</strong>, because your index usually means something and labels stay attached to their rows through sorting and filtering. Use <code>.iloc</code> when you really mean a position, like “the first ten rows.”</p>
 </section>
 <section id="boolean-masks" class="level3">
 <h3 class="anchored" data-anchor-id="boolean-masks">Boolean masks</h3>
-<p>The most powerful selection is a boolean mask: a Series of <code>True</code>/<code>False</code> that filters rows.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>]                     <span class="co"># rows where price &gt; 10</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[(df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>) <span class="op">&amp;</span> (df[<span class="st">"in_stock"</span>])] <span class="co"># conjunction — note the parentheses</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"name"</span>].isin([<span class="st">"Alice"</span>, <span class="st">"Bob"</span>])]    <span class="co"># membership</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"note"</span>].<span class="bu">str</span>.contains(<span class="st">"refund"</span>, na<span class="op">=</span><span class="va">False</span>)]  <span class="co"># regex-enabled string match</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Three things to remember about boolean masks:</p>
-<ol type="1">
-<li><strong>Use <code>&amp;</code> and <code>|</code>, not <code>and</code> / <code>or</code>.</strong> The Python keywords operate on scalars, not arrays.</li>
-<li><strong>Parenthesize every sub-condition.</strong> <code>df[df["x"] &gt; 1 &amp; df["y"] &lt; 2]</code> misbehaves because of operator precedence.</li>
-<li><strong>Use <code>na=False</code></strong> on <code>.str.contains</code> to make NaNs behave like <code>False</code>.</li>
-</ol>
+<p>The selection you’ll use most answers “which rows meet this condition?” A comparison on a column gives a Series of <code>True</code> and <code>False</code>, one per row, called a boolean <strong>mask</strong> (after <a href="https://en.wikipedia.org/wiki/Mask_(computing)">bit masks</a>). Inside brackets, it keeps the <code>True</code> rows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>]                          <span class="co"># rows where price is over 10</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df[(df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>) <span class="op">&amp;</span> (df[<span class="st">"in_stock"</span>])]     <span class="co"># both conditions (note the parentheses)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"quantity"</span>].isin([<span class="dv">1</span>, <span class="dv">2</span>])]               <span class="co"># value is in a list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Conditions combine with <code>&amp;</code> (and), <code>|</code> (or), and <code>~</code> (not), never Python’s <code>and</code>, <code>or</code>, and <code>not</code>, and each gets its own parentheses; the traps below show why. The guide’s <a href="https://pandas.pydata.org/docs/user_guide/indexing.html#boolean-indexing">boolean indexing</a> section has more kinds of mask.</p>
+<p>When you search free text that has gaps, add <code>na=False</code>, as in <code>orders["note"].str.contains("refund", na=False)</code>. pandas 3 already counts a missing note as “no match,” but pandas 2 stopped with <code>ValueError: Cannot mask with non-boolean array containing NA / NaN values</code>. The guide to <a href="https://pandas.pydata.org/docs/user_guide/text.html">working with text</a> covers the other <code>.str</code> methods.</p>
 </section>
 </section>
 <section id="adding-modifying-and-dropping-columns" class="level2" data-number="22.5">
 <h2 data-number="22.5" class="anchored" data-anchor-id="adding-modifying-and-dropping-columns"><span class="header-section-number">22.5</span> Adding, modifying, and dropping columns</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"revenue"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> df[<span class="st">"quantity"</span>]        <span class="co"># new column from arithmetic</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span>                     <span class="co"># overwrite a column</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"discount_tier"</span>] <span class="op">=</span> pd.cut(df[<span class="st">"price"</span>], bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>])   <span class="co"># derived categorical</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">"discount_tier"</span>])             <span class="co"># drop a column</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">"price"</span>: <span class="st">"unit_price"</span>})     <span class="co"># rename</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>assign</code> returns a new DataFrame with added columns — useful in chained expressions:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(df</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  .assign(profit<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">-</span> d[<span class="st">"cost"</span>])</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once you can select, changing a table is mostly assignment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"revenue"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> df[<span class="st">"quantity"</span>]                      <span class="co"># new column from arithmetic</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span>                                   <span class="co"># overwrite a column</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price_band"</span>] <span class="op">=</span> pd.cut(df[<span class="st">"price"</span>], bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>])     <span class="co"># numbers into ranges</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">"price_band"</span>])                              <span class="co"># drop a column</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">"price"</span>: <span class="st">"unit_price"</span>})                   <span class="co"># rename</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Look at which lines say <code>df = ...</code>. Setting <code>df["col"]</code> changes <code>df</code> directly, but <code>drop</code> and <code>rename</code> return a changed <em>copy</em>, lost unless you assign it; two traps below grow from that difference. (<a href="https://pandas.pydata.org/docs/reference/api/pandas.cut.html"><code>pd.cut</code></a> sorts numbers into ranges like <code>(10, 20]</code>.)</p>
+<p>To build several columns in one expression without touching <code>df</code>, use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.assign.html"><code>assign</code></a>. Each <code>lambda d:</code> gets the table as it stands at that step, so the second <code>assign</code> can use the first one’s column:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  .assign(big_order<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">&gt;</span> <span class="dv">50</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="the-classic-novice-traps" class="level2" data-number="22.6">
 <h2 data-number="22.6" class="anchored" data-anchor-id="the-classic-novice-traps"><span class="header-section-number">22.6</span> The classic novice traps</h2>
-<section id="chained-assignment-and-settingwithcopywarning" class="level3">
-<h3 class="anchored" data-anchor-id="chained-assignment-and-settingwithcopywarning">Chained assignment and <code>SettingWithCopyWarning</code></h3>
-<p>This is the most confusing warning in pandas:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>][<span class="st">"in_stock"</span>] <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SettingWithCopyWarning: A value is trying to be set on a copy of a slice from a DataFrame.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The problem is that <code>df[df["price"] &gt; 10]</code> returns a <em>temporary</em> slice, and you are modifying the temporary, not the original. Sometimes it works, sometimes it silently does nothing. Do not rely on it.</p>
-<p><strong>Fix:</strong> use <code>.loc</code> in one step.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df.loc[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>, <span class="st">"in_stock"</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This says “for rows matching this condition, set this column,” in a single expression pandas understands.</p>
+<p>Every pandas user falls into these, usually more than once: each is pandas doing exactly what you told it, when that isn’t quite what you meant. The output below is from pandas 3.0 (<a href="https://pandas.pydata.org/docs/whatsnew/v3.0.0.html">released in January 2026</a>), which changed several of them. Most tutorials, forum answers, and AI assistants learned their pandas from version 2, so if what you see doesn’t match, check <code>pd.__version__</code> and the notes on version 2.</p>
+<section id="chained-assignment" class="level3">
+<h3 class="anchored" data-anchor-id="chained-assignment">Chained assignment</h3>
+<p>You want to mark everything over $10 as out of stock, so you write it the way you’d say it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>][<span class="st">"in_stock"</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>pandas 3 answers with this (trimmed, and wrapped to fit):</p>
+<pre class="text"><code>ChainedAssignmentError: A value is being set on a copy of a DataFrame or Series
+through chained assignment.
+Such chained assignment never works to update the original DataFrame or Series,
+because the intermediate object on which we are setting values always behaves
+as a copy (due to Copy-on-Write).</code></pre>
+<p>Print <code>df</code>, and bread and cheese are still <code>True</code>. Despite “Error” in its name, this is a <em>warning</em>: the cell keeps running, which makes it easy to miss.</p>
+<p>That line is two steps chained together: <code>df[df["price"] &gt; 10]</code> builds a new, smaller table, and <code>["in_stock"] = False</code> changes <em>that</em> table, which is then thrown away. Under pandas 3’s <a href="https://pandas.pydata.org/docs/user_guide/copy_on_write.html#chained-assignment">Copy-on-Write</a> rules (named after a <a href="https://en.wikipedia.org/wiki/Copy-on-write">general programming technique</a>), every selection behaves as its own copy, so an assignment chained onto one <em>never</em> reaches the original. <strong>Do it in one step with <code>.loc</code></strong>, which takes the rows and the column together, and bread and cheese both become <code>False</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df.loc[df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>, <span class="st">"in_stock"</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The flip side is good news: when you take a subset on purpose (<code>expensive = df[df["price"] &gt; 10]</code>, then <code>expensive["quantity"] = 0</code>), pandas 3 changes <code>expensive</code>, leaves <code>df</code> alone, and doesn’t warn.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>If you’re following a pandas 2 tutorial
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>pandas 2 warned about both cases with <code>SettingWithCopyWarning: A value is trying to be set on a copy of a slice from a DataFrame</code>, even the harmless one, which is why older code is full of <code>.copy()</code> calls added just to quiet it; pandas 3 removed that warning. And the column-first form, <code>df["in_stock"][mask] = False</code>, <em>did</em> change <code>df</code> in pandas 2, so code written that way silently stops working in pandas 3. The <code>.loc</code> version works in both.</p>
+</div>
+</div>
 </section>
-<section id="forgetting-that-most-methods-return-a-copy" class="level3">
-<h3 class="anchored" data-anchor-id="forgetting-that-most-methods-return-a-copy">Forgetting that most methods return a copy</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>)    <span class="co"># returns a sorted copy; df is unchanged</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If you want to keep the result, assign it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(<span class="st">"price"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Most methods (<code>sort_values</code>, <code>drop</code>, <code>rename</code>, <code>dropna</code>, <code>reset_index</code>, …) work this way. The <code>inplace=True</code> parameter exists on many of them but is discouraged in modern pandas — assigning back is clearer.</p>
+<section id="inplacetrue-and-methods-that-return-a-copy" class="level3">
+<h3 class="anchored" data-anchor-id="inplacetrue-and-methods-that-return-a-copy"><code>inplace=True</code>, and methods that return a copy</h3>
+<p>You sort your table, print it, and it’s in the original order. Nothing is broken: <code>sort_values</code> returns a sorted copy, as do <code>drop</code>, <code>rename</code>, <code>dropna</code>, <code>reset_index</code>, and most other methods, so keep it with <code>df = df.sort_values("price")</code>. Many of them also take <code>inplace=True</code>, which changes <code>df</code> directly and usually returns <code>None</code>. So this line cleans the table and then replaces it with nothing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df.head()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># AttributeError: 'NoneType' object has no attribute 'head'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you see <code>'NoneType' object has no attribute</code> right after a pandas method, look for an <code>inplace=True</code> with an assignment in front of it (<a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a> shows how the signature warns you). pandas 3 made this <em>less</em> predictable: a few methods, including <code>fillna</code>, <code>replace</code>, and <code>clip</code>, now return the DataFrame even with <code>inplace=True</code>, while <code>sort_values</code>, <code>dropna</code>, <code>drop</code>, <code>rename</code>, and most others still return <code>None</code>. Rather than memorizing which is which, <strong>skip <code>inplace</code> and assign the result back.</strong></p>
 </section>
-<section id="mutating-while-iterating" class="level3">
-<h3 class="anchored" data-anchor-id="mutating-while-iterating">Mutating while iterating</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows():</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    df.loc[i, <span class="st">"adjusted"</span>] <span class="op">=</span> row[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span>    <span class="co"># slow and error-prone</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This works but defeats the point of pandas. Vectorize instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"adjusted"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A good rule: if you wrote <code>iterrows</code> or <code>itertuples</code>, your first instinct should be “how can I do this as a vectorized operation or a <code>.apply</code>?” There is almost always a way.</p>
+<section id="and-where-you-meant" class="level3">
+<h3 class="anchored" data-anchor-id="and-where-you-meant"><code>and</code> where you meant <code>&amp;</code></h3>
+<p>You want rows that are over $10 and in stock:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df[(df[<span class="st">"price"</span>] <span class="op">&gt;</span> <span class="dv">10</span>) <span class="kw">and</span> (df[<span class="st">"in_stock"</span>])]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(),</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a.item(), a.any() or a.all().</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Python’s <code>and</code>, <code>or</code>, <code>not</code>, and <code>if</code> each need a single <code>True</code> or <code>False</code>. A comparison on a column gives one per row, and pandas won’t guess whether you mean “are <em>any</em> true?” or “are <em>all</em> true?” You meant “combine these row by row,” which is what <code>&amp;</code> does: <code>df[(df["price"] &gt; 10) &amp; (df["in_stock"])]</code> returns bread and cheese. The same error comes from <code>if df["price"] &gt; 10:</code>, where the fix is to ask what you mean, with <code>.any()</code> or <code>.all()</code>.</p>
+<p>The parentheses matter just as much. <code>&amp;</code> binds more tightly than <code>&gt;</code> (see Python’s <a href="https://docs.python.org/3/reference/expressions.html#operator-precedence">operator precedence table</a>), so <code>df[df["price"] &gt; 10 &amp; df["in_stock"]]</code> means <code>df["price"] &gt; (10 &amp; df["in_stock"])</code>. Since <code>10 &amp; True</code> is <code>0</code> (the bits are combined one by one), that asks for prices over 0, and you get all four rows back with no error and no warning. Parenthesize every condition, every time.</p>
+</section>
+<section id="is-where-you-meant" class="level3">
+<h3 class="anchored" data-anchor-id="is-where-you-meant"><code>is</code> where you meant <code>==</code></h3>
+<p><code>==</code> asks “are these values equal?” <code>is</code> asks “are these the very same object in memory?” (an <a href="https://docs.python.org/3/reference/expressions.html#is-not">identity comparison</a>), which is almost never what you mean with data:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"price"</span>] <span class="kw">is</span> <span class="fl">22.0</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SyntaxWarning: "is" with a literal. Did you mean "=="?</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># KeyError: False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The column isn’t the same object as the number, so <code>is</code> gives one <code>False</code>, and pandas looks for a column named <code>False</code>. Python’s warning has it right: <code>df[df["price"] == 22.0]</code> returns the cheese row.</p>
+<p>Missing values fool <code>==</code> too, because <code>NaN</code> is designed <a href="https://en.wikipedia.org/wiki/NaN">not to equal anything</a>, itself included. On <code>s = pd.Series([9.99, np.nan, 7.25])</code>, <code>s == np.nan</code> is <code>False</code> for all three rows, even the missing one, while <code>s.isna()</code> finds it. Use <code>.isna()</code> (or <code>.notna()</code>) to find missing values, always.</p>
+</section>
+<section id="loc-where-you-meant-.iloc" class="level3">
+<h3 class="anchored" data-anchor-id="loc-where-you-meant-.iloc"><code>.loc</code> where you meant <code>.iloc</code></h3>
+<p>A table read from a CSV gets a default index of 0, 1, 2, …, so labels match positions and <code>.loc</code> and <code>.iloc</code> agree. That’s why mixing them up goes unnoticed, until you sort:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame({<span class="st">"student"</span>: [<span class="st">"Ana"</span>, <span class="st">"Ben"</span>, <span class="st">"Chen"</span>, <span class="st">"Dev"</span>],</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"score"</span>: [<span class="dv">88</span>, <span class="dv">72</span>, <span class="dv">95</span>, <span class="dv">64</span>]})</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> scores.sort_values(<span class="st">"score"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ranked)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   student  score</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2    Chen     95</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 0     Ana     88</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1     Ben     72</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 3     Dev     64</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You want the top scorer, so you ask for row 0. <code>ranked.loc[0]</code> gives Ana, whose <em>label</em> is still 0; <code>ranked.iloc[0]</code> gives Chen, first by <em>position</em>. Ranges get stranger: <code>ranked.iloc[0:2]</code> gives Chen and Ana, but <code>ranked.loc[0:2]</code> gives an empty table, because label 2 now comes <em>before</em> label 0. Say which you mean.</p>
+<p>(A pandas 2 note: plain brackets with a number on a text index, like <code>prices[0]</code>, used to fall back to position with a <code>FutureWarning</code>. In pandas 3 that raises <code>KeyError: 0</code>; write <code>prices.iloc[0]</code>.)</p>
+</section>
+<section id="looping-over-rows" class="level3">
+<h3 class="anchored" data-anchor-id="looping-over-rows">Looping over rows</h3>
+<p>If you learned to program with lists, a loop feels like the natural way to change every row:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    df.loc[i, <span class="st">"adjusted"</span>] <span class="op">=</span> row[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span>    <span class="co"># slow, and easy to get wrong</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"adjusted"</span>] <span class="op">=</span> df[<span class="st">"price"</span>] <span class="op">*</span> <span class="fl">1.1</span>                <span class="co"># the same result, vectorized</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On the computer this chapter was tested on (pandas 3.0, September 2026), the loop took about 15 seconds for 100,000 rows, and the one-liner under 2 milliseconds. Your timings will differ; the gap won’t. The loop runs Python code once per row, while the one-liner hands the whole column to <a href="https://numpy.org/doc/stable/user/absolute_beginners.html">NumPy</a>, the library underneath pandas, which does the arithmetic in compiled code. pandas’ own guide says <a href="https://pandas.pydata.org/docs/user_guide/basics.html#iteration">iterating is generally slow</a>, and that changing what you’re iterating over isn’t guaranteed to work at all.</p>
+<p>So when you reach for <code>iterrows</code> or <code>itertuples</code>, ask how to say it for the whole column. <code>.str</code> and <code>.dt</code> work on whole columns of text and dates, and an if-else per row becomes <a href="https://numpy.org/doc/stable/reference/generated/numpy.where.html"><code>np.where</code></a>: <code>np.where(df["price"] &gt; 10, "premium", "standard")</code>. When there’s truly no whole-column version, <code>.apply</code> is a middle ground (about 25 milliseconds in the same test). <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> shows how to find what’s actually slow.</p>
 </section>
 </section>
 <section id="aggregation-and-group-by" class="level2" data-number="22.7">
 <h2 data-number="22.7" class="anchored" data-anchor-id="aggregation-and-group-by"><span class="header-section-number">22.7</span> Aggregation and group-by</h2>
-<p>Group-by is pandas’s single most important verb. It splits the data into groups, applies a function to each group, and combines the results.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">"category"</span>)[<span class="st">"revenue"</span>].<span class="bu">sum</span>()</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">"category"</span>)[<span class="st">"revenue"</span>].agg([<span class="st">"sum"</span>, <span class="st">"mean"</span>, <span class="st">"count"</span>])</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df.groupby([<span class="st">"category"</span>, <span class="st">"region"</span>])[<span class="st">"revenue"</span>].mean().unstack()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A worked example: find the top three products by revenue within each category.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(df</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">"category"</span>, group_keys<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">apply</span>(<span class="kw">lambda</span> g: g.nlargest(<span class="dv">3</span>, <span class="st">"revenue"</span>))</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If you find yourself writing complex group-by logic, that is the moment to read the pandas User Guide chapter on <code>groupby</code> — see <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
+<p>Sooner or later every analysis asks something like “how much revenue did each category bring in?” That’s <code>groupby</code>, and a huge share of real questions are group-bys in disguise. It works in the three steps Hadley Wickham named <a href="https://www.jstatsoft.org/article/view/v040i01">split-apply-combine</a>: split the rows into groups, apply a calculation to each, and combine the results. Take a small made-up table:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"product"</span>:  [<span class="st">"pens"</span>, <span class="st">"paper"</span>, <span class="st">"ink"</span>, <span class="st">"stapler"</span>, <span class="st">"tape"</span>, <span class="st">"folders"</span>, <span class="st">"labels"</span>, <span class="st">"clips"</span>],</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"category"</span>: [<span class="st">"writing"</span>, <span class="st">"paper"</span>, <span class="st">"writing"</span>, <span class="st">"desk"</span>, <span class="st">"desk"</span>, <span class="st">"paper"</span>, <span class="st">"paper"</span>, <span class="st">"desk"</span>],</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"region"</span>:   [<span class="st">"west"</span>, <span class="st">"east"</span>, <span class="st">"west"</span>, <span class="st">"east"</span>, <span class="st">"west"</span>, <span class="st">"west"</span>, <span class="st">"east"</span>, <span class="st">"east"</span>],</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"price"</span>:    [<span class="fl">2.50</span>, <span class="fl">8.00</span>, <span class="fl">12.00</span>, <span class="fl">15.00</span>, <span class="fl">3.00</span>, <span class="fl">6.50</span>, <span class="fl">4.00</span>, <span class="fl">1.50</span>],</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantity"</span>: [<span class="dv">40</span>, <span class="dv">25</span>, <span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">30</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">50</span>],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">"revenue"</span>] <span class="op">=</span> sales[<span class="st">"price"</span>] <span class="op">*</span> sales[<span class="st">"quantity"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Read a group-by left to right: group by category, take revenue, sum it.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sales.groupby(<span class="st">"category"</span>)[<span class="st">"revenue"</span>].<span class="bu">sum</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># category</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># desk       225.0</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># paper      358.0</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># writing    220.0</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Name: revenue, dtype: float64</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>sales.groupby(<span class="st">"category"</span>)[<span class="st">"revenue"</span>].agg([<span class="st">"sum"</span>, <span class="st">"mean"</span>, <span class="st">"count"</span>])</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>sales.groupby([<span class="st">"category"</span>, <span class="st">"region"</span>])[<span class="st">"revenue"</span>].mean().unstack()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The second line computes three summaries at once. The third groups by two columns and spreads the regions across the top; its writing-and-east cell is <code>NaN</code>, because nothing in that category sold in the east. The <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">group by guide</a> takes it from there.</p>
+<p>For “the top two products in each category,” sort, then take the first rows of each group: <code>sales.sort_values("revenue", ascending=False).groupby("category").head(2)</code>. Older answers online use <code>.groupby("category").apply(lambda g: g.nlargest(2, "revenue"))</code> instead. Be careful with those: in pandas 3, <code>apply</code> no longer passes the grouping column to your function, so the result quietly comes back without a <code>category</code> column (pandas 2 warned about the change).</p>
 </section>
 <section id="merging-joining-dataframes" class="level2" data-number="22.8">
 <h2 data-number="22.8" class="anchored" data-anchor-id="merging-joining-dataframes"><span class="header-section-number">22.8</span> Merging (joining) DataFrames</h2>
-<p><code>merge</code> is the pandas equivalent of a SQL JOIN (see <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Parameters to care about:</p>
+<p>Orders are in one table and customers in another, and you want each order’s customer city beside it. That’s a merge, pandas’ version of a SQL <a href="https://en.wikipedia.org/wiki/Join_(SQL)">join</a> (see <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>); the <a href="https://pandas.pydata.org/docs/user_guide/merging.html">merging guide</a> draws every kind:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, how<span class="op">=</span><span class="st">"left"</span>, validate<span class="op">=</span><span class="st">"many_to_one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>on</code>: the column name(s) to join on. Or use <code>left_on=</code> / <code>right_on=</code> if the column names differ.</li>
-<li><code>how</code>: <code>"inner"</code> (default, keeps only matching rows), <code>"left"</code>, <code>"right"</code>, <code>"outer"</code> (union).</li>
-<li><strong><code>validate</code></strong>: specify the expected cardinality (<code>"one_to_one"</code>, <code>"one_to_many"</code>, <code>"many_to_one"</code>, <code>"many_to_many"</code>). Use this <em>every time</em>. It catches bad merges immediately. See <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a>.</li>
+<li><strong><code>on</code></strong> names the column(s) to match on; use <code>left_on=</code> and <code>right_on=</code> if the names differ.</li>
+<li><strong><code>how</code></strong> says which rows survive: <code>"inner"</code> (the default) keeps only rows that match on both sides; <code>"left"</code> or <code>"right"</code> keeps every row of that side; <code>"outer"</code> keeps everything.</li>
+<li><strong><code>validate</code></strong> states the relationship you expect: <code>"one_to_one"</code>, <code>"one_to_many"</code>, <code>"many_to_one"</code>, or <code>"many_to_many"</code>. Use it every time.</li>
 </ul>
+<p>That last one matters most. If a customer was entered twice, a merge without <code>validate</code> quietly matches each of their orders twice, and every total grows; with it, pandas stops with <code>MergeError: Merge keys are not unique in right dataset; not a many-to-one merge</code>. <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> tells the full story of merges that multiply or drop rows.</p>
 </section>
 <section id="sorting" class="level2" data-number="22.9">
 <h2 data-number="22.9" class="anchored" data-anchor-id="sorting"><span class="header-section-number">22.9</span> Sorting</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>)                        <span class="co"># ascending by one column</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>, ascending<span class="op">=</span><span class="va">False</span>)       <span class="co"># descending</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.sort_values([<span class="st">"category"</span>, <span class="st">"price"</span>])          <span class="co"># multi-column</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>df.sort_index()                                <span class="co"># sort by index (labels)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>)                        <span class="co"># ascending by one column</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"price"</span>, ascending<span class="op">=</span><span class="va">False</span>)       <span class="co"># descending</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>df.sort_values([<span class="st">"category"</span>, <span class="st">"price"</span>])          <span class="co"># by category, then price within it</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df.sort_index()                                <span class="co"># by the index labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Like most methods, <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html"><code>sort_values</code></a> returns a sorted copy. Missing values go last in either direction. And text sorts by character code, so capitalized words come before lowercase ones (<code>"Banana"</code> before <code>"apple"</code>); pass <code>key=lambda col: col.str.lower()</code> to sort the way a person would.</p>
 </section>
 <section id="randomness-you-can-repeat" class="level2" data-number="22.10">
 <h2 data-number="22.10" class="anchored" data-anchor-id="randomness-you-can-repeat"><span class="header-section-number">22.10</span> Randomness you can repeat</h2>
-<p>Some analysis steps are random on purpose: drawing a sample to look at, splitting data into training and test sets, shuffling, or resampling for a bootstrap estimate. Run them twice and you get different answers:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"student"</span>: [<span class="st">"Ana"</span>, <span class="st">"Ben"</span>, <span class="st">"Chen"</span>, <span class="st">"Dev"</span>, <span class="st">"Eli"</span>, <span class="st">"Fay"</span>, <span class="st">"Gus"</span>, <span class="st">"Hana"</span>],</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"score"</span>: [<span class="dv">88</span>, <span class="dv">72</span>, <span class="dv">95</span>, <span class="dv">64</span>, <span class="dv">79</span>, <span class="dv">91</span>, <span class="dv">70</span>, <span class="dv">83</span>],</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Chen', 'Fay']</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Eli', 'Dev', 'Ben']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That’s correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can’t be reproduced or debugged. The fix is to control where the random numbers come from with a <strong>seed</strong>, a number that fixes the whole sequence of “random” draws that follows. <code>df.sample(3, random_state=42)</code> returns <code>['Ben', 'Fay', 'Ana']</code> every time.</p>
+<p>Some analysis steps are random on purpose: drawing a sample to look at, splitting data into <a href="https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets">training and test sets</a>, shuffling, or resampling for a <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">bootstrap</a> estimate. Run them twice and you get different answers:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"student"</span>: [<span class="st">"Ana"</span>, <span class="st">"Ben"</span>, <span class="st">"Chen"</span>, <span class="st">"Dev"</span>, <span class="st">"Eli"</span>, <span class="st">"Fay"</span>, <span class="st">"Gus"</span>, <span class="st">"Hana"</span>],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"score"</span>: [<span class="dv">88</span>, <span class="dv">72</span>, <span class="dv">95</span>, <span class="dv">64</span>, <span class="dv">79</span>, <span class="dv">91</span>, <span class="dv">70</span>, <span class="dv">83</span>],</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Chen', 'Fay']</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Eli', 'Dev', 'Ben']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That’s correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can’t be reproduced or debugged. Computers make “random” numbers with a <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudorandom number generator</a>, a formula whose output looks random but is fixed by where it starts. So the fix is to control that starting point with a <strong><a href="https://en.wikipedia.org/wiki/Random_seed">seed</a></strong>, a number that fixes the whole sequence of “random” draws that follows. <code>df.sample(3, random_state=42)</code> returns <code>['Ben', 'Fay', 'Ana']</code> every time.</p>
 <section id="one-generator-passed-along" class="level3">
 <h3 class="anchored" data-anchor-id="one-generator-passed-along">One generator, passed along</h3>
-<p>For more than one random step, create a single random number <strong>generator</strong> from one seed, near the top of your notebook or script, and hand it to every step that needs randomness:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">2026</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(SEED)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split(df, rng):</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>rng)</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.drop(test.index), test</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bootstrap_mean(scores, rng, n<span class="op">=</span><span class="dv">1000</span>):</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> [scores.sample(<span class="bu">len</span>(scores), replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>rng).mean() <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n)]</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(means)</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> split(df, rng)</span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>estimate <span class="op">=</span> bootstrap_mean(train[<span class="st">"score"</span>], rng)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas’ <code>random_state</code> accepts a generator like <code>rng</code>. Other libraries have their own way to take a seed (scikit-learn’s functions have a <code>random_state</code> argument, for example), so check each one’s documentation and give it the seed. Put the seed where people will see it: a constant at the top, a <code>--seed</code> option on a script (see <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>), and a line in your results that says which seed produced them.</p>
+<p>For more than one random step, create a single random number <strong>generator</strong> from one seed, near the top of your notebook or script, with NumPy’s <a href="https://numpy.org/doc/stable/reference/random/generator.html"><code>default_rng</code></a>, and hand it to every step that needs randomness:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">2026</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(SEED)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split(df, rng):</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>rng)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.drop(test.index), test</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bootstrap_mean(scores, rng, n<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> [scores.sample(<span class="bu">len</span>(scores), replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>rng).mean() <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n)]</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(means)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> split(df, rng)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>estimate <span class="op">=</span> bootstrap_mean(train[<span class="st">"score"</span>], rng)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas’ <code>random_state</code> accepts a generator like <code>rng</code>. Other libraries have their own way to take a seed (scikit-learn’s functions have a <code>random_state</code> argument, for example, explained in its guide to <a href="https://scikit-learn.org/stable/common_pitfalls.html#controlling-randomness">controlling randomness</a>), so check each one’s documentation and give it the seed. Put the seed where people will see it: a constant at the top, a <code>--seed</code> option on a script (see <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>), and a line in your results that says which seed produced them.</p>
 </section>
 <section id="why-not-np.random.seed42" class="level3">
 <h3 class="anchored" data-anchor-id="why-not-np.random.seed42">Why not <code>np.random.seed(42)</code>?</h3>
 <p>Many tutorials call <code>np.random.seed(42)</code> once at the top. That sets NumPy’s single, shared <strong>global</strong> generator, which any library in the program can draw from, and <code>df.sample()</code> without a <code>random_state</code> draws from it too. The result then depends on everything else that happened to draw numbers first:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Fay', 'Ana']</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">5</span>)   <span class="co"># some other step draws numbers first</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ana', 'Ben', 'Gus']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Fay', 'Ana']</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">5</span>)   <span class="co"># some other step draws numbers first</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ana', 'Ben', 'Gus']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Same seed, different sample. In a notebook, rerunning one cell, or running cells in a different order, has the same effect. A generator you pass explicitly belongs to your code alone, so nothing else can use up its numbers.</p>
-<p>The same goes for running work in parallel. Don’t give every worker the same seed (they’d all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: <code>workers = rng.spawn(4)</code>.</p>
+<p>The same goes for running work in parallel. Don’t give every worker the same seed (they’d all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: <code>workers = rng.spawn(4)</code> (NumPy explains why in its page on <a href="https://numpy.org/doc/stable/reference/random/parallel.html">parallel generation</a>).</p>
 </section>
 <section id="what-a-seed-does-not-promise" class="level3">
 <h3 class="anchored" data-anchor-id="what-a-seed-does-not-promise">What a seed does not promise</h3>
-<p>A seed reproduces results on the same versions of your libraries. NumPy <a href="https://numpy.org/doc/stable/reference/random/compatibility.html">says so explicitly</a>: the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>). And don’t go looking for the seed that gives the nicest result: a finding that holds for seed 42 but not for 7 or 1,000 isn’t a finding. Rerun an important result with a few different seeds and report how much it moves.</p>
+<p>A seed reproduces results on the same versions of your libraries. NumPy <a href="https://numpy.org/doc/stable/reference/random/compatibility.html">says so explicitly</a>: the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>). And don’t go looking for the seed that gives the nicest result, a quiet form of <a href="https://en.wikipedia.org/wiki/Data_dredging">data dredging</a>: a finding that holds for seed 42 but not for 7 or 1,000 isn’t a finding. Rerun an important result with a few different seeds and report how much it moves.</p>
 </section>
 </section>
 <section id="stakes-and-politics" class="level2" data-number="22.11">
 <h2 data-number="22.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">22.11</span> Stakes and politics</h2>
-<p>pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.</p>
-<p>Three things to notice. First, <em>the dtype defaults assume Western numeric and date conventions</em>. Numbers are read as IEEE 754 floats; dates parse as month-day-year unless told otherwise (a common silent bug in non-US data); missing values silently coerce integer columns to floats because the original NumPy <code>int64</code> cannot hold <code>NaN</code>. None of these are bugs — they are documented choices — but they work cleanly for the data their authors most often handled, and less cleanly for everyone else’s. Second, <em>merge and groupby defaults preferentially keep the populous side</em>. <code>merge(how="inner")</code> is the default, which silently discards rows that do not match — a behavior that is fine when you are joining a transactions table against a complete customer list, and quietly disastrous when you are joining unequal demographic groups whose representation in your matching key is itself unequal. Third, <em>the maintainers and contributors are not the user base</em>. pandas is overwhelmingly maintained by a small number of contributors, paid by a small number of US and European institutions, working in English. The bug reports that get prioritized are the ones that surface in their workflows; the rough edges that affect non-English text, right-to-left scripts, non-Gregorian calendars, and informal-economy data shapes get fixed when someone with the time and English fluency files a careful issue.</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, and <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> for the cleaning-decision politics that ride on top of these defaults. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.</p>
+<p>Load a CSV from a colleague in Berlin and the prices arrive as text: <code>1.234,50</code> isn’t a number to pandas until you pass <code>decimal=","</code> and <code>thousands="."</code>, because <a href="https://en.wikipedia.org/wiki/Decimal_separator">decimal separators</a> differ around the world. Parse dates from a London office and <code>03/04/2026</code> becomes March 4 rather than 3 April, without a word, unless a later row happens to say <code>15/04</code> and the parse fails. Leave one blank in a column of whole numbers and the whole column turns into decimals, because pandas’ default integer type can’t hold a missing value (the <a href="https://pandas.pydata.org/docs/user_guide/integer_na.html">nullable integer types</a> can, if you ask).</p>
+<p>None of these are bugs. They’re documented defaults, and defaults carry a tool’s history: pandas <a href="https://en.wikipedia.org/wiki/Pandas_(software)">began in 2008 at an investment firm</a>, built for financial data, and a decimal point and month-first dates are American conventions. The fixes exist, but only for people who know to ask. <code>merge</code> is the same: its default inner join silently drops every row without a match, and those rows are rarely random. A name spelled two ways, a town missing from a lookup table: who disappears depends on whose records were kept carelessly. And which rough edges get smoothed depends on who runs into them and has time to file a careful report with pandas’ <a href="https://pandas.pydata.org/about/team.html">volunteer contributors and small team of maintainers</a>. (<a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> covers the cleaning decisions that ride on top of these defaults.)</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.</p>
 </section>
 <section id="worked-examples" class="level2" data-number="22.12">
 <h2 data-number="22.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.12</span> Worked examples</h2>
-<section id="a-one-minute-exploration-of-a-new-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/iris.csv"</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># A first question: average petal length per species?</span></span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">"species"</span>)[<span class="st">"petal_length"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="a-one-minute-look-at-a-new-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="a-one-minute-look-at-a-new-dataset">A one-minute look at a new dataset</h3>
+<p>The classic <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris data set</a>, 150 flowers made famous by the statistician Ronald Fisher in 1936, is small enough to take in at once:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/iris.csv"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># A first question: average petal length per species?</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">"species"</span>)[<span class="st">"petal_length"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The shape is <code>(150, 5)</code>: four measurements as <code>float64</code> and <code>species</code> as <code>str</code>. The last line answers the question: 1.462 for setosa, 4.260 for versicolor, and 5.552 for virginica.</p>
 </section>
 <section id="filter-sort-derive-aggregate" class="level3">
 <h3 class="anchored" data-anchor-id="filter-sort-derive-aggregate">Filter, sort, derive, aggregate</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a cleaned dataset</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>top_customers <span class="op">=</span> (</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    df</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01'"</span>)               <span class="co"># filter</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])   <span class="co"># derive</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"customer_id"</span>)[<span class="st">"revenue"</span>]           <span class="co"># group</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()                                       <span class="co"># aggregate</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)                <span class="co"># sort</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">10</span>)                                    <span class="co"># top 10</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top_customers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The method-chain pattern (pandas calls this “fluent interface”) makes long transformations readable top-to-bottom.</p>
+<p>Which ten customers brought in the most revenue this year? As a chain, the code reads like the question:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a cleaned dataset</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>top_customers <span class="op">=</span> (</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01'"</span>)                          <span class="co"># filter</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])   <span class="co"># derive</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"customer_id"</span>)[<span class="st">"revenue"</span>]                      <span class="co"># group</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()                                                  <span class="co"># aggregate</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)                           <span class="co"># sort</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">10</span>)                                               <span class="co"># top 10</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top_customers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each line does one thing and feeds the next, a style called <a href="https://en.wikipedia.org/wiki/Method_chaining">method chaining</a>; <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html"><code>query</code></a> takes the filter as a string. When a chain misbehaves, comment out lines from the bottom up and look at each step’s result.</p>
 </section>
 <section id="a-join-with-validation" class="level3">
 <h3 class="anchored" data-anchor-id="a-join-with-validation">A join with validation</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    customers,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"customer_id"</span>,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    validate<span class="op">=</span><span class="st">"many_to_one"</span>,     <span class="co"># one customer per order; crashes on bad data</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(merged) <span class="op">==</span> <span class="bu">len</span>(orders), <span class="st">"Merge changed row count"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>validate</code> + assert pattern prevents the silent-duplication class of bugs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    customers,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"customer_id"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    validate<span class="op">=</span><span class="st">"many_to_one"</span>,     <span class="co"># one customer per order; raises MergeError on bad data</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(merged) <span class="op">==</span> <span class="bu">len</span>(orders), <span class="st">"Merge changed row count"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With <code>how="left"</code> every order survives, and <code>validate</code> guarantees none is duplicated, so the row count can’t change. The <code>assert</code> states that promise, so bad data stops the script here instead of three charts later.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="22.13">
 <h2 data-number="22.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">22.13</span> Templates</h2>
 <p><strong>A “first look” block for any new DataFrame:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dtypes:"</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">head:"</span>)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">nulls per column:"</span>)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">numeric summary:"</span>)</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dtypes:"</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">head:"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">nulls per column:"</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">numeric summary:"</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>A clean filter-derive-aggregate pipeline:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    df</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01' and region == 'west'"</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    .assign(profit<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">-</span> d[<span class="st">"cost"</span>])</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"product_id"</span>)[<span class="st">"profit"</span>]</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01' and region == 'west'"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    .assign(profit<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">-</span> d[<span class="st">"cost"</span>])</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"product_id"</span>)[<span class="st">"profit"</span>]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="exercises" class="level2" data-number="22.14">
 <h2 data-number="22.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">22.14</span> Exercises</h2>
 <ol type="1">
-<li>Load a CSV from an open-data source into a DataFrame. Run the six inspection commands from section 3. Write one sentence for each about what you learned.</li>
+<li>Load a CSV from an open-data source into a DataFrame. Run the seven inspection lines from “Inspecting a new DataFrame.” Write one sentence for each about what you learned.</li>
 <li>From the same DataFrame, select a single column as a Series and a list of two columns as a DataFrame. Confirm the types with <code>type()</code>.</li>
 <li>Write three different ways to select the top 10 rows: by <code>.head(10)</code>, by <code>.iloc[:10]</code>, and by sort-then-head. Compare performance on a big DataFrame with <code>%timeit</code>.</li>
-<li>Use <code>.loc</code> with a boolean mask to update a subset of rows in-place. Confirm no <code>SettingWithCopyWarning</code> appears.</li>
+<li>Write a chained assignment (<code>df[mask]["col"] = value</code>) on purpose and read the warning your pandas version prints. Then make the same change with <code>.loc</code> in one step, and confirm the warning is gone and <code>df</code> really changed.</li>
+<li>Sort a DataFrame that has the default 0, 1, 2, … index, and compare <code>.loc[0]</code> with <code>.iloc[0]</code>. Explain the difference in one sentence.</li>
 <li>Write a group-by that answers a real question about your data (“average price per category,” “max revenue per customer”). Add a second aggregation to the same call.</li>
-<li>Perform a <code>merge</code> and then <code>validate="one_to_one"</code>. Intentionally break it by duplicating a row in the right-hand DataFrame and confirm pandas raises.</li>
+<li>Perform a <code>merge</code> with <code>validate="one_to_one"</code>. Break it on purpose by duplicating a row in the right-hand DataFrame, and confirm pandas raises a <code>MergeError</code>.</li>
 <li>Take a notebook cell you wrote as a for-loop over <code>iterrows</code> and rewrite it as a vectorized operation. Time both. Write down the speedup.</li>
 <li>Find a random step in one of your notebooks (a <code>sample</code>, a split, a shuffle). Run the notebook twice and note what changes. Then create one generator with <code>np.random.default_rng(SEED)</code> at the top, pass it to every random step, and confirm two runs agree. Finally, try three other seeds and write down how much your result moves.</li>
 </ol>
@@ -1129,15 +1188,17 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 <h2 data-number="22.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">22.15</span> One-page checklist</h2>
 <ul>
 <li>Every new DataFrame: run shape / dtypes / head / describe / isna before anything else.</li>
-<li>Use <code>.loc</code> for label-based selection, <code>.iloc</code> for integer-based, and boolean masks for filters.</li>
-<li>Boolean masks use <code>&amp;</code> and <code>|</code>, not <code>and</code> / <code>or</code>. Parenthesize every sub-condition.</li>
-<li>Most methods return a copy; assign the result (<code>df = df.sort_values(...)</code>).</li>
+<li>Use <code>.loc</code> for label-based selection, <code>.iloc</code> for position-based, and boolean masks for filters.</li>
+<li>Boolean masks use <code>&amp;</code>, <code>|</code>, and <code>~</code>, not <code>and</code>, <code>or</code>, and <code>not</code>. Parenthesize every condition.</li>
+<li>Compare values with <code>==</code>, never <code>is</code>; find missing values with <code>.isna()</code>.</li>
+<li>Most methods return a copy; assign the result (<code>df = df.sort_values(...)</code>) and skip <code>inplace=True</code>.</li>
 <li>Never chain assignment (<code>df[mask]["col"] = value</code>). Use <code>df.loc[mask, "col"] = value</code>.</li>
-<li>Vectorize first; reach for <code>iterrows</code> only when you truly cannot.</li>
+<li>Vectorize first; reach for <code>.apply</code> next, and <code>iterrows</code> only when you truly cannot avoid it.</li>
 <li>Merge with <code>validate="..."</code> every time.</li>
 <li>Random steps get <code>random_state=rng</code>, from one <code>np.random.default_rng(SEED)</code> made at the top; record the seed and your package versions.</li>
+<li>When a tutorial’s output doesn’t match yours, check <code>pd.__version__</code>.</li>
 <li>For reshaping and validation, read <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> first.</li>
-<li>For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</li>
+<li>For anything beyond this chapter, the pandas User Guide and API Reference are your friends; see <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1150,13 +1211,13 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>pandas, <a href="https://pandas.pydata.org/docs/user_guide/index.html">User Guide</a> — conceptual explanations of indexing, merging, and reshaping; treat this as the textbook.</li>
-<li>pandas, <a href="https://pandas.pydata.org/docs/reference/index.html">API reference</a> — every method and parameter, with examples; treat this as the dictionary.</li>
-<li>pandas, <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">Cheat Sheet (PDF)</a> — a printable one-pager covering the most common operations; useful taped above your desk.</li>
-<li>Wes McKinney, <a href="https://wesmckinney.com/book/"><em>Python for Data Analysis</em>, 3rd edition</a> — the book by pandas’s original author; the second half is dense reference, the first half is a clean introduction.</li>
-<li>Wes McKinney, <a href="https://wesmckinney.com/blog/apache-arrow-pandas-internals/">Apache Arrow and the “10 Things I Hate About pandas”</a> — the design retrospective from pandas’s creator; useful context for the “Stakes and politics” framing above.</li>
-<li>Polars, <a href="https://docs.pola.rs/user-guide/">User Guide</a> — a fast, Rust-based DataFrame library with a different (lazy, expression-based) API; worth knowing exists when pandas runs out of room.</li>
-<li>DuckDB, <a href="https://duckdb.org/docs/api/python/overview">Python API</a> — an in-process analytic database that reads and writes pandas DataFrames directly; the right tool when SQL is the better fit for the question.</li>
+<li>pandas, <a href="https://pandas.pydata.org/docs/user_guide/index.html">User Guide</a> — the conceptual explanations of indexing, group-by, merging, and reshaping; treat it as the textbook.</li>
+<li>pandas, <a href="https://pandas.pydata.org/docs/reference/index.html">API reference</a> — every method and parameter, with examples; treat it as the dictionary.</li>
+<li>pandas, <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">Cheat Sheet (PDF)</a> — a printable summary of the most common operations, worth taping above your desk.</li>
+<li>Wes McKinney, <a href="https://wesmckinney.com/book/"><em>Python for Data Analysis</em>, 3rd edition</a> — the book by pandas’ original author, free to read online; the first half is a clean introduction, the second half dense reference.</li>
+<li>Wes McKinney, <a href="https://wesmckinney.com/blog/apache-arrow-pandas-internals/">Apache Arrow and the “10 Things I Hate About pandas”</a> — pandas’ creator on the design choices he’d make differently; useful context for the “Stakes and politics” section above.</li>
+<li>Polars, <a href="https://docs.pola.rs/user-guide/">User Guide</a> — a fast DataFrame library with a different, expression-based style; worth knowing about when pandas runs out of room.</li>
+<li>DuckDB, <a href="https://duckdb.org/docs/api/python/overview">Python API</a> — an in-process database that queries pandas DataFrames directly with SQL; the right tool when SQL is the better fit for the question.</li>
 </ul>
 </div>
 </div>

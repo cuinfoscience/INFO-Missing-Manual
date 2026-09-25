@@ -10,266 +10,319 @@
 
 ![Hagrid Meme: Tried to scrape a website, got the entire campus blocked.](../graphics/memes/http-apis.png)
 
-A surprising amount of real data science starts with fetching data from a URL. Weather records, stock prices, GitHub issues, Wikipedia edits, census statistics, and a long tail of research datasets live behind HTTP APIs — you send a request, the server sends back JSON or CSV, and you parse it into a DataFrame. Knowing how to do this cleanly is the difference between “I could only use the datasets my instructor handed me” and “I can get data for any project I care about.”
+You found the perfect data for your term project, and it lives behind an API. You paste one of its URLs into your browser, data comes back, and the hard part seems over. So you write a loop over 3,000 IDs, start it, and go to dinner. When you come back, the notebook is stuck on item 1,412. Or it crashed with `KeyError: 'results'`, because response 1,413 wasn’t data at all but a message saying you’d made too many requests.
 
-This chapter covers the minimum you need to fetch data over HTTP responsibly and reliably: what an HTTP request is, how to use the `requests` library, how to deal with JSON responses, how to handle errors and rate limits, how to carry an API key without leaking it, and how to be a good citizen on someone else’s server. You will not leave this chapter a backend engineer — that is a whole different discipline — but you will leave able to fetch data from 90% of the APIs you encounter as a student.
+If that’s happened to you, you’re in good company. Almost everyone’s first data-collection script works for ten requests and falls over somewhere in the next thousand. Networks are unreliable, servers get busy, and the people who run them set rules about how fast you may ask, and none of that shows up when you test one URL in a browser.
 
-## Learning objectives
+This chapter covers what an HTTP request is, how to poke at an API with `curl`, how to write the Python version with `requests`, how to turn the JSON that comes back into a DataFrame, and how to handle keys, errors, rate limits, and pages of results. It won’t make you a backend engineer, and it doesn’t cover scraping pages that were never meant to be data (the companion book [*Web Data Science*](https://cuinfoscience.github.io/Web-Data-Science-Book/) goes much further into both). It will get you from “I can only use the datasets I’m handed” to “I can go and get the data I need.”
 
-By the end of this chapter, you should be able to:
+## Why read this chapter
 
-1.  Explain what HTTP is in one paragraph, and name the four verbs you will use most (GET, POST, PUT, DELETE).
-2.  Read an HTTP status code and know whether your request succeeded, failed because of you, or failed because of the server.
-3.  Use the `requests` library to make GET and POST requests with query parameters, headers, and a body.
-4.  Parse a JSON response into a Python dict and then into a pandas DataFrame.
-5.  Pass an API key via a header without committing it to git.
-6.  Handle errors gracefully: timeouts, 4xx/5xx responses, rate limits, and network failures.
-7.  Respect rate limits, `User-Agent` headers, and `robots.txt`.
-8.  Recognize when you should use an official SDK, a CSV download, or a database dump instead of an API.
+- Your script has been stuck on the same line for twenty minutes, and you can’t tell whether it’s working, waiting, or frozen forever.
+- `resp.json()` raised `JSONDecodeError: Expecting value: line 1 column 1 (char 0)`, even though the URL showed perfectly good data in your browser.
+- An API answered `401`, `403`, or `429`, and you don’t know whether the problem is your key, your code, or that you’re being told to slow down.
+- The API’s documentation only shows `curl` commands, and you’d like to read them and turn them into Python.
+- The JSON came back nested three levels deep, and `pd.DataFrame(...)` gave you a column full of dictionaries.
+- You asked for every issue in a repository and got exactly 30, with no error and no hint about where the rest went.
+- You need to put an API key somewhere, and you’ve heard the stories about keys that ended up on GitHub.
 
-## Running theme: the network is slow, broken, and rude — plan for it
+## Running theme: the network is slow, broken, and rude, so plan for it
 
-Assume every HTTP request can time out, rate-limit you, return garbage, or fail silently. Good HTTP code has timeouts, status checks, and retries. Bad HTTP code crashes halfway through a ten-minute loop.
+Every request can hang, fail, get rate-limited, or come back as something other than what you asked for. Code that expects this, with timeouts, status checks, and polite retries, finishes the job; code that doesn’t crashes halfway through a ten-minute loop.
 
-## 24.1 HTTP in one paragraph
+## 24.1 What happens when you fetch a URL
 
-The web runs on [HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) (Hypertext Transfer Protocol). A client (your Python script, a browser, [`curl`](https://curl.se/docs/manpage.html)) sends a **request** to a server: a method (GET, POST, …), a URL (`https://api.example.com/v1/users/42`), optional headers (metadata), and optional body (data). The server replies with a **response**: a status code (200 OK, 404 Not Found, 500 Server Error), headers, and a body (usually HTML, JSON, or binary data). That is the whole protocol for our purposes.
+The idea underneath every tool in this chapter is small, and many confusing errors make sense once you see it. The web runs on [HTTP](https://en.wikipedia.org/wiki/HTTP), a conversation with two turns. A **client** (your browser, a Python script, `curl`) sends a **request** to a server: a **method** saying what you want, such as `GET`; a [URL](https://en.wikipedia.org/wiki/URL) saying which thing you mean, such as `https://api.github.com/repos/pandas-dev/pandas`; **headers**, short lines of metadata (“I’m a script called my-term-project,” “here’s my key”); and sometimes a **body** with data in it. The server sends back a **response**: a three-digit **status code** saying how it went, headers of its own, and a body, usually HTML for a person, [JSON](https://en.wikipedia.org/wiki/JSON) for a program, or the bytes of a file.
 
-### The four HTTP verbs
+“API” ([application programming interface](https://en.wikipedia.org/wiki/API)) means a dozen things in computing, which is part of why it’s confusing. Here it means a [web API](https://en.wikipedia.org/wiki/Web_API): URLs a service publishes on purpose for programs, which return data instead of pages. Each such URL is an **endpoint**. Many follow a loose style called [REST](https://en.wikipedia.org/wiki/REST), which mostly means each URL names a thing (a repository, a weather station) and the method says what to do with it.
 
-You will use these four most often:
+### Methods: what you want to do
 
-| Verb     | Purpose                                               |
-|----------|-------------------------------------------------------|
-| `GET`    | fetch data — “give me this resource”                  |
-| `POST`   | create or submit data — “here is something new”       |
-| `PUT`    | update a resource in place — “replace this with that” |
-| `DELETE` | delete a resource — “get rid of this”                 |
+HTTP has a handful of [methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods), also called verbs. These four are the ones you’ll meet:
 
-For data fetching as a student, you will use `GET` 95% of the time and `POST` for the handful of APIs that want you to submit a query.
+| Method   | What it asks for                                     |
+|----------|------------------------------------------------------|
+| `GET`    | “Give me this resource.” Fetching data.              |
+| `POST`   | “Here’s something new.” Creating or submitting data. |
+| `PUT`    | “Replace this with that.” Updating a resource.       |
+| `DELETE` | “Get rid of this.”                                   |
 
-### Status codes
+Collecting data, you’ll use `GET` almost every time, and `POST` for the occasional API that wants a search query in the body instead of the URL.
 
-Status codes fall into five ranges. The first digit tells you the category:
+### Status codes: how it went
 
-| Range | Meaning                                                            |
-|-------|--------------------------------------------------------------------|
-| 1xx   | informational (rare — you usually don’t see these)                 |
-| 2xx   | success (200 OK is the standard “all good”)                        |
-| 3xx   | redirect (the resource moved; `requests` follows these by default) |
-| 4xx   | **your fault** — bad request, missing auth, wrong URL              |
-| 5xx   | **server’s fault** — the API is broken or down                     |
+When something goes wrong, the [status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status) is the first thing to look at, and its first digit does most of the work:
 
-Memorize these five:
+| Range | Meaning |
+|----|----|
+| 1xx | Informational; you’ll rarely see these. |
+| 2xx | Success. `200 OK` is the usual “all good.” |
+| 3xx | Redirect: the thing moved. `requests` follows these for you. |
+| 4xx | **Something about your request**: a bad URL, a missing key, too many requests. |
+| 5xx | **Something on the server’s end**: it broke, or it’s overloaded. |
 
-- **200 OK** — worked.
-- **401 Unauthorized** — missing or bad credentials.
-- **403 Forbidden** — credentials were accepted but you are not allowed to do that.
-- **404 Not Found** — URL is wrong, or the resource does not exist.
-- **429 Too Many Requests** — you are being rate-limited. Slow down.
-- **500 Internal Server Error** — the server broke. Not your fault; try again later.
+The useful split: retrying a 4xx won’t help until you change something, while a 5xx often clears up if you wait. Six codes cover most of what you’ll see:
+
+- **200 OK:** it worked.
+- **401 Unauthorized:** your credentials are missing or wrong. Despite the name, it means “unauthenticated”: the server doesn’t know who you are.
+- **403 Forbidden:** the server knows who you are and still won’t let you. Some APIs, GitHub among them, also send 403 when you’ve used up your allowance.
+- **404 Not Found:** the URL is wrong, or the thing doesn’t exist (or isn’t visible to you).
+- **429 Too Many Requests:** you’re being [rate-limited](https://en.wikipedia.org/wiki/Rate_limiting). Slow down.
+- **500 Internal Server Error:** the server broke. Not your fault; try again later.
 
 ## 24.2 Quick fetches with `curl` and `wget`
 
-Before you write any Python, the fastest way to confirm that an API actually works is to call it from the command line. Two tools are universally available: [`curl`](https://curl.se/docs/manpage.html) and [`wget`](https://www.gnu.org/software/wget/manual/wget.html). They overlap but are good at different things, and a working knowledge of both pays for itself the first time you have to debug an API at 3 AM with no Python interpreter in sight.
+Before you write any Python, the fastest way to see whether an API works, and what it sends back, is to ask it from the command line with [`curl`](https://curl.se/docs/manpage.html) or [`wget`](https://www.gnu.org/software/wget/manual/wget.html). It’s also how you rule out your own code when an API misbehaves.
 
-### `curl` for inspecting
+`curl` comes with macOS, most Linux systems, and [Windows 10 and 11](https://curl.se/windows/microsoft.html), with one trap: in Windows PowerShell, `curl` can run a different command, `Invoke-WebRequest`, which understands none of the options below. Type `curl.exe` to get the real thing. `wget` is standard on Linux but usually has to be installed on macOS and Windows.
 
-`curl` is a Swiss Army knife for HTTP. The bare invocation `curl <url>` sends a GET request and prints the response body to your terminal. That is enough for most quick checks:
+### `curl` for looking around
+
+`curl` with just a URL sends a `GET` request and prints the response body:
 
 ``` bash
 curl https://api.github.com/repos/pandas-dev/pandas
 ```
 
-Paste the same URL into a browser and you get the same response, often formatted for reading ([Figure fig-browser-json](#fig-browser-json)). Either way, it is plain JSON: keys and values, with objects such as `owner` nested inside.
+Paste the same URL into a browser and you get the same response, often formatted for reading ([Figure fig-browser-json](#fig-browser-json)). Either way, it’s plain JSON: keys and values, with objects such as `owner` nested inside, and many URLs that point at further API requests you could make.
 
 ![Screenshot of JSON in a dark browser window under Save, Copy, and Pretty Print buttons. It opens with an id of 858127, name pandas, full_name pandas-dev/pandas, and private false. Then an owner object, indented, gives login pandas-dev, type Organization, and a list of API URLs such as https://api.github.com/users/pandas-dev/repos. After the owner closes, html_url reads https://github.com/pandas-dev/pandas.](../graphics/http-apis/browser-json-response.png)
 
 Figure 24.1: The start of the GitHub API’s response for pandas’ repository, in Firefox’s JSON viewer, in September 2026. It is the same text `curl` prints, laid out with one key per line; `owner` is an object of its own, and the long URLs are links to further API requests. Cropped to the top-left corner of the response.
 
-The flag worth memorizing first is `-i`, which includes the response headers (status line, content-type, rate-limit info) in the output. When you are debugging “is the API actually responding?” or “what status code did I get?”, `-i` is the answer:
+The body is only half the response, and when something goes wrong the answer is usually in the other half. The flag to learn first is **`-i`**, which prints the status line and headers above the body. To practice on errors without bothering a real service, use [httpbin.org](https://httpbin.org/), a testing site whose URLs answer however you ask: `/status/429` returns a 429, `/delay/5` waits five seconds. Here’s a real 429 from September 2026:
 
 ``` bash
-$ curl -i https://api.github.com/repos/pandas-dev/pandas | head
-HTTP/2 200
-content-type: application/json; charset=utf-8
-x-ratelimit-limit: 60
-x-ratelimit-remaining: 58
-...
+$ curl -i https://httpbin.org/status/429
+HTTP/2 429
+date: Fri, 25 Sep 2026 18:48:23 GMT
+content-type: text/html; charset=utf-8
+content-length: 0
+server: gunicorn/19.9.0
+access-control-allow-origin: *
+access-control-allow-credentials: true
 ```
 
-Three more flags handle most situations. **`-H 'Header: value'`** adds a request header — use it to send your `User-Agent` or an `Authorization: Bearer <token>`. **`-X POST`** changes the HTTP method (the default is GET); pair it with **`-d '...'`** to send a body. And **`-o filename`** writes the response body to a file instead of stdout. Strung together:
+Without `-i`, that command prints nothing at all, the kind of silence that makes an API feel haunted. With it, the problem is on the first line. Try `curl -i` on the GitHub URL and you’ll find `x-ratelimit-limit: 60` and `x-ratelimit-remaining` among the headers: without a key, GitHub allows [60 requests an hour](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api), and it’s telling you how many you have left.
+
+A few more flags cover most of what API documentation shows. **`-H 'Name: value'`** adds a header. **`-d '...'`** sends a body, and makes the request a `POST` on its own, so the `-X POST` you’ll often see beside it is harmless but redundant (`-X` sets the method). **`-o filename`** saves the body to a file. Here they are, sent to httpbin’s `/post`, which echoes back what it received, piped into [`jq`](https://jqlang.org/manual/), a small tool for pulling pieces out of JSON:
 
 ``` bash
-curl -X POST https://api.example.com/items \
+curl -s https://httpbin.org/post \
   -H "Authorization: Bearer $API_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"name": "widget", "qty": 12}'
+  -d '{"name": "widget", "qty": 12}' | jq '.headers.Authorization'
 ```
 
-Two more flags are worth knowing for scripts. **`-s`** silences the progress meter (essential when piping `curl` into another command), and **`-f`** makes `curl` exit with a nonzero status code on any HTTP 4xx or 5xx response — without it, `curl` happily writes the server’s HTML error page to your output file and reports success.
+If `API_TOKEN` isn’t set, that prints `"Bearer"` and nothing more: the shell quietly replaced the missing variable with nothing, and the server got a header with no token. That’s how a lot of mysterious 401s happen. (Keys belong in environment variables like this one, never typed into commands; see [sec-secrets](#sec-secrets).)
 
-For pretty-printing JSON responses while you explore, pipe `curl` into [`jq`](https://jqlang.github.io/jq/manual/), which is the de facto JSON command-line processor:
-
-``` bash
-curl -s https://api.github.com/repos/pandas-dev/pandas | jq '.stargazers_count'
-```
+Two more flags matter once `curl` is in a script. **`-s`** hides the progress meter, which `curl` prints whenever its output goes into a pipe or a file. **`-f`** makes it fail on a 4xx or 5xx. Without `-f`, `curl -o data.json` on a missing page saves the error page as `data.json` and reports success; with it, you get `curl: (22) The requested URL returned error: 404` and a nonzero [exit code](https://everything.curl.dev/cmdline/exitcode.html) your script can check.
 
 ### `wget` for downloading
 
-`wget` is a download tool first and an HTTP client second. Where `curl` is built for ad-hoc API inspection, `wget` is built for “fetch this URL to a file, reliably, possibly across a flaky network.” Two features make it the better choice for bulk downloads.
+Where `curl` is built for poking at APIs, `wget` is built for “get this file onto my disk, even over a flaky network.” **`wget -c <url>`** resumes a partial download instead of starting again from byte zero, which for a multi-gigabyte dataset is the difference between babysitting it all night and leaving it running (and `wget` retries most failures up to 20 times on its own).
 
-The first is **resumable transfers**: `wget -c <url>` continues a partial download instead of restarting it from byte zero. For a multi-gigabyte dataset on a slow connection, this is the difference between “I have to babysit this all night” and “I can leave it running.”
-
-The second is **recursive mirroring**: `wget -r <url>` follows every link on a page and downloads everything it finds, subject to depth and same-host limits. This is occasionally useful for archiving a small documentation site, and it is wildly inappropriate against most modern web infrastructure — see “Respect `robots.txt`” later in this chapter, and never recursively `wget` a site you do not own without checking the robots policy first.
-
-For most everyday use, the invocation is short:
+**`wget -r <url>`** downloads recursively, following links five levels deep by default. It’s handy for archiving a small site you have permission to copy, and it’s exactly how people get blocked: one command can send thousands of requests at a server that never expected them. `wget` respects a site’s `robots.txt` when it recurses (see “Rate limits and being polite”), but that’s the floor. Don’t point `wget -r` at a site you don’t own without reading its rules first.
 
 ``` bash
 wget https://example.com/dataset.csv               # save as dataset.csv
-wget -O sales.csv https://example.com/data.csv     # save under a chosen name
+wget -O sales.csv https://example.com/data.csv     # save under a name you choose
 wget -c https://example.com/big-file.zip           # resume if interrupted
 ```
 
-### When to use which
+### Which tool when
 
-A practical rule of thumb. Use **`curl`** when you are *exploring* an API — checking what it returns, testing auth, debugging headers, prototyping a request you will eventually translate into Python. Use **`wget`** when you are *downloading a file* and want resilience features like resume and retry. Use **`requests`** (the rest of this chapter) when you are *writing code* that has to fetch data as part of a larger pipeline. The three tools are not competitors; they are different points on the spectrum from “ad-hoc inspection” to “production code.”
+Use **`curl`** when you’re *exploring* an endpoint, a key, or a header; **`wget`** when you’re *downloading a file* and want resuming and retries for free; and **`requests`** when you’re *writing code* that fetches data as one step of an analysis. Since many APIs use `curl` commands as their documentation examples, reading `-H` and `-d` at a glance also lets you translate those examples into Python without guessing.
 
-A hidden benefit of starting with `curl`: many APIs include `curl` invocations in their documentation as the canonical example. Being able to read those examples directly — instead of mentally translating them into `requests` first — speeds up your reading of API docs by a noticeable amount.
+## 24.3 Fetching data in Python with `requests`
 
-## 24.3 The `requests` library
-
-The [`requests`](https://requests.readthedocs.io/en/latest/) library is the de facto standard for HTTP in Python. It is not in the standard library, so install it:
+[`requests`](https://requests.readthedocs.io/en/latest/user/quickstart/) is the library nearly everyone uses for HTTP in Python. It isn’t in the standard library, so install it into your environment (see [sec-pkg-mgmt](#sec-pkg-mgmt)):
 
 ``` bash
 python -m pip install requests
 ```
 
-The simplest possible use:
-
-> **WARNING:**
->
-> The three most common API failures each have a distinctive signature. **The request hangs forever** — you forgot to pass a `timeout=` argument to `requests.get()`, and the default is no timeout. Add `timeout=10` to every request. **The response has status 401 or 403** — your API key is missing, wrong, or being sent in the wrong header. Check the API’s docs for the exact header name (usually `Authorization: Bearer <key>` or `X-API-Key: <key>`) and confirm the key is loaded correctly from your `.env` file (see [sec-secrets](#sec-secrets)). **The response has status 429** — the server is rate-limiting you. Slow down: add `time.sleep()` between requests, or check for a `Retry-After` header that tells you how long to wait.
->
-> For any 4xx error, `print(response.text)` before parsing — the server almost always returns a helpful error message in the body that explains what it rejected.
+The simplest use is three lines:
 
 ``` python
 import requests
 
-resp = requests.get("https://api.github.com/repos/pandas-dev/pandas")
-print(resp.status_code)        # 200
+resp = requests.get("https://api.github.com/repos/pandas-dev/pandas", timeout=10)
+print(resp.status_code)
 print(resp.json()["stargazers_count"])
 ```
 
-`resp.json()` parses the JSON body into a Python dict (or list). For non-JSON responses, use `resp.text` (string) or `resp.content` (bytes).
+`resp` holds everything the server sent. `resp.status_code` is the code, and `resp.headers` the headers (capitalization doesn’t matter: `resp.headers["content-type"]` works too). For the body, `resp.json()` parses JSON into dictionaries and lists, `resp.text` gives a string, and `resp.content` gives raw bytes, for images and zip files.
+
+> **WARNING:**
+>
+> **It hangs forever:** you left out `timeout=`; add `timeout=10` to every call. **It comes back 401 or 403:** your key is missing, wrong, or in the wrong place. Check the API’s documentation for where it goes (often an `Authorization: Bearer <key>` header, sometimes `X-API-Key` or a URL parameter), and check that it loaded from your `.env` file (see [sec-secrets](#sec-secrets)). **It comes back 429:** you’re being rate-limited; sleep between requests, and look for a `Retry-After` header. **`resp.json()` raises `JSONDecodeError`:** the body isn’t JSON, so print `resp.text[:500]` to see what it is.
+>
+> For any 4xx, print `resp.text` first. Servers almost always explain in the body what they didn’t like.
 
 ### Query parameters
 
-URLs with `?foo=1&bar=2` are how you pass parameters to most GET endpoints. Do not concatenate them by hand — pass a dict:
+Many endpoints take options in the URL’s [query string](https://en.wikipedia.org/wiki/Query_string), after the `?`. It’s tempting to build that string with an f-string. Don’t: the moment a value contains a space or an `&`, the URL breaks in ways that are hard to spot. Pass a dictionary as `params=` and `requests` builds it, [percent-encoding](https://en.wikipedia.org/wiki/Percent-encoding) every character correctly:
 
 ``` python
 resp = requests.get(
-    "https://api.example.com/search",
-    params={"q": "pandas", "limit": 50},
+    "https://httpbin.org/get",
+    params={"q": "data science & ethics", "limit": 50},
+    timeout=10,
 )
-# requests builds the final URL: ...search?q=pandas&limit=50
+print(resp.url)
 ```
 
-`requests` handles URL-encoding of special characters automatically, which is important for queries that contain spaces or `&` or `=`.
+``` text
+https://httpbin.org/get?q=data+science+%26+ethics&limit=50
+```
+
+Built by hand, that `&` would have split one search term into two parameters.
 
 ### Headers
 
-Headers are metadata about your request. The two you will use most are `Authorization` (for API keys / tokens) and `User-Agent` (for identifying your script politely).
+The two headers you’ll set most are `Authorization`, which carries a key (see “API keys and secrets”), and [`User-Agent`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent), which names your program. `User-Agent` looks like a formality, and isn’t. Left alone, `requests` calls itself `python-requests/2.34.2` (or your version), which tells a server’s operators nothing about you. GitHub [requires a valid one](https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api), and Wikimedia’s [User-Agent policy](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_User-Agent_Policy) warns that scripts without an informative one “may be blocked without notice.” So send one, with a way to reach you:
 
 ``` python
 headers = {
-    "Authorization": f"Bearer {api_token}",
-    "User-Agent": "my-term-project/0.1 (contact: alice@example.com)",
+    "User-Agent": "my-term-project/0.1 (contact: you@example.edu)",
     "Accept": "application/json",
 }
-resp = requests.get(url, headers=headers)
+resp = requests.get("https://httpbin.org/headers", headers=headers, timeout=10)
+print(resp.json()["headers"]["User-Agent"])
 ```
 
-Many APIs reject requests with no `User-Agent` or with a default one. Send a descriptive one so server operators can reach you if your script misbehaves.
+``` text
+my-term-project/0.1 (contact: you@example.edu)
+```
 
-### POST with a body
+httpbin’s `/headers` echoes back what it received, which shows you what your code really sends.
+
+### Sending data with `POST`
+
+When an API wants data in the body, pass a dictionary as `json=`, which turns it into JSON and sets `Content-Type: application/json` for you:
 
 ``` python
 resp = requests.post(
-    "https://api.example.com/users",
+    "https://httpbin.org/post",
     json={"name": "Alice", "email": "alice@example.com"},
+    timeout=10,
 )
 ```
 
-Using `json=` serializes the dict into JSON and sets `Content-Type: application/json` automatically. You rarely need `data=` (form-encoded) for modern APIs.
+Older examples use `data=`, which sends fields the way an HTML form does; modern APIs rarely want that.
 
 ### Timeouts are not optional
 
-Always pass a `timeout` — otherwise a hung server can freeze your script forever.
+This is the fix for the script stuck on one line. By default, `requests` [never times out](https://requests.readthedocs.io/en/latest/user/advanced/#timeouts): if a server accepts your connection and goes quiet, your program waits forever, without a word. So pass a timeout every time:
 
 ``` python
-resp = requests.get(url, timeout=10)   # fail after 10 seconds
+resp = requests.get(url, timeout=10)   # give up if the server goes quiet for 10 seconds
 ```
 
-10 seconds is reasonable for most APIs. Set it shorter for fast APIs and longer for reports or exports.
+Now a silent server raises an exception you can catch. Here’s a real one, from asking httpbin to wait five seconds while allowing two:
+
+``` text
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='httpbin.org', port=443): Read timed out. (read timeout=2)
+```
+
+The timeout isn’t a limit on the whole download, which surprises people: it’s how long to wait with *nothing* arriving. Ten seconds suits most APIs; one that builds a large export before answering may need more.
 
 ## 24.4 Checking the response
 
-`requests` will not raise an exception on a 404 or 500 by default — you have to check. Two common idioms:
+Here’s what catches nearly everyone: `requests` does **not** raise an error when the server says no. To `requests`, a 404 is a perfectly good response, so your code carries on, and the failure surfaces three lines later as a confusing `KeyError` about data that was never there. You have to check.
+
+The quickest check is `raise_for_status()`, which does nothing on success and raises an `HTTPError` on any 4xx or 5xx, with a message naming the code and URL (`404 Client Error: NOT FOUND for url: https://httpbin.org/status/404`):
 
 ``` python
-# Idiom 1: explicit status check
-resp = requests.get(url, timeout=10)
-if resp.status_code != 200:
-    raise RuntimeError(f"API returned {resp.status_code}: {resp.text[:200]}")
-
-# Idiom 2: raise_for_status (raises on 4xx/5xx)
 resp = requests.get(url, timeout=10)
 resp.raise_for_status()
 data = resp.json()
 ```
 
-Use `raise_for_status()` when you just want to abort on any error. Use the explicit check when you want different behavior for different codes (e.g., retry on 429 but abort on 404).
+When different failures need different handling, such as retrying a 429 but giving up on a 404, check the code yourself:
 
-## 24.5 JSON → DataFrame
+``` python
+resp = requests.get(url, timeout=10)
+if resp.status_code == 429:
+    ...  # wait, then try again (see "Rate limits and being polite")
+elif not resp.ok:
+    raise RuntimeError(f"API returned {resp.status_code}: {resp.text[:200]}")
+```
 
-Most APIs return JSON. For tabular data the pattern is usually:
+`resp.ok` is true for any code below 400, which is safer than testing `status_code != 200`: a `POST` that creates something often returns `201 Created`, and that’s success too.
+
+Then check the body. `JSONDecodeError: Expecting value: line 1 column 1 (char 0)` sounds like subtly broken JSON, and it almost never is. “Line 1, column 1” means the very first character wasn’t JSON: the server sent something else, usually an HTML page (a login screen, an error page) or nothing at all. Look before you parse: `print(resp.status_code, resp.text[:300])`.
+
+## 24.5 From JSON to a DataFrame
+
+JSON maps neatly onto Python (objects become dictionaries, arrays become lists), but APIs rarely hand you a table. They wrap the rows in an envelope and nest objects inside each row. Here’s a made-up response shaped like many real ones:
 
 ``` python
 import pandas as pd
-import requests
 
-resp = requests.get(
-    "https://api.example.com/v1/sales",
-    params={"from": "2024-01-01", "to": "2024-03-31"},
-    timeout=10,
-)
-resp.raise_for_status()
-payload = resp.json()
-
-# A flat list of records:
-df = pd.DataFrame(payload)
-
-# Or if the list is nested under a key:
-df = pd.DataFrame(payload["data"])
-
-# Or for deeply nested JSON, see @sec-data-file-formats
-df = pd.json_normalize(payload["results"])
+payload = {
+    "total_count": 2,
+    "results": [
+        {"id": 101, "title": "Fix dates", "user": {"login": "maria", "id": 7},
+         "labels": [{"name": "bug"}, {"name": "dates"}]},
+        {"id": 102, "title": "Add README", "user": {"login": "sam", "id": 9},
+         "labels": []},
+    ],
+}
 ```
 
-Always inspect `payload` in a REPL or notebook cell before assuming it is shaped like you expect. The first couple times you call a new API, `print(payload)` and `print(type(payload))` are cheaper than wrong code.
+`pd.DataFrame(payload)` gives something strange: a `total_count` column and a `results` column where each cell is a whole record. The rows you want are one level down, so point pandas at the list:
+
+``` python
+df = pd.DataFrame(payload["results"])
+df[["id", "user"]]
+```
+
+``` text
+    id                         user
+0  101  {'login': 'maria', 'id': 7}
+1  102    {'login': 'sam', 'id': 9}
+```
+
+Closer, but you can’t sort, filter, or group by a column of dictionaries. [`pd.json_normalize`](https://pandas.pydata.org/docs/reference/api/pandas.json_normalize.html) flattens nested objects into their own columns, joining the names with dots:
+
+``` python
+pd.json_normalize(payload["results"])
+```
+
+``` text
+    id       title                                labels user.login  user.id
+0  101   Fix dates  [{'name': 'bug'}, {'name': 'dates'}]      maria        7
+1  102  Add README                                    []        sam        9
+```
+
+Nested *lists*, like `labels`, stay as lists, since an issue can have any number of labels. When the list is what you care about, make it the rows with `record_path=`, and carry fields from the outer record along with `meta=`:
+
+``` python
+pd.json_normalize(payload["results"], record_path="labels", meta=["id", "title"])
+```
+
+``` text
+    name   id      title
+0    bug  101  Fix dates
+1  dates  101  Fix dates
+```
+
+Each row is now one label on one issue, the tidy shape [sec-tabular-data](#sec-tabular-data) recommends. Issue 102 has vanished, because it had no labels to make rows from: right for a table of labels, but worth knowing before you count anything. [sec-data-file-formats](#sec-data-file-formats) has more on JSON as a file format.
+
+The habit that saves the most time: the first few times you call a new API, print `payload.keys()` and one record before writing code for it.
 
 ## 24.6 API keys and secrets
 
-Most useful APIs require authentication. The key goes in a header, usually as `Authorization: Bearer <token>` or in a custom header like `X-API-Key`.
-
-**Never hardcode a key in your script.** Never commit one to git. Use an environment variable instead:
+Most useful APIs want to know who’s asking, so they give you an [API key](https://en.wikipedia.org/wiki/API_key) (or a token, which works the same way here) to send with every request. Wherever it goes, the key must not live in your code. A key typed into a notebook ends up in a commit, and commits end up on GitHub, where automated scanners look for exactly that. Keep it in an [environment variable](https://en.wikipedia.org/wiki/Environment_variable) instead, and read it with `os.environ`:
 
 ``` python
 import os
 import requests
 
-api_key = os.environ["OPENWEATHER_API_KEY"]   # KeyError if missing — good
+api_key = os.environ["OPENWEATHER_API_KEY"]   # a KeyError here means it isn't set
+
 resp = requests.get(
     "https://api.openweathermap.org/data/2.5/weather",
     params={"q": "Boulder,US", "appid": api_key},
@@ -277,15 +330,17 @@ resp = requests.get(
 )
 ```
 
-Store the key in a `.env` file and load it with `python-dotenv`. The full workflow — why, how, and how to avoid leaking keys into git — is [sec-secrets](#sec-secrets). Read it before building anything serious.
+The square brackets are deliberate. If the variable isn’t set, the script stops right there with `KeyError: 'OPENWEATHER_API_KEY'`, naming the problem. The softer `os.environ.get(...)` would hand you `None`, and you’d find out later from a 401 (from OpenWeather, `"Invalid API key"`).
+
+One trap comes with APIs like this one that take the key in the URL: `raise_for_status()` prints the full URL, key included (`401 Client Error: Unauthorized for url: https://api.openweathermap.org/data/2.5/weather?q=Boulder%2CUS&appid=not-a-real-key`). In a notebook, that message is saved in the cell’s output, and the output is saved in the file you commit. Clear outputs before committing a notebook that talks to an API ([sec-jupyter](#sec-jupyter) shows how).
+
+In practice, keep keys in a `.env` file that git ignores and load it with [`python-dotenv`](https://pypi.org/project/python-dotenv/); there’s a template at the end of this chapter, and [sec-secrets](#sec-secrets) covers the whole workflow, including what to do if a key leaks.
 
 ## 24.7 Rate limits and being polite
 
-Most APIs limit how fast you can call them — often “N requests per minute” or “N requests per day.” When you exceed the limit, you get a `429 Too Many Requests`. Some APIs return a `Retry-After` header telling you how many seconds to wait.
+Every API runs on somebody’s servers, shared with everyone using it, so nearly every API caps how many requests you may make in a period (GitHub: 60 an hour without a key). Go over and you’ll usually get a `429`, often with a [`Retry-After`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After) header saying how many seconds to wait. Not every API follows the textbook: GitHub may answer with a 403 *or* a 429 when you run out, and says to watch its `x-ratelimit-remaining` header.
 
-### Simple rate limiting
-
-For a modest script, just sleep between requests:
+Treat a 429 less as an obstacle than as the server telling you how to be a good guest. The first courtesy costs one line: pause between requests, and stay comfortably under the documented limit.
 
 ``` python
 import time
@@ -294,59 +349,83 @@ for item_id in ids:
     resp = requests.get(f"https://api.example.com/items/{item_id}", timeout=10)
     resp.raise_for_status()
     process(resp.json())
-    time.sleep(0.2)      # 5 requests per second
+    time.sleep(0.2)      # at most about 5 requests per second
 ```
 
-### Retry on 429 with backoff
+A loop that takes twenty minutes and finishes beats one that takes five and gets your key suspended.
+
+### Retry on 429, with backoff
+
+Even careful loops hit the occasional 429. The polite response is to wait and try again, and if the server doesn’t say how long, to wait longer after each failure: [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), which gives a struggling server more room each time instead of a steady hammering.
 
 ``` python
 import time
+import requests
 
 def get_with_retry(url, headers=None, params=None, max_retries=5):
     for attempt in range(max_retries):
         resp = requests.get(url, headers=headers, params=params, timeout=10)
         if resp.status_code == 429:
-            wait = int(resp.headers.get("Retry-After", 2 ** attempt))
+            retry_after = resp.headers.get("Retry-After", "")
+            wait = int(retry_after) if retry_after.isdigit() else 2 ** attempt
             time.sleep(wait)
             continue
         resp.raise_for_status()
         return resp
-    raise RuntimeError(f"Gave up after {max_retries} attempts")
+    raise RuntimeError(f"Gave up on {url} after {max_retries} attempts")
 ```
 
-`2 ** attempt` gives exponential backoff (1s, 2s, 4s, 8s, 16s), which is how polite clients handle overloaded servers.
+When `Retry-After` is a number of seconds, the function waits that long; otherwise `2 ** attempt` waits 1, 2, 4, 8, then 16 seconds. (`Retry-After` may also be a date, which `int()` would crash on, hence `isdigit()`.) Against a test server that answered 429 twice with `Retry-After: 1`, it returned the data after about two seconds; after five failures it gives up rather than looping forever. For bigger projects, [urllib3’s `Retry`](https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry) can do all this for you, attached through a [transport adapter](https://requests.readthedocs.io/en/latest/user/advanced/#transport-adapters).
 
-### Respect `robots.txt`
+### Respect `robots.txt`, and read the terms
 
-For web pages (not APIs), check `https://example.com/robots.txt` before scraping. It tells you which paths the site owner is OK with automated tools hitting. Ignoring it is rude and can get your IP blocked.
+APIs come with terms that say what you may do. Ordinary web pages usually don’t, but most sites publish a [`robots.txt`](https://en.wikipedia.org/wiki/Robots.txt) file at their root saying which paths automated tools should stay out of, and sometimes how long to wait between requests. It’s a request rather than a lock, and honoring it is the minimum courtesy of [web scraping](https://en.wikipedia.org/wiki/Web_scraping). Python’s [`urllib.robotparser`](https://docs.python.org/3/library/urllib.robotparser.html) reads it for you:
 
-## 24.8 When *not* to use `requests` directly
+``` python
+from urllib.robotparser import RobotFileParser
 
-Before you write a lot of custom API code, check:
+robots = RobotFileParser("https://example.com/robots.txt")
+robots.read()
+robots.can_fetch("my-term-project", "https://example.com/private/data.html")  # True or False
+robots.crawl_delay("my-term-project")  # seconds to wait between requests, or None
+```
 
-- **Does an SDK exist?** Many big APIs ship an official Python library: `github` → `PyGithub`, `slack` → `slack_sdk`, AWS → `boto3`, Google → `google-*`. SDKs handle auth, rate limits, pagination, and error types for you. Use them when they exist.
-- **Is there a bulk download?** Many data sources also offer CSV, Parquet, or SQL dumps of the same data. If you want a snapshot, the dump is usually much faster and easier than hammering the API row by row. See [sec-data-file-formats](#sec-data-file-formats).
-- **Is this a one-off?** For a single fetch, `curl` on the command line or a browser download might be faster than a Python script. Save the result to disk and work from there.
+A site’s terms of service can also forbid automated collection that `robots.txt` never mentions, and ignoring either can get your address blocked. On a campus network, many people’s traffic can leave through the same few addresses, so a block aimed at your script can land on everyone around you. If you aren’t sure a plan is acceptable, ask your instructor before you run it.
 
-## 24.9 Stakes and politics
+## 24.8 Pages of results
 
-A web API is a controlled door into someone else’s data. The mechanics in this chapter — keys, rate limits, authentication, retries — are the door’s hardware, and noticing them as hardware is most of the political move.
+You ask GitHub for every issue in a repository and get exactly 30. Nothing went wrong. List endpoints return one **page** at a time (GitHub’s [pagination guide](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api) notes that its issues endpoint returns 30, even for a repository with more than 1,600 open issues) and expect you to ask for the next one. The silence is what makes it confusing: nothing in a 30-row DataFrame says it’s incomplete.
 
-Three things to notice. First, *the data provider sets the terms*. They choose which fields the API exposes, which historical records remain accessible, what counts as “fair use,” and how often they will deprecate endpoints. When Twitter became X and revoked academic API access in 2023, dozens of long-running research projects collapsed overnight; when Reddit moved to paid API access later that year, third-party clients shut down and the moderation tools many subreddits relied on stopped working. Endpoints are not infrastructure; they are corporate decisions held in place until they are not. Second, *rate limits and pricing tiers concentrate access*. A free tier that allows 60 requests per hour is enough for a class assignment and useless for any analysis at scale. Paid tiers exist precisely to filter who can ask which questions, and the price is set by the provider’s business model, not by the cost of serving the bytes. Third, *the legal gradient between API and scrape is real*. APIs come with terms of service that explicitly authorize the access you are doing; web scraping the same data may or may not be lawful depending on the CFAA, the DMCA, the site’s terms, and which jurisdiction you sit in. The technical bar to scraping is low; the legal bar can be unexpectedly high — Aaron Swartz’s case is the cautionary one.
+APIs point to the next page in one of a few ways. Some take a `page` number, and you keep asking, with the number going up by one, until a page comes back empty. Some return a `next` URL or a **cursor** token in the JSON. And some, GitHub included, put the next URL in a `Link` response header, which `requests` parses into `resp.links` for you (see “Worked examples”). The documentation will say which, usually under “pagination”; find it before you trust any count.
 
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework, including the CFAA and DMCA history. The concrete prompt to carry forward: when you build a project on someone else’s API, ask what happens when the provider changes the rules — because they will.
+## 24.9 When *not* to use `requests` directly
 
-## 24.10 Worked examples
+**Is there an official library?** Many services publish a Python package, often called an SDK ([software development kit](https://en.wikipedia.org/wiki/Software_development_kit)), that wraps their API: [PyGithub](https://pygithub.readthedocs.io/en/stable/) for GitHub, the [Slack SDK](https://docs.slack.dev/tools/python-slack-sdk/), [boto3](https://docs.aws.amazon.com/boto3/latest/guide/quickstart.html) for Amazon Web Services, the [`google-cloud-*` packages](https://docs.cloud.google.com/python/docs/reference) for Google Cloud. A good one handles keys, pagination, retries, and errors for you.
 
-### Fetch a GitHub repo’s metadata
+**Is there a bulk download?** Many sources offer the same data as a CSV, Parquet, or database dump; Wikipedia publishes complete [database dumps](https://dumps.wikimedia.org/) so nobody has to fetch millions of pages one at a time. If you want everything, the dump is faster for you and kinder to the server. See [sec-data-file-formats](#sec-data-file-formats).
+
+**Is this a one-off?** For a single fetch, `curl` or your browser may be quicker than a script. Save the file into your raw data folder, note where and when it came from, and work from there.
+
+## 24.10 Stakes and politics
+
+In February 2023, [Twitter announced](https://en.wikipedia.org/wiki/Twitter_under_Elon_Musk) it would end free access to its API. Researchers had used that access for years to study elections, misinformation, and harassment, and a Reuters survey found that more than 100 ongoing studies had to be changed or cancelled. That spring, Reddit [announced](https://en.wikipedia.org/wiki/2023_Reddit_API_controversy) it would charge for its API too. The developer of the popular Apollo app said he’d been quoted \$12,000 per 50 million requests, and on June 30, Apollo and several other apps shut down, taking with them tools that volunteer moderators had relied on.
+
+Nothing was wrong with the code in those projects. The terms changed, and they were always the provider’s to change: which fields the API exposes, what the free tier allows, who gets a key at all. A limit of 60 requests an hour is plenty for a class assignment and useless for studying a platform at scale, so pricing quietly decides who gets to ask which questions. Moving from an API to scraping the same pages isn’t only a technical step, either. An API comes with terms that say what you may do; scraping may or may not be lawful, depending on the site’s terms, the [Computer Fraud and Abuse Act](https://en.wikipedia.org/wiki/Computer_Fraud_and_Abuse_Act), and where you are. The technical bar is low and the legal one can be surprisingly high, as the federal prosecution of [Aaron Swartz](https://en.wikipedia.org/wiki/Aaron_Swartz) for mass-downloading journal articles showed.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you build a project on someone else’s API, ask what happens when the provider changes the rules, because sooner or later they will.
+
+## 24.11 Worked examples
+
+### Fetch a GitHub repository’s metadata
+
+Everything above in its smallest form: a descriptive `User-Agent`, a timeout, a status check, then the data.
 
 ``` python
 import requests
-import pandas as pd
 
 resp = requests.get(
     "https://api.github.com/repos/pandas-dev/pandas",
-    headers={"User-Agent": "term-project/0.1"},
+    headers={"User-Agent": "term-project/0.1 (contact: you@example.edu)"},
     timeout=10,
 )
 resp.raise_for_status()
@@ -356,33 +435,46 @@ print(f"{repo['full_name']}: {repo['stargazers_count']:,} stars")
 print(f"Last updated: {repo['updated_at']}")
 ```
 
-### Paginate through results
+GitHub’s documentation for [getting a repository](https://docs.github.com/en/rest/repos/repos#get-a-repository) lists every key in the response; when you’re unsure what a field is called, that page (or the JSON itself, as in [Figure fig-browser-json](#fig-browser-json)) beats guessing.
 
-Most list endpoints return a few dozen items per page and require you to request subsequent pages.
+### Collect every page of results
+
+This fetches every issue in a repository by following GitHub’s `Link` header until there’s no `next` page. It reads a token from the environment and uses a [`Session`](https://requests.readthedocs.io/en/latest/user/advanced/#session-objects), so the headers are set once and the connection is reused:
 
 ``` python
-def list_issues(owner, repo, token):
+import os
+import time
+import requests
+
+def list_issues(owner, repo):
+    session = requests.Session()
+    session.headers.update({
+        "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
+        "User-Agent": "term-project/0.1 (contact: you@example.edu)",
+    })
     url = f"https://api.github.com/repos/{owner}/{repo}/issues"
-    headers = {"Authorization": f"Bearer {token}", "User-Agent": "tp/0.1"}
+    params = {"state": "all", "per_page": 100}
     issues = []
-    params = {"state": "all", "per_page": 100, "page": 1}
-    while True:
-        resp = requests.get(url, headers=headers, params=params, timeout=10)
+    while url:
+        resp = session.get(url, params=params, timeout=10)
         resp.raise_for_status()
-        page = resp.json()
-        if not page:
-            break
-        issues.extend(page)
-        params["page"] += 1
+        issues.extend(resp.json())
+        url = resp.links.get("next", {}).get("url")   # None on the last page
+        params = None   # the next URL already carries the parameters
+        time.sleep(0.5)
     return issues
 ```
 
-Stop when the response is an empty list. Some APIs also return a `Link` header with `rel="next"` — you can follow that instead of incrementing a page number.
+Two details are easy to miss. After the first request, `params` becomes `None`, because GitHub’s `next` URL already includes `state` and `per_page`. And GitHub counts every pull request as an issue, so the list includes pull requests, each marked by a `pull_request` key you can filter on. `pd.json_normalize(issues)` then turns the list into a DataFrame.
 
 ### Handle a flaky weather API
 
+A function you’ll call hundreds of times has to survive every failure from this chapter: a server that doesn’t answer, a network that drops, a 429 or 5xx that will probably clear up, and a bad key that won’t.
+
 ``` python
-import os, time, requests
+import os
+import time
+import requests
 
 API_KEY = os.environ["OPENWEATHER_API_KEY"]
 
@@ -394,29 +486,32 @@ def current_weather(city):
                 params={"q": city, "appid": API_KEY, "units": "metric"},
                 timeout=10,
             )
-            if resp.status_code == 200:
-                return resp.json()
-            if resp.status_code == 429:
-                time.sleep(int(resp.headers.get("Retry-After", 2 ** attempt)))
-                continue
-            resp.raise_for_status()
-        except requests.Timeout:
-            time.sleep(2 ** attempt)
-    raise RuntimeError(f"Failed to fetch weather for {city}")
+        except (requests.Timeout, requests.ConnectionError):
+            time.sleep(2 ** attempt)          # the network hiccuped: wait, then retry
+            continue
+        if resp.status_code == 429 or resp.status_code >= 500:
+            retry_after = resp.headers.get("Retry-After", "")
+            time.sleep(int(retry_after) if retry_after.isdigit() else 2 ** attempt)
+            continue
+        if resp.status_code == 401:
+            raise RuntimeError("OpenWeather rejected the key: check OPENWEATHER_API_KEY")
+        resp.raise_for_status()               # any other 4xx: retrying won't help
+        return resp.json()
+    raise RuntimeError(f"Failed to fetch weather for {city} after 3 attempts")
 ```
 
-Three layers of defense: status-code checks, timeout handling, and exponential backoff.
+Network and server trouble get retried with backoff. A bad key stops at once with a message saying what to fix, one that (unlike `raise_for_status()`) doesn’t print the key. Anything else raises, and after three attempts the function gives up. With a made-up key it stops with the 401 message; against a test server that returned 429 twice, it succeeded on the third try.
 
-## 24.11 Templates
+## 24.12 Templates
 
-**A defensive GET helper:**
+**A defensive GET helper** to import from your notebooks instead of rewriting the same lines:
 
 ``` python
 import requests
 
 def get_json(url, *, params=None, headers=None, timeout=10):
     default_headers = {
-        "User-Agent": "my-project/0.1",
+        "User-Agent": "my-project/0.1 (contact: you@example.edu)",
         "Accept": "application/json",
     }
     if headers:
@@ -426,50 +521,51 @@ def get_json(url, *, params=None, headers=None, timeout=10):
     return resp.json()
 ```
 
-Import this from every notebook instead of duplicating the boilerplate.
+**A `.env` file** (paired with [sec-secrets](#sec-secrets)), with placeholders where your real keys go. Add `.env` to `.gitignore` before you put anything real in it:
 
-**A `.env` file (paired with [sec-secrets](#sec-secrets)):**
+``` text
+OPENWEATHER_API_KEY=paste-your-key-here
+GITHUB_TOKEN=paste-your-token-here
+```
 
-    OPENWEATHER_API_KEY=abc123...
-    GITHUB_TOKEN=ghp_...
-
-Load at the top of your script:
+Load it at the top of your script:
 
 ``` python
 from dotenv import load_dotenv
 load_dotenv()
 ```
 
-## 24.12 Exercises
+## 24.13 Exercises
 
-1.  Use `requests.get` to fetch `https://api.github.com/repos/python/cpython` and print the star count, license name, and default branch.
-2.  Add a `User-Agent` header to the request above. Repeat the request without one (or with `User-Agent: ""`) and see if you get the same response.
-3.  Pick a public API (weather, Wikipedia, NASA Open Data, a Kaggle dataset) that requires a key. Sign up for a key, store it in a `.env` file, and write a short script that fetches one record. Do not commit the key.
-4.  Write a function `get_with_retry(url, max_retries=3)` that retries on 429 and 5xx with exponential backoff, and raises on 4xx (except 429).
-5.  Fetch a paginated endpoint (GitHub issues, Reddit posts, Hacker News) and build a DataFrame of every record across at least three pages. Print `df.shape`.
-6.  Find a dataset that is available both as a bulk CSV download and as an API. Download both, load them into pandas, compare the row counts, and write down which was faster and why.
-7.  Use `resp = requests.get(...)` and inspect `resp.headers` in a notebook. Find the `Content-Type`, `Server`, and any rate-limit headers (`X-RateLimit-Remaining` is common).
+1.  Use `requests.get` to fetch `https://api.github.com/repos/python/cpython` and print the star count, the license name, and the default branch.
+2.  Send the same request with `curl -i`, once as is and once with `-H "User-Agent:"`, which removes the header. GitHub says requests without a valid `User-Agent` are rejected; what status code and message do you get?
+3.  Pick a public API that requires a key, such as one of [NASA’s open APIs](https://api.nasa.gov/). Get a key, store it in a `.env` file, and write a short script that fetches one record. Check with `git status` that the key isn’t about to be committed.
+4.  Write `get_with_retry(url, max_retries=3)` so that it retries on 429 and on 5xx with exponential backoff, and raises at once on any other 4xx. Test it against `https://httpbin.org/status/503` and `https://httpbin.org/status/404`.
+5.  Fetch a paginated endpoint (GitHub issues work well) and build a DataFrame of every record across at least three pages. Print `df.shape`.
+6.  Find a dataset available both as a bulk download and through an API. Get it both ways, load each into pandas, compare the row counts, and write down which was faster and why.
+7.  Make any request and look through `resp.headers` in a notebook. Find the `Content-Type`, the `Server`, and any rate-limit headers (`X-RateLimit-Remaining` is common).
 
-## 24.13 One-page checklist
+## 24.14 One-page checklist
 
-- Import `requests`; install with `python -m pip install requests`.
-- Always pass a `timeout=` to every request.
-- Check `resp.status_code` or call `resp.raise_for_status()` before using `resp.json()`.
-- Pass query parameters as a `params=` dict, not by hand in the URL.
-- Send a descriptive `User-Agent` header.
-- Put API keys in environment variables, loaded from a `.env` file that is in `.gitignore`. See [sec-secrets](#sec-secrets).
+- Try a new API with `curl -i` first, and read the status line.
+- Pass `timeout=` to every request.
+- Call `resp.raise_for_status()` or check `resp.ok` before `resp.json()`.
+- If `resp.json()` fails, print `resp.status_code` and `resp.text[:300]`.
+- Pass query parameters as a `params=` dictionary, not by hand in the URL.
+- Send a descriptive `User-Agent` with a way to contact you.
+- Keep keys in environment variables, loaded from a `.env` file in `.gitignore` ([sec-secrets](#sec-secrets)).
+- Clear notebook outputs before committing; error messages can contain keys.
 - Sleep between requests; handle 429 with `Retry-After` or exponential backoff.
-- Prefer an official SDK when one exists.
-- Prefer a bulk download when you need a snapshot of the whole dataset.
-- Inspect `resp.json()` in a notebook before assuming its shape.
+- Assume a list endpoint is paginated until you’ve checked.
+- Read `robots.txt` and the terms of service before collecting from a website.
+- Prefer an official SDK when one exists, and a bulk download when you need everything.
 
 > **NOTE:**
 >
-> - Python Software Foundation, [`requests` documentation](https://requests.readthedocs.io/en/latest/) — the official guide to the most widely used Python HTTP library.
-> - Encode, [`httpx` documentation](https://www.python-httpx.org/) — a modern alternative to `requests` with the same shape but native async support; the right choice when you need concurrency.
-> - MDN, [An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) — a clear, browser-agnostic explanation of HTTP methods, headers, and status codes.
-> - [HTTP Status Codes (httpstatuses.com)](https://httpstatuses.com/) — a searchable reference for every status code you will see in the wild, with explanations.
-> - [HTTPie](https://httpie.io/cli) — a friendly command-line HTTP client; great for poking at an API before you wrap it in Python.
-> - IETF, [RFC 6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749) — the canonical authentication flow most modern APIs use; useful when “use the SDK” stops being an option.
-> - IETF, [RFC 9309: Robots Exclusion Protocol](https://datatracker.ietf.org/doc/html/rfc9309) — the formal `robots.txt` standard; relevant when the API runs out and you are deciding whether scraping is appropriate.
-> - Electronic Frontier Foundation, [Coders’ Rights Project](https://www.eff.org/issues/coders) — ongoing legal explainers on the CFAA, DMCA, and security research; useful context for the “Stakes and politics” framing above.
+> - **Python Software Foundation**, [`requests` documentation](https://requests.readthedocs.io/en/latest/) — the official guide to Python’s most widely used HTTP library, from the quickstart through sessions and authentication.
+> - **Encode**, [`httpx` documentation](https://www.python-httpx.org/) — a modern alternative to `requests` with nearly the same interface plus async support; the one to reach for when you need many requests at once.
+> - **MDN**, [An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) — a clear explanation of requests, responses, methods, and headers, linked to MDN’s reference for every status code and header.
+> - **HTTPie**, [HTTPie CLI](https://httpie.io/cli) — a friendlier command-line HTTP client than `curl`, with readable output by default; good for exploring an API before you write Python.
+> - **IETF**, [RFC 6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749) — the standard behind the “log in with…” flows many APIs use; useful background when a simple key isn’t an option.
+> - **IETF**, [RFC 9309: Robots Exclusion Protocol](https://datatracker.ietf.org/doc/html/rfc9309) — the formal `robots.txt` standard, for when you’re deciding whether and how to collect from a website.
+> - **Electronic Frontier Foundation**, [Coders’ Rights Project](https://www.eff.org/issues/coders) — legal explainers on the CFAA, the DMCA, and security research; context for the “Stakes and politics” section above.

@@ -668,7 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-never-trust-a-file-you-just-read" id="toc-running-theme-never-trust-a-file-you-just-read" class="nav-link" data-scroll-target="#running-theme-never-trust-a-file-you-just-read">Running theme: never trust a file you just read</a></li>
   <li><a href="#csv-the-workhorse-and-its-quirks" id="toc-csv-the-workhorse-and-its-quirks" class="nav-link" data-scroll-target="#csv-the-workhorse-and-its-quirks"><span class="header-section-number">20.1</span> CSV: the workhorse, and its quirks</a>
   <ul class="collapse">
@@ -678,8 +678,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#missing-values-the-many-faces-of-nothing" id="toc-missing-values-the-many-faces-of-nothing" class="nav-link" data-scroll-target="#missing-values-the-many-faces-of-nothing">Missing values: the many faces of “nothing”</a></li>
   <li><a href="#dtypes-the-everything-is-a-string-trap" id="toc-dtypes-the-everything-is-a-string-trap" class="nav-link" data-scroll-target="#dtypes-the-everything-is-a-string-trap">Dtypes: the “everything is a string” trap</a></li>
   <li><a href="#dates" id="toc-dates" class="nav-link" data-scroll-target="#dates">Dates</a></li>
-  <li><a href="#headers-and-index-columns" id="toc-headers-and-index-columns" class="nav-link" data-scroll-target="#headers-and-index-columns">Headers and index columns</a></li>
-  <li><a href="#large-files-do-not-read-what-you-do-not-need" id="toc-large-files-do-not-read-what-you-do-not-need" class="nav-link" data-scroll-target="#large-files-do-not-read-what-you-do-not-need">Large files: do not read what you do not need</a></li>
+  <li><a href="#headers-index-columns-and-junk-at-the-top" id="toc-headers-index-columns-and-junk-at-the-top" class="nav-link" data-scroll-target="#headers-index-columns-and-junk-at-the-top">Headers, index columns, and junk at the top</a></li>
+  <li><a href="#large-files-dont-read-what-you-dont-need" id="toc-large-files-dont-read-what-you-dont-need" class="nav-link" data-scroll-target="#large-files-dont-read-what-you-dont-need">Large files: don’t read what you don’t need</a></li>
   </ul></li>
   <li><a href="#tsv-and-other-delimited-formats" id="toc-tsv-and-other-delimited-formats" class="nav-link" data-scroll-target="#tsv-and-other-delimited-formats"><span class="header-section-number">20.2</span> TSV and other delimited formats</a></li>
   <li><a href="#json-when-the-structure-is-nested" id="toc-json-when-the-structure-is-nested" class="nav-link" data-scroll-target="#json-when-the-structure-is-nested"><span class="header-section-number">20.3</span> JSON: when the structure is nested</a>
@@ -687,13 +687,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#flat-json" id="toc-flat-json" class="nav-link" data-scroll-target="#flat-json">Flat JSON</a></li>
   <li><a href="#nested-json" id="toc-nested-json" class="nav-link" data-scroll-target="#nested-json">Nested JSON</a></li>
   <li><a href="#newline-delimited-json-ndjson-jsonl" id="toc-newline-delimited-json-ndjson-jsonl" class="nav-link" data-scroll-target="#newline-delimited-json-ndjson-jsonl">Newline-delimited JSON (NDJSON / JSONL)</a></li>
-  <li><a href="#json-encoding-gotchas" id="toc-json-encoding-gotchas" class="nav-link" data-scroll-target="#json-encoding-gotchas">JSON encoding gotchas</a></li>
+  <li><a href="#when-json-wont-parse" id="toc-when-json-wont-parse" class="nav-link" data-scroll-target="#when-json-wont-parse">When JSON won’t parse</a></li>
   </ul></li>
   <li><a href="#excel-the-format-you-cannot-escape" id="toc-excel-the-format-you-cannot-escape" class="nav-link" data-scroll-target="#excel-the-format-you-cannot-escape"><span class="header-section-number">20.4</span> Excel: the format you cannot escape</a>
   <ul class="collapse">
   <li><a href="#basic-usage" id="toc-basic-usage" class="nav-link" data-scroll-target="#basic-usage">Basic usage</a></li>
   <li><a href="#multiple-sheets" id="toc-multiple-sheets" class="nav-link" data-scroll-target="#multiple-sheets">Multiple sheets</a></li>
-  <li><a href="#dealing-with-messy-excel-layouts" id="toc-dealing-with-messy-excel-layouts" class="nav-link" data-scroll-target="#dealing-with-messy-excel-layouts">Dealing with messy Excel layouts</a></li>
+  <li><a href="#dealing-with-messy-layouts" id="toc-dealing-with-messy-layouts" class="nav-link" data-scroll-target="#dealing-with-messy-layouts">Dealing with messy layouts</a></li>
   <li><a href="#save-back-to-excel" id="toc-save-back-to-excel" class="nav-link" data-scroll-target="#save-back-to-excel">Save back to Excel</a></li>
   </ul></li>
   <li><a href="#parquet-the-format-for-real-data-work" id="toc-parquet-the-format-for-real-data-work" class="nav-link" data-scroll-target="#parquet-the-format-for-real-data-work"><span class="header-section-number">20.5</span> Parquet: the format for real data work</a>
@@ -772,75 +772,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/data-file-formats.png" class="img-fluid" alt="Noah Meme: CSV, JSON, Parquet, What is this?"></p>
 </div>
-<p>A huge fraction of your time in a first data science course is spent moving data from a file into a <a href="https://pandas.pydata.org/docs/">pandas</a> DataFrame. On paper, this is a one-liner: <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>pd.read_csv("data.csv")</code></a>. In practice, real-world files introduce an astonishing number of ways that simple line can go wrong — wrong delimiter, broken encoding, missing-value sentinels that sneak in as strings, dates parsed as objects, silently duplicated rows, multi-level headers, Excel sheets that aren’t sheets, JSON that is almost but not quite valid.</p>
-<p>This chapter is a field guide to the five file formats you will meet most often as a novice data scientist — <a href="../chapters/appendix-glossary.html#term-csv">CSV</a>, TSV, <a href="../chapters/appendix-glossary.html#term-json">JSON</a>, Excel, and <a href="../chapters/appendix-glossary.html#term-parquet">Parquet</a> — with the specific quirks of each, the <code>pandas</code> reader invocation that will actually work, and the debugging steps for when it does not. The goal is not to make you a file format expert but to give you enough mental model to recognize what is going wrong when a simple read fails.</p>
+<p>Here’s a scene from every intro data course. You get a dataset and type the line every <a href="https://pandas.pydata.org/docs/">pandas</a> tutorial promises will work: <code>pd.read_csv("data.csv")</code>. Sometimes it does. Other times you get a wall of red text about a “codec,” or a DataFrame with one enormous column, or, worst of all, a table that loads without complaint and is quietly wrong: prices stored as text, dates that are only strings, a <code>-999</code> dragging every average below zero.</p>
+<p>None of that means you’re bad at this. pandas has to guess at the habits of whoever made the file (which character separates columns, which values mean “nothing here”), and when it guesses wrong, the fix is almost always one argument, once you know which one to reach for. This chapter is a field guide to the formats you’ll meet most: <a href="../chapters/appendix-glossary.html#term-csv">CSV</a> (and its cousin TSV), <a href="../chapters/appendix-glossary.html#term-json">JSON</a>, Excel, and <a href="../chapters/appendix-glossary.html#term-parquet">Parquet</a>, plus the text encodings underneath them and what to do when a file is too big to load. It doesn’t cover cleaning a table once it’s loaded (that’s <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a>), pandas itself (<a href="pandas-basics.html" class="quarto-xref"><span>Chapter 22</span></a>), fetching JSON from an API (<a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a>), or JSON as a configuration format (<a href="common-formats.html" class="quarto-xref"><span>Chapter 4</span></a>).</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Pick the right file format for a given situation (and explain why).</li>
-<li>Read a CSV reliably, controlling the delimiter, quoting, encoding, missing-value sentinels, and dtype inference.</li>
-<li>Diagnose and fix the three most common <code>pd.read_csv</code> failures.</li>
-<li>Read a JSON file into a DataFrame using <code>pd.read_json</code> or <code>json.load</code>, and handle nested structures with <code>pd.json_normalize</code>.</li>
-<li>Read an Excel file, select a specific sheet, and handle merged cells and multi-level headers.</li>
-<li>Explain when Parquet is the right choice and how to read/write it with <code>pd.read_parquet</code> / <code>df.to_parquet</code>.</li>
-<li>Recognize text encoding errors (<code>UnicodeDecodeError</code>) and recover from them.</li>
-<li>Work with a file too big for memory: estimate what it needs, read less or in chunks, and hand the question to DuckDB or Polars.</li>
-<li>Follow a short checklist to validate that a file was loaded correctly before you start analysis.</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>Your CSV loaded as a single column with a name like <code>'name;price;city'</code>, and you can’t see what went wrong.</li>
+<li><code>pd.read_csv</code> stopped with <code>UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9</code>, and you have no idea what a codec is.</li>
+<li>You averaged a temperature column and got −233 °C, because nothing told pandas that <code>-999</code> means “no reading.”</li>
+<li>Boston ZIP codes lost their leading zero, or 3 April turned into March 4, and nothing warned you either time.</li>
+<li>An API gave you nested JSON, and <code>pd.read_json</code> answered with <code>ValueError: Mixing dicts with non-Series may lead to ambiguous ordering</code>.</li>
+<li>Someone emailed you a spreadsheet with a title banner, merged cells, and five sheets, and you need one clean table out of it.</li>
+<li>Your notebook’s kernel keeps dying on a big file, and you want to know whether Parquet, DuckDB, or Polars would help.</li>
+</ul>
 </section>
 <section id="running-theme-never-trust-a-file-you-just-read" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-never-trust-a-file-you-just-read">Running theme: never trust a file you just read</h2>
-<p>Always verify shape, columns, dtypes, and head/tail of a DataFrame in the cell right after <code>read_*</code>. Most data bugs are actually loading bugs in disguise.</p>
+<p>Look at the shape, the columns, the types, and the first and last rows in the cell right after every <code>read_*</code> call. Most data bugs are loading bugs in disguise, and they’re cheapest to catch the moment the file comes in.</p>
 </section>
 <section id="csv-the-workhorse-and-its-quirks" class="level2" data-number="20.1">
 <h2 data-number="20.1" class="anchored" data-anchor-id="csv-the-workhorse-and-its-quirks"><span class="header-section-number">20.1</span> CSV: the workhorse, and its quirks</h2>
-<p>A <a href="../chapters/appendix-glossary.html#term-csv">CSV</a> file is a plain-text file where each line is a row and columns are separated by a delimiter — traditionally a comma. CSV is the most common data format you will encounter because it is human-readable, supported everywhere, and easy to generate from any tool.</p>
-<p>It is also the most common source of data-loading bugs, for exactly the same reasons: “plain text” and “human-readable” leave a lot of room for inconsistency.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> file is about as simple as a data format gets: plain text, one row per line, commas between the values. That’s why everything can write one, and why they cause so much trouble: there’s a short standard (RFC 4180, in Further reading), but nothing enforces it, so every program has its own ideas about separators, quoting, and encodings. pandas’ <a href="https://pandas.pydata.org/docs/user_guide/io.html#io-read-csv-table">guide to reading CSV files</a> documents every option; this section covers the ones you’ll need.</p>
 <section id="the-simple-case" class="level3">
 <h3 class="anchored" data-anchor-id="the-simple-case">The simple case</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>When this works, it works great. It rarely works the first time on a file you did not generate yourself. Here are the things <code>pd.read_csv</code> tries to do automatically and the parameters you use when it guesses wrong.</p>
+<p>On a file you didn’t make, this often fails the first time, and that’s normal. Before reaching for arguments, look at the raw text in a text editor (see <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a>), not Excel, which reformats what it shows, or with <code>head -5 sales.csv</code> in a terminal (see <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>). Thirty seconds tells you the separator, whether there’s a header, and whether junk sits above it.</p>
 </section>
 <section id="delimiters-other-than-comma" class="level3">
 <h3 class="anchored" data-anchor-id="delimiters-other-than-comma">Delimiters other than comma</h3>
-<p>Many files use tabs, semicolons, or pipes.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.tsv"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)          <span class="co"># tab-separated</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"european.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>)        <span class="co"># common in European data</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"weird.csv"</span>, sep<span class="op">=</span><span class="st">"|"</span>)           <span class="co"># pipe-separated</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A file with a <code>.csv</code> extension is <em>not guaranteed</em> to be comma-separated. Open the file in a text editor first and look at the first line. If columns are separated by something other than commas, pass <code>sep=</code> explicitly.</p>
-<p>You can also let pandas sniff:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"unknown.csv"</span>, sep<span class="op">=</span><span class="va">None</span>, engine<span class="op">=</span><span class="st">"python"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>but sniffing is slower and occasionally wrong; it is a last resort, not a habit.</p>
+<p>Here’s a classic surprise: the DataFrame has one column.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"european.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>(2, 1)
+['name;price;city']</code></pre>
+<p>The file uses semicolons, common where the comma is the <a href="https://en.wikipedia.org/wiki/Decimal_separator">decimal separator</a> (three and a half euros is <code>3,50</code>). A <code>.csv</code> extension is only part of a name; it promises nothing about what’s inside. Tell pandas the separator, and the decimal mark while you’re at it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"european.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>, decimal<span class="op">=</span><span class="st">","</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>               name  price    city
+0      Café Lumière    3.5   Paris
+1  Bäckerei Schmidt    2.1  Berlin</code></pre>
+<p>Without <code>decimal=","</code>, the prices would load as the text <code>'3,50'</code>. Tabs (<code>sep="\t"</code>) and pipes (<code>sep="|"</code>) are the other separators you’ll meet. pandas can also sniff the separator with <code>sep=None, engine="python"</code>, but that’s slower and occasionally wrong, so treat it as a last resort.</p>
 </section>
 <section id="encoding-unicodedecodeerror" class="level3">
 <h3 class="anchored" data-anchor-id="encoding-unicodedecodeerror">Encoding: <code>UnicodeDecodeError</code></h3>
-<p>You will eventually hit:</p>
-<pre><code>UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 42: invalid continuation byte</code></pre>
-<p>This means the file is not UTF-8. Data from Excel on Windows is often Latin-1 (a.k.a. <code>cp1252</code>). Try:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"legacy.csv"</span>, encoding<span class="op">=</span><span class="st">"latin-1"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If that fails, try <code>encoding="cp1252"</code>, then <code>encoding="utf-16"</code>. If <em>none</em> work, the file is probably binary (it is not actually a CSV) or corrupted.</p>
+<p>Sooner or later you’ll see this:</p>
+<pre class="text"><code>UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 18: invalid continuation byte</code></pre>
+<p>It looks terrifying and is usually easy. pandas assumes the bytes follow <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a>, the modern standard, and this file uses another rule, most often <a href="https://en.wikipedia.org/wiki/Windows-1252">Windows-1252</a> (<code>cp1252</code> to Python), long used by Windows programs for Western European text. There, byte <code>0xe9</code> is <code>é</code>; in UTF-8 it can’t stand alone. Try <code>cp1252</code> first:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"legacy.csv"</span>, encoding<span class="op">=</span><span class="st">"cp1252"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You’ll also see advice to use <code>encoding="latin-1"</code>, which has a catch: it never raises an error, even on the wrong file. “Text encoding in general” below explains.</p>
 </section>
 <section id="missing-values-the-many-faces-of-nothing" class="level3">
 <h3 class="anchored" data-anchor-id="missing-values-the-many-faces-of-nothing">Missing values: the many faces of “nothing”</h3>
-<p>Data comes with all kinds of sentinels for “this value is missing”:</p>
-<ul>
-<li><code>""</code> (empty string)</li>
-<li><code>NA</code>, <code>N/A</code>, <code>n/a</code></li>
-<li><code>NULL</code>, <code>null</code></li>
-<li><code>-</code>, <code>--</code></li>
-<li><code>999</code>, <code>-999</code>, <code>9999</code> (the “numeric sentinel” tradition)</li>
-<li>blank cells</li>
-</ul>
-<p><code>pd.read_csv</code> treats a small set (<code>NA</code>, <code>N/A</code>, <code>NULL</code>, empty) as missing by default, but not all. The rest will sneak in as strings and silently poison any numeric operation (see the <code>ValueError: could not convert string to float</code> example in <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>).</p>
-<p>Fix it at read time:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"survey.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">"999"</span>, <span class="st">"n/a"</span>, <span class="st">"unknown"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Files say “no value here” in many ways: empty cells, <code>NA</code>, <code>NULL</code>, a dash, <code>unknown</code>, or codes like <code>-999</code> that only make sense if you’ve read the documentation. These stand-ins are called <a href="https://en.wikipedia.org/wiki/Sentinel_value">sentinel values</a>. pandas already reads a standard set as missing, including empty cells, <code>NA</code>, <code>N/A</code>, <code>n/a</code>, <code>NULL</code>, <code>null</code>, and <code>None</code> (the <a href="https://pandas.pydata.org/docs/user_guide/io.html#na-values"><code>na_values</code> section</a> has the full list). Anything else comes in as text:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"survey.csv"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>   id  age   income
+0   1   34    52000
+1   2    -  unknown
+2   3  NaN    61000
+3   4  NaN       --
+4   5  NaN    48000</code></pre>
+<p>The file’s <code>n/a</code>, <code>NULL</code>, and empty cell became <code>NaN</code>, pandas’ marker for missing. The <code>-</code>, <code>unknown</code>, and <code>--</code> didn’t, so both columns are text, and the error shows up later, far from its cause: <code>df["income"].mean()</code> fails with <code>TypeError: Cannot perform reduction 'mean' with string dtype</code> (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). Add the file’s own codes to pandas’ defaults:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"survey.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">"unknown"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now both columns are numbers. Numeric codes like <code>-999</code> are sneakier, because they <em>are</em> numbers: nothing fails, and every average is wrong. Worked example 2 shows one.</p>
 </section>
 <section id="dtypes-the-everything-is-a-string-trap" class="level3">
 <h3 class="anchored" data-anchor-id="dtypes-the-everything-is-a-string-trap">Dtypes: the “everything is a string” trap</h3>
-<p>If a single “bad” cell sneaks into a numeric column — maybe a footnote, a <code>$</code>, or an accidental space — pandas will read the entire column as text. You discover this later when <code>df["revenue"].sum()</code> concatenates strings instead of adding numbers: a column holding <code>12.50</code>, <code>$8</code>, and <code>9.25</code> sums to <code>'12.50$89.25'</code>.</p>
+<p>Every column has one type, its <a href="https://pandas.pydata.org/docs/user_guide/basics.html#basics-dtypes">dtype</a>, and pandas picks it from the values. One cell it can’t read as a number (a footnote, a <code>$</code>, a note like <code>call for price</code>) and the whole column becomes text. You usually find out when a sum glues strings together instead of adding them. A column holding <code>12.50</code>, <code>$8</code>, and <code>9.25</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"revenue.csv"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"revenue"</span>].<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>'12.50$89.25'</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -851,197 +855,180 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>pandas 3.0 and later read a text column as <code>str</code>; pandas 2 and earlier read it as <code>object</code>. Tutorials and answers written for older versions say <code>object</code>, so check which version you have with <code>pd.__version__</code>. To ask whether a column is numeric in either version, ask directly: <code>pd.api.types.is_numeric_dtype(df["revenue"])</code> returns <code>False</code> for the column above in both.</p>
+<p>pandas 3.0 and later read a text column as <code>str</code>; pandas 2 and earlier read it as <code>object</code>. Tutorials and answers written for older versions say <code>object</code>, so check which version you have with <code>pd.__version__</code> (pandas’ <a href="https://pandas.pydata.org/docs/user_guide/migration-3-strings.html">guide to the new string type</a> explains the change). To ask whether a column is numeric in either version, ask directly: <code>pd.api.types.is_numeric_dtype(df["revenue"])</code> returns <code>False</code> for the column above in both.</p>
 </div>
 </div>
-<p>Two fixes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 1: handle missing values at read time, as above</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"revenue.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">""</span>])</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 2: coerce after loading</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"revenue"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"revenue"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>errors="coerce"</code> turns unconvertible cells into <code>NaN</code>, which you can then inspect with <code>df["revenue"].isna().sum()</code>.</p>
-<p>Always check dtypes after loading:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.dtypes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If a column you expect to be numeric shows as <code>str</code> (or <code>object</code> in pandas 2), you have a hidden non-number somewhere.</p>
+<p>There are two ways out. If the bad values are missing-value codes, use <code>na_values=</code> at read time. Otherwise, convert after loading with <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html"><code>pd.to_numeric</code></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 1: handle missing values at read time, as above</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"revenue.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">""</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 2: coerce after loading</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"revenue"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"revenue"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>errors="coerce"</code> turns what it can’t convert into <code>NaN</code>, so <code>df["revenue"].isna().sum()</code> counts the failures, and you can inspect those rows (<a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> shows how). Either way, run <code>df.dtypes</code> after every load: an expected number column that shows up as <code>str</code> (or <code>object</code> in pandas 2) has a non-number hiding in it.</p>
+<p>Guessing goes wrong the other way, too. Codes made of digits, like <a href="https://en.wikipedia.org/wiki/ZIP_Code">ZIP codes</a> and student IDs, look like numbers, so Boston’s <code>02134</code> loads as <code>2134</code>, and the zero is gone for good. If you’d never do arithmetic on it, read it as text:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"addresses.csv"</span>, dtype<span class="op">=</span>{<span class="st">"zip"</span>: <span class="st">"str"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="dates" class="level3">
 <h3 class="anchored" data-anchor-id="dates">Dates</h3>
-<p>pandas does not parse dates by default; dates come in as strings. Parse them at read time:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If pandas cannot guess the format and you see <code>2024-13-01</code> (January 13 in day-first locales) parsed as month 13, pass the format explicitly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sales.csv"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    date_format<span class="op">=</span><span class="st">"</span><span class="sc">%d</span><span class="st">/%m/%Y"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>pandas leaves dates as text unless you ask, and the first sign is often <code>AttributeError: Can only use .dt accessor with datetimelike values</code>. Ask at read time:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That’s reliable on unambiguous <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> dates like <code>2026-03-04</code>, the form to use when you write dates yourself. On <code>03/04/2026</code> (March 4 in the United States, 3 April in much of the world), pandas guesses month first and fails quietly. If every date could be month first, a British file’s 3 April becomes March 4. If some can’t (<code>13/04/2026</code>), the whole column stays text. Neither comes with a warning; <code>df.dtypes</code> catches the second, and only knowing the file’s origin catches the first. When you know the format, give it in Python’s <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">format codes</a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sales.csv"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    date_format<span class="op">=</span><span class="st">"</span><span class="sc">%d</span><span class="st">/%m/%Y"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="headers-and-index-columns" class="level3">
-<h3 class="anchored" data-anchor-id="headers-and-index-columns">Headers and index columns</h3>
-<p>A CSV with no header row:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data.csv"</span>, header<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A CSV whose first column should become the DataFrame index:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A CSV with metadata garbage above the header (comments, export timestamps, Excel dumps):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"export.csv"</span>, skiprows<span class="op">=</span><span class="dv">3</span>)       <span class="co"># skip 3 lines, then header</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="headers-index-columns-and-junk-at-the-top" class="level3">
+<h3 class="anchored" data-anchor-id="headers-index-columns-and-junk-at-the-top">Headers, index columns, and junk at the top</h3>
+<p>pandas assumes the first line is a header. If there isn’t one, a first row of <code>Alice,34</code> becomes the column names, and Alice vanishes from the data. Say so, and name the columns:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>[<span class="st">"name"</span>, <span class="st">"age"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the first column should become the index (the row labels), use <code>index_col=0</code>. And a title or timestamp above the header produces an error that sounds unrelated: <code>ParserError: Error tokenizing data. C error: Expected 1 fields in line 4, saw 2</code>. Count the lines above the header and skip them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"export.csv"</span>, skiprows<span class="op">=</span><span class="dv">3</span>)       <span class="co"># skip 3 lines, then header</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="large-files-do-not-read-what-you-do-not-need" class="level3">
-<h3 class="anchored" data-anchor-id="large-files-do-not-read-what-you-do-not-need">Large files: do not read what you do not need</h3>
+<section id="large-files-dont-read-what-you-dont-need" class="level3">
+<h3 class="anchored" data-anchor-id="large-files-dont-read-what-you-dont-need">Large files: don’t read what you don’t need</h3>
 <p>If a CSV is too big to load comfortably, don’t read all of it. Read only the columns you need (<code>usecols=</code>), read it in pieces (<code>chunksize=</code>), convert it to Parquet once, or let DuckDB or Polars answer the question without loading the whole file. “Data bigger than memory” below walks through each, with measurements.</p>
 </section>
 </section>
 <section id="tsv-and-other-delimited-formats" class="level2" data-number="20.2">
 <h2 data-number="20.2" class="anchored" data-anchor-id="tsv-and-other-delimited-formats"><span class="header-section-number">20.2</span> TSV and other delimited formats</h2>
-<p>A TSV file is a CSV file where the delimiter is a tab. TSVs are marginally better than CSVs because tabs are very rarely used inside cell values, so quoting is less important. Read them with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data.tsv"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Everything else from the CSV section applies.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Tab-separated_values">TSV</a> file is a CSV with tabs instead of commas, which is a little friendlier: tabs almost never appear inside a value, so quoting rarely comes up. Read one with <code>pd.read_csv("data.tsv", sep="\t")</code>. Everything in the CSV section applies, including the one-giant-column symptom when a tab-separated file arrives named <code>.csv</code>.</p>
 </section>
 <section id="json-when-the-structure-is-nested" class="level2" data-number="20.3">
 <h2 data-number="20.3" class="anchored" data-anchor-id="json-when-the-structure-is-nested"><span class="header-section-number">20.3</span> JSON: when the structure is nested</h2>
-<p><a href="../chapters/appendix-glossary.html#term-json">JSON</a> is the dominant format for data returned from web APIs. Unlike CSV, JSON supports nested data — a record can have fields whose values are themselves objects or arrays.</p>
+<p><a href="https://en.wikipedia.org/wiki/JSON">JSON</a> is how most web APIs send data (see <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a>). Unlike a CSV’s grid, a JSON record can hold other records and lists, like a user whose address has a city and a ZIP code, so most of working with JSON in pandas is deciding how to flatten it. Python’s built-in <a href="https://docs.python.org/3/library/json.html"><code>json</code> module</a> reads any JSON file into dictionaries and lists, and pandas’ <a href="https://pandas.pydata.org/docs/user_guide/io.html#io-json-reader">JSON guide</a> covers reading it straight into a DataFrame.</p>
 <section id="flat-json" class="level3">
 <h3 class="anchored" data-anchor-id="flat-json">Flat JSON</h3>
-<p>If the file is a JSON array of flat objects, <code>pd.read_json</code> reads it directly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">"users.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the file is a list of records with no nesting, <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_json.html"><code>pd.read_json</code></a> reads it directly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">"people.json"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>JSON has no date type. <code>read_json</code> converts columns whose names look like dates (<code>date</code>, or names ending in <code>_at</code> or <code>_time</code>, among others) and leaves the rest, so <code>signup_date</code> stays text until you run <code>pd.to_datetime</code> on it.</p>
 </section>
 <section id="nested-json" class="level3">
 <h3 class="anchored" data-anchor-id="nested-json">Nested JSON</h3>
-<p>Real-world API responses are rarely flat. A typical response looks like:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"data"</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Alice"</span><span class="fu">,</span> <span class="dt">"address"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"city"</span><span class="fu">:</span> <span class="st">"Boulder"</span><span class="fu">,</span> <span class="dt">"zip"</span><span class="fu">:</span> <span class="st">"80301"</span><span class="fu">}}</span><span class="ot">,</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Bob"</span><span class="fu">,</span>   <span class="dt">"address"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"city"</span><span class="fu">:</span> <span class="st">"Denver"</span><span class="fu">,</span>  <span class="dt">"zip"</span><span class="fu">:</span> <span class="st">"80202"</span><span class="fu">}}</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"meta"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"page"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"total"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">}</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Load it as Python data first, then flatten the list you actually want:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"users.json"</span>) <span class="im">as</span> f:</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    payload <span class="op">=</span> json.load(f)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(payload[<span class="st">"data"</span>])</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># columns: id, name, address.city, address.zip</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>pd.json_normalize</code> expands nested dictionaries into dot-separated column names, which is usually what you want.</p>
+<p>Real API responses are rarely flat. A typical one wraps the records in an envelope:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"data"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Alice"</span><span class="fu">,</span> <span class="dt">"address"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"city"</span><span class="fu">:</span> <span class="st">"Boulder"</span><span class="fu">,</span> <span class="dt">"zip"</span><span class="fu">:</span> <span class="st">"80301"</span><span class="fu">}}</span><span class="ot">,</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">"id"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Bob"</span><span class="fu">,</span>   <span class="dt">"address"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"city"</span><span class="fu">:</span> <span class="st">"Denver"</span><span class="fu">,</span>  <span class="dt">"zip"</span><span class="fu">:</span> <span class="st">"80202"</span><span class="fu">}}</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"meta"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"page"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">"total"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">}</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hand that to <code>pd.read_json</code> and you get <code>ValueError: Mixing dicts with non-Series may lead to ambiguous ordering</code>, pandas’ way of saying it can’t tell which part is the table. Load it as Python data, pick out the list you want, and flatten it with <a href="https://pandas.pydata.org/docs/reference/api/pandas.json_normalize.html"><code>pd.json_normalize</code></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"users.json"</span>) <span class="im">as</span> f:</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    payload <span class="op">=</span> json.load(f)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(payload[<span class="st">"data"</span>])</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>   id   name address.city address.zip
+0   1  Alice      Boulder       80301
+1   2    Bob       Denver       80202</code></pre>
+<p>Each nested dictionary becomes columns with dot-separated names. (The ZIP codes stayed text because the JSON put them in quotes, a distinction CSV can’t make.)</p>
 </section>
 <section id="newline-delimited-json-ndjson-jsonl" class="level3">
 <h3 class="anchored" data-anchor-id="newline-delimited-json-ndjson-jsonl">Newline-delimited JSON (NDJSON / JSONL)</h3>
-<p>Some data sources write one JSON object per line:</p>
-<pre><code>{"id": 1, "name": "Alice"}
+<p>Logs and big exports often use <a href="https://jsonlines.org/">JSON Lines</a>: one complete JSON object per line, with no surrounding list.</p>
+<pre class="text"><code>{"id": 1, "name": "Alice"}
 {"id": 2, "name": "Bob"}</code></pre>
-<p>Read it with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">"events.jsonl"</span>, lines<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>json.load</code> rejects the file as a whole, but pandas reads it with one extra argument, and can read it in chunks too (see “Data bigger than memory”):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">"events.jsonl"</span>, lines<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="json-encoding-gotchas" class="level3">
-<h3 class="anchored" data-anchor-id="json-encoding-gotchas">JSON encoding gotchas</h3>
-<ul>
-<li>JSON strings must be double-quoted. Files with single quotes will fail with <code>json.decoder.JSONDecodeError</code>.</li>
-<li>Trailing commas are not allowed in strict JSON. Some tools emit them; you may need to pre-process.</li>
-<li>JSON has no native date type — dates are always strings. Convert after loading with <code>pd.to_datetime(df["date"])</code>.</li>
-</ul>
+<section id="when-json-wont-parse" class="level3">
+<h3 class="anchored" data-anchor-id="when-json-wont-parse">When JSON won’t parse</h3>
+<p>JSON is strict, and two mistakes cause most failures. Strings need double quotes, so single quotes (the way Python prints a dictionary) fail with <code>JSONDecodeError: Expecting property name enclosed in double quotes</code>. And no comma may follow the last item. Python 3.13 and later say so plainly (<code>Illegal trailing comma before end of object</code>), but 3.12 and earlier give the <em>same</em> “expecting property name” message, sending people hunting for quotes that are fine. The line and column in the message point at the spot. pandas is vaguer (<code>ValueError: Expected object or value</code>), so try <code>json.load</code> for the better message.</p>
 </section>
 </section>
 <section id="excel-the-format-you-cannot-escape" class="level2" data-number="20.4">
 <h2 data-number="20.4" class="anchored" data-anchor-id="excel-the-format-you-cannot-escape"><span class="header-section-number">20.4</span> Excel: the format you cannot escape</h2>
-<p>Excel files (<code>.xlsx</code>, <code>.xls</code>) are not plain text. They are binary (or XML-in-a-zip for <code>.xlsx</code>) and contain one or more <em>sheets</em>, each with its own rows, columns, formulas, formatting, and occasional merged cells. pandas reads them via <code>openpyxl</code> (which you may need to install):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install openpyxl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sooner or later someone sends you a spreadsheet. An <code>.xlsx</code> file is a zip archive of XML (<a href="https://en.wikipedia.org/wiki/Office_Open_XML">Office Open XML</a>) holding one or more <em>sheets</em>, with formulas, formatting, and merged cells. pandas reads it through <a href="https://openpyxl.readthedocs.io/en/stable/">openpyxl</a> (old <code>.xls</code> files need xlrd), which doesn’t come with pandas. If you see <code>ImportError: `Import openpyxl` failed.</code>, install it into your environment (see <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install openpyxl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>pandas’ <a href="https://pandas.pydata.org/docs/user_guide/io.html#io-excel">Excel guide</a> has every option; these are the ones you’ll use.</p>
 <section id="basic-usage" class="level3">
 <h3 class="anchored" data-anchor-id="basic-usage">Basic usage</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>)              <span class="co"># reads the first sheet</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>)              <span class="co"># reads the first sheet</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="multiple-sheets" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-sheets">Multiple sheets</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="st">"Sales"</span>)           <span class="co"># one sheet by name</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="dv">0</span>)                 <span class="co"># one sheet by index</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sheets <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="va">None</span>)          <span class="co"># dict of all sheets</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>sheets <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span>[<span class="st">"Sales"</span>,<span class="st">"Q4"</span>])<span class="co"># dict of some sheets</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>When you pass <code>sheet_name=None</code>, you get a dict mapping sheet name to DataFrame. Iterate or pick.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="st">"Sales"</span>)           <span class="co"># one sheet by name</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="dv">0</span>)                 <span class="co"># one sheet by index</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sheets <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span><span class="va">None</span>)          <span class="co"># dict of all sheets</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>sheets <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, sheet_name<span class="op">=</span>[<span class="st">"Sales"</span>,<span class="st">"Q4"</span>])<span class="co"># dict of some sheets</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With <code>sheet_name=None</code> or a list, you get a dictionary mapping each sheet’s name to a DataFrame, not a DataFrame, so <code>sheets.head()</code> fails. Pick one with <code>sheets["Sales"]</code>, or loop over <code>sheets.items()</code>.</p>
 </section>
-<section id="dealing-with-messy-excel-layouts" class="level3">
-<h3 class="anchored" data-anchor-id="dealing-with-messy-excel-layouts">Dealing with messy Excel layouts</h3>
-<p>Excel files are often designed for humans, not computers. Common issues:</p>
-<ul>
-<li><p><strong>Header rows buried below a title and blank rows.</strong> Use <code>skiprows=</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, skiprows<span class="op">=</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
-<li><p><strong>Multi-level column headers</strong> (two header rows for grouped columns):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"report.xlsx"</span>, header<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
-<li><p><strong>Merged cells.</strong> pandas unmerges them and fills only the top-left cell with the value; other cells become <code>NaN</code>. You may need to forward-fill: <code>df["group"] = df["group"].ffill()</code>.</p></li>
-<li><p><strong>Formulas.</strong> pandas reads the last-computed <em>value</em> of a formula cell, not the formula. If Excel did not compute the formulas before saving, you get <code>NaN</code>.</p></li>
-</ul>
+<section id="dealing-with-messy-layouts" class="level3">
+<h3 class="anchored" data-anchor-id="dealing-with-messy-layouts">Dealing with messy layouts</h3>
+<p>Spreadsheets are made for people to read, and it shows.</p>
+<p><strong>Title rows above the header.</strong> If your columns come out as <code>Unnamed: 0</code>, <code>Unnamed: 1</code>, and the report’s title, pandas took the title for the header. Skip the rows above the real one with <code>skiprows=</code> (worked example 4 skips four).</p>
+<p><strong>Two header rows</strong>, such as a year above each group of columns: <code>header=[0, 1]</code> makes each column name a pair, like <code>('2025', 'units')</code>.</p>
+<p><strong>Merged cells.</strong> A value merged down four rows is stored only in the top cell, so pandas gives <code>NaN</code> below it. Fill it down with <code>df["region"] = df["region"].ffill()</code>.</p>
+<p><strong>Formulas.</strong> pandas reads the value Excel last calculated, not the formula, so a file written by a program that never calculated its formulas (a script using openpyxl, say) gives <code>NaN</code> in every formula cell. Opening and saving it in Excel stores the results. Worked example 4 shows these problems in one file.</p>
 </section>
 <section id="save-back-to-excel" class="level3">
 <h3 class="anchored" data-anchor-id="save-back-to-excel">Save back to Excel</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df.to_excel(<span class="st">"cleaned.xlsx"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Always pass <code>index=False</code> unless you explicitly want the row index as a column.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.to_excel(<span class="st">"cleaned.xlsx"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pass <code>index=False</code> (to <code>to_csv</code>, too), or whoever reads the file finds a mystery first column called <code>Unnamed: 0</code>. And a sheet holds at most 1,048,576 rows (<a href="https://support.microsoft.com/en-us/excel/excel-specifications-and-limits">Microsoft’s limits</a>); the old <code>.xls</code> format holds 65,536, a limit that once mattered a great deal (see “Stakes and politics”).</p>
 </section>
 </section>
 <section id="parquet-the-format-for-real-data-work" class="level2" data-number="20.5">
 <h2 data-number="20.5" class="anchored" data-anchor-id="parquet-the-format-for-real-data-work"><span class="header-section-number">20.5</span> Parquet: the format for real data work</h2>
-<p><a href="../chapters/appendix-glossary.html#term-parquet">Parquet</a> is a binary, columnar format designed for analytical data. It is the right answer for datasets bigger than a few hundred MB or for data you load repeatedly. You will need <code>pyarrow</code> installed:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install pyarrow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="https://en.wikipedia.org/wiki/Apache_Parquet">Parquet</a> is a binary format built for analysis. It stores data column by column (<a href="https://en.wikipedia.org/wiki/Column-oriented_DBMS">columnar storage</a>), compresses each column, and records each column’s type. You can’t read it in a text editor, and don’t need to: you’ll mostly write it yourself, as a faster, more faithful copy of data you’ve loaded and cleaned. pandas reads and writes it with the pyarrow library (<code>python -m pip install pyarrow</code> if it’s missing).</p>
 <section id="reading-and-writing" class="level3">
 <h3 class="anchored" data-anchor-id="reading-and-writing">Reading and writing</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"sales.parquet"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df.to_parquet(<span class="st">"sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"sales.parquet"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.to_parquet(<span class="st">"sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="why-parquet-instead-of-csv" class="level3">
 <h3 class="anchored" data-anchor-id="why-parquet-instead-of-csv">Why Parquet instead of CSV</h3>
-<ul>
-<li><strong>Smaller.</strong> Parquet compresses columns individually. Expect 5–10× smaller than the equivalent CSV.</li>
-<li><strong>Faster.</strong> Reading a Parquet file is 10–50× faster than reading a CSV of the same data, because it is binary and column-oriented.</li>
-<li><strong>Dtype-preserving.</strong> Parquet stores dtypes natively — no more “why did my date column become a string?”</li>
-<li><strong>Column selection is free.</strong> <code>pd.read_parquet("f.parquet", columns=["date", "revenue"])</code> reads only those columns from disk. CSVs must read the whole file and then drop columns in memory.</li>
-</ul>
+<p><strong>It keeps your types.</strong> A CSV stores everything as text, so every read repeats all the guessing above, and dates you converted come back as strings. Parquet stores the types: dates stay dates, and text ZIP codes stay text.</p>
+<p><strong>It’s smaller and faster.</strong> In the test in “Data bigger than memory,” a 184 MB CSV became a 24 MB Parquet file. On a similar file, reading the Parquet took about a second; reading the CSV took about nine.</p>
+<p><strong>You can read only the columns you need.</strong> <code>pd.read_parquet("f.parquet", columns=["date", "revenue"])</code> reads just those columns from disk; a CSV has to be read through to find them. pandas’ <a href="https://pandas.pydata.org/docs/user_guide/io.html#io-parquet">Parquet guide</a> has the other options.</p>
 </section>
 <section id="when-not-to-use-parquet" class="level3">
 <h3 class="anchored" data-anchor-id="when-not-to-use-parquet">When not to use Parquet</h3>
-<ul>
-<li>You need to open the file in a spreadsheet or text editor. Parquet is binary, so editors show garbage.</li>
-<li>You are handing the file to a collaborator who does not have pyarrow installed.</li>
-<li>The dataset is tiny (a few hundred rows) — the CSV is fine and everyone understands it.</li>
-</ul>
-<p>A common pattern: keep the raw data in CSV (or whatever you received), convert to Parquet once at the start of your pipeline, and do all subsequent reads from Parquet.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">"raw/sales.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>], na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">"N/A"</span>])</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>raw.to_parquet(<span class="st">"intermediate/sales.parquet"</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># From now on, every notebook starts with:</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"intermediate/sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Stick with CSV when someone needs to open the file in a spreadsheet or text editor (Parquet shows up as gibberish), when a collaborator’s tools can’t read Parquet, or when the dataset is a few hundred rows. A pattern that works well: keep the raw file as you received it, convert it to Parquet once at the start of your pipeline, and do every later read from the Parquet file (<a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> explains the folder layout).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/sales.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>], na_values<span class="op">=</span>[<span class="st">"-"</span>])</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>raw.to_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># From now on, every notebook starts with:</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="data-bigger-than-memory" class="level2" data-number="20.6">
 <h2 data-number="20.6" class="anchored" data-anchor-id="data-bigger-than-memory"><span class="header-section-number">20.6</span> Data bigger than memory</h2>
-<p>Sooner or later a file is too big for the tools above. In a notebook, the cell runs for a while and then Jupyter says <em>“The kernel appears to have died. It will restart automatically.”</em> In a script, you get a <code>MemoryError</code>, or your whole computer slows to a crawl as it starts using the disk as memory. The file isn’t broken. It just doesn’t fit, and the fix is to change how you read it, not to buy a new laptop.</p>
+<p>Sooner or later a file is too big for the tools above. In a notebook, the cell runs for a while and then Jupyter says <em>“The kernel appears to have died. It will restart automatically.”</em> In a script, you get a <code>MemoryError</code>, or your whole computer slows to a crawl as it starts using the disk as memory. The file isn’t broken. It just doesn’t fit, and the fix is to change how you read it, not to buy a new laptop. pandas’ guide to <a href="https://pandas.pydata.org/docs/user_guide/scale.html">scaling to large datasets</a> covers the same ground.</p>
 <section id="how-much-memory-a-file-needs" class="level3">
 <h3 class="anchored" data-anchor-id="how-much-memory-a-file-needs">How much memory a file needs</h3>
 <p>A DataFrame usually takes more memory than the file it came from, and how much more depends on your pandas version. To find out, we loaded a 184 MB CSV of five million sales records (date, store, product, quantity, revenue, and a short note):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.__version__)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>df<span class="sc">.</span>memory_usage(deep<span class="op">=</span><span class="va">True</span>)<span class="sc">.</span><span class="bu">sum</span>() <span class="op">/</span> <span class="fl">1e6</span><span class="sc">:.0f}</span><span class="ss"> MB in memory"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.__version__)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>df<span class="sc">.</span>memory_usage(deep<span class="op">=</span><span class="va">True</span>)<span class="sc">.</span><span class="bu">sum</span>() <span class="op">/</span> <span class="fl">1e6</span><span class="sc">:.0f}</span><span class="ss"> MB in memory"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>With pandas 3.0 (the current release in September 2026), the DataFrame took 368 MB, twice the file, and the Python process peaked at about 680 MB while reading it. With pandas 2.3, which stores text as general Python objects, the same DataFrame took 1,241 MB, nearly seven times the file. So if your laptop has 8 GB of memory, a 1 GB CSV can be comfortable, tight, or impossible depending on its columns and your pandas version. Check <code>pd.__version__</code>, measure with <code>memory_usage(deep=True)</code> on a sample, and work up the steps below in order, stopping at the first one that fits.</p>
 </section>
 <section id="step-1-read-less" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-read-less">Step 1: read less</h3>
-<p>Most analyses use a few columns of a wide file. Read only those, and tell pandas when a text column repeats a small set of values, so it can store each value once:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sales.csv"</span>,</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"store"</span>, <span class="st">"revenue"</span>],</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"store"</span>: <span class="st">"category"</span>},</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Most analyses use a few columns of a wide file. Read only those, and tell pandas when a text column repeats a small set of values, so it can store each value once as a <a href="https://pandas.pydata.org/docs/user_guide/categorical.html">category</a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sales.csv"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"store"</span>, <span class="st">"revenue"</span>],</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"store"</span>: <span class="st">"category"</span>},</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That DataFrame took 90 MB instead of 368. Before any of this, <code>pd.read_csv("sales.csv", nrows=1000)</code> reads just the first thousand rows, which is enough to see the columns and choose.</p>
 </section>
 <section id="step-2-read-in-chunks" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-read-in-chunks">Step 2: read in chunks</h3>
 <p>When even the columns you need won’t fit, read the file a piece at a time. With <code>chunksize</code>, <code>read_csv</code> hands you one ordinary DataFrame of that many rows at a time, and you keep only a small summary of each:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> []</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chunk <span class="kw">in</span> pd.read_csv(<span class="st">"sales.csv"</span>, usecols<span class="op">=</span>[<span class="st">"store"</span>, <span class="st">"revenue"</span>], chunksize<span class="op">=</span><span class="dv">500_000</span>):</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    parts.append(chunk.groupby(<span class="st">"store"</span>)[<span class="st">"revenue"</span>].agg([<span class="st">"sum"</span>, <span class="st">"count"</span>]))</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>totals <span class="op">=</span> pd.concat(parts).groupby(level<span class="op">=</span><span class="dv">0</span>).<span class="bu">sum</span>()</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>mean_revenue <span class="op">=</span> totals[<span class="st">"sum"</span>] <span class="op">/</span> totals[<span class="st">"count"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> []</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chunk <span class="kw">in</span> pd.read_csv(<span class="st">"sales.csv"</span>, usecols<span class="op">=</span>[<span class="st">"store"</span>, <span class="st">"revenue"</span>], chunksize<span class="op">=</span><span class="dv">500_000</span>):</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    parts.append(chunk.groupby(<span class="st">"store"</span>)[<span class="st">"revenue"</span>].agg([<span class="st">"sum"</span>, <span class="st">"count"</span>]))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>totals <span class="op">=</span> pd.concat(parts).groupby(level<span class="op">=</span><span class="dv">0</span>).<span class="bu">sum</span>()</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>mean_revenue <span class="op">=</span> totals[<span class="st">"sum"</span>] <span class="op">/</span> totals[<span class="st">"count"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Notice what each chunk keeps: a sum and a count, not a mean. Sums and counts can be added up across chunks; means can’t. Averaging the chunk averages here gives answers off by up to 0.004, which is small enough to miss and wrong all the same. When you summarize in chunks, keep pieces that combine by adding: sums, counts, minimums, and maximums.</p>
 <p>Line-delimited JSON (see “Newline-delimited JSON” above) reads in chunks the same way: <code>pd.read_json("events.jsonl", lines=True, chunksize=100_000)</code> gives you a reader to loop over inside a <code>with</code> block.</p>
 </section>
@@ -1052,35 +1039,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-4-let-a-query-engine-do-the-work" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-let-a-query-engine-do-the-work">Step 4: let a query engine do the work</h3>
 <p>Two libraries answer questions about a large file without loading all of it into a DataFrame. They read only the columns a question needs, process the file in pieces, and use every core of your computer. You install them like any other package (<code>python -m pip install duckdb polars</code>).</p>
-<p><a href="https://duckdb.org/docs/">DuckDB</a> runs SQL directly on a CSV or Parquet file and gives you back a small pandas DataFrame:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.sql(<span class="st">"""</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT store, avg(revenue) AS mean_revenue, count(*) AS n</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM 'sales.csv'</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY store</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY store</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="https://duckdb.org/docs/current/clients/python/overview.html">DuckDB</a> runs SQL directly on a CSV or Parquet file and gives you back a small pandas DataFrame:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.sql(<span class="st">"""</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT store, avg(revenue) AS mean_revenue, count(*) AS n</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM 'sales.csv'</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY store</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY store</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>       store  mean_revenue      n
 0  store-000     11.963152  24984
 1  store-001     11.919008  25150
 2  store-002     11.985570  24942
 ...</code></pre>
 <p><a href="https://docs.pola.rs/user-guide/">Polars</a> is a DataFrame library in the spirit of pandas. Its <code>scan_csv</code> builds a plan instead of reading the file, and <code>collect()</code> runs the plan, reading only what the plan needs:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    pl.scan_csv(<span class="st">"sales.csv"</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"store"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    .agg(pl.col(<span class="st">"revenue"</span>).mean().alias(<span class="st">"mean_revenue"</span>), pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>))</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"store"</span>)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    .collect()</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    pl.scan_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"store"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    .agg(pl.col(<span class="st">"revenue"</span>).mean().alias(<span class="st">"mean_revenue"</span>), pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>))</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"store"</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    .collect()</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Both gave the same means as the chunked pandas code above. Pick DuckDB if you know SQL or want to learn it (see <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>); pick Polars if you’d rather stay in Python method chains. Either way, the result is usually small, and <code>.df()</code> (DuckDB) or <code>.to_pandas()</code> (Polars) turns it into a pandas DataFrame for plotting and the rest of your analysis.</p>
 </section>
 <section id="what-each-step-cost" class="level3">
 <h3 class="anchored" data-anchor-id="what-each-step-cost">What each step cost</h3>
-<p>Here is what computing the mean revenue for each store took on one computer, a four-core Linux machine with 16 GB of memory. Peak memory is for the whole Python process, libraries included. Your numbers will differ; the pattern is what to take away.</p>
+<p><a href="#tbl-bigger-than-memory" class="quarto-xref">Table&nbsp;<span>20.1</span></a> shows what computing the mean revenue for each store took on one computer, a four-core Linux machine with 16 GB of memory. Peak memory is for the whole Python process, libraries included. Your numbers will differ; the pattern is what to take away.</p>
 <div id="tbl-bigger-than-memory" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bigger-than-memory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1144,97 +1131,108 @@ Table&nbsp;20.1: Computing mean revenue per store from a 184 MB CSV of five mill
 </section>
 <section id="text-encoding-in-general" class="level2" data-number="20.7">
 <h2 data-number="20.7" class="anchored" data-anchor-id="text-encoding-in-general"><span class="header-section-number">20.7</span> Text encoding in general</h2>
-<p>If you remember only one thing about encoding, remember this: <strong>encoding is the rule for turning bytes into characters.</strong> UTF-8 is the standard for modern text and should be your default. Files that are not UTF-8 are usually Latin-1 (or <code>cp1252</code> on Windows), which covers Western European characters but not Greek, Cyrillic, Chinese, etc.</p>
-<p>To check a file’s encoding, on macOS/Linux:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file</span> <span class="at">-i</span> data.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>On Python, if you are unsure:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data.csv"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> f.read(<span class="dv">1000</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>raw[:<span class="dv">100</span>]   <span class="co"># look at the raw bytes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Unusual bytes like <code>\xe9</code> (é in Latin-1, invalid in UTF-8) are the telltale of a non-UTF-8 file.</p>
-<p>When you write a file yourself, always write UTF-8:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"out.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Encoding problems confuse people because they’re invisible: a file looks fine in one program and garbled in another, and nothing says why. The idea is simple, though. A computer stores text as bytes, and a <a href="https://en.wikipedia.org/wiki/Character_encoding">character encoding</a> is the rule for turning bytes into characters. <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> gives every character in every writing system a number, and UTF-8 is the standard way to write those numbers as bytes; make it your default. Older encodings like Windows-1252 and <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1">Latin-1</a> use one byte per character, so they have room for only 256: enough for Western European languages, and nothing for Greek, Cyrillic, Chinese, or most of the world’s writing.</p>
+<p>Read bytes with the wrong rule and you get an error, or something worse: <a href="https://en.wikipedia.org/wiki/Mojibake">mojibake</a>, text that decodes without complaint into nonsense. Read a UTF-8 file as Latin-1, and <code>José Muñoz</code> comes out as <code>JosÃ© MuÃ±oz</code>. That’s why Latin-1 is a risky guess: it assigns a character to every possible byte, so it never fails, even on the wrong file. Read a Windows-1252 file as Latin-1 and it looks fine until you notice the curly quotes have become invisible control characters (<code>'\x93Smart\x94 quote'</code>). An error-free read isn’t proof you picked the right encoding, so look at a few rows with accented names. And if you see <code>Ã©</code> where <code>é</code> should be, don’t find-and-replace the damage; read the file again with the right encoding.</p>
+<p>To find out what a file is, the <code>file</code> command guesses from its bytes: <code>file -i data.csv</code> on Linux, <code>file -I data.csv</code> on macOS (lowercase <code>-i</code> means something else there). On Linux, a Latin-1 file comes back as <code>charset=iso-8859-1</code>, and a Windows-1252 file with curly quotes as <code>charset=unknown-8bit</code>. On any system, you can look at the raw bytes in Python:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data.csv"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> f.read(<span class="dv">1000</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw[:<span class="dv">60</span>])   <span class="co"># look at the raw bytes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>b'id,name,city\n1,Jos\xe9 Mu\xf1oz,San Jos\xe9\n2,Zo\xeb Bront\xeb,Montr\xe9al\n3,\x93'</code></pre>
+<p>A lone <code>\xe9</code> (é in Windows-1252 and Latin-1) is the telltale of a file that isn’t UTF-8, where é takes two bytes, <code>\xc3\xa9</code>. If the error names byte <code>0xff</code> or <code>0xfe</code> in position 0, the file is probably UTF-16; try <code>encoding="utf-16"</code>.</p>
+<p>One more invisible thing: some programs, including Excel’s “CSV UTF-8” option, start a file with three bytes called a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> (BOM). pandas skips it, but Python’s <code>csv</code> module glues it to the first column name as <code>'\ufeffid'</code>, which looks like <code>id</code> and won’t match it. Open such files with <code>encoding="utf-8-sig"</code>. When you write a file yourself, write UTF-8:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"out.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If someone will double-click it open in Excel, use <code>encoding="utf-8-sig"</code> instead: Excel <a href="https://support.microsoft.com/en-us/excel/opening-csv-utf-8-files-correctly-in-excel">opens a UTF-8 CSV correctly when it starts with a BOM</a>, and without one may show them mojibake.</p>
 </section>
 <section id="stakes-and-politics" class="level2" data-number="20.8">
 <h2 data-number="20.8" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">20.8</span> Stakes and politics</h2>
-<p>Data file formats look like neutral containers, but each one encodes a worldview about what data is and who it is for. Three things to notice. First, <em>what counts as “tabular.”</em> CSV, Excel, and Parquet all assume your data fits naturally into rows and columns of fixed width — the worldview of accountants, statisticians, and relational databases. JSON and XML allow nesting and so admit shapes (trees, graphs, ragged records) the tabular formats cannot represent without flattening. Whichever format you pick, you are pre-committing to a shape, and information that does not fit gets lost or distorted in the conversion.</p>
-<p>Second, <em>whose languages and characters were the spec written for</em>. CSV’s RFC 4180 says nothing about encoding; in practice “CSV” still means CP1252 on many Windows machines, Latin-1 on some legacy Unix systems, and UTF-8 on the rest, and a name with a <code>ñ</code> or a <code>ü</code> round-trips correctly only when every step in the chain agrees. The 2010s convergence on UTF-8 is real progress — but a non-trivial amount of public-sector and corporate data still ships in encodings designed for English and Western European text, with predictable consequences for everyone else’s names. Third, <em>who can read each format without paying</em>. Excel’s <code>.xlsx</code> is a documented Open XML standard, but the most reliable readers are Microsoft’s; Parquet is open but mostly written and read by tools tied to Hadoop/Spark/cloud-warehouse pipelines that smaller teams cannot afford to run.</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data shapes it serves cleanly and whose it forces you to mangle.</p>
+<p>In the autumn of 2020, nearly 16,000 positive COVID-19 tests in England went unreported for days. The labs’ CSV files were fine. The failure came when Public Health England pulled them into Excel templates saved in the old <code>.xls</code> format, which holds only about 65,000 rows. Each test took several rows, so a template filled up at around 1,400 cases, and, as the <a href="https://www.bbc.com/news/technology-54423988">BBC reported</a>, further cases were simply left off, with no error. Contact tracing for those people started late while the virus kept spreading. Nobody decided to drop those cases. A file format did, and its limit stayed invisible until someone went looking.</p>
+<p>Most format decisions have smaller stakes, but the pattern repeats: defaults serve the people they were designed around, and the costs land on whoever doesn’t fit. A name like Muñoz or Nguyễn survives a pipeline only if every step agrees on the encoding, so it’s names from outside English that turn to mojibake or fail to match. Because a CSV carries no types, ZIP codes that start with 0, which cover every New England state, lose the zero and stop matching anything. And flattening nested JSON decides which parts of a record count as data. Each looks like a technical detail, and each decides whose records reach the analysis intact.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data it holds cleanly and whose it will truncate, garble, or drop without telling you.</p>
 </section>
 <section id="worked-examples" class="level2" data-number="20.9">
 <h2 data-number="20.9" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">20.9</span> Worked examples</h2>
 <section id="a-normal-csv-that-is-not-normal" class="level3">
 <h3 class="anchored" data-anchor-id="a-normal-csv-that-is-not-normal">A “normal” CSV that is not normal</h3>
-<p>You run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>and get:</p>
-<pre><code>ParserError: Error tokenizing data. C error: Expected 5 fields in line 237, saw 6</code></pre>
-<p><strong>Diagnosis:</strong> line 237 has an extra field. Usually this means a cell in that row contains a comma that was not properly quoted, or the CSV has an inconsistent number of columns per row.</p>
-<p><strong>Fix:</strong> open the file in a text editor, jump to line 237, and inspect. You will probably find a value like <code>"Acme, Inc."</code> that was written without quotes. If you cannot fix the source, read with a more forgiving parser:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>, engine<span class="op">=</span><span class="st">"python"</span>, on_bad_lines<span class="op">=</span><span class="st">"warn"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This logs the bad lines and skips them, which is better than failing silently but worse than fixing the source.</p>
+<p>You run <code>df = pd.read_csv("sales.csv")</code> and get:</p>
+<pre class="text"><code>ParserError: Error tokenizing data. C error: Expected 5 fields in line 237, saw 6</code></pre>
+<p><strong>Diagnosis:</strong> line 237 has one field too many, usually because a value contains an unquoted comma. pandas counts the header as line 1, so the number matches your text editor’s.</p>
+<p><strong>Fix:</strong> open the file, jump to line 237, and look. Here it reads <code>236,2026-01-13,Acme, Inc.,SKU-5,12.50</code>. A program following the CSV standard would have written <code>"Acme, Inc."</code> in double quotes, which pandas reads correctly, so the best fix is a properly quoted export. If you can’t get one, skip bad lines, loudly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>, on_bad_lines<span class="op">=</span><span class="st">"warn"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>ParserWarning: Skipping line 237: expected 5 fields, saw 6</code></pre>
+<p>The Acme order is now gone from your data, so note every skipped line and check that losing them doesn’t change your answer.</p>
 </section>
 <section id="silent-missing-value-corruption" class="level3">
 <h3 class="anchored" data-anchor-id="silent-missing-value-corruption">Silent missing-value corruption</h3>
-<p>You load a temperature dataset:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"weather.csv"</span>)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"temp_c"</span>].mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>and get:</p>
-<pre><code>ValueError: could not convert string to float: '-999'</code></pre>
-<p><strong>Diagnosis:</strong> <code>-999</code> is a common “no reading” sentinel in weather data. pandas read the column as string because of it.</p>
-<p><strong>Fix:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"weather.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-999"</span>])</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"temp_c"</span>].mean()   <span class="co"># now works, missing values are NaN</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You load eight days of temperature readings and take the average:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"weather.csv"</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"temp_c"</span>].mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>np.float64(-233.4375)</code></pre>
+<p>No error, and an average colder than anywhere on Earth has ever been. <code>df["temp_c"].describe()</code> shows why: the minimum is <code>-999.0</code>, this file’s code (as in a lot of weather data) for “no reading.” It’s a perfectly good number, so pandas averaged it in.</p>
+<p><strong>Fix:</strong> tell pandas the code means missing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"weather.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-999"</span>])</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"temp_c"</span>].mean()   <span class="co"># 21.75: the two missing readings are now NaN</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="nested-json-from-a-web-api" class="level3">
 <h3 class="anchored" data-anchor-id="nested-json-from-a-web-api">Nested JSON from a web API</h3>
-<p>You downloaded a GitHub API response:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"repos.json"</span>) <span class="im">as</span> f:</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(f)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(data, record_path<span class="op">=</span><span class="st">"items"</span>, meta<span class="op">=</span>[<span class="st">"total_count"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>record_path="items"</code> tells pandas which nested list to flatten into rows; <code>meta=["total_count"]</code> adds the top-level metadata as extra columns on every row.</p>
+<p>You saved a response from GitHub’s repository search API: a <code>total_count</code>, and an <code>items</code> list with one record per repository, each with a nested <code>owner</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"repos.json"</span>) <span class="im">as</span> f:</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(f)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(data, record_path<span class="op">=</span><span class="st">"items"</span>, meta<span class="op">=</span>[<span class="st">"total_count"</span>])</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>    id      full_name  stargazers_count owner.login    owner.type total_count
+0  101  example/alpha              1520     example  Organization           2
+1  102   example/beta                87     example  Organization           2</code></pre>
+<p><code>record_path="items"</code> tells pandas which nested list holds the rows; <code>meta=["total_count"]</code> copies a top-level value onto every row, and <code>owner</code> became two dotted columns.</p>
 </section>
 <section id="excel-with-a-four-row-banner" class="level3">
 <h3 class="anchored" data-anchor-id="excel-with-a-four-row-banner">Excel with a four-row banner</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quarterly_report.xlsx"</span>,</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    sheet_name<span class="op">=</span><span class="st">"Q4 Sales"</span>,</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    skiprows<span class="op">=</span><span class="dv">4</span>,                  <span class="co"># skip the title, date, and blank rows</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span>,                    <span class="co"># first row after skipping is the header</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span><span class="st">"B:G"</span>,               <span class="co"># only these columns (Excel letters!)</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A report’s sheet has a title, a “Generated” date, and two blank rows above the real header, which starts in column B. Region names are merged down across each region’s stores, and revenue is a formula.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quarterly_report.xlsx"</span>,</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    sheet_name<span class="op">=</span><span class="st">"Q4 Sales"</span>,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    skiprows<span class="op">=</span><span class="dv">4</span>,                  <span class="co"># skip the title, date, and blank rows</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    header<span class="op">=</span><span class="dv">0</span>,                    <span class="co"># first row after skipping is the header</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    usecols<span class="op">=</span><span class="st">"B:G"</span>,               <span class="co"># only these columns (Excel letters!)</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>  region    store  units  price  revenue  notes
+0   West  Boulder     10    2.5      NaN    NaN
+1    NaN   Denver      4    3.0      NaN    NaN
+2   East   Boston      7    2.0      NaN    NaN
+3    NaN      NYC      3    4.0      NaN    NaN</code></pre>
+<p>The header is right, and two messy-layout problems show. The <code>NaN</code>s in <code>region</code> are merged cells (fix with <code>ffill()</code>), and the empty <code>revenue</code> column means a script wrote this file without calculating its formulas; open and save it in Excel, or compute <code>units * price</code> yourself.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="20.10">
 <h2 data-number="20.10" class="anchored" data-anchor-id="templates"><span class="header-section-number">20.10</span> Templates</h2>
-<p><strong>A defensive <code>read_csv</code> that handles most of the common quirks:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data.csv"</span>,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    sep<span class="op">=</span><span class="st">","</span>,</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    encoding<span class="op">=</span><span class="st">"utf-8"</span>,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">"N/A"</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>, <span class="st">"NULL"</span>, <span class="st">"null"</span>, <span class="st">"999"</span>, <span class="st">"-999"</span>],</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],          <span class="co"># adjust to your date columns</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"sku"</span>: <span class="st">"string"</span>},       <span class="co"># force string dtype for columns you know are strings</span></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>A defensive <code>read_csv</code> that handles the common quirks:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data.csv"</span>,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    sep<span class="op">=</span><span class="st">","</span>,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    encoding<span class="op">=</span><span class="st">"utf-8"</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    na_values<span class="op">=</span>[<span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">"-999"</span>],   <span class="co"># added to pandas' defaults; use your file's own codes</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">"date"</span>],            <span class="co"># adjust to your date columns</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{<span class="st">"zip"</span>: <span class="st">"str"</span>},            <span class="co"># keep codes like ZIP codes as text</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>A validation snippet to run after every load:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"nulls per column:"</span>)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"nulls per column:"</span>)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="exercises" class="level2" data-number="20.11">
 <h2 data-number="20.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">20.11</span> Exercises</h2>
 <ol type="1">
-<li>Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor, note the delimiter, the header row, and any obviously-missing-value sentinels. Then load it with <code>pd.read_csv</code>, passing the correct parameters the first time.</li>
-<li>Deliberately save a CSV with <code>encoding="latin-1"</code> (e.g., a file with accented characters). Try to read it with the default UTF-8 and observe the <code>UnicodeDecodeError</code>. Then read it correctly.</li>
-<li>Find a dataset with numeric sentinels for missing values (temperature, survey responses). Load it both ways — once without <code>na_values</code>, once with — and run <code>.describe()</code> on both. Compare.</li>
-<li>Load a nested JSON file (e.g., a GitHub API response or a tweet dump). Use <code>pd.json_normalize</code> to flatten the records you care about.</li>
-<li>Load an Excel file with multiple sheets. Use <code>sheet_name=None</code> to get a dict, then loop over it to print the shape of each sheet.</li>
-<li>Convert a CSV you use often into Parquet. Compare file sizes and load times (<code>%time df = pd.read_csv(...)</code> vs <code>%time df = pd.read_parquet(...)</code>).</li>
+<li>Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor and note the delimiter, the header row, and any missing-value codes. Then load it with <code>pd.read_csv</code>, passing the right parameters the first time.</li>
+<li>Save a small CSV with accented names using <code>encoding="cp1252"</code>. Read it with the default UTF-8 and read the <code>UnicodeDecodeError</code>. Then read it correctly, and once more with <code>encoding="latin-1"</code>: did anything change, and would you have noticed?</li>
+<li>Find a dataset with numeric codes for missing values (temperatures, survey responses). Load it once without <code>na_values</code> and once with, and run <code>.describe()</code> on both. How far did the averages move?</li>
+<li>Load a nested JSON file (an API response you saved, for example). Use <code>pd.json_normalize</code> to flatten the records you care about.</li>
+<li>Load an Excel file with several sheets. Use <code>sheet_name=None</code> to get a dictionary, then loop over it to print the shape of each sheet.</li>
+<li>Convert a CSV you use often to Parquet. Compare file sizes, load times (<code>%time df = pd.read_csv(...)</code> vs <code>%time df = pd.read_parquet(...)</code>), and <code>df.dtypes</code> after each load.</li>
 <li>Take the largest CSV you have (or make one by repeating a small file many times). Measure its memory with <code>df.memory_usage(deep=True).sum()</code>, then compute one grouped mean three ways: pandas on the whole file, pandas in chunks, and DuckDB. Check that the answers match.</li>
 <li>Turn the validation snippet in Templates into a reusable function <code>validate(df)</code> that prints the report. Put it in a module you can import from any notebook.</li>
 </ol>
@@ -1243,15 +1241,16 @@ Table&nbsp;20.1: Computing mean revenue per store from a 184 MB CSV of five mill
 <h2 data-number="20.12" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">20.12</span> One-page checklist</h2>
 <ul>
 <li>Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.</li>
-<li>Default to UTF-8 encoding; fall back to Latin-1 / cp1252 only when needed.</li>
-<li>Pass <code>na_values=</code> liberally; domain data has its own missing-value sentinels.</li>
-<li>Use <code>parse_dates=</code> at read time instead of converting later.</li>
+<li>Default to UTF-8. On a <code>UnicodeDecodeError</code>, try <code>cp1252</code>; <code>latin-1</code> never errors, even when it’s wrong.</li>
+<li>Pass <code>na_values=</code> with the file’s own missing-value codes; pandas already handles <code>NA</code>, <code>N/A</code>, <code>NULL</code>, and empty cells.</li>
+<li>Read ID-like codes (ZIP codes, phone numbers) as text with <code>dtype=</code>.</li>
+<li>Use <code>parse_dates=</code> at read time, with <code>date_format=</code> when dates might be day first.</li>
 <li>Check <code>df.shape</code>, <code>df.columns</code>, <code>df.dtypes</code>, and <code>df.head()</code> in the cell right after every <code>read_*</code>.</li>
 <li>If a numeric column shows up as <code>str</code> (pandas 3) or <code>object</code> (pandas 2), you have hidden strings. Use <code>pd.to_numeric(..., errors="coerce")</code> to find them.</li>
 <li>Use Parquet for intermediate files and anything over ~100 MB.</li>
 <li>If a file won’t fit in memory: read fewer columns, read in chunks (keeping sums and counts, not means), or query it with DuckDB or Polars.</li>
 <li>Always pass <code>index=False</code> when writing a CSV or Excel file unless you want the row index as a column.</li>
-<li>When in doubt, <code>df.head()</code> and <code>df.tail()</code> and trust your eyes over your assumptions.</li>
+<li>When in doubt, <code>df.head()</code> and <code>df.tail()</code>, and trust your eyes over your assumptions.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1264,13 +1263,13 @@ Table&nbsp;20.1: Computing mean revenue per store from a 184 MB CSV of five mill
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>pandas, <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>read_csv</code> reference</a> — the complete parameter list with notes on each option; the <code>na_values</code>, <code>parse_dates</code>, <code>dtype</code>, and <code>encoding</code> arguments alone reward a careful read.</li>
-<li>IETF, <a href="https://www.rfc-editor.org/rfc/rfc4180">RFC 4180: Common Format and MIME Type for CSV Files</a> — the short, official CSV specification; useful for settling arguments about quoting and line endings.</li>
-<li><a href="https://www.json.org/json-en.html">JSON specification (json.org)</a> — the canonical explanation of JSON with syntax diagrams.</li>
-<li>Apache, <a href="https://parquet.apache.org/docs/">Parquet documentation</a> — the columnar format used for any dataset large enough that CSV becomes painful; the file-format spec is short and worth skimming.</li>
-<li>Joel Spolsky, <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets</a> — a 2003 essay that is still the best 30-minute introduction to encodings; required reading after your first <code>UnicodeDecodeError</code>.</li>
-<li>ECMA International, <a href="https://ecma-international.org/publications-and-standards/standards/ecma-376/">Office Open XML File Formats (<code>.xlsx</code>)</a> — the standard underneath Excel files; useful when you want to know what is actually in a <code>.xlsx</code> file (a zip of XML).</li>
-<li>Tom Augspurger and others, <a href="https://tomaugspurger.net/posts/modern-1-intro/">Modern Pandas: Tidy Data and File I/O</a> — practitioner-focused notes on reading messy real-world tabular data; pairs well with the <code>read_csv</code> reference.</li>
+<li><strong>pandas</strong>, <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>read_csv</code> reference</a> — every parameter with notes on each; the <code>na_values</code>, <code>parse_dates</code>, <code>dtype</code>, and <code>encoding</code> entries alone reward a careful read.</li>
+<li><strong>IETF</strong>, <a href="https://www.rfc-editor.org/rfc/rfc4180">RFC 4180: Common Format and MIME Type for CSV Files</a> — the short, official CSV specification; handy for settling arguments about quoting and line endings.</li>
+<li><strong>json.org</strong>, <a href="https://www.json.org/json-en.html">Introducing JSON</a> — the whole JSON syntax on one page, drawn as diagrams you can check a stubborn file against.</li>
+<li><strong>Apache</strong>, <a href="https://parquet.apache.org/docs/">Parquet documentation</a> — the format’s own documentation; the overview and file-format pages are short and explain why columnar files are so fast.</li>
+<li><strong>Joel Spolsky</strong>, <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets</a> — a 2003 essay that’s still the best half-hour introduction to encodings; read it after your first <code>UnicodeDecodeError</code>.</li>
+<li><strong>ECMA International</strong>, <a href="https://ecma-international.org/publications-and-standards/standards/ecma-376/">Office Open XML File Formats (ECMA-376)</a> — the standard underneath <code>.xlsx</code> files, for when you want to know what’s really inside one (a zip of XML).</li>
+<li><strong>Tom Augspurger</strong>, <a href="https://tomaugspurger.net/posts/modern-1-intro/">Modern Pandas (Part 1)</a> — the start of an intermediate series that opens by downloading and reading a real, messy government dataset; written in 2016, so some code is dated, but the habits hold.</li>
 </ul>
 </div>
 </div>
