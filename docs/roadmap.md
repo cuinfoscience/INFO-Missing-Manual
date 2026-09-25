@@ -24,7 +24,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 ### 2. Cloud notebooks and data too big for memory
 
 - [x] **Cloud notebooks (Colab, Kaggle, Codespaces)** — added to `jupyter.qmd` in September 2026 as "Notebooks on someone else's computer": a comparison table, then persistence, environments, secrets (each platform's own store), GPUs, and what not to upload; `remote.qmd` points to it. The same pull request filled `jupyter`'s empty Exercises heading. Limits were checked against each platform's docs in September 2026; re-check them when the chapter is next reviewed.
-- [ ] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — extension of `data-file-formats.qmd`: when to graduate from `pd.read_csv` to chunking, streaming, or a different tool entirely.
+- [x] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — added to `data-file-formats.qmd` in September 2026 as "Data bigger than memory": how much memory a file needs (measured in pandas 3.0 and 2.3), then read less, read in chunks, convert to Parquet, and DuckDB or Polars, with a table of measured time and memory.
 
 ### 3. Documenting and licensing data
 
@@ -47,6 +47,7 @@ From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-rev
 - [x] **`package-management.qmd` empty stubs.** Deleted in September 2026. The stranded paragraph after the Quick reference (Anaconda or Miniconda; where conda can't be installed) moved into "Choosing tools" with its diagram, and its footnotes became links.
 - [x] **`jupyter.qmd` empty heading.** Filled in September 2026 with a table of the IPython conveniences the chapter teaches.
 - [x] **`presenting.qmd` duplicate table.** The copy in Templates was removed in September 2026; the Quick reference keeps it.
+- [ ] **pandas 3 text columns.** pandas 3.0 (the current release in September 2026) reads text as the `str` dtype, not `object`, so advice such as "if a numeric column shows up as `object`, you have hidden strings" is out of date for new installs. About eight passages in `data-file-formats`, `tabular-data`, `debugging`, and `questions` say `object`; each should say what both versions show.
 - [x] **Stakes voice check.** Read side by side in September 2026: the content is specific, but fifteen openings used one of two stock moves. `package-management`, `version-control`, and `evaluating-ai` now open on a concrete case, and `AGENTS.md` asks new chapters to do the same ([`decisions.md`](decisions.md)).
 - [x] **Inline glossary links.** Linked in September 2026 on first use: auditing in `evaluating-ai`, Matilda effects in `writing-manuscripts`, open access in `reading-scholarship`, RLHF in `ai-llm` and `ai-agents`, and schema in `sql-basics`. The RLHF entry now points to `ai-agents` instead of `llm-internals`, which never mentions it.
 
