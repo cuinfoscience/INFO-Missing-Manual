@@ -331,7 +331,7 @@ FIGURES = {
         "legend_cols": 3,
         "lines": [
             text("you@MacBook-Air Project % ls -l data/"),
-            text("total 16", dim=True),
+            text("total 24", dim=True),
             text("-rw-r--r--  1 you  staff  8421 Apr 10 12:34 input.csv", dim=True),
             text("you@MacBook-Air Project % pwd"),
             text("/Users/you/Courses/INFO-3010/Project", dim=True),
