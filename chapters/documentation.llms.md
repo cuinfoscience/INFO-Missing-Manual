@@ -10,96 +10,85 @@
 
 ![Put It Somewhere Else Patrick Meme: Why don’t we take everything we know and write it down somewhere?](../graphics/memes/documentation.png)
 
-Computing courses often teach you *what* to type, but they do not always teach you how to learn what to type next. In real projects, the fastest path forward is rarely a memorized recipe. It is the ability to locate authoritative documentation, interpret it, test it against your situation, and—when needed—write documentation that helps other people reproduce, maintain, and extend your work.
+Here’s a situation almost everyone lands in sooner or later. You copy a few lines from a tutorial, run them, and get `AttributeError: 'DataFrame' object has no attribute 'append'`. You search the error, open six tabs, and find six answers that each say something slightly different. An hour later it works, but you couldn’t say why, and the next error starts the whole cycle over. Or you flip it around: a teammate clones your project and messages you, “how do I run this?”, and you realize the answer has only ever lived in your head.
 
-This chapter treats documentation as a practical tool and a collaborative artifact. You will learn how to (1) find documentation efficiently, (2) read it with the right level of skepticism and precision, and (3) write documentation that is usable by people who do not share your context. Along the way, we will separate different kinds of documentation (reference, tutorials, how-to guides, explanations), show how they support different questions, and give you templates you can reuse throughout the course.
+Both problems are about [documentation](https://en.wikipedia.org/wiki/Software_documentation), from opposite ends. Computing courses teach you *what* to type, but rarely how to find out what to type next, and almost never how to write things down so that someone else (including you, next month) can pick up where you left off. That’s not a gap in your ability. It’s a skill nobody sat you down to teach, and it’s a learnable one.
 
-## Learning objectives
+This chapter covers both ends. It shows you how to find the right docs quickly, how to read them with the right mix of trust and skepticism, how to line them up with the versions on your own computer, and how to write READMEs, runbooks, diagrams, and decision logs that people actually use. [sec-reading-docs](#sec-reading-docs) goes deeper on the anatomy of an official docs site, and [sec-asking-questions](#sec-asking-questions) picks up where the docs run out and you need to ask a person.
 
-By the end of this chapter, you should be able to:
+## Why read this chapter
 
-1.  Identify common documentation genres and choose the right one for your task.
-
-2.  Locate primary sources of truth (official docs, READMEs, man pages, API references) and distinguish them from secondary commentary.
-
-3.  Read documentation actively: extract assumptions, constraints, inputs/outputs, and failure modes.
-
-4.  Reconcile documentation with your local context (OS, version, environment, permissions) and confirm behavior with small experiments.
-
-5.  Write documentation that enables others to set up, run, and verify your work.
-
-6.  Maintain documentation as an ongoing practice: update it when code changes and record decisions that affect reproducibility.
-
-7.  Use AI tools to assist documentation work while maintaining verification, citations, and security hygiene.
-
-8.  Read a flowchart, an entity-relationship diagram, and a sequence diagram, and draw simple ones as text with Mermaid.
+- You “read the docs” and still didn’t get it, and you’ve started to suspect the problem is you (it usually isn’t: you were reading the wrong kind of docs).
+- You copied an example from a blog post, got `AttributeError: 'DataFrame' object has no attribute 'append'`, and only later learned the post was written for an older version of pandas.
+- You searched “how do I …” and ended up with a dozen tabs of answers that disagree with each other, and no way to tell which one is right.
+- A teammate cloned your repository and asked “how do I run this?”, and you realized the answer was nowhere but your own memory.
+- You came back to your own project after a break and couldn’t remember which script to run first, or in which environment.
+- Your instructor wants a README, a data notes section, or a diagram of your pipeline, and you’re not sure what goes in one.
+- Someone showed you a diagram full of crow’s feet and dotted arrows, and you nodded along without knowing how to read it.
+- You’d like an AI tool to draft your docs, without it inventing a command-line flag that doesn’t exist.
 
 ## Running theme: documentation is an interface
 
-Documentation is an interface between *your intent* and *someone else’s understanding*. The “someone else” might be a teammate, a future version of you, or even a tool like a build system or continuous integration job. Good documentation lowers the cost of correct action and raises the cost of confusion.
+Documentation is the connection between what you meant and what someone else understands, whether that someone is a teammate, a future version of you, or a tool like a build system. Good docs make the right action easy and the wrong one hard to stumble into.
 
-## 3.1 A beginner mental model of documentation
+## 3.1 Documentation is a stack, not a single thing
 
-A common misconception is that documentation is a single thing: “the docs.” In practice, documentation is a *stack* of artifacts produced by different actors and optimized for different questions. When you learn to navigate that stack, you stop treating confusion as personal failure and start treating it as a routing problem: “Which source should answer this question?”
+People talk about “the docs” as if there were one. In practice there’s a whole stack of them, written by different people for different questions: the official reference, a tutorial someone wrote for beginners, the project’s README, a forum answer from 2019, the comments in the code. If you’ve ever felt lost in documentation, part of what’s happening is that you’re asking one layer of that stack a question another layer was built to answer. Once you see the layers, confusion stops being a personal failing and becomes a routing problem: *which source should answer this question?*
 
-### Two complementary roles: learning and coordination
+### Learning and coordination
 
-Documentation does two jobs at the same time. The first is **learning support**: teaching you how a tool works and how to use it. The second is **coordination support**: aligning multiple people on how a project should be run, changed, and evaluated. The same document rarely does both jobs well, which is why so many frustrations come from asking the wrong artifact to do the wrong job. An API reference is a poor tutorial because it assumes you already know what you are looking for. A tutorial is a poor specification because it focuses on one path through the tool, not on every behavior. A README is not a substitute for a change log, because it describes the project as it is *now*, not how it changed. Recognizing which role you need is half the battle.
+Documentation does two jobs, and they pull in different directions. One is **learning**: teaching you how a tool works and how to use it. The other is **coordination**: keeping several people agreed on how a project is run, changed, and checked. The same document rarely does both well, and a lot of frustration comes from asking a document to do the job it wasn’t written for. An API reference makes a poor tutorial because it assumes you already know what you’re looking for. A tutorial makes a poor specification because it follows one path through the tool rather than listing every behavior. A README can’t stand in for a [changelog](https://en.wikipedia.org/wiki/Changelog), because it describes the project as it is *now*, not how it got that way. Knowing which job you need done is half the battle.
 
-### A simple hierarchy of authority
+### Which source wins when they disagree
 
-When sources conflict, it helps to rank them by authority and proximity:
+Sooner or later a blog post will tell you one thing and the official docs another. When that happens, rank your sources by how close they are to the thing itself. **Primary sources** come first: the official documentation, man pages, the tool’s own source code, and published specifications. Next come **project-local sources**: your repository’s README and CONTRIBUTING guide, comments in the code, and the project’s issues. **Secondary sources** come last: blog posts, videos, forum answers, and anything an AI tool tells you.
 
-1.  **Primary sources**: official documentation, man pages, upstream source code, published specifications.
-
-2.  **Project-local sources**: your repository README, CONTRIBUTING guide, code comments, and issues.
-
-3.  **Secondary sources**: blog posts, videos, forum answers, AI-generated suggestions.
-
-Secondary sources can be valuable, especially for novices, but they are more likely to be outdated or context-specific. Your goal is to use them as *navigation aids* to primary sources, not as final authority.
+That doesn’t make secondary sources bad. They’re often where a beginner’s explanation lives, written by someone who remembers being confused. But they’re more likely to be out of date or written for a situation that isn’t yours. Use them as *navigation aids* that point you toward the primary source, not as the last word.
 
 ## 3.2 Documentation genres and the questions they answer
 
-A useful classification (popularized by the [Diátaxis framework](https://diataxis.fr/) and multiple documentation communities) separates four genres. You do not need to memorize the labels; you need to recognize the different user needs they serve.
+The most useful map of those layers comes from the [Diátaxis framework](https://diataxis.fr/start-here/), which sorts documentation into four genres by the need each one serves. You don’t need to memorize the labels. What helps is being able to tell, a few seconds into a page, which kind you’re reading and whether it’s the kind you need.
 
 ### Reference documentation
 
-Reference docs answer the question *“what are the exact inputs, outputs, options, and behaviors?”* They include API references for functions, classes, and parameters; command-line help and man pages; and configuration file schemas. Reference is dense, structured, and typically not narrative — you do not read it cover to cover, you dip into it for one precise answer and then leave. When you already know what function you want and just need to confirm an argument, reference is the right genre.
+Reference docs answer *“what exactly are the inputs, outputs, options, and behaviors?”* That covers API references for functions, classes, and parameters; command-line help and [man pages](https://en.wikipedia.org/wiki/Man_page); and the schemas of configuration files. Reference is dense, structured, and not written as a story. You don’t read it cover to cover; you dip in for one precise answer and leave. It’s the right genre when you already know which function you want and just need to confirm an argument.
+
+Some of the most useful reference is already on your computer:
 
 ``` bash
-# Examples of reference docs you can read locally
-git help merge          # man-page-style git reference (https://git-scm.com/docs)
-ls --help               # GNU ls option reference
-python -c "help(dict)"  # Python built-in reference (https://docs.python.org/3/)
+# Reference docs you can read without a browser
+git help merge          # git's full reference page for merge (also online at https://git-scm.com/docs)
+ls --help               # GNU ls option reference (Linux; on a Mac, use `man ls`)
+python -c "help(dict)"  # Python's built-in reference (https://docs.python.org/3/)
 ```
 
 ### Tutorials
 
-Tutorials answer the question *“how do I learn this from scratch in a guided way?”* They are linear and scaffolded, and they assume you have the time to follow a sequence step by step. A good tutorial gets you to a working example quickly, even if you do not fully understand every piece on the first pass. The [pandas “Getting Started” guide](https://pandas.pydata.org/docs/getting_started/index.html) and the [official Python tutorial](https://docs.python.org/3/tutorial/) are both examples of this genre.
+Tutorials answer *“how do I learn this from scratch, with someone guiding me?”* They’re linear and scaffolded, and they assume you have time to follow a sequence step by step. A good one gets you to something working quickly, even if you don’t understand every piece on the first pass. The [pandas “Getting started” guide](https://pandas.pydata.org/docs/getting_started/index.html) and the [official Python tutorial](https://docs.python.org/3/tutorial/) are both good examples.
 
 ### How-to guides
 
-How-to guides answer the question *“how do I accomplish a specific task?”* They are goal-oriented and practical, and the best ones are short, focused, and opinionated about the steps. They assume you already know roughly what you want — “I need to read a CSV with a custom delimiter” — and they hand you the recipe without padding it with conceptual background.
+How-to guides answer *“how do I get this specific thing done?”* They assume you already know roughly what you want (“I need to read a CSV that uses semicolons instead of commas”) and hand you the steps without a lecture. The best ones are short, focused, and opinionated about the right way to do it.
 
-### Explanations and concepts
+### Explanations
 
-Explanations answer the questions *“why does this work the way it does?”* and *“what is the right mental model for this thing?”* Concept docs clarify terminology, architecture, trade-offs, and design rationale. They are often where you learn what *not* to do — why `iterrows()` is slow in pandas, why mutable default arguments are a trap in Python, why HTTP `POST` is not idempotent. Reading good explanation docs is one of the highest-leverage activities in technical learning, even though it produces nothing immediately runnable.
+Explanations answer *“why does this work the way it does?”* and *“how should I think about this?”* They cover terminology, architecture, trade-offs, and the reasons behind a design. They’re often where you learn what *not* to do: why [looping over a DataFrame’s rows](https://pandas.pydata.org/docs/user_guide/basics.html#iteration) is slow, why a [mutable default argument](https://docs.python.org/3/tutorial/controlflow.html#default-argument-values) is a trap in Python, or why an HTTP `POST` isn’t [idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent) the way a `GET` is. Reading explanations produces nothing you can run right away, which is why students skip them. It’s also why the same conceptual mistake keeps coming back for students who do.
 
-### Why this classification matters
+### Why the genres matter
 
-When a student says “I read the docs and still don’t get it,” the hidden question is almost always *which kind of docs they read versus which kind they actually needed.* A quick mental diagnostic helps: if you cannot even find the right *function name* for what you want to do, you need a tutorial or a how-to to point you at it. If you know the function name and just need to look up the right parameter, you need reference. And if you keep making the same conceptual mistake — the same join going wrong, the same kind of `KeyError` — you need an explanation page that fixes the mental model, not another how-to that fixes one symptom.
+When you say “I read the docs and still don’t get it,” the hidden question is almost always *which kind* of docs you read compared with the kind you needed. A quick diagnosis helps. If you can’t even find the *name* of the function you need, reach for a tutorial or a how-to guide to point you at it. If you know the name and just need the right parameter, go to the reference. And if you keep making the same kind of mistake (the same join going wrong, the same `KeyError` in a new place), you need an explanation that fixes your mental model, not another how-to that patches one symptom.
 
 ## 3.3 Finding documentation efficiently
 
-Finding documentation is a skill because the web contains too much material, and search engines optimize for popularity rather than correctness. You should develop a repeatable workflow that reliably gets you to primary sources.
+Finding the right page is harder than it sounds, because the web holds far more about any popular tool than you could ever read, and search engines rank pages by popularity, not correctness. The fix is a routine that reliably gets you to the primary source.
 
-### Start with “what is the object?”
+### Start with “what kind of thing is this?”
 
-The first move is always to figure out what *kind* of thing you are dealing with, because the answer determines where the “official” docs live. Are you trying to understand a **language feature** (Python list slicing, generator expressions), a **library** ([pandas](https://pandas.pydata.org/docs/), [numpy](https://numpy.org/doc/stable/), [scikit-learn](https://scikit-learn.org/stable/)), a **tool** ([Git](https://git-scm.com/doc), [conda](https://docs.conda.io/en/latest/), [Jupyter](https://jupyter.org/documentation)), a **platform** ([GitHub Actions](https://docs.github.com/en/actions), [Windows Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page)), or a **file format** ([CSV](https://www.rfc-editor.org/rfc/rfc4180), [JSON](https://www.json.org/json-en.html), [Parquet](https://parquet.apache.org/docs/))? Each of those categories has a different home: language features live in the language reference, libraries live in their own documentation sites, tools live in their man pages and project sites, platforms live in their vendor docs, and file formats live in their public specifications. Once you know the category, you almost always know the URL pattern.
+The first move is to work out what *kind* of thing you’re dealing with, because that decides where its official docs live. Is it a **language feature**, like list slicing in Python? A **library**, like [pandas](https://pandas.pydata.org/docs/), [NumPy](https://numpy.org/doc/stable/), or [scikit-learn](https://scikit-learn.org/stable/)? A **tool**, like [Git](https://git-scm.com/doc), [conda](https://docs.conda.io/en/latest/), or [Jupyter](https://jupyter.org/documentation)? A **platform**, like [GitHub Actions](https://docs.github.com/en/actions) or [Windows Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page)? Or a **file format**, like [CSV](https://www.rfc-editor.org/rfc/rfc4180.html), [JSON](https://www.json.org/json-en.html), or [Parquet](https://parquet.apache.org/docs/)? Each category has its own home. Language features live in the language reference, libraries on their own documentation sites, tools in their man pages and project sites, platforms in their vendor’s docs, and file formats in their public specifications. Once you know the category, you can usually guess the URL.
 
-### Search queries that route you to primary sources
+### Search in a way that finds the official page
 
-A common novice mistake is to type *“how do I do X”* into Google and end up in a sea of secondary sources — blog posts, Stack Overflow answers, and YouTube videos of varying age and accuracy. A small change in search query routes you to primary sources directly. Instead of *“how do I write a requirements.txt”*, search for [`pip documentation requirements.txt`](https://pip.pypa.io/en/stable/reference/requirements-file-format/). Instead of *“how do I use SSH ProxyJump”*, search for `ssh man page ProxyJump`. Instead of *“pandas merge tutorial”*, search for `pandas API merge`. The pattern is always the same: name the tool, name the topic, and add a word like `documentation`, `API`, or `man page` to bias the results toward authoritative sources.
+Here’s the trap nearly everyone falls into: you type *“how do I do X”* into a search engine and land in a sea of secondary sources, blog posts and forum threads and videos of every age and accuracy. A small change to the query routes you to primary sources instead. Rather than *“how do I write a requirements.txt”*, search for `pip documentation requirements.txt`, which lands you on pip’s page for the [requirements file format](https://pip.pypa.io/en/stable/reference/requirements-file-format/). Rather than *“how do I use SSH ProxyJump”*, search for `ssh man page ProxyJump`. The pattern is always the same: name the tool, name the topic, and add a word like `documentation`, `API`, or `man page` to tilt the results toward the source.
 
 ``` text
 # Instead of                          search for
@@ -108,59 +97,51 @@ A common novice mistake is to type *“how do I do X”* into Google and end up 
 # "fix requests timeout"        →     "requests timeout parameter site:requests.readthedocs.io"
 ```
 
-When you do land on a blog or Stack Overflow post, treat it as a *navigation aid*: use it to extract the function names, flags, and concepts you should look up next, and then jump immediately to the official docs to verify them against your installed version.
+You’ll still land on a blog or a forum answer sometimes, and that’s fine. Treat it as a map: pull out the function names, flags, and concepts it mentions, then go straight to the official docs to check them against the version you have installed.
 
-### Know the “home bases”
+### Know the home bases
 
-A small set of sites recur in data science work:
+A small set of sites comes up again and again in data science work, and it’s worth recognizing them on sight. For installing Python packages and managing environments, the authorities are the Python Packaging User Guide, pip’s user guide, and conda’s guide to managing environments ([Python Packaging Authority, n.d.](#ref-python_packaging_user_guide); [pip developers, n.d.](#ref-pip_user_guide); [Conda Project, n.d.](#ref-conda_manage_environments)). For notebooks, it’s the documentation of Project Jupyter and JupyterLab ([Project Jupyter, n.d.-b](#ref-project_jupyter_docs), [n.d.-a](#ref-jupyterlab_docs)). For version control, it’s the free book *Pro Git* ([Chacon and Straub 2014](#ref-chacon2014progit)). You don’t need to memorize URLs. You do need to recognize which organizations write the authoritative reference for the tools you use, so that a search result from one of them stands out.
 
-- Python packaging and installation: ([Python Packaging Authority, n.d.](#ref-python_packaging_user_guide); [pip developers, n.d.](#ref-pip_user_guide); [Conda Project, n.d.](#ref-conda_manage_environments))
+### Check your own computer before the web
 
-- Jupyter ecosystem: ([Project Jupyter, n.d.-b](#ref-project_jupyter_docs), [n.d.-a](#ref-jupyterlab_docs))
-
-- Version control and collaboration: ([Chacon and Straub 2014](#ref-chacon2014progit))
-
-You do not need to memorize URLs. You do need to recognize which domains and organizations produce the authoritative references for a given tool.
-
-### Use built-in documentation before the web
-
-Before you open a browser, check what is already on your machine. Almost every tool you use ships with its own reference, and that reference has the enormous advantage of being aligned with your installed version — which is exactly what you need when version differences matter. From the command line, the patterns are `tool --help`, `man tool`, or `help tool`. From Python, you can call `help(obj)` on any function or class, and inside Jupyter or IPython you can append `?` to a name to read its docstring or `??` to see its source code. R users have `?function` and `help(function)`. Git’s subcommands all have their own help pages, accessible as `git help merge`, `git help commit`, and so on.
+Before you open a browser, look at what’s already installed. Almost every tool ships with its own reference, and that reference has one big advantage over anything online: it matches the version you actually have. From the command line, try `tool --help`, `man tool`, or `help tool`. Git’s subcommands each have a full help page (`git help merge`, `git help commit`), and `git merge -h` prints a short summary of the options instead. In Python, the built-in [`help()`](https://docs.python.org/3/builtins/functions.html#help) works on any function or class and prints its docstring, the description its author wrote. Inside Jupyter or IPython it’s even quicker: add `?` after a name to see its docstring, or `??` to see its source code, as the [IPython tutorial](https://ipython.readthedocs.io/en/stable/interactive/tutorial.html) shows. R users have `?function` and `help(function)`.
 
 ``` bash
-git help rebase                  # full man page for git rebase
-ls --help | head -20             # short reference for ls flags
+git help rebase                  # full reference page for git rebase
+ls --help | head -20             # the first 20 lines of ls's options (Linux)
 python -c "help(dict.get)"       # built-in help for dict.get
 ```
 
-The local help is fast, offline, and version-correct. Reach for it before you reach for a search engine.
+Two small snags to know about. The Mac’s `ls` doesn’t understand `--help` and prints a short usage line instead, so use `man ls` there. And on some Macs, `python` doesn’t exist and you need `python3`. Local help is fast, works offline, and is always right about your version, so reach for it before a search engine.
 
 ## 3.4 Reading documentation actively
 
-Reading technical documentation is not like reading a novel. You do not “consume” it from start to finish. You interrogate it.
+Reading technical docs isn’t like reading a novel, and if you’ve ever read a docs page top to bottom and come away with nothing, that’s why. You don’t take it in from start to finish. You question it.
 
-### The “extract five facts” method
+### Pull out five facts
 
-When you are reading the docs for a function, command, or tool behavior, you are looking for five specific facts: the **inputs** (required arguments and the types they accept), the **outputs** (return types, files written, side effects on global state), the **defaults** (what happens if you do not pass anything special), the **constraints** (version requirements, OS restrictions, permissions needed), and the **failure modes** (which errors the function can raise and what they usually mean). If you can find all five for a given function, you know almost everything you need to use it confidently. If you cannot find them — for example, if a tutorial only shows you one usage and never enumerates the parameters — you are reading the wrong genre and should switch to the reference page.
+When you’re reading about a function, command, or tool, you’re hunting for five things. **Inputs:** which arguments are required, and what types they accept. **Outputs:** what comes back, what files get written, and what else changes along the way. **Defaults:** what happens if you don’t pass anything special. **Constraints:** version requirements, operating-system limits, and permissions. **Failure modes:** which errors it can raise and what they usually mean. If you can find all five, you know nearly everything you need to use it with confidence. If you can’t (say, a tutorial shows one way to call a function and never lists the parameters), you’re reading the wrong genre, and it’s time to switch to the reference page.
 
-### Identify assumptions and hidden context
+### Find the assumptions nobody wrote down
 
-Almost every set of docs is written for a specific imagined reader, and that reader is usually in a slightly different situation than you are. Docs routinely assume that you are in the right working directory, that your environment is already activated, that you have network access, that you have read/write permissions to wherever the example writes, and that your input data match a schema the docs never quite specify. As you read, train yourself to ask “what must be true for these steps to work?” — and then compare each of those assumptions to your actual situation. The first place they diverge is usually the place where the docs and your reality will collide.
+Every set of docs is written for an imagined reader, and that reader is usually in a slightly different situation from you. Docs routinely assume you’re in the right folder, that your environment is already activated, that you’re online, that you’re allowed to write wherever the example writes, and that your data looks like data the docs never quite describe. As you read, keep asking: *what has to be true for these steps to work?* Then check each answer against your real situation. The first place they differ is usually where the docs and your computer will collide.
 
-### Examples are executable contracts
+### Treat examples as promises
 
-Examples in official docs are not decoration. They are the closest thing documentation has to a contract: the maintainer is asserting that *this* code, running in *this* version of the library, produces *this* result. The most useful thing you can do with an example is take it seriously: copy it into a scratch file, run it as-is on your installed version, and confirm it works *before* you change anything. Then modify it one variable at a time toward your real use case. If the example fails on your machine, that is itself a piece of evidence — either the docs are out of date, you are on a different version than the docs assume, or one of the hidden prerequisites is missing in your environment. Either way, you have learned something concrete instead of staring at the docs in confusion.
+The examples in official docs aren’t decoration. They’re the closest thing documentation has to a promise: the maintainers are saying that *this* code, in *this* version of the library, gives *this* result. So take them at their word. Copy the example into a scratch file, run it exactly as written on your installed version, and confirm it works *before* you change anything. Then change one thing at a time toward what you really need. If the example fails on your machine, that’s useful evidence, not a dead end: either the docs are out of date, you’re on a different version than they assume, or one of their unwritten assumptions doesn’t hold for you. Any of those beats staring at the page.
 
-### Beware the “happy path”
+### Look past the happy path
 
-Tutorials almost always show the happy path: clean input data, correct permissions, a fresh environment, no network blips, and no edge cases. Real work involves the messy versions of all of those — missing files, corrupted data, half-installed packages, version conflicts between tools that used to coexist, and intermittent network failures that look like bugs but are not. When you are reading docs, deliberately look for the sections that handle the unhappy path: “Troubleshooting,” “Common issues,” “FAQ,” “Compatibility,” and “Upgrading.” Most projects have these, and they are often the highest-density information in the entire site, because they describe exactly the situations that send people looking for help.
+Tutorials almost always show the [happy path](https://en.wikipedia.org/wiki/Happy_path): clean data, the right permissions, a fresh environment, a steady network, no edge cases. Real work brings the messy versions of all of those: missing files, corrupted data, half-installed packages, two tools that used to get along and now don’t, and network hiccups that look like bugs but aren’t. So go looking for the pages about the unhappy path, usually titled “Troubleshooting,” “Common issues,” “FAQ,” “Compatibility,” or “Upgrading.” Most projects have them, and they’re often the most useful pages on the whole site, because they describe exactly the situations that send people searching for help.
 
 ## 3.5 Reconciling documentation with versions and environments
 
-A high percentage of “the docs are wrong” complaints are actually version mismatches. The documentation might be correct for *some version* of the tool, just not yours.
+Here’s something that saves a lot of grief: a big share of “the docs are wrong” moments are really version mismatches. The docs are correct, just for a different version of the tool than the one you have. That `DataFrame.append` error from the start of the chapter is a perfect case. `append` worked for years, then [pandas 2.0 removed it](https://pandas.pydata.org/docs/whatsnew/v2.0.0.html) in favor of `pd.concat`, and every older tutorial that uses it now fails on a current install.
 
-### Always capture version context
+### Write down your versions first
 
-When you are stuck on something that the docs say should work, the cheapest first move is to record exactly which versions of everything you have installed. The five fields that solve most version mysteries are the tool or library version, your operating system, your Python version (if Python is involved), the environment manager you are using (conda, pip, venv), and the path of the executable you are actually running. Capture all five before you start changing anything, because every fix you try is going to be interpreted in light of those values.
+When something the docs say should work doesn’t, the cheapest first step is to record exactly what you’re running. Five facts solve most version mysteries: the version of the tool or library, your operating system, your Python version (if Python is involved), the environment manager you’re using (conda, pip, or venv), and the path of the program that’s actually running. That last one catches more problems than you’d guess: if you have two Pythons installed, `sys.executable` tells you which one you’re really using. Collect all five before you change anything, because every fix you try will be judged against them.
 
 ``` bash
 python --version
@@ -169,29 +150,23 @@ python -c "import pandas; print(pandas.__version__)"
 uname -a   # macOS / Linux  (Windows: 'systeminfo' or 'ver')
 ```
 
-This habit aligns with the broader reproducibility guidance from the literature ([Wilson et al. 2017](#ref-wilson2017goodenough); [The Turing Way Community 2025](#ref-turingway2025zenodo)), and as a practical bonus it also makes your questions answerable when you need to ask for help (see [sec-asking-questions](#sec-asking-questions)).
+Recording your versions is one of the habits the reproducibility literature recommends ([Wilson et al. 2017](#ref-wilson2017goodenough); [The Turing Way Community 2025](#ref-turingway2025zenodo)), and it has a practical bonus: it makes your question answerable when you need to ask someone for help (see [sec-asking-questions](#sec-asking-questions)). If you need the whole list of installed packages, [`pip freeze`](https://pip.pypa.io/en/stable/cli/pip_freeze/) prints them with their exact versions.
 
-### Doc version selectors and release notes
+### Pick the docs for your version
 
-Many doc sites include version selectors. If your library has major versions, explicitly pick the correct one. When behavior changes, consult release notes or change logs. (You do not need to read every change; you need to confirm whether your symptom matches a known change.)
+Many documentation sites have a version switcher, usually a dropdown near the top of the page, and the version you land on from a search engine is often not the one you have installed. If your library has had major releases, pick the right version explicitly. When behavior has changed, check the release notes or changelog. You don’t need to read every entry; you only need to find out whether your symptom matches a known change.
 
-### The “pin or upgrade” decision
+### Pin or upgrade
 
-When documentation and behavior mismatch, you often face a decision:
-
-- **Pin**: keep your environment as-is and use docs for your version.
-
-- **Upgrade**: move to the current version and follow the latest docs.
-
-For class projects, upgrading is often fine if it does not break the assignment. For collaborative projects, pinning is often safer to preserve team consistency. Either way, write the choice down in your project documentation.
+When the docs and the behavior disagree, you usually face a choice. You can **pin**: keep your environment as it is and read the docs for your version. Or you can **upgrade**: move to the current version and follow the latest docs. For a class project, upgrading is often fine if it doesn’t break the assignment. For a team project, pinning is usually safer, because everyone stays on the same version. Either way, write the choice down in the project’s documentation, so nobody has to rediscover it.
 
 ## 3.6 Project-local documentation: READMEs and runbooks
 
-A project README is the most important document in your repository. It is the front door. It should answer: “What is this?” and “How do I run it?”
+Every project needs a front door, and that’s the [README](https://en.wikipedia.org/wiki/README): the file GitHub shows on your repository’s front page, and the first thing anyone opens. At minimum it has to answer two questions: “what is this?” and “how do I run it?”
 
-### Minimum viable README
+### A minimum viable README
 
-A minimal README for a class project has six sections, and they should appear in roughly this order. First, a **one-paragraph purpose** describing what the project does and why anyone should care. Second, a **setup** section that walks through environment creation and dependency installation. Third, a **how to run** section with the exact commands a reader should type. Fourth, an **expected outputs** section that says what files or results will appear when the run succeeds — this is what lets a reader confirm the run actually worked. Fifth, a **project structure** section explaining what each top-level folder contains. Sixth, a **data notes** section saying where the data came from and any restrictions on its use.
+A good README for a class project has six parts, roughly in this order. It opens with **a one-paragraph purpose**: what the project does and why anyone should care. Then comes **setup**, which walks through creating the environment and installing the dependencies. Next is **how to run it**, with the exact commands to type. After that, **expected outputs** says which files or results appear when the run succeeds; this is the part that lets a reader confirm it actually worked, and it’s the part people most often leave out. A **project structure** section explains what each top-level folder holds. And **data notes** say where the data came from and any limits on how it can be used. Here’s all six in one short [Markdown](../chapters/appendix-glossary.llms.md#term-markdown) file:
 
 ``` markdown
 # Q3 Sales Analysis
@@ -220,101 +195,53 @@ produces a report.
 Source: /shared/sales-data/2026-q3.csv (internal use only).
 ```
 
-This is not busywork. It is an investment that pays back the first time you return to the project after a week away — or the first time a teammate clones the repo and tries to run it on their own machine.
+(The `source .venv/bin/activate` line is for macOS and Linux. On Windows it’s `.venv\Scripts\activate`; [sec-virtual-environments](#sec-virtual-environments) has the details, and a README that expects Windows readers should say so.)
 
-### Runbooks and operational docs
+Writing this can feel like busywork, especially for a project only you have touched. It pays you back the first time you come back after a week away, and again the first time a teammate clones the repository and tries to run it on their own machine.
 
-When a project has recurring operational tasks (refresh data, rebuild figures, re-run pipeline), create a short runbook:
+### Runbooks for recurring jobs
 
-- What the task is
-
-- When to run it
-
-- The command to run it
-
-- Where logs and outputs go
-
-- What to do when it fails
-
-Runbooks are especially valuable when tasks become automated (see the automation chapter in your handbook).
+Some projects have jobs you do over and over: refresh the data, rebuild the figures, rerun the pipeline. Each of those deserves a short [runbook](https://en.wikipedia.org/wiki/Runbook), a page that someone who has never done the job could follow. It says what the task is, when to run it, the exact command, where the logs and outputs go, and what to do when it fails. Runbooks matter even more once a task is automated (see [sec-automation](#sec-automation)), because the day the automation breaks is the day nobody remembers how to do the job by hand.
 
 ## 3.7 Writing documentation that people actually use
 
-The hard part of writing documentation is not typing words. It is choosing what to include and what to omit.
+The hard part of writing documentation isn’t typing the words. It’s deciding what to put in and what to leave out, and most bad docs fail on that choice rather than on grammar.
 
 ### Write for a specific reader
 
-Before you write, decide:
-
-- Who is the reader (classmate, TA, future you)?
-
-- What do they already know?
-
-- What do they need to accomplish?
-
-Documentation that tries to serve everyone often serves no one. Prefer clear, scoped docs over universal docs.
+Before you write, decide who you’re writing for (a classmate, a TA, you in six months), what they already know, and what they need to get done. The reason this matters has a name, the [curse of knowledge](https://en.wikipedia.org/wiki/Curse_of_knowledge): once you understand something, it’s genuinely hard to remember what it was like not to, so you skip steps that feel obvious to you and aren’t to anyone else. Picturing one specific reader is the best cure. Documentation that tries to serve everyone usually serves no one; a clear page for a named reader beats a universal one.
 
 ### Structure beats cleverness
 
-Use predictable headings and consistent patterns. For procedural docs, a reliable structure is:
+Readers skim before they read, so give them predictable headings and a consistent pattern. For anything procedural, a reliable shape is:
 
 1.  Purpose
-
 2.  Prerequisites
-
 3.  Steps (numbered)
-
-4.  Verification (what “success” looks like)
-
+4.  Verification (what success looks like)
 5.  Troubleshooting (common failures)
 
-If your reader can skim the headings and understand the shape, you have already reduced friction.
+If a reader can skim just the headings and understand the shape of the task, you’ve already saved them most of the friction. Template A at the end of the chapter follows this shape.
 
 ### Make commands copyable
 
-When documentation includes commands:
+Nothing’s more frustrating than a README that says “run the script” and stops there. Which script? From which folder? In which environment, and with which arguments? When your docs include commands, put each one in a code block so it can be copied exactly, say which folder to run it from, explain any placeholder like `<your-file>` rather than leaving the reader to guess, and show the expected output when it helps a reader confirm the command worked.
 
-- use code blocks,
+### Explain why, not just what
 
-- include the working directory context,
+Good docs explain *why* the important steps exist: why you pin versions, why you never edit the raw data in place, why you run the formatting check before committing. A step without a reason looks like clutter, and a future collaborator trying to tidy things up will “optimize away” exactly the steps that were keeping the results correct. One sentence of rationale protects them.
 
-- avoid placeholders unless you explain them,
+### Anchor ideas with an example
 
-- show expected output when useful.
-
-A common novice mistake is to document “run the script” without specifying *which environment*, *from which folder*, and *with which parameters*.
-
-### Document intent, not just mechanics
-
-Good docs explain *why* key steps exist:
-
-- Why you pin versions
-
-- Why you never edit raw data in place
-
-- Why you run formatting checks before committing
-
-A short rationale prevents future collaborators from “optimizing away” the steps that preserve correctness.
-
-### Use examples as anchors
-
-For conceptual documentation, include one example that is fully worked:
-
-- a real command invocation,
-
-- a real function call with realistic inputs,
-
-- a sample configuration file.
-
-Examples turn abstract descriptions into something testable.
+When you’re explaining a concept, include one fully worked example: a real command with its output, a real function call with realistic inputs, or a sample configuration file. An abstract description gives a reader nothing to check; a worked example is something they can run and compare against.
 
 ## 3.8 Diagrams: reading and drawing them
 
-Some things are hard to hold in your head from prose: which script reads which file, how two tables connect, who sends what to whom and in what order. A diagram shows that structure at once, and a reader who knows the three common kinds below can read most of the diagrams in documentation, papers, and design discussions.
+Some things are hard to hold in your head from prose: which script reads which file, how two tables connect, who sends what to whom and in what order. A diagram shows that structure at once, and a reader who knows the three common kinds below can read most of the diagrams in documentation, papers, and design discussions. If diagrams have always looked like a secret code, it’s because they use conventions nobody explains; once you know the conventions, they’re quick to read.
 
 ### Flowcharts: what happens, in what order
 
-A **flowchart** (or pipeline diagram) shows steps as boxes and the order between them as arrows. [Figure fig-diagram-pipeline](#fig-diagram-pipeline) is the kind of project described in [sec-project-management](#sec-project-management), drawn as one:
+A [flowchart](https://en.wikipedia.org/wiki/Flowchart) (or pipeline diagram) shows steps as boxes and the order between them as arrows. [Figure fig-diagram-pipeline](#fig-diagram-pipeline) is the kind of project described in [sec-project-management](#sec-project-management), drawn as one:
 
 ``` mermaid
 flowchart TD
@@ -333,7 +260,7 @@ Read it from the top, along the arrows. The shapes carry meaning (here, cylinder
 
 ### Entity-relationship diagrams: how tables connect
 
-An **entity-relationship (ER) diagram** shows the tables in a database, their columns, and how their rows relate. [Figure fig-diagram-er](#fig-diagram-er) draws the two tables from [sec-sql-basics](#sec-sql-basics):
+An [entity-relationship (ER) diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) shows the tables in a database, their columns, and how their rows relate. [Figure fig-diagram-er](#fig-diagram-er) draws the two tables from [sec-sql-basics](#sec-sql-basics):
 
 ``` mermaid
 erDiagram
@@ -359,7 +286,7 @@ The marks at each end of the line, called **crow’s-foot notation**, carry the 
 
 ### Sequence diagrams: who talks to whom
 
-A **sequence diagram** shows messages between participants over time: each participant gets a vertical line, time runs downward, and each arrow is one message. [Figure fig-diagram-sequence](#fig-diagram-sequence) is a script calling a web API, as in [sec-http-apis](#sec-http-apis):
+A [sequence diagram](https://en.wikipedia.org/wiki/Sequence_diagram) shows messages between participants over time: each participant gets a vertical line, time runs downward, and each arrow is one message. [Figure fig-diagram-sequence](#fig-diagram-sequence) is a script calling a web API, as in [sec-http-apis](#sec-http-apis):
 
 ``` mermaid
 sequenceDiagram
@@ -381,130 +308,78 @@ Sequence diagrams are how API documentation explains authentication and how peop
 
 ### Drawing your own
 
-Most diagrams in a student project are informal **architecture sketches**: boxes for the pieces (your laptop, a server, a database, cloud storage), arrows for what moves between them, and labels on everything. A photo of a whiteboard is a fine start. For a diagram that will live in documentation, write it as text, the way the three above are written, in [Mermaid](https://mermaid.js.org/). A Mermaid diagram is a few lines in a fenced code block that GitHub, Quarto, and many other tools draw for you; because it is text, it lives in version control, shows up in diffs, and is easy to change when the project does. The [Mermaid Live Editor](https://mermaid.live/) shows the drawing as you type. For diagrams Mermaid can’t lay out well, [diagrams.net](https://www.diagrams.net/) is a free drawing tool whose files can also be kept in a repository.
+Most diagrams in a student project are informal **architecture sketches**: boxes for the pieces (your laptop, a server, a database, cloud storage), arrows for what moves between them, and labels on everything. A photo of a whiteboard is a fine start. For a diagram that will live in documentation, write it as text, the way the three above are written, in [Mermaid](https://mermaid.js.org/). A Mermaid diagram is a few lines in a fenced code block that [GitHub](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams), Quarto, and many other tools draw for you; because it’s text, it lives in version control, shows up in diffs, and is easy to change when the project does. The [Mermaid Live Editor](https://mermaid.live/) shows the drawing as you type. For diagrams Mermaid can’t lay out well, [draw.io](https://www.drawio.com/) (also known as diagrams.net) is a free drawing tool whose files can also be kept in a repository.
 
 Whichever tool you use, a few habits make a diagram readable:
 
 - **One idea per diagram.** A diagram that shows the data flow, the database schema, and the deployment at once shows none of them clearly. Draw three.
 - **Label the arrows** with verbs (“reads,” “writes,” “checks”), and say what the shapes and line styles mean.
 - **Keep one direction of flow,** left to right or top to bottom, so the reader never has to hunt for where it starts.
-- **Describe it in words too.** A caption and the text around a diagram should say what it shows, for readers who can’t see it and for the moment the diagram falls out of date. In Mermaid, an `accTitle:` line and an `accDescr:` line inside the diagram give screen readers a title and a description; the three diagrams above have them.
+- **Describe it in words too.** A caption and the text around a diagram should say what it shows, for readers who can’t see it and for the moment the diagram falls out of date. In Mermaid, an `accTitle:` line and an `accDescr:` line inside the diagram give screen readers a title and a description (Mermaid’s [accessibility guide](https://mermaid.js.org/config/accessibility.html) explains both); the three diagrams above have them.
 
 ## 3.9 Documentation maintenance as a habit
 
-Documentation is not a one-time deliverable. It is a living layer that must move with your code.
+Here’s the uncomfortable truth about docs: the day you write them is the day they start going out of date. Every change to the code is a chance for the README to drift a little further from reality, until one day a newcomer follows it exactly and nothing works. Documentation isn’t a one-time deliverable. It has to move with the code.
 
 ### Docs are part of “done”
 
-Adopt a simple policy: if a change affects how someone uses the project, update the docs in the same pull request. This prevents drift and reduces the cognitive load of “remembering to update later.”
+The simplest policy that works: if a change affects how someone uses the project, update the docs in the same pull request. Not “later,” because later rarely comes. When the docs travel with the change, reviewers see both at once, and nobody has to remember what needs updating.
 
 ### When docs drift, treat it as a bug
 
-If instructions stop working, file an issue. Drift is not shameful; it is normal. The problem is leaving drift invisible.
+When instructions stop working, file an issue, just as you would for broken code. Drift isn’t shameful; it happens to every project. What causes the harm is drift nobody has written down, because then the next person hits the same wall and assumes the problem is them.
 
-### Decision logs and “why we chose this”
+### Keep a decision log
 
-Some choices are not obvious from code:
-
-- why you selected a dataset,
-
-- why you used a specific model or parameter,
-
-- why you excluded certain records,
-
-- why you used one workflow rather than another.
-
-A lightweight decision log prevents repeated debates and helps future readers interpret results. This practice aligns with reproducible project guidance ([The Turing Way Community 2025](#ref-turingway2025zenodo); [Wilson et al. 2017](#ref-wilson2017goodenough)).
+Some choices can’t be read from the code: why you picked this dataset, why you used this model or that parameter, why you excluded certain records, why you chose one workflow over another. Three months later, someone (often you) will look at one of those choices and wonder whether it was a mistake. A short **decision log**, a running list of what you decided, when, and why, answers that question before it’s asked and stops the team from having the same debate twice. Software teams call the bigger version an [architectural decision record](https://en.wikipedia.org/wiki/Architectural_decision); for a class project, a few lines per decision in a Markdown file is plenty (Template C below is one). Keeping one is standard advice for reproducible projects ([The Turing Way Community 2025](#ref-turingway2025zenodo); [Wilson et al. 2017](#ref-wilson2017goodenough)).
 
 ## 3.10 AI tools in documentation workflows
 
-AI tools can help with documentation, but they also introduce risks: hallucinated facts, mismatched versions, and accidental leakage of sensitive data. The goal is to use AI as an assistant for drafting and structuring, not as an authority.
+AI tools are genuinely good at some documentation chores, and genuinely risky at others. They can [make things up](https://en.wikipedia.org/wiki/Hallucination_%28artificial_intelligence%29) with total confidence, including command-line flags and function arguments that don’t exist; they can describe a different version of a tool from the one you have; and anything you paste into them may leave your computer. The way through is to use AI as an assistant for drafting and structure, never as the authority on facts.
 
-### High-value uses
+Where it helps most is turning material you already have into a better shape. Ask it to draft a README skeleton from your project’s folder structure, to rewrite rough notes into a how-to guide, to produce consistent templates such as issue forms or a pull request checklist, to suggest likely troubleshooting steps (which you then check), or to make a draft clearer for a beginner. In each case you’re supplying the facts and the AI is supplying the arrangement.
 
-AI tools can be effective for:
+A few guardrails keep that arrangement safe:
 
-- drafting a README skeleton from a project structure,
+1.  **Never paste secrets:** tokens, keys, passwords, or private data (see [sec-secrets](#sec-secrets)).
+2.  **Treat every output as a draft:** check it against the official docs and by running the commands yourself.
+3.  **Prefer local evidence:** your logs, your versions, and your environment beat the AI’s guess about them.
+4.  **Cite primary sources:** don’t let an AI’s answer stand in for the reference it should have pointed you to.
 
-- rewriting rough notes into a coherent how-to guide,
-
-- generating consistent templates (issue forms, PR checklists),
-
-- proposing likely troubleshooting steps (to be verified),
-
-- improving clarity and concision for a novice audience.
-
-### Guardrails
-
-Use the following guardrails:
-
-1.  **Never paste secrets**: tokens, keys, private data.
-
-2.  **Treat outputs as drafts**: verify against official docs and by running commands.
-
-3.  **Prefer local evidence**: your logs, your versions, your environment.
-
-4.  **Cite primary sources**: do not let AI replace authoritative references.
-
-A practical rule: if the AI suggests a command that could be destructive (`rm`, `sudo`, permissions changes), stop and verify in official documentation or with an instructor.
+And one rule to follow every time: if an AI suggests a command that could destroy something (`rm`, `sudo`, a change to file permissions), stop and check it in the official documentation or with an instructor before you run it.
 
 ## 3.11 Stakes and politics
 
-Documentation decides who can use a tool. Every “just run `pip install`” or “open a terminal” smuggles in assumptions: that you have administrator access on your machine, that your network does not block PyPI, that English is not a barrier, that your screen reader can navigate the docs site, and that you have unbroken time to follow a multi-step setup. When those assumptions are wrong, the tool is effectively unavailable — not because the technology cannot serve the reader, but because the documentation drew a boundary they could not cross. The professional shorthand “RTFM” treats this as the reader’s problem; the design habit you should be building treats it as the writer’s problem.
+Think about the first line of a typical setup guide: “Just run `pip install`.” Now picture the student reading it on a library computer where installing software is blocked, on a university-managed laptop without administrator rights, on a campus network that blocks the package index, or through a screen reader on a docs site whose examples are images. For each of them that line is a wall, and the tool is effectively unavailable: not because the technology couldn’t serve them, but because the documentation drew a boundary they couldn’t cross. The old shorthand [RTFM](https://en.wikipedia.org/wiki/RTFM) treats that as the reader’s problem. The habit worth building treats it as the writer’s.
 
-Two decisions to notice. First, *whose problems the docs anticipate*: the example commands, the operating system shown, the network connection assumed, the device on which screenshots were taken. These choices encode an imagined user — usually English-speaking, on a recent laptop, with broadband — and a reader who does not match the imagined user pays the difference in time and frustration. Second, *whose labor maintains the docs*: most large open-source projects rely on a small group of unpaid contributors to keep documentation current, with predictable consequences for translations, accessibility features, and the edge cases that fall outside the contributors’ own situations. The docs are as inclusive as the people who write them have time and motivation to make them.
+Whose problems the docs anticipate is a design decision: the operating system in the screenshots, the network connection assumed, the language of the prose. Those choices encode an imagined user, usually English-speaking, on a recent laptop, with fast internet, and anyone who doesn’t match pays the difference in time and frustration. GitHub’s [2017 Open Source Survey](https://opensourcesurvey.org/2017/) found that nearly a quarter of the open-source community reads and writes English less than “very well.” Who maintains the docs is a decision too. The same survey found that 93% of respondents had run into incomplete or outdated documentation, yet 60% of contributors rarely or never contribute to it. Docs are only as inclusive as their writers have the time and motivation to make them.
 
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward when you write a README or a how-to: name your imagined reader explicitly, then add one sentence for the reader you assumed away.
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a README or a how-to, name your imagined reader explicitly, then add one sentence for the reader you assumed away.
 
 ## 3.12 Worked examples
 
-This section demonstrates how documentation practices appear in typical novice workflows.
+These three examples show the habits above in the kind of project you’re likely working on right now.
 
 ### Turning a notebook into a runnable project
 
-A student’s initial workflow often begins in a Jupyter notebook. That is fine, but as the project grows, collaborators need a stable way to reproduce results.
+Most student projects start life as a single Jupyter notebook, and that’s fine. The trouble starts when someone else needs to reproduce your results: they don’t know which environment you used, which data file to put where, or what “working” is supposed to look like. A few additions fix that, in this order:
 
-A documentation upgrade path:
+1.  Create a README with a one-sentence purpose and a “How to run” section.
+2.  Add an environment section explaining how to set up with conda or pip.
+3.  Add an “Outputs” section describing what files appear after a successful run.
+4.  Add a “Project structure” section describing the folders.
 
-1.  Create a README with a one-sentence purpose and “How to run.”
-
-2.  Add an environment section (conda or pip).
-
-3.  Add an “Outputs” section describing what files appear after running.
-
-4.  Add a “Project structure” section describing folders.
-
-This minimal documentation shift turns a private artifact into a collaborative artifact.
+That’s maybe half an hour of work, and it turns a private notebook into something a teammate can pick up and run.
 
 ### Documenting a data intake pipeline
 
-Even a simple “load a CSV and clean it” pipeline has assumptions:
+Even a pipeline as simple as “load a CSV and clean it” rests on assumptions nobody wrote down: the file’s encoding, its delimiter, the codes it uses for missing values, the columns it’s expected to have, and what makes a row valid. Each one is a way the pipeline can break silently when a new version of the file arrives.
 
-- file encoding,
-
-- delimiter,
-
-- missing value markers,
-
-- expected columns,
-
-- row-level integrity.
-
-A good intake document includes:
-
-1.  dataset source and date,
-
-2.  schema and column meanings,
-
-3.  known quirks (e.g., numbers stored as text),
-
-4.  checks you run before analysis.
-
-This bridges the gap between raw files and analysis claims.
+A good intake note makes those assumptions visible. It records where the dataset came from and when you got it, what each column means (its schema), the quirks you’ve found (numbers stored as text, say), and the checks you run before any analysis. That note is the bridge between a raw file and the claims you make from it. [sec-tabular-data](#sec-tabular-data) shows how to turn those checks into code, and [sec-project-management](#sec-project-management) shows how to write the column meanings up as a data dictionary.
 
 ### Writing troubleshooting notes
 
-Troubleshooting notes become valuable when they are specific. Compare:
+Troubleshooting notes are only useful when they’re specific. Compare these two notes about the same problem.
 
 ##### Weak.
 
@@ -512,9 +387,9 @@ Troubleshooting notes become valuable when they are specific. Compare:
 
 ##### Better.
 
-“If `conda activate` fails with ‘command not found,’ confirm your shell initialization includes conda. On macOS, check your `.zshrc` and restart the terminal. If you installed Anaconda/Miniconda after opening the terminal, the current session may not have the PATH update.”
+“If `conda activate` fails with ‘Your shell has not been properly configured to use conda activate’, your shell hasn’t been set up for conda yet. Run `conda init zsh` (or `conda init bash`, to match your shell), then close the terminal and open a new one. If instead the terminal says `conda: command not found`, conda isn’t on your PATH: if you installed Anaconda or Miniconda after opening this terminal, a new terminal window usually fixes it.”
 
-The “better” version specifies symptoms, a hypothesis, and a verification step.
+The better version names the exact symptom, gives a likely cause, and says what to try next and how to tell whether it worked. Someone searching for that error message will find it, and someone following it won’t need to message you.
 
 ## 3.13 Templates
 
@@ -583,45 +458,37 @@ The “better” version specifies symptoms, a hypothesis, and a verification st
 
 ## 3.14 Exercises
 
-1.  Pick a tool you used this week (Git, conda, pandas, Jupyter). Identify one example each of reference docs, a tutorial, and a how-to guide. Write one sentence describing what question each one answers best.
-
-2.  Write a one-page README for a class assignment repository. Swap with a classmate and attempt to run each other’s project using only the README. Record what was missing and revise.
-
-3.  Take a confusing error you encountered and create a “troubleshooting note” that includes: symptom, likely cause, verification step, fix.
-
-4.  Rewrite a set of rough notes into a how-to guide using Template A. Include a verification step that a reader can perform.
-
-5.  Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.
-
+1.  Pick a tool you used this week (Git, conda, pandas, Jupyter). Find one example each of reference docs, a tutorial, and a how-to guide for it, and write one sentence on the question each one answers best.
+2.  Write a one-page README for a class assignment repository. Swap with a classmate and try to run each other’s project using only the README. Write down what was missing, then revise.
+3.  Take a confusing error you’ve run into and write a troubleshooting note for it that includes the symptom, the likely cause, a way to check, and the fix.
+4.  Rewrite a set of rough notes into a how-to guide using Template A. Include a verification step a reader can actually perform.
+5.  Find one assumption in your current project that isn’t written down (a path, a version, a parameter, a quirk of the data). Add it to the README with a sentence explaining why.
 6.  Draw your project’s pipeline as a Mermaid flowchart in its README, with an `accDescr:` line, and check that GitHub draws it. If the project uses more than one table, add an ER diagram of how they join.
+7.  Run `python -c "import pandas; print(pandas.__version__)"`, then find the documentation for exactly that version of pandas using the site’s version switcher. What’s the first thing on the release notes page that could have affected you?
 
 ## 3.15 One-page checklist
 
-- I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.
-
-- I can route from secondary sources to primary sources.
-
-- When reading docs, I extract inputs, outputs, defaults, constraints, and failure modes.
-
-- I record version/environment details when behavior is surprising.
-
-- My README contains purpose, setup, run instructions, and verification.
-
-- I update docs when code changes affect usage.
-
+- I can tell whether I need reference docs, a tutorial, a how-to guide, or an explanation.
+- I use secondary sources to find primary sources, not to replace them.
+- When reading docs, I pull out the inputs, outputs, defaults, constraints, and failure modes.
+- I check local help (`--help`, `man`, `help()`, `?`) before searching the web.
+- I record version and environment details when behavior surprises me.
+- I read the docs for the version I actually have installed.
+- My README covers purpose, setup, how to run, expected outputs, structure, and data.
+- Commands in my docs are copyable and say where to run them.
+- I update the docs in the same pull request as the change that affects them.
 - I keep a short decision log for consequential choices.
-
 - Where structure is hard to follow in prose, I add a diagram as text (Mermaid) with one idea, labeled arrows, and a description.
-
-- If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.
+- If I use AI tools, I check their output against official docs and my own experiments, and I never paste secrets.
 
 > **NOTE:**
 >
-> - Daniele Procida, [The Diátaxis framework](https://diataxis.fr/) — the four-quadrant model for tutorials, how-tos, reference, and explanation; the clearest way to think about documentation genres.
-> - Write the Docs, [Beginner’s guide to writing documentation](https://www.writethedocs.org/guide/) — a community-maintained introduction to technical writing for software projects.
+> - Daniele Procida, [The Diátaxis framework](https://diataxis.fr/) — the four-part model of tutorials, how-to guides, reference, and explanation; the clearest way to think about documentation genres.
+> - Write the Docs, [Beginner’s guide to writing documentation](https://www.writethedocs.org/guide/) — a friendly, community-maintained introduction to writing docs for software projects.
 > - [Make a README](https://www.makeareadme.com/) — a short guide with a template you can copy into any project today.
-> - The Good Docs Project, [Templates](https://www.thegooddocsproject.dev/template) — community-developed, open-licensed templates for the most common documentation genres (how-tos, references, release notes, tutorials).
-> - Microsoft, [Writing Style Guide: Bias-free communication](https://learn.microsoft.com/en-us/style-guide/bias-free-communication) — a working reference for inclusive language in technical writing.
+> - The Good Docs Project, [Templates](https://www.thegooddocsproject.dev/template) — community-developed, openly licensed templates for the most common documentation genres (how-tos, references, release notes, tutorials).
+> - Microsoft, [Writing Style Guide: Bias-free communication](https://learn.microsoft.com/en-us/style-guide/bias-free-communication) — a practical reference for inclusive language in technical writing.
+> - Google, [Technical Writing courses](https://developers.google.com/tech-writing) — free, short, self-paced courses on writing clear technical prose, aimed at people who write docs as part of another job.
 > - Mike Pope, [Five principles for writing good technical documentation](https://www.mkpope.com/post/five-principles-for-writing-good-technical-documentation/) — practitioner-focused, durable advice on audience, tone, and maintenance.
 
 Chacon, Scott, and Ben Straub. 2014. *Pro Git*. 2nd ed. Apress. <https://doi.org/10.1007/978-1-4842-0076-6>.

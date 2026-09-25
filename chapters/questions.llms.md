@@ -10,164 +10,151 @@
 
 ![Awesome-Awkward Penguin Meme: Work Up The Nerve To Ask For Help, Question Closed For Lack Of A MRE.](../graphics/memes/questions.png)
 
-Computing education often assumes that students will “figure it out” when something breaks: how to describe an error, how to ask for help, and how to turn a confusing symptom into an answerable question. In practice, asking good technical questions is a core professional skill. It determines how quickly you can diagnose problems, how effectively you can use documentation, and how well you can collaborate with classmates, teaching assistants, colleagues, and online communities.
+You’ve been stuck on an error for an hour. You finally give in and post in the course forum: “My code doesn’t work, can anyone help?” Two hours later someone replies, “What error are you getting?” You paste a screenshot. The next reply asks to see the code. Then which version of pandas you have. By the time the conversation gets anywhere, a whole day has gone by, and the fix turns out to be one line.
 
-This chapter teaches a repeatable method for asking questions that are specific, reproducible, and respectful of other people’s time. It also explains why technical questions fail, how to make progress when you are stuck, and how to document your own work so that future you (or your teammates) can understand what happened.
+If that has happened to you, you’re in good company. Nobody sits you down and teaches you how to ask for help with code; it’s part of the [hidden curriculum](https://en.wikipedia.org/wiki/Hidden_curriculum) that everyone is expected to pick up somehow. The people who seem to get fast answers aren’t smarter or better connected. They’ve learned to hand the helper what the helper needs up front, so the conversation starts at the answer instead of at twenty questions. And that skill is learnable in an afternoon.
 
-## Learning objectives
+This chapter is that afternoon: a repeatable way to turn “it doesn’t work” into a question someone can answer, how to shrink your problem into a small example anyone can run, where to ask and what each place expects, and what to do once you have your answer. It doesn’t cover the full craft of hunting down bugs (that’s [sec-debugging](#sec-debugging)) or reading error messages line by line ([sec-tracebacks](#sec-tracebacks)), and it touches AI assistants only as far as they help you ask ([sec-ai-llm](#sec-ai-llm) has the rest).
 
-By the end of this chapter, you should be able to:
+## Why read this chapter
 
-1.  Convert a vague problem statement (“it doesn’t work”) into a specific, testable question.
-
-2.  Produce a minimal, reproducible example (MRE) that someone else can run.
-
-3.  Provide the right context: environment, inputs, expected output, actual output, and what you tried.
-
-4.  Use a structured workflow to debug before you ask, so your question reflects real investigation.
-
-5.  Choose an appropriate help channel (instructor, teammate, issue tracker, forum) and follow its norms.
-
-6.  Close the loop by summarizing the solution for others and for your future self.
+- You posted “it doesn’t work, any ideas?” in the class Discord, and the only reply was “what’s the error?”
+- Your first Stack Overflow question was closed within the hour for needing “details or clarity,” and you have no idea which details they wanted.
+- You spent two hours stuck before going to office hours, where the TA spotted the problem in thirty seconds, and you’d like to know when to stop grinding and ask.
+- Someone told you to “post an MRE,” and you’re not sure how to shrink a 60-cell notebook into anything minimal.
+- A classmate’s fix worked perfectly on their laptop and did nothing on yours, and it turned out you were running a different Python.
+- You asked how to write a regex and got a regex, when one line of pandas would have done the whole job.
+- You want to use an AI assistant to help you get unstuck without pasting your API key or someone’s private data into a chat window.
 
 ## Running theme: make your question runnable
 
-The highest-impact upgrade you can make to a technical question is to ensure that another person could reproduce the issue (or at least understand exactly what you saw) without guessing. Good questions are not longer; they are *more structured*. They reduce uncertainty.
+The best thing you can do for a technical question is make it possible for someone else to see exactly what you saw, without guessing. Good questions aren’t longer; they’re better organized, and every line removes a guess.
 
 ## 2.1 A mental model of technical help
 
-When you ask for help, you are not asking someone to read your mind. You are inviting them to participate in a small investigation. In that investigation, three things matter:
+When you ask for help, you’re not asking someone to read your mind. You’re inviting them into a small investigation, and like any investigation it runs on three things. There’s **the claim**: what you expected to happen and what you saw instead. There’s **the evidence**: the smallest set of steps, code, and output that shows the claim is true. And there’s **the context**: the computer, versions, and constraints that decide which fixes will actually work for you.
 
-1.  **The claim**: what you expected and what you observed.
-
-2.  **The evidence**: the smallest set of steps and artifacts that support the claim.
-
-3.  **The context**: the environment and constraints that shape what counts as a valid solution.
-
-If any of these are missing, helpers must fill the gaps by asking follow-up questions. That is normal, but it slows everything down. Your goal is not to impress people with technical vocabulary. Your goal is to supply the claim, evidence, and context so the investigation can start immediately.
+Leave any of those out, and your helper has to ask for it before they can start. That’s normal, and nobody will think less of you for it, but every round trip costs you hours when people answer in between classes. You don’t need to impress anyone with vocabulary. You just need to supply the claim, the evidence, and the context, so the investigation can start with the first reply.
 
 ### Why “help me” fails
 
-Most unproductive questions fail in one of a few characteristic ways. The most common is an **ambiguous symptom** — “it doesn’t work” without ever saying what “work” was supposed to look like. Closely related is **missing reproduction steps**: there is no concrete sequence of actions that another person could follow to make the same thing happen. A third is **no stated expectation**, where the helper cannot tell whether the program is misbehaving or the asker simply expected the wrong thing. A fourth is **no evidence at all** — no error message, no output, no screenshot, no code snippet — leaving the helper to guess. The fifth is the opposite problem: **too much irrelevant detail**, like a full notebook dump with no marker for where the failure happens, which buries the relevant lines under hundreds of unrelated ones. And the sixth is using **the wrong channel**, like asking for a half-hour debugging session in a chat venue designed for quick yes/no questions.
+Most questions that go nowhere fail in one of a handful of predictable ways, and it helps to recognize them in your own drafts.
 
-The good news is that each of these failure modes has a direct, mechanical fix, and the rest of this chapter is about applying them.
+The most common is an **ambiguous symptom**: “it doesn’t work,” without ever saying what working would have looked like. Close behind it are **missing reproduction steps**, where there’s no sequence of actions another person could follow to make the same thing happen on their machine. Then there’s **no stated expectation**: the helper can’t tell whether the program is misbehaving or whether you expected the wrong thing. Some questions have **no evidence at all** (no error message, no output, no code) and leave the helper to guess. Others have the opposite problem, **too much irrelevant detail**, like a whole notebook pasted in with no hint of where it fails, so the three lines that matter are buried under three hundred that don’t. And some land in **the wrong channel**, like a request for a half-hour debugging session in a chat meant for quick questions.
+
+The good news is that every one of these has a direct, mechanical fix, and the rest of this chapter is about applying them.
 
 ## 2.2 Before you ask: a short self-debugging loop
 
-A productive question usually comes after 5–15 minutes of structured investigation. You are not required to solve the problem alone, but you should make a good-faith attempt to understand it. [sec-debugging](#sec-debugging) develops this investigation mindset into a full systematic workflow; the triage loop here is your minimum viable version.
+Asking for help early is fine. Asking before you’ve looked at the problem at all is what gets people a cool reception, because the first three replies will be things you could have checked yourself. Five to fifteen minutes of structured poking around usually does two things: it sometimes solves the problem outright, and when it doesn’t, it gives you the raw material of a good question. [sec-debugging](#sec-debugging) turns this into a full method; the loop below is the minimum version.
 
 ### The 10-minute triage
 
-Use this checklist before you ask for help:
+Run through this list before you ask. It’s a checklist on purpose: you’ll use it when you’re frustrated, and that’s not the moment for paragraphs.
 
-1.  **Re-run once.** Many issues are transient or caused by stale state.
+1.  **Re-run once.** Some problems come from stale state, like a notebook whose cells ran out of order, and vanish on a clean run.
 
-2.  **Reduce scope.** Can you reproduce the issue in a smaller script or notebook cell?
+2.  **Reduce scope.** Can you make the same error happen in a smaller script or a single notebook cell?
 
-3.  **Read the error.** Copy it exactly; do not paraphrase it.
+3.  **Read the error.** All of it, and copy it exactly rather than paraphrasing it.
 
-4.  **Locate the first relevant line.** Stack traces often include many internal frames.
+4.  **Find the first line that’s yours.** A [stack trace](https://en.wikipedia.org/wiki/Stack_trace) is often full of lines from inside the library; the line from your own file is usually where to start looking ([sec-tracebacks](#sec-tracebacks) walks through this).
 
-5.  **Check recent changes.** What did you change last?
+5.  **Check recent changes.** What did you change last? It worked yesterday, so what’s different today?
 
-6.  **Search with precision.** Use the exact error message and library name.
+6.  **Search with precision.** Use the error message and the library name, not a description of your feelings about them.
 
-7.  **Consult primary docs.** Look up the function you are using.
+7.  **Consult the official docs.** Look up the function you’re calling and check what it expects.
 
-8.  **Try one hypothesis.** Change one thing and observe the result.
+8.  **Try one hypothesis.** Change one thing, run it again, and see what happens.
 
-9.  **Record what you tried.** This becomes part of the question.
+9.  **Write down what you tried.** This becomes part of your question.
 
-10. **Stop when you are looping.** If you are repeating the same attempt, ask.
+10. **Stop when you’re looping.** If you’re trying the same thing for the third time, it’s time to ask.
 
-This loop matters because it generates valuable information: what triggers the bug, what does not, and what you have ruled out. That is the raw material of a good question.
+That last step matters as much as the others. Grinding for another hour on something a TA could spot in a minute isn’t virtue; it’s an hour you don’t get back. The loop’s real job is to give you the facts a helper needs: what triggers the problem, what doesn’t, and what you’ve already ruled out.
 
 ### What counts as “what I tried”
 
-“What I tried” is one of the most useful fields in any technical question, but only if it contains *concrete actions paired with their outcomes*, not vague gestures at effort. A useful entry looks like “I verified the file exists with `ls data/input.csv` and it is in the correct folder,” or “I printed `df.dtypes` and confirmed that `date` is `str`, not `datetime64`,” or “I tried [`pip install package==1.2.3`](https://pip.pypa.io/en/stable/cli/pip_install/) and the import error changed from `ModuleNotFoundError` to `ImportError: cannot import name 'foo'`.” Each of these tells the helper exactly what state the world is in and what hypotheses have already been ruled out.
+“What I tried” is one of the most useful parts of any question, but only when it’s made of *concrete actions and what happened*. “I checked that the file exists with `ls data/input.csv`, and it’s there.” “I printed `df.dtypes` and `date` is `str`, not `datetime64`.” “I ran [`pip install package==1.2.3`](https://pip.pypa.io/en/stable/cli/pip_install/) and the error changed from `ModuleNotFoundError` to `ImportError: cannot import name 'foo'`.” Each of those tells your helper something about the state of your computer and crosses off a possibility.
 
-The contrast is with vague statements like “I tried a bunch of things” or “I looked online but nothing worked.” Those carry no information — your helper has no idea what is still worth checking and will end up suggesting the same things you have already tried. If you cannot remember what you tried, that is a hint that you should be writing it down as you go.
+Compare “I tried a bunch of things” or “I looked online but nothing worked.” Those feel like proof of effort, but they carry no information, so your helper will cheerfully suggest the exact things you already tried. If you can’t remember what you tried, that’s the sign to start writing it down as you go, even in a scratch text file.
 
-## 2.3 The anatomy of a high-quality technical question
+## 2.3 The anatomy of a good technical question
 
-A strong technical question can often be expressed using five fields:
+Nearly every strong technical question, whatever it’s about, fills in the same five fields:
 
-1.  **Goal**: what you are trying to do.
+1.  **Goal**: what you’re trying to do.
 
 2.  **Expected**: what you expected to happen.
 
 3.  **Actual**: what actually happened.
 
-4.  **Reproduction**: the minimal steps/code/data that reproduce the issue.
+4.  **Reproduction**: the smallest steps, code, and data that make it happen.
 
-5.  **Context**: environment details and constraints.
+5.  **Context**: your computer, your versions, and any constraints.
 
-This structure works across domains: Python errors, spreadsheet formulas, Git conflicts, file path confusion, and even conceptual misunderstandings.
+That structure works for Python errors, spreadsheet formulas, Git conflicts, missing files, and even “I don’t understand this concept.” The subsections below take the fields one at a time.
 
 ### Goal
 
-State your goal in a single sentence built around a verb and an object: “Load a CSV into [pandas](https://pandas.pydata.org/docs/) and parse the date column,” “Connect to the remote server via [SSH](https://www.openssh.com/manual.html) and run [JupyterLab](https://jupyterlab.readthedocs.io/en/latest/),” “Merge my feature branch into `main` without losing changes.” Each of these names a concrete outcome the helper can recognize as success.
+State your goal in one sentence built around a verb and an object: “Load a CSV into [pandas](https://pandas.pydata.org/docs/) and parse the date column.” “Connect to the lab server over [SSH](https://www.openssh.com/manual.html) and run [JupyterLab](https://jupyterlab.readthedocs.io/en/latest/).” “Merge my feature branch into `main` without losing my changes.” Each names an outcome your helper can recognize as success.
 
-This field matters more than people expect, because sometimes the most useful answer is not “fix this error” but “there is an easier way to achieve what you actually want.” If the helper only sees the symptom — say, a regex that does not match — they may help you debug the regex when the real answer is that you should not be using a regex at all (see [sec-regex](#sec-regex)). Stating the goal explicitly keeps that door open.
+This field matters more than people expect, because sometimes the best answer isn’t “here’s how to fix that error” but “there’s a much easier way to do what you actually want.” If your helper only sees the symptom, say a regex that won’t match, they’ll help you fix the regex, when the real answer might be that a regex is the wrong tool (see [sec-regex](#sec-regex), and the XY problem below). Saying the goal keeps that door open.
 
 ### Expected vs. actual
 
-Always distinguish between expected and actual behavior. This reduces confusion and helps others evaluate whether you are interpreting the output correctly.
+Always say both what you expected and what you got. It sounds obvious, but it’s the part people skip most, and without it your helper can’t tell a bug from a misunderstanding:
 
-> Expected: a dataframe with 10 columns and a datetime index.
+> Expected: the `date` column converted to dates, so I can group by month.
 >
-> Actual: `ValueError: time data ’2026/13/01’ does not match format %Y-%m-%d`.
+> Actual: `ValueError: time data "2026/13/01" doesn't match format "%Y/%m/%d"`
 
-Note that the expected behavior is not a guess about what the library does; it is the behavior you intend for your program.
+Notice that “expected” isn’t a guess about what the library does; it’s what *you* intended your program to do. And notice that the actual error, pasted exactly, already holds a clue. [`pd.to_datetime`](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) guessed a year/month/day format from the first row, then hit a row claiming month 13. Either that row is a typo, or the file writes some dates as year/day/month. A helper can see that in seconds, but only if you paste the real message.
 
 ### Reproduction
 
-If you can reproduce the problem reliably on your machine, you can almost always solve it; if someone else can reproduce it reliably on theirs, they can help you in minutes. A complete reproduction has four parts: the exact command(s) you ran (including the directory you were in when you ran them), the exact code snippet that triggers the issue, the input data — either the real file or a small synthetic version that has the same structure — and the output or error as plain text rather than a screenshot.
+Here’s the heart of it: if you can make the problem happen reliably, you can almost always solve it, and if someone else can make it happen on *their* computer, they can usually help you in minutes. A complete reproduction has four parts. There’s the exact command you ran, including which folder you were in. There’s the code that triggers the problem. There’s the input data, either the real file or a small made-up version with the same structure. And there’s the output or [traceback](../chapters/appendix-glossary.llms.md#term-traceback), pasted as text rather than a screenshot:
 
 ``` text
 $ pwd
 /Users/alex/projects/q3-analysis
 $ python load.py
 Traceback (most recent call last):
-  File "load.py", line 4, in <module>
+  File "/Users/alex/projects/q3-analysis/load.py", line 4, in <module>
     df["date"] = pd.to_datetime(df["date"])
-  File ".../pandas/core/tools/datetimes.py", line 1075, in to_datetime
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ...
+ValueError: time data "2026/13/01" doesn't match format "%Y/%m/%d". You might want to try:
+    - passing `format` if your strings have a consistent format;
     ...
-ValueError: time data '2026/13/01' does not match format
 ```
 
-That kind of block — directory, command, output, all as text — is what makes a question reproducible.
+The `...` lines mark where the book trimmed pandas’ internal frames to save space; in a real question, paste the whole thing. That kind of block (folder, command, and output, all as text) is what makes a question reproducible.
 
 ### Context
 
-“Context” is the set of details that affect whether a proposed solution will actually work on your machine. The fields that come up most often are your operating system (Windows, macOS, or Linux), your [Python](https://docs.python.org/3/) version and the environment you are using ([conda](https://docs.conda.io/en/latest/), [venv](https://docs.python.org/3/library/venv.html), system Python), the versions of the packages involved, any hardware constraints that matter (memory, GPU availability), whether you have administrator access on the machine, and whether the work is local or running on a remote server. You do not need to provide every field every time; provide enough to rule out the major classes of problem. For Python errors, the four lines below answer most of the questions a helper would otherwise have to ask:
+Context is whatever decides whether a suggested fix will actually work on *your* machine. The details that come up most are your operating system (Windows, macOS, or Linux); your [Python](https://docs.python.org/3/) version and the environment you’re working in ([conda](https://docs.conda.io/en/latest/), [venv](https://docs.python.org/3/library/venv.html), or the system Python); the versions of the packages involved; any hardware limits that matter, like memory or a GPU; whether you have administrator rights on the computer; and whether you’re working locally or on a remote server.
 
-``` bash
-python --version
-python -c "import sys; print(sys.executable)"
-pip show pandas | head -2
-uname -a   # macOS/Linux; on Windows use 'systeminfo' or 'ver'
-```
+You don’t need every one of those every time. Give enough to rule out the big categories of problem, and your helper will ask if they need more. For Python problems, a few short commands answer most of the questions a helper would otherwise ask, and “How much context is enough?” below shows them.
 
-Paste that block once at the bottom of your question and the helper has nearly everything they need.
+## 2.4 Minimal reproducible examples (MREs)
 
-## 2.4 Minimal Reproducible Examples (MREs)
+A [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example), or MRE, is the most powerful tool you have for getting help. It’s a tiny, self-contained program that shows your problem and nothing else. You’ll also see it called a “minimal working example” or a “reprex.”
 
-A minimal reproducible example is the most powerful tool you have for asking questions. It is also a tool for debugging yourself.
+If “post an MRE” sounds like homework somebody assigns to get rid of you, here’s the secret: building one is also one of the best debugging techniques there is. Stripping a problem down to ten lines forces you to understand which parts matter, and a surprising number of times the bug reveals itself halfway through. It’s the same effect as [rubber duck debugging](https://en.wikipedia.org/wiki/Rubber_duck_debugging), where explaining your code line by line to a toy duck on your desk makes the mistake jump out at you. Many questions never get posted, because the MRE answered them.
 
 ### What “minimal” means
 
-“Minimal” does not mean tiny at all costs; it means “no irrelevant parts.” An MRE includes only the elements required to trigger the issue.
-
-For example, if your notebook has 50 cells, but the error happens in one function call, your MRE might be a 10-line script that imports the same library, constructs a small input, and calls that function.
+“Minimal” doesn’t mean tiny at all costs; it means *nothing irrelevant*. An MRE includes only what’s needed to trigger the problem. If your notebook has 50 cells but the error happens in one function call, your MRE might be a ten-line script that imports the same library, builds a small input, and calls that function.
 
 ### Three ways to build an MRE
 
-The first way is **deletion**: start with your real code and delete pieces until the error goes away. Each deletion that *still* fails proves that the code you removed was not relevant. The last version that still produces the failure is your MRE. This is fast when the failing code is short and the bug is concentrated in a small region.
+**The first way is deletion.** Start with your real code and delete pieces, running it after each cut. Every deletion that *still* fails proves the part you removed didn’t matter. The last version that still fails is your MRE. This is fast when the failing code is short.
 
-The second way is **construction**: start from a blank script and add pieces back until the error appears. This is slower than deletion, but it has the advantage of clarifying which line is the actual trigger — by definition, it is the one whose addition flipped the script from “works” to “broken.” Use construction when deletion is hard (because the failing code is very large) or when you want a rock-solid story about cause and effect to put in a question.
+**The second way is construction.** Start from a blank script and add pieces back until the error appears. It’s slower, but it tells you exactly which line is the trigger: the one whose addition flipped the script from working to broken. Use it when your code is too big to delete your way through, or when you want an airtight story about cause and effect.
 
-The third way is **substitution**: replace your real data with synthetic or sample data that has the same structure. This is essential whenever the real data is large, private, or messy enough that you cannot share it. Pandas is happy to read from `io.StringIO`, so a few inline rows of CSV are usually enough:
+**The third way is substitution.** Replace your real data with a few rows of made-up data that have the same structure. This one is essential when the real data is huge, private, or messy enough that you can’t share it. pandas will happily read a CSV from a string wrapped in [`io.StringIO`](https://docs.python.org/3/library/io.html#io.StringIO), so a few inline rows are usually enough:
 
 ``` python
 import pandas as pd
@@ -181,51 +168,57 @@ df = pd.read_csv(StringIO(raw))
 df["joined"] = pd.to_datetime(df["joined"])   # reproduces the ValueError
 ```
 
-Most real MREs use a combination of all three: you delete the irrelevant code, substitute synthetic data for the real input, and end up with a 15-line script anyone can run.
+Anyone with pandas installed can paste that and see the same `ValueError` you did. Most real MREs use all three moves together: you delete the code that doesn’t matter, swap in made-up data, and end up with a 15-line script that runs anywhere.
 
 ### A template for MREs
 
-The following template is appropriate for many Python questions:
+This shape works for most Python questions. Here it’s filled in for the date problem above; swap in the library and the call you’re asking about:
 
-    # mre.py
-    import sys
-    import platform
-    import package  # replace
+``` python
+# mre.py
+import sys
+import platform
+import pandas as pd  # replace with the library you're asking about
 
-    print("Python:", sys.version)
-    print("Platform:", platform.platform())
-    print("Package:", package.__version__)
+print("Python:", sys.version)
+print("Platform:", platform.platform())
+print("pandas:", pd.__version__)
 
-    # minimal input
-    x = ...
+# minimal input
+x = pd.Series(["2026/01/15", "2026/13/01"])
 
-    # reproduce
-    result = package.some_function(x)
-    print(result)
+# reproduce
+result = pd.to_datetime(x)
+print(result)
+```
 
-When you share an MRE, you can delete the environment printouts if they are irrelevant, but they are valuable when version mismatches are common.
+The three `print` lines at the top report your Python version, your operating system (via Python’s `platform` module), and the library’s version. Delete them when versions clearly don’t matter, but keep them when they might; version mismatches are behind a lot of “works for me” mysteries.
 
 ## 2.5 How much context is enough?
 
-Students often oscillate between too little context and too much. Use the following rule:
+Most students swing between too little context and far too much. When you can’t decide, use this rule:
 
 > **Include anything a helper would need to run the same steps and see the same output.**
 
-If you are not sure, include the context once, and then trim based on feedback.
+If you’re not sure whether something matters, include it once and let the replies tell you what to trim.
 
 ### Environment context: the “three lines”
 
-For Python projects, three short commands resolve a remarkable number of mysteries on their own. The first is `python --version`, which tells you which language version is running. The second is `which python` on macOS or Linux (or `where python` on Windows), which tells you the file path of the interpreter — and therefore which environment it lives in. The third is `pip show <package>` or `conda list <package>`, which tells you whether the package you think is installed actually is, and at what version. Together these three answer the most common version of “why isn’t this working”: you are using a different Python than you think.
+Here’s a confusion that eats hours: you install a package, the install says it succeeded, and `import` still says `ModuleNotFoundError`. Almost every time, it’s because your computer has more than one Python, and the one running your code isn’t the one `pip` installed into. Three short answers settle it: which version of Python is running, *where* that Python lives (which tells you which environment it belongs to), and which version of the package that Python can see.
 
 ``` bash
 python --version
-which python                # macOS/Linux  (Windows: where python)
-pip show pandas | head -3
+python -c "import sys; print(sys.executable)"
+python -c "import pandas; print(pandas.__version__)"
 ```
+
+The middle line prints the full path of the interpreter ([`sys.executable`](https://docs.python.org/3/library/sys.html#sys.executable)): if it points somewhere you didn’t expect, like the system Python instead of your project’s environment, you’ve probably found your problem (see [sec-virtual-environments](#sec-virtual-environments)). On macOS or Linux, `which python` gives the same answer. On Windows, `where python` works in Command Prompt, but in PowerShell `where` means something else entirely, so use [`Get-Command python`](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-command) there, or just stick with the `sys.executable` line, which works everywhere. If you use conda, `conda list pandas` shows the installed version too. (`pip show pandas` also reports a version, but for some packages, pandas included, it prints the package’s entire license along with it.) And if a Mac tells you `python: command not found`, try `python3`; recent versions of macOS don’t come with a plain `python` command.
+
+Add one more line if the operating system might matter, `python -c "import platform; print(platform.platform())"`, and paste all four outputs at the bottom of your question. Your helper now has nearly everything they’d otherwise have to ask for.
 
 ### File system context
 
-When your issue involves missing files, always paste three things: your current working directory, the relative or absolute path you used in the code, and a directory listing showing whether the file actually exists where you said it would. A surprising number of “file not found” errors are not really errors at all — they are “you are in the wrong folder.”
+“File not found” might be the single most common error students ask about, and it’s rarely what it sounds like. The file usually exists. Python is just looking for it somewhere else, because relative paths are resolved from your [working directory](https://en.wikipedia.org/wiki/Working_directory), the folder your program was started from, and that’s often not the folder you think. So when an issue involves a missing file, paste three things: the folder you’re in, the [path](../chapters/appendix-glossary.llms.md#term-path) your code uses, and a listing that shows where the file really is.
 
 ``` bash
 $ pwd
@@ -234,194 +227,202 @@ $ ls ../data | head
 input.csv
 metadata.json
 $ python -c "import pandas; pandas.read_csv('data/input.csv')"
+Traceback (most recent call last):
+  ...
 FileNotFoundError: [Errno 2] No such file or directory: 'data/input.csv'
 ```
 
-Paste exactly that, and the helper can immediately point at the cause: you are inside `notebooks/`, the file is in `../data/`, the relative path needs the `..` prefix or you need to `cd` up one level first.
+Paste exactly that, and the answer is almost immediate: you’re inside `notebooks/`, the file is in `../data/`, so the path needs the `../` in front, or you need to `cd` up one level first. [sec-filesystem](#sec-filesystem) explains paths and working directories properly.
 
 ## 2.6 Choosing the right channel
 
-Different venues have different expectations.
+Where you ask shapes what a good question looks like. A quick message to a teammate, a question at office hours, and a public post read by strangers all have different norms, and matching the norm is half of getting a useful answer.
 
-### In-class and office hours
+### In class and office hours
 
-When you are asking an instructor or TA face to face, the bar is lower than for an online forum, but the same preparation pays off. Bring your MRE and the literal text of the error, explain what you have already tried (so the instructor does not waste the first ten minutes suggesting things you already ruled out), and be ready to reproduce the problem live on your laptop. It also helps to remember that office hours are not just for bugs — they are some of the best venues for clarifying a concept you only half-understand or asking whether your overall workflow is sensible. Bringing an open-ended question is fine, as long as it is specific enough to have a useful answer.
+Face to face with an instructor or TA, the bar is lower than on a public forum, but the same preparation pays off. Bring your MRE and the exact text of the error, say what you’ve already tried (so the first ten minutes aren’t spent suggesting it), and be ready to reproduce the problem live on your laptop. And remember that office hours aren’t just for bugs. They’re one of the best places to untangle a concept you only half understand, or to ask whether your whole approach makes sense. An open-ended question is welcome, as long as it’s specific enough to have a useful answer.
 
 ### Teammates
 
-Teammates have the same time constraints you do. Respect that by writing a concise problem statement *before* you ping them, by making it easy to help asynchronously — share a link to the failing line, paste the error, summarize what you tried — and by *not* dumping a full repository on them with no guidance about where to look. The smaller the area of the codebase you ask them to load into their head, the faster they can help.
+Your teammates are as busy as you are, so make it easy for them to help. Write a short problem statement *before* you ping them. Make it possible to help without a meeting: link to the failing line, paste the error, and summarize what you tried. And don’t drop a whole repository on them with no hint about where to look. The smaller the piece of code you ask them to hold in their head, the faster they can help.
 
 ### Issue trackers
 
-If your course (or your team) uses [GitHub Issues](https://docs.github.com/en/issues) or a similar tracker, treat an issue as a formal question with an audit trail. Future readers — including future you — will appreciate the structure. The first thing to get right is the title: it should be specific enough to identify the problem at a glance, like `pd.read_csv fails when sep=";" with UTF-8 BOM`, not vague enough to apply to a hundred other situations like `read_csv broken`. Issues are the right channel when the bug affects more than one person, when the answer should be preserved for later (rather than evaporating in chat), or when the resolution is going to require follow-up work that someone needs to track.
+If your course or team uses [GitHub Issues](https://docs.github.com/en/issues) or another [bug tracker](https://en.wikipedia.org/wiki/Bug_tracking_system), treat an issue as a question that leaves a written record. Future readers, including future you, will be glad of the structure. Start with the title: it should identify the problem at a glance, like `pd.read_csv loads a semicolon-separated file as one column`, not something that could describe a hundred problems, like `read_csv broken`. Paste code and errors as code blocks (three backticks on the lines before and after) so they keep their formatting. An issue is the right place when a bug affects more than one person, when the answer should be kept instead of disappearing into a chat scroll, or when fixing it will take follow-up work someone needs to track.
 
 ### Public forums
 
-Public forums — [Stack Overflow](https://stackoverflow.com/help/how-to-ask), [GitHub Discussions](https://docs.github.com/en/discussions), your course Discord — can be enormously helpful, but they have norms you should respect. The expectation is that you will show evidence of your own investigation (so volunteers do not have to triage hundreds of “does anyone know” posts), include a real MRE rather than a vague description, give the question a clear and specific title, and never share sensitive data like API keys, real student records, or anything subject to FERPA / HIPAA / GDPR. If you are a beginner, do not worry about perfect terminology — most communities are forgiving about that. Do worry about reproducibility and clarity, because those are the things that determine whether your question gets answered or scrolls into oblivion.
+Public forums like Stack Overflow, [GitHub Discussions](https://docs.github.com/en/discussions), or your course Discord can be enormously helpful, and they have norms worth respecting. Show that you’ve investigated, so volunteers aren’t sorting through hundreds of “does anyone know” posts. Include a real MRE, not a description of one. Give the post a clear, specific title. And never share sensitive data: API keys and passwords (see [sec-secrets](#sec-secrets)), real student records, or anything covered by privacy law such as [FERPA](https://en.wikipedia.org/wiki/Family_Educational_Rights_and_Privacy_Act), [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act), or the [GDPR](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation). If you’re a beginner, don’t worry about using the perfect terminology; most communities forgive that easily. Do worry about reproducibility and clarity, because those decide whether your question gets answered or scrolls away unanswered.
 
 ## 2.7 Searching and asking on Stack Overflow
 
-[Stack Overflow](https://stackoverflow.com/) is the largest catalog of solved technical problems on the internet, and most of the work it can do for you is reading rather than posting. The site’s culture rewards specific answers to specific reproducible questions, which is the same standard the rest of this chapter has been pushing. Two skills are worth developing on top of the general guidance above: searching effectively for an existing answer (so you do not ask a duplicate) and posting a new question that respects the norms of the site enough to actually get answered.
+[Stack Overflow](https://en.wikipedia.org/wiki/Stack_Overflow) is the biggest collection of solved programming problems on the internet, and most of what it can do for you involves reading, not posting. It also has a reputation for being tough on newcomers, and if your first question got a chilly reception, you’re far from the only one. Most of that chill comes from a handful of site norms nobody explains up front. Learn them, and the site becomes much friendlier.
 
 ### Searching first
 
-Most of the time the question you are about to ask has already been answered. The fastest way to find out is to search Stack Overflow with the same precision you would put into a question title. Three habits dominate.
+Most of the time, someone has already asked your question. Finding their post takes the same precision you’d put into a question title, and three habits make the biggest difference.
 
-The first is **search for the literal error message, with the variable parts trimmed**. A traceback like `KeyError: 'date'` should be searched as `pandas KeyError column not found` — the literal `'date'` is specific to your data, but the rest is the universal shape of the bug. If you copy and paste the *whole* error message verbatim, you will usually get zero results because no other person has the same combination of file paths and variable names.
+**Search for the error message, minus the parts that are yours.** A traceback like `KeyError: 'date'` searches better as `pandas KeyError column`: the `'date'` is specific to your data, but the rest is the general shape of the bug. If you paste the *entire* message, file paths and all, you’ll often get nothing, because nobody else has your exact folders and variable names.
 
-The second is **filter by language or library tag**. Stack Overflow tags work like topic filters; adding `[pandas]` or `[python-3.x]` to your query (with the brackets) restricts results to questions tagged with that tool. This is the difference between drowning in JavaScript answers and seeing the three pandas-specific posts that actually apply.
+**Filter by tag.** Tags on Stack Overflow work like topic filters, and the site’s [search syntax](https://stackoverflow.com/help/searching) lets you put a tag in square brackets: `[pandas] to_datetime ValueError` searches only questions tagged `pandas`. That’s the difference between wading through JavaScript answers and finding the three pandas posts that apply. Quotes work too, for an exact phrase.
 
-The third is **read the highest-voted answer, not always the accepted one**. The accepted answer is whatever the original asker marked as correct; that was sometimes years ago and may now be obsolete. The highest-voted answer reflects the cumulative judgment of the community, and on long-lived questions it usually has the most up-to-date solution. Look at the dates: an answer from last year that mentions a deprecation notice is more reliable than the accepted answer from 2014.
+**Read the top-voted answer, not just the accepted one.** The accepted answer is the one the original asker marked as solving their problem, sometimes a decade ago, and it may be out of date now. Votes reflect the judgment of everyone who came after. Check the dates: a recent answer that mentions a deprecation warning is more trustworthy than a 2014 answer written for a version of the library you don’t have.
 
-A useful trick when the on-site search is noisy: search Stack Overflow through Google by prefixing your query with `site:stackoverflow.com`. Google’s ranking sometimes surfaces the right post faster than Stack Overflow’s own search.
+When the site’s own search is noisy, try a web search with [`site:stackoverflow.com`](https://support.google.com/websearch/answer/2466433) in front of your query. Google’s ranking sometimes finds the right post faster.
 
 ### When a search has answered your question
 
-If you find a post that matches your problem, three actions cost almost nothing and improve the commons. **Upvote** the question and the answer that helped — this is how good content rises. **Read the comments under the accepted answer** for caveats that the answer body does not mention. And if your situation is the same as the asker’s but the answer did not quite work, **add a comment** explaining what you tried and what happened, rather than posting a new question that links back to it.
+When you find a post that matches your problem, a few small actions help the next person. **Upvote** the question and the answer that helped; that’s how good content rises (the site asks for [15 reputation points](https://stackoverflow.com/help/privileges/vote-up) before you can vote, which you earn as people upvote your own posts). **Read the comments** under the answer too, since caveats often live there. And if your situation matches but the answer didn’t quite work, a comment saying what you tried and what happened is often better than a brand-new question that links back.
 
 ### When you do need to ask
 
-If the search genuinely turns up nothing — which happens less often than you think — Stack Overflow expects a question that follows the structure this chapter has been building toward. The mechanics of the site add a few specific norms on top of that structure.
+If a real search turns up nothing (which happens less often than you’d think), Stack Overflow expects a question built on the five-field structure from earlier. The site adds a few norms of its own.
 
-**Title.** A Stack Overflow title is a one-line summary of the symptom and the context, optimized for someone scanning a list of search results. `pd.read_csv silently dropping rows when sep=";" and a UTF-8 BOM` is a good title; `Pandas problem` is not. The pattern that works is `<library or tool>: <what is happening> <under what conditions>`. Save the prose for the body.
+**The title** is a one-line summary of the symptom and its context, written for someone scanning a list of search results. `pandas to_datetime: "doesn't match format" error when one row has month 13` is a good title; `Pandas problem` is not. A pattern that works is `<library or tool>: <what's happening> <under what conditions>`. Save the explanation for the body.
 
-**Tags.** Add three to five tags that name the tools your question is about: the language (`[python]`), the library (`[pandas]`), and possibly the version or platform if it matters (`[python-3.11]`, `[macos]`). Tags are how subject-matter experts find your question; missing or wrong tags are a common reason a perfectly good question gets no answers.
+**The tags** name the tools your question is about: the language (`python`), the library (`pandas`), and a version or platform if it matters (`python-3.11`, `macos`). You can use [up to five](https://stackoverflow.com/help/tagging). Tags are how the experts who follow a topic find your question, so missing or wrong tags are a common reason a perfectly good question sits unanswered.
 
-**Body.** Use the five-field structure from earlier in this chapter (Goal, Expected, Actual, Reproduction, Context). Stack Overflow specifically expects an MRE — its [help page on the topic](https://stackoverflow.com/help/minimal-reproducible-example) is worth re-reading every time you post. Format code with the code-block button (or four-space indent), not as inline backticks; format error output the same way. Screenshots of code or error text will be downvoted on sight, because the rest of the community cannot copy or search them.
+**The body** follows the five fields: goal, expected, actual, reproduction, context. Stack Overflow specifically expects an MRE; its guide to writing one is in Further reading, and it’s worth rereading before you post. Format code and error output as code blocks, either with the code button or by putting three backticks on the lines before and after (the site’s [formatting help](https://stackoverflow.com/editing-help) shows both). Never post screenshots of code or errors: the site’s own guide to asking says in capital letters not to, because nobody can copy, run, or search the text in an image.
 
-**Edits and follow-ups.** If a commenter asks for clarification, edit the question to add it; do not bury the answer in a comment thread. If the answer you receive solves the problem, click the checkmark to accept it — this is how Stack Overflow signals “solved” to future searchers. And if you eventually figure out the answer yourself, post it as your own answer to your own question. Self-answers are not only allowed but encouraged; they turn your investigation into a public resource for the next person who hits the same wall.
+**Edits and follow-ups** keep the question useful. If someone asks for clarification in a comment, edit the question to add it, rather than replying in the comments where it will get buried. If an answer solves your problem, [accept it](https://stackoverflow.com/help/someone-answers) by clicking the check mark; that’s how the site tells future searchers the question is solved. And if you figure it out yourself, post your solution as an answer to your own question. The site [explicitly encourages self-answers](https://stackoverflow.com/help/self-answer), and yours turns a frustrating afternoon into a resource for the next person who hits the same wall.
 
 ### What gets a question closed
 
-A small fraction of questions are closed by moderators or community members for one of a few specific reasons, and knowing them in advance prevents your question from being one of them. **“Needs more focus”** means you asked several questions in one post — split them. **“Needs debugging details”** is the duplicate of “no MRE” — provide a runnable example. **“Opinion-based”** means you asked which of several tools is “best” — Stack Overflow’s format requires answers that can be objectively verified, not preferences. **“Duplicate”** means an existing question already covers your case — which is why the search-first habit matters. A closed question stays online but cannot accept new answers, so it is a poor outcome for everyone.
+Having a question closed stings, especially when it’s your first. It helps to know that closing is usually about the question’s format, not about you, and that the common reasons are predictable. Stack Overflow’s [help page on closed questions](https://stackoverflow.com/help/closed-questions) lists them. **“Needs details or clarity”** means readers can’t tell exactly what’s going wrong, often because there’s no runnable example or no clear expected-versus-actual: add them. **“Needs more focus”** means you asked several questions in one post: split them. **“Opinion-based”** means you asked which tool is “best”; the site wants questions whose answers can be checked, not preferences. **“Duplicate”** means an existing question already covers yours, which is exactly why searching first matters. There are also site-specific reasons, like a question that isn’t really about programming.
+
+A closed question stays online but can’t receive new answers. The good news is that closing isn’t final: you can edit a closed question to fix the problem, and an edited question can be reopened.
 
 ### Stack Overflow is a tool, not a teacher
 
-A final caveat. Stack Overflow is excellent for diagnosing a specific bug, but it is not a substitute for reading documentation or building a mental model. If you find yourself searching the same tool repeatedly, the productive next step is usually to spend an hour with the official docs (see [sec-reading-docs](#sec-reading-docs)), not to bookmark another half-dozen Stack Overflow answers. The site is a precision instrument; it works best when you arrive with a focused question that the docs have not yet answered.
+One last thing. Stack Overflow is excellent for diagnosing a specific bug, but it’s no substitute for reading the documentation or building your own understanding. If you notice you’re searching about the same tool over and over, the better move is usually to spend an hour with its official docs (see [sec-reading-docs](#sec-reading-docs)) instead of bookmarking another half-dozen answers. The site works best when you arrive with a focused question the docs haven’t answered.
 
 ## 2.8 Common traps and how to avoid them
 
+Some mistakes are so common that they have names. Here are the ones that trip up newcomers most.
+
 ### The XY problem
 
-The XY problem is the name for a specific kind of unhelpful question: you ask about your *attempted solution* (Y) when what you actually need help with is the *real goal* (X). The classic example is asking “how do I parse this weird string with regex?” when your real goal is “how do I extract the year from this date column?” — a problem regex is the wrong tool for, because pandas already has `pd.to_datetime` and `.dt.year`. The helper, given only the regex question, ends up writing you an elaborate regex when one line of pandas would do.
+The [XY problem](https://en.wikipedia.org/wiki/XY_problem) happens when you ask about your *attempted solution* (Y) instead of your *actual goal* (X). The classic version: you ask “how do I pull the year out of this date string with a regex?” when what you really want is “how do I get the year from this date column?” Regex is the wrong tool for that, because pandas already has `pd.to_datetime` and `.dt.year`. But your helper only sees the regex question, so they write you an elaborate regex when one line of pandas would have done.
 
-The fix is mechanical. State the real goal first, in one sentence, before you describe what you tried. Mention your attempted solution as *one option* you considered, not as the only path forward. And explicitly invite alternatives — something as simple as “open to other approaches” goes a long way. With those three habits, the XY trap mostly goes away on its own.
+It’s an easy trap to fall into, because by the time you ask, you’ve been staring at Y for an hour and it feels like *the* problem. The fix is mechanical. Say your real goal first, in one sentence, before describing what you tried. Mention your approach as one option you considered, not the only path. And invite alternatives: even “I’m open to other approaches” goes a long way.
 
 ### Copying errors by hand
 
-Do not retype error messages. Copy and paste them as text. Retyping introduces mistakes and removes critical details.
+Don’t retype error messages. Copy and paste them as text. Retyping introduces typos, drops details you didn’t know mattered, and makes the message harder to search for.
 
 ### Screenshot-only questions
 
-Screenshots have their place — they are good for showing the layout of an IDE, the contents of a settings dialog, or a GUI error you cannot copy out of. But for any text the helper might want to search, copy, or paste back to you, screenshots are actively harmful. Stack traces, commands, and code snippets should always be included as text. If you also want to attach a screenshot for context, fine, but include the text alongside it so the helper does not have to retype anything.
+Screenshots have their place. They’re good for showing the layout of an editor, a settings dialog, or an error in a window you can’t copy text out of. But for anything a helper might want to search, copy, or paste back to you, a screenshot actively gets in the way: they’d have to retype it, and they can’t search for it. Stack traces, commands, and code should always go in as text. Attach a screenshot as well if it adds something, but put the text alongside it.
 
 ### Sharing entire notebooks
 
-A 200-cell notebook is one of the hardest things to debug for someone who is not you. If you are tempted to share an entire notebook, do at least three things first: identify the specific cell that fails (by index or by name), produce an MRE that reproduces the failure outside the notebook context if possible, and clear cell outputs that are not relevant to the bug — both because they bloat the file and because they sometimes contain things you did not realize were sensitive. Most of the time, the act of preparing the notebook for sharing will reveal the bug to you before you ever send it.
+A 200-cell notebook is one of the hardest things for anyone but you to debug. If you’re tempted to share a whole notebook, do three things first: point to the specific cell that fails, try to reproduce the failure in a short script outside the notebook, and clear the outputs that don’t matter, both because they bloat the file and because they sometimes contain things you didn’t realize were sensitive ([sec-jupyter](#sec-jupyter) shows how). More often than not, getting the notebook ready to share reveals the bug before you ever send it.
 
 ## 2.9 Using AI tools when asking questions
 
-AI tools can accelerate the process of forming a good question, but they can also produce misleading confidence. Use AI to improve *structure* and *communication*, not to outsource verification. [sec-ai-llm](#sec-ai-llm) covers disciplined AI workflows in full, including verification loops, risk categories, and prompt patterns.
+AI assistants can help you shape a question, and they can also hand you a confident answer that’s wrong. The rule of thumb is to use AI to improve the *structure* and *clarity* of your question, not to skip checking the answer. [sec-ai-llm](#sec-ai-llm) covers how to work with AI tools carefully, including how to verify what they tell you.
 
-### Good uses of AI in question formation
+### Good uses of AI when forming a question
 
-The most reliable use of AI in question formation is structural: take your messy first description and ask the assistant to convert it into the standard template (goal, expected, actual, reproduction, context, what you tried). The assistant is good at filling in the template and at noticing fields you forgot, which is exactly what you want here. Beyond that, the assistant can suggest what environment details might matter for a given error type, propose deletions to help you shrink your code into an MRE, and turn a noisy error message into a clean search query by stripping the parts that are specific to your machine.
+The most reliable use is structural. Paste in your messy first description (with anything private removed) and ask the assistant to reorganize it into the five fields plus “what I tried.” It’s good at filling in the template and at pointing out fields you forgot, which is exactly what you want. It can also suggest which environment details matter for a given kind of error, propose cuts that shrink your code toward an MRE, and turn a noisy error message into a clean search query by stripping out the parts specific to your machine.
 
-### Bad uses of AI in question formation
+### Bad uses of AI when forming a question
 
-The worst uses of AI come from asking it to do the parts of the work you should be doing yourself. Asking it to “fix” your error without you actually reproducing the failure is one — you will get a plausible-looking fix that may or may not address the real cause, and you will not have learned anything you can apply to the next bug. Pasting secrets, tokens, or private data into a prompt is another, and it should be treated as a hard rule: once a secret leaves your machine, you have to assume it is no longer secret. And the most dangerous of all is accepting an AI-suggested command without understanding what it does — especially anything involving `sudo`, recursive deletes, or network configuration. See [sec-ai-llm](#sec-ai-llm) for the full set of rules around verifying AI output.
+The worst uses come from handing over the parts of the work that need to be yours. Asking it to “fix” an error you haven’t reproduced is one: you’ll get a plausible-looking fix that may or may not touch the real cause, and you won’t learn anything you can use on the next bug. Pasting secrets, tokens, or private data into a prompt is another, and treat that as a hard rule: once a secret leaves your machine, assume it’s no longer secret (see [sec-secrets](#sec-secrets)). The most dangerous is running an AI-suggested command you don’t understand, especially anything with `sudo`, a recursive delete, or network settings.
 
 ### A safe workflow
 
-1.  Reproduce the error.
+**First, reproduce the error** yourself, so you know exactly what you’re asking about. **Then draft the question** using the five fields. **Next, ask the AI to improve it**: clearer wording, missing context, a tighter MRE. **Check any command it proposes** against the official documentation before you run it. **Finally, post the question**, knowing that everything in it is something you’ve seen with your own eyes.
 
-2.  Draft the question using the five-field structure.
+## 2.10 Closing the loop: after you get help
 
-3.  Ask AI to improve clarity and completeness of context.
+Getting the answer feels like the end, but a few more minutes turn one person’s help into something that keeps paying off, for you and for the people after you.
 
-4.  Verify any AI-proposed commands in official documentation.
+### Summarize the solution
 
-5.  Post the question.
+In the class forum, issue, or chat thread where you asked, write a short note: what the root cause was, what fixed it, and what you learned (a principle about paths, say, or environments). The next student who searches for that error will find your question *and* its answer, instead of a thread that ends with “nvm, fixed it.”
 
-## 2.10 Stakes and politics
+### Update your documentation
 
-The five-field template in this chapter is, like every other technique in this handbook, an artifact with politics. It encodes a specific cultural norm: that the burden of investigation falls on the asker, that effort must be visible in the right idiom, and that questions which fail those tests can be closed or ignored. That norm is largely good — it has built communities like Stack Overflow that contain decades of useful answers — but it also creates a steep gradient. People who already speak the dialect of “minimal reproducible example, exact error text, environment versions” get answered quickly; people who are still learning what those phrases mean get told to come back when they have done more homework. The result is a feedback loop where help flows most easily to those who already look like insiders.
+If the fix revealed a fragile step (“always activate the environment first”), write it into your README or project notes, so future you doesn’t repeat the mistake. [sec-documentation](#sec-documentation) has more on keeping notes that help.
 
-Two decisions to notice. First, *whose investigation counts as real*: the gold-standard MRE assumes you have a stable laptop, a working environment, and unbroken time to iterate. A student debugging on a borrowed Chromebook between shifts has done real investigation that is harder to package this way. Second, *which channel you can afford*: paid mentorship, a well-staffed TA queue, or a senior colleague on Slack are all forms of help that bypass the public-forum gauntlet, and access to them is unevenly distributed. When you write a question — and especially when you answer or moderate one — you are participating in this distribution.
+### Turn recurring problems into checklists
+
+If you keep running into the same kind of error, make a personal checklist for it: a “file not found” checklist, an “import error” checklist, a “Git conflict” checklist. The third time you hit a problem, you’ll solve it in two minutes instead of two hours.
+
+## 2.11 Stakes and politics
+
+In April 2018, Stack Overflow’s own blog ran a post by Jay Hanlon titled [Stack Overflow Isn’t Very Welcoming. It’s Time for That to Change.](https://stackoverflow.blog/2018/04/26/stack-overflow-isnt-very-welcoming-its-time-for-that-to-change/) It admitted that “too many people experience Stack Overflow as a hostile or elitist place, especially newer coders, women, people of color, and others in marginalized groups.” The post didn’t blame a few bad actors. It blamed the company itself, which had “trained users to tell other users what they’re doing wrong” but hadn’t given new folks “the necessary guidance to do it right.”
+
+The five-field template in this chapter is that missing guidance, and it’s also a gate. It assumes the burden of investigation falls on the asker, and that effort only counts when it’s shown in one particular idiom. People who already speak “minimal reproducible example, exact error text, environment versions” get fast answers; people still learning what those words mean get told to come back later. So help flows most easily to those who already sound like insiders. And the gold-standard MRE quietly assumes a stable laptop, a working environment, and unbroken time to iterate. A student debugging on a borrowed Chromebook between shifts has done real investigation that’s much harder to package this way. Meanwhile, paid tutoring, a well-staffed TA queue, or a senior colleague on Slack let some people skip the public-forum gauntlet entirely, and access to those is unevenly spread.
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: before closing, downvoting, or dismissing a “low-effort” question, ask whether the asker had access to the resources the template silently assumes.
 
-## 2.11 Worked examples
+## 2.12 Worked examples
 
-This section illustrates how vague questions become answerable.
+Each example below starts from the kind of question everyone writes at first and turns it into one a helper can answer in a single reply. Watch how often the rewrite contains the seed of its own answer.
 
 ### From “Jupyter shows no notebooks” to a working-directory diagnosis
 
-##### Vague question.
+**The first draft:** “Jupyter opens but my notebook files aren’t there.”
 
-“Jupyter opens but my notebook files aren’t there.”
+**The rewrite:**
 
-##### Revised question (structured).
-
-> Goal: Open `analysis.ipynb` in JupyterLab.
+> Goal: Open `notebooks/analysis.ipynb` in JupyterLab.
 >
-> Expected: JupyterLab file browser shows my `notebooks/` folder and `analysis.ipynb`.
+> Expected: JupyterLab’s file browser shows my project folder, including `notebooks/analysis.ipynb`.
 >
-> Actual: JupyterLab opens in a browser, but the file browser shows an empty directory that does not include my project.
+> Actual: JupyterLab opens in the browser, but the file browser shows an old folder from last semester, not my project. The terminal says `Serving notebooks from local directory: /Users/alex/old-course`.
 >
 > Reproduction:
 >
 >     cd ~/Desktop/project
 >     jupyter lab
 >
-> Context: macOS 14.3, conda env `ds101`, JupyterLab 4.1. I can see `notebooks/analysis.ipynb` in Finder.
+> Context: macOS 14.3, conda environment `ds101`, JupyterLab 4.1. I can see `notebooks/analysis.ipynb` in Finder.
 >
-> What I tried: restarted JupyterLab; confirmed I ran `cd` into the project; tried `jupyter lab –notebook-dir=.` and it worked.
+> What I tried: restarted JupyterLab; confirmed I had `cd`’d into the project first; ran `jupyter lab --notebook-dir=.` and that worked.
 
-Notice how the revised question contains the seed of the solution: Jupyter was launching with a different working directory, and specifying `–notebook-dir=.` fixed it. Even if you did not know why, the helper can now explain it.
+The rewrite nearly answers itself. Jupyter normally shows the folder you started it from, so something is telling it to start somewhere else, and the terminal line says exactly where. The usual culprit is a leftover setting (`root_dir`) in a `jupyter_server_config.py` file from an earlier setup; [`jupyter --paths`](https://jupyter-server.readthedocs.io/en/latest/users/configuration.html) lists the folders where Jupyter looks for those files. A folder given on the command line, like `--notebook-dir=.`, overrides the config file, which is why that worked. Even if you didn’t know any of that, a helper can now explain it in one reply. ([sec-jupyter](#sec-jupyter) covers how Jupyter finds your files.)
 
 ### From “Git push rejected” to a fetch-and-merge plan
 
-##### Vague question.
+**The first draft:** “Git won’t let me push.”
 
-“Git won’t let me push.”
+**The rewrite:**
 
-##### Revised question.
+> Goal: Push my commits on branch `feature-cleaning` to GitHub.
+>
+> Expected: `git push` updates the branch on GitHub.
+>
+> Actual: the push is rejected:
+>
+>     $ git push
+>     To https://github.com/our-team/project.git
+>      ! [rejected]        feature-cleaning -> feature-cleaning (fetch first)
+>     error: failed to push some refs to 'https://github.com/our-team/project.git'
+>     hint: Updates were rejected because the remote contains work that you do not
+>     hint: have locally. This is usually caused by another repository pushing to
+>     hint: the same ref. If you want to integrate the remote changes, use
+>     hint: 'git pull' before pushing again.
+>
+> Context: I’m working with one teammate, and we both push to the same branch.
+>
+> What I tried: `git pull` stopped with `fatal: Need to specify how to reconcile divergent branches.` Then `git pull --no-rebase` gave `CONFLICT (content): Merge conflict in cleaning.py`.
 
-> Goal: Push my local commits on branch `feature-cleaning` to GitHub.
->
-> Expected: `git push` updates the remote.
->
-> Actual: `rejected` message saying the remote contains work I do not have locally.
->
-> Reproduction:
->
->     git status
->     # On branch feature-cleaning
->
->     git push
->     # ! [rejected] feature-cleaning -> feature-cleaning
->     # (fetch first)
->
-> Context: I am collaborating with one teammate; we both push to the same branch.
->
-> What I tried: I ran `git pull` and got a merge conflict in `cleaning.py`.
+Now a helper can walk you straight through it. Your teammate pushed commits you don’t have yet, so Git won’t let you overwrite them. The “divergent branches” message is Git asking you to choose *how* to combine the two histories, and `--no-rebase` chose a merge. The conflict in `cleaning.py` means you both edited the same lines. Open the file, [resolve the conflict](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), commit, and push again. [sec-git-github](#sec-git-github) explains each of these steps.
 
-Now a helper can quickly guide you: fetch/pull first, resolve conflicts, then push.
+### From “my CSV loads wrong” to a tab-delimited fix
 
-### From “pandas read_csv weird columns” to a tab-delimited fix
+**The first draft:** “My CSV loads wrong.”
 
-##### Vague question.
+**The rewrite, with an MRE:**
 
-“My CSV loads wrong.”
-
-##### Revised question with an MRE.
-
-> Goal: Load a tab-delimited file into pandas.
+> Goal: Load a tab-separated file into pandas.
 >
-> Expected: Columns are `name`, `age`, `city`.
+> Expected: three columns, `name`, `age`, and `city`.
 >
-> Actual: pandas creates a single column with the entire line as a string.
+> Actual: pandas makes a single column holding the whole line as one string.
 >
 > Reproduction:
 >
@@ -434,41 +435,17 @@ Now a helper can quickly guide you: fetch/pull first, resolve conflicts, then pu
 >
 > Output:
 >
->     Index(['name\tage\tcity'], dtype='object')
+>     Index(['name\tage\tcity'], dtype='str')
 >
-> Context: pandas 2.2.0.
+> Context: pandas 3.0.
 >
-> What I tried: setting `sep=’'͡` fixes it.
+> What I tried: passing `sep="\t"` gives the three columns I expected.
 
-This is a model question because the reproduction uses synthetic data and demonstrates the fix.
+This is a model question, even though it answers itself. The made-up data shows the whole problem in five lines, and building the MRE is what exposed the cause: [`read_csv`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) assumes commas unless you tell it otherwise, and this file is [tab-separated](https://en.wikipedia.org/wiki/Tab-separated_values). If you get this far on your own, post it anyway, as a question with your own answer, and the next person with a mystery one-column DataFrame will find it.
 
-## 2.12 Closing the loop: after you get help
+## 2.13 Templates
 
-Your responsibility does not end when you receive an answer.
-
-### Summarize the solution
-
-In a class forum, issue tracker, or chat thread, summarize:
-
-- what the root cause was,
-
-- what fixed it,
-
-- what you learned (e.g., a principle about paths or environments).
-
-This turns one person’s help into a reusable resource.
-
-### Update your documentation
-
-If the fix reveals a fragile step (“always activate the environment”), update your README or project notes so future you does not repeat the mistake.
-
-### Turn recurrent problems into checklists
-
-If you keep encountering the same class of errors, create a personal checklist. For example: “file not found” checklist, “import error” checklist, “git conflict” checklist.
-
-## 2.13 Templates you can reuse
-
-### Template A: question skeleton (copy/paste)
+### Template A: question skeleton (copy and paste)
 
     Goal:
     Expected:
@@ -493,9 +470,9 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 - Uses the smallest amount of code that still fails.
 
-- Uses public or synthetic data (no secrets).
+- Uses public or made-up data (no secrets).
 
-- Includes exact error/output text.
+- Includes the exact error or output text.
 
 - Includes all necessary imports.
 
@@ -503,39 +480,39 @@ If you keep encountering the same class of errors, create a personal checklist. 
 
 ## 2.14 Exercises
 
-1.  Take three vague questions (from your own experience or provided by the instructor) and rewrite them using the five-field structure.
+1.  Take three vague questions (from your own experience or from your instructor) and rewrite them using the five-field structure.
 
-2.  Create an MRE for a bug you encountered this week. Reduce it until it is fewer than 20 lines.
+2.  Build an MRE for a bug you ran into this week. Shrink it until it’s fewer than 20 lines.
 
-3.  Practice the 10-minute triage loop on a new error and document each step you took.
+3.  Run the 10-minute triage loop on a new error, and write down each step you took and what it showed.
 
-4.  Post a structured question to your course forum, then update it with a solution summary after you receive help.
+4.  Post a structured question to your course forum, then update it with a summary of the solution once you get help.
 
-5.  Swap questions with a classmate: can they reproduce your MRE without asking you follow-ups?
+5.  Swap questions with a classmate: can they reproduce your MRE without asking you anything?
 
 ## 2.15 One-page checklist
 
-- My goal is stated as a verb + object.
+- My goal is stated as a verb plus an object.
 
-- I clearly distinguish expected vs actual behavior.
+- I clearly separate what I expected from what actually happened.
 
-- I include the smallest reproducible steps.
+- I include the smallest steps that reproduce the problem.
 
-- I include the exact error/output as text.
+- I include the exact error or output, as text.
 
-- I include relevant environment context (OS, versions, env).
+- I include the relevant environment context (OS, versions, environment).
 
 - I describe what I tried and what happened.
 
 - I chose the right channel and followed its norms.
 
-- I closed the loop with a summary and documentation update.
+- I closed the loop with a summary and a documentation update.
 
 > **NOTE:**
 >
-> - Stack Overflow, [How do I ask a good question?](https://stackoverflow.com/help/how-to-ask) — the site’s canonical guide; short, opinionated, and worth re-reading every year.
-> - Stack Overflow, [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs with language-specific examples.
+> - Stack Overflow, [How do I ask a good question?](https://stackoverflow.com/help/how-to-ask) — the site’s own guide; short, opinionated, and worth rereading every year.
+> - Stack Overflow, [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the companion page on MREs, and the standard most answerers will hold your question to.
 > - Eric S. Raymond, [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html) — the classic essay; the tone is dated and at times unwelcoming, but the structural advice holds up.
-> - Julia Evans, [How to ask good questions](https://jvns.ca/blog/good-questions/) — a kinder, more inclusive complement to Raymond, focused on small concrete moves that work for newcomers.
-> - Jon Skeet, [Writing the perfect question](https://codeblog.jonskeet.uk/2010/08/29/writing-the-perfect-question/) — practitioner advice from one of Stack Overflow’s highest-reputation users; especially good on titles and tags.
-> - The Recurse Center, [Social rules](https://www.recurse.com/social-rules) — a short, explicit set of norms (“no feigning surprise”, “no well-actually’s”) that improve the climate around technical questions and answers.
+> - Julia Evans, [How to ask good questions](https://jvns.ca/blog/good-questions/) — a kinder, more inclusive complement to Raymond, full of small concrete moves that work for newcomers.
+> - Jon Skeet, [Writing the perfect question](https://codeblog.jonskeet.uk/2010/08/29/writing-the-perfect-question/) — practical advice from one of Stack Overflow’s highest-reputation users; especially good on titles and tags.
+> - The Recurse Center, [Social rules](https://www.recurse.com/social-rules) — a short, explicit set of norms (“no feigning surprise,” “no well-actually’s”) that make it easier for everyone to ask and answer technical questions.

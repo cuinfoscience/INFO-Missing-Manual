@@ -668,32 +668,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
   <li><a href="#running-theme-the-last-line-tells-you-what-the-stack-tells-you-where" id="toc-running-theme-the-last-line-tells-you-what-the-stack-tells-you-where" class="nav-link" data-scroll-target="#running-theme-the-last-line-tells-you-what-the-stack-tells-you-where">Running theme: the last line tells you <em>what</em>, the stack tells you <em>where</em></a></li>
   <li><a href="#the-anatomy-of-a-traceback" id="toc-the-anatomy-of-a-traceback" class="nav-link" data-scroll-target="#the-anatomy-of-a-traceback"><span class="header-section-number">7.1</span> The anatomy of a traceback</a></li>
-  <li><a href="#top-down-vs.-bottom-up-reading" id="toc-top-down-vs.-bottom-up-reading" class="nav-link" data-scroll-target="#top-down-vs.-bottom-up-reading"><span class="header-section-number">7.2</span> Top-down vs.&nbsp;bottom-up reading</a></li>
-  <li><a href="#the-ten-exceptions-you-will-see-most-often" id="toc-the-ten-exceptions-you-will-see-most-often" class="nav-link" data-scroll-target="#the-ten-exceptions-you-will-see-most-often"><span class="header-section-number">7.3</span> The ten exceptions you will see most often</a>
+  <li><a href="#reading-up-reading-down-finding-the-frame-thats-yours" id="toc-reading-up-reading-down-finding-the-frame-thats-yours" class="nav-link" data-scroll-target="#reading-up-reading-down-finding-the-frame-thats-yours"><span class="header-section-number">7.2</span> Reading up, reading down: finding the frame that’s yours</a></li>
+  <li><a href="#the-ten-exceptions-youll-see-most-often" id="toc-the-ten-exceptions-youll-see-most-often" class="nav-link" data-scroll-target="#the-ten-exceptions-youll-see-most-often"><span class="header-section-number">7.3</span> The ten exceptions you’ll see most often</a>
   <ul class="collapse">
-  <li><a href="#nameerror-name-foo-is-not-defined" id="toc-nameerror-name-foo-is-not-defined" class="nav-link" data-scroll-target="#nameerror-name-foo-is-not-defined"><code>NameError: name 'foo' is not defined</code></a></li>
-  <li><a href="#modulenotfounderror-no-module-named-foo-importerror" id="toc-modulenotfounderror-no-module-named-foo-importerror" class="nav-link" data-scroll-target="#modulenotfounderror-no-module-named-foo-importerror"><code>ModuleNotFoundError: No module named 'foo'</code> / <code>ImportError</code></a></li>
-  <li><a href="#syntaxerror-invalid-syntax" id="toc-syntaxerror-invalid-syntax" class="nav-link" data-scroll-target="#syntaxerror-invalid-syntax"><code>SyntaxError: invalid syntax</code></a></li>
-  <li><a href="#indentationerror-unexpected-indent" id="toc-indentationerror-unexpected-indent" class="nav-link" data-scroll-target="#indentationerror-unexpected-indent"><code>IndentationError: unexpected indent</code></a></li>
-  <li><a href="#typeerror-...-takes-...-arguments-but-...-were-given-or-typeerror-unsupported-operand-types-for-int-and-str" id="toc-typeerror-...-takes-...-arguments-but-...-were-given-or-typeerror-unsupported-operand-types-for-int-and-str" class="nav-link" data-scroll-target="#typeerror-...-takes-...-arguments-but-...-were-given-or-typeerror-unsupported-operand-types-for-int-and-str"><code>TypeError: ... takes ... arguments but ... were given</code> or <code>TypeError: unsupported operand type(s) for +: 'int' and 'str'</code></a></li>
-  <li><a href="#valueerror-could-not-convert-string-to-float-na" id="toc-valueerror-could-not-convert-string-to-float-na" class="nav-link" data-scroll-target="#valueerror-could-not-convert-string-to-float-na"><code>ValueError: could not convert string to float: 'N/A'</code></a></li>
-  <li><a href="#keyerror-date" id="toc-keyerror-date" class="nav-link" data-scroll-target="#keyerror-date"><code>KeyError: 'date'</code></a></li>
-  <li><a href="#indexerror-list-index-out-of-range" id="toc-indexerror-list-index-out-of-range" class="nav-link" data-scroll-target="#indexerror-list-index-out-of-range"><code>IndexError: list index out of range</code></a></li>
-  <li><a href="#attributeerror-nonetype-object-has-no-attribute-foo" id="toc-attributeerror-nonetype-object-has-no-attribute-foo" class="nav-link" data-scroll-target="#attributeerror-nonetype-object-has-no-attribute-foo"><code>AttributeError: 'NoneType' object has no attribute 'foo'</code></a></li>
-  <li><a href="#filenotfounderror-errno-2-no-such-file-or-directory-data.csv" id="toc-filenotfounderror-errno-2-no-such-file-or-directory-data.csv" class="nav-link" data-scroll-target="#filenotfounderror-errno-2-no-such-file-or-directory-data.csv"><code>FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'</code></a></li>
+  <li><a href="#nameerror-a-name-python-has-never-seen" id="toc-nameerror-a-name-python-has-never-seen" class="nav-link" data-scroll-target="#nameerror-a-name-python-has-never-seen">NameError: a name Python has never seen</a></li>
+  <li><a href="#modulenotfounderror-and-importerror-a-package-python-cant-find" id="toc-modulenotfounderror-and-importerror-a-package-python-cant-find" class="nav-link" data-scroll-target="#modulenotfounderror-and-importerror-a-package-python-cant-find">ModuleNotFoundError and ImportError: a package Python can’t find</a></li>
+  <li><a href="#syntaxerror-code-python-cant-read" id="toc-syntaxerror-code-python-cant-read" class="nav-link" data-scroll-target="#syntaxerror-code-python-cant-read">SyntaxError: code Python can’t read</a></li>
+  <li><a href="#indentationerror-whitespace-that-doesnt-line-up" id="toc-indentationerror-whitespace-that-doesnt-line-up" class="nav-link" data-scroll-target="#indentationerror-whitespace-that-doesnt-line-up">IndentationError: whitespace that doesn’t line up</a></li>
+  <li><a href="#typeerror-the-wrong-kind-of-value" id="toc-typeerror-the-wrong-kind-of-value" class="nav-link" data-scroll-target="#typeerror-the-wrong-kind-of-value">TypeError: the wrong kind of value</a></li>
+  <li><a href="#valueerror-the-right-kind-the-wrong-value" id="toc-valueerror-the-right-kind-the-wrong-value" class="nav-link" data-scroll-target="#valueerror-the-right-kind-the-wrong-value">ValueError: the right kind, the wrong value</a></li>
+  <li><a href="#keyerror-a-key-or-column-that-isnt-there" id="toc-keyerror-a-key-or-column-that-isnt-there" class="nav-link" data-scroll-target="#keyerror-a-key-or-column-that-isnt-there">KeyError: a key or column that isn’t there</a></li>
+  <li><a href="#indexerror-past-the-end-of-a-list" id="toc-indexerror-past-the-end-of-a-list" class="nav-link" data-scroll-target="#indexerror-past-the-end-of-a-list">IndexError: past the end of a list</a></li>
+  <li><a href="#attributeerror-nonetype-object-has-no-attribute" id="toc-attributeerror-nonetype-object-has-no-attribute" class="nav-link" data-scroll-target="#attributeerror-nonetype-object-has-no-attribute">AttributeError: ‘NoneType’ object has no attribute …</a></li>
+  <li><a href="#filenotfounderror-a-path-that-doesnt-lead-anywhere" id="toc-filenotfounderror-a-path-that-doesnt-lead-anywhere" class="nav-link" data-scroll-target="#filenotfounderror-a-path-that-doesnt-lead-anywhere">FileNotFoundError: a path that doesn’t lead anywhere</a></li>
   </ul></li>
-  <li><a href="#chained-tracebacks-during-handling-of-the-above-exception" id="toc-chained-tracebacks-during-handling-of-the-above-exception" class="nav-link" data-scroll-target="#chained-tracebacks-during-handling-of-the-above-exception"><span class="header-section-number">7.4</span> Chained tracebacks: “during handling of the above exception”</a></li>
+  <li><a href="#chained-tracebacks-when-one-error-leads-to-another" id="toc-chained-tracebacks-when-one-error-leads-to-another" class="nav-link" data-scroll-target="#chained-tracebacks-when-one-error-leads-to-another"><span class="header-section-number">7.4</span> Chained tracebacks: when one error leads to another</a></li>
   <li><a href="#tracebacks-in-jupyter-notebooks" id="toc-tracebacks-in-jupyter-notebooks" class="nav-link" data-scroll-target="#tracebacks-in-jupyter-notebooks"><span class="header-section-number">7.5</span> Tracebacks in Jupyter notebooks</a></li>
-  <li><a href="#searching-for-errors-online" id="toc-searching-for-errors-online" class="nav-link" data-scroll-target="#searching-for-errors-online"><span class="header-section-number">7.6</span> Searching for errors online</a></li>
+  <li><a href="#searching-for-an-error-online" id="toc-searching-for-an-error-online" class="nav-link" data-scroll-target="#searching-for-an-error-online"><span class="header-section-number">7.6</span> Searching for an error online</a></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">7.7</span> Stakes and politics</a></li>
   <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">7.8</span> Worked examples</a>
   <ul class="collapse">
-  <li><a href="#a-keyerror-in-pandas" id="toc-a-keyerror-in-pandas" class="nav-link" data-scroll-target="#a-keyerror-in-pandas">A <code>KeyError</code> in pandas</a></li>
-  <li><a href="#a-valueerror-from-a-numeric-column" id="toc-a-valueerror-from-a-numeric-column" class="nav-link" data-scroll-target="#a-valueerror-from-a-numeric-column">A <code>ValueError</code> from a “numeric” column</a></li>
-  <li><a href="#a-chained-traceback-from-a-flaky-web-request" id="toc-a-chained-traceback-from-a-flaky-web-request" class="nav-link" data-scroll-target="#a-chained-traceback-from-a-flaky-web-request">A chained traceback from a flaky web request</a></li>
+  <li><a href="#a-keyerror-in-pandas" id="toc-a-keyerror-in-pandas" class="nav-link" data-scroll-target="#a-keyerror-in-pandas">1. A KeyError in pandas</a></li>
+  <li><a href="#a-numeric-column-that-wont-average" id="toc-a-numeric-column-that-wont-average" class="nav-link" data-scroll-target="#a-numeric-column-that-wont-average">2. A “numeric” column that won’t average</a></li>
+  <li><a href="#a-chained-traceback-from-a-web-request" id="toc-a-chained-traceback-from-a-web-request" class="nav-link" data-scroll-target="#a-chained-traceback-from-a-web-request">3. A chained traceback from a web request</a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.9</span> Exercises</a></li>
   <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">7.10</span> One-page checklist</a></li>
@@ -746,233 +746,470 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/tracebacks.png" class="img-fluid" alt="Fry from Futurama Meme: Not Sure If My Bug Or The Library’s Bug."></p>
 </div>
-<p>When your Python code crashes, Python prints a wall of red text ending with something like <code>KeyError: 'date'</code> or <code>ValueError: could not convert string to float: 'N/A'</code>. Many novices glance at this wall, feel a jolt of dread, and scroll past to the error message at the bottom — losing most of the information the interpreter is trying to give them for free.</p>
-<p>That wall of text is a <a href="../chapters/appendix-glossary.html#term-traceback">traceback</a>, and it is the single most useful piece of evidence you will get when something breaks. A traceback tells you exactly which file, which line, which function call, and which value caused the crash. Learning to parse one quickly turns most bug-hunting sessions from “I have no idea what is wrong” into “I know which line to look at and roughly why.” This chapter teaches you how.</p>
-<p>It is a short chapter on purpose: reading tracebacks is a focused skill you can learn in 30 minutes and then reuse for the rest of your career. It pairs naturally with <a href="debugging.html" class="quarto-xref"><span>Chapter 6</span></a>, which teaches the investigative loop you use after the traceback has told you where to look.</p>
+<p>You run a cell that worked yesterday, and the screen fills with thirty lines of red text: file paths you’ve never seen, function names with underscores on both sides, rows of <code>^^^^^^</code>, and at the very bottom, <code>KeyError: 'date'</code>. Your stomach drops a little. You scroll past the whole thing, stare at your code, and start changing things until the red goes away.</p>
+<p>If that’s how errors have gone for you so far, you’re in good company, and you’re also leaving most of the help on the table. That wall of text is a <a href="../chapters/appendix-glossary.html#term-traceback">traceback</a> (the general name is a <a href="https://en.wikipedia.org/wiki/Stack_trace">stack trace</a>), and it’s the best evidence you’ll ever get when something breaks. It names the file, the line, the chain of function calls that led there, and usually the exact value that caused the trouble. Once you can read one, most bug hunts go from “I have no idea what’s wrong” to “I know which line to look at, and roughly why.”</p>
+<p>This chapter teaches you to read them. It’s short on purpose: reading tracebacks is a focused skill you can pick up in half an hour and use for the rest of your life with Python. It covers the parts of a traceback, how to find the line that’s yours among the library’s, the ten errors you’ll meet most, chained tracebacks, and how tracebacks look in Jupyter. What to do <em>after</em> the traceback has pointed you somewhere, the investigative loop of hypotheses and experiments, is <a href="debugging.html" class="quarto-xref"><span>Chapter 6</span></a>. Every traceback shown here is real output from Python 3.11 and pandas 3, with only the file paths changed.</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Identify the parts of a Python traceback: the error type, the error message, the stack, and each frame’s file, line number, and code snippet.</li>
-<li>Read a traceback top-down and bottom-up and explain when each direction is useful.</li>
-<li>Distinguish between an error raised in <em>your</em> code and one raised inside a third-party library like pandas or numpy.</li>
-<li>Translate the ten most common <a href="https://docs.python.org/3/library/exceptions.html">Python exception types</a> into plain English and know where to look first when you see them.</li>
-<li>Read a chained traceback (<em>“during handling of the above exception, another exception occurred”</em>) and find the root cause.</li>
-<li>Read tracebacks that appear inside Jupyter notebook cells, where the “file” is a cell index.</li>
-<li>Search for an error message online in a way that returns useful hits rather than noise.</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You see a screen of red text and your first move is to scroll past it, and you’d like to know what it was trying to tell you.</li>
+<li>The last line says <code>KeyError: 'date'</code> but every file named in the error is somewhere inside pandas, and you can’t tell whether the bug is yours or the library’s.</li>
+<li>You got a traceback with two sections and the line <em>“During handling of the above exception, another exception occurred,”</em> and you don’t know which error to fix.</li>
+<li>Python says <code>ModuleNotFoundError: No module named 'seaborn'</code> right after you installed seaborn, and you’re starting to doubt your sanity.</li>
+<li>Your notebook says the problem is in <code>Cell In[7]</code>, and there is no cell 7 that you can find.</li>
+<li>You pasted an error into a search engine and got nothing useful back, or a hundred pages that are almost, but not quite, your problem.</li>
+<li>You’d like to ask a classmate, a TA, or an AI assistant for help and give them what they need to answer on the first try.</li>
+</ul>
 </section>
 <section id="running-theme-the-last-line-tells-you-what-the-stack-tells-you-where" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="running-theme-the-last-line-tells-you-what-the-stack-tells-you-where">Running theme: the last line tells you <em>what</em>, the stack tells you <em>where</em></h2>
-<p>A traceback has two jobs: tell you what went wrong (the exception type and message on the last line) and tell you where it happened (the stack of frames above it). Most of the time you need both — the “what” is a label, and the “where” is the evidence.</p>
+<p>Every traceback answers two questions. The last line says what went wrong, and the frames above it say where it happened and how the program got there. You’ll usually need both: the “what” is a label, and the “where” is the evidence.</p>
 </section>
 <section id="the-anatomy-of-a-traceback" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="the-anatomy-of-a-traceback"><span class="header-section-number">7.1</span> The anatomy of a traceback</h2>
-<p>Here is a minimal traceback from a small script:</p>
+<p>The best way to stop fearing tracebacks is to take one apart. Here’s a small script that reads numbers from a file and averages them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># analysis.py</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_mean(xs):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(xs) <span class="op">/</span> <span class="bu">len</span>(xs)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize(path):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(path) <span class="im">as</span> f:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> [<span class="bu">float</span>(line) <span class="cf">for</span> line <span class="kw">in</span> f <span class="cf">if</span> line.strip()]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> compute_mean(values)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summarize(<span class="st">"readings.txt"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It works fine until the day <code>readings.txt</code> arrives empty. Then <code>python analysis.py</code> prints this:</p>
 <pre class="text"><code>Traceback (most recent call last):
-  File "/home/you/project/src/analysis.py", line 42, in &lt;module&gt;
-    total = compute_mean(values)
-  File "/home/you/project/src/analysis.py", line 17, in compute_mean
+  File "/Users/you/project/analysis.py", line 11, in &lt;module&gt;
+    print(summarize("readings.txt"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/analysis.py", line 8, in summarize
+    return compute_mean(values)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/analysis.py", line 2, in compute_mean
     return sum(xs) / len(xs)
+           ~~~~~~~~^~~~~~~~~
 ZeroDivisionError: division by zero</code></pre>
-<p>The first line, <code>Traceback (most recent call last):</code>, is Python’s way of announcing that an exception propagated all the way up without being caught, and it is about to list the chain of function calls that led to the failure. Read it as a header for what comes next.</p>
-<p>The middle of the output is the <strong>stack</strong>: a sequence of <em>frames</em>, where each frame is a single function call in progress at the moment the error happened. Each frame begins with a <code>File ..., line ..., in ...</code> line that names the source file, the line number, and the function the program was inside. Underneath that header, Python reads your source file back and prints the actual line of code at that location, which is enormously helpful — you do not have to switch windows to see what is going on. The topmost frame is the entry point: the script you ran, or the notebook cell you executed. The bottommost frame is the innermost function — the one that actually raised the error. In the example above, the script started by calling <code>compute_mean(values)</code> on line 42, and <code>compute_mean</code> then crashed on line 17 trying to divide by <code>len(xs)</code>.</p>
-<p>The last line is the exception type and the exception message. Here it is <code>ZeroDivisionError: division by zero</code>. Everything before the colon is the class name of the exception; everything after is a free-form string describing what went wrong. You can simulate this in a fresh Python file to see how the same structure shows up for any error you cause:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># anatomy_demo.py</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_mean(xs):</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(xs) <span class="op">/</span> <span class="bu">len</span>(xs)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> []                <span class="co"># an empty list, on purpose</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> compute_mean(values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Run it with <code>python anatomy_demo.py</code> and Python prints exactly the kind of traceback you saw above, with the same three parts: header, stack, and final exception line.</p>
-<p>The phrase <strong>“most recent call last”</strong> is the single most important thing to understand. Python prints the stack in execution order: the first frame is what you started with, and the last frame is what was running when the crash happened. If you want to know <em>what code actually crashed</em>, look at the <strong>bottom</strong>. If you want to know <em>how the program got there</em>, read the frames <strong>top-to-bottom</strong> like a trail of breadcrumbs.</p>
+<p>It looks like a lot, but it has only three parts. The first line, <code>Traceback (most recent call last):</code>, is a header. It means an <a href="https://en.wikipedia.org/wiki/Exception_handling">exception</a> (Python’s word for an error that stops the normal flow of the program) made it all the way up without anything catching it, and Python is about to show you how it got there.</p>
+<p>The middle is the <strong>stack</strong>, a list of <strong>frames</strong>. Each frame is one function call that was still in progress when the error happened: the program’s <a href="https://en.wikipedia.org/wiki/Call_stack">call stack</a>, frozen at the moment of the crash. Every frame starts with a line of the form <code>File "...", line N, in name</code>, giving the file, the line number, and the function the program was inside (<code>&lt;module&gt;</code> means “the top level of the file, not inside any function”). Under it, Python prints that line of your source code, so you don’t have to go find it.</p>
+<p>The last line is the <strong>exception type</strong> and <strong>message</strong>: <code>ZeroDivisionError: division by zero</code>. The part before the colon is the kind of error, here a <a href="https://docs.python.org/3/library/exceptions.html#ZeroDivisionError"><code>ZeroDivisionError</code></a>. The part after the colon is a message written for you, and it’s often the most useful sentence on the screen.</p>
+<p>The phrase that trips people up is <strong>“most recent call last.”</strong> Python prints the stack in the order things happened, so the top frame is where your program started and the bottom frame is where it was when it crashed. Read the frames top to bottom and you get the story: line 11 called <code>summarize</code>, <code>summarize</code> called <code>compute_mean</code> on line 8, and <code>compute_mean</code> tried to divide on line 2. Read the bottom line and you get the ending: it divided by zero, because <code>len(xs)</code> was 0, because the file was empty. Notice that the line that crashed isn’t really the line that’s wrong. <code>compute_mean</code> did exactly what it was told; the fix belongs in <code>summarize</code>, or wherever you decide an empty file should be handled. A traceback tells you where the program <em>noticed</em> the problem, and part of your job is walking back up the stack to where the problem <em>started</em>.</p>
+<p>The <code>^^^^^</code> and <code>~~~~^~~~</code> marks under each line are new in Python 3.11 (<a href="https://docs.python.org/3/whatsnew/3.11.html#whatsnew311-pep657">what’s new in 3.11</a> has the details). They underline the exact piece of the line that was running. On line 2, the <code>~</code> marks cover the two sides of the division and the lone <code>^</code> points at the <code>/</code> itself, which tells you the division failed, not the <code>sum</code> or the <code>len</code>. On a line with several things happening, like <code>df["price"].astype(float).mean()</code>, that pointer saves you from guessing which step blew up. If you’re on an older Python, you just won’t see them; everything else here still applies.</p>
 </section>
-<section id="top-down-vs.-bottom-up-reading" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="top-down-vs.-bottom-up-reading"><span class="header-section-number">7.2</span> Top-down vs.&nbsp;bottom-up reading</h2>
-<p>Both directions through the stack are useful; pick based on the question you are trying to answer.</p>
-<p><strong>Read bottom-up when the error is in <em>your</em> code.</strong> Start at the last line (<code>ZeroDivisionError: division by zero</code>) and then jump to the bottommost frame. That frame almost always points at a line in your source that is wrong in some small way — an empty list, an off-by-one index, a typo in a column name. The bottom is where the crash actually happened, and if the file path on the bottom frame is inside your project, you have already located the bug.</p>
-<p><strong>Read top-down when the error is deep inside a library.</strong> If the bottommost frame is in a file like <code>/site-packages/pandas/core/indexing.py</code>, the line shown will be pandas’s internal code, and staring at it will not help you. Instead, scan top-down until you find the last frame whose file path is inside your project (for example <code>src/analysis.py</code> or <code>notebooks/exploration.ipynb</code>). That frame is the last bit of code <em>you wrote</em> before handing control over to pandas, and that is where the bug almost certainly lives. The lines below it are the library doing its job correctly with bad input you provided.</p>
-<p>A useful heuristic that combines both: <strong>scan for the first file path that belongs to you, starting from the bottom up.</strong> That frame is where your change lives. To make this fast, get used to the shape of paths that aren’t yours. Anything inside <code>site-packages/</code>, <code>lib/python3.X/</code>, or <code>frozen importlib</code> is library or interpreter code and almost never your problem:</p>
-<pre class="text"><code>File ".../site-packages/pandas/core/frame.py", line 3893    # not yours
-File ".../site-packages/pandas/core/indexes/base.py", ...   # not yours
-File "src/cleaning.py", line 27, in normalize_dates         # YOURS — start here</code></pre>
-<p>The first frame you recognize as yours is almost always the one to fix.</p>
+<section id="reading-up-reading-down-finding-the-frame-thats-yours" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="reading-up-reading-down-finding-the-frame-thats-yours"><span class="header-section-number">7.2</span> Reading up, reading down: finding the frame that’s yours</h2>
+<p>The traceback above lives entirely in your own file, so it’s easy. The ones that make people give up are the ones that wander into someone else’s code. Here’s a cleaning script that adds a year column to a table of sales:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># src/cleaning.py</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_year(df):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"year"</span>] <span class="op">=</span> df[<span class="st">"date"</span>].dt.year</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>sales.columns <span class="op">=</span> sales.columns.<span class="bu">str</span>.lower()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> add_year(sales)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and here’s what Python says:</p>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/src/cleaning.py", line 11, in &lt;module&gt;
+    sales = add_year(sales)
+            ^^^^^^^^^^^^^^^
+  File "/Users/you/project/src/cleaning.py", line 5, in add_year
+    df["year"] = df["date"].dt.year
+                 ^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/generic.py", line 6194, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/accessor.py", line 230, in __get__
+    return self._accessor(obj)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/accessors.py", line 698, in __new__
+    raise AttributeError("Can only use .dt accessor with datetimelike values")
+AttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?</code></pre>
+<p>The bottom three frames are inside pandas, in files you’ve never opened, and the code they show (<code>object.__getattribute__(self, name)</code>) means nothing to you. That’s normal, and it doesn’t mean pandas is broken. It means your code handed pandas something it couldn’t work with, and pandas went a few calls deep before it gave up. Staring at <code>accessors.py</code> won’t help. What helps is finding the last moment the program was in <em>your</em> code.</p>
+<p>The trick is to learn the shape of paths that aren’t yours. Anything under <code>site-packages/</code> is a <a href="../chapters/appendix-glossary.html#term-library">library</a> you installed. Anything under a path like <code>lib/python3.11/</code> without <code>site-packages</code> is Python’s own standard library. File names ending in <code>.pyx</code> or <code>.pxi</code> are compiled parts of a library. Anything with <code>frozen importlib</code> in it is Python’s import machinery. Your files are the ones inside your project folder:</p>
+<pre class="text"><code>File ".../site-packages/pandas/core/indexes/accessors.py", line 698   # not yours
+File ".../site-packages/pandas/core/accessor.py", line 230            # not yours
+File ".../site-packages/pandas/core/generic.py", line 6194            # not yours
+File "/Users/you/project/src/cleaning.py", line 5, in add_year        # yours: start here</code></pre>
+<p>So the rule of thumb is: <strong>start at the bottom and scan up until you reach the first frame from your own project.</strong> That frame is where your code handed over the bad input, and it’s almost always the line to fix. Here it’s line 5, <code>df["date"].dt.year</code>, and together with the message the story is clear. The <a href="https://pandas.pydata.org/docs/user_guide/basics.html#basics-dt-accessors"><code>.dt</code> accessor</a> only works on columns of real dates, and <code>date</code> came out of <code>read_csv</code> as plain text. The fix is to convert the column with <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html"><code>pd.to_datetime</code></a> first.</p>
+<p>Two directions, then, for two different questions. When the bottom frame is in your code, <strong>read bottom-up</strong>: the crash site is right there, and you’ve probably found the bug. When the bottom frame is in a library, <strong>keep scanning up</strong> until the paths turn familiar. And when you want to know <em>how</em> the program got somewhere surprising, <strong>read top-down</strong>, like a trail of breadcrumbs from where you started.</p>
+<p>One more thing to notice in that last line: <em>Did you mean: ‘at’?</em> Recent versions of Python add these suggestions to <code>NameError</code> and <code>AttributeError</code> messages by looking for a similarly spelled name. When you’ve made a typo, they’re wonderful. Here the suggestion is nonsense (the problem was never the spelling of <code>dt</code>), so treat them as hints, not diagnoses.</p>
 </section>
-<section id="the-ten-exceptions-you-will-see-most-often" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="the-ten-exceptions-you-will-see-most-often"><span class="header-section-number">7.3</span> The ten exceptions you will see most often</h2>
-<p>These are the error types you will encounter 90% of the time in a first data science course, with a plain-English translation and the first place to look.</p>
-<section id="nameerror-name-foo-is-not-defined" class="level3">
-<h3 class="anchored" data-anchor-id="nameerror-name-foo-is-not-defined"><code>NameError: name 'foo' is not defined</code></h3>
-<p><strong>Plain English:</strong> you used a variable or function that Python has never heard of.</p>
-<p><strong>First place to look:</strong> typos (<code>datafame</code> vs <code>dataframe</code>), forgetting to run the cell that defined <code>foo</code>, or importing under a different name than you expected (<code>import pandas as pd</code> then typing <code>pandas.read_csv</code> instead of <code>pd.read_csv</code>).</p>
+<section id="the-ten-exceptions-youll-see-most-often" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="the-ten-exceptions-youll-see-most-often"><span class="header-section-number">7.3</span> The ten exceptions you’ll see most often</h2>
+<p>A handful of error types account for most of what you’ll meet in a first data course. Each one below comes with a real example, what it means in plain English, and the first place to look. Every exception name links to its entry in Python’s own documentation.</p>
+<section id="nameerror-a-name-python-has-never-seen" class="level3">
+<h3 class="anchored" data-anchor-id="nameerror-a-name-python-has-never-seen">NameError: a name Python has never seen</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/report.py", line 2, in &lt;module&gt;
+    print(datafame)
+          ^^^^^^^^
+NameError: name 'datafame' is not defined. Did you mean: 'dataframe'?</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#NameError"><code>NameError</code></a> means you used a variable or function Python has never heard of. The usual causes are a typo (<code>datafame</code> for <code>dataframe</code>), a notebook cell you never ran (or ran before the kernel restarted), or an import under a different name than the one you’re typing: after <code>import pandas as pd</code>, writing <code>pandas.read_csv</code> gets you <code>NameError: name 'pandas' is not defined</code>, because the name you created was <code>pd</code>.</p>
 </section>
-<section id="modulenotfounderror-no-module-named-foo-importerror" class="level3">
-<h3 class="anchored" data-anchor-id="modulenotfounderror-no-module-named-foo-importerror"><code>ModuleNotFoundError: No module named 'foo'</code> / <code>ImportError</code></h3>
-<p><strong>Plain English:</strong> Python cannot find a package you are trying to import.</p>
-<p><strong>First place to look:</strong> is the package installed in the <em>active</em> environment? Check with <code>pip list | grep foo</code> or <code>conda list foo</code>. If you are in a Jupyter notebook, make sure the kernel matches the environment you installed into. See <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a> and <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>.</p>
+<section id="modulenotfounderror-and-importerror-a-package-python-cant-find" class="level3">
+<h3 class="anchored" data-anchor-id="modulenotfounderror-and-importerror-a-package-python-cant-find">ModuleNotFoundError and ImportError: a package Python can’t find</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/plots.py", line 1, in &lt;module&gt;
+    import seaborn
+ModuleNotFoundError: No module named 'seaborn'</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError"><code>ModuleNotFoundError</code></a> means Python looked everywhere it knows to look (its module search path) and didn’t find the package. The maddening version is when you’re <em>sure</em> you installed it. Almost always, you did, just into a different environment than the one running your code. Ask the Python that’s running which one it is with <code>import sys; print(sys.executable)</code> (<a href="https://docs.python.org/3/library/sys.html#sys.executable"><code>sys.executable</code></a> is the path to the interpreter), and ask that same environment whether the package is there with <code>python -m pip show seaborn</code> (<a href="https://pip.pypa.io/en/stable/cli/pip_show/"><code>pip show</code></a> prints <code>WARNING: Package(s) not found</code> if it isn’t) or <code>conda list seaborn</code>. In a Jupyter notebook, the environment that matters is the kernel’s, and running <a href="https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-pip"><code>%pip install seaborn</code></a> in a cell installs into it directly. <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a> and <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a> explain why there’s more than one Python on your computer in the first place.</p>
+<p>Its cousin, <a href="https://docs.python.org/3/library/exceptions.html#ImportError"><code>ImportError</code></a>, means the package was found but the thing you asked for inside it wasn’t: <code>from pandas import read_cvs</code> fails with <code>ImportError: cannot import name 'read_cvs' from 'pandas'</code>. Check the spelling, then check that the function exists in the version you have installed.</p>
 </section>
-<section id="syntaxerror-invalid-syntax" class="level3">
-<h3 class="anchored" data-anchor-id="syntaxerror-invalid-syntax"><code>SyntaxError: invalid syntax</code></h3>
-<p><strong>Plain English:</strong> Python cannot parse your code. The error is usually on the line the traceback points at or on the <em>previous</em> line (an unclosed bracket or string).</p>
-<p><strong>First place to look:</strong> unclosed <code>(</code>, <code>[</code>, <code>{</code>, or <code>"</code>; a missing colon at the end of a <code>def</code>, <code>for</code>, <code>if</code>, or <code>while</code>; Python 2 <code>print</code> syntax.</p>
+<section id="syntaxerror-code-python-cant-read" class="level3">
+<h3 class="anchored" data-anchor-id="syntaxerror-code-python-cant-read">SyntaxError: code Python can’t read</h3>
+<pre class="text"><code>  File "/Users/you/project/totals.py", line 1
+    total = sum([1, 2, 3]
+               ^
+SyntaxError: '(' was never closed</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#SyntaxError"><code>SyntaxError</code></a> is different from every other error in this list, and you can see it in the output: there’s no <code>Traceback (most recent call last)</code> header and no stack. Python couldn’t even read the file, so nothing ran. Recent versions of Python give much friendlier messages here than older ones did. You’ll see things like <code>'(' was never closed</code>, <code>expected ':'</code> (a <code>def</code>, <code>for</code>, <code>if</code>, or <code>while</code> line missing its colon), and <code>Missing parentheses in call to 'print'. Did you mean print(...)?</code>, which is what you get from old Python 2 code like <code>print "hello"</code>. Sometimes all you get is a plain <code>SyntaxError: invalid syntax</code>. Look at the caret first, then at the line or two above it: an unclosed bracket or quote on one line often isn’t noticed until the next.</p>
 </section>
-<section id="indentationerror-unexpected-indent" class="level3">
-<h3 class="anchored" data-anchor-id="indentationerror-unexpected-indent"><code>IndentationError: unexpected indent</code></h3>
-<p><strong>Plain English:</strong> Python’s whitespace rules have been broken. Every block must be indented consistently.</p>
-<p><strong>First place to look:</strong> mixed tabs and spaces (the worst offender), or pasting code that had different indentation than the surrounding block.</p>
+<section id="indentationerror-whitespace-that-doesnt-line-up" class="level3">
+<h3 class="anchored" data-anchor-id="indentationerror-whitespace-that-doesnt-line-up">IndentationError: whitespace that doesn’t line up</h3>
+<pre class="text"><code>  File "/Users/you/project/greet.py", line 2
+    print("hi", name)
+    ^
+IndentationError: expected an indented block after function definition on line 1</code></pre>
+<p>Python uses indentation to decide which lines belong to which block (the fancy name is the <a href="https://en.wikipedia.org/wiki/Off-side_rule">off-side rule</a>), so whitespace that doesn’t line up is a real error. <a href="https://docs.python.org/3/library/exceptions.html#IndentationError"><code>IndentationError</code></a> is a special kind of <code>SyntaxError</code>, and like it, it stops the file before anything runs. You’ll see <code>expected an indented block</code> (a <code>def</code> or <code>if</code> with nothing indented under it), <code>unexpected indent</code> (a line indented for no reason, which happens a lot when you paste code), and the sneakiest one, <a href="https://docs.python.org/3/library/exceptions.html#TabError"><code>TabError</code></a>: <code>inconsistent use of tabs and spaces in indentation</code>. Tabs and spaces look identical on screen, which is why this one is so frustrating. Turn on your editor’s “render whitespace” option to see them, and set it to insert four spaces when you press Tab, as <a href="https://peps.python.org/pep-0008/#tabs-or-spaces">PEP 8</a> recommends (<a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a> shows where the setting lives).</p>
 </section>
-<section id="typeerror-...-takes-...-arguments-but-...-were-given-or-typeerror-unsupported-operand-types-for-int-and-str" class="level3">
-<h3 class="anchored" data-anchor-id="typeerror-...-takes-...-arguments-but-...-were-given-or-typeerror-unsupported-operand-types-for-int-and-str"><code>TypeError: ... takes ... arguments but ... were given</code> or <code>TypeError: unsupported operand type(s) for +: 'int' and 'str'</code></h3>
-<p><strong>Plain English:</strong> you called a function with the wrong number of arguments, or you tried an operation on values of the wrong type.</p>
-<p><strong>First place to look:</strong> the line at the bottom of the traceback. Check what each argument actually is (<code>print(type(x))</code> just before the failing line) — a string you expected to be a number, or a list you expected to be a dict.</p>
+<section id="typeerror-the-wrong-kind-of-value" class="level3">
+<h3 class="anchored" data-anchor-id="typeerror-the-wrong-kind-of-value">TypeError: the wrong kind of value</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/label.py", line 2, in &lt;module&gt;
+    print("Age: " + age)
+          ~~~~~~~~^~~~~
+TypeError: can only concatenate str (not "int") to str</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#TypeError"><code>TypeError</code></a> means you tried an operation on a kind of value that doesn’t support it, like adding a number to a piece of text. The same exception covers calling a function with the wrong number of arguments: <code>f() takes 2 positional arguments but 3 were given</code>. Look at the line the bottom frame (or your last frame) points to, and check what each value really is by printing <code>type(x)</code> just before it. The usual surprise is a number that’s secretly a string, or a list you thought was a dictionary.</p>
 </section>
-<section id="valueerror-could-not-convert-string-to-float-na" class="level3">
-<h3 class="anchored" data-anchor-id="valueerror-could-not-convert-string-to-float-na"><code>ValueError: could not convert string to float: 'N/A'</code></h3>
-<p><strong>Plain English:</strong> the type was right but the value was wrong. Here, pandas got the string <code>'N/A'</code> when it expected a number.</p>
-<p><strong>First place to look:</strong> missing-value sentinels in your CSV. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for how <code>pd.read_csv</code> handles them with <code>na_values=...</code>.</p>
+<section id="valueerror-the-right-kind-the-wrong-value" class="level3">
+<h3 class="anchored" data-anchor-id="valueerror-the-right-kind-the-wrong-value">ValueError: the right kind, the wrong value</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/convert.py", line 1, in &lt;module&gt;
+    float("N/A")
+ValueError: could not convert string to float: 'N/A'</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#ValueError"><code>ValueError</code></a> means the type was fine but this particular value wasn’t: <code>float</code> accepts strings, just not the string <code>'N/A'</code>. In data work the usual culprit is a <a href="https://en.wikipedia.org/wiki/Sentinel_value">sentinel value</a>, a code like <code>"N/A"</code>, <code>"-"</code>, or <code>"no reading"</code> that someone typed where a number should go. pandas’ <code>read_csv</code> already treats a standard set of codes, including <code>N/A</code>, <code>NA</code>, <code>NULL</code>, and empty cells, as missing, and you can add your own with <a href="https://pandas.pydata.org/docs/user_guide/io.html#na-values"><code>na_values=</code></a>. Anything not on the list comes in as text, and the error shows up later when you try to use the column as numbers (see <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>, and worked example 2 below). Handily, the message quotes the offending value, so you know exactly what to search your file for.</p>
 </section>
-<section id="keyerror-date" class="level3">
-<h3 class="anchored" data-anchor-id="keyerror-date"><code>KeyError: 'date'</code></h3>
-<p><strong>Plain English:</strong> you asked a dictionary (or a DataFrame, which is dict-like for columns) for a key that does not exist.</p>
-<p><strong>First place to look:</strong> column name typos (<code>'date '</code> with a trailing space is a classic), or a column that was dropped earlier in your notebook but the cell that uses it is still running. Print <code>df.columns.tolist()</code> to see what is actually there.</p>
+<section id="keyerror-a-key-or-column-that-isnt-there" class="level3">
+<h3 class="anchored" data-anchor-id="keyerror-a-key-or-column-that-isnt-there">KeyError: a key or column that isn’t there</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/lookup.py", line 2, in &lt;module&gt;
+    print(row["date"])
+          ~~~^^^^^^^^
+KeyError: 'date'</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#KeyError"><code>KeyError</code></a> means you asked a dictionary for a key it doesn’t have, and a DataFrame counts as a dictionary of columns here, so a missing column raises the same thing. The message is just the key you asked for, in quotes. Look closely at those quotes: <code>'date '</code> with a trailing space and <code>'Date'</code> with a capital D are both classics. Print <code>df.columns.tolist()</code> to see the names that are really there, and check whether an earlier cell dropped or renamed the column. A <code>KeyError</code> raised inside pandas also comes as a two-part chained traceback, which worked example 1 walks through.</p>
 </section>
-<section id="indexerror-list-index-out-of-range" class="level3">
-<h3 class="anchored" data-anchor-id="indexerror-list-index-out-of-range"><code>IndexError: list index out of range</code></h3>
-<p><strong>Plain English:</strong> you asked a list for element number <em>N</em> but the list has fewer than <em>N+1</em> items.</p>
-<p><strong>First place to look:</strong> off-by-one errors in loops, empty lists you did not expect to be empty, or data that has fewer rows than you assumed.</p>
+<section id="indexerror-past-the-end-of-a-list" class="level3">
+<h3 class="anchored" data-anchor-id="indexerror-past-the-end-of-a-list">IndexError: past the end of a list</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/scores.py", line 2, in &lt;module&gt;
+    print(scores[3])
+          ~~~~~~^^^
+IndexError: list index out of range</code></pre>
+<p>An <a href="https://docs.python.org/3/library/exceptions.html#IndexError"><code>IndexError</code></a> means you asked for item number <em>N</em> of a list that doesn’t have that many. Python counts from 0, so a list of three scores has positions 0, 1, and 2, and <code>scores[3]</code> is one past the end: a textbook <a href="https://en.wikipedia.org/wiki/Off-by-one_error">off-by-one error</a>. The other usual causes are a list that’s empty when you didn’t expect it to be, and data with fewer rows than you assumed.</p>
 </section>
-<section id="attributeerror-nonetype-object-has-no-attribute-foo" class="level3">
-<h3 class="anchored" data-anchor-id="attributeerror-nonetype-object-has-no-attribute-foo"><code>AttributeError: 'NoneType' object has no attribute 'foo'</code></h3>
-<p><strong>Plain English:</strong> you called <code>.foo()</code> on something that is <code>None</code>. Usually a function you called returned <code>None</code> when you expected it to return an object.</p>
-<p><strong>First place to look:</strong> a preceding line that assigned from a function that can return <code>None</code> (for example, <code>re.match</code> when nothing matches, or <code>dict.get</code> with no default).</p>
+<section id="attributeerror-nonetype-object-has-no-attribute" class="level3">
+<h3 class="anchored" data-anchor-id="attributeerror-nonetype-object-has-no-attribute">AttributeError: ‘NoneType’ object has no attribute …</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/extract.py", line 3, in &lt;module&gt;
+    print(m.group())
+          ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'</code></pre>
+<p>An <a href="https://docs.python.org/3/library/exceptions.html#AttributeError"><code>AttributeError</code></a> means you asked a value for a method or attribute it doesn’t have. When the value is <code>None</code> (Python’s “nothing here”), the real problem is almost never on this line. It’s on an earlier line that assigned from a function that returned <code>None</code> when you expected something. Here <code>m</code> came from <a href="https://docs.python.org/3/library/re.html#re.match"><code>re.match</code></a>, which returns <code>None</code> when the pattern doesn’t match. Other common sources are <a href="https://docs.python.org/3/library/stdtypes.html#dict.get"><code>dict.get</code></a> with no default, and your own function that forgot its <code>return</code> statement. Walk back up to the assignment and ask why it came back empty.</p>
 </section>
-<section id="filenotfounderror-errno-2-no-such-file-or-directory-data.csv" class="level3">
-<h3 class="anchored" data-anchor-id="filenotfounderror-errno-2-no-such-file-or-directory-data.csv"><code>FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'</code></h3>
-<p><strong>Plain English:</strong> Python cannot find the file at the path you gave it.</p>
-<p><strong>First place to look:</strong> the <em>current working directory</em>. Print <code>import os; os.getcwd()</code> — the path is relative to that. In Jupyter, the current directory is usually the directory containing the <code>.ipynb</code> file, not the project root. See <a href="file-system.html" class="quarto-xref"><span>Chapter 10</span></a>.</p>
+<section id="filenotfounderror-a-path-that-doesnt-lead-anywhere" class="level3">
+<h3 class="anchored" data-anchor-id="filenotfounderror-a-path-that-doesnt-lead-anywhere">FileNotFoundError: a path that doesn’t lead anywhere</h3>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/load.py", line 1, in &lt;module&gt;
+    with open("data.csv") as f:
+         ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'</code></pre>
+<p>A <a href="https://docs.python.org/3/library/exceptions.html#FileNotFoundError"><code>FileNotFoundError</code></a> means there’s no file at the path you gave. “But it’s right there!” is the usual reaction, and the answer is usually the <a href="https://en.wikipedia.org/wiki/Working_directory">working directory</a>. A relative <a href="../chapters/appendix-glossary.html#term-path">path</a> like <code>"data.csv"</code> is looked up relative to wherever Python is running, not relative to your script. Print <a href="https://docs.python.org/3/library/os.html#os.getcwd"><code>os.getcwd()</code></a> (after <code>import os</code>) to see where that is. In Jupyter, it’s usually the folder that contains the <code>.ipynb</code> file, not your project’s top folder, so a notebook in <code>notebooks/</code> needs <code>"../data/data.csv"</code>. <a href="file-system.html" class="quarto-xref"><span>Chapter 10</span></a> covers paths properly.</p>
 </section>
 </section>
-<section id="chained-tracebacks-during-handling-of-the-above-exception" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="chained-tracebacks-during-handling-of-the-above-exception"><span class="header-section-number">7.4</span> Chained tracebacks: “during handling of the above exception”</h2>
-<p>Sometimes a traceback has two sections joined by a line that says:</p>
+<section id="chained-tracebacks-when-one-error-leads-to-another" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="chained-tracebacks-when-one-error-leads-to-another"><span class="header-section-number">7.4</span> Chained tracebacks: when one error leads to another</h2>
+<p>Sooner or later you’ll get a traceback that seems to contain two tracebacks, joined by one of these lines:</p>
 <pre class="text"><code>During handling of the above exception, another exception occurred:</code></pre>
-<p>or</p>
 <pre class="text"><code>The above exception was the direct cause of the following exception:</code></pre>
-<p>This means the code caught an exception and raised a <em>new</em> one while handling it. Pandas does this constantly: it catches a low-level <code>ValueError</code> from numpy and re-raises it as a more helpful <code>pandas.errors.ParserError</code> with a better message. To debug, <strong>read the original (top) exception first</strong> — that is the root cause — and use the second one as context about how it manifested. The bottom traceback often has a friendlier message, but the top one is what you actually need to fix.</p>
+<p>Both mean the same basic thing: some code caught the first error and, while dealing with it, a second error was raised. Python shows you both, oldest first, so the block at the top is where the trouble began and the block at the bottom is where it ended. The two phrases tell you <em>how</em> the second error came about, and that changes which one you fix.</p>
+<p><strong>“During handling of the above exception”</strong> usually means the error-handling code itself had a bug. This script tries to turn price strings into numbers and fall back to “not a number” when it can’t:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prices.py</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>raw_prices <span class="op">=</span> [<span class="st">"12.50"</span>, <span class="st">"89.25"</span>, <span class="st">"call for price"</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>prices <span class="op">=</span> []</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> raw <span class="kw">in</span> raw_prices:</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        prices.append(<span class="bu">float</span>(raw))</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        prices.append(flaot(<span class="st">"nan"</span>))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prices)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/prices.py", line 6, in &lt;module&gt;
+    prices.append(float(raw))
+                  ^^^^^^^^^^
+ValueError: could not convert string to float: 'call for price'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/you/project/prices.py", line 8, in &lt;module&gt;
+    prices.append(flaot("nan"))
+                  ^^^^^
+NameError: name 'flaot' is not defined. Did you mean: 'float'?</code></pre>
+<p>The first <code>ValueError</code> was expected: that’s what the <code>try</code>/<code>except</code> was there for. The real bug is the second block, a typo in the <code>except</code> branch. Fix <code>flaot</code> and the script works. The general lesson is to read both blocks and ask which one is the surprise.</p>
+<p><strong>“The above exception was the direct cause”</strong> means someone deliberately raised a new error on top of the old one, using <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement"><code>raise ... from ...</code></a>. Libraries do this to translate a low-level error into one that makes more sense to you, and you may do it yourself to add context. Here the top block usually holds the underlying cause, and the bottom block holds the friendlier summary. pandas does this every time you ask for a column that doesn’t exist, and in that case it’s the <em>bottom</em> block that contains your code, while the top block is pandas’ internal lookup. Worked example 1 reads one of those line by line, and worked example 3 reads the other kind, where your own code wraps an error from a library.</p>
+<p>Whichever phrase you see, the approach is the same as for any traceback. Read the very last line to see how things ended, find the frames from your own project in either block, and then read the other block for context on why.</p>
 </section>
 <section id="tracebacks-in-jupyter-notebooks" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="tracebacks-in-jupyter-notebooks"><span class="header-section-number">7.5</span> Tracebacks in Jupyter notebooks</h2>
-<p>Jupyter adds some formatting of its own around tracebacks, but the bones are the same. A traceback from a failing notebook cell looks something like:</p>
+<p>Jupyter prints tracebacks in its own style, with more source code and less punctuation, and the first time you see one it can look like a different language. The bones are the same. Here’s the <a href="../chapters/appendix-glossary.html#term-notebook">notebook</a> version of a very common mistake, asking for a <code>date</code> column in a file whose column is really called <code>Date</code>:</p>
 <pre class="text"><code>---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+File ~/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/base.py:3641, in Index.get_loc(self, key)
+   3640 try:
+-&gt; 3641     return self._engine.get_loc(casted_key)
+   3642 except KeyError as err:
+
+File pandas/_libs/index.pyx:168, in pandas._libs.index.IndexEngine.get_loc()
+--&gt; 168 'Could not get source, probably due dynamically evaluated source code.'
+File pandas/_libs/index.pyx:197, in pandas._libs.index.IndexEngine.get_loc()
+--&gt; 197 'Could not get source, probably due dynamically evaluated source code.'
+File pandas/_libs/hashtable_class_helper.pxi:7668, in pandas._libs.hashtable.PyObjectHashTable.get_item()
+-&gt; 7668 'Could not get source, probably due dynamically evaluated source code.'
+File pandas/_libs/hashtable_class_helper.pxi:7676, in pandas._libs.hashtable.PyObjectHashTable.get_item()
+-&gt; 7676 'Could not get source, probably due dynamically evaluated source code.'
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
 KeyError                                  Traceback (most recent call last)
 Cell In[7], line 3
       1 import pandas as pd
       2 df = pd.read_csv("sales.csv")
-----&gt; 3 df["date"].dt.year
-      4
-      5 print(df.head())
+----&gt; 3 years = df["date"].dt.year
+      5 print(years.value_counts())
 
-File ~/envs/project/lib/python3.11/site-packages/pandas/core/frame.py:3893, in DataFrame.__getitem__(self, key)
-   3891 if self.columns.nlevels &gt; 1:
-   3892     return self._getitem_multilevel(key)
--&gt; 3893     indexer = self.columns.get_loc(key)
-...
+File ~/project/.venv/lib/python3.11/site-packages/pandas/core/frame.py:4378, in DataFrame.__getitem__(self, key)
+   4374
+   4375         if is_single_key:
+   4376             if self.columns.nlevels &gt; 1:
+   4377                 return self._getitem_multilevel(key)
+-&gt; 4378             indexer = self.columns.get_loc(key)
+   4379             if is_integer(indexer):
+   4380                 indexer = [indexer]
+   4381         else:
+
+File ~/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/base.py:3648, in Index.get_loc(self, key)
+   3643     if isinstance(casted_key, slice) or (
+   3644         isinstance(casted_key, abc.Iterable)
+   3645         and any(isinstance(x, slice) for x in casted_key)
+   3646     ):
+   3647         raise InvalidIndexError(key) from err
+-&gt; 3648     raise KeyError(key) from err
+   3649 except TypeError:
+   3650     # If we have a listlike key, _check_indexing_error will raise
+   3651     #  InvalidIndexError. Otherwise we fall through and re-raise
+   3652     #  the TypeError.
+   3653     self._check_indexing_error(key)
+
 KeyError: 'date'</code></pre>
-<p>The header <code>Cell In[7]</code> names the cell by its <em>execution number</em>, not by where the cell sits in your notebook. If you have been re-running cells out of order, those numbers can get confusing fast — there is no rule that says cell 7 is the seventh cell from the top. When the numbering stops matching your mental model, that is a hint to restart the kernel and run from the top (see <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> for why this matters).</p>
-<p>The little <code>----&gt;</code> arrow inside the cell preview is Jupyter’s pointer at the <em>exact line</em> that was executing when things blew up. Conceptually it plays the same role as the <code>File ..., line ...</code> frame in a script traceback: it tells you which line crashed. The few unmarked lines of source code shown above and below are just context, so you can see the line in situ.</p>
-<p>Below that, frames inside libraries are printed in full, exactly as they would be in a script traceback. So the “find the first frame that belongs to you, starting from the bottom” heuristic still works in notebooks. In the example above, <code>pandas/core/frame.py</code> is library code; the place where you should look is the cell with <code>df["date"].dt.year</code>, because that is the last code <em>you wrote</em> before pandas raised the error.</p>
+<p>Fifty lines for a one-letter mistake, and nearly all of it is pandas. Here’s how to cut it down to size.</p>
+<p>Each block starts with the exception type on the left and <code>Traceback (most recent call last)</code> on the right, and each frame starts with <code>File ...:line, in function</code>, the same information as a script traceback in a different layout. Instead of one line of source per frame, Jupyter shows a few lines around it, with an arrow (<code>-&gt;</code> or <code>----&gt;</code>) pointing at the line that was running. The lines saying <em>Could not get source</em> come from the parts of pandas written in <a href="https://en.wikipedia.org/wiki/Cython">Cython</a> and compiled, where there’s no Python source to show; skip them.</p>
+<p>The frame that’s yours is the one that starts with <code>Cell In[7], line 3</code>: that’s your notebook cell, and the <code>----&gt;</code> arrow points at <code>years = df["date"].dt.year</code>. It’s in the second block, as usual for a <code>raise ... from</code> chain inside a library, so the bottom-up rule still works: start at the bottom, pass the two pandas frames, and stop at the first cell.</p>
+<p>The one genuinely confusing part is the number. <code>In[7]</code> is the cell’s <em>execution count</em>, the number that appears in the brackets next to the cell after it runs, not its position in the notebook. If you’ve been running cells out of order, re-running some and skipping others, cell 7 might be the second cell on the page or the twentieth. That’s why “there is no cell 7” happens. When the numbers stop matching what you see, restart the <a href="../chapters/appendix-glossary.html#term-kernel">kernel</a> and run everything from the top (in <a href="https://jupyterlab.readthedocs.io/en/stable/user/notebook.html">JupyterLab</a>, that’s <strong>Restart Kernel and Run All Cells…</strong> in the Kernel menu), and see <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> for why out-of-order state causes so much grief.</p>
 </section>
-<section id="searching-for-errors-online" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="searching-for-errors-online"><span class="header-section-number">7.6</span> Searching for errors online</h2>
-<p>When you paste an error message into a search engine, include the <strong>exception type</strong> and the <strong>static part of the message</strong>. Strip out things that are specific to your machine: file paths, variable values, line numbers. For example, do not search</p>
+<section id="searching-for-an-error-online" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="searching-for-an-error-online"><span class="header-section-number">7.6</span> Searching for an error online</h2>
+<p>Most errors you’ll ever hit, someone else has hit first and asked about. The trick is searching for their error, not yours. Your message is full of details only you have, such as your user name, your file names, and your data values, and a search engine will dutifully try to match all of them. So don’t search for</p>
 <blockquote class="blockquote">
 <p><code>FileNotFoundError: [Errno 2] No such file or directory: '/Users/alex/project/data/sales_2024_q3.csv'</code></p>
 </blockquote>
-<p>search instead for</p>
+<p>Search instead for the exception type, the part of the message that would be the same on anyone’s computer, and the library or function involved:</p>
 <blockquote class="blockquote">
 <p><code>FileNotFoundError No such file or directory pandas read_csv</code></p>
 </blockquote>
-<p>The static part plus the library is usually enough to land you on a Stack Overflow answer with your exact problem.</p>
-<p>If the exception is from a library, add the library name. If the exception is a <code>SyntaxError</code> or <code>IndentationError</code>, don’t bother searching — those are almost always typos in your own code that you will spot faster by re-reading.</p>
+<p>That’s usually enough to land you on a <a href="https://en.wikipedia.org/wiki/Stack_Overflow">Stack Overflow</a> question with your exact problem. Two cautions. Check the dates on what you find: error messages change between versions, and pandas 3 changed how it stores text columns, giving them their own <code>str</code> type, so some errors about text columns now read differently (the <a href="https://pandas.pydata.org/docs/user_guide/migration-3-strings.html">pandas 3 string migration guide</a> explains the change), so an answer from 2019 may quote a message you’ll never see. And for a <code>SyntaxError</code> or <code>IndentationError</code>, don’t bother searching; it’s a typo in your own file, and you’ll find it faster by rereading the line the caret points to and the one above.</p>
+<p>When you ask a person or an AI assistant instead, flip the rule: give them the <em>whole</em> traceback, not just the last line, plus the code that produced it. The stack is half the information, and “I got a KeyError” alone can’t be answered. The best questions come with a <a href="https://en.wikipedia.org/wiki/Minimal_reproducible_example">minimal reproducible example</a>, the smallest bit of code that still shows the error; <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a> shows how to build one, and <a href="ai-llm.html" class="quarto-xref"><span>Chapter 35</span></a> covers working with AI tools.</p>
 </section>
 <section id="stakes-and-politics" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">7.7</span> Stakes and politics</h2>
-<p>Reading a traceback is a narrow technical skill, but the artifact itself has politics. Two concrete things to notice. First, <em>the traceback speaks one language</em>. Python’s exception messages, library error strings, and the conventions for naming exceptions (<code>KeyError</code>, <code>ValueError</code>, <code>IndexError</code>) are all English, and so are the Stack Overflow answers, GitHub issues, and AI explanations you will reach for next. Non-English speakers debug Python by translating an English error message back to the underlying concept and then forward to their own working language. The barrier is small for any single bug, but it accumulates across a career and is one of the reasons that beginning to program in English is itself a form of cultural capital. Second, <em>tracebacks leak context</em>. The full file paths Python prints often include your user name, your project name, the layout of your home directory, and the versions of every library on your <code>PYTHONPATH</code>; pasting a raw traceback into a public forum or AI chat is sharing that information whether you meant to or not.</p>
-<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you paste a traceback for help, glance at what else it tells the reader about your machine, and redact the parts that are not part of the bug.</p>
+<p>Look at the first frame of a traceback from your own laptop. It might read <code>File "/Users/maria.lopez/Documents/counseling-intake/clean_2026.py"</code>, and in one line it has told a stranger your name, what project you’re on, and what the data is about, before anyone reads the error. The message can say more: a <code>ValueError</code> quotes the bad value, and a <code>KeyError</code> quotes the key, so a traceback can carry a piece of the data itself. Paste it into a public forum or a chatbot and all of that goes too. When the data concerns other people, that can be <a href="https://en.wikipedia.org/wiki/Personal_data">personal data</a> you had promised to protect.</p>
+<p>There’s a second cost, easy to miss if English is your first language. Exception names, messages, and nearly every answer you’ll find by searching them are in English, so a student who reads English as a second language does a translation step on every bug that a native speaker doesn’t. Tools like <code>friendly_traceback</code> (see Further reading) show that the default could be otherwise.</p>
+<p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: before you paste a traceback anywhere, read it once as a stranger would, and redact whatever isn’t part of the bug.</p>
 </section>
 <section id="worked-examples" class="level2" data-number="7.8">
 <h2 data-number="7.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">7.8</span> Worked examples</h2>
 <section id="a-keyerror-in-pandas" class="level3">
-<h3 class="anchored" data-anchor-id="a-keyerror-in-pandas">A <code>KeyError</code> in pandas</h3>
-<p>You run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>and see:</p>
-<pre><code>KeyError: 'date'</code></pre>
-<p><strong>Read the traceback bottom-up.</strong> The last line is <code>KeyError: 'date'</code>. The bottommost frame is inside pandas (<code>pandas/core/indexes/base.py</code>), which is not helpful. Scan upward until you hit a frame in <em>your</em> file — in this case, the <code>Cell In[7]</code> or script frame. That frame points at <code>df["date"]</code>. The problem is not the date arithmetic; it is that pandas cannot find a column called <code>date</code> at all.</p>
-<p><strong>Next step:</strong> run <code>df.columns.tolist()</code> and look for similar names. You will probably find <code>'Date'</code>, <code>' date'</code>, or <code>'date '</code>. Fix the column name (or normalize with <code>df.columns = df.columns.str.strip().str.lower()</code>) and the error goes away.</p>
+<h3 class="anchored" data-anchor-id="a-keyerror-in-pandas">1. A KeyError in pandas</h3>
+<p>You have a small file of sales, <code>sales.csv</code>, whose first line is <code>Date,store,amount</code>. You run this script:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sales_report.py</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and get:</p>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/you/project/sales_report.py", line 4, in &lt;module&gt;
+    print(df["date"].dt.year.value_counts())
+          ~~^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'date'</code></pre>
+<p><strong>Read the last line first.</strong> <code>KeyError: 'date'</code>: something asked for a key called <code>date</code> and didn’t find it.</p>
+<p><strong>Find your frame.</strong> The top block is entirely pandas: its first frame is in <code>site-packages</code>, and the rest are compiled <code>.pyx</code> files. That block is pandas looking the name up internally, and you can skip it. In the bottom block, scanning up from the bottom, you pass <code>base.py</code> and <code>frame.py</code> and reach <code>sales_report.py</code>, line 4. The markers under that line (<code>~~^^^^^^^^</code>) point at <code>df["date"]</code>, not at <code>.dt.year</code> or <code>.value_counts()</code>. So the problem isn’t the date handling at all; pandas can’t find a column called <code>date</code>.</p>
+<p><strong>Look at what’s really there.</strong> Run <code>print(df.columns.tolist())</code>, and you’ll see <code>['Date', 'store', 'amount']</code>. The column has a capital D. You could type <code>df["Date"]</code>, but it’s more durable to clean every name once, right after loading, so the next file’s <code>" Date "</code> doesn’t bite you either:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Expect the next error.</strong> With the name fixed, the same line now fails with <code>AttributeError: Can only use .dt accessor with datetimelike values</code>, the error from earlier in this chapter, because the column is still text. Convert it, and the script prints the year counts:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Fixing one error and meeting the next is normal. It’s progress, not failure: each traceback is further down the script than the last.</p>
 </section>
-<section id="a-valueerror-from-a-numeric-column" class="level3">
-<h3 class="anchored" data-anchor-id="a-valueerror-from-a-numeric-column">A <code>ValueError</code> from a “numeric” column</h3>
-<p>You run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"reading"</span>].mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>and see:</p>
-<pre><code>ValueError: could not convert string to float: 'N/A'</code></pre>
-<p><strong>Read the traceback bottom-up.</strong> The exception is in numpy, several frames deep inside pandas. Your frame is the <code>.mean()</code> call. The problem is not <code>.mean()</code> itself; it is that the <code>reading</code> column contains the string <code>'N/A'</code> which pandas read as a string rather than a missing value, and numpy can’t take the mean of strings.</p>
-<p><strong>Next step:</strong> tell <code>read_csv</code> to treat <code>'N/A'</code> as missing:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>, na_values<span class="op">=</span>[<span class="st">"N/A"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for the full list of ways missing values can hide in CSVs.</p>
+<section id="a-numeric-column-that-wont-average" class="level3">
+<h3 class="anchored" data-anchor-id="a-numeric-column-that-wont-average">2. A “numeric” column that won’t average</h3>
+<p>Your file <code>measurements.csv</code> has a <code>reading</code> column of numbers, with a few gaps. You run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># measurements_report.py</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and get:</p>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/measurements_report.py", line 4, in &lt;module&gt;
+    print(df["reading"].mean())
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/util/_decorators.py", line 336, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/series.py", line 8113, in mean
+    return NDFrame.mean(
+           ^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/generic.py", line 11819, in mean
+    return self._stat_function(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/generic.py", line 11773, in _stat_function
+    return self._reduce(
+           ^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/series.py", line 7480, in _reduce
+    result = delegate._reduce(name, skipna=skipna, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/arrays/string_arrow.py", line 564, in _reduce
+    raise TypeError(f"Cannot perform reduction '{name}' with string dtype")
+TypeError: Cannot perform reduction 'mean' with string dtype</code></pre>
+<p><strong>Read the last line first.</strong> pandas can’t take the mean of a column whose type is <em>string</em>. That’s surprising, because <code>reading</code> is supposed to hold numbers.</p>
+<p><strong>Find your frame.</strong> Six frames are pandas; one is yours, at the very top: line 4, the <code>.mean()</code> call. But <code>.mean()</code> isn’t the mistake. It’s doing its job on a column that came out of <code>read_csv</code> as text, so the problem started one line earlier, when the file was read.</p>
+<p><strong>Find the value that made it text.</strong> <code>print(df.dtypes)</code> confirms that <code>reading</code> is <code>str</code>. To see which values couldn’t be read as numbers, convert with <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html"><code>pd.to_numeric</code></a> and look at what turned into missing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>as_numbers <span class="op">=</span> pd.to_numeric(df[<span class="st">"reading"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[as_numbers.isna() <span class="op">&amp;</span> df[<span class="st">"reading"</span>].notna()])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This prints one row, site <code>D</code>, whose reading is the text <code>no reading</code>. (The file also has an <code>N/A</code>, but <code>read_csv</code> already treats that as missing, so it doesn’t show up.) One stray string was enough to make the whole column text.</p>
+<p><strong>Fix it where the file is read.</strong> Tell <code>read_csv</code> that <code>no reading</code> means missing, and the mean works (it prints <code>3.65</code> for this file):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>, na_values<span class="op">=</span>[<span class="st">"no reading"</span>])</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you’d tried <code>df["reading"].astype(float)</code> instead, you’d have gotten <code>ValueError: could not convert string to float: 'no reading'</code>, which names the culprit directly. Different route, same cause. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for the other ways missing values hide in files.</p>
 </section>
-<section id="a-chained-traceback-from-a-flaky-web-request" class="level3">
-<h3 class="anchored" data-anchor-id="a-chained-traceback-from-a-flaky-web-request">A chained traceback from a flaky web request</h3>
-<pre><code>Traceback (most recent call last):
-  File "fetch.py", line 12, in &lt;module&gt;
+<section id="a-chained-traceback-from-a-web-request" class="level3">
+<h3 class="anchored" data-anchor-id="a-chained-traceback-from-a-web-request">3. A chained traceback from a web request</h3>
+<p>This script asks a web server for a user’s profile and parses the reply as <a href="../chapters/appendix-glossary.html#term-json">JSON</a>, wrapping any parsing failure in an error of its own:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fetch.py</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_user(user_id):</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://example.com/users/</span><span class="sc">{</span>user_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(resp.text)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> load_user(<span class="dv">42</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> json.JSONDecodeError <span class="im">as</span> e:</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"failed to load user profile"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It prints:</p>
+<pre class="text"><code>Traceback (most recent call last):
+  File "/Users/you/project/fetch.py", line 12, in &lt;module&gt;
     data = load_user(42)
-  File "fetch.py", line 6, in load_user
+           ^^^^^^^^^^^^^
+  File "/Users/you/project/fetch.py", line 8, in load_user
     return json.loads(resp.text)
-  File ".../json/decoder.py", line 337, in decode
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
     raise JSONDecodeError("Expecting value", s, err.value) from None
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "fetch.py", line 14, in &lt;module&gt;
+  File "/Users/you/project/fetch.py", line 14, in &lt;module&gt;
     raise RuntimeError("failed to load user profile") from e
 RuntimeError: failed to load user profile</code></pre>
-<p><strong>Read the top block first.</strong> The original problem is <code>JSONDecodeError: Expecting value: line 1 column 1 (char 0)</code> — the response body was empty or not valid JSON. The <code>RuntimeError</code> is your own code wrapping the library error with a friendlier message.</p>
-<p><strong>Next step:</strong> print <code>resp.status_code</code> and <code>resp.text[:200]</code> before the <code>json.loads</code> call. You will probably find an HTML error page or an empty response.</p>
+<p><strong>Read the last line, then the top block.</strong> The final error is a <a href="https://docs.python.org/3/library/exceptions.html#RuntimeError"><code>RuntimeError</code></a> that your own code raised on line 14, and all it says is that loading failed. It’s “the direct cause” phrase, so the reason is in the block above: a <a href="https://docs.python.org/3/library/json.html#json.JSONDecodeError"><code>JSONDecodeError</code></a> from <a href="https://docs.python.org/3/library/json.html#json.loads"><code>json.loads</code></a>, on line 8 of your file. <code>Expecting value: line 1 column 1 (char 0)</code> means the very first character of the reply wasn’t valid JSON, which in practice means the reply was empty or wasn’t JSON at all.</p>
+<p><strong>Look at what the server sent.</strong> Before the <code>json.loads</code> line, print the status and the start of the body:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.status_code)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.text[:<span class="dv">60</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It prints <code>404</code>, then <code>&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;title&gt;Example Domain&lt;/</code>. The server answered with an <a href="https://en.wikipedia.org/wiki/HTTP_404">HTTP 404</a> “not found” page written in HTML (unsurprisingly: <a href="https://en.wikipedia.org/wiki/Example.com">example.com</a> is a domain reserved for examples and has no user profiles). Nothing was wrong with the JSON parser; you were feeding it a web page. The durable fix is to check <a href="https://requests.readthedocs.io/en/latest/user/quickstart/#response-status-codes"><code>resp.status_code</code></a> before parsing, so the error you get says “the server said 404” instead of something about line 1, column 1. <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a> covers status codes and how to handle them.</p>
 </section>
 </section>
 <section id="exercises" class="level2" data-number="7.9">
 <h2 data-number="7.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.9</span> Exercises</h2>
 <ol type="1">
-<li>Take a working Python script of your own and deliberately break it in four ways: misspell a variable name, delete an <code>import</code>, index past the end of a list, and call a method on <code>None</code>. Read each traceback and write down, in a single sentence, what the “what” and “where” are.</li>
-<li>Find a traceback in your own recent course work (a screenshot or a notebook cell output). Without re-running the code, write down your best guess at the root cause based only on the traceback. Then re-run to confirm.</li>
-<li>Pick a library you use often (pandas, numpy, matplotlib). Deliberately trigger an error inside it and follow the “bottom-up to your code” heuristic to find which line of yours caused the bad input.</li>
-<li>In a Jupyter notebook, run cells in a deliberately-wrong order so that a variable is <code>None</code> when the next cell uses it. Read the resulting traceback and practice reading the <code>Cell In[N]</code> header.</li>
-<li>Pick the most confusing error message you encountered in the last week, strip out the machine-specific parts, paste the static part into a search engine, and write down the first Stack Overflow answer you found. Was it helpful? If not, what made the message hard to search for?</li>
+<li>Take a working Python script of your own and break it four ways: misspell a variable name, delete an <code>import</code>, index past the end of a list, and call a method on <code>None</code>. For each traceback, write one sentence naming the “what” and the “where.”</li>
+<li>Find a traceback in your own recent course work (a screenshot or a notebook cell’s output). Without rerunning anything, write down your best guess at the cause from the traceback alone. Then rerun and check.</li>
+<li>Pick a library you use often (pandas, numpy, matplotlib) and trigger an error inside it on purpose. Scan up from the bottom to the first frame of yours, and write down which line of your code supplied the bad input.</li>
+<li>Write a <code>try</code>/<code>except</code> block with a deliberate typo in the <code>except</code> branch, as in <code>prices.py</code> above. Read the chained traceback and say which of the two blocks holds the bug.</li>
+<li>In a Jupyter notebook, run cells in the wrong order so that a variable is <code>None</code> (or undefined) when a later cell uses it. Read the traceback, find the <code>Cell In[N]</code> header, and work out which cell on the page that number refers to.</li>
+<li>Pick the most confusing error message you’ve met in the last week. Strip out the parts specific to your machine, search for what’s left, and note whether the first result was helpful. If it wasn’t, what made the message hard to search for?</li>
 </ol>
 </section>
 <section id="one-page-checklist" class="level2" data-number="7.10">
 <h2 data-number="7.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">7.10</span> One-page checklist</h2>
 <ul>
-<li>Look at the <strong>last line</strong> first: exception type and message = <em>what</em>.</li>
-<li>Look at the <strong>bottommost frame</strong> inside <em>your</em> code: file and line = <em>where</em>.</li>
-<li>If the bottommost frame is in a library, scan <strong>upward</strong> until you hit a frame from your project.</li>
-<li>For chained tracebacks, read the <strong>top block</strong> first: that is the root cause.</li>
-<li>In Jupyter, the <code>Cell In[N]</code> header names the cell by execution number, and the <code>----&gt;</code> arrow marks the exact offending line.</li>
-<li>Before asking for help, paste the traceback in full — never just the error message. The stack is half the information. See <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>.</li>
-<li>When searching online, include the exception type and the static part of the message; strip file paths, values, and line numbers.</li>
+<li>Read the <strong>last line</strong> first: the exception type and message tell you <em>what</em>.</li>
+<li>Find the <strong>bottom frame</strong> in your own code: its file and line tell you <em>where</em>.</li>
+<li>If the bottom frame is in a library (<code>site-packages</code>, <code>.pyx</code>, the standard library), scan <strong>up</strong> until you reach a file from your project.</li>
+<li>Use the <code>^^^^</code> markers to see which part of a long line failed.</li>
+<li>Remember that the line that crashed isn’t always the line that’s wrong; walk back up the stack to where the bad value came from.</li>
+<li>For chained tracebacks, read both blocks. “During handling” often means a bug in the error handler; “direct cause” means the top block holds the underlying reason.</li>
+<li>A <code>SyntaxError</code> or <code>IndentationError</code> has no stack: nothing ran, so look at the caret and the line above it.</li>
+<li>In Jupyter, <code>Cell In[N]</code> is the execution count, not the cell’s position, and the arrow marks the line that ran.</li>
+<li>When searching, keep the exception type and the part of the message anyone would see; drop paths, values, and line numbers.</li>
+<li>When asking for help, paste the whole traceback plus the code, after removing anything private (see <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>).</li>
 </ul>
 </section>
 <section id="quick-reference-common-exceptions-first-suspect" class="level2" data-number="7.11">
 <h2 data-number="7.11" class="anchored" data-anchor-id="quick-reference-common-exceptions-first-suspect"><span class="header-section-number">7.11</span> Quick reference: common exceptions → first suspect</h2>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Exception</th>
@@ -982,43 +1219,47 @@ RuntimeError: failed to load user profile</code></pre>
 <tbody>
 <tr class="odd">
 <td><code>NameError</code></td>
-<td>typo or unrun cell</td>
+<td>typo, or a cell you haven’t run</td>
 </tr>
 <tr class="even">
 <td><code>ModuleNotFoundError</code></td>
-<td>wrong environment or kernel</td>
+<td>installed into a different environment or kernel</td>
 </tr>
 <tr class="odd">
+<td><code>ImportError</code></td>
+<td>misspelled name, or a different package version</td>
+</tr>
+<tr class="even">
 <td><code>SyntaxError</code></td>
-<td>unclosed bracket on this or previous line</td>
-</tr>
-<tr class="even">
-<td><code>IndentationError</code></td>
-<td>tabs vs.&nbsp;spaces</td>
+<td>unclosed bracket or quote on this line or the one above</td>
 </tr>
 <tr class="odd">
+<td><code>IndentationError</code> / <code>TabError</code></td>
+<td>tabs mixed with spaces, or pasted code</td>
+</tr>
+<tr class="even">
 <td><code>TypeError</code></td>
-<td>wrong argument type or count</td>
+<td>wrong kind of value (often a number stored as text), or wrong number of arguments</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ValueError</code></td>
-<td>wrong value (e.g., missing-value sentinel)</td>
+<td>right type, bad value (often a missing-value code)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>KeyError</code></td>
-<td>dict or DataFrame column typo</td>
-</tr>
-<tr class="even">
-<td><code>IndexError</code></td>
-<td>off-by-one, empty list</td>
+<td>misspelled key or column name, or a stray space or capital</td>
 </tr>
 <tr class="odd">
-<td><code>AttributeError: 'NoneType'</code></td>
-<td>a function returned <code>None</code> earlier</td>
+<td><code>IndexError</code></td>
+<td>off-by-one, or an empty list</td>
 </tr>
 <tr class="even">
+<td><code>AttributeError: 'NoneType'</code></td>
+<td>an earlier function returned <code>None</code></td>
+</tr>
+<tr class="odd">
 <td><code>FileNotFoundError</code></td>
-<td>current working directory mismatch</td>
+<td>the working directory isn’t where you think</td>
 </tr>
 </tbody>
 </table>
@@ -1033,12 +1274,12 @@ RuntimeError: failed to load user profile</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Python docs, <a href="https://docs.python.org/3/library/exceptions.html">Built-in Exceptions</a> — the complete hierarchy of Python exception classes; worth scanning end-to-end once so the names start triggering associations.</li>
-<li>Python docs, <a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions (tutorial)</a> — the official introduction to raising and handling exceptions.</li>
-<li>Python docs, <a href="https://docs.python.org/3/library/traceback.html"><code>traceback</code> module</a> — the standard-library tools for capturing, formatting, and inspecting tracebacks programmatically; useful when logging.</li>
-<li><a href="https://peps.python.org/pep-0657/">PEP 657 — Include Fine Grained Error Locations in Tracebacks</a> — explains the <code>^^^^^</code> underline markers introduced in Python 3.11; once you know what you’re looking at, they accelerate diagnosis significantly.</li>
-<li>Real Python, <a href="https://realpython.com/python-traceback/">Understanding the Python Traceback</a> — a walk-through of every part of a traceback with worked examples.</li>
-<li>André Roberge, <a href="https://aroberge.github.io/friendly-traceback-docs/docs/html/"><code>friendly_traceback</code></a> — a third-party library that rewrites tracebacks in plain English (and several other languages); useful as both a learning aid and a glimpse at what less-Anglocentric error messages could look like.</li>
+<li><strong>Python docs</strong>, <a href="https://docs.python.org/3/library/exceptions.html">Built-in Exceptions</a> — every exception class Python has, arranged as a family tree; worth skimming once so the names start to ring bells.</li>
+<li><strong>Python docs</strong>, <a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions</a> — the official tutorial on raising, catching, and chaining exceptions, for when you want to write <code>try</code>/<code>except</code> blocks of your own.</li>
+<li><strong>Python docs</strong>, <a href="https://docs.python.org/3/library/traceback.html"><code>traceback</code> module</a> — the standard-library tools for capturing and formatting tracebacks yourself, useful when you start logging errors from longer-running scripts.</li>
+<li><strong>Pablo Galindo Salgado, Batuhan Taskaya, and Ammar Askar</strong>, <a href="https://peps.python.org/pep-0657/">PEP 657: Include Fine Grained Error Locations in Tracebacks</a> — the proposal behind the <code>^^^^</code> markers in Python 3.11, with examples of the guesswork they replace.</li>
+<li><strong>Software Carpentry</strong>, <a href="https://swcarpentry.github.io/python-novice-inflammation/09-errors.html">Errors and Exceptions</a> — a beginner-friendly lesson on reading tracebacks, with exercises, from a community that teaches researchers to code.</li>
+<li><strong>André Roberge</strong>, <a href="https://aroberge.github.io/friendly-traceback-docs/docs/html/"><code>friendly_traceback</code></a> — a library that explains tracebacks in plain language, in English or French; useful as a learning aid and as a glimpse of error messages that don’t assume English.</li>
 </ul>
 </div>
 </div>

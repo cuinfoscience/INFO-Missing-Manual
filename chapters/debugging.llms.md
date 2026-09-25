@@ -10,258 +10,225 @@
 
 ![Crying Floor Meme: a person is lying on the floor crying, saying ‘It worked yesterday’ and ‘Now nothing works.’](../graphics/memes/debugging.png)
 
-When a program fails, it can feel like the computer is “mad at you.” In reality, most bugs are ordinary mismatches between what you think the computer is doing and what it is actually doing. Debugging is the practice of finding that mismatch efficiently and fixing it without breaking something else.
+It’s 11 p.m., the assignment is due at midnight, and the notebook that ran fine this afternoon now stops with `KeyError: 'date'`. You rerun the cell. Same error. You change `'date'` to `'Date'`, then back again, paste in a line from a forum answer, and rerun. Forty minutes later there’s a different error, and you’re no longer sure which of your edits caused it, or whether the first problem is fixed at all.
 
-In computing courses, beginners sometimes treat debugging as a chaotic activity: rerun the same cell, change random lines, search the error message, and hope it works. Professionals do something different. They treat debugging as a structured investigation. They narrow the search space, form hypotheses, run controlled experiments, collect evidence (including logs), and confirm the fix with tests.
+If that sounds familiar, you’re in very good company. Most people debug this way at first, because hardly anyone is taught how to debug: courses show you how to write code and then assume fixing it comes naturally. It doesn’t, but it can be learned. Bugs are rarely as mysterious as they feel at 11 p.m. Almost every one is an ordinary mismatch between what you think the computer is doing and what it’s actually doing, and [debugging](https://en.wikipedia.org/wiki/Debugging) is the craft of finding that mismatch on purpose instead of by luck. The people who seem to fix things instantly aren’t smarter than you. They’re running a loop: narrow the search, guess a cause, test the guess, and keep the evidence.
 
-This chapter gives you a repeatable debugging workflow you can use in Python scripts, Jupyter notebooks, spreadsheets, and command-line tools. The emphasis is not on fancy tools. The emphasis is on disciplined thinking: decomposition, minimal reproduction, instrumentation, and verification.
+This chapter teaches that loop and the tools that feed it: a clear problem statement, a small example that fails, print statements and assertions, Python’s built-in debugger, logging, and small tests that keep a fixed bug fixed. It works the same way in scripts, Jupyter notebooks, and at the command line. It doesn’t catalog Python’s error messages ([sec-tracebacks](#sec-tracebacks) does that), and it doesn’t cover how to ask other people for help once you’re truly stuck ([sec-asking-questions](#sec-asking-questions)), though a lot of what you learn here is what makes a question easy to answer.
 
-## Learning objectives
+## Why read this chapter
 
-By the end of this chapter, you should be able to:
-
-1.  Describe debugging as an investigation: symptoms, hypotheses, experiments, and evidence.
-
-2.  Produce a minimal reproducible example (MRE) that isolates a bug.
-
-3.  Decompose a failing program into smaller units and test them independently.
-
-4.  Read error messages and stack traces to locate the relevant failure point.
-
-5.  Use print statements and the [`logging`](https://docs.python.org/3/library/logging.html) module to collect useful diagnostic information.
-
-6.  Pause a running program with `breakpoint()`, a post-mortem session, or an editor breakpoint, and inspect its state with a handful of debugger commands.
-
-7.  Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.
-
-8.  Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.
-
-9.  Use AI tools to assist debugging without outsourcing verification or creating new risks.
+- You’ve rerun the same cell five times hoping the error would go away, and you’d like a better plan than hope.
+- You changed four things at once, the error disappeared, and you have no idea which change fixed it or what else you broke.
+- Your script prints an average that’s obviously wrong but raises no error at all, and you don’t know where to start looking.
+- The code worked yesterday, you’re sure nothing changed, and today it fails with `ModuleNotFoundError: No module named 'pandas'`.
+- You’ve scattered `print()` calls through a loop to chase one value, and you’ve heard there’s a tool that lets you just stop the program and look.
+- Your notebook works for you but crashes for your teammate the moment they run it top to bottom, and neither of you can say why.
+- You need to post a question in a forum or bring one to office hours, and you want a small example that actually shows the problem.
+- You pasted an error into an AI chatbot, applied its fix, got a new error, and you’d like to use these tools without going in circles.
 
 ## Running theme: change one thing, observe one thing
 
-Most debugging becomes easier when you adopt one rule: make one change at a time, then observe the result. When you change multiple things at once, you cannot tell which change mattered. Debugging is a science experiment, not a guessing game.
+Debugging is an experiment, not a guessing game: make one change, run the code, and look at what happened. Change two things at once and you can’t tell which one mattered.
 
-## 6.1 A mental model: debugging as an evidence-driven loop
+## 6.1 Debugging is an investigation
 
-A bug is a situation where the program behaves differently than you expect. Debugging is the process of reconciling expectations with reality.
+A bug is any situation where a program behaves differently from what you expected, and debugging is the work of reconciling the two. That framing matters, because it tells you what to do next. You aren’t trying to make the red text go away. You’re trying to find out *which of your expectations is wrong*, and that’s a question you can answer with evidence.
 
-A useful way to think about debugging is a loop:
+The investigation runs as a loop. **Start by stating the symptom:** what exactly went wrong, and what did you expect instead? **Then reproduce it,** so you can make it fail again on demand, and **localize it,** so you know roughly where the failure happens. **Next, form a hypothesis** about the cause, and **run a controlled experiment** that changes one thing to test it. **Collect the evidence** the experiment produces: output, logs, small checks. When the evidence points at a cause, **apply the smallest fix** that removes it, and finally **verify the fix and guard against a repeat,** usually with a test.
 
-1.  **State the symptom.** What exactly went wrong? What did you expect instead?
+The loop isn’t a straight line. You’ll circle back through it several times on a stubborn bug, and that’s normal. What makes it work is that each pass should leave you knowing more than the last one did. Julia Evans’s [debugging manifesto](https://jvns.ca/blog/2022/12/08/a-debugging-manifesto/) puts it well: “Being stuck is temporary.” Evidence is how you get unstuck.
 
-2.  **Reproduce it reliably.** Can you make it fail again on demand?
+### Why random edits fail
 
-3.  **Localize the problem.** Where (roughly) does the failure occur?
+The instinct when something breaks is to change a few lines, rerun, and see if the symptom goes away. It feels productive, and it fails for three connected reasons. First, you lose cause and effect: if the bug does disappear, you don’t know which of your changes fixed it, so you haven’t learned anything you can use on the next bug. Second, random edits routinely break code that was already working. The bug “moves” instead of vanishing, and now you have two problems. Third, even when this approach eventually works, it’s the slowest possible way to get there, because you spend effort without building understanding, and the same kind of bug will trap you again next week.
 
-4.  **Form hypotheses.** What could cause this symptom?
+A disciplined workflow feels slower for the first few minutes and is dramatically faster after that, because every minute goes into shrinking what you don’t know.
 
-5.  **Run a controlled experiment.** Change one thing to test one hypothesis.
-
-6.  **Collect evidence.** Use output, logs, and small checks.
-
-7.  **Apply a fix.** Make the smallest change that resolves the cause.
-
-8.  **Verify and prevent regression.** Confirm the fix and write a test.
-
-This loop is not linear. You may circle back several times. But it is structured: each iteration should reduce uncertainty.
-
-### Why the “random edits” strategy fails
-
-Beginners often respond to a bug by changing multiple lines, rerunning, and hoping the symptom goes away. This feels productive, but it fails for three connected reasons. First, you lose causality: if the bug does happen to disappear, you do not know which of your changes was responsible, which means you have not actually learned anything you can apply to the next bug. Second, random edits routinely break code that was already working — the bug “moves” instead of vanishing, and you now have two problems instead of one. Third, even when this approach eventually works, it is the slowest possible way to solve the problem: you spend effort without building understanding, so the same kind of bug will trap you again next week.
-
-A disciplined debugging workflow feels slower for the first few minutes and is dramatically faster after that, because it spends each minute reducing uncertainty rather than spinning in confusion.
+When you feel stuck, walk back through the loop and look for the question you can’t answer yet. What exactly is the symptom? Can you make it happen again? What’s the smallest example that fails? Where does it fail: which line, function, or stage? What are two or three plausible causes? What single change would test one of them, and what result would confirm or rule it out? And after the fix, what test will keep it fixed? The question you can’t answer is usually the step you skipped. The same questions are in the One-page checklist at the end of this chapter, ready to print and keep near your desk.
 
 ## 6.2 Start with a clear problem statement
 
-Before you dive into code, write a one-sentence statement:
+Before you touch any code, write one sentence:
 
 > **When I do *X*, I expect *Y*, but instead I observe *Z*.**
 
-Examples:
+For example:
 
 - “When I call `pd.read_csv` on this file, I expect three columns, but I get one combined column.”
-
 - “When I run `python pipeline.py`, I expect an `outputs/` folder, but nothing is created and there is no error.”
-
 - “When I merge my branch, I expect a clean history, but I get a merge conflict in `analysis.ipynb`.”
 
-This statement forces you to name your expectation. Many issues turn out to be misunderstandings of what a function or tool is supposed to do.
+This can feel like a formality when you’re anxious to start fixing things. It isn’t. Writing the sentence forces you to name your expectation, and a surprising number of bugs turn out to be a wrong expectation: the function never did what you thought it did. (The first example above is often a file separated by semicolons or tabs, not commas, and the code is behaving exactly as written.)
+
+Saying the problem out loud works for the same reason. Programmers call it [rubber duck debugging](https://en.wikipedia.org/wiki/Rubber_duck_debugging): explain your code, line by line, to a rubber duck (or a patient roommate), and you’ll often hear the mistake in your own explanation before you finish.
 
 ## 6.3 Reproduce the bug and capture the evidence
 
-If you cannot reproduce a bug, you cannot reliably confirm a fix. Reproduction does not always mean “every time.” It means “often enough that you can test changes.”
+If you can’t make a bug happen again, you can’t tell whether a fix worked. Reproducing doesn’t have to mean “every time.” It means “often enough that you can test a change and see a difference.”
 
 ### What to capture
 
-When something fails, the very first move is to capture the evidence before it disappears. Record the exact commands you ran and the directory you were in when you ran them — `pwd` and your shell history are your friends here. Copy and paste the exact error message rather than retyping it, because retyping introduces tiny mistakes and you need the literal text to search for it later. Save the full stack trace if there is one (not just the bottom line). Note the inputs that triggered the failure: the file path, the parameters you passed, and a small sample of the data if it is something you can share. And capture the environment: your OS, your Python version, the versions of the key packages, and *which* environment is currently active.
+The first move when something fails is to save the evidence before it disappears, because a lot of it will. Record the exact command you ran and the folder you were in when you ran it; `pwd` and your shell history are your friends here. Copy and paste the error message rather than retyping it, since retyping introduces tiny mistakes and you’ll want the literal text to search for later. Save the whole [traceback](../chapters/appendix-glossary.llms.md#term-traceback), not just its last line. Note the inputs that triggered the failure: the file path, the parameters you passed, and a small sample of the data if you can share it. And capture the environment: your operating system, your Python version, the versions of the key packages, and *which* Python is running, which is often not the one you think (the `sys.executable` line below prints it; see [sec-virtual-environments](#sec-virtual-environments) for why there can be several).
 
 ``` bash
 # What to capture, all in one go
 pwd                                # working directory
 python --version
 python -c "import sys; print(sys.executable)"
-pip show pandas | head -2          # package + version
-# then copy-paste the failing command and its full output
+pip show pandas | head -2          # package name and version
+# then copy and paste the failing command and its full output
 ```
 
-A practical rule of thumb: if the information would disappear when you close the terminal or restart the notebook, write it down somewhere persistent before you start trying fixes.
+A good rule of thumb: if the information would vanish when you close the terminal or restart the notebook, write it down somewhere that won’t, before you start trying fixes.
 
 ### Reproduction in notebooks versus scripts
 
-Jupyter notebooks are convenient, but they create a common debugging hazard: *hidden state*. You can run cells out of order, redefine variables, or keep stale objects in memory. Two ways to protect yourself:
+Jupyter notebooks are convenient, and they create a debugging hazard of their own: *hidden state*. You can run cells out of order, redefine a variable in one cell and forget about it in another, or keep a stale object in memory long after you deleted the code that made it. What’s on the screen and what the [kernel](../chapters/appendix-glossary.llms.md#term-kernel) remembers can quietly drift apart.
 
-1.  Restart the kernel and run all cells from top to bottom.
+Two habits protect you. **Restart the kernel and run all cells from top to bottom** before you believe any result, good or bad. And when you can, **reproduce the problem in a plain script,** which always runs top to bottom from a clean start. If a bug shows up in the notebook but not in the script (or the other way around), that difference is evidence: it points straight at state the notebook is carrying around.
 
-2.  When you can, reproduce the issue in a plain script.
+## 6.4 Read error messages and tracebacks
 
-If a bug appears in a notebook but not in a script (or vice versa), that difference is evidence.
-
-## 6.4 Read error messages and stack traces
-
-Error messages are not insults. They are structured signals.
+A wall of red text feels like the computer yelling at you. It’s actually the most useful thing it will tell you all day. An error message is a structured signal: what went wrong, and where.
 
 ### The difference between an error and a symptom
 
-Sometimes the error message is the symptom (e.g., `FileNotFoundError`). Sometimes the symptom is incorrect output with no error (e.g., a column is all zeros). Both require debugging. Errors are easier because the program tells you where it stopped.
+Sometimes the symptom *is* the error: `FileNotFoundError` means Python couldn’t find a file. Other times the symptom is wrong output with no error at all, like a column that’s all zeros or an average that can’t be right. Both need debugging, but a crash is the easier kind, because the program tells you exactly where it stopped. Silent wrongness makes you find that spot yourself (the second worked example below walks through one).
 
-### How to read a Python stack trace
+### How to read a Python traceback
 
-A Python stack trace shows the sequence of function calls that led to the error. Beginners often stare at the last line only. Instead:
+A traceback (sometimes called a [stack trace](https://en.wikipedia.org/wiki/Stack_trace)) lists the chain of function calls that led to the error, with the most recent call last. The natural instinct is to read only the last line, and it’s a good start, but there’s more. **Find the exception type** on the last line (`KeyError`, `TypeError`). **Read its message,** which often names the missing key or the wrong value. **Then scan upward for the first line that refers to your own code,** a file path inside your project, and treat the frames below it as the internal details of whatever library you called.
 
-1.  Find the exception type (e.g., `KeyError`, `TypeError`).
+A common first mistake is trying to “fix” a library’s code in `site-packages` because the traceback ends there. Resist it. When a traceback ends inside pandas or NumPy, the cause is almost always what you passed in, or the environment you’re running in, not a bug in a library that millions of people use.
 
-2.  Read the exception message (it often includes the missing key or wrong type).
+### Learn a few families of errors
 
-3.  Scan upward for the first line that refers to *your code* (a file path in your project).
+You don’t need to memorize Python’s [built-in exceptions](https://docs.python.org/3/library/exceptions.html). It’s enough to recognize a handful of families, because each one tells you where to look first:
 
-4.  Treat the frames below that line as internal details of libraries.
+| Family | What it usually means | Your first move |
+|----|----|----|
+| Name and scope (`NameError`) | A variable Python has never heard of: a typo, a missing import, or a notebook cell you haven’t run yet | Check the spelling, and run the cells above |
+| Type mismatch (`TypeError`) | An operation on the wrong kind of object: adding text to a number, calling something that isn’t a function, passing the wrong number of arguments | `print(type(x))` on each value involved |
+| Index and key (`IndexError`, `KeyError`) | Reaching for a list item, dictionary key, or DataFrame column that doesn’t exist: often a column-name typo or an off-by-one loop | `print(df.columns.tolist())` |
+| File and path (`FileNotFoundError`, `PermissionError`) | The working directory or permissions, not the code | `pwd` and `ls` |
+| Parsing and format (`ValueError`) | A value of the right type but the wrong shape: `'N/A'` where a number belongs, or a date in a format Python can’t read | Look at the exact value named in the message |
+| Import and environment (`ModuleNotFoundError`) | Which Python is running, and what’s installed in *that* Python (see [sec-pkg-mgmt](#sec-pkg-mgmt)) | `which python` and `pip list` |
 
-Common novice mistake: trying to “fix” library code in `site-packages`. If the traceback points into a library, the cause is usually your inputs or your environment.
+The table is useful precisely because the last column tells you *what to do next*, not just what went wrong. For a fuller tour of the common exceptions and how to read the frames around them, see [sec-tracebacks](#sec-tracebacks).
 
-### Error taxonomies: learn a few recurring families
+## 6.5 Make the problem smaller
 
-You do not need to memorize every Python exception, but it helps to recognize a small number of *families* and what each one usually means about where to look. **Name and scope errors** like `NameError` are about variables that Python has never heard of — almost always a typo, a forgotten import, or a cell in the notebook that you have not run yet. **Type mismatches** like `TypeError` are about operations applied to the wrong kind of object: adding a string to an integer, calling something that is not a function, or passing the wrong number of arguments. **Indexing and key errors** (`IndexError`, `KeyError`) are about reaching for an element of a list, dict, or DataFrame column that does not exist — usually a column name typo or an off-by-one in a loop. **File and path errors** like `FileNotFoundError` are about the working directory or permissions, not the code itself. **Parsing and format errors**, almost always raised as `ValueError`, are about a value that has the right type but the wrong shape — a string `'N/A'` where a number was expected, or a date in a format Python cannot parse. And **import and environment errors** like `ModuleNotFoundError` are about which Python is running and which packages are installed in *that* Python (see [sec-pkg-mgmt](#sec-pkg-mgmt)).
+If you learn only one debugging skill, make it this one: shrink a big, confusing failure into a small, obvious one. Nearly every technique in this section is a way of throwing away the parts of the problem that don’t matter until the part that does is staring at you.
 
-Each family points you at a different first move. A `KeyError` should make you reach for `print(df.columns.tolist())`. A `ModuleNotFoundError` should make you reach for `which python` and `pip list`. A `FileNotFoundError` should make you reach for `pwd` and `ls`. The taxonomy is useful precisely because it tells you *what to do next*, not just what went wrong.
+### Divide and conquer
 
-For a fuller treatment of the most common Python exceptions and how to read the surrounding stack frames, see [sec-tracebacks](#sec-tracebacks).
-
-## 6.5 Decomposition: make the problem smaller
-
-Decomposition is the most important debugging skill. You reduce a complex failure to a small failure.
-
-### Three decomposition strategies
-
-The first strategy is **divide and conquer**: split the workflow into stages and find where the bug first appears. A typical data-science pipeline has six stages — load data, clean and transform, compute features, fit a model, evaluate it, and produce outputs — and the bug almost always lives at the boundary between two of them. Run each stage separately, inspect the intermediate result, and ask “is this what I expected at this point?” The first place where the answer is “no” is the place where the bug actually happens, even if the symptom shows up much later.
+Split the workflow into stages and find where things first go wrong. A typical data pipeline has half a dozen stages (load the data, clean and transform it, compute features, fit a model, evaluate it, write the outputs), and bugs tend to live at the boundary between two of them. Run each stage separately, look at what it produced, and ask, “Is this what I expected at this point?” The first place the answer is “no” is where the bug actually happens, even if the symptom shows up much later.
 
 ``` python
-# Divide and conquer: check the intermediate after every stage
-df = load_raw_data("data.csv");        print("loaded:", df.shape)
-df = clean_columns(df);                 print("cleaned:", df.shape)
-df = compute_features(df);              print("features:", df.shape)
-# the first stage where shape or columns surprise you is the bug site
+# Divide and conquer: check the result after every stage
+# (load_raw_data and the rest stand in for your own pipeline's steps)
+df = load_raw_data("data.csv")
+print("loaded:", df.shape)
+df = clean_columns(df)
+print("cleaned:", df.shape)
+df = compute_features(df)
+print("features:", df.shape)
+# the first stage where the shape or columns surprise you is where to look
 ```
 
-The second strategy is **binary search over history**: if the code worked yesterday and is broken today, look at what changed. Version control makes this dramatically faster — [`git log --oneline`](https://git-scm.com/docs/git-log) lists the recent commits, `git diff HEAD~5` shows the cumulative diff over the last five, and [`git bisect`](https://git-scm.com/docs/git-bisect) will literally do the binary search for you, asking you to mark commits as “good” or “bad” until it isolates the exact one that introduced the bug. Even without [git](https://git-scm.com/doc), you can usually copy your last working version into a separate folder and diff the two.
+### Search your history
 
-The third strategy is to **strip to a minimal reproducible example**: take the failing code and aggressively delete anything that is not essential to triggering the bug. Each deletion that *still* fails is a piece of evidence about which code is irrelevant. The endpoint is a tiny script — usually fewer than 20 lines — that reproduces the failure with no surrounding noise. At that point, the bug is almost always obvious, and even if it is not, you have produced exactly the artifact you need to ask for help (see [sec-asking-questions](#sec-asking-questions)).
+If the code worked yesterday and fails today, something changed, even if you’re sure nothing did. Version control makes finding it fast (see [sec-git-github](#sec-git-github)). [`git log --oneline`](https://git-scm.com/docs/git-log) lists recent commits, and `git diff HEAD~5` shows everything that changed over the last five. When the list is long, [`git bisect`](https://git-scm.com/docs/git-bisect) runs a [binary search](https://en.wikipedia.org/wiki/Bisection_(software_engineering)) through your history for you: you mark one commit “good” and one “bad,” it checks out the commit halfway between, you test and mark it, and it keeps halving until it names the exact commit that introduced the bug. Even without [Git](https://git-scm.com/doc), you can usually copy your last working version into a separate folder and compare the two.
 
-### The minimal reproducible example (MRE) as a debugging tool
+### Strip it down to a minimal example
 
-An MRE is often described as a tool for asking questions, but it is just as valuable as a debugging instrument in its own right. The act of producing a 15-line script that recreates your bug forces you to learn three things you may not have noticed: *which inputs actually matter* (the ones you can’t delete without losing the failure), *which library call is the immediate trigger* (the line you can’t remove), and *what assumptions you were silently making* (the things you have to add to the MRE to get it to fail at all). Most of the time, by the time you finish reducing the example, you have already found the bug.
+Take the failing code and delete, aggressively, anything that isn’t needed to trigger the bug. Each deletion that *still* fails tells you that code was irrelevant. The endpoint is a [minimal reproducible example](https://en.wikipedia.org/wiki/Minimal_reproducible_example) (an MRE): a tiny script, usually under 20 lines, that fails the same way with nothing else in the way.
 
-### Practical MRE techniques
+MREs are usually taught as something you make to ask for help (see [sec-asking-questions](#sec-asking-questions)), but they’re just as valuable as a debugging tool in their own right. Building one forces you to learn three things you may not have noticed: *which inputs actually matter* (the ones you can’t delete without losing the failure), *which call is the immediate trigger* (the line you can’t remove), and *what you were silently assuming* (whatever you have to add back to make it fail at all). Most of the time, by the time you’ve finished shrinking the example, you’ve found the bug. Computer scientists have even automated the process, under the name *delta debugging* (Zeller’s *The Debugging Book*, in Further reading, shows how).
 
-A few mechanical techniques make MRE construction faster. The single most useful one is to **replace real data with synthetic data** — pandas reads from `io.StringIO` exactly as it does from a file, so a few lines of inline CSV are enough to recreate most data-loading bugs without any external file:
+A few techniques make shrinking faster. The most useful is to **replace your real data with a few lines of made-up data.** pandas reads from an [`io.StringIO`](https://docs.python.org/3/library/io.html#io.StringIO) object exactly as it reads from a file, so a short string of inline CSV is enough to recreate most data-loading bugs:
 
 ``` python
 import pandas as pd
 from io import StringIO
 
-raw = "name,age\nada,35\nlin,N/A\n"
+raw = "name,age\nada,35\nlin,unknown\n"
 df = pd.read_csv(StringIO(raw))
-df["age"].mean()           # reproduces the ValueError without a real file
+df["age"].mean()   # TypeError: Cannot perform reduction 'mean' with string dtype
 ```
 
-Closely related: **hard-code a small example.** A three-row DataFrame or a five-element list is almost always enough to reproduce a logic bug, and it’s small enough to reason about end to end. **Delete code aggressively** — pull out everything that isn’t required to trigger the failure, and if removing a block does not change the symptom, it was not relevant. Finally, **freeze any randomness**. If your bug only sometimes appears, set the random seeds (`random.seed(0)`, `numpy.random.seed(0)`, `torch.manual_seed(0)`) so that “sometimes” becomes “every time on this seed,” which is debuggable.
+Three lines of data, and the bug is in plain sight: one `'unknown'` turned the whole `age` column into text, and you can’t average text. (In pandas 2 the message is worded differently, but it’s still a `TypeError`.) Notice that the made-up value is `'unknown'` and not `'N/A'`: pandas already treats `'N/A'` as missing, so an MRE built with it wouldn’t fail. Getting an MRE to fail is itself a lesson about what pandas does by default.
+
+Along the same lines, **hard-code a small example**: a three-row DataFrame or a five-item list is almost always enough to reproduce a logic bug, and it’s small enough to reason about end to end. **Delete code aggressively**; if removing a block doesn’t change the symptom, the block wasn’t involved. And **freeze any randomness.** If a bug only appears sometimes, fix the [random seeds](https://docs.python.org/3/library/random.html#random.seed) (`random.seed(0)`, `numpy.random.seed(0)`, `torch.manual_seed(0)`) so that “sometimes” becomes “every time on this seed,” which you can debug.
 
 ## 6.6 Hypotheses and controlled experiments
 
-Once you have localized the issue, do not jump straight to a fix. First, form a hypothesis.
+Once you know roughly where the problem is, the temptation is to jump straight to a fix. Wait. First, make a guess you can test.
 
 ### What a good hypothesis looks like
 
-A useful debugging hypothesis is specific and *falsifiable*: it makes a concrete claim about cause and effect that you can test in a few minutes. “The file path is relative to the working directory, and I am running from the wrong folder” is a good hypothesis — you can test it with `pwd` and `ls` in 30 seconds. “This column is stored as strings with embedded commas, so numeric conversion silently fails” is a good hypothesis — you can test it with `df["price"].dtype` and `df["price"].head()`. “I installed pandas into a different environment than the one running my notebook” is a good hypothesis — you can test it with `import sys; print(sys.executable)` from inside the notebook.
+A useful hypothesis is specific and [falsifiable](https://en.wikipedia.org/wiki/Falsifiability): it makes a concrete claim about cause and effect that a few minutes’ work could prove wrong. “The file path is relative to the working directory, and I’m running from the wrong folder” is a good one; you can test it with `pwd` and `ls` in 30 seconds. “This column is stored as text with embedded commas, so converting it to numbers silently fails” is a good one; `df["price"].dtype` and `df["price"].head()` will tell you. “I installed pandas into a different environment from the one my notebook is running” is a good one; `import sys; print(sys.executable)` inside the notebook settles it.
 
-The contrast is with vague non-hypotheses like “something is wrong with pandas” or “my computer is broken.” These are not hypotheses at all, because there is no test you could run that would prove them right or wrong. When you find yourself reaching for one of those, that is the moment to slow down and ask, “What concretely do I think is happening, and how would I know?”
+Compare those with “something is wrong with pandas” or “my computer is broken.” Those feel like explanations, but they aren’t hypotheses, because no test you could run would prove them right or wrong. When you catch yourself reaching for one, slow down and ask, “What concretely do I think is happening, and how would I know?”
+
+One more trap: once you have a favorite theory, you’ll be tempted to run only the experiments that could confirm it. That’s [confirmation bias](https://en.wikipedia.org/wiki/Confirmation_bias), and it catches experienced programmers too. Ask instead what result would prove your theory *wrong*, and go looking for it.
 
 ### Designing a controlled experiment
 
-A controlled experiment changes exactly one factor and observes exactly one outcome. The “one factor” rule is the entire point: if you change two things at once, you cannot interpret the result. The most common experiments are tiny — printing a variable right before the line that crashes, replacing a single suspect input with a known-good value, running the same code in a fresh shell or a new venv to rule out environment state, or commenting out a single transformation step to see whether the bug is upstream or downstream of it.
+A controlled experiment changes exactly one thing and watches exactly one outcome. That one-thing rule is the whole point: change two things and you can’t read the result. Most experiments are tiny: print a variable just before the line that crashes, swap one suspicious input for a value you know is good, run the same code in a fresh terminal or a new virtual environment to rule out leftover state, or comment out one transformation to see whether the bug is upstream or downstream of it.
 
 ``` python
-# Two controlled experiments, one factor each
+# Two controlled experiments, one question each
 print("--- before merge ---")
-print(df_a.shape, df_b.shape)              # experiment 1: shapes upstream
+print(df_a.shape, df_b.shape)              # experiment 1: the shapes going in
 result = df_a.merge(df_b, on="id")
 print("--- after merge ---")
-print(result.shape)                         # experiment 2: shape downstream
+print(result.shape)                         # experiment 2: the shape coming out
 ```
 
-Whatever experiment you run, *write down* what you tried and what happened. Even when the bug remains, the run is progress: you have ruled something out, and your search space just got smaller.
+Whatever you try, *write down* what you did and what happened. Even when the bug survives, the run was progress: you’ve ruled something out, and the space left to search just got smaller.
 
 ## 6.7 Instrumentation: print statements and sanity checks
 
-Instrumentation means adding temporary measurements to observe program state.
+To see inside a running program, you add temporary measurements to it. That’s all *instrumentation* means, and the humblest version, the `print()` call, is a perfectly respectable debugging tool.
 
 ### Strategic printing
 
-Print statements are a legitimate debugging tool when used strategically. Good print debugging follows these rules:
+Print debugging goes wrong when it turns into printing everything and scrolling through the flood. It goes right when each print answers a question. Print a label with every value (`print("rows after merge:", len(df))`, not `print(len(df))`), so you know what you’re looking at. Print just before and just after the line you suspect. Print shapes, types, and small samples, never whole datasets. And when you’re done, delete the prints, or turn the ones worth keeping into log messages (see “Logging” below).
 
-1.  Print *labels* and *values* (so you know what you are seeing).
+In data work, a handful of prints answer most questions:
 
-2.  Print right before and right after suspicious lines.
+``` python
+print(df.shape)                  # how many rows and columns?
+print(df.dtypes)                 # is each column the type you think?
+print(df.head(3))                # what do the values actually look like?
+print(df["col"].isna().mean())   # what fraction of this column is missing?
+```
 
-3.  Print shapes, types, and small samples—not entire datasets.
+### Assertions: your assumptions, written down
 
-4.  Remove or convert prints to logs after you finish.
+An assertion is a statement that should be true. Python’s [`assert` statement](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) does nothing when it is, and stops the program with your message when it isn’t. That’s what makes assertions so useful when you’re starting out: they turn silent wrongness into loud wrongness, at the moment it happens instead of three steps later.
 
-Examples of useful prints in data work:
+``` python
+assert df.shape[0] > 0, "DataFrame has no rows"
+assert "date" in df.columns, "Missing expected column: date"
+assert df["age"].min() >= 0, "Negative age values present"
+```
 
-- `print(df.shape)`
-
-- `print(df.dtypes)`
-
-- `print(df.head(3))`
-
-- `print(df['col'].isna().mean())`
-
-### Assertions as executable assumptions
-
-An assertion is a statement that should be true. If it is false, the program stops with a clear signal.
-
-For beginners, assertions are useful because they turn silent wrongness into loud wrongness.
-
-Examples:
-
-    assert df.shape[0] > 0, "Dataframe has no rows"
-    assert 'date' in df.columns, "Missing expected column: date"
-    assert df['age'].min() >= 0, "Negative age values present"
-
-Use assertions to encode assumptions you would otherwise hold in your head.
+Any assumption you’re holding in your head (“this can’t be empty,” “that column is always there”) is a candidate for an assertion. [sec-tabular-data](#sec-tabular-data) shows how a short block of them at the top of an analysis catches bad data before it spreads.
 
 ## 6.8 Interactive debuggers: pause the program and look around
 
 A print statement answers one question per run. You decide in advance what to look at, run the program, and read the output; if the answer raises a new question, you edit and run again. An **interactive debugger** turns that around. It pauses the program at a line you choose and gives you a prompt inside the running program, where you can ask as many questions as you like before letting it go on. It gathers the same evidence as printing, with a faster loop: one run, many observations.
 
-You don’t need a debugger for every bug. Reach for one when print debugging starts to feel slow: the value you need is deep inside a loop, you need to see several variables at the same moment, or every rerun takes minutes because the data is large.
+You don’t need a debugger for every bug, and a lot of people put off learning one because it looks intimidating. It’s less work than it looks. Reach for one when print debugging starts to feel slow: the value you need is deep inside a loop, you need to see several variables at the same moment, or every rerun takes minutes because the data is large.
 
 ### `breakpoint()`: stop here
 
-Python comes with a debugger, [`pdb`](https://docs.python.org/3/library/pdb.html), and a built-in function that starts it. Put `breakpoint()` on a line of its own and run the script as usual. When Python reaches that line, it stops before running the next one and hands you the debugger’s prompt. A line where a program stops like this is a [breakpoint](../chapters/appendix-glossary.llms.md#term-breakpoint).
+Python comes with a debugger, [`pdb`](https://docs.python.org/3/library/pdb.html), and a built-in function, [`breakpoint()`](https://docs.python.org/3/library/functions.html#breakpoint), that starts it. Put `breakpoint()` on a line of its own and run the script as usual. When Python reaches that line, it stops before running the next one and hands you the debugger’s prompt. A line where a program stops like this is a [breakpoint](../chapters/appendix-glossary.llms.md#term-breakpoint).
 
-Here is a small script with a silent bug. The ages it can read are 35, 42, and 29, which average 35.3, but it prints `26.5`:
+Here is a small script, `ages.py`, with a silent bug. The ages it can read are 35, 42, and 29, which average 35.3, but it prints `26.5`:
 
 ``` python
 rows = ["35", "42", "unknown", "29"]
@@ -304,7 +271,7 @@ $ python ages.py
 -> count += 1
 ```
 
-(The path is shortened; yours shows the full path to the file.) Read the two lines above each prompt: the `>` line says which file, line number, and function you are in, and the `->` line is the line that runs *next*, which hasn’t run yet. On the third stop, `v` is `'unknown'`. One `n` (next) runs the `if`, which skips `'unknown'` as it should, and the next line to run is `count += 1`. That is the bug: the script skips the value but counts it anyway, so it divides 106 by 4 instead of 3. The fix is to indent `count += 1` into the `if` block. Type `q` to quit (Python may print a `BdbQuit` traceback, which is only the debugger stopping), then fix the line and delete the `breakpoint()`.
+(The path is shortened; yours shows the full path to the file.) Read the two lines above each prompt: the `>` line says which file, line number, and function you’re in, and the `->` line is the line that runs *next*, which hasn’t run yet. On the third stop, `v` is `'unknown'`. One `n` (next) runs the `if`, which skips `'unknown'` as it should, and the next line to run is `count += 1`. That’s the bug: the script skips the value but counts it anyway, so it divides 106 by 4 instead of 3. The fix is to indent `count += 1` into the `if` block. Type `q` to quit (Python may print a `BdbQuit` traceback, which is only the debugger stopping), then fix the line and delete the `breakpoint()`.
 
 That session is the loop from the start of this chapter in miniature: a symptom (26.5), a hypothesis (something is counted wrong), and evidence gathered one step at a time until the hypothesis is confirmed.
 
@@ -327,11 +294,27 @@ At the `(Pdb)` prompt you can type any Python expression, such as `len(values)` 
 
 Table 6.1: The `pdb` commands that cover most debugging sessions.
 
-One trap: if a variable has the same name as a command (`n`, `c`, `l`, `p`), typing its name runs the command instead of showing the variable. Type `p n` to see a variable called `n`.
+One trap catches nearly everyone once: if a variable has the same name as a command (`n`, `c`, `l`, `p`), typing its name runs the command instead of showing the variable. Type `p n` to see a variable called `n`.
 
 ### After a crash: post-mortem debugging
 
-When a program crashes, the traceback tells you where (see [sec-tracebacks](#sec-tracebacks)). **Post-mortem debugging** lets you look around at that exact moment, with every variable still in place. Suppose an earlier version of the script, `crash.py`, converted every value with `total += int(v)` and no check. Run it under `pdb` with `python -m pdb`. It stops before the first line; type `c` to run the program. When the program raises an exception nothing catches, `pdb` prints the traceback and opens a prompt at the failing line:
+When a program crashes, the traceback tells you where (see [sec-tracebacks](#sec-tracebacks)). **Post-mortem debugging** lets you look around at that exact moment, with every variable still in place. Suppose an earlier version of the script, `crash.py`, converted every value with no check at all:
+
+``` python
+rows = ["35", "42", "unknown", "29"]
+
+
+def mean_age(values):
+    total = 0
+    for v in values:
+        total += int(v)
+    return total / len(values)
+
+
+print(mean_age(rows))
+```
+
+Run it under `pdb` with `python -m pdb`. It stops before the first line; type `c` to run the program. When the program raises an exception nothing catches, `pdb` prints the traceback and opens a prompt at the failing line:
 
 ``` text
 $ python -m pdb crash.py
@@ -349,138 +332,109 @@ Running 'cont' or 'step' will restart the program
 'unknown'
 ```
 
-The traceback alone says that some value couldn’t become an integer; one `p v` says which. Type `q` to leave. (As the message warns, `c` starts the program again from the top.)
+The traceback alone says that some value couldn’t become an integer; one `p v` says which. To leave, type `q` twice: the first `q` ends the post-mortem session and `pdb` restarts the script at its first line, and the second quits. (As the message warns, `c` also starts the program again from the top.)
 
-In a Jupyter notebook you don’t need to rerun anything. After a cell raises an exception, run `%debug` in a new cell, and you get the same prompt at the line that failed. `%pdb on` opens it automatically after every exception until you turn it off with `%pdb off`. JupyterLab also has a visual debugger, the bug icon in the notebook’s toolbar, which works like the editor debuggers below. See [sec-jupyter](#sec-jupyter) for notebooks in general.
+In a Jupyter notebook you don’t need to rerun anything. After a cell raises an exception, run [`%debug`](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-debug) in a new cell, and you get the same prompt at the line that failed. `%pdb on` opens it automatically after every exception until you turn it off with `%pdb off`. JupyterLab also has a [visual debugger](https://jupyterlab.readthedocs.io/en/stable/user/debugger.html), the bug icon in the notebook’s toolbar, which works like the editor debuggers below. See [sec-jupyter](#sec-jupyter) for notebooks in general.
 
 ### Breakpoints in your editor
 
-Editors put the same debugger behind buttons: click in the gutter beside a line number to set a breakpoint, press `F5` to run under the debugger, and read variables and the call stack in side panels. [sec-text-editors](#sec-text-editors) walks through VS Code’s. Two editor features are worth learning early, because they are clumsy with `pdb` alone:
+Editors put the same debugger behind buttons: click in the gutter beside a line number to set a breakpoint, press `F5` to run under the debugger, and read variables and the call stack in side panels. [sec-text-editors](#sec-text-editors) walks through VS Code’s. Two editor features are worth learning early, because they’re clumsy with `pdb` alone, and VS Code’s [debugging guide](https://code.visualstudio.com/docs/debugtest/debugging#_conditional-breakpoints) covers both:
 
 - **Conditional breakpoints.** In VS Code, right-click the gutter, choose *Add Conditional Breakpoint*, and type an expression such as `v == "unknown"` or `i == 4817`. The program stops only when the expression is true: this is how you stop at row 4,817 of 50,000 without typing `c` 4,816 times. In plain Python, the same trick is `if i == 4817: breakpoint()`.
-- **Logpoints.** *Add Logpoint* prints a message each time a line runs, without stopping and without changing the file. It is a print statement you can’t forget to delete.
+- **Logpoints.** *Add Logpoint* prints a message each time a line runs, without stopping and without changing the file. It’s a print statement you can’t forget to delete.
 
 ### Don’t leave a `breakpoint()` behind
 
 A forgotten `breakpoint()` stops the program the next time anyone runs it. At a terminal, it waits at a prompt; where nobody can type, as in a scheduled job or a CI run (see [sec-automation](#sec-automation)), it crashes with `BdbQuit`. Two safety nets:
 
-- **Let the linter find them.** Ruff’s rule `T100` flags every `breakpoint()` and `import pdb`. Run `ruff check --select T100 .` before you commit, or add `"T10"` to the `select` list in your `pyproject.toml` so every `ruff check` includes it (see [sec-linting](#sec-linting)).
-- **Switch them off for one run.** `PYTHONBREAKPOINT=0 python ages.py` runs the script with every `breakpoint()` ignored.
+- **Let the linter find them.** Ruff’s rule [`T100`](https://docs.astral.sh/ruff/rules/debugger/) flags every `breakpoint()` and `import pdb`. Run `ruff check --select T100 .` before you commit, or add `"T10"` to the `select` list in your `pyproject.toml` so every `ruff check` includes it (see [sec-linting](#sec-linting)).
+- **Switch them off for one run.** Setting the `PYTHONBREAKPOINT` environment variable to `0`, as in `PYTHONBREAKPOINT=0 python ages.py`, runs the script with every `breakpoint()` ignored.
 
 ## 6.9 Logging: debugging that scales beyond one run
 
-Print statements are fine during exploration, but logging is better when:
+Prints are fine while you’re exploring at your own keyboard. They stop being enough when your code runs for an hour, runs overnight as a scheduled job, runs on someone else’s computer, or fails once a week and you need to know what happened last Tuesday. That’s what [logging](https://en.wikipedia.org/wiki/Logging_(computing)) is for.
 
-- your code runs for a long time,
+### What logging is (and isn’t)
 
-- you run it as a scheduled job,
-
-- you need to keep evidence for later,
-
-- multiple people will run the code.
-
-### What logging is (and is not)
-
-Logging is a structured way to record events. It is not the same as printing everything. Logs should help you answer:
-
-- Where did the program get to?
-
-- What inputs and configuration did it use?
-
-- How long did steps take?
-
-- Why did it fail?
+Logging is a structured record of what your program did. It isn’t printing everything. A good log answers four questions after the fact: How far did the program get? What inputs and settings did it use? How long did each step take? And if it failed, why?
 
 ### Logging levels
 
-Most logging systems have levels such as `DEBUG`, `INFO`, `WARNING`, `ERROR`. A beginner-friendly interpretation:
+Every message gets a *level*, which says how much it matters, and you choose at run time which levels to show. Python’s [`logging`](https://docs.python.org/3/library/logging.html) module has four you’ll use constantly:
 
-- `DEBUG`: details useful for developers while diagnosing.
+- `DEBUG`: details that help while you’re diagnosing a problem, and noise the rest of the time.
+- `INFO`: milestones (started, loaded the data, finished).
+- `WARNING`: something unexpected that didn’t stop the program.
+- `ERROR`: an operation failed.
 
-- `INFO`: major milestones (started, loaded data, finished).
-
-- `WARNING`: something unexpected but not fatal.
-
-- `ERROR`: the operation failed.
+Set the level to `INFO` normally, and switch to `DEBUG` when you’re hunting a bug: all your detailed messages come back without your editing a single line.
 
 ### A minimal Python logging setup
 
-You do not need a complicated configuration. A simple pattern:
+You don’t need a complicated configuration. This is enough for most projects:
 
-    import logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s %(levelname)s %(message)s"
-    )
-    logger = logging.getLogger(__name__)
+``` python
+import logging
 
-    logger.info("Starting pipeline")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+logger = logging.getLogger(__name__)
 
-Then replace prints with `logger.info(...)` or `logger.debug(...)`.
+logger.info("Starting pipeline")
+logger.info("Loaded %d rows from %s", len(df), "data/survey.csv")
+logger.debug("Hidden unless the level is DEBUG")
+```
 
-### Avoid logging secrets
+Each message comes out stamped with the time and its level, like `2026-09-25 13:37:31,751 INFO Starting pipeline`. From there, replace your debugging prints with `logger.info(...)` or `logger.debug(...)`.
 
-Never log:
+### Keep secrets out of your logs
 
-- passwords,
-
-- API keys,
-
-- private personal data,
-
-- full rows of sensitive datasets.
-
-If you need to confirm that a token exists, log only that it is set, not its value.
+Logs get copied, emailed, pasted into forum posts, and uploaded along with everything else, so anything in them should be safe for a stranger to read. Never log passwords, API keys, private personal data, or full rows of a sensitive dataset. If you need to confirm that a key exists, log *that* it’s set (`logger.info("API key is set: %s", "API_KEY" in os.environ)`), never its value. [sec-secrets](#sec-secrets) has more on handling keys safely.
 
 ## 6.10 Testing: confirm fixes and prevent regressions
 
-Testing is the final stage of debugging. Without tests, a bug can return quietly.
+A fix you haven’t tested is a hope. And a bug you fixed once can come back quietly months later, when someone (possibly you) changes a line nearby. A small test is how you know the fix works today and still works next month.
 
 ### What a test is
 
-A test is an executable claim about behavior. It says: for this input, the output should satisfy this condition.
+A test is a claim about your code’s behavior that you can run: for this input, the output should satisfy this condition. Tests can sound like something only large professional teams bother with. In fact small tests are one of the best study tools in programming, because writing one forces you to say exactly what a function is supposed to do.
 
-Beginners often think tests are only for large professional projects. In reality, small tests are one of the best study tools in programming.
+### A testing ladder
 
-### A testing ladder for novices
+You don’t have to start with a full test suite. Climb one rung at a time. A [smoke test](https://en.wikipedia.org/wiki/Smoke_testing_(software)) just checks that the script runs from start to finish without crashing, which catches more than you’d think. Property checks confirm that the output has the shape, columns, and ranges you expect (the assertions above are exactly this). [Unit tests](https://en.wikipedia.org/wiki/Unit_testing) check that a single function gives the right answer on small inputs. Integration tests check that several pieces work together. For most class projects, a smoke test and a handful of unit tests are plenty.
 
-Start small and build up:
+### Write the test that would have caught the bug
 
-1.  **Smoke tests**: does the script run end-to-end without crashing?
+After you fix a bug, ask what condition was violated, and write a test that fails on the old code and passes on the new. That’s a [regression test](https://en.wikipedia.org/wiki/Regression_testing): it exists so this particular bug can never quietly return. For the `ages.py` bug above, once `count += 1` is indented inside the `if` (and the `breakpoint()` is gone), a regression test for [pytest](https://docs.pytest.org/en/stable/getting-started.html) is three lines of real content:
 
-2.  **Property checks**: outputs have expected shape, columns, ranges.
+``` python
+# test_ages.py
+import pytest
 
-3.  **Unit tests**: a single function behaves correctly on small inputs.
+from ages import mean_age
 
-4.  **Integration tests**: multiple components work together.
 
-For most class projects, smoke tests and a handful of unit tests are enough.
+def test_skips_values_that_are_not_ages():
+    assert mean_age(["35", "42", "unknown", "29"]) == pytest.approx(35.33, abs=0.01)
+```
 
-### Write a test that would have caught the bug
+Run `pytest` in the same folder. On the fixed code it passes; put `count += 1` back where it was, and it fails with `assert 26.5 == 35.33 ± 0.01`. The same idea works for other bugs: if a column was missing, test that the required columns exist; if parsing failed on an odd value, test that the value is handled; if a function returned the wrong units, test that its result falls in the expected range.
 
-After fixing a bug, ask: “What condition was violated?” Then write a test that fails on the old behavior and passes on the new.
+### Tests should give the same answer every time
 
-Examples:
-
-- If a column was missing: test that required columns exist.
-
-- If parsing failed on a weird value: test that that value is handled.
-
-- If a function returned wrong units: test numeric values within expected range.
-
-### Golden rule: tests should be deterministic
-
-A test should give the same result every run. If randomness is involved, set a seed or test statistical properties rather than exact values.
+A test that sometimes passes and sometimes fails is worse than no test, because you’ll learn to ignore it. If randomness is involved, set a seed, or test properties of the result (it’s between 0 and 1, it has 100 rows) rather than exact values.
 
 ## 6.11 Debugging in common environments
 
-Different environments create different failure modes.
+Where your code runs shapes how it breaks. Notebooks and the command line each have their own favorite failures, and knowing them saves hours.
 
-### Notebook-specific hazards
+### Notebook hazards
 
-Notebooks are wonderful for exploration and treacherous for debugging, because they invite *hidden state*. The four classic traps are running cells out of order (so the variable on screen is not the variable in memory), redefining a function in a later cell and forgetting that the earlier cells still hold the old version, keeping a stale DataFrame around after you thought you had replaced it, and installing a package into one environment while the notebook kernel is running in another.
+Notebooks are wonderful for exploration and treacherous for debugging, because they invite hidden state. The classic traps are running cells out of order (so the variable on screen isn’t the variable in memory), redefining a function in a later cell and forgetting that results from earlier cells came from the old version, keeping a stale DataFrame around after you thought you’d replaced it, and installing a package into one environment while the notebook’s kernel runs in another.
 
-The single most reliable countermeasure is **Kernel → Restart and Run All**. If your code does not work after a clean restart, it does not work, and any “success” you saw before was an illusion produced by leftover state. Beyond that, give your cells single, well-defined responsibilities so it is harder to introduce side effects accidentally, and when something is mysterious, print `sys.executable`, `pandas.__version__`, and the relevant variable’s `type(...)` and `id(...)` to confirm that the world is what you think it is.
+The single most reliable countermeasure is restarting the kernel and running every cell from the top (in JupyterLab, **Kernel → Restart Kernel and Run All Cells**). If your code doesn’t work after a clean restart, it doesn’t work, and any success you saw before was an illusion made of leftover state. Beyond that, give each cell one clear job, so it’s harder to create side effects by accident. And when something is truly mysterious, print the basics to confirm the world is what you think it is:
 
 ``` python
 # When confused, dump the basics
@@ -490,47 +444,39 @@ print("pandas:", pd.__version__)
 print("df type:", type(df), "df id:", id(df), "df shape:", df.shape)
 ```
 
-### Command-line and OS-level bugs
+If `id(df)` changes between two cells you expected to share a DataFrame, you’re looking at two different objects.
 
-Not every bug lives in the code. A surprising number of “code” bugs are actually environment bugs in disguise: you are in the wrong working directory, the file you are trying to read does not have the right permissions, your shell’s `PATH` does not point at the Python you think it does, the file is encoded in something other than UTF-8, or you are hitting a line-ending difference between Windows and macOS. Each of these can manifest as something that looks like a Python error but cannot be fixed by changing Python code. (See [sec-terminal](#sec-terminal) for the full command-line toolbox.)
+### Command-line and operating-system bugs
 
-The diagnostic move that catches most of these in one go is to compare environments: if a command works in one terminal but not another, the environment is the suspect, not the code. Run the same command in both and compare the output of `pwd`, `which python`, `echo $PATH`, and `python --version`. The first place these diverge is the place to investigate.
+Not every bug lives in your code, and this one frustrates people more than most, because the code looks right and still fails. A surprising number of “Python errors” are environment problems in disguise: you’re in the wrong [working directory](https://en.wikipedia.org/wiki/Working_directory), the file doesn’t have the right permissions, your shell’s [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)) finds a different Python from the one you meant, the file is saved in some encoding other than [UTF-8](https://en.wikipedia.org/wiki/UTF-8), or Windows and macOS disagree about line endings. No change to your Python code fixes any of these. ([sec-terminal](#sec-terminal) has the full command-line toolbox.)
 
-## 6.12 A practical debugging checklist
+The move that catches most of them at once is to compare environments. If a command works in one terminal and not another, or on your laptop and not your teammate’s, the environment is the suspect, not the code. Run `pwd`, `which python`, `echo $PATH`, and `python --version` in both places and compare. The first line where they differ is where to look.
 
-When you feel stuck, use this checklist as a reset:
+## 6.12 Using AI tools in debugging
 
-1.  What exactly is the symptom (expected vs actual)?
+Pasting an error into a chatbot is now many people’s first move, and it can help. It can also send you in circles, because a chatbot will cheerfully offer a confident fix for a problem it can’t see, and applying fix after fix is the random-edits strategy with extra steps. The way out is to use AI inside the loop rather than instead of it ([sec-ai-llm](#sec-ai-llm) covers these tools more broadly).
 
-2.  Can I reproduce it?
+AI tools are genuinely good at a few debugging jobs. They can explain an unfamiliar error message in plain language and suggest which family it belongs to. They can suggest questions worth asking (“What’s the dtype of that column? What’s your working directory?”), which are really hypotheses in disguise. They can help you strip a long script down to a minimal example. And once you know what the correct behavior is, they can draft the skeleton of a test for it.
 
-3.  What is the smallest example that fails?
+A few guardrails keep that help from turning into new problems. Never paste secrets or private data into a chat, including the API key sitting in the cell above the error (see [sec-secrets](#sec-secrets)). Check any command a chatbot suggests against the official documentation before you run it, especially anything that installs, deletes, or changes settings. Apply one suggested change at a time, so you still know which change mattered. And make every proposed fix prove itself: a test that failed before the fix should pass after it. The second worked example below shows what happens when a quick fix skips that step.
 
-4.  Where is the failure located (line/function/stage)?
-
-5.  What are 2–3 plausible hypotheses?
-
-6.  What experiment tests one hypothesis with one change?
-
-7.  What evidence will confirm or refute it?
-
-8.  After the fix, what test will prevent regression?
-
-Print it and keep it near your desk.
+A motto worth keeping: AI can suggest hypotheses; you supply the evidence.
 
 ## 6.13 Stakes and politics
 
-Debugging treats a bug as an objective discrepancy between expected and observed behavior, and most of the time it is. The political dimension shows up at the edges, in the question of *which discrepancies count as bugs worth fixing*. “Works on my machine” is a famous developer joke, but it has a serious version — bug reports that fail to reproduce in the maintainer’s environment routinely get closed as “cannot reproduce,” and the reporters who see the bug most often are the ones whose environments differ most from the developers’. Users on right-to-left scripts, on assistive technology, on low-bandwidth connections, on older hardware, and on non-English locales all encounter classes of bug that the dominant developer profile rarely sees, and those classes get fixed last (if at all).
+You find a real bug in an open-source library, write it up carefully, and file it on GitHub. A maintainer replies “Cannot reproduce” and closes the issue. On their machine, it works.
 
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you cannot reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug is not real.
+“Works on my machine” is a running joke among programmers, but it has a serious side. A bug that doesn’t reproduce in the maintainers’ environment is easy to dismiss, and the people who hit such bugs most often are the ones whose environments differ most from the developers’. People who write in [right-to-left scripts](https://en.wikipedia.org/wiki/Bidirectional_text), who use [assistive technology](https://en.wikipedia.org/wiki/Assistive_technology) such as screen readers, who work over slow connections or on older hardware, or who run their computers in a language other than English all run into kinds of bugs that the typical developer rarely sees, and those kinds tend to get fixed last, if at all. Deciding which discrepancies count as bugs worth fixing is where the politics sits.
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you can’t reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug isn’t real.
 
 ## 6.14 Worked examples
 
-The goal of these worked examples is to show the loop in action.
+These two examples run the whole loop, from symptom to verified fix: first a crash, then the harder case, a wrong answer with no error at all.
 
 ### “File not found” that is really “wrong folder”
 
-You run a script and Python tells you `FileNotFoundError: data/input.csv`. Rather than editing the path at random, you stop and gather evidence about where the script thinks it is. Two commands settle it:
+You run a script and Python stops with `FileNotFoundError: [Errno 2] No such file or directory: 'data/input.csv'`. You can see the file right there in your project. Rather than editing the path at random, stop and gather evidence about where the script thinks it is:
 
 ``` python
 import os
@@ -538,123 +484,104 @@ print("cwd:", os.getcwd())
 print("data dir:", os.listdir("data") if os.path.isdir("data") else "missing")
 ```
 
-If `cwd` is the project root, the path is fine and the file is genuinely missing. If `cwd` is some other directory, the path is *relative* to that other directory and the bug is not in your code at all — you just ran the script from the wrong place. The hypothesis is: the script uses a relative path and you are running it from the wrong directory. The experiment is: run the script from the project root, or rewrite the path so it is computed from `__file__` and is independent of the working directory:
+If `cwd` is the project folder and `data dir` lists the file, the path is fine and something else is going on (check the spelling and the extension). If `cwd` is some other folder, you’ve found it. A relative path like `data/input.csv` is looked up relative to wherever you *ran* the script from, not where the script lives, so the bug isn’t in your code at all: you just ran it from a different place. That’s the hypothesis, and there are two ways to test it. Run the script from the project folder and see if the error goes away, or better, build the path from the script’s own location with [`pathlib`](https://docs.python.org/3/library/pathlib.html), so it works no matter where you run it from:
 
 ``` python
-from pathlib import Path   # https://docs.python.org/3/library/pathlib.html
+from pathlib import Path
+
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data" / "input.csv"
 assert DATA.exists(), f"Missing {DATA}"
 ```
 
-That assertion is the verification step: it turns the silent assumption (“the file is here”) into a loud check that fails immediately if the assumption ever breaks again. The lesson generalizes: many “code” failures are really about context, not logic. Always confirm where you are before you change what you do.
+That assertion is the verification step: it turns a silent assumption (“the file is here”) into a loud check that fails immediately, with the full path in the message, if the assumption ever breaks again. The lesson carries well beyond this one error: many “code” failures are about context, not logic. Confirm where you are before you change what you do.
 
-### “It runs but the results are wrong”
+### “It runs, but the results are wrong”
 
-Silent wrongness is much harder than a crash. Suppose you compute the average age in your dataset and get back `0.0`, which is obviously wrong but does not raise any exception. The investigation is decomposition: break the pipeline into stages — load the ages, convert them to numeric, compute the average — and inspect the intermediate result after each stage:
+Silent wrongness is harder than a crash, because nothing tells you where to look. Suppose a survey’s age column has some answers recorded as `unknown`. Earlier in the semester, averaging it crashed with the `TypeError` from the MRE above, so someone (maybe a chatbot, maybe you at 11 p.m.) added a fix that made the error go away:
 
 ``` python
-print(df["age"].head())              # what do the values actually look like?
-print(df["age"].dtype)               # is the column numeric or object?
-print(df["age"].isna().mean())       # how many are NaN?
+import pandas as pd
+from io import StringIO
+
+raw = "name,age\nada,35\nlin,unknown\nsam,42\nkai,unknown\nrae,29\nmax,51\n"
+df = pd.read_csv(StringIO(raw))
+df["age"] = pd.to_numeric(df["age"], errors="coerce").fillna(0)   # the quick fix
+print(df["age"].mean())    # 26.166666666666668
 ```
 
-In this case the column is text (`str` in pandas 3, `object` in pandas 2), the head shows `'35'`, `'42'`, `'unknown'`, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the `'unknown'` sentinel, so `pd.to_numeric` produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (`na_values=['unknown']`) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.
+No error, and an average age of 26.2 for a group you know is mostly in their thirties and forties. The symptom statement: when I average the ages, I expect something near 40, but I get 26.2. The move is to stop looking at the final answer and inspect what the column holds on its way there:
 
-## 6.15 Using AI tools in debugging
+``` python
+print(df["age"].head())           # 35.0, 0.0, 42.0, 0.0, 29.0
+print(df["age"].dtype)            # float64
+print(df["age"].value_counts())   # 0.0 appears twice
+```
 
-AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.
+The column is numeric now, but two people are zero years old. The hypothesis: `errors="coerce"` turned each `unknown` into a missing value, and `.fillna(0)` then turned each missing value into a real age of zero, which drags the average down. That zero is a [sentinel value](https://en.wikipedia.org/wiki/Sentinel_value) you created yourself. The fix is to let missing stay missing. Tell `read_csv` that `unknown` means “no data,” and pandas skips those rows when it averages:
 
-### Good uses of AI
+``` python
+df = pd.read_csv(StringIO(raw), na_values=["unknown"])
+print(df["age"].mean())           # 39.25
+assert (df["age"].dropna() > 0).all(), "An age of 0 or less: check how missing ages were coded"
+```
 
-- Summarize an error message and propose likely categories (type mismatch, missing key).
+The average is now 39.25, from the four people who gave an age, and the assertion guards the next version of the data: if anyone ever fills the gaps with zeros again, the script stops instead of quietly reporting a younger population. The general lesson is that debugging silent wrongness almost always means inspecting the intermediate results rather than the final answer, and that a “fix” which makes an error disappear hasn’t been verified until you’ve checked the numbers it produces. [sec-tabular-data](#sec-tabular-data) covers codes like `unknown` and `-999` in more depth.
 
-- Suggest questions to ask (What is the dtype? What is the working directory?).
-
-- Propose an MRE by stripping code.
-
-- Draft a unit test skeleton once you know the expected behavior.
-
-### Guardrails
-
-1.  Do not paste secrets or private data.
-
-2.  Verify AI-suggested commands in official docs.
-
-3.  Prefer small diffs: one change at a time.
-
-4.  If the AI proposes a fix, make it fail/pass with a test.
-
-A practical motto: AI can suggest hypotheses; you supply the evidence.
-
-## 6.16 Templates
+## 6.15 Templates
 
 ### Template A: debugging journal entry
 
-When debugging takes more than a few minutes, keep a short journal:
+When a bug takes more than a few minutes, keep a short journal. It stops you from repeating experiments, and it’s most of a help request already written:
 
-    Symptom:
-    Expected vs actual:
-    Reproduction steps:
-    Evidence captured (error/trace/logs):
-    Hypotheses:
-    Experiments tried (one per line) + outcomes:
-    Fix applied:
-    Test added:
+``` text
+Symptom:
+Expected vs actual:
+Reproduction steps:
+Evidence captured (error/trace/logs):
+Hypotheses:
+Experiments tried (one per line) + outcomes:
+Fix applied:
+Test added:
+```
 
 ### Template B: minimal test checklist
 
 - Test name describes behavior.
-
 - Inputs are small and synthetic.
-
 - Expected outcome is explicit.
-
 - Test is deterministic.
-
 - Test fails on the buggy version.
 
-## 6.17 Exercises
+## 6.16 Exercises
 
-1.  Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).
-
-2.  Create an MRE that reproduces the error in fewer than 20 lines.
-
+1.  Take a recent error you ran into. Write a one-sentence symptom statement: when I do X, I expect Y, but I observe Z.
+2.  Create an MRE that reproduces the error in fewer than 20 lines, using `StringIO` or a hard-coded example instead of your real data.
 3.  Add two assertions that encode assumptions about your data (columns, ranges, missingness).
-
-4.  Convert three print statements into logging calls with levels.
-
-5.  Fix a bug and then write a unit test that would have caught it.
-
-6.  In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.
-
+4.  Convert three print statements into logging calls with levels, then switch the level between `INFO` and `DEBUG` and watch what changes.
+5.  Fix a bug, then write a pytest test that fails on the old code and passes on the new.
+6.  In a notebook, create a hidden-state bug on purpose (run cells out of order), then fix it by restarting and running from the top.
 7.  Put `breakpoint()` inside a loop in one of your own scripts, and use `p`, `n`, and `c` to watch one variable change over three passes through the loop. Then delete the breakpoint and run `ruff check --select T100 .` to confirm none are left.
 
-## 6.18 One-page checklist
+## 6.17 One-page checklist
 
-- I can state the symptom clearly (expected vs actual).
-
-- I can reproduce the bug and capture the evidence.
-
-- I can localize the failure and reduce scope.
-
-- I form hypotheses and test them with one-change experiments.
-
-- I use prints/assertions/logs to collect useful signals.
-
-- When rerunning with prints gets slow, I pause the program (`breakpoint()`, `python -m pdb`, `%debug`) and look around, and I remove every breakpoint before I commit.
-
-- I verify the fix and add a test to prevent regression.
-
-- In notebooks, I manage hidden state (restart + run all).
-
-- If I use AI tools, I treat outputs as drafts and verify with tests.
+- State the symptom in one sentence: when I do X, I expect Y, but I observe Z.
+- Make it happen again, and capture the evidence (command, folder, full traceback, versions, which Python) before trying fixes.
+- Shrink it: find the stage where it first goes wrong, and cut it down to the smallest example that still fails.
+- List two or three plausible causes, and test one at a time, one change per run.
+- Before each experiment, know what result would confirm or rule out your guess.
+- Use labeled prints, assertions, and logs to collect evidence; never print whole datasets or log secrets.
+- When rerunning with prints gets slow, pause the program (`breakpoint()`, `python -m pdb`, `%debug`) and look around, and remove every breakpoint before you commit.
+- Verify the fix, and add a test that would have caught the bug.
+- In notebooks, restart the kernel and run all cells before you trust any result.
+- If a command works in one place and not another, compare `pwd`, `which python`, and `python --version` in both.
+- Treat AI suggestions as hypotheses: apply one at a time, and prove each with a test.
 
 > **NOTE:**
 >
-> - [Python `logging` HOWTO](https://docs.python.org/3/howto/logging.html) — the official walk-through of loggers, handlers, and levels.
-> - [Real Python: Python Debugging with `pdb`](https://realpython.com/python-debugging-pdb/) — a clean, beginner-friendly introduction to Python’s built-in interactive debugger.
-> - [Software Carpentry: Python Debugging lesson](https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html) — a short, scaffolded lesson on systematic debugging with worked examples.
-> - John Regehr, [How to Debug](https://blog.regehr.org/archives/199) — a compact, opinionated essay from a systems researcher on hypothesis-driven debugging that translates well to scientific Python.
-> - Julia Evans, [Bite Size Debugging](https://wizardzines.com/zines/debugging/) — a short illustrated zine covering print debugging, strace, gdb, and the mental moves that work across languages.
-> - Andreas Zeller, [*The Debugging Book*](https://www.debuggingbook.org/) — a free interactive textbook covering tracing, deltas, fuzzing, and automatic debugging; useful when you want to go beyond print statements.
+> - **Python documentation**, [Logging HOWTO](https://docs.python.org/3/howto/logging.html) — the official walk-through of loggers, handlers, and levels, starting from the simplest setup.
+> - **Stack Overflow**, [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) — the community’s own guide to shrinking a problem until it’s small, complete, and reproducible; useful whether or not you end up posting.
+> - **Software Carpentry**, [Programming with Python: Debugging](https://swcarpentry.github.io/python-novice-inflammation/11-debugging.html) — a short, scaffolded lesson on systematic debugging, with exercises.
+> - **John Regehr**, [How to Debug](https://blog.regehr.org/archives/199) — a compact, opinionated essay from a computer science professor on hypothesis-driven debugging that translates well to scientific Python.
+> - **Julia Evans**, [*The Pocket Guide to Debugging*](https://wizardzines.com/zines/debugging-guide/) — an illustrated zine about the strategies (and the feelings) that get you unstuck, in any language.
+> - **Andreas Zeller**, [*The Debugging Book*](https://www.debuggingbook.org/) — a free interactive textbook on tracing, delta debugging, and automated debugging, for when you want to go beyond print statements.
