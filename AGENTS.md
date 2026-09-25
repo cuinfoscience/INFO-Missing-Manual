@@ -515,7 +515,7 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 
     The leading slash matters. Chapters live in `chapters/`, so a bare `graphics/filename.png` resolves against `chapters/` and renders as a broken link with no warning from Quarto. A `/`-prefixed path is resolved against the project root and rewritten per page. (The unfilled `PLACEHOLDER-*` references still use the bare form; fix the path when you fill one in.)
 
-3.  Cross-reference it in prose with `@fig-slug`, and give every figure a `fig-alt`.
+3.  Cross-reference it in prose with `@fig-slug`, and give every figure a `fig-alt`. A Mermaid diagram (a ```` ```{mermaid} ```` block) is the exception: Quarto doesn't pass `fig-alt` through to it, so put `accTitle:` and `accDescr:` lines inside the diagram, which Mermaid writes into the drawing for screen readers (see `documentation.qmd`).
 4.  Use `::: {.column-margin}` only for small, simple images. Anything with labels, callouts, or fine detail is illegible at margin width (300 CSS px, against about 680 px for the body column; `tools/layout-audit/` measures both) and belongs in the body column.
 
 ### Add a bibliography entry
