@@ -12,7 +12,7 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
 - [x] **The table of contents below the chapter meme** ([#30](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/30)): [`plans/2026-09-24-toc-below-meme.md`](plans/2026-09-24-toc-below-meme.md). Done in the pull request that closed #30 (September 2026).
 - [x] **Cloud storage, sync, and your disk** ([#34](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/34)), in chapters 9 and 10: [`plans/2026-09-24-cloud-storage-sections.md`](plans/2026-09-24-cloud-storage-sections.md). Done in the pull request that closed #34 (September 2026); the plan's optional folding of chapter 10's trailing sections is still open below.
 
-- [ ] **A welcoming narrative voice in every chapter** ([`decisions.md`](decisions.md), 2026-09-25; rules in `AGENTS.md`, "Tone and Voice"). One pull request per part, after the pilot, following [`plans/2026-09-25-voice-rollout.md`](plans/2026-09-25-voice-rollout.md); each also replaces the chapter's "Learning objectives" with "Why read this chapter" bullets:
+- [x] **A welcoming narrative voice in every chapter** ([`decisions.md`](decisions.md), 2026-09-25; rules in `AGENTS.md`, "Tone and Voice"). One pull request per part, after the pilot, following [`plans/2026-09-25-voice-rollout.md`](plans/2026-09-25-voice-rollout.md); each also replaces the chapter's "Learning objectives" with "Why read this chapter" bullets:
     - [x] Pilot: `tabular-data` (September 2026)
     - [x] Part I — Practice of Technical Work (#62)
     - [x] Part II — Computing Environment (#63)
@@ -20,7 +20,7 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
     - [x] Part IV — Working with Data (the rest of it) (#65)
     - [x] Part V — Communication (#66)
     - [x] Part VI — Project Management (#67)
-    - [ ] Part VII — Algorithmic Systems, and the appendices, introduction, and conclusion
+    - [x] Part VII — Algorithmic Systems, and the appendices, introduction, and conclusion (#68). The rollout is done; [`aar/AAR_INFO-Missing-Manual_2026-09-25.md`](aar/AAR_INFO-Missing-Manual_2026-09-25.md) reviews it.
 
 ## Chapter and section candidates
 
