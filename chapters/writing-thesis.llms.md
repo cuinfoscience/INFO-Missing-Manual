@@ -10,155 +10,165 @@
 
 ![Worst Meme: This is the hardest writing I’ve ever done, This is the hardest writing so far.](../graphics/memes/writing-thesis.png)
 
-A thesis is the longest single argument most people will ever write. An MS thesis is a hundred pages. A PhD dissertation is two to three hundred. Either way, it is a different kind of object from a paper — it is sustained, it is yours alone in a way a co-authored paper isn’t, and it has to be coherent across more text than you have ever produced before. The writing problems are different too. In a paper, you can keep the whole argument in your head. In a thesis, you cannot, and the project becomes about how to manage scale: how to outline at three levels, how to revise without losing the thread, how to integrate published or under-review papers into a unified narrative, how to work with a committee, and how to finish.
+It’s the start of senior year, and the professor you finally worked up the nerve to email about an honors thesis writes back with one line: “Great, what do you want to work on?” Or you’re a master’s student with a data set, a deadline in May, and no idea what a thesis is supposed to look like. Or you’re a PhD student with three papers in various states of finish, and someone has just told you they need to become *one* dissertation. Each comes with the same quiet panic: you’ve written plenty of papers, and none of them prepared you for this.
 
-This chapter is for someone whose first thesis is on the horizon — an honors student in their senior year, a master’s student starting their second year, a PhD student moving toward a proposal. It does not cover the substance of thesis research; that is the work of your advisor, your committee, and your reading. It covers the meta-skill of how to *write the thesis as a coherent document.* It speaks generically about U.S. R1 PhD program norms and avoids university-specific policies — for those, talk to your program’s graduate coordinator.
+That feeling is reasonable, because a thesis really is a different kind of object. It’s the longest single argument most people ever write, it’s yours in a way a co-authored paper isn’t, and it’s too big to hold in your head at once. So the hard parts are less about sentences and more about scale and people: sizing a topic you can finish, outlining at several levels, revising without losing the thread, working with an advisor and a committee who don’t always agree, and actually stopping.
 
-Read this chapter alongside [sec-writing-manuscripts](#sec-writing-manuscripts). The two share a great deal: both are exercises in writing a coherent argument for a critical reader. But a thesis is a bigger room with its own acoustics, and some of what works for a paper does not scale.
+This chapter covers that craft for an honors or senior thesis, a master’s thesis, or a PhD dissertation. It doesn’t cover the substance of your research; that’s the work of your advisor, your committee, and your reading. It describes common U.S. practice in general terms; rules differ between universities and even departments, so your program’s handbook and thesis guide have the final word. Read it alongside [sec-writing-manuscripts](#sec-writing-manuscripts): a thesis is a bigger room with its own acoustics, and some of what works for a paper doesn’t scale.
 
-## Learning objectives
+## Why read this chapter
 
-By the end of this chapter, you should be able to:
-
-1.  Distinguish an MS thesis, a monograph PhD dissertation, and a three-paper PhD dissertation, and explain when each is appropriate.
-
-2.  Draft a thesis proposal that articulates a research question, situates it in the literature, and lays out a defensible plan and timeline.
-
-3.  Choose and work with a thesis committee, and understand the rhythms of comprehensive exams, proposal defenses, and final defenses.
-
-4.  Outline a long-form document at chapter, section, and paragraph granularity, and revise it without losing the thread.
-
-5.  Integrate published or under-review papers into a unified dissertation narrative.
-
-6.  Manage the emotional and logistical realities of long-form writing — drafting, feedback, revision, and finishing.
+- You’ve been told to pick a thesis topic by October, and every idea you have feels either too big to finish or too small to matter.
+- Your advisor takes three weeks to answer an email, and you’re not sure whether you’re allowed to ask for more of their time.
+- Two committee members gave you opposite advice on the same chapter, and you don’t know whose to follow.
+- You’ve rewritten the first page of chapter one five times and still haven’t started the chapter the whole thesis depends on.
+- You have three papers that are supposed to become one dissertation, and stapled together they read like three strangers.
+- Your defense is on the calendar, and you have no idea what actually happens in the room, or what happens if it goes badly.
+- People keep saying “prospectus,” “comps,” “quals,” and “deposit,” and nobody has told you which of them apply to you.
 
 ## Running theme: a thesis is one argument, told once, at length, in your own voice
 
-The temptation is to think of a thesis as a series of papers stapled together. Even when the dissertation contains three published papers, that is not what the thesis is. The thesis is one argument, and the papers are evidence for that argument. The introduction names it; the chapters develop it; the conclusion synthesizes it.
+Even a dissertation built from three published papers isn’t a stack of papers: it’s one argument that the introduction names, the chapters develop, and the conclusion pulls together.
 
 ## 27.1 What a thesis is for
 
-A thesis serves three audiences, each with different demands.
+A thesis has three audiences, and they want different things. The **committee** (for many undergraduate theses, your advisor and a second reader) is the gatekeeper. They’ll read the whole thing, sign off on it, and sit in the room if there’s a defense, and they want to be persuaded that you’ve done a coherent piece of work you can stand behind. Your **future self** is the second audience: in five or ten years you’ll open this document to remember what you actually did and what you’d do differently, and it’s the only record of the project written from the inside. Your **future readers** are the third: colleagues, students, hiring committees, someone who found your thesis in a library search. Most of them will read the introduction and maybe one chapter.
 
-The **committee** is the gatekeeper. They have read it, they will sign off on it, they will sit at your defense. They want to be persuaded that you have done a coherent piece of work and that you can defend it.
+So the committee wants completeness, your future self wants an honest record, and your readers want compression. A workable compromise is to write the introduction and conclusion for compression, the chapters for completeness, and the appendices for honesty (the failed analyses, the full survey instrument, the code).
 
-Your **future self** is the second audience. You will look at this document in five or ten years and want to remember what you actually did and what you would do differently. The thesis is the most permanent record of a multi-year project, and the only one written from inside.
+## 27.2 Kinds of thesis
 
-Your **future readers** — colleagues, students, hiring committees, the broader research community — are the third. Most of them will read only the introduction and a chapter or two. Make those sections worth their time.
+The vocabulary alone trips people up. At most U.S. universities you write a *thesis* for a bachelor’s or master’s degree and a *dissertation* for a doctorate; in the UK the words roughly flip, and Wikipedia’s [thesis article](https://en.wikipedia.org/wiki/Thesis#Regional_and_degree-specific_practices_and_terminologies) collects the variations country by country. This chapter says “thesis” for all of them. Four forms cover most of what you’ll meet, and the page counts below are rough, since they vary a lot by field and program.
 
-These three audiences pull in slightly different directions. The committee wants completeness. Your future self wants honest record-keeping. Your future readers want compression. The compromise: write the introduction and conclusion for compression, the chapters for completeness, and the appendices for honesty.
+**Honors or senior thesis.** A focused project, usually written over one or two semesters of your final year with a faculty advisor and often a second reader. It usually isn’t held to a dissertation’s standard of a new contribution to the field (though the best ones make one), but it does have to ask a real question, use real sources or data, and argue carefully. It’s often the first time you’ll sustain one argument across dozens of pages, which is good practice if graduate school is on your mind.
 
-## 27.2 Genres of thesis
+**Master’s thesis.** Often fifty to a hundred pages, with one or two research questions and one coherent contribution. It’s often a stepping stone to a PhD or to research work in industry, and it’s shaped more like a long paper than a book, with a bigger literature review than a paper would carry.
 
-Three forms dominate, and the choice between them shapes everything that follows.
+**Monograph dissertation.** Often a hundred and fifty to three hundred pages of sustained argument, a [monograph](https://en.wikipedia.org/wiki/Monograph) in all but name, and common in the humanities and much of the social sciences. Its strength is depth: one big idea developed across chapters. The risk is that no chapter ever becomes a standalone publication, and years of work get read by almost no one outside your committee.
 
-**MS thesis.** Roughly fifty to a hundred pages, single coherent contribution, one or two research questions. An MS thesis is often a stepping stone — to a PhD, to industry research, to a portfolio piece. It is shorter than a PhD dissertation and shorter than most PhD students remember. The genre conventions of an MS thesis are closer to a long paper than to a monograph: introduction, methods, results, discussion, conclusion, with a literature review larger than a paper would carry.
+**Three-paper (or article-based) dissertation.** Several publishable papers (most often three in U.S. programs) plus an introduction and conclusion that frame them as one contribution. It’s the standard [thesis as a collection of articles](https://en.wikipedia.org/wiki/Thesis_as_a_collection_of_articles) in some countries and fields, and common in information science, HCI, and computational social science. You finish with papers already out or under review; the price is coherence, because if the papers are too different, the introduction has to work very hard to make them one project.
 
-**Monograph PhD dissertation.** A hundred-fifty to three hundred pages of sustained argument across chapters. Common in humanities and parts of social science. The strength of a monograph is depth — one big idea, developed across multiple chapters, each chapter doing rhetorical work. The risk is that none of the chapters become standalone publications, and you defend a thousand pages of work that nobody outside the committee will ever read.
+Three large empirical studies fit the paper-based form; an argument that builds chapter by chapter fits the monograph. Settle the form with your advisor early, within your program’s rules, because switching halfway through is painful.
 
-**Three-paper PhD dissertation.** Increasingly common in HCI, information science, and computational social science. Three publishable manuscripts plus an introduction and a conclusion that frame them as a unified contribution. The strength is publishing throughput — you finish the dissertation with three papers in the pipeline. The weakness is coherence — if the three papers are too different, the framing introduction has to do enormous work to make them feel like one project.
+## 27.3 Choosing a topic you can finish
 
-The choice depends on your field, your advisor, and the kind of work you do. A computational thesis with three large empirical projects fits the three-paper form naturally. A theoretical thesis with one developing argument fits the monograph. Talk to your advisor early; the choice is not lightly reversible.
+Picking a topic is where many theses stall before they start. Every idea seems to land in one of two bins: so big it would take a career, or so small it can’t possibly be worth a year. Almost everyone bounces between those bins for a while. The way out is to stop asking “is this important?” and start asking “can I answer this with the time and data I have?”
 
-## 27.3 The proposal
+A thesis topic is really a [research question](https://en.wikipedia.org/wiki/Research_question) sized to a calendar, and a good test is whether you can state it in one sentence that names what you’ll study and how. “Social media and democracy” is an area. “Did one large subreddit’s 2023 moderation policy change reduce reported harassment over the next six months?” is a question. It sounds smaller, and that’s the point: a finished narrow question is worth far more than an unfinished broad one.
 
-Most PhD programs require a written proposal between coursework and the dissertation work. Master’s programs vary. The proposal is a thirty-to-sixty-page document that contains a literature review, the research questions, the methods, the timeline, an ethics or IRB plan if applicable, and a statement of expected contribution.
+Workable topics usually grow from what you already have: a course paper you wished you could have taken further, a data set you already know how to clean, or the data, methods, and access your advisor’s group already has. Talk to two or three faculty members before you commit; they know which questions are live and which will eat a year of data collection before you write a word. Expect the topic to narrow as you go, which is healthy. The opposite, [scope creep](https://en.wikipedia.org/wiki/Scope_creep), is what keeps a project from ending, so when a promising tangent shows up, put it in a “future work” file and keep going.
 
-A useful framing: the proposal is the dissertation introduction, written before you have done the work. You will rewrite it later — many sentences will survive, many will not — but the act of writing it forces you to articulate what you don’t yet know. If you cannot state your research question in one sentence at proposal time, the next year of work will drift.
+## 27.4 The proposal
 
-Pat Thomson’s blog has a long-running series on proposals ([^1]) that is the most realistic short read on the genre. Joan Bolker’s *Writing Your Dissertation in Fifteen Minutes a Day* ([^2]) is the standard companion on the writing side; Wendy Belcher’s twelve-week framework (cited in [sec-writing-manuscripts](#sec-writing-manuscripts)) translates to thesis-scale writing once you scale the units up.
+Most U.S. PhD programs, many master’s programs, and some honors programs ask for a written proposal (sometimes called a prospectus) before the main work begins. It can run from a few pages for an honors thesis to thirty, sixty, or more for a dissertation, and it usually covers a [literature review](https://en.wikipedia.org/wiki/Literature_review), the research questions, the methods, a timeline, an ethics plan (such as approval from your university’s [institutional review board](https://en.wikipedia.org/wiki/Institutional_review_board) if you’ll study people), and the contribution you expect.
 
-## 27.4 The committee
+Think of the proposal as your introduction, written before you’ve done the work. Plenty of its sentences won’t survive, but writing it forces you to say out loud what you don’t know yet, and if you can’t state your research question in one sentence at proposal time, the next year of work will drift.
 
-The committee is the small group of faculty who supervise the thesis. The composition varies by program, but generic norms apply.
+Pat Thomson’s blog has thoughtful posts on proposals as a kind of writing.[^1] Joan Bolker’s *Writing Your Dissertation in Fifteen Minutes a Day* is the standard companion on the writing side,[^2] and Wendy Belcher’s twelve-week framework (cited in [sec-writing-manuscripts](#sec-writing-manuscripts)) carries over to thesis-scale writing once you scale the units up.
 
-Your **chair** (often your advisor) is the primary supervisor. You meet with them most often; they read drafts most carefully; they shepherd the project through milestones. Their job is to push you toward a defensible thesis and to defend you at the moments when committee disagreement gets sharp.
+## 27.5 Your advisor and your committee
 
-The other members are usually two to four additional faculty. At least one is often from outside your department; they ensure the work is legible to a broader audience and they catch field-specific blind spots. Their reading is less continuous than the chair’s; they enter the project at proposal time and intensify their attention near the defense.
+A thesis is the first writing project where you manage people as much as prose, and nobody teaches you how. Your **advisor** (also called a supervisor, chair, or [doctoral advisor](https://en.wikipedia.org/wiki/Doctoral_advisor)) is the person you meet with most, who reads your drafts most closely, steers the project through each milestone, and backs you up when the committee disagrees. The **other committee members** are often two to four more faculty for a doctorate, fewer for a master’s, and for many honors theses a single second reader. Some programs require one member from outside your department, to check that the work makes sense beyond your field. Their attention comes in bursts, mostly at the proposal and near the defense.
 
-Two practical rules. **Read committee feedback charitably.** A comment that lands as harsh on a Tuesday morning may be entirely reasonable when you re-read it Wednesday afternoon. **Manage conflicting feedback explicitly.** When two committee members disagree about what you should do, escalate to your chair; do not pick one and ignore the other. The chair’s job is to mediate.
+**When your advisor seems to disappear.** Perhaps the most common thesis frustration is an advisor who is kind, brilliant, and nearly impossible to reach. It usually isn’t about you: faculty juggle teaching, grants, and a dozen other students, and your thesis gets what’s left. You can make that attention easier to give. Ask for a standing meeting (every two weeks is common) instead of scheduling each one from scratch. Bring a short agenda and a specific question (“Should chapter 3 come before chapter 4?” rather than “What do you think?”). Send a summary email after each meeting listing what you agreed (there’s a template below), give each draft a date you’d like comments by, and find other readers too: a postdoc, another faculty member, or a writing group. If the relationship is truly broken, not just busy, talk to your program’s graduate or honors director; many universities also have an [ombuds office](https://en.wikipedia.org/wiki/Ombudsman) for confidential advice.
 
-## 27.5 Comprehensive exams or qualifying exams
+**When feedback stings,** read it charitably, and not right away if you can help it. A comment that feels harsh on a Tuesday morning often reads as entirely reasonable on Wednesday afternoon.
 
-Most PhD programs have one. Formats vary widely — written exams, oral exams, paper portfolios, literature reading lists with synthesis essays. The exam usually serves as the gateway from coursework to the proposal. It is field-specific and program-specific; for the precise rules, ask your program’s graduate coordinator. The advice that generalizes: start preparing earlier than you think you need to, treat the reading list as a literature map (see [sec-reading-scholarship](#sec-reading-scholarship)), and ask former students of your program for their actual study materials.
+**When two committee members disagree,** say one asks you to cut the section another asked you to add, don’t quietly pick one and ignore the other; that surfaces at the defense, in public. Take both comments to your chair, in writing and side by side, and ask how to resolve them. Mediating is part of the chair’s job.
 
-## 27.6 Outlining and drafting at thesis scale
+## 27.6 Comprehensive and qualifying exams
 
-A thesis is too big to outline at one level. You need three levels at once.
+Most U.S. PhD programs put some kind of exam between coursework and the proposal, called [comprehensive exams](https://en.wikipedia.org/wiki/Comprehensive_examination) (“comps”), qualifying exams (“quals”), or preliminary exams (“prelims”). Undergraduate and most master’s theses don’t have one. Formats vary enormously (timed written exams, oral exams, paper portfolios, reading lists with synthesis essays), so ask your program coordinator for the local rules. The advice that travels: start earlier than you think you need to, treat the reading list as a literature map (see [sec-reading-scholarship](#sec-reading-scholarship)), and ask students a year or two ahead of you for their actual study materials. Most will happily share.
 
-**The chapter level.** A one-page table of contents with the title of each chapter, a one-sentence statement of what each chapter does, and the rough word count. This is your map. You will revise it many times; that is fine.
+## 27.7 Outlining and drafting at thesis scale
 
-**The section level.** Within each chapter, an outline of the sections and their order. Section-level outlines are where the rhetorical structure of the chapter becomes visible — and where you discover, sometimes painfully, that two of your sections are actually saying the same thing.
+Here’s where many people freeze: you’ve read a lot, you have results, and when you sit down to write, the thesis is too big to see all at once. The fix is to outline at three levels and keep all three alive.
 
-**The paragraph level.** For the chapter you are currently drafting, a list of paragraphs with topic-sentence stubs. This is the level where your daily writing happens. A good day is a few topic-sentence stubs turned into paragraphs.
+**At the chapter level,** keep a one-page table of contents with each chapter’s title, one sentence on what it does for the argument, and a rough target length. It’s your map, and you’ll redraw it many times.
 
-Anne Lamott’s “shitty first drafts” applies. A thesis chapter has to be drafted ugly and then revised. The most common failure mode is polishing the introduction of chapter one for two months and never writing chapter four. Set a daily writing target — Bolker’s fifteen minutes a day is real — and keep it.
+**At the section level,** outline each chapter’s sections in order. This is where a chapter’s argument becomes visible, and where you discover, sometimes painfully, that two sections are saying the same thing.
 
-A second failure mode: writing in inspiration sprints and then disappearing for weeks. Steady throughput beats heroic effort. Belcher and Bolker both make this case. Block protected mornings; treat the writing time as a meeting that doesn’t get rescheduled.
+**At the paragraph level,** for the chapter you’re drafting now, list the paragraphs as topic-sentence stubs. A good writing day turns a few stubs into paragraphs.
 
-## 27.7 Integrating papers into a dissertation
+Then draft ugly. [Anne Lamott](https://en.wikipedia.org/wiki/Anne_Lamott)’s famous case for terrible first drafts, in her book *Bird by Bird*, applies here more than anywhere. The most common way a thesis stalls is polishing the opening of chapter one for two months and never writing chapter four; the introduction is the last thing to finish, because you don’t know what it introduces until the rest exists. The second is writing in bursts and then vanishing for weeks. Steady output beats heroic effort (the whole argument of Bolker’s and Belcher’s books), so set a small daily target, even Bolker’s fifteen minutes, and block it on your calendar like a meeting you don’t move.
 
-For a three-paper dissertation, the integration is the work that turns three papers into one thesis.
+Two habits save grief later. Keep every source in a reference manager such as [Zotero](https://www.zotero.org/support/quick_start_guide) from the first week, so a two-hundred-page bibliography builds itself ([sec-reading-scholarship](#sec-reading-scholarship) shows the setup). And keep the thesis under version control, one chapter per file ([sec-git-github](#sec-git-github)).
 
-The **introduction** is where the framing happens. It is not “here are three papers I wrote”; it is “here is one research question, and these three papers approach it from three angles.” Spend real time on this. The introduction is what your future readers will read, and the framing it establishes is what makes the thesis feel like a thesis.
+## 27.8 Integrating papers into a dissertation
 
-Each **paper-chapter** typically gets a short preface — a paragraph or two — explaining where it was published (or is under review), how it relates to the others, and what the reader should know coming in. The body of each chapter is usually the paper itself, possibly with adjustments to figure numbers, cross-references, and notation to keep the thesis internally consistent.
+For a paper-based dissertation, integration is the work that turns three papers into one thesis, and it’s easy to underestimate.
 
-The **conclusion** synthesizes across the three chapters. What did you learn that you could not have learned from any one paper alone? What is the contribution of the dissertation as a whole? Future work?
+The **introduction** does the framing. It shouldn’t say “here are three papers I wrote”; it should say “here is one research question, and these three studies approach it from three angles.” It’s what most readers will read, and it’s what makes the thesis feel like a thesis, so spend real time on it.
 
-A monograph dissertation handles integration differently — the chapters are continuous, with no paper-shaped seams to hide. The introduction and conclusion still do framing, but the chapters are not standalone artifacts.
+Each **paper chapter** usually gets a preface of a paragraph or two: where it was published (or is under review), how it relates to the other chapters, and what the reader should know coming in. The body is usually the paper itself, with figure numbers, cross-references, and notation made consistent across the thesis. Check two rules early, because they catch people late: many programs ask you to state your own contribution to any co-authored paper, and for a published paper you should check the copyright agreement you signed (many publishers explicitly allow reuse in a thesis, sometimes with a required citation).
 
-## 27.8 Revision and feedback cycles
+The **conclusion** synthesizes. What did you learn that no single paper could show? What does the dissertation contribute as a whole? What comes next? A monograph handles all this differently: its chapters run continuously, with no paper-shaped seams to hide, though its introduction and conclusion still do the framing.
 
-The drafting-to-defense workflow has a characteristic shape. You draft a chapter; you give it to your advisor; you revise based on their feedback; you circulate to the committee at proposal or pre-defense; you revise based on their feedback; you defend; you revise once more.
+## 27.9 Revision and feedback cycles
 
-Each cycle compresses. Advisor feedback on chapter one might run for months; committee feedback at the proposal might run for weeks; pre-defense revision is usually weeks; post-defense revision, days. Plan accordingly.
+The path from draft to defense has a typical shape: your advisor comments on chapters and you revise; the committee reads the proposal and later the full draft, and you revise again; you defend; you revise one last time. Each cycle tends to be shorter than the last, from months of back-and-forth on your first chapter to days or weeks of corrections after the defense. Plan for that, and assume everything will take longer than your plan says; the [planning fallacy](https://en.wikipedia.org/wiki/Planning_fallacy) is a documented bias, not a personal failing.
 
-Track changes matters. Word’s track-changes mode works for circulating to committee members who don’t use git. LaTeX users can use `latexdiff` to produce a marked-up PDF showing changes between two versions; see [sec-latex](#sec-latex). Git is the persistent record; see [sec-git-github](#sec-git-github) for chapter-level branching strategies. Many students keep a `dissertation/` repo with one chapter per file and use branches for major revisions.
+Readers will ask “what changed since the version I read?”, so keep track. If your committee works in Word, [Track Changes](https://support.microsoft.com/en-us/office/track-changes-in-word-197ba630-0f5f-4a8e-9a77-3712475e806a) is the common language. If you write in LaTeX (see [sec-latex](#sec-latex)), [latexdiff](https://ctan.org/pkg/latexdiff) compares two versions of a `.tex` file and writes a third that marks every deletion and addition; compile it as usual to get a marked-up PDF:
 
-The 80/20 rule: address most committee comments without argument. The few you choose to push back on, do so in a written response — even when the committee meeting is in person — so there is a record of what you decided and why.
+``` bash
+latexdiff ch3-sent.tex ch3-now.tex > ch3-diff.tex
+```
 
-## 27.9 The defense
+If the thesis is in Git, [tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) each version you send out so you can compare against it later; `--word-diff` shows changes word by word, which suits prose far better than Git’s usual line-by-line view:
 
-The defense is mostly conversational. Your committee has read the document and has already decided whether to pass you; the defense is the formal occasion to confirm that decision and to surface the questions that didn’t fit on the page.
+``` bash
+git tag -a sent-to-committee -m "Full draft sent to the committee"
+# ...weeks of revision later...
+git diff --word-diff sent-to-committee -- chapters/ch3.md
+```
 
-The public-talk component — the thirty-to-forty-five-minute presentation — is the visible part. See [sec-presenting](#sec-presenting) for slide design and timing; the presenting chapter has a section specifically on defenses. The Q&A, often an hour or more, is where committee members ask the questions they care about. Surprises are rare if your advisor has done their job. Prepare for the questions you would ask if you were on the committee, and prepare for the question you most fear; that one is usually asked.
+Address most comments without argument. For the few you push back on, reply in writing, even if the conversation happened in person, so there’s a record of what you decided and why.
 
-After the defense, the committee deliberates briefly and tells you the outcome. Most defenses pass with revisions. The revisions are usually minor and have a deadline.
+**The draft that won’t end.** At some point many theses stop converging: each round of revision turns up two more things to fix, and “almost done” stretches across a semester. Often nobody has said what “done” means. Ask your advisor directly, “What has to be true before I can schedule the defense?”, write the answer down as a short list, and work the list. New ideas go in the future-work file, not the draft.
 
-## 27.10 Finishing
+## 27.10 The defense
 
-“Done is better than perfect.” This is the hardest part of a thesis to internalize. The dissertation is not the last thing you will ever write; it is one document, and finishing it is a discrete milestone. The Thesis Whisperer blog ([^3]) is the most candid public voice on the emotional reality of finishing — read it.
+Many students picture the defense as a trial. In most U.S. programs it’s closer to a structured conversation about work the committee has already read, and your advisor usually won’t let you schedule it until they believe the thesis is ready. The [thesis examination](https://en.wikipedia.org/wiki/Thesis#Thesis_examinations) looks different elsewhere: in the UK and Ireland it’s the *viva*, usually a private exam with two examiners (one from another university) that can last a few hours. And plenty of honors theses have no oral defense at all, or end with a short presentation to the advisor and second reader, so ask early which kind yours is.
 
-Practical end-game logistics: institutional formatting requirements (margins, font, table of contents conventions); ProQuest deposit ([^4]) for PhD dissertations; embargo decisions; institutional repository deposit. None of this is intellectual work. All of it has deadlines. Read your program’s formatting guide twice.
+A U.S. graduate defense usually opens with a talk, often thirty to forty-five minutes ([sec-presenting](#sec-presenting) covers defense talks among its genres). The questions that follow are the real substance and often run longer than the talk. Prepare for the questions you’d ask if you were on the committee, and especially for the one you most fear, because it usually gets asked. “I don’t know, but here’s how I’d find out” beats bluffing.
 
-## 27.11 Stakes and politics
+Afterward, the committee sends you out, talks briefly, and calls you back with the outcome: a pass with no changes, a pass with minor or major revisions, or (rarely) a requirement to revise and defend again. Passing with revisions is very common, so don’t hear “revisions” as failure. They usually come with a deadline and one person, often your advisor, who checks them.
 
-A thesis is a multi-year commitment to a single sustained argument, and the conditions under which someone can sustain it are not equally distributed.
+## 27.11 Finishing
 
-Three things to notice. First, *who can afford the time*. A funded PhD with a teaching or research assistantship is a part-time wage in exchange for full-time scholarly labor, and the wage is set by the institution, not by the cost of living in its city. Students with caregiving obligations, debt, undocumented status, or chronic health conditions face a different calculation than students without those constraints, and “just take an extra year” is not a neutral piece of advice. The visible attrition statistics in PhD programs are downstream of an invisible filtering at admission, in advising, and in funding renewal. Second, *advising is a power relationship*. The advisor signs off on every milestone, writes every recommendation letter, and shapes the network the student will leave the program with. When the relationship works, the student flourishes; when it does not — through neglect, mismatch, or in the worst cases, harassment — the student often has no recourse short of starting over. Mental-health literature on graduate school documents elevated rates of depression and anxiety relative to comparable non-academic populations. Third, *citation, attribution, and “the field” apply to theses too*. Whose work you build on, whose names you canonize as the conversation, and whose contributions you credit in your acknowledgements all encode a position. See [sec-writing-manuscripts](#sec-writing-manuscripts) for the related framing on authorship and citation.
+“Done is better than perfect” is the hardest advice in this chapter to take. The thesis isn’t the last thing you’ll write; finishing it is a milestone, not a verdict on your worth. Near the end, many people hit a stretch where the whole project suddenly looks obvious, boring, or wrong. Inger Mewburn of the Thesis Whisperer calls it a valley (her post’s title is blunter), and her point is that you’re passing through it, not stuck there.[^3] The sense that you’re the only one faking it has a name, [impostor syndrome](https://en.wikipedia.org/wiki/Impostor_syndrome), and saying so to someone you trust helps.
 
-See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you plan a thesis, plan also for the conditions that make finishing possible — financial, relational, and emotional — and recognize that those conditions are unevenly distributed.
+Then there’s the paperwork, which bites people who leave it to the last week. Your graduate school or honors program will have rules for margins, fonts, and front matter, and many run a format review before accepting the final file. If yours publishes a Word or LaTeX template, write in it from the start (Overleaf keeps a [gallery of university thesis templates](https://www.overleaf.com/latex/templates/tagged/thesis), but your own school’s version is the one that counts). Doctoral dissertations at many U.S. universities also go to ProQuest’s dissertation database,[^4] and most universities post theses in their [institutional repository](https://en.wikipedia.org/wiki/Institutional_repository); if you’re publishing chapters as papers or a book, ask your advisor about an embargo that delays public release. None of this is intellectual work, and all of it has deadlines, so read your formatting guide the first time long before you need it.
 
-## 27.12 Worked examples
+## 27.12 Stakes and politics
+
+Open a few theses in your department’s repository and read the acknowledgments. You’ll often find a partner thanked for covering the rent in a final, unfunded year, a parent for watching the kids on writing days, or a fellowship for years of support. The acknowledgments are the one page of a thesis that admits it ran on time, and that someone paid for the time.
+
+A funded PhD is a part-time wage for full-time scholarly work, set by the institution rather than by the cost of living in its city. Students with caregiving responsibilities, debt, visa rules that limit outside work, or chronic illness face a different calculation from those without, so “just take an extra year” isn’t neutral advice. The undergraduate version is quieter: a year of unpaid research fits more easily around a life without twenty hours a week of paid work. Advising is also a power relationship. Your advisor signs off on every milestone, writes your letters, and shapes the network you leave with; when the relationship fails through neglect, mismatch, or harassment, the remedy is often starting over, which is part of why “[all but dissertation](https://en.wikipedia.org/wiki/All_but_dissertation)” is a familiar phrase. Surveys report anxiety and depression among graduate students at rates well above the general population (see Further reading). Even your citations take a position: whose work you build on, and whom you thank, shape who counts as the field (see [sec-writing-manuscripts](#sec-writing-manuscripts)).
+
+See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you plan a thesis, plan also for the conditions that make finishing possible (money, time, and people), and notice that those conditions aren’t handed out evenly.
+
+## 27.13 Worked examples
 
 ### A three-paper dissertation outline
 
-A hypothetical dissertation: “Governance on Volunteer-Run Online Platforms.” Three papers, framing introduction, conclusion.
+Here’s a hypothetical dissertation, “Governance on Volunteer-Run Online Platforms,” built from three papers plus a framing introduction and conclusion.
 
-*Introduction (8–10k words).* Frames the broader question — how do volunteer moderators on platforms like Reddit, Wikipedia, and Discord govern user behavior, and what changes when platforms shift policy from above? Sets up the three angles. Reviews the literature on online governance, content moderation, and volunteer labor. Names the three contributions.
+**Introduction (8,000–10,000 words).** Frames the broad question: how do volunteer moderators on platforms like Reddit, Wikipedia, and Discord govern user behavior, and what changes when a platform shifts policy from above? Reviews the literature on online governance, [content moderation](https://en.wikipedia.org/wiki/Content_moderation), and volunteer labor, sets up the three angles, and names the three contributions.
 
-*Chapter 2 (Paper 1, published at CSCW 2025).* A natural-experiment study of one subreddit before and after a moderation policy change. Method: difference-in-differences with a matched comparison community.
+**Chapter 2 (Paper 1, published at CSCW 2025).** A natural-experiment study of one subreddit before and after a moderation policy change, using [difference-in-differences](https://en.wikipedia.org/wiki/Difference_in_differences) with a matched comparison community.
 
-*Chapter 3 (Paper 2, under review at* New Media & Society*).* An interview study of twenty volunteer moderators across five platforms. Method: semi-structured interviews and reflexive thematic analysis.
+**Chapter 3 (Paper 2, under review at *New Media & Society*).** An interview study of twenty volunteer moderators across five platforms, using [semi-structured interviews](https://en.wikipedia.org/wiki/Semi-structured_interview) and reflexive [thematic analysis](https://en.wikipedia.org/wiki/Thematic_analysis).
 
-*Chapter 4 (Paper 3, in preparation).* A computational analysis of the rule-text corpora from a thousand subreddits, looking at how rule complexity correlates with community size and turnover.
+**Chapter 4 (Paper 3, in preparation).** A computational analysis of the rules of a thousand subreddits, asking how rule complexity relates to community size and moderator turnover.
 
-*Conclusion (3–5k words).* Synthesizes across the three chapters. Argues that volunteer moderation shows a characteristic pattern of escalation and burnout that quantitative analysis alone can document but cannot explain, that interview work alone can describe but cannot generalize, and that the three approaches together produce an account neither would alone. Future work.
+**Conclusion (3,000–5,000 words).** Argues that volunteer moderation shows a pattern of escalation and burnout that quantitative analysis alone can document but not explain, and interviews alone can describe but not generalize, so the three approaches together produce an account none could alone. Then future work.
 
-The connective tissue is the framing introduction and the conclusion. Each chapter retains its standalone form (with a one-paragraph preface noting publication status) but reads as part of a single argument.
+Each chapter keeps its standalone form, with a one-paragraph preface noting its publication status; the introduction and conclusion are the connective tissue that makes them one argument.
 
 ### A 12-month proposal-to-defense timeline
+
+Proposals often show the timeline as a [Gantt chart](https://en.wikipedia.org/wiki/Gantt_chart); a table by month does the same job:
 
 | Month | Milestone                                                        |
 |-------|------------------------------------------------------------------|
@@ -172,21 +182,19 @@ The connective tissue is the framing introduction and the conclusion. Each chapt
 | 11    | Circulate full dissertation to committee; schedule defense.      |
 | 12    | Defense; final revisions; deposit.                               |
 
-This is aggressive — most students take longer, and that is normal. The shape is what matters: proposal early, data work in the long middle, defense and deposit at the end.
+This is aggressive; most students take longer, and that’s normal. The shape is what matters: proposal early, data work in the long middle, defense and deposit at the end. A two-semester honors thesis has the same shape in miniature, so work backward from your program’s published deadline, leaving room for the revisions your advisor will ask for.
 
 ### An advisor-feedback log entry
 
-Your advisor has commented on a methods section: “I’m not convinced the interview sample is balanced. Why only women moderators?”
-
-You disagree — the focus on women moderators is intentional and theoretically motivated. Your job is not to argue back; it is to record the decision and the reasoning, calmly, in writing.
+Your advisor has commented on your methods section: “I’m not convinced the interview sample is balanced. Why only women moderators?” You disagree: the focus is deliberate and theoretically motivated. Your job isn’t to win the argument; it’s to record the decision and your reasons, calmly, in writing.
 
 > *Advisor feedback (2026-03-12):* “Why only women moderators?”
 >
-> *My response:* The all-women sample is intentional. Two reasons. First, the existing literature on volunteer moderation has focused largely on men’s experiences (cite Squirrell, Matias). The asymmetry in the literature is the reason for the asymmetry in the sample. Second, my interviews surfaced gendered patterns of harassment and emotional labor that are central to the contribution; a mixed sample would have diluted the analysis. I will revise §3.2 to make this rationale explicit. *Discussed with advisor 2026-03-15: agreed on revised framing.*
+> *My response:* The all-women sample is intentional, for two reasons. First, the studies of volunteer moderation I build on in §2.3 drew their samples mostly from men, and this study is designed to address that gap. Second, my interviews surfaced gendered patterns of harassment and emotional labor that are central to the contribution; a mixed sample would have diluted that analysis. I will revise §3.2 to make this rationale explicit. *Discussed with advisor 2026-03-15: agreed on revised framing.*
 
-The point of the log is not to win the argument; it is to make the decision visible, defensible, and reviewable. When the committee or a reviewer raises the same question later, you have the answer ready.
+When the committee, or a reviewer of the published paper, raises the same question later, the answer is ready, and you won’t have to reconstruct it from memory.
 
-## 27.13 Templates
+## 27.14 Templates
 
 A proposal outline:
 
@@ -247,47 +255,69 @@ A committee-feedback tracker:
 | ... | ... | ... | ... | ... |
 ```
 
-## 27.14 Exercises
+A meeting summary to send your advisor the same day:
 
-1.  Write a 250-word “contribution statement” for a hypothetical thesis project of your own. State the question, the approach, and the expected contribution.
-2.  Find a recent PhD dissertation in your university’s institutional repository (in your subfield). Reverse-engineer its outline at chapter and section level. What kind of dissertation is it (MS, monograph, three-paper)? How does the introduction frame the chapters?
-3.  Draft a committee-invitation email to a faculty member you would want on your committee. The email is short — one paragraph on the project, one paragraph on why you are asking them.
-4.  Build a 12-month proposal-to-defense timeline for your own (real or hypothetical) thesis. Mark the dates of the proposal defense, the data-collection windows, and the final defense.
+``` text
+Subject: Summary of our meeting, {date}
 
-## 27.15 One-page checklist
+Thanks for meeting today. Here's what I have down:
 
-- Did you choose the dissertation genre (MS / monograph / three-paper) intentionally and with your advisor?
-- Is your research question stated in one sentence somewhere in the proposal?
-- Is your committee assembled, and have you confirmed each member can serve?
+- Decided: {what we agreed, e.g., chapter 3 moves before chapter 4}
+- I'll do next: {tasks}, by {date}
+- Open question for next time: {question}
+- Next meeting: {date}
+
+Please let me know if I've misremembered anything.
+```
+
+## 27.15 Exercises
+
+1.  Write a 250-word “contribution statement” for a thesis project of your own (real or hypothetical): the question, the approach, and the contribution you expect.
+2.  Take the broadest topic you care about and narrow it, in three steps, to a one-sentence research question you could answer in the time you have.
+3.  Find a recent thesis or dissertation in your subfield in your university’s institutional repository and reverse-engineer its outline at chapter and section level. Which kind of thesis is it? How does the introduction frame the chapters?
+4.  Draft a short email inviting a faculty member to be on your committee or to be your second reader: one paragraph on the project, one on why you’re asking them.
+5.  Build a timeline for your own (real or hypothetical) thesis, working backward from your program’s deadline. Mark the proposal, the data-collection windows, the full draft, and the defense.
+6.  Write the five questions you’d most dread hearing at your defense, and draft a two-sentence answer to each.
+
+## 27.16 One-page checklist
+
+- Did you choose your thesis’s form deliberately, with your advisor, and within your program’s rules?
+- Can you state your research question in one sentence?
+- Do tangents go in a “future work” file instead of the draft?
+- Has each committee member (or your second reader) confirmed they can serve?
+- Do you have a standing meeting with your advisor, and send a summary after each one?
 - Are you outlining at three levels (chapter, section, paragraph)?
 - Is your daily writing time blocked and protected?
-- Are chapters under version control (see [sec-git-github](#sec-git-github))?
-- Are committee comments tracked in writing?
-- Did you read your program’s formatting guide *before* the final-week scramble?
-- Have you read about the emotional realities of finishing (Thesis Whisperer)?
+- Are your sources in a reference manager and your chapters under version control (see [sec-git-github](#sec-git-github))?
+- Are committee comments and your decisions tracked in writing?
+- Do you and your advisor agree, in writing, on what “ready to defend” means?
+- Did you read your program’s formatting guide and deadlines *before* the final-week scramble?
 
-## 27.16 Quick reference: thesis genres at a glance
+## 27.17 Quick reference: thesis forms at a glance
 
-| Genre | Length | Form | Strength | Risk |
-|----|----|----|----|----|
-| MS thesis | 50–100 pages | Single project | Stepping stone | Compressed scope |
-| Monograph PhD | 150–300 pages | Single sustained argument | Depth | Chapters never publish |
-| Three-paper PhD | 150–250 pages | Three papers + framing | Publishing throughput | Coherence |
+Page counts are rough and vary a lot by field and program.
+
+| Form | Typical shape | Strength and risk |
+|----|----|----|
+| Honors or senior thesis | One focused project over one or two semesters; length set by your program | Strength: a real research experience. Risk: a topic too big for the time you have. |
+| Master’s thesis | Often 50–100 pages; one project | Strength: a stepping stone. Risk: compressed scope. |
+| Monograph dissertation | Often 150–300 pages; one sustained argument | Strength: depth. Risk: chapters that never get published. |
+| Paper-based dissertation | Often 150–250 pages; three papers plus framing | Strength: publications along the way. Risk: coherence. |
 
 > **NOTE:**
 >
-> - Joan Bolker, [*Writing Your Dissertation in Fifteen Minutes a Day*](https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/) (Henry Holt, 1998) — short, durable advice on building a daily writing habit; the title is the method.
-> - Peg Boyle Single, [*Demystifying Dissertation Writing*](https://styluspub.presswarehouse.com/browse/book/9781579222932/Demystifying-Dissertation-Writing) (Stylus, 2009) — a research-backed protocol for outlining, drafting, and revising at thesis scale.
-> - Pat Thomson, [*patter* — thesis category](https://patthomson.net/category/thesis/) — long-running blog of practical advice from a PhD supervisor; especially good on revision and committee management.
-> - [The Thesis Whisperer](https://thesiswhisperer.com/) — Inger Mewburn’s blog and the most candid public voice on the emotional reality of finishing.
-> - Wendy Laura Belcher, [*Writing Your Journal Article in Twelve Weeks*](https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html) (2nd ed., 2019) — a paired resource for the three-paper-dissertation route, since each paper goes through the same workbook.
-> - Karen Kelsky, [The Professor Is In](https://theprofessorisin.com/) — practical advice on the academic job market, advising relationships, and finishing strategy; especially useful when “what comes after the thesis?” needs to be planned.
-> - Teresa Evans et al., [*Evidence for a mental health crisis in graduate education*](https://www.nature.com/articles/nbt.4089) (*Nature Biotechnology*, 2018) — the empirical backbone for the “Stakes and politics” framing above.
+> - **Joan Bolker**, [*Writing Your Dissertation in Fifteen Minutes a Day*](https://books.google.com/books?vid=ISBN9780805048919) (Henry Holt, 1998) — short, durable advice on building a daily writing habit; the title is the method.
+> - **Peg Boyle Single**, [*Demystifying Dissertation Writing*](https://www.routledge.com/Demystifying-Dissertation-Writing-A-Streamlined-Process-from-Choice-of-Topic-to-Final-Text/Single/p/book/9781579223137) (Stylus, 2009) — a research-backed method for choosing a topic, outlining, drafting, and revising at thesis scale.
+> - **Pat Thomson**, [*patter*, thesis category](https://patthomson.net/category/thesis/) — long-running blog of practical advice from a PhD supervisor; especially good on revision and working with supervisors.
+> - **Inger Mewburn**, [The Thesis Whisperer](https://thesiswhisperer.com/) — the most candid public voice on the emotional reality of doing, and finishing, a research degree.
+> - **Wendy Laura Belcher**, [*Writing Your Journal Article in Twelve Weeks*](https://press.uchicago.edu/ucp/books/book/chicago/W/bo26985005.html) (2nd ed., 2019) — a companion for the paper-based route, since each paper goes through the same workbook.
+> - **Karen Kelsky**, [The Professor Is In](https://theprofessorisin.com/) — practical advice on the academic job market, advising relationships, and finishing; useful when “what comes after the thesis?” needs planning.
+> - **Teresa Evans et al.**, [*Evidence for a mental health crisis in graduate education*](https://www.nature.com/articles/nbt.4089) (*Nature Biotechnology*, 2018) — a widely cited survey finding high rates of anxiety and depression among graduate students; the evidence behind the “Stakes and politics” section above.
 
-[^1]: <https://patthomson.net/category/thesis/>
+[^1]: For example, Pat Thomson, [“the research proposal as writing ‘work’”](https://patthomson.net/2014/06/23/the-research-proposal-as-writing-work/) (2014).
 
-[^2]: <https://www.henryholt.com/9780805048919/writing-your-dissertation-in-fifteen-minutes-a-day/>
+[^2]: Bolker’s book is listed in Further reading at the end of this chapter.
 
-[^3]: <https://thesiswhisperer.com/>
+[^3]: Inger Mewburn, [“The Valley of Shit”](https://thesiswhisperer.com/2012/05/08/the-valley-of-shit/), *The Thesis Whisperer* (2012).
 
 [^4]: <https://www.proquest.com/products-services/dissertations/>

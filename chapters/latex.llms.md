@@ -10,64 +10,55 @@
 
 ![Dodgson Meme: They wrote their paper in LaTeX, see? No one cares.](../graphics/memes/latex.png)
 
-LaTeX is the typesetting system that produces most of the scholarly papers you have read. It is the default in computer science, math, statistics, physics, much of engineering, and increasingly in HCI and information science. It produces typographically careful PDFs, handles math and bibliographies natively, and decouples the content of your document from its appearance. It is also notorious for its compile errors, its byzantine packaging system, and its capacity to make smart people feel dumb.
+Your advisor sends you a link to an Overleaf project and says “just add your section to the paper.” You open it and find a screen full of backslashes and curly braces, a file called `references.bib`, and a PDF on the right that looks exactly like the papers you read for class. You type a paragraph, click Recompile, and a red box appears: 12 errors, a log that scrolls forever, and one line that says `! Undefined control sequence.` You didn’t even touch the part it’s complaining about.
 
-This chapter is a friendly on-ramp. The thesis it argues is simple: **start on Overleaf, and you can be productive on day one.** Overleaf is a browser-based LaTeX editor that compiles your document for you, handles package installation invisibly, and makes the first hour of LaTeX feel like writing in a slightly fussy Markdown editor. Local installations are powerful but optional; you can do an entire master’s thesis without one.
+If that’s where you are, you’re in good company. [LaTeX](https://en.wikipedia.org/wiki/LaTeX) has a reputation for making smart people feel dumb. It’s also the system behind most papers in computer science, math, statistics, and physics, and many in engineering, HCI, and information science, because it handles equations and bibliographies better than anything else. The first hour is the steepest part, and on Overleaf you don’t need to install anything to get through it.
 
-Read this chapter alongside [sec-reading-scholarship](#sec-reading-scholarship) — the bibliography workflow it describes (Zotero plus Better BibTeX) is what makes LaTeX painless. Read it alongside [sec-writing-manuscripts](#sec-writing-manuscripts) — when your venue requires the ACM template, this chapter tells you how to use it. Read it alongside [sec-presenting](#sec-presenting) — Beamer, the LaTeX presentation framework, is a strong choice for math-heavy talks.
+This chapter is that on-ramp: when LaTeX is worth it, a first document, the syntax you’ll use in nearly every paper, venue templates, bibliographies, Beamer slides, and how to read errors without panicking. It isn’t a complete reference (Further reading points to those). It pairs with [sec-reading-scholarship](#sec-reading-scholarship), whose Zotero setup makes bibliographies painless, [sec-writing-manuscripts](#sec-writing-manuscripts) for what goes in the paper, and [sec-presenting](#sec-presenting) for the design side of slides.
 
-## Learning objectives
+## Why read this chapter
 
-By the end of this chapter, you should be able to:
+- Someone handed you a `.tex` file and said “just use Overleaf,” and you’ve never written a command that starts with a backslash.
+- You clicked Recompile and got a wall of log output ending in `! Undefined control sequence.`, and you can’t tell which of the hundreds of lines matters.
+- Your citations show up as **\[?\]** in the PDF, even though the entry is sitting right there in your `.bib` file.
+- Your figure floats to the top of the next page (or to the end of the paper) no matter where you put it in the source.
+- You downloaded the ACM or IEEE template for a class project or a submission, and it either won’t compile or you don’t know which lines to change.
+- You’re writing equations for a stats or methods class, and Word’s equation editor is fighting you on every subscript.
+- You’re deciding whether LaTeX is worth learning at all, or whether Word or Google Docs is fine for what you write.
 
-1.  Recognize when LaTeX is the right tool — and when it is not — for a writing project.
+## Running theme: start on Overleaf and be productive on day one
 
-2.  Compile your first document on Overleaf with no local installation.
-
-3.  Read and write basic LaTeX syntax: document class, sectioning, environments, packages, math mode, references.
-
-4.  Manage a bibliography with BibTeX or BibLaTeX, integrating with Zotero via Better BibTeX.
-
-5.  Use the standard ACM and IEEE templates and explain how to swap between them.
-
-6.  Build a Beamer presentation from a LaTeX source.
-
-7.  Diagnose common compilation errors — missing package, misplaced `&`, BibTeX mismatches — without panicking.
-
-## Running theme: LaTeX is the default scholarly typesetter for a reason — and you can be productive on day one with Overleaf
-
-The folklore that LaTeX has a steep learning curve is half-true. The first hour is steep. After that, the curve flattens fast, and the productivity gain compounds for the rest of your career.
+The folklore that LaTeX has a steep learning curve is half true. The first hour is steep; after that it flattens fast, and what you learn keeps paying off for every paper, thesis, and talk you write afterwards.
 
 ## 29.1 Why LaTeX (and when not)
 
-LaTeX wins three problems most academic writers have. *Math typesetting:* Word’s equation editor is workable; LaTeX produces journal-quality math without effort. *Bibliographies:* a `.bib` file plus `\cite{}` plus a stable citation key is dramatically more reliable than Word’s reference manager, especially across multiple authors and machines. *Versioning:* LaTeX source is plain text, so it diffs cleanly under git (see [sec-git-github](#sec-git-github)), tracks changes meaningfully, and survives software updates.
+LaTeX is a [markup language](https://en.wikipedia.org/wiki/Markup_language), not a word processor. In Word, what you see is what you get, and you format by clicking; in LaTeX, you write plain text with commands mixed in (`\section{Method}`, `$x^2$`), and a program turns it into a PDF. That program is [TeX](https://en.wikipedia.org/wiki/TeX), which [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth) released in 1978 because he didn’t like how a new edition of his own book had been typeset. LaTeX, first released by Leslie Lamport in 1984, is the friendlier layer of commands on top.
 
-LaTeX loses on a few problems too. **Don’t use LaTeX for** short documents with no math or citations (a one-page memo is faster in Markdown or Word). **Don’t use LaTeX when** your collaborators refuse to learn it — a paper with two authors who can read LaTeX and one who can’t is a paper where the LaTeX user does all the typesetting. **Don’t fight your venue.** If a journal requires Word submission, draft in LaTeX only if you have a reliable LaTeX-to-Word workflow; otherwise, draft in Word.
+That design wins on three problems most academic writers have. **Math:** journal-quality equations from a few keystrokes. **Bibliographies:** a `.bib` file plus `\cite{key}` is far more reliable than a word processor’s reference manager, especially with several authors on several machines. **Versioning:** plain-text source works with Git (see [sec-git-github](#sec-git-github)), so you can see exactly which sentence a co-author changed last Tuesday.
 
-A useful counterpoint: Knauff and Nejasmic (2014) ran a controlled experiment comparing LaTeX and Word users on a writing task and found Word users completed comparable tasks faster. The result is debated, but the lesson is honest: LaTeX is a good investment for a long career of math-and-citation-heavy writing. It is not a productivity win on every document.
+It loses elsewhere. **Skip it for short documents** with no math or citations; a memo is faster in Markdown or Word. **Skip it when collaborators won’t learn it,** or the LaTeX users end up doing all the typesetting. **And don’t fight your venue:** if a journal wants Word, draft in LaTeX only if you trust your conversion workflow ([Pandoc](https://pandoc.org/) gets you most of the way).
+
+The skeptics have evidence, too. In [a 2014 study](https://doi.org/10.1371/journal.pone.0115069), Markus Knauff and Jelica Nejasmic had 40 researchers retype sample texts in Word or LaTeX. On plain text and on a table, Word users typed more and made fewer formatting mistakes; on the text full of equations, it flipped. The lesson: LaTeX pays off for math- and citation-heavy writing, not for every document.
 
 ## 29.2 Overleaf as the default environment
 
-Overleaf ([^1]) is a browser-based LaTeX editor with continuous compilation. You write source on the left; the PDF renders on the right; the compile button does what your local TeX install would, without making you install anything. For a student starting out, it is the right default.
+The hardest part of LaTeX used to be installing it. Overleaf ([^1]) makes that disappear: it’s a LaTeX editor in your browser, with source on the left, the PDF on the right, and a Recompile button that does everything a local installation would. It’s the right default for a student, and you can write a whole thesis there.
 
-Practical first steps:
+**Make an account.** The free plan is enough for most class papers; its main limit is [one collaborator per project](https://www.overleaf.com/user/subscription/plans). Many universities have an institutional license that lifts the limits, so ask your library before paying.
 
-1.  Create an account at <https://www.overleaf.com/>. Free accounts are fine; many universities have institutional accounts that unlock collaboration features (check with your library).
-2.  Click “New Project” → “Blank Project” or pick a template from the gallery.
-3.  The interface has three regions: a file tree (left), a source editor (middle), and a compiled-PDF preview (right). The “Recompile” button at the top of the preview rebuilds the PDF.
-4.  Sharing is one click: “Share” → invite by email. Real-time collaborative editing on Overleaf Pro works the same way as Google Docs.
-5.  Overleaf Pro adds git integration — you can `git clone` an Overleaf project, work locally, and push changes back. Free accounts can still download the source as a `.zip`.
+**Start a project** with New Project, then Blank Project or a template. You’ll see a file list, the source editor, and the PDF preview, with Recompile at the top of the preview. If LaTeX is brand new to you, Overleaf’s [Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes) is time well spent.
 
-If your project is on Overleaf and you eventually decide to work locally, you have lost nothing — the project is just a directory of `.tex` and `.bib` files.
+**Share** with the Share button. Editing is live, like Google Docs.
+
+**Get your files out** whenever you like: download a `.zip`, or, on paid and institutional plans, [`git clone` the project](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git-integration) and push changes back. An Overleaf project is just a folder of `.tex` and `.bib` files, so moving to a local setup later costs you nothing.
 
 ## 29.3 A first document
 
-A complete, minimal LaTeX document:
+Here is a complete LaTeX document. Paste it into a blank Overleaf project, click Recompile, and you get a one-page PDF:
 
 ``` latex
 \documentclass[11pt]{article}
 
-\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -94,17 +85,17 @@ Einstein's famous equation is $E = mc^2$. In display form:
 \end{document}
 ```
 
-That is enough to compile a one-page PDF. The structure: a `\documentclass` line that sets the overall layout, a preamble where you load packages and set metadata, and a `document` environment that contains the actual content. Everything between `\begin{document}` and `\end{document}` is what appears in the PDF.
+Every LaTeX document has the same three parts, and once you can see them, any template gets less scary. The **`\documentclass` line** picks the overall layout (`article` here, a venue’s own class when you submit). The **preamble,** everything before `\begin{document}`, loads packages and sets the title and author; nothing in it appears on the page by itself. The **body,** between `\begin{document}` and `\end{document}`, is what ends up in the PDF, and its `\maketitle` prints the title you set in the preamble.
 
-Paste this into Overleaf, click Recompile, and you have a working document.
+Older templates often add `\usepackage[utf8]{inputenc}`. It’s harmless but unnecessary: UTF-8 has been the default since the [April 2018 release of LaTeX](https://www.latex-project.org/news/latex2e-news/ltnews28.pdf).
 
 ## 29.4 Syntax you’ll actually use
 
-This is not a complete LaTeX reference. It is the subset you will use in 95% of your documents.
+LaTeX has thousands of commands, and most papers use a few dozen. These are the ones you’ll reach for; for anything else, search “latex” plus what you want, and the answer is usually on Overleaf’s help pages or TeX StackExchange.
 
-**Sectioning.** `\section{Title}`, `\subsection{Title}`, `\subsubsection{Title}`. Numbering is automatic; `\section*{Title}` produces an unnumbered section.
+**Sectioning** numbers itself: `\section{Title}`, `\subsection{Title}`, `\subsubsection{Title}`, and `\section*{Title}` for an unnumbered one.
 
-**Environments.** Most structure in LaTeX lives in environments — paired `\begin{...}` and `\end{...}` blocks.
+**Environments,** paired `\begin{...}` and `\end{...}` lines, hold most of the structure: lists, quotations, equations, figures. Lists and quotes look like this:
 
 ``` latex
 \begin{itemize}
@@ -122,7 +113,7 @@ A short block quote.
 \end{quote}
 ```
 
-**Math mode.** Inline math is between `$...$`. Display math is `\[ ... \]` (unnumbered) or the `equation` environment (numbered).
+**Math** is where LaTeX earns its keep. Inline math goes between dollar signs, `$...$`; `\[ ... \]` displays an unnumbered equation, and the `equation` environment a numbered one:
 
 ``` latex
 The Pythagorean theorem: $a^2 + b^2 = c^2$.
@@ -133,11 +124,17 @@ The Pythagorean theorem: $a^2 + b^2 = c^2$.
 \end{equation}
 ```
 
-Use `amsmath` for `align`, `cases`, and other multi-line constructs. The `cleveref` package gives you `\cref{eq:pythag}` instead of writing “Equation~\\\ref{eq:pythag}\\” by hand.
+`amsmath` adds `align` (lines lined up at the `=` signs), `cases`, and other multi-line layouts; Overleaf’s page on [mathematical expressions](https://www.overleaf.com/learn/latex/Mathematical_expressions) is a good tour.
 
-**Cross-references.** Mark the target with `\label{...}` and refer to it with `\ref{...}`, `\eqref{...}` (math), or `\autoref{...}` (with `hyperref`, fills in the type word). Compile twice for cross-references to resolve.
+**Cross-references** mean you never type “Figure 3” yourself. Put `\label{...}` on the target and refer to it with `\ref{...}` (the number), `\eqref{...}` (an equation number in parentheses), or `\autoref{...}` (from `hyperref`, which adds the word, as in “Figure 1”). [`cleveref`](https://ctan.org/pkg/cleveref)’s `\cref{eq:pythag}` does the same, so you never write “Equation~\\\ref{eq:pythag}\\” by hand. The snag everyone hits: on the first compile, every reference shows as **??**, and the log says:
 
-**Figures and tables.** Figures go in `figure` environments; tables go in `table` environments. The `[!htbp]` placement option tells LaTeX you really want the float close to where you wrote it.
+``` text
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+```
+
+Nothing is broken. LaTeX learns where the labels are on the first pass and fills in the numbers on the second, so compile twice (Overleaf and `latexmk` do this for you); Overleaf’s guide to [cross-referencing](https://www.overleaf.com/learn/latex/Cross_referencing_sections%2C_equations_and_floats) has more.
+
+**Figures and tables** go in `figure` and `table` environments, which LaTeX calls *floats*, and the name is a warning: LaTeX decides where each goes, so a figure you placed in section 2 may turn up on the next page, or at the very end. The option `[!htbp]` says you’d accept here, top, bottom, or a page of floats, and asks LaTeX to try hard:
 
 ``` latex
 \begin{figure}[!htbp]
@@ -148,7 +145,7 @@ Use `amsmath` for `align`, `cases`, and other multi-line constructs. The `clever
 \end{figure}
 ```
 
-Tables look the same with a `tabular` environment inside. The `booktabs` package (`\toprule`, `\midrule`, `\bottomrule`) produces tables that look like the ones in published papers.
+A table has a `tabular` inside, where `&` separates columns and `\\` ends a row. [`booktabs`](https://ctan.org/pkg/booktabs)’s `\toprule`, `\midrule`, and `\bottomrule` give you a published paper’s clean rules instead of a grid:
 
 ``` latex
 \begin{table}[!htbp]
@@ -166,72 +163,76 @@ Tables look the same with a `tabular` environment inside. The `booktabs` package
 \end{table}
 ```
 
-**Packages.** A package is a library of LaTeX commands you load in the preamble with `\usepackage{name}`. The packages you will use in nearly every document:
+If a float still lands somewhere odd, don’t fight it yet: placement changes with every paragraph you add, and most complaints vanish once the text is near its final length. Overleaf’s page on [positioning images and tables](https://www.overleaf.com/learn/latex/Positioning_images_and_tables) has tricks for the rest. Refer to figures with `\autoref`, not “the figure below,” and it won’t matter where they land.
+
+**Packages** are libraries of extra commands, loaded with `\usepackage{name}`; almost every one, with its manual, is on [CTAN](https://ctan.org/), the Comprehensive TeX Archive Network. These are worth loading in nearly every document:
 
 ``` latex
 \usepackage{amsmath}     % math
 \usepackage{graphicx}    % figures
-\usepackage{hyperref}    % links and \autoref
 \usepackage{booktabs}    % publication-quality tables
 \usepackage{microtype}   % subtle typography improvements
+\usepackage{hyperref}    % links and \autoref
 \usepackage{cleveref}    % smart cross-references
 ```
 
-`hyperref` should be loaded last (after most other packages) because it patches them. `cleveref` should be loaded after `hyperref`. These ordering rules are the kind of LaTeX folklore that the documentation will eventually teach you; for now, just remember that the order in the preamble matters.
+The order is deliberate. `hyperref` changes how many other packages work, so its manual asks you to load it after nearly everything else, and `cleveref` must come after `hyperref`. When two packages clash, the order is the first thing to check. (`microtype` makes tiny spacing adjustments so lines justify evenly with fewer hyphens; you’ll rarely notice it, which is the point.)
 
-## 29.5 Templates
+## 29.5 Document classes and journal templates
 
-Most venues require a specific template. Overleaf hosts a gallery ([^2]) with the major ones; “New Project from Template” is the easy way to start.
+Most venues want your paper in their own template, and the first one you open can look like a wall of code you’re afraid to touch. Remember the three parts: the template is mostly preamble, and your job is mostly the body. Overleaf keeps a gallery of templates ([^2]), the easiest place to start.
 
-**`article` class.** The universal default for short documents not aimed at a specific venue.
+**The `article` class** is the default for anything not headed to a particular venue.
 
-**ACM `acmart`.** For CHI, CSCW, FAccT, and other ACM venues. Download the latest from <https://www.acm.org/publications/proceedings-template>. The `[anonymous,review]` document-class options strip author info for double-blind submission:
+**ACM’s `acmart` class** covers CHI, CSCW, FAccT, and other ACM venues; get the current version from <https://www.acm.org/publications/proceedings-template> or [CTAN](https://ctan.org/pkg/acmart). For an anonymous submission, the option `anonymous` hides the authors and `review` adds line numbers:
 
 ``` latex
 \documentclass[sigconf,anonymous,review]{acmart}
 ```
 
-When the paper is accepted and you prepare the camera-ready, remove `anonymous,review` and add the publication metadata block per the template’s instructions.
+For the [camera-ready](https://en.wikipedia.org/wiki/Camera-ready) version, remove `anonymous,review` and add the rights and publication details ACM sends you (`\setcopyright`, `\acmConference`, `\acmDOI`, and friends). [sec-writing-manuscripts](#sec-writing-manuscripts) covers the rest of anonymous submission.
 
-**IEEE.** `IEEEtran` document class ([^3]) for IEEE conferences and journals. The conventions are different — two-column by default, IEEE-style citations, distinct math conventions.
+**IEEE’s `IEEEtran` class** ([^3]) covers IEEE venues, with its own conventions: two columns by default and numbered citations in square brackets.
 
-**Springer / Elsevier / journal-specific.** Most journals provide a LaTeX class on the journal website. Some are well-maintained; some are old and finicky. Download fresh; do not reuse a template from a colleague’s prior submission, since the journal may have updated it.
+**Springer, Elsevier, and other journals** publish their own classes, some well maintained and some old and fussy. Download a fresh copy rather than reusing a colleague’s, since the journal may have changed it. If a journal template won’t compile, check that every file in its `.zip` made it into your project, that you’re using the compiler its instructions name (some need XeLaTeX or LuaLaTeX), and that the error isn’t in a line you added.
 
-**Thesis templates.** Most universities provide a LaTeX thesis class. Ask your graduate program; they will know whether to use the official one (often), an unofficial one maintained by students (sometimes better), or a generic class with a custom title page (acceptable when the official one is broken).
+**Thesis templates** come from your university. Ask your graduate program whether to use the official class (usually), a student-maintained one (sometimes better), or a generic class with a custom title page; [sec-writing-thesis](#sec-writing-thesis) has the rest of the paperwork.
 
-## 29.6 Bibliographies with BibTeX/BibLaTeX
+## 29.6 Bibliographies with BibTeX and BibLaTeX
 
-The two-file workflow: `main.tex` is your manuscript; `references.bib` is your bibliography. You cite with `\cite{key}`, and the bibliography compiles separately.
+LaTeX bibliographies use two files: `main.tex`, your manuscript, and `references.bib`, a plain-text list of sources, each with a *citation key* like `matias2019civic`. You cite with `\cite{key}`, and a separate program builds the reference list in whatever style the venue wants. That program is either the classic [BibTeX](https://en.wikipedia.org/wiki/BibTeX), which the ACM and IEEE templates use, or the newer [BibLaTeX](https://ctan.org/pkg/biblatex) with its helper [Biber](https://ctan.org/pkg/biber), which is more flexible about styles and Unicode. Use whichever your template uses.
 
-**Generating `.bib` from Zotero.** This is the move. See [sec-reading-scholarship](#sec-reading-scholarship) for the Zotero + Better BibTeX setup. Configure Better BibTeX to auto-export your collection to a synced file (e.g., `~/code/paper/references.bib`). The `.bib` file updates automatically every time you save a paper to Zotero. In your LaTeX project, point `\bibliography{references}` at that file.
+**Let Zotero write the `.bib` file,** because typing entries by hand is how typos get into author names. With the [Better BibTeX](https://retorque.re/zotero-better-bibtex/) plugin, Zotero keeps a `.bib` file such as `~/code/term-paper/references.bib` up to date on its own ([sec-reading-scholarship](#sec-reading-scholarship) has the setup). Point `\bibliography{references}` at it locally; on Overleaf, upload the file (again when it changes), or link your Zotero library on a paid or institutional plan.
 
-**Citing.** The basic command is `\cite{keshav2007}`. With the `natbib` package, you also get `\citep{keshav2007}` (parenthetical: “(Keshav, 2007)”) and `\citet{keshav2007}` (textual: “Keshav (2007)”). With `biblatex`, the equivalent is `\autocite{}` and `\textcite{}`.
+**Citing** has a few flavors. Plain `\cite{keshav2007}` works everywhere. The `natbib` package adds `\citep{keshav2007}` for a parenthetical citation and `\citet{keshav2007}` for one in your sentence (“Keshav (2007) argues”). Its default brackets are square, “\[Keshav, 2007\]”; load it as `\usepackage[round]{natbib}` for parentheses. With BibLaTeX, use `\autocite{}` and `\textcite{}`.
 
-**Bibliography styles.** Common choices:
+**The bibliography style** decides how it all looks: author-year or numbered, “et al.” or full author lists. With BibTeX, you pick one with `\bibliographystyle{...}`:
 
-- `acm-sig-proc` for ACM venues (often set by the `acmart` class itself).
+- `ACM-Reference-Format` for ACM venues (the `acmart` templates set this up).
 - `IEEEtran` for IEEE venues.
-- `chicago`, `apalike`, `numeric` for general use.
+- `plainnat` (author-year, with `natbib`), `apalike`, `chicago`, or `plain` (numbered) for everything else.
 
-The bibliography style determines how citations render — author-year vs. numeric, full author lists vs. “et al.,” and so on.
+With BibLaTeX, it’s an option instead, as in `\usepackage[style=authoryear]{biblatex}`. One BibTeX quirk catches everyone: many styles lowercase titles, so “End Users on Reddit” comes out “end users on reddit.” Wrap anything that must keep its capitals in braces, `{Reddit}`, in the `.bib` file.
 
-**The compile dance.** A LaTeX document with citations needs more than one pass to resolve them. The classic sequence is `pdflatex` → `bibtex` (or `biber`) → `pdflatex` → `pdflatex`. Most tools automate this. On Overleaf, the Recompile button does it for you. Locally, `latexmk -pdf main.tex` runs the right sequence automatically.
+**Then comes the compile dance,** behind the most common LaTeX question of all: “why do my citations say \[?\]?” The first `pdflatex` run notes which keys you cited; `bibtex` looks them up and writes the formatted list; the second `pdflatex` run reads that list, and the third fills in the citation labels. Until then, every citation shows as **\[?\]** (or **(?)** with `natbib`), and the log says:
 
-A `latexmkrc` file in your project root configures `latexmk`:
+``` text
+LaTeX Warning: Citation `matias2019civic' on page 1 undefined on input line 3.
+```
+
+You almost never run these by hand. Overleaf’s Recompile runs [`latexmk`](https://ctan.org/pkg/latexmk), which works out which programs to run and how many times. Locally, `latexmk -pdf main.tex` does the same (and runs Biber instead of BibTeX when your document uses BibLaTeX). A `latexmkrc` file in the project folder saves the options, so the command is just `latexmk`:
 
 ``` perl
 $pdf_mode = 1;       # produce a PDF
-$bibtex_use = 2;     # always run BibTeX/biber when needed
+$bibtex_use = 2;     # run BibTeX or Biber whenever it's needed
 @default_files = ('main.tex');
 ```
 
-With `latexmk` and a `latexmkrc`, “build the document” becomes one command.
+Overleaf [reads a `latexmkrc`](https://docs.overleaf.com/managing-projects-and-files/the-latexmkrc-file) too. Its guides to bibliographies [with BibTeX](https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex) and [with BibLaTeX](https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex) cover the rest.
 
 ## 29.7 Beamer for presentations
 
-Beamer is LaTeX’s presentation framework. It uses the same source format you already know, and it is the right choice for math-heavy talks (see [sec-presenting](#sec-presenting) for the design principles).
-
-A minimal Beamer document with the `metropolis` theme ([^4]):
+Retyping equations into PowerPoint is miserable. Beamer is LaTeX’s class for slides: the source format you already know, one `frame` per slide, and math that looks just like your paper’s (see [sec-presenting](#sec-presenting) for what makes a talk good). A minimal talk with the `metropolis` theme ([^4]):
 
 ``` latex
 \documentclass{beamer}
@@ -265,49 +266,72 @@ A minimal Beamer document with the `metropolis` theme ([^4]):
 \end{document}
 ```
 
-Each `frame` is a slide. `\onslide` and the `<n->` syntax produce overlays — content that appears on a click. The `metropolis` theme is a clean, modern default; the built-in themes (Madrid, Berlin, etc.) are dated and best avoided.
+Each `frame` is a slide, titled in the braces after `\begin{frame}`. The `<2->` on the second bullet is an *overlay*: the bullet appears from the slide’s second step on, so this four-frame talk compiles to a five-page PDF, one page per click. `\onslide` does the same for anything else, and `appendixnumberbeamer` keeps backup slides after `\appendix` out of the slide count.
+
+`metropolis` is clean and modern, where many find the built-in themes (Madrid, Berlin) dated. It hasn’t been updated since 2017, though, and a maintained fork, [moloch](https://ctan.org/pkg/moloch), exists if it gives you trouble. Compiled with pdfLaTeX, it warns:
+
+``` text
+Package beamerthememetropolis Warning: You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts on input line 95.
+```
+
+It’s harmless; the slides compile in a standard font. For the intended Fira fonts, switch the compiler to XeLaTeX (on Overleaf, in the project menu’s [compiler setting](https://docs.overleaf.com/getting-started/recompiling-your-project/selecting-a-tex-live-version-and-latex-compiler)). Overleaf’s [Beamer guide](https://www.overleaf.com/learn/latex/Beamer) covers the rest.
 
 ## 29.8 Local installation (optional)
 
-You can do everything you need on Overleaf. If you want to work locally — for offline writing, faster compiles on a large project, or git-only workflows — there are three viable options.
+Everything in this chapter works on Overleaf. Install LaTeX locally when you want to write offline, when a big project compiles slowly, or when you want Git and your usual editor. Three good choices:
 
-- **TeX Live** ([^5]). The reference distribution. Works on Linux, macOS, and Windows. Large download (several GB). The right choice if you do not mind disk space.
-- **MiKTeX** ([^6]). Windows-friendly, with on-demand package installation.
-- **Tectonic** ([^7]). A modern reimplementation. Single binary, downloads packages on demand, fast. The right choice for a hassle-free local setup.
+- **TeX Live** ([^5]) is the reference distribution for Linux, macOS, and Windows (on a Mac, as [MacTeX](https://www.tug.org/mactex/)). The full installation needs several gigabytes, and then everything is there.
+- **MiKTeX** ([^6]) is popular on Windows and runs on macOS and Linux too. It starts small and installs missing packages the first time a document asks for them.
+- **Tectonic** ([^7]) is a self-contained engine in a single program that downloads packages on demand and reruns TeX and BibTeX as needed: the least hassle to set up.
 
-For an editor, VS Code with the **LaTeX Workshop** extension ([^8]) is a strong free option. See [sec-text-editors](#sec-text-editors) for the editor-choice discussion. TeXShop, TeXstudio, Emacs with AUCTeX, and Vim with vimtex are also fine; consistency beats novelty.
+For an editor, VS Code with the **LaTeX Workshop** extension ([^8]) is a strong free choice (see [sec-text-editors](#sec-text-editors)); TeXShop, TeXstudio, Emacs with AUCTeX, and Vim with vimtex are fine too, and one you know beats one that’s new. A local project also makes files Overleaf hides from you (`main.aux`, `main.log`, `main.bbl`, and more), so keep them out of Git with the `.gitignore` in Templates.
 
-## 29.9 Common pitfalls and how to fix them
+## 29.9 Reading LaTeX errors without panicking
 
-LaTeX errors are tractable. The error message is almost always specific enough to fix the problem. Read the line number, read the surrounding source, and apply the same investigative loop you use elsewhere (see [sec-tracebacks](#sec-tracebacks) and [sec-debugging](#sec-debugging) — LaTeX errors yield to the same protocol).
+When a compile fails, the log is the scary part: hundreds of lines about fonts and packages, with the one that matters buried in the middle. The secret: **look for lines that start with `!`.** Those are the errors; the rest is mostly LaTeX thinking out loud. (Overleaf’s logs panel lists errors and warnings with clickable line numbers.) Every error has the same shape: a message, then `l.` and a line number, with the line broken where TeX stopped reading. Here’s `\toprule` without `booktabs` loaded:
 
-`! Undefined control sequence.` You used a command LaTeX doesn’t recognize — usually because you forgot to load the package that defines it. Read the line; identify the command; add `\usepackage{...}`. For `\includegraphics`, that’s `graphicx`; for `\toprule`, that’s `booktabs`; for `\autoref`, that’s `hyperref`.
+``` text
+! Undefined control sequence.
+l.4 Some text. \toprule
+```
 
-`! Misplaced alignment tab character &.` You used `&` outside an environment that expects it (`tabular`, `align`, `cases`). Either wrap your content in the right environment or escape the ampersand as `\&`.
+TeX reached `\toprule` on line 4 and didn’t know it. That’s the whole diagnosis, found with the same loop you use for Python tracebacks (see [sec-tracebacks](#sec-tracebacks) and [sec-debugging](#sec-debugging)). A handful of errors cause most of the trouble:
 
-`! LaTeX Error: File X.sty not found.` You’re missing a package. On Overleaf this is rare and usually means a typo in `\usepackage{}`. Locally, install the package: `tlmgr install X` for TeX Live, or open the MiKTeX console.
+`! Undefined control sequence.` LaTeX doesn’t know a command. Usually it’s a typo (`\secton`) or a command from a package you didn’t load: `\includegraphics` needs `graphicx`, `\toprule` needs `booktabs`, `\autoref` needs `hyperref`, and `\cref` needs `cleveref`.
 
-`Citation undefined` on the first compile. BibTeX hasn’t run yet, or the citation key isn’t in your `.bib` file. Run BibTeX, then PDFLaTeX twice. If the warning persists, check that the key in `\cite{}` exactly matches the key in `references.bib`.
+`! Missing $ inserted.` You used a math-only character, usually `_` or `^`, in ordinary text, classically in a file name:
 
-Float-placement complaints (“the figure is on the wrong page”). Most of these resolve when the document is closer to its final length. Use `[!htbp]` and don’t fight float placement until the rest of the document is stable.
+``` text
+! Missing $ inserted.
+<inserted text>
+                $
+l.4 Save it as data_
+                    file.csv please.
+```
 
-`[Missing \endcsname inserted]` and other obscure errors. Usually a stray underscore or ampersand in math mode or in a citation key. The line number is approximate but useful.
+Escape it as `\_`. The same error appears if you forget an equation’s closing `$`.
 
-When the error is opaque, comment out half the document, recompile, and bisect. The error is in whichever half still fails.
+`! Misplaced alignment tab character &.` `&` separates table columns, so anywhere else write `\&`, as in `Smith \& Jones`. In a `.bib` file, a journal like `New Media & Society` passes through BibTeX untouched and the error points to `main.bbl`, a file you never wrote; the fix goes in the `.bib` file.
+
+`` ! LaTeX Error: File `booktab.sty' not found. `` On Overleaf, which has nearly every package, it’s a typo (`booktab` for `booktabs`). Locally, the package may be missing: `tlmgr install <name>` for TeX Live, or MiKTeX’s console.
+
+`LaTeX Warning: Citation ... undefined.` The bibliography step hasn’t run, or the key isn’t in your `.bib` file. If it survives a full compile, BibTeX’s log, `main.blg`, says `I didn't find a database entry for "matias2019civc"` about a mistyped key.
+
+`! Missing \endcsname inserted.` Usually a command inside a `\label` or `\ref`, like `\label{sec:\textit{intro}}`. Keep labels to letters, digits, colons, and hyphens.
+
+Two messages look alarming and aren’t errors. `Overfull \hbox (120.69057pt too wide)` means a line sticks into the margin, often a long URL; fix it only if you can see it in the PDF. `` LaTeX Warning: `h' float specifier changed to `ht'. `` is a figure floating, as described earlier.
+
+When a message makes no sense, try Overleaf’s Recompile from scratch (in the menu beside Recompile), which clears leftover helper files that can keep a fixed error alive. Then bisect: comment out half the body with `%`, recompile, and halve whichever half still fails. Overleaf’s [guide to errors](https://www.overleaf.com/learn/latex/Errors) explains many more messages. And since Overleaf [produces a PDF despite errors](https://docs.overleaf.com/getting-started/recompiling-your-project) by default, don’t leave errors sitting because the PDF looks fine: later ones are often side effects of earlier ones, so fix them from the top down.
 
 ## 29.10 AI assistance with LaTeX
 
-LLMs are excellent at LaTeX (see [sec-ai-llm](#sec-ai-llm) for the principled discussion). They can convert a Markdown table into a `tabular` environment, debug an error message that has stumped you for ten minutes, generate a `sed` regex to clean stray characters out of a `.bib` file, and write a `latexmkrc` that does what you want.
-
-They are bad at *math correctness*. An LLM will happily produce LaTeX for an equation that is subtly wrong. Read what it produces; do not paste a long derivation without checking each step.
-
-A useful protocol: describe the problem precisely, paste the error message verbatim, paste the relevant source, and ask. Vague questions get vague answers. The CU-ITSS Intro-to-LaTeX repository ([^9]) is a strong follow-on resource if you want a sequenced course.
+LLMs are good at LaTeX (see [sec-ai-llm](#sec-ai-llm)). They’ll turn a Markdown table into a `tabular`, explain an error that has stumped you for ten minutes, clean stray characters out of a `.bib` file, and write a `latexmkrc`. They’re bad at *math correctness*: an LLM will happily typeset an equation with a sign flipped or a subscript on the wrong variable, and because it’s beautifully typeset, it looks right. Check every step of anything it derives. Ask the way you’d ask a person: what you’re trying to do, the error message exactly as the log shows it, the source around that line, and whether you’re on Overleaf or a local install.
 
 ## 29.11 Stakes and politics
 
-LaTeX looks like a typesetter and is also a disciplinary marker. In math, physics, theoretical CS, and statistics, a paper not in LaTeX reads as unfinished; in much of the humanities and social sciences, a paper *in* LaTeX can read as unnecessary effort or status performance. Two things to notice. First, *the “professional” appearance LaTeX gives a paper is a status signal*. Reviewers and reading committees notice typesetting quality, and absent either the technical skill to use LaTeX well or the time to develop it, a draft that is otherwise as substantive as another can read as less serious. The labor cost of typesetting is unevenly distributed across disciplines, advisors, and access to mentorship.
+Run `pdfinfo` on the PDF from this chapter’s first document, and one line of its output reads `Tagged: no`. The text is in the file, but nothing marks which line is a heading, what order the columns are read in, or what a figure shows. A [screen reader](https://en.wikipedia.org/wiki/Screen_reader) user gets a flat stream of words, and equations can come out as strings of symbols. Most LaTeX papers you’ve read were made this way, because an untagged PDF is what `pdflatex` has always produced unless someone asks for more.
 
-Second, *LaTeX-typeset PDFs are routinely inaccessible to screen readers*. The default output is image-of-text plus broken tagging, and only with deliberate effort — `\usepackage{accessibility}`, `tagpdf`, careful figure alt text, structured `\section`s — does the resulting PDF become navigable by assistive technology. The convenience that LaTeX gives sighted authors is partly subsidized by a usability tax it imposes on disabled readers.
+Asking for more is getting easier. The LaTeX Project’s [tagging instructions](https://latex3.github.io/tagging-project/documentation/usage-instructions) describe adding a `\DocumentMetadata` line before `\documentclass` and an `alt=` description to each `\includegraphics`, which together produce a [tagged PDF](https://en.wikipedia.org/wiki/Tagged_PDF). The work is still in progress, and many packages and journal templates don’t support it yet. The convenience LaTeX gives sighted authors has long been paid for by disabled readers, and the default is the politics: nobody chose to exclude them, and nothing in the workflow asked.
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you submit a LaTeX-typeset document, ask whether the people who need to read it actually can.
 
@@ -315,11 +339,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
 ### From Word outline to a compiled LaTeX article on Overleaf
 
-You have a five-paragraph Word outline with two citations and one equation. You want to convert it into a compiled LaTeX PDF on Overleaf.
-
-Start: log into Overleaf, click “New Project” → “Blank Project,” name it `term-paper`. Overleaf creates a project with one file, `main.tex`, containing a sample article.
-
-Replace the contents of `main.tex` with:
+You have a Word outline with two citations and one equation (a [difference-in-differences](https://en.wikipedia.org/wiki/Difference_in_differences) estimate), and you’d like a proper LaTeX PDF. In Overleaf, click New Project, then Blank Project, and name it `term-paper`. Replace the contents of its `main.tex` with:
 
 ``` latex
 \documentclass[11pt]{article}
@@ -355,42 +375,47 @@ The effect is statistically and substantively significant.
 \end{document}
 ```
 
-Now create `references.bib` (in Overleaf, click the new-file icon, name it `references.bib`):
+Make `references.bib` with the new-file icon above the file list, and paste in two entries (or export them from Zotero):
 
 ``` bibtex
 @article{matias2019civic,
-  title   = {Preventing Harassment and Increasing Group Participation through Social Norms},
+  title   = {Preventing Harassment and Increasing Group Participation through Social Norms in 2,190 Online Science Discussions},
   author  = {Matias, J. Nathan},
   journal = {Proceedings of the National Academy of Sciences},
+  volume  = {116},
+  number  = {20},
+  pages   = {9785--9789},
   year    = {2019}
 }
 
 @article{squirrell2019platform,
-  title   = {Platform Dialectics: The Relationships between Volunteer Moderators and End Users on Reddit},
+  title   = {Platform Dialectics: The Relationships between Volunteer Moderators and End Users on {Reddit}},
   author  = {Squirrell, Tim},
   journal = {New Media \& Society},
+  volume  = {21},
+  number  = {9},
+  pages   = {1910--1927},
   year    = {2019}
 }
 ```
 
-Click Recompile. Overleaf runs `pdflatex`, `bibtex`, and `pdflatex` twice in sequence. The PDF on the right shows your title, the introduction with two cited references, the equation, and the bibliography. Total time: about ten minutes the first time. The next paper will take less.
+Note the `\&` in the journal name and the braces around `{Reddit}`. Click Recompile, and `latexmk` runs `pdflatex`, `bibtex`, and `pdflatex` as many times as it takes. The PDF shows your title, two citations as “\[Matias, 2019\]” and “\[Squirrell, 2019\]” (use `\usepackage[round]{natbib}` for parentheses), the numbered equation, and a References section. The first time takes about ten minutes; the next paper takes less.
 
-### Adding CHI-style citations to a paper
+### Fixing “Citation undefined” in an ACM paper
 
-You have a project using the ACM `acmart` template. You added a Zotero-exported `.bib` file. The first compile produces “Citation undefined” warnings.
+Your `acmart` project has a new Zotero `.bib` file, and the first compile fills the log with “Citation undefined” while every citation reads **\[?\]**. That’s normal, and it takes one or two fixes.
 
-This is normal. Here’s the fix sequence.
+**Check the file name.** `\bibliography{references}` looks for `references.bib` in the project’s top folder.
 
-1.  Confirm the `.bib` file is in your project root and is named `references.bib` (or whatever your `\bibliography{}` line points to).
-2.  Confirm the citation keys in your `\cite{}` calls exactly match the keys in the `.bib` file. Better BibTeX produces consistent keys; check by opening the `.bib` file and searching for the key.
-3.  On Overleaf, click Recompile. On a local install, run `pdflatex main.tex`, then `bibtex main`, then `pdflatex main.tex` twice. (`latexmk -pdf main.tex` does this in one command.)
-4.  If “Citation undefined” persists after the full sequence, check the BibTeX log (`main.blg`) for entries it could not parse. Common causes: an unescaped `&` in a journal name, a Unicode character that BibTeX dislikes, or a malformed entry.
+**Check the keys.** Each `\cite{}` key must match a `.bib` key exactly, including capitals; search the `.bib` file for it.
 
-The “Citation undefined” warning on the first compile is one of those LaTeX rituals that feels broken until you understand it: BibTeX needs the `.aux` file from the first PDFLaTeX run to know which citations to look up; the second PDFLaTeX run incorporates BibTeX’s output. Three passes is normal.
+**Run the whole sequence.** On Overleaf, Recompile. Locally, `pdflatex main.tex`, `bibtex main`, then `pdflatex main.tex` twice, or just `latexmk -pdf main.tex`.
 
-### A 10-slide Beamer/metropolis lab-meeting deck
+**If a warning survives, read `main.blg`,** BibTeX’s log, which names keys it couldn’t find and entries it couldn’t read: usually an unescaped `&`, a character BibTeX can’t handle, or a missing comma or brace. BibTeX needs one `pdflatex` run to know what you cited, and later runs need its output, so several passes are simply how it works.
 
-You want a clean Beamer deck for a lab meeting. Here is the source:
+### A ten-minute lab-meeting deck in Beamer
+
+You want a clean lab-meeting deck with the method’s equation typeset properly:
 
 ``` latex
 \documentclass{beamer}
@@ -421,7 +446,7 @@ You want a clean Beamer deck for a lab meeting. Here is the source:
 \section{Setup}
 
 \begin{frame}{The site and the policy change}
-  Reddit, $r/$\textit{Anonymized}, ~250{,}000 subscribers. Moderators introduced a stricter incivility rule on 2025-03-15.
+  Reddit, r/\textit{Anonymized}, about 250,000 subscribers. Moderators introduced a stricter incivility rule on 2025-03-15.
 \end{frame}
 
 \begin{frame}{Method: difference-in-differences}
@@ -464,7 +489,7 @@ You want a clean Beamer deck for a lab meeting. Here is the source:
 \end{document}
 ```
 
-Compile this on Overleaf with the `metropolis` theme and you have a clean ten-slide deck.
+Compile it and you get twelve slides from the nine you wrote (the title and eight frames), because `metropolis` adds a divider slide for each `\section`, which `\tableofcontents` also lists. `[standout]` gives the last frame a dark background, and the one overlay makes the PDF 13 pages. Note `18\%`: a bare `%` starts a comment and silently hides the rest of the line. And “about 250,000” is written out, because in LaTeX `~` is a non-breaking space, not “approximately.”
 
 ## 29.13 Templates
 
@@ -472,7 +497,7 @@ A minimal `article`:
 
 ``` latex
 \documentclass[11pt]{article}
-\usepackage{amsmath, graphicx, hyperref, booktabs, microtype, cleveref}
+\usepackage{amsmath, graphicx, booktabs, microtype, hyperref, cleveref}
 \title{}
 \author{}
 \date{\today}
@@ -505,13 +530,13 @@ A CHI/CSCW `acmart` skeleton:
 \end{document}
 ```
 
-Three working `.bib` entries (one per common entry type):
+Three `.bib` entries, one for each common entry type (the first is a made-up example, with a placeholder DOI):
 
 ``` bibtex
-@inproceedings{keegan2025civility,
-  title     = {Civility After Moderation: A Difference-in-Differences Study},
-  author    = {Keegan, Brian C.},
-  booktitle = {Proceedings of the 2025 ACM Conference on Computer-Supported Cooperative Work},
+@inproceedings{lastname2025example,
+  title     = {Title of Your Paper in Title Case},
+  author    = {Lastname, Firstname and Coauthor, Second},
+  booktitle = {Proceedings of the Conference Name},
   year      = {2025},
   publisher = {ACM},
   doi       = {10.1145/0000000.0000000}
@@ -535,7 +560,7 @@ Three working `.bib` entries (one per common entry type):
 }
 ```
 
-A minimal Beamer `metropolis` deck (see the third worked example above).
+A minimal Beamer `metropolis` deck: see the third worked example above.
 
 A `latexmkrc`:
 
@@ -544,6 +569,26 @@ $pdf_mode = 1;
 $bibtex_use = 2;
 @default_files = ('main.tex');
 ```
+
+A `.gitignore` for a LaTeX project (the last four lines are for Beamer and BibLaTeX):
+
+``` text
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.bcf
+*.run.xml
+```
+
+Add `main.pdf` too if you’d rather not track the compiled PDF.
 
 ## 29.14 Exercises
 
@@ -564,6 +609,7 @@ $bibtex_use = 2;
 - Are tables using `booktabs` (`\toprule`, `\midrule`, `\bottomrule`)?
 - Are cross-references using `\autoref` or `cleveref` for consistent prefixes?
 - Did you load `hyperref` after most other packages and `cleveref` after `hyperref`?
+- When the log shows errors, did you fix them from the first `!` line down?
 
 ## 29.16 Quick reference: the LaTeX commands you’ll use most
 
@@ -577,23 +623,24 @@ $bibtex_use = 2;
 | Bold / italic | `\textbf{...}` / `\textit{...}` |
 | Bullet list | `\begin{itemize} \item ... \end{itemize}` |
 | Numbered list | `\begin{enumerate} \item ... \end{enumerate}` |
-| Figure | `\begin{figure}[!htbp] \includegraphics{f.pdf} \caption{} \label{fig:x} \end{figure}` |
+| Figure | `figure` env with `\includegraphics{f.pdf}`, `\caption{}`, `\label{fig:x}` |
 | Table (booktabs) | `\toprule`, `\midrule`, `\bottomrule` |
 | Cite | `\cite{key}` / `\citep{}` / `\citet{}` |
 | Cross-reference | `\label{...}` / `\ref{...}` / `\autoref{...}` / `\cref{...}` |
 | URL | `\url{...}` (via `hyperref`) |
+| Literal `%`, `&`, `_` | `\%`, `\&`, `\_` |
 | Comment | `% ...` |
 | Build (CLI) | `latexmk -pdf main.tex` |
 
 > **NOTE:**
 >
-> - Overleaf, [Learn LaTeX](https://www.overleaf.com/learn) — the most accessible online LaTeX reference; the entry point for most students.
-> - [learnlatex.org](https://www.learnlatex.org/) — a community-built lesson series; complements Overleaf’s reference with a hands-on track.
-> - [The LaTeX Wikibook](https://en.wikibooks.org/wiki/LaTeX) — open, comprehensive, and surprisingly current; useful for “how do I do X in LaTeX” questions.
-> - [TeX StackExchange](https://tex.stackexchange.com/) — the community Q&A; one of the highest-quality Stack Exchange sites, and the right destination for any specific error you cannot solve in 15 minutes.
-> - [Detexify](https://detexify.kirelabs.org/) — draw a symbol with your mouse, get the LaTeX command; saves untold hours of “what is the command for `\Updownarrow` again?”
-> - [CU-ITSS Intro-to-LaTeX](https://github.com/CU-ITSS/Intro-to-LaTeX) — a sequenced course repository; strong follow-on after Overleaf Learn.
-> - LaTeX Project, [`tagpdf` and accessibility tooling](https://www.latex-project.org/news/2024/05/29/tagged-pdf-LaTeX-Live-2024/) and Ulrike Fischer et al., [Tagged PDF in LaTeX](https://github.com/latex3/tagging-project) — current state of the work to make LaTeX-typeset PDFs screen-reader-accessible; useful when accessibility is non-negotiable.
+> - **Overleaf**, [Learn LaTeX](https://www.overleaf.com/learn) — the most approachable online LaTeX reference, with a page for nearly every task and error; where most students start.
+> - **learnlatex.org**, [Learn LaTeX](https://www.learnlatex.org/) — a short series of hands-on lessons, each with an example you can run in the browser; complements Overleaf’s reference.
+> - **Wikibooks**, [LaTeX](https://en.wikibooks.org/wiki/LaTeX) — open, comprehensive, and surprisingly current; good for “how do I do X in LaTeX” questions.
+> - **TeX StackExchange**, [tex.stackexchange.com](https://tex.stackexchange.com/) — the community Q&A, one of the best Stack Exchange sites, and the place to take any error you can’t solve in 15 minutes.
+> - **Detexify**, [Detexify](https://detexify.kirelabs.org/) — draw a symbol with your mouse and get its LaTeX command; saves you from ever again wondering what `\Updownarrow` is called.
+> - **CU-ITSS**, [Intro-to-LaTeX](https://github.com/CU-ITSS/Intro-to-LaTeX) — a sequenced course repository; a strong next step after Overleaf’s Learn pages.
+> - **LaTeX Project**, [How to make accessible PDF](https://www.latex-project.org/news/2024/07/08/tagging/) and the [LaTeX Tagged PDF project](https://github.com/latex3/tagging-project) — where the work on screen-reader-accessible LaTeX PDFs stands; read these when accessibility is non-negotiable.
 
 [^1]: <https://www.overleaf.com/>
 
@@ -610,5 +657,3 @@ $bibtex_use = 2;
 [^7]: <https://tectonic-typesetting.github.io/>
 
 [^8]: <https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop>
-
-[^9]: <https://github.com/CU-ITSS/Intro-to-LaTeX>
