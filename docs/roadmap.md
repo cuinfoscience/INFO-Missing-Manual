@@ -34,7 +34,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 ### 4. The rest
 
 - [x] **Profiling / performance (`%%timeit`, `cProfile`)** — added to `jupyter.qmd` in September 2026 as "Finding what's slow: measure, then profile": `%timeit`, `cProfile` and `%prun` on a pipeline whose slow step isn't the one that looks slow (62 s to 1.6 s), and the usual pandas suspects, all measured.
-- [ ] **Reproducible randomness** — short section (likely in `pandas-basics.qmd` or `tabular-data.qmd`) on `np.random.default_rng(seed)`, why globals like `np.random.seed` are insufficient for parallel work, and how to thread a seed through a pipeline.
+- [x] **Reproducible randomness** — added to `pandas-basics.qmd` in September 2026 as "Randomness you can repeat": `random_state`, one `default_rng` generator passed through a pipeline, why the global `np.random.seed` breaks (shown), `rng.spawn` for parallel work, and what a seed does not promise (NumPy's version policy; don't shop for seeds).
 - [ ] **Diagram literacy (Mermaid, ER, sequence)** — add to `documentation.qmd` or a new short chapter: how to read and produce ER diagrams, sequence diagrams, and architecture sketches as part of writing for technical audiences.
 - [ ] **Editor automation (snippets, format-on-save, multi-cursor)** — extend `text-editors.qmd`: the keystrokes and configurations that turn an editor from a notepad into a tool.
 

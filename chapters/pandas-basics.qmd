@@ -41,6 +41,7 @@ By the end of this chapter, you should be able to:
 5.  Apply the core data operations: filter, sort, add a column, aggregate, group-by, and join (merge).
 6.  Recognize and avoid the three classic pandas gotchas: chained assignment, `SettingWithCopyWarning`, and forgetting that most operations return a copy.
 7.  Know when to vectorize vs. when to write a Python loop (almost always vectorize).
+8.  Make random steps (sampling, splits, bootstraps) repeatable with one seeded generator passed through the analysis.
 
 ## Running theme: pandas rewards vectorized thinking, and punishes loops {.unnumbered}
 
@@ -340,6 +341,69 @@ df.sort_values(["category", "price"])          # multi-column
 df.sort_index()                                # sort by index (labels)
 ```
 
+## Randomness you can repeat
+
+Some analysis steps are random on purpose: drawing a sample to look at, splitting data into training and test sets, shuffling, or resampling for a bootstrap estimate. Run them twice and you get different answers:
+
+```python
+df = pd.DataFrame({
+    "student": ["Ana", "Ben", "Chen", "Dev", "Eli", "Fay", "Gus", "Hana"],
+    "score": [88, 72, 95, 64, 79, 91, 70, 83],
+})
+df.sample(3)["student"].tolist()   # ['Ben', 'Chen', 'Fay']
+df.sample(3)["student"].tolist()   # ['Eli', 'Dev', 'Ben']
+```
+
+That's correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can't be reproduced or debugged. The fix is to control where the random numbers come from with a **seed**, a number that fixes the whole sequence of "random" draws that follows. `df.sample(3, random_state=42)` returns `['Ben', 'Fay', 'Ana']` every time.
+
+### One generator, passed along
+
+For more than one random step, create a single random number **generator** from one seed, near the top of your notebook or script, and hand it to every step that needs randomness:
+
+```python
+import numpy as np
+
+SEED = 2026
+rng = np.random.default_rng(SEED)
+
+
+def split(df, rng):
+    test = df.sample(frac=0.25, random_state=rng)
+    return df.drop(test.index), test
+
+
+def bootstrap_mean(scores, rng, n=1000):
+    means = [scores.sample(len(scores), replace=True, random_state=rng).mean() for _ in range(n)]
+    return np.mean(means)
+
+
+train, test = split(df, rng)
+estimate = bootstrap_mean(train["score"], rng)
+```
+
+Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas' `random_state` accepts a generator like `rng`. Other libraries have their own way to take a seed (scikit-learn's functions have a `random_state` argument, for example), so check each one's documentation and give it the seed. Put the seed where people will see it: a constant at the top, a `--seed` option on a script (see @sec-scripts-vs-notebooks), and a line in your results that says which seed produced them.
+
+### Why not `np.random.seed(42)`?
+
+Many tutorials call `np.random.seed(42)` once at the top. That sets NumPy's single, shared **global** generator, which any library in the program can draw from, and `df.sample()` without a `random_state` draws from it too. The result then depends on everything else that happened to draw numbers first:
+
+```python
+np.random.seed(42)
+df.sample(3)["student"].tolist()   # ['Ben', 'Fay', 'Ana']
+
+np.random.seed(42)
+noise = np.random.normal(size=5)   # some other step draws numbers first
+df.sample(3)["student"].tolist()   # ['Ana', 'Ben', 'Gus']
+```
+
+Same seed, different sample. In a notebook, rerunning one cell, or running cells in a different order, has the same effect. A generator you pass explicitly belongs to your code alone, so nothing else can use up its numbers.
+
+The same goes for running work in parallel. Don't give every worker the same seed (they'd all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: `workers = rng.spawn(4)`.
+
+### What a seed does not promise
+
+A seed reproduces results on the same versions of your libraries. NumPy [says so explicitly](https://numpy.org/doc/stable/reference/random/compatibility.html): the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see @sec-virtual-environments). And don't go looking for the seed that gives the nicest result: a finding that holds for seed 42 but not for 7 or 1,000 isn't a finding. Rerun an important result with a few different seeds and report how much it moves.
+
 ## Stakes and politics
 
 pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.
@@ -444,6 +508,7 @@ result = (
 5.  Write a group-by that answers a real question about your data ("average price per category," "max revenue per customer"). Add a second aggregation to the same call.
 6.  Perform a `merge` and then `validate="one_to_one"`. Intentionally break it by duplicating a row in the right-hand DataFrame and confirm pandas raises.
 7.  Take a notebook cell you wrote as a for-loop over `iterrows` and rewrite it as a vectorized operation. Time both. Write down the speedup.
+8.  Find a random step in one of your notebooks (a `sample`, a split, a shuffle). Run the notebook twice and note what changes. Then create one generator with `np.random.default_rng(SEED)` at the top, pass it to every random step, and confirm two runs agree. Finally, try three other seeds and write down how much your result moves.
 
 ## One-page checklist
 
@@ -454,6 +519,7 @@ result = (
 -   Never chain assignment (`df[mask]["col"] = value`). Use `df.loc[mask, "col"] = value`.
 -   Vectorize first; reach for `iterrows` only when you truly cannot.
 -   Merge with `validate="..."` every time.
+-   Random steps get `random_state=rng`, from one `np.random.default_rng(SEED)` made at the top; record the seed and your package versions.
 -   For reshaping and validation, read @sec-tabular-data first.
 -   For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see @sec-reading-docs.
 
