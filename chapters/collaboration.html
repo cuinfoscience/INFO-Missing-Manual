@@ -948,7 +948,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Before you request a review, walk through a short self-review of your own PR. <strong>Re-read your own diff</strong> on the GitHub PR page, not just in your editor — the side-by-side rendering often surfaces things that looked fine locally, like a debugging <code>print</code> you meant to delete or an accidental change to an unrelated file. <strong>Run a smoke test</strong>: execute the code, run the relevant tests, re-run the notebook. If you cannot demonstrate that the change works, the reviewer certainly cannot. <strong>Confirm that docs are updated</strong> in the same PR — README, docstrings, data dictionary, whatever the change affects. And <strong>check for accidental inclusions</strong>: no secrets, no API keys, no large binary files, no committed <code>.venv/</code> directories. A 30-second scan of <code>git status</code> and the PR’s file list catches almost all of these.</p>
 </section>
 </section>
-<section id="reviewing-and-commenting-mechanics" class="level2" data-number="32.6">
+<section id="reviewing-and-commenting-mechanics" class="level2 page-columns page-full" data-number="32.6">
 <h2 data-number="32.6" class="anchored" data-anchor-id="reviewing-and-commenting-mechanics"><span class="header-section-number">32.6</span> Reviewing and commenting mechanics</h2>
 <section id="comment-taxonomy-so-feedback-is-legible" class="level3">
 <h3 class="anchored" data-anchor-id="comment-taxonomy-so-feedback-is-legible">Comment taxonomy (so feedback is legible)</h3>
@@ -985,10 +985,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="thread-management">Thread management</h3>
 <p>Keep <strong>one issue per thread</strong>: if you have two concerns about the same function, post them as two separate comments so each can be resolved independently. <strong>Resolve threads when they are addressed</strong>, so the PR’s “unresolved conversations” count actually means something. If a thread produces a consequential decision — “we’re going to keep the old behavior because of backward compatibility” — <strong>summarize that decision in the PR description or in <code>DECISIONS.md</code></strong>, because threads on closed PRs are hard to find later. The PR description is the canonical summary of the PR; use it that way.</p>
 </section>
-<section id="responding-to-reviews-as-an-author" class="level3">
+<section id="responding-to-reviews-as-an-author" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="responding-to-reviews-as-an-author">Responding to reviews as an author</h3>
 <p>When reviewers leave comments, your job as the author is to close each loop explicitly. <strong>Reply to every thread</strong>, even the small ones — either “Fixed in commit abc123” or “Kept as-is because…” or “Good catch, thanks.” Silence on a thread makes the reviewer wonder whether you saw the comment at all.</p>
 <p>If you <strong>disagree</strong> with a comment, say so with your reasoning, and propose an alternative: “I don’t think we should rename this — the current name matches the upstream API. Would it help if I added a comment explaining the mapping?” Disagreement is fine; silent reversals are not. And <strong>avoid drive-by changes</strong> — if during the review you notice an unrelated bug and are tempted to fix it in the same branch, resist. Open a second PR. Drive-by changes confuse the reviewer (“wait, did they address the comment or add new stuff?”) and slow the merge.</p>
+<p><a href="#fig-github-pr-review-comment" class="quarto-xref">Figure&nbsp;<span>32.1</span></a> shows a whole loop on one small thread: a line comment with a suggested change, a reply that says where the fix went, and the thread resolved. Notice one thing it doesn’t do: the comment carries no label from the taxonomy above. The <em>Suggested change</em> box hints at what kind of comment this is, but a “<strong>Suggestion</strong>:” prefix would have said so outright.</p>
+<div id="fig-github-pr-review-comment" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" alt="Screenshot of a resolved GitHub review thread on chapters/version-control.qmd, with a Hide resolved button in its header. Diff lines 763 to 766 end in git stash pop. A blurred reviewer suggests adding git stash list to the quick reference, with a Suggested change box. A blurred author replies: Agreed. This pull request is already merged, so I've added git stash list in a follow-up pull request instead.">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../graphics/collaboration/github-pr-review-comment.png" class="img-fluid figure-img" alt="Screenshot of a resolved GitHub review thread on chapters/version-control.qmd, with a Hide resolved button in its header. Diff lines 763 to 766 end in git stash pop. A blurred reviewer suggests adding git stash list to the quick reference, with a Suggested change box. A blurred author replies: Agreed. This pull request is already merged, so I've added git stash list in a follow-up pull request instead.">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;32.1: A resolved review thread on a pull request in this book’s own repository, signed out, in September 2026. The reviewer’s comment proposes a change in GitHub’s <em>Suggested change</em> box; the author’s reply says where the fix went, because the pull request had already merged; and <em>Hide resolved</em> in the header means the thread has been marked resolved and is shown expanded. Claude Code wrote both sides from the maintainer’s account; names and avatars are blurred.
+</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="merging-ownership-and-handoffs" class="level2" data-number="32.7">
@@ -1107,24 +1118,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Fix:</strong> include a “docs updated” checkbox in your PR template and treat un-updated docs as a Blocker during review. When documentation is missing, <strong>file an issue</strong> — do not leave the gap invisible. And do a quick doc pass once per milestone: clone the repo fresh, follow the README step-by-step, and file an issue for every place the instructions are wrong or unclear. An hour of that per month keeps the docs honest.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2 page-columns page-full" data-number="32.11">
+<section id="stakes-and-politics" class="level2" data-number="32.11">
 <h2 data-number="32.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">32.11</span> Stakes and politics</h2>
 <p>Code review is one of the most concentrated cultural moments in software collaboration: a senior person reads a junior person’s work and decides whether it is acceptable, and the language of that decision shapes how the junior person feels about their work for the rest of the week. The mechanics in this chapter — small PRs, focused comments, asynchronous review — are good practices, and they are also not the whole story.</p>
 <p>Two things to notice. First, <em>review style is cultural</em>. Comments that seem direct to one reviewer (“this is wrong”; “why would you do it that way?”) read as hostile to another, especially across language fluency, age, and seniority gaps. The literature on psychological safety and the experience of women, people of color, and non-native English speakers in code-review systems all converge on the same finding: the same comment, with the same content, is read very differently depending on who wrote it and who received it. Conventions like Conventional Comments exist precisely to make intent legible — to compensate for the fact that text strips out the cues a face-to-face conversation would carry. Second, <em>who can approve a merge is power</em>. The “code owner” who has to sign off, the senior engineer whose word ends a thread, the maintainer who can <code>LGTM</code> a PR into main — these are real authority relationships dressed up as technical machinery. When you contribute to an open-source project, you are entering somebody else’s review hierarchy; when you build one, you are deciding whose voices count.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div id="fig-github-pr-review-comment" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="graphics/PLACEHOLDER-github-pr-review-comment.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-github-pr-review-comment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;32.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
-</figcaption>
-</figure>
-</div>
-</div></div></section>
+</section>
 <section id="worked-examples-outline" class="level2" data-number="32.12">
 <h2 data-number="32.12" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">32.12</span> Worked examples (outline)</h2>
 <section id="turn-a-chat-question-into-a-good-issue" class="level3">

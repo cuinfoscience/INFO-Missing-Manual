@@ -59,10 +59,6 @@ c127108 Merge pre-commit chapter into automation
 >
 > If you see “non-fast-forward” on a branch no one else should be pushing to, check that you are on the right branch (`git branch` shows the current one with an asterisk) and that you are pushing to the right remote (`git remote -v`). Never “fix” a rejection with `git push --force` unless you understand exactly which commits you are about to overwrite. See [sec-asking-questions](#sec-asking-questions) if you need help.
 
-![](graphics/PLACEHOLDER-github-pr-diff.png)
-
-Figure 31.1: ALT: GitHub pull request page showing the diff view with red removed lines and green added lines side by side, plus a reviewer comment thread anchored to a specific line.
-
 Git history is not a single straight line — it is a graph. Branches diverge and merge back together, and the same project can have many parallel lines of work in flight at once. Once you internalize that mental picture, the rest of Git makes more sense.
 
 There are three zones any file moves through on its way into history. The **working tree** is the version of the file as it exists on disk right now — what you see when you open it in your editor. The **staging area** (also called the *index*) is the set of changes you have explicitly told Git you intend to include in your next commit. And the **commit** is the saved snapshot in history once you actually run `git commit`. Edits land in the working tree first; `git add` promotes them to staging; `git commit` turns staging into a commit.
@@ -251,7 +247,7 @@ A GitHub repository page has several tabs, and each one is a different surface y
 
 ![Screenshot of the GitHub page for cuinfoscience/INFO-Missing-Manual, marked Public. A row of tabs reads Code (selected), Issues, Pull requests, Actions, Projects, and Security. Below, a branch menu shows main. The latest commit, by brianckeegan, is a merged pull request with 121 commits in all. The file list shows folders .github, chapters, docs, graphics, and tools, then files such as AGENTS.md and CONTRIBUTING.md.](../graphics/version-control/github-repo.png)
 
-Figure 31.2: This book’s own repository on GitHub, signed out, in September 2026. The tabs along the top are the repository’s working surfaces; the Code tab, open here, lists the files and folders on the default branch, `main`, each beside the last commit that changed it. The README is rendered below the list, out of view.
+Figure 31.1: This book’s own repository on GitHub, signed out, in September 2026. The tabs along the top are the repository’s working surfaces; the Code tab, open here, lists the files and folders on the default branch, `main`, each beside the last commit that changed it. The README is rendered below the list, out of view.
 
 The single most important file in any repository is the **README**, because it is the front door. When someone lands on your repository for the first time — a classmate, a reviewer, a potential employer, or future-you — the README is what tells them what the project is, how to install it, and how to run it. If the README is missing or stale, every other tab is less useful because readers have no orientation. Invest in the README first and maintain it as part of the work (see [sec-project-management](#sec-project-management) for what a good README contains).
 
@@ -269,9 +265,13 @@ There is no “best” strategy — each has trade-offs. The important thing is 
 
 ### Reviews and commenting best practices
 
-Good review comments share three traits: they point to a specific line or region, they explain the *why*, and they propose a concrete direction. “This is wrong” is useless; “This assumes the column is never null, but the source data has about 3% nulls, so this line will crash on real input — consider adding a dropna or fillna before this step” is actionable. Aim for that level of specificity on every comment you leave.
+Good review comments share three traits: they point to a specific line or region, they explain the *why*, and they propose a concrete direction. “This is wrong” is useless; “This assumes the column is never null, but the source data has about 3% nulls, so this line will crash on real input — consider adding a dropna or fillna before this step” is actionable. Aim for that level of specificity on every comment you leave. On GitHub you attach a comment to a line by clicking beside it in the pull request’s diff, and a *suggestion* goes one step further: it carries the exact replacement text, which the author can accept with one click ([Figure fig-github-pr-diff](#fig-github-pr-diff)).
 
-It also helps reviewers and authors to tag the *kind* of feedback a comment is. A simple taxonomy — **Blocker** (must fix before merge, correctness or security), **Suggestion** (a better alternative, non-blocking), **Question** (asking the author to clarify intent), **Nit** (a minor style or naming point, explicitly non-blocking) — lets the author know what actually has to change before the PR can merge versus what is opinion. When you are the author responding to reviews, always reply to each thread explicitly: either “changed in commit abc123” or “kept as-is because…” so the reviewer can see the loop closed. Chapter [sec-collaboration](#sec-collaboration) has more on this.
+![Screenshot of a GitHub review thread on chapters/version-control.qmd. Diff lines 763 to 766 are green additions ending in git stash pop. Below, a comment by a blurred user, marked Collaborator and Author, reads: The new section uses git stash list too, but the quick reference leaves it out. A Suggested change box replaces line 766 with git stash list and git stash pop. The comment ends: Generated by Claude Code.](../graphics/version-control/github-pr-diff.png)
+
+Figure 31.2: A review comment on a pull request in this book’s own repository, signed out, in September 2026. The green lines are the end of the diff the comment is attached to. The comment proposes a change in GitHub’s *Suggested change* box, which shows the line it would replace in red and the replacement in green. Claude Code wrote the comment from the maintainer’s account; the name and avatar are blurred.
+
+It also helps reviewers and authors to tag the *kind* of feedback a comment is. A simple taxonomy — **Blocker** (must fix before merge, correctness or security), **Suggestion** (a better alternative, non-blocking), **Question** (asking the author to clarify intent), **Nit** (a minor style or naming point, explicitly non-blocking) — lets the author know what actually has to change before the PR can merge versus what is opinion. When you are the author responding to reviews, always reply to each thread explicitly: either “changed in commit abc123” or “kept as-is because…” so the reviewer can see the loop closed. [sec-collaboration](#sec-collaboration) has more on this.
 
 ### Linking work: issues \\\leftrightarrow\\ PRs
 
@@ -749,6 +749,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
     git reflog
     git stash push -m "..."
+    git stash list
     git stash pop
     git cherry-pick <sha>
     git rebase main

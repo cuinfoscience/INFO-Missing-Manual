@@ -234,6 +234,12 @@ When reviewers leave comments, your job as the author is to close each loop expl
 
 If you **disagree** with a comment, say so with your reasoning, and propose an alternative: “I don’t think we should rename this — the current name matches the upstream API. Would it help if I added a comment explaining the mapping?” Disagreement is fine; silent reversals are not. And **avoid drive-by changes** — if during the review you notice an unrelated bug and are tempted to fix it in the same branch, resist. Open a second PR. Drive-by changes confuse the reviewer (“wait, did they address the comment or add new stuff?”) and slow the merge.
 
+[Figure fig-github-pr-review-comment](#fig-github-pr-review-comment) shows a whole loop on one small thread: a line comment with a suggested change, a reply that says where the fix went, and the thread resolved. Notice one thing it doesn’t do: the comment carries no label from the taxonomy above. The *Suggested change* box hints at what kind of comment this is, but a “**Suggestion**:” prefix would have said so outright.
+
+![Screenshot of a resolved GitHub review thread on chapters/version-control.qmd, with a Hide resolved button in its header. Diff lines 763 to 766 end in git stash pop. A blurred reviewer suggests adding git stash list to the quick reference, with a Suggested change box. A blurred author replies: Agreed. This pull request is already merged, so I've added git stash list in a follow-up pull request instead.](../graphics/collaboration/github-pr-review-comment.png)
+
+Figure 32.1: A resolved review thread on a pull request in this book’s own repository, signed out, in September 2026. The reviewer’s comment proposes a change in GitHub’s *Suggested change* box; the author’s reply says where the fix went, because the pull request had already merged; and *Hide resolved* in the header means the thread has been marked resolved and is shown expanded. Claude Code wrote both sides from the maintainer’s account; names and avatars are blurred.
+
 ## 32.7 Merging, ownership, and handoffs
 
 ### Definition of done (team agreement)
@@ -375,10 +381,6 @@ Code review is one of the most concentrated cultural moments in software collabo
 Two things to notice. First, *review style is cultural*. Comments that seem direct to one reviewer (“this is wrong”; “why would you do it that way?”) read as hostile to another, especially across language fluency, age, and seniority gaps. The literature on psychological safety and the experience of women, people of color, and non-native English speakers in code-review systems all converge on the same finding: the same comment, with the same content, is read very differently depending on who wrote it and who received it. Conventions like Conventional Comments exist precisely to make intent legible — to compensate for the fact that text strips out the cues a face-to-face conversation would carry. Second, *who can approve a merge is power*. The “code owner” who has to sign off, the senior engineer whose word ends a thread, the maintainer who can `LGTM` a PR into main — these are real authority relationships dressed up as technical machinery. When you contribute to an open-source project, you are entering somebody else’s review hierarchy; when you build one, you are deciding whose voices count.
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.
-
-![](graphics/PLACEHOLDER-github-pr-review-comment.png)
-
-Figure 32.1: ALT: GitHub pull request review interface, showing an inline comment anchored to a specific line of the diff. The comment thread includes the reviewer’s suggestion, a reply from the author, and a resolved-thread indicator.
 
 ## 32.12 Worked examples (outline)
 
