@@ -719,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#work-tracked-in-private-channels" id="toc-work-tracked-in-private-channels" class="nav-link" data-scroll-target="#work-tracked-in-private-channels">Work tracked in private channels</a></li>
   </ul></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">30.9</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">30.10</span> Worked examples (outline)</a>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">30.10</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#start-a-new-course-project-in-20-minutes" id="toc-start-a-new-course-project-in-20-minutes" class="nav-link" data-scroll-target="#start-a-new-course-project-in-20-minutes">Start a new course project in 20 minutes</a></li>
   <li><a href="#intake-a-dataset-with-provenance-and-a-data-dictionary" id="toc-intake-a-dataset-with-provenance-and-a-data-dictionary" class="nav-link" data-scroll-target="#intake-a-dataset-with-provenance-and-a-data-dictionary">Intake a dataset with provenance and a data dictionary</a></li>
@@ -1289,38 +1289,94 @@ For the narrative:
 <p>Second, <em>visibility is uneven</em>. The practices this chapter teaches — making issues, writing definition-of-done lines, posting status updates — make some labor visible and other labor invisible. Care work, mentoring, building trust with collaborators, the slow read of someone else’s draft: none of these fit neatly into a Kanban column, and pipelines that reward only what is visible end up rewarding only the visible workers. Project management hygiene is a real good; it is also a values choice about what gets seen.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you adopt a project-management practice, ask whose work it makes legible and whose work it lets disappear.</p>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="30.10">
-<h2 data-number="30.10" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">30.10</span> Worked examples (outline)</h2>
+<section id="worked-examples" class="level2" data-number="30.10">
+<h2 data-number="30.10" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">30.10</span> Worked examples</h2>
+<p>These follow one small course project, <code>coffee-sales</code>: which products drove the spring sales increase at three campus cafés? The commands and output are from a real run (Python 3.11, pandas 3.0, on Linux; on Windows, activate the environment with <code>.venv\Scripts\activate</code>).</p>
 <section id="start-a-new-course-project-in-20-minutes" class="level3">
 <h3 class="anchored" data-anchor-id="start-a-new-course-project-in-20-minutes">Start a new course project in 20 minutes</h3>
-<ul>
-<li><p>Create the folder structure.</p></li>
-<li><p>Add environment file.</p></li>
-<li><p>Write a README with “how to run”.</p></li>
-</ul>
+<p>Make the folders from the directory template above, start Git, and create the environment before writing any analysis:</p>
+<pre class="text"><code>$ mkdir -p coffee-sales/{data/raw,data/processed,notebooks,src,reports/figures}
+$ cd coffee-sales
+$ git init
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt</code></pre>
+<p>Before that last line, write three short files. <code>requirements.txt</code> holds the one package the project needs so far, pinned: <code>pandas==3.0.6</code>. <code>.gitignore</code> keeps out what shouldn’t be committed: <code>.venv/</code>, <code>__pycache__/</code>, <code>.ipynb_checkpoints/</code>, and the generated <code>data/processed/</code> and <code>reports/</code>. And the README states the question, then how to set up and run the project, even though “run” is only one line so far (Template B below has the full skeleton). Then commit:</p>
+<pre class="text"><code>$ git add .
+$ git commit -m "Set up project structure"
+[main (root-commit) 836f769] Set up project structure
+ 4 files changed, 20 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 data/raw/.gitkeep
+ create mode 100644 requirements.txt</code></pre>
+<p>Notice what isn’t in the commit: <code>notebooks/</code>, <code>src/</code>, and the other empty folders. Git tracks files, not folders, so an empty folder disappears from anyone else’s clone. An empty placeholder file named <code>.gitkeep</code> keeps a folder that must exist (here <code>data/raw/</code>, where the data will go); the others will fill up with real files soon enough.</p>
 </section>
 <section id="intake-a-dataset-with-provenance-and-a-data-dictionary" class="level3">
 <h3 class="anchored" data-anchor-id="intake-a-dataset-with-provenance-and-a-data-dictionary">Intake a dataset with provenance and a data dictionary</h3>
-<ul>
-<li><p>Place raw file.</p></li>
-<li><p>Write provenance notes.</p></li>
-<li><p>Draft codebook and a first-pass quality report.</p></li>
-</ul>
+<p>The cafés’ sales export arrives as a CSV. Put it in <code>data/raw/</code> and don’t edit it. Record where it came from in <code>data/raw/provenance.md</code> (see “Provenance” above), and record its checksum so you can tell later if the file ever changes:</p>
+<pre class="text"><code>$ sha256sum data/raw/sales-2026-04-10.csv &gt;&gt; data/raw/checksums.txt</code></pre>
+<p>(On macOS the command is <code>shasum -a 256</code>.) Then run a first-pass quality report, a few lines that say what the file contains before you trust it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/sales-2026-04-10.csv"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> rows, </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columns"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"duplicate rows: </span><span class="sc">{</span>df<span class="sc">.</span>duplicated()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"missing values per column:"</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>().to_string())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>$ python src/quality_report.py
+10 rows, 6 columns
+duplicate rows: 1
+missing values per column:
+date        0
+store       0
+product     0
+quantity    1
+revenue     0
+note        7</code></pre>
+<p>Read it column by column. Seven missing <code>note</code> values are expected: the data dictionary says a blank note means no discount. One missing <code>quantity</code> and one duplicated row are not expected, and each needs a decision. Draft the data dictionary now, following “Data dictionary and codebook” above, while the columns are fresh in your mind.</p>
 </section>
 <section id="use-issues-to-manage-a-cleaning-pipeline" class="level3">
 <h3 class="anchored" data-anchor-id="use-issues-to-manage-a-cleaning-pipeline">Use issues to manage a cleaning pipeline</h3>
+<p>Each surprise in the quality report becomes an issue, with a definition of done:</p>
 <ul>
-<li><p>Create issues for missingness, type conversions, duplicates, joins.</p></li>
-<li><p>Close each issue with a summary and link to outputs.</p></li>
+<li><strong>“Decide what to do with the duplicate sale (south, coffee, 2026-04-02).”</strong> Done when you know whether it is one sale recorded twice or two identical sales (ask whoever sent the export), and the cleaning script does the right thing.</li>
+<li><strong>“Handle the sale with a missing quantity (north, tea, 2026-04-03).”</strong> Done when the row is either filled from another source or dropped, and the choice is written in the README’s list of cleaning rules.</li>
+<li><strong>“Draft the data dictionary.”</strong> Done when every column has a description, units, and allowed values.</li>
 </ul>
+<p>Close each issue with a sentence that says what you decided, and link the commit or output that shows it: “One sale recorded twice, confirmed by the café manager; <code>clean.py</code> drops exact duplicates (commit 4e1a0c2). The processed file has 8 rows.” Three months later, that sentence is the only record of why the processed data has 8 rows, not 10.</p>
 </section>
 <section id="final-reproducibility-check-before-submission" class="level3">
 <h3 class="anchored" data-anchor-id="final-reproducibility-check-before-submission">Final reproducibility check before submission</h3>
-<ul>
-<li><p>Recreate env.</p></li>
-<li><p>Run end-to-end.</p></li>
-<li><p>Confirm outputs and update README.</p></li>
-</ul>
+<p>The day before the deadline, run the check from “The reproducibility check” above: throw away everything generated, rebuild from the README, and run. For this project, it caught a real problem:</p>
+<pre class="text"><code>$ rm -rf .venv data/processed/*
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+$ python src/clean.py
+...
+ImportError: Unable to find a usable engine; tried using: 'pyarrow', 'fastparquet'.</code></pre>
+<p><code>clean.py</code> writes Parquet, which needs the <code>pyarrow</code> package. It had worked for weeks, because <code>pyarrow</code> was installed by hand in the old environment, but it was never added to <code>requirements.txt</code>, so anyone else following the README would have hit this error. Add it, pinned to the version you used, and rebuild:</p>
+<pre class="text"><code>$ echo "pyarrow==25.0.1" &gt;&gt; requirements.txt
+$ pip install -r requirements.txt
+$ python src/clean.py
+wrote 8 rows to data/processed/sales.parquet
+$ sha256sum -c data/raw/checksums.txt
+data/raw/sales-2026-04-10.csv: OK
+$ git status --short
+ M requirements.txt</code></pre>
+<p>The pipeline runs from nothing, the raw data is unchanged, and the only difference from the last commit is the fix. Commit it.</p>
+<p>The strictest version of the check starts from a fresh clone in a new folder, because that also catches anything that exists only on your computer. Here it caught a second problem:</p>
+<pre class="text"><code>$ git clone coffee-sales fresh
+$ cd fresh
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+$ python src/clean.py
+...
+OSError: Cannot save file into a non-existent directory: 'data/processed'</code></pre>
+<p><code>.gitignore</code> keeps <code>data/processed/</code> out of the repository, and Git doesn’t track empty folders, so a fresh clone has no such folder. On the original computer it had always existed. The fix is one line in <code>clean.py</code>, before it writes, so the script makes the folder it needs: <code>Path("data/processed").mkdir(parents=True, exist_ok=True)</code>. After that, the fresh clone runs cleanly: <code>wrote 8 rows to data/processed/sales.parquet</code>.</p>
+<p>Both checks together took about fifteen minutes, and they found two problems the day before the deadline, not after it.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="30.11">

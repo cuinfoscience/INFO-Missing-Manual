@@ -638,37 +638,128 @@ Second, *visibility is uneven*. The practices this chapter teaches — making is
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you adopt a project-management practice, ask whose work it makes legible and whose work it lets disappear.
 
-## 30.10 Worked examples (outline)
+## 30.10 Worked examples
+
+These follow one small course project, `coffee-sales`: which products drove the spring sales increase at three campus cafés? The commands and output are from a real run (Python 3.11, pandas 3.0, on Linux; on Windows, activate the environment with `.venv\Scripts\activate`).
 
 ### Start a new course project in 20 minutes
 
-- Create the folder structure.
+Make the folders from the directory template above, start Git, and create the environment before writing any analysis:
 
-- Add environment file.
+``` text
+$ mkdir -p coffee-sales/{data/raw,data/processed,notebooks,src,reports/figures}
+$ cd coffee-sales
+$ git init
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+```
 
-- Write a README with “how to run”.
+Before that last line, write three short files. `requirements.txt` holds the one package the project needs so far, pinned: `pandas==3.0.6`. `.gitignore` keeps out what shouldn’t be committed: `.venv/`, `__pycache__/`, `.ipynb_checkpoints/`, and the generated `data/processed/` and `reports/`. And the README states the question, then how to set up and run the project, even though “run” is only one line so far (Template B below has the full skeleton). Then commit:
+
+``` text
+$ git add .
+$ git commit -m "Set up project structure"
+[main (root-commit) 836f769] Set up project structure
+ 4 files changed, 20 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 data/raw/.gitkeep
+ create mode 100644 requirements.txt
+```
+
+Notice what isn’t in the commit: `notebooks/`, `src/`, and the other empty folders. Git tracks files, not folders, so an empty folder disappears from anyone else’s clone. An empty placeholder file named `.gitkeep` keeps a folder that must exist (here `data/raw/`, where the data will go); the others will fill up with real files soon enough.
 
 ### Intake a dataset with provenance and a data dictionary
 
-- Place raw file.
+The cafés’ sales export arrives as a CSV. Put it in `data/raw/` and don’t edit it. Record where it came from in `data/raw/provenance.md` (see “Provenance” above), and record its checksum so you can tell later if the file ever changes:
 
-- Write provenance notes.
+``` text
+$ sha256sum data/raw/sales-2026-04-10.csv >> data/raw/checksums.txt
+```
 
-- Draft codebook and a first-pass quality report.
+(On macOS the command is `shasum -a 256`.) Then run a first-pass quality report, a few lines that say what the file contains before you trust it:
+
+``` python
+import pandas as pd
+
+df = pd.read_csv("data/raw/sales-2026-04-10.csv")
+print(f"{len(df)} rows, {df.shape[1]} columns")
+print(f"duplicate rows: {df.duplicated().sum()}")
+print("missing values per column:")
+print(df.isna().sum().to_string())
+```
+
+``` text
+$ python src/quality_report.py
+10 rows, 6 columns
+duplicate rows: 1
+missing values per column:
+date        0
+store       0
+product     0
+quantity    1
+revenue     0
+note        7
+```
+
+Read it column by column. Seven missing `note` values are expected: the data dictionary says a blank note means no discount. One missing `quantity` and one duplicated row are not expected, and each needs a decision. Draft the data dictionary now, following “Data dictionary and codebook” above, while the columns are fresh in your mind.
 
 ### Use issues to manage a cleaning pipeline
 
-- Create issues for missingness, type conversions, duplicates, joins.
+Each surprise in the quality report becomes an issue, with a definition of done:
 
-- Close each issue with a summary and link to outputs.
+- **“Decide what to do with the duplicate sale (south, coffee, 2026-04-02).”** Done when you know whether it is one sale recorded twice or two identical sales (ask whoever sent the export), and the cleaning script does the right thing.
+- **“Handle the sale with a missing quantity (north, tea, 2026-04-03).”** Done when the row is either filled from another source or dropped, and the choice is written in the README’s list of cleaning rules.
+- **“Draft the data dictionary.”** Done when every column has a description, units, and allowed values.
+
+Close each issue with a sentence that says what you decided, and link the commit or output that shows it: “One sale recorded twice, confirmed by the café manager; `clean.py` drops exact duplicates (commit 4e1a0c2). The processed file has 8 rows.” Three months later, that sentence is the only record of why the processed data has 8 rows, not 10.
 
 ### Final reproducibility check before submission
 
-- Recreate env.
+The day before the deadline, run the check from “The reproducibility check” above: throw away everything generated, rebuild from the README, and run. For this project, it caught a real problem:
 
-- Run end-to-end.
+``` text
+$ rm -rf .venv data/processed/*
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+$ python src/clean.py
+...
+ImportError: Unable to find a usable engine; tried using: 'pyarrow', 'fastparquet'.
+```
 
-- Confirm outputs and update README.
+`clean.py` writes Parquet, which needs the `pyarrow` package. It had worked for weeks, because `pyarrow` was installed by hand in the old environment, but it was never added to `requirements.txt`, so anyone else following the README would have hit this error. Add it, pinned to the version you used, and rebuild:
+
+``` text
+$ echo "pyarrow==25.0.1" >> requirements.txt
+$ pip install -r requirements.txt
+$ python src/clean.py
+wrote 8 rows to data/processed/sales.parquet
+$ sha256sum -c data/raw/checksums.txt
+data/raw/sales-2026-04-10.csv: OK
+$ git status --short
+ M requirements.txt
+```
+
+The pipeline runs from nothing, the raw data is unchanged, and the only difference from the last commit is the fix. Commit it.
+
+The strictest version of the check starts from a fresh clone in a new folder, because that also catches anything that exists only on your computer. Here it caught a second problem:
+
+``` text
+$ git clone coffee-sales fresh
+$ cd fresh
+$ python -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+$ python src/clean.py
+...
+OSError: Cannot save file into a non-existent directory: 'data/processed'
+```
+
+`.gitignore` keeps `data/processed/` out of the repository, and Git doesn’t track empty folders, so a fresh clone has no such folder. On the original computer it had always existed. The fix is one line in `clean.py`, before it writes, so the script makes the folder it needs: `Path("data/processed").mkdir(parents=True, exist_ok=True)`. After that, the fresh clone runs cleanly: `wrote 8 rows to data/processed/sales.parquet`.
+
+Both checks together took about fifteen minutes, and they found two problems the day before the deadline, not after it.
 
 ## 30.11 Templates
 
