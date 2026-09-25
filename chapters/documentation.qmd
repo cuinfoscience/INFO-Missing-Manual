@@ -46,6 +46,8 @@ By the end of this chapter, you should be able to:
 
 7.  Use AI tools to assist documentation work while maintaining verification, citations, and security hygiene.
 
+8.  Read a flowchart, an entity-relationship diagram, and a sequence diagram, and draw simple ones as text with Mermaid.
+
 ## Running theme: documentation is an interface {.unnumbered}
 
 Documentation is an interface between *your intent* and *someone else's understanding*. The "someone else" might be a teammate, a future version of you, or even a tool like a build system or continuous integration job. Good documentation lowers the cost of correct action and raises the cost of confusion.
@@ -320,6 +322,88 @@ For conceptual documentation, include one example that is fully worked:
 
 Examples turn abstract descriptions into something testable.
 
+## Diagrams: reading and drawing them
+
+Some things are hard to hold in your head from prose: which script reads which file, how two tables connect, who sends what to whom and in what order. A diagram shows that structure at once, and a reader who knows the three common kinds below can read most of the diagrams in documentation, papers, and design discussions.
+
+### Flowcharts: what happens, in what order
+
+A **flowchart** (or pipeline diagram) shows steps as boxes and the order between them as arrows. @fig-diagram-pipeline is the kind of project described in @sec-project-management, drawn as one:
+
+```{mermaid}
+%%| label: fig-diagram-pipeline
+%%| fig-cap: "A data pipeline as a flowchart. Cylinders are files; rectangles are code; the dotted arrow is a check, not a flow of data."
+flowchart TD
+    accTitle: A data pipeline
+    accDescr: A flowchart. The file data/raw/sales.csv flows into the script clean.py, which the file data/dictionary.csv checks (a dotted arrow). clean.py writes data/processed/sales.parquet, which flows into analysis.ipynb, which writes reports/figures/.
+    raw[(data/raw/sales.csv)] --> clean[clean.py]
+    dict[(data/dictionary.csv)] -. checks .-> clean
+    clean --> tidy[(data/processed/sales.parquet)]
+    tidy --> nb[analysis.ipynb]
+    nb --> figs[(reports/figures/)]
+```
+
+Read it from the top, along the arrows. The shapes carry meaning (here, cylinders for stored data and rectangles for code), and a good diagram says what its shapes and line styles mean, in a caption or a legend.
+
+### Entity-relationship diagrams: how tables connect
+
+An **entity-relationship (ER) diagram** shows the tables in a database, their columns, and how their rows relate. @fig-diagram-er draws the two tables from @sec-sql-basics:
+
+```{mermaid}
+%%| label: fig-diagram-er
+%%| fig-cap: "The customers and orders tables from the SQL chapter as an ER diagram. The line between them reads: one customer places zero or more orders."
+erDiagram
+    accTitle: Customers and orders
+    accDescr: An ER diagram of two tables. CUSTOMERS has customer_id (primary key), name, and city. ORDERS has order_id (primary key), customer_id (foreign key), amount, and date. A line labeled places joins them, with two bars at the CUSTOMERS end and a circle and crow's foot at the ORDERS end.
+    CUSTOMERS ||--o{ ORDERS : places
+    CUSTOMERS {
+        int customer_id PK
+        string name
+        string city
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        float amount
+        date date
+    }
+```
+
+The marks at each end of the line, called **crow's-foot notation**, carry the relationship. Two bars (`||`) mean "exactly one," a circle means "zero," and the three-pronged crow's foot means "many." So the line reads, from each side: every order belongs to exactly one customer, and a customer places zero or more orders. `PK` marks a table's primary key and `FK` a foreign key, the column that points to another table. When you join two tables, the ER diagram tells you which column to join on and whether a join can duplicate rows (the "many" end is where they multiply).
+
+### Sequence diagrams: who talks to whom
+
+A **sequence diagram** shows messages between participants over time: each participant gets a vertical line, time runs downward, and each arrow is one message. @fig-diagram-sequence is a script calling a web API, as in @sec-http-apis:
+
+```{mermaid}
+%%| label: fig-diagram-sequence
+%%| fig-cap: "A script fetching data from a web API as a sequence diagram. Solid arrows are requests; dashed arrows are responses."
+sequenceDiagram
+    accTitle: Fetching from a web API
+    accDescr: A sequence diagram with two participants, fetch.py and GitHub API. fetch.py sends GET /repos/pandas-dev/pandas with User-Agent and token; the API answers 200 OK with a JSON body. fetch.py parses the JSON and saves it to data/raw/. It then requests the next page, and the API answers 429 Too Many Requests; a note says wait, then retry.
+    participant S as fetch.py
+    participant A as GitHub API
+    S->>A: GET /repos/pandas-dev/pandas (with User-Agent and token)
+    A-->>S: 200 OK, JSON body
+    S->>S: parse JSON, save to data/raw/
+    S->>A: GET the next page
+    A-->>S: 429 Too Many Requests
+    Note over S: wait, then retry
+```
+
+Sequence diagrams are how API documentation explains authentication and how people debug a conversation between programs: when something fails, you can point at the arrow where it went wrong.
+
+### Drawing your own
+
+Most diagrams in a student project are informal **architecture sketches**: boxes for the pieces (your laptop, a server, a database, cloud storage), arrows for what moves between them, and labels on everything. A photo of a whiteboard is a fine start. For a diagram that will live in documentation, write it as text, the way the three above are written, in [Mermaid](https://mermaid.js.org/). A Mermaid diagram is a few lines in a fenced code block that GitHub, Quarto, and many other tools draw for you; because it is text, it lives in version control, shows up in diffs, and is easy to change when the project does. The [Mermaid Live Editor](https://mermaid.live/) shows the drawing as you type. For diagrams Mermaid can't lay out well, [diagrams.net](https://www.diagrams.net/) is a free drawing tool whose files can also be kept in a repository.
+
+Whichever tool you use, a few habits make a diagram readable:
+
+- **One idea per diagram.** A diagram that shows the data flow, the database schema, and the deployment at once shows none of them clearly. Draw three.
+- **Label the arrows** with verbs ("reads," "writes," "checks"), and say what the shapes and line styles mean.
+- **Keep one direction of flow,** left to right or top to bottom, so the reader never has to hunt for where it starts.
+- **Describe it in words too.** A caption and the text around a diagram should say what it shows, for readers who can't see it and for the moment the diagram falls out of date. In Mermaid, an `accTitle:` line and an `accDescr:` line inside the diagram give screen readers a title and a description; the three diagrams above have them.
+
 ## Documentation maintenance as a habit
 
 Documentation is not a one-time deliverable. It is a living layer that must move with your code.
@@ -523,6 +607,8 @@ The "better" version specifies symptoms, a hypothesis, and a verification step.
 
 5.  Identify one assumption in your current project that is not written down (paths, versions, parameters, data quirks). Document it in the README and add a short rationale.
 
+6.  Draw your project's pipeline as a Mermaid flowchart in its README, with an `accDescr:` line, and check that GitHub draws it. If the project uses more than one table, add an ER diagram of how they join.
+
 ## One-page checklist
 
 -   I can identify whether I need reference docs, a tutorial, a how-to, or a conceptual explanation.
@@ -538,6 +624,8 @@ The "better" version specifies symptoms, a hypothesis, and a verification step.
 -   I update docs when code changes affect usage.
 
 -   I keep a short decision log for consequential choices.
+
+-   Where structure is hard to follow in prose, I add a diagram as text (Mermaid) with one idea, labeled arrows, and a description.
 
 -   If I use AI tools, I verify outputs against official docs and local experiments, and I never paste secrets.
 
