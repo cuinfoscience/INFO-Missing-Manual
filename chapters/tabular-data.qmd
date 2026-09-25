@@ -207,7 +207,7 @@ df.columns = (
 
 **Symptom:** `df["price"].sum()` concatenates strings instead of adding numbers.
 
-**Fix:** one bad value somewhere (a `"N/A"` or a `"$"` or a stray footnote) is making pandas treat the whole column as `object`. Use `pd.to_numeric(..., errors="coerce")` to convert and flag the culprits:
+**Fix:** one bad value somewhere (a `"N/A"` or a `"$"` or a stray footnote) is making pandas treat the whole column as text (`str` in pandas 3, `object` in pandas 2). Use `pd.to_numeric(..., errors="coerce")` to convert and flag the culprits:
 
 ```python
 df["price_num"] = pd.to_numeric(df["price"], errors="coerce")
@@ -274,7 +274,7 @@ For groupby, pass `dropna=False` if you want NaN groups included.
 
 ### 7. Mixed types in a "numeric" column
 
-**Symptom:** a column has integers, floats, and a few strings ("N/A", "n/a", "unknown"). Reads as `object`. Operations are slow and error-prone.
+**Symptom:** a column has integers, floats, and a few strings ("N/A", "n/a", "unknown"). Reads as text (`str`, or `object` in pandas 2). Operations are slow and error-prone.
 
 **Fix:** `pd.to_numeric(..., errors="coerce")` as in problem 2, then decide what to do with the NaNs. Do not silently `.dropna()` — that is the row you should be investigating.
 
