@@ -268,6 +268,8 @@ Every content chapter (except the cornerstone) ends — just before Worked examp
 See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: <one sentence the reader can apply when they next encounter this chapter's topic>.
 ```
 
+**Open on something specific to the chapter:** a case, an event, or an experience the reader has had. Read side by side in September 2026, fifteen sections opened with one of two stock moves ("X looks like neutral plumbing, but…" and "X is taught as Y, and it is. It is also…"), and most announced a count ("Three things to notice"); in a row they read as boilerplate. Don't add more of either. `package-management`, `version-control`, and `evaluating-ai` show the alternative. The closing sentence stays fixed, as the template shows.
+
 Tier-3 chapters (narrowly technical topics where the politics angle is hardest to make load-bearing — for example `regex`, `tracebacks`, `latex`, `common-formats`, `debugging`, `file-system`) get shorter sections (~150–200 words) anchored on a single concrete question rather than a forced full-checklist application.
 
 ### Further reading callout
