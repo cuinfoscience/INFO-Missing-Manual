@@ -345,6 +345,8 @@ Non-executable code blocks are the default; the book does not currently use Jupy
 
 Bibliography file: `references.bib` at the repo root. Bibliography rendering is handled automatically via `bibliography: references.bib` in `_quarto.yml`.
 
+**Every reference is real, and every example entry is obviously fake.** A citation, a Further reading item, or a DOI must resolve to the work it names; check it (a DOI at `https://doi.org/<doi>`) before it goes in. A template or example that needs a sample entry uses placeholders (`Lastname, Firstname`, `Title of Your Paper`, DOI `10.1145/0000000.0000000`), never a made-up paper under a real person's name. The Part V rewrite found one of each: a Further reading item whose DOI returned 404 and whose authors were invented, and a template entry crediting the maintainer with a paper that doesn't exist.
+
 **Links and margin notes:**
 
 ```markdown

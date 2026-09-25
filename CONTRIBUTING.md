@@ -83,6 +83,7 @@ The full style guide is in [`AGENTS.md`](AGENTS.md), which is also what AI codin
 - **Chapter shape.** Every chapter follows the same outline (Purpose, Why read this chapter, numbered sections, Stakes and politics, Worked examples, Exercises, a one-page checklist, Further reading), so readers can jump into any chapter. Match the chapter you're editing.
 - **Links between chapters** use `@sec-…` labels, such as `@sec-debugging`. The list is in `AGENTS.md`. Don't write "Chapter" before one; Quarto adds it.
 - **Figures** live in `graphics/`, are referenced with a leading slash (`/graphics/name.png`), and always have alt text (`fig-alt="…"`) describing what someone who can't see the image needs to know. Screenshots follow extra rules (real captures only, readable at the size the book shows them); see "Screenshots" in `AGENTS.md` and [`tools/shots/README.md`](tools/shots/README.md).
+- **Real sources only.** Every book, paper, or link you cite should be one you've opened; an example citation in a template uses placeholders like `Lastname, Firstname`, never an invented paper under a real person's name.
 - **Don't rename or move chapter files.** Each file name is a web address that syllabi and course pages link to ([`docs/decisions.md`](docs/decisions.md) records why).
 - **If you add, rename, or reorder a chapter,** register it in `_quarto.yml` and run `python tools/issue-forms/sync_issue_chapters.py`, so the issue forms' chapter list stays right.
 
