@@ -701,44 +701,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#strategic-printing" id="toc-strategic-printing" class="nav-link" data-scroll-target="#strategic-printing">Strategic printing</a></li>
   <li><a href="#assertions-as-executable-assumptions" id="toc-assertions-as-executable-assumptions" class="nav-link" data-scroll-target="#assertions-as-executable-assumptions">Assertions as executable assumptions</a></li>
   </ul></li>
-  <li><a href="#logging-debugging-that-scales-beyond-one-run" id="toc-logging-debugging-that-scales-beyond-one-run" class="nav-link" data-scroll-target="#logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">6.8</span> Logging: debugging that scales beyond one run</a>
+  <li><a href="#interactive-debuggers-pause-the-program-and-look-around" id="toc-interactive-debuggers-pause-the-program-and-look-around" class="nav-link" data-scroll-target="#interactive-debuggers-pause-the-program-and-look-around"><span class="header-section-number">6.8</span> Interactive debuggers: pause the program and look around</a>
+  <ul class="collapse">
+  <li><a href="#breakpoint-stop-here" id="toc-breakpoint-stop-here" class="nav-link" data-scroll-target="#breakpoint-stop-here"><code>breakpoint()</code>: stop here</a></li>
+  <li><a href="#the-commands-youll-use" id="toc-the-commands-youll-use" class="nav-link" data-scroll-target="#the-commands-youll-use">The commands you’ll use</a></li>
+  <li><a href="#after-a-crash-post-mortem-debugging" id="toc-after-a-crash-post-mortem-debugging" class="nav-link" data-scroll-target="#after-a-crash-post-mortem-debugging">After a crash: post-mortem debugging</a></li>
+  <li><a href="#breakpoints-in-your-editor" id="toc-breakpoints-in-your-editor" class="nav-link" data-scroll-target="#breakpoints-in-your-editor">Breakpoints in your editor</a></li>
+  <li><a href="#dont-leave-a-breakpoint-behind" id="toc-dont-leave-a-breakpoint-behind" class="nav-link" data-scroll-target="#dont-leave-a-breakpoint-behind">Don’t leave a <code>breakpoint()</code> behind</a></li>
+  </ul></li>
+  <li><a href="#logging-debugging-that-scales-beyond-one-run" id="toc-logging-debugging-that-scales-beyond-one-run" class="nav-link" data-scroll-target="#logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">6.9</span> Logging: debugging that scales beyond one run</a>
   <ul class="collapse">
   <li><a href="#what-logging-is-and-is-not" id="toc-what-logging-is-and-is-not" class="nav-link" data-scroll-target="#what-logging-is-and-is-not">What logging is (and is not)</a></li>
   <li><a href="#logging-levels" id="toc-logging-levels" class="nav-link" data-scroll-target="#logging-levels">Logging levels</a></li>
   <li><a href="#a-minimal-python-logging-setup" id="toc-a-minimal-python-logging-setup" class="nav-link" data-scroll-target="#a-minimal-python-logging-setup">A minimal Python logging setup</a></li>
   <li><a href="#avoid-logging-secrets" id="toc-avoid-logging-secrets" class="nav-link" data-scroll-target="#avoid-logging-secrets">Avoid logging secrets</a></li>
   </ul></li>
-  <li><a href="#testing-confirm-fixes-and-prevent-regressions" id="toc-testing-confirm-fixes-and-prevent-regressions" class="nav-link" data-scroll-target="#testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">6.9</span> Testing: confirm fixes and prevent regressions</a>
+  <li><a href="#testing-confirm-fixes-and-prevent-regressions" id="toc-testing-confirm-fixes-and-prevent-regressions" class="nav-link" data-scroll-target="#testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">6.10</span> Testing: confirm fixes and prevent regressions</a>
   <ul class="collapse">
   <li><a href="#what-a-test-is" id="toc-what-a-test-is" class="nav-link" data-scroll-target="#what-a-test-is">What a test is</a></li>
   <li><a href="#a-testing-ladder-for-novices" id="toc-a-testing-ladder-for-novices" class="nav-link" data-scroll-target="#a-testing-ladder-for-novices">A testing ladder for novices</a></li>
   <li><a href="#write-a-test-that-would-have-caught-the-bug" id="toc-write-a-test-that-would-have-caught-the-bug" class="nav-link" data-scroll-target="#write-a-test-that-would-have-caught-the-bug">Write a test that would have caught the bug</a></li>
   <li><a href="#golden-rule-tests-should-be-deterministic" id="toc-golden-rule-tests-should-be-deterministic" class="nav-link" data-scroll-target="#golden-rule-tests-should-be-deterministic">Golden rule: tests should be deterministic</a></li>
   </ul></li>
-  <li><a href="#debugging-in-common-environments" id="toc-debugging-in-common-environments" class="nav-link" data-scroll-target="#debugging-in-common-environments"><span class="header-section-number">6.10</span> Debugging in common environments</a>
+  <li><a href="#debugging-in-common-environments" id="toc-debugging-in-common-environments" class="nav-link" data-scroll-target="#debugging-in-common-environments"><span class="header-section-number">6.11</span> Debugging in common environments</a>
   <ul class="collapse">
   <li><a href="#notebook-specific-hazards" id="toc-notebook-specific-hazards" class="nav-link" data-scroll-target="#notebook-specific-hazards">Notebook-specific hazards</a></li>
   <li><a href="#command-line-and-os-level-bugs" id="toc-command-line-and-os-level-bugs" class="nav-link" data-scroll-target="#command-line-and-os-level-bugs">Command-line and OS-level bugs</a></li>
   </ul></li>
-  <li><a href="#a-practical-debugging-checklist" id="toc-a-practical-debugging-checklist" class="nav-link" data-scroll-target="#a-practical-debugging-checklist"><span class="header-section-number">6.11</span> A practical debugging checklist</a></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">6.12</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">6.13</span> Worked examples</a>
+  <li><a href="#a-practical-debugging-checklist" id="toc-a-practical-debugging-checklist" class="nav-link" data-scroll-target="#a-practical-debugging-checklist"><span class="header-section-number">6.12</span> A practical debugging checklist</a></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">6.13</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">6.14</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#file-not-found-that-is-really-wrong-folder" id="toc-file-not-found-that-is-really-wrong-folder" class="nav-link" data-scroll-target="#file-not-found-that-is-really-wrong-folder">“File not found” that is really “wrong folder”</a></li>
   <li><a href="#it-runs-but-the-results-are-wrong" id="toc-it-runs-but-the-results-are-wrong" class="nav-link" data-scroll-target="#it-runs-but-the-results-are-wrong">“It runs but the results are wrong”</a></li>
   </ul></li>
-  <li><a href="#using-ai-tools-in-debugging" id="toc-using-ai-tools-in-debugging" class="nav-link" data-scroll-target="#using-ai-tools-in-debugging"><span class="header-section-number">6.14</span> Using AI tools in debugging</a>
+  <li><a href="#using-ai-tools-in-debugging" id="toc-using-ai-tools-in-debugging" class="nav-link" data-scroll-target="#using-ai-tools-in-debugging"><span class="header-section-number">6.15</span> Using AI tools in debugging</a>
   <ul class="collapse">
   <li><a href="#good-uses-of-ai" id="toc-good-uses-of-ai" class="nav-link" data-scroll-target="#good-uses-of-ai">Good uses of AI</a></li>
   <li><a href="#guardrails" id="toc-guardrails" class="nav-link" data-scroll-target="#guardrails">Guardrails</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">6.15</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">6.16</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-debugging-journal-entry" id="toc-template-a-debugging-journal-entry" class="nav-link" data-scroll-target="#template-a-debugging-journal-entry">Template A: debugging journal entry</a></li>
   <li><a href="#template-b-minimal-test-checklist" id="toc-template-b-minimal-test-checklist" class="nav-link" data-scroll-target="#template-b-minimal-test-checklist">Template B: minimal test checklist</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.16</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">6.17</span> One-page checklist</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.17</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">6.18</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/debugging.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -800,6 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Decompose a failing program into smaller units and test them independently.</p></li>
 <li><p>Read error messages and stack traces to locate the relevant failure point.</p></li>
 <li><p>Use print statements and the <a href="https://docs.python.org/3/library/logging.html"><code>logging</code></a> module to collect useful diagnostic information.</p></li>
+<li><p>Pause a running program with <code>breakpoint()</code>, a post-mortem session, or an editor breakpoint, and inspect its state with a handful of debugger commands.</p></li>
 <li><p>Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.</p></li>
 <li><p>Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.</p></li>
 <li><p>Use AI tools to assist debugging without outsourcing verification or creating new risks.</p></li>
@@ -960,7 +969,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code>print(df.shape)</code></p></li>
 <li><p><code>print(df.dtypes)</code></p></li>
 <li><p><code>print(df.head(3))</code></p></li>
-<li><p><code>print(df[’col’].isna().mean())</code></p></li>
+<li><p><code>print(df['col'].isna().mean())</code></p></li>
 </ul>
 </section>
 <section id="assertions-as-executable-assumptions" class="level3">
@@ -974,8 +983,157 @@ assert df['age'].min() &gt;= 0, "Negative age values present"</code></pre>
 <p>Use assertions to encode assumptions you would otherwise hold in your head.</p>
 </section>
 </section>
-<section id="logging-debugging-that-scales-beyond-one-run" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">6.8</span> Logging: debugging that scales beyond one run</h2>
+<section id="interactive-debuggers-pause-the-program-and-look-around" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="interactive-debuggers-pause-the-program-and-look-around"><span class="header-section-number">6.8</span> Interactive debuggers: pause the program and look around</h2>
+<p>A print statement answers one question per run. You decide in advance what to look at, run the program, and read the output; if the answer raises a new question, you edit and run again. An <strong>interactive debugger</strong> turns that around. It pauses the program at a line you choose and gives you a prompt inside the running program, where you can ask as many questions as you like before letting it go on. It gathers the same evidence as printing, with a faster loop: one run, many observations.</p>
+<p>You don’t need a debugger for every bug. Reach for one when print debugging starts to feel slow: the value you need is deep inside a loop, you need to see several variables at the same moment, or every rerun takes minutes because the data is large.</p>
+<section id="breakpoint-stop-here" class="level3">
+<h3 class="anchored" data-anchor-id="breakpoint-stop-here"><code>breakpoint()</code>: stop here</h3>
+<p>Python comes with a debugger, <a href="https://docs.python.org/3/library/pdb.html"><code>pdb</code></a>, and a built-in function that starts it. Put <code>breakpoint()</code> on a line of its own and run the script as usual. When Python reaches that line, it stops before running the next one and hands you the debugger’s prompt. A line where a program stops like this is a <a href="../chapters/appendix-glossary.html#term-breakpoint">breakpoint</a>.</p>
+<p>Here is a small script with a silent bug. The ages it can read are 35, 42, and 29, which average 35.3, but it prints <code>26.5</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_age(values):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">breakpoint</span>()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> v.isdigit():</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            total <span class="op">+=</span> <span class="bu">int</span>(v)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">/</span> count</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_age(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run it, and it stops at the first pass through the loop. Each time it stops, print the three variables that matter with <code>p</code>, then continue to the next stop with <code>c</code>:</p>
+<pre class="text"><code>$ python ages.py
+&gt; .../project/ages.py(9)mean_age()
+-&gt; if v.isdigit():
+(Pdb) p v, total, count
+('35', 0, 0)
+(Pdb) c
+&gt; .../project/ages.py(9)mean_age()
+-&gt; if v.isdigit():
+(Pdb) p v, total, count
+('42', 35, 1)
+(Pdb) c
+&gt; .../project/ages.py(9)mean_age()
+-&gt; if v.isdigit():
+(Pdb) p v, total, count
+('unknown', 77, 2)
+(Pdb) n
+&gt; .../project/ages.py(11)mean_age()
+-&gt; count += 1</code></pre>
+<p>(The path is shortened; yours shows the full path to the file.) Read the two lines above each prompt: the <code>&gt;</code> line says which file, line number, and function you are in, and the <code>-&gt;</code> line is the line that runs <em>next</em>, which hasn’t run yet. On the third stop, <code>v</code> is <code>'unknown'</code>. One <code>n</code> (next) runs the <code>if</code>, which skips <code>'unknown'</code> as it should, and the next line to run is <code>count += 1</code>. That is the bug: the script skips the value but counts it anyway, so it divides 106 by 4 instead of 3. The fix is to indent <code>count += 1</code> into the <code>if</code> block. Type <code>q</code> to quit (Python may print a <code>BdbQuit</code> traceback, which is only the debugger stopping), then fix the line and delete the <code>breakpoint()</code>.</p>
+<p>That session is the loop from the start of this chapter in miniature: a symptom (26.5), a hypothesis (something is counted wrong), and evidence gathered one step at a time until the hypothesis is confirmed.</p>
+</section>
+<section id="the-commands-youll-use" class="level3">
+<h3 class="anchored" data-anchor-id="the-commands-youll-use">The commands you’ll use</h3>
+<p>At the <code>(Pdb)</code> prompt you can type any Python expression, such as <code>len(values)</code> or <code>df["age"].unique()</code>, and see its value. Beyond that, a handful of commands cover most sessions (<a href="#tbl-pdb-commands" class="quarto-xref">Table&nbsp;<span>6.1</span></a>):</p>
+<div id="tbl-pdb-commands" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pdb-commands-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: The <code>pdb</code> commands that cover most debugging sessions.
+</figcaption>
+<div aria-describedby="tbl-pdb-commands-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>p expr</code></td>
+<td>Print the value of an expression.</td>
+</tr>
+<tr class="even">
+<td><code>pp expr</code></td>
+<td>Pretty-print it, which helps with nested lists and dictionaries.</td>
+</tr>
+<tr class="odd">
+<td><code>n</code> (next)</td>
+<td>Run the current line and stop at the next line in this function.</td>
+</tr>
+<tr class="even">
+<td><code>s</code> (step)</td>
+<td>Run the current line, and stop inside any function it calls.</td>
+</tr>
+<tr class="odd">
+<td><code>c</code> (continue)</td>
+<td>Run until the next breakpoint, or until the program ends.</td>
+</tr>
+<tr class="even">
+<td><code>l</code> / <code>ll</code></td>
+<td>List the code around the current line / the whole current function.</td>
+</tr>
+<tr class="odd">
+<td><code>w</code> (where)</td>
+<td>Show the call stack: which calls led to this line.</td>
+</tr>
+<tr class="even">
+<td><code>u</code> / <code>d</code></td>
+<td>Move up to the calling function (and back down) to look at its variables.</td>
+</tr>
+<tr class="odd">
+<td><code>h</code></td>
+<td>Help, with a list of every command.</td>
+</tr>
+<tr class="even">
+<td><code>q</code></td>
+<td>Quit the debugger, which also stops the program.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>One trap: if a variable has the same name as a command (<code>n</code>, <code>c</code>, <code>l</code>, <code>p</code>), typing its name runs the command instead of showing the variable. Type <code>p n</code> to see a variable called <code>n</code>.</p>
+</section>
+<section id="after-a-crash-post-mortem-debugging" class="level3">
+<h3 class="anchored" data-anchor-id="after-a-crash-post-mortem-debugging">After a crash: post-mortem debugging</h3>
+<p>When a program crashes, the traceback tells you where (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). <strong>Post-mortem debugging</strong> lets you look around at that exact moment, with every variable still in place. Suppose an earlier version of the script, <code>crash.py</code>, converted every value with <code>total += int(v)</code> and no check. Run it under <code>pdb</code> with <code>python -m pdb</code>. It stops before the first line; type <code>c</code> to run the program. When the program raises an exception nothing catches, <code>pdb</code> prints the traceback and opens a prompt at the failing line:</p>
+<pre class="text"><code>$ python -m pdb crash.py
+&gt; .../project/crash.py(1)&lt;module&gt;()
+-&gt; rows = ["35", "42", "unknown", "29"]
+(Pdb) c
+Traceback (most recent call last):
+  ...
+ValueError: invalid literal for int() with base 10: 'unknown'
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+&gt; .../project/crash.py(7)mean_age()
+-&gt; total += int(v)
+(Pdb) p v
+'unknown'</code></pre>
+<p>The traceback alone says that some value couldn’t become an integer; one <code>p v</code> says which. Type <code>q</code> to leave. (As the message warns, <code>c</code> starts the program again from the top.)</p>
+<p>In a Jupyter notebook you don’t need to rerun anything. After a cell raises an exception, run <code>%debug</code> in a new cell, and you get the same prompt at the line that failed. <code>%pdb on</code> opens it automatically after every exception until you turn it off with <code>%pdb off</code>. JupyterLab also has a visual debugger, the bug icon in the notebook’s toolbar, which works like the editor debuggers below. See <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> for notebooks in general.</p>
+</section>
+<section id="breakpoints-in-your-editor" class="level3">
+<h3 class="anchored" data-anchor-id="breakpoints-in-your-editor">Breakpoints in your editor</h3>
+<p>Editors put the same debugger behind buttons: click in the gutter beside a line number to set a breakpoint, press <code>F5</code> to run under the debugger, and read variables and the call stack in side panels. <a href="text-editors.html" class="quarto-xref"><span>Chapter 12</span></a> walks through VS Code’s. Two editor features are worth learning early, because they are clumsy with <code>pdb</code> alone:</p>
+<ul>
+<li><strong>Conditional breakpoints.</strong> In VS Code, right-click the gutter, choose <em>Add Conditional Breakpoint</em>, and type an expression such as <code>v == "unknown"</code> or <code>i == 4817</code>. The program stops only when the expression is true: this is how you stop at row 4,817 of 50,000 without typing <code>c</code> 4,816 times. In plain Python, the same trick is <code>if i == 4817: breakpoint()</code>.</li>
+<li><strong>Logpoints.</strong> <em>Add Logpoint</em> prints a message each time a line runs, without stopping and without changing the file. It is a print statement you can’t forget to delete.</li>
+</ul>
+</section>
+<section id="dont-leave-a-breakpoint-behind" class="level3">
+<h3 class="anchored" data-anchor-id="dont-leave-a-breakpoint-behind">Don’t leave a <code>breakpoint()</code> behind</h3>
+<p>A forgotten <code>breakpoint()</code> stops the program the next time anyone runs it. At a terminal, it waits at a prompt; where nobody can type, as in a scheduled job or a CI run (see <a href="automation.html" class="quarto-xref"><span>Chapter 33</span></a>), it crashes with <code>BdbQuit</code>. Two safety nets:</p>
+<ul>
+<li><strong>Let the linter find them.</strong> Ruff’s rule <code>T100</code> flags every <code>breakpoint()</code> and <code>import pdb</code>. Run <code>ruff check --select T100 .</code> before you commit, or add <code>"T10"</code> to the <code>select</code> list in your <code>pyproject.toml</code> so every <code>ruff check</code> includes it (see <a href="linting.html" class="quarto-xref"><span>Chapter 19</span></a>).</li>
+<li><strong>Switch them off for one run.</strong> <code>PYTHONBREAKPOINT=0 python ages.py</code> runs the script with every <code>breakpoint()</code> ignored.</li>
+</ul>
+</section>
+</section>
+<section id="logging-debugging-that-scales-beyond-one-run" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="logging-debugging-that-scales-beyond-one-run"><span class="header-section-number">6.9</span> Logging: debugging that scales beyond one run</h2>
 <p>Print statements are fine during exploration, but logging is better when:</p>
 <ul>
 <li><p>your code runs for a long time,</p></li>
@@ -1028,8 +1186,8 @@ logger.info("Starting pipeline")</code></pre>
 <p>If you need to confirm that a token exists, log only that it is set, not its value.</p>
 </section>
 </section>
-<section id="testing-confirm-fixes-and-prevent-regressions" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">6.9</span> Testing: confirm fixes and prevent regressions</h2>
+<section id="testing-confirm-fixes-and-prevent-regressions" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="testing-confirm-fixes-and-prevent-regressions"><span class="header-section-number">6.10</span> Testing: confirm fixes and prevent regressions</h2>
 <p>Testing is the final stage of debugging. Without tests, a bug can return quietly.</p>
 <section id="what-a-test-is" class="level3">
 <h3 class="anchored" data-anchor-id="what-a-test-is">What a test is</h3>
@@ -1062,18 +1220,18 @@ logger.info("Starting pipeline")</code></pre>
 <p>A test should give the same result every run. If randomness is involved, set a seed or test statistical properties rather than exact values.</p>
 </section>
 </section>
-<section id="debugging-in-common-environments" class="level2" data-number="6.10">
-<h2 data-number="6.10" class="anchored" data-anchor-id="debugging-in-common-environments"><span class="header-section-number">6.10</span> Debugging in common environments</h2>
+<section id="debugging-in-common-environments" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="debugging-in-common-environments"><span class="header-section-number">6.11</span> Debugging in common environments</h2>
 <p>Different environments create different failure modes.</p>
 <section id="notebook-specific-hazards" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-specific-hazards">Notebook-specific hazards</h3>
 <p>Notebooks are wonderful for exploration and treacherous for debugging, because they invite <em>hidden state</em>. The four classic traps are running cells out of order (so the variable on screen is not the variable in memory), redefining a function in a later cell and forgetting that the earlier cells still hold the old version, keeping a stale DataFrame around after you thought you had replaced it, and installing a package into one environment while the notebook kernel is running in another.</p>
 <p>The single most reliable countermeasure is <strong>Kernel → Restart and Run All</strong>. If your code does not work after a clean restart, it does not work, and any “success” you saw before was an illusion produced by leftover state. Beyond that, give your cells single, well-defined responsibilities so it is harder to introduce side effects accidentally, and when something is mysterious, print <code>sys.executable</code>, <code>pandas.__version__</code>, and the relevant variable’s <code>type(...)</code> and <code>id(...)</code> to confirm that the world is what you think it is.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># When confused, dump the basics</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pandas <span class="im">as</span> pd</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pandas:"</span>, pd.__version__)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df type:"</span>, <span class="bu">type</span>(df), <span class="st">"df id:"</span>, <span class="bu">id</span>(df), <span class="st">"df shape:"</span>, df.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># When confused, dump the basics</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pandas <span class="im">as</span> pd</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pandas:"</span>, pd.__version__)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df type:"</span>, <span class="bu">type</span>(df), <span class="st">"df id:"</span>, <span class="bu">id</span>(df), <span class="st">"df shape:"</span>, df.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="command-line-and-os-level-bugs" class="level3">
 <h3 class="anchored" data-anchor-id="command-line-and-os-level-bugs">Command-line and OS-level bugs</h3>
@@ -1081,8 +1239,8 @@ logger.info("Starting pipeline")</code></pre>
 <p>The diagnostic move that catches most of these in one go is to compare environments: if a command works in one terminal but not another, the environment is the suspect, not the code. Run the same command in both and compare the output of <code>pwd</code>, <code>which python</code>, <code>echo $PATH</code>, and <code>python --version</code>. The first place these diverge is the place to investigate.</p>
 </section>
 </section>
-<section id="a-practical-debugging-checklist" class="level2" data-number="6.11">
-<h2 data-number="6.11" class="anchored" data-anchor-id="a-practical-debugging-checklist"><span class="header-section-number">6.11</span> A practical debugging checklist</h2>
+<section id="a-practical-debugging-checklist" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="a-practical-debugging-checklist"><span class="header-section-number">6.12</span> A practical debugging checklist</h2>
 <p>When you feel stuck, use this checklist as a reset:</p>
 <ol type="1">
 <li><p>What exactly is the symptom (expected vs actual)?</p></li>
@@ -1096,38 +1254,38 @@ logger.info("Starting pipeline")</code></pre>
 </ol>
 <p>Print it and keep it near your desk.</p>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="6.12">
-<h2 data-number="6.12" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">6.12</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">6.13</span> Stakes and politics</h2>
 <p>Debugging treats a bug as an objective discrepancy between expected and observed behavior, and most of the time it is. The political dimension shows up at the edges, in the question of <em>which discrepancies count as bugs worth fixing</em>. “Works on my machine” is a famous developer joke, but it has a serious version — bug reports that fail to reproduce in the maintainer’s environment routinely get closed as “cannot reproduce,” and the reporters who see the bug most often are the ones whose environments differ most from the developers’. Users on right-to-left scripts, on assistive technology, on low-bandwidth connections, on older hardware, and on non-English locales all encounter classes of bug that the dominant developer profile rarely sees, and those classes get fixed last (if at all).</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you cannot reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug is not real.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="6.13">
-<h2 data-number="6.13" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">6.13</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">6.14</span> Worked examples</h2>
 <p>The goal of these worked examples is to show the loop in action.</p>
 <section id="file-not-found-that-is-really-wrong-folder" class="level3">
 <h3 class="anchored" data-anchor-id="file-not-found-that-is-really-wrong-folder">“File not found” that is really “wrong folder”</h3>
 <p>You run a script and Python tells you <code>FileNotFoundError: data/input.csv</code>. Rather than editing the path at random, you stop and gather evidence about where the script thinks it is. Two commands settle it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"data dir:"</span>, os.listdir(<span class="st">"data"</span>) <span class="cf">if</span> os.path.isdir(<span class="st">"data"</span>) <span class="cf">else</span> <span class="st">"missing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"data dir:"</span>, os.listdir(<span class="st">"data"</span>) <span class="cf">if</span> os.path.isdir(<span class="st">"data"</span>) <span class="cf">else</span> <span class="st">"missing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>cwd</code> is the project root, the path is fine and the file is genuinely missing. If <code>cwd</code> is some other directory, the path is <em>relative</em> to that other directory and the bug is not in your code at all — you just ran the script from the wrong place. The hypothesis is: the script uses a relative path and you are running it from the wrong directory. The experiment is: run the script from the project root, or rewrite the path so it is computed from <code>__file__</code> and is independent of the working directory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path   <span class="co"># https://docs.python.org/3/library/pathlib.html</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>HERE <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>DATA <span class="op">=</span> HERE <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"input.csv"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> DATA.exists(), <span class="ss">f"Missing </span><span class="sc">{</span>DATA<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path   <span class="co"># https://docs.python.org/3/library/pathlib.html</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>HERE <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>DATA <span class="op">=</span> HERE <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"input.csv"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> DATA.exists(), <span class="ss">f"Missing </span><span class="sc">{</span>DATA<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That assertion is the verification step: it turns the silent assumption (“the file is here”) into a loud check that fails immediately if the assumption ever breaks again. The lesson generalizes: many “code” failures are really about context, not logic. Always confirm where you are before you change what you do.</p>
 </section>
 <section id="it-runs-but-the-results-are-wrong" class="level3">
 <h3 class="anchored" data-anchor-id="it-runs-but-the-results-are-wrong">“It runs but the results are wrong”</h3>
 <p>Silent wrongness is much harder than a crash. Suppose you compute the average age in your dataset and get back <code>0.0</code>, which is obviously wrong but does not raise any exception. The investigation is decomposition: break the pipeline into stages — load the ages, convert them to numeric, compute the average — and inspect the intermediate result after each stage:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].head())              <span class="co"># what do the values actually look like?</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].dtype)               <span class="co"># is the column numeric or object?</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].isna().mean())       <span class="co"># how many are NaN?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].head())              <span class="co"># what do the values actually look like?</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].dtype)               <span class="co"># is the column numeric or object?</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].isna().mean())       <span class="co"># how many are NaN?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In this case the column is <code>object</code>, the head shows <code>'35'</code>, <code>'42'</code>, <code>'unknown'</code>, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the <code>'unknown'</code> sentinel, so <code>pd.to_numeric</code> produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (<code>na_values=['unknown']</code>) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.</p>
 </section>
 </section>
-<section id="using-ai-tools-in-debugging" class="level2" data-number="6.14">
-<h2 data-number="6.14" class="anchored" data-anchor-id="using-ai-tools-in-debugging"><span class="header-section-number">6.14</span> Using AI tools in debugging</h2>
+<section id="using-ai-tools-in-debugging" class="level2" data-number="6.15">
+<h2 data-number="6.15" class="anchored" data-anchor-id="using-ai-tools-in-debugging"><span class="header-section-number">6.15</span> Using AI tools in debugging</h2>
 <p>AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.</p>
 <section id="good-uses-of-ai" class="level3">
 <h3 class="anchored" data-anchor-id="good-uses-of-ai">Good uses of AI</h3>
@@ -1149,8 +1307,8 @@ logger.info("Starting pipeline")</code></pre>
 <p>A practical motto: AI can suggest hypotheses; you supply the evidence.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="6.15">
-<h2 data-number="6.15" class="anchored" data-anchor-id="templates"><span class="header-section-number">6.15</span> Templates</h2>
+<section id="templates" class="level2" data-number="6.16">
+<h2 data-number="6.16" class="anchored" data-anchor-id="templates"><span class="header-section-number">6.16</span> Templates</h2>
 <section id="template-a-debugging-journal-entry" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-debugging-journal-entry">Template A: debugging journal entry</h3>
 <p>When debugging takes more than a few minutes, keep a short journal:</p>
@@ -1174,8 +1332,8 @@ Test added:</code></pre>
 </ul>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="6.16">
-<h2 data-number="6.16" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.16</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="6.17">
+<h2 data-number="6.17" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.17</span> Exercises</h2>
 <ol type="1">
 <li><p>Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).</p></li>
 <li><p>Create an MRE that reproduces the error in fewer than 20 lines.</p></li>
@@ -1183,16 +1341,18 @@ Test added:</code></pre>
 <li><p>Convert three print statements into logging calls with levels.</p></li>
 <li><p>Fix a bug and then write a unit test that would have caught it.</p></li>
 <li><p>In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.</p></li>
+<li><p>Put <code>breakpoint()</code> inside a loop in one of your own scripts, and use <code>p</code>, <code>n</code>, and <code>c</code> to watch one variable change over three passes through the loop. Then delete the breakpoint and run <code>ruff check --select T100 .</code> to confirm none are left.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="6.17">
-<h2 data-number="6.17" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">6.17</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="6.18">
+<h2 data-number="6.18" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">6.18</span> One-page checklist</h2>
 <ul>
 <li><p>I can state the symptom clearly (expected vs actual).</p></li>
 <li><p>I can reproduce the bug and capture the evidence.</p></li>
 <li><p>I can localize the failure and reduce scope.</p></li>
 <li><p>I form hypotheses and test them with one-change experiments.</p></li>
 <li><p>I use prints/assertions/logs to collect useful signals.</p></li>
+<li><p>When rerunning with prints gets slow, I pause the program (<code>breakpoint()</code>, <code>python -m pdb</code>, <code>%debug</code>) and look around, and I remove every breakpoint before I commit.</p></li>
 <li><p>I verify the fix and add a test to prevent regression.</p></li>
 <li><p>In notebooks, I manage hidden state (restart + run all).</p></li>
 <li><p>If I use AI tools, I treat outputs as drafts and verify with tests.</p></li>

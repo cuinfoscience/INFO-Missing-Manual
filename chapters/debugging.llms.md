@@ -30,11 +30,13 @@ By the end of this chapter, you should be able to:
 
 5.  Use print statements and the [`logging`](https://docs.python.org/3/library/logging.html) module to collect useful diagnostic information.
 
-6.  Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.
+6.  Pause a running program with `breakpoint()`, a post-mortem session, or an editor breakpoint, and inspect its state with a handful of debugger commands.
 
-7.  Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.
+7.  Write small tests (including “smoke tests”) to confirm that your fix works and stays fixed.
 
-8.  Use AI tools to assist debugging without outsourcing verification or creating new risks.
+8.  Avoid common debugging traps such as random edits, confirmation bias, and stale state in notebooks.
+
+9.  Use AI tools to assist debugging without outsourcing verification or creating new risks.
 
 ## Running theme: change one thing, observe one thing
 
@@ -233,7 +235,7 @@ Examples of useful prints in data work:
 
 - `print(df.head(3))`
 
-- `print(df[’col’].isna().mean())`
+- `print(df['col'].isna().mean())`
 
 ### Assertions as executable assumptions
 
@@ -249,7 +251,123 @@ Examples:
 
 Use assertions to encode assumptions you would otherwise hold in your head.
 
-## 6.8 Logging: debugging that scales beyond one run
+## 6.8 Interactive debuggers: pause the program and look around
+
+A print statement answers one question per run. You decide in advance what to look at, run the program, and read the output; if the answer raises a new question, you edit and run again. An **interactive debugger** turns that around. It pauses the program at a line you choose and gives you a prompt inside the running program, where you can ask as many questions as you like before letting it go on. It gathers the same evidence as printing, with a faster loop: one run, many observations.
+
+You don’t need a debugger for every bug. Reach for one when print debugging starts to feel slow: the value you need is deep inside a loop, you need to see several variables at the same moment, or every rerun takes minutes because the data is large.
+
+### `breakpoint()`: stop here
+
+Python comes with a debugger, [`pdb`](https://docs.python.org/3/library/pdb.html), and a built-in function that starts it. Put `breakpoint()` on a line of its own and run the script as usual. When Python reaches that line, it stops before running the next one and hands you the debugger’s prompt. A line where a program stops like this is a [breakpoint](../chapters/appendix-glossary.llms.md#term-breakpoint).
+
+Here is a small script with a silent bug. The ages it can read are 35, 42, and 29, which average 35.3, but it prints `26.5`:
+
+``` python
+rows = ["35", "42", "unknown", "29"]
+
+
+def mean_age(values):
+    total = 0
+    count = 0
+    for v in values:
+        breakpoint()
+        if v.isdigit():
+            total += int(v)
+        count += 1
+    return total / count
+
+
+print(mean_age(rows))
+```
+
+Run it, and it stops at the first pass through the loop. Each time it stops, print the three variables that matter with `p`, then continue to the next stop with `c`:
+
+``` text
+$ python ages.py
+> .../project/ages.py(9)mean_age()
+-> if v.isdigit():
+(Pdb) p v, total, count
+('35', 0, 0)
+(Pdb) c
+> .../project/ages.py(9)mean_age()
+-> if v.isdigit():
+(Pdb) p v, total, count
+('42', 35, 1)
+(Pdb) c
+> .../project/ages.py(9)mean_age()
+-> if v.isdigit():
+(Pdb) p v, total, count
+('unknown', 77, 2)
+(Pdb) n
+> .../project/ages.py(11)mean_age()
+-> count += 1
+```
+
+(The path is shortened; yours shows the full path to the file.) Read the two lines above each prompt: the `>` line says which file, line number, and function you are in, and the `->` line is the line that runs *next*, which hasn’t run yet. On the third stop, `v` is `'unknown'`. One `n` (next) runs the `if`, which skips `'unknown'` as it should, and the next line to run is `count += 1`. That is the bug: the script skips the value but counts it anyway, so it divides 106 by 4 instead of 3. The fix is to indent `count += 1` into the `if` block. Type `q` to quit (Python may print a `BdbQuit` traceback, which is only the debugger stopping), then fix the line and delete the `breakpoint()`.
+
+That session is the loop from the start of this chapter in miniature: a symptom (26.5), a hypothesis (something is counted wrong), and evidence gathered one step at a time until the hypothesis is confirmed.
+
+### The commands you’ll use
+
+At the `(Pdb)` prompt you can type any Python expression, such as `len(values)` or `df["age"].unique()`, and see its value. Beyond that, a handful of commands cover most sessions ([Table tbl-pdb-commands](#tbl-pdb-commands)):
+
+| Command | What it does |
+|----|----|
+| `p expr` | Print the value of an expression. |
+| `pp expr` | Pretty-print it, which helps with nested lists and dictionaries. |
+| `n` (next) | Run the current line and stop at the next line in this function. |
+| `s` (step) | Run the current line, and stop inside any function it calls. |
+| `c` (continue) | Run until the next breakpoint, or until the program ends. |
+| `l` / `ll` | List the code around the current line / the whole current function. |
+| `w` (where) | Show the call stack: which calls led to this line. |
+| `u` / `d` | Move up to the calling function (and back down) to look at its variables. |
+| `h` | Help, with a list of every command. |
+| `q` | Quit the debugger, which also stops the program. |
+
+Table 6.1: The `pdb` commands that cover most debugging sessions.
+
+One trap: if a variable has the same name as a command (`n`, `c`, `l`, `p`), typing its name runs the command instead of showing the variable. Type `p n` to see a variable called `n`.
+
+### After a crash: post-mortem debugging
+
+When a program crashes, the traceback tells you where (see [sec-tracebacks](#sec-tracebacks)). **Post-mortem debugging** lets you look around at that exact moment, with every variable still in place. Suppose an earlier version of the script, `crash.py`, converted every value with `total += int(v)` and no check. Run it under `pdb` with `python -m pdb`. It stops before the first line; type `c` to run the program. When the program raises an exception nothing catches, `pdb` prints the traceback and opens a prompt at the failing line:
+
+``` text
+$ python -m pdb crash.py
+> .../project/crash.py(1)<module>()
+-> rows = ["35", "42", "unknown", "29"]
+(Pdb) c
+Traceback (most recent call last):
+  ...
+ValueError: invalid literal for int() with base 10: 'unknown'
+Uncaught exception. Entering post mortem debugging
+Running 'cont' or 'step' will restart the program
+> .../project/crash.py(7)mean_age()
+-> total += int(v)
+(Pdb) p v
+'unknown'
+```
+
+The traceback alone says that some value couldn’t become an integer; one `p v` says which. Type `q` to leave. (As the message warns, `c` starts the program again from the top.)
+
+In a Jupyter notebook you don’t need to rerun anything. After a cell raises an exception, run `%debug` in a new cell, and you get the same prompt at the line that failed. `%pdb on` opens it automatically after every exception until you turn it off with `%pdb off`. JupyterLab also has a visual debugger, the bug icon in the notebook’s toolbar, which works like the editor debuggers below. See [sec-jupyter](#sec-jupyter) for notebooks in general.
+
+### Breakpoints in your editor
+
+Editors put the same debugger behind buttons: click in the gutter beside a line number to set a breakpoint, press `F5` to run under the debugger, and read variables and the call stack in side panels. [sec-text-editors](#sec-text-editors) walks through VS Code’s. Two editor features are worth learning early, because they are clumsy with `pdb` alone:
+
+- **Conditional breakpoints.** In VS Code, right-click the gutter, choose *Add Conditional Breakpoint*, and type an expression such as `v == "unknown"` or `i == 4817`. The program stops only when the expression is true: this is how you stop at row 4,817 of 50,000 without typing `c` 4,816 times. In plain Python, the same trick is `if i == 4817: breakpoint()`.
+- **Logpoints.** *Add Logpoint* prints a message each time a line runs, without stopping and without changing the file. It is a print statement you can’t forget to delete.
+
+### Don’t leave a `breakpoint()` behind
+
+A forgotten `breakpoint()` stops the program the next time anyone runs it. At a terminal, it waits at a prompt; where nobody can type, as in a scheduled job or a CI run (see [sec-automation](#sec-automation)), it crashes with `BdbQuit`. Two safety nets:
+
+- **Let the linter find them.** Ruff’s rule `T100` flags every `breakpoint()` and `import pdb`. Run `ruff check --select T100 .` before you commit, or add `"T10"` to the `select` list in your `pyproject.toml` so every `ruff check` includes it (see [sec-linting](#sec-linting)).
+- **Switch them off for one run.** `PYTHONBREAKPOINT=0 python ages.py` runs the script with every `breakpoint()` ignored.
+
+## 6.9 Logging: debugging that scales beyond one run
 
 Print statements are fine during exploration, but logging is better when:
 
@@ -314,7 +432,7 @@ Never log:
 
 If you need to confirm that a token exists, log only that it is set, not its value.
 
-## 6.9 Testing: confirm fixes and prevent regressions
+## 6.10 Testing: confirm fixes and prevent regressions
 
 Testing is the final stage of debugging. Without tests, a bug can return quietly.
 
@@ -354,7 +472,7 @@ Examples:
 
 A test should give the same result every run. If randomness is involved, set a seed or test statistical properties rather than exact values.
 
-## 6.10 Debugging in common environments
+## 6.11 Debugging in common environments
 
 Different environments create different failure modes.
 
@@ -378,7 +496,7 @@ Not every bug lives in the code. A surprising number of “code” bugs are actu
 
 The diagnostic move that catches most of these in one go is to compare environments: if a command works in one terminal but not another, the environment is the suspect, not the code. Run the same command in both and compare the output of `pwd`, `which python`, `echo $PATH`, and `python --version`. The first place these diverge is the place to investigate.
 
-## 6.11 A practical debugging checklist
+## 6.12 A practical debugging checklist
 
 When you feel stuck, use this checklist as a reset:
 
@@ -400,13 +518,13 @@ When you feel stuck, use this checklist as a reset:
 
 Print it and keep it near your desk.
 
-## 6.12 Stakes and politics
+## 6.13 Stakes and politics
 
 Debugging treats a bug as an objective discrepancy between expected and observed behavior, and most of the time it is. The political dimension shows up at the edges, in the question of *which discrepancies count as bugs worth fixing*. “Works on my machine” is a famous developer joke, but it has a serious version — bug reports that fail to reproduce in the maintainer’s environment routinely get closed as “cannot reproduce,” and the reporters who see the bug most often are the ones whose environments differ most from the developers’. Users on right-to-left scripts, on assistive technology, on low-bandwidth connections, on older hardware, and on non-English locales all encounter classes of bug that the dominant developer profile rarely sees, and those classes get fixed last (if at all).
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you cannot reproduce someone else’s bug, ask whose environment yours quietly assumes before deciding the bug is not real.
 
-## 6.13 Worked examples
+## 6.14 Worked examples
 
 The goal of these worked examples is to show the loop in action.
 
@@ -443,7 +561,7 @@ print(df["age"].isna().mean())       # how many are NaN?
 
 In this case the column is `object`, the head shows `'35'`, `'42'`, `'unknown'`, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the `'unknown'` sentinel, so `pd.to_numeric` produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (`na_values=['unknown']`) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.
 
-## 6.14 Using AI tools in debugging
+## 6.15 Using AI tools in debugging
 
 AI tools can help you debug, but they can also increase confusion if you treat them as authoritative.
 
@@ -469,7 +587,7 @@ AI tools can help you debug, but they can also increase confusion if you treat t
 
 A practical motto: AI can suggest hypotheses; you supply the evidence.
 
-## 6.15 Templates
+## 6.16 Templates
 
 ### Template A: debugging journal entry
 
@@ -496,7 +614,7 @@ When debugging takes more than a few minutes, keep a short journal:
 
 - Test fails on the buggy version.
 
-## 6.16 Exercises
+## 6.17 Exercises
 
 1.  Take a recent error you encountered. Write a one-sentence symptom statement (X, expect Y, observe Z).
 
@@ -510,7 +628,9 @@ When debugging takes more than a few minutes, keep a short journal:
 
 6.  In a notebook, intentionally create a hidden-state bug (run cells out of order), then fix it by restarting and re-running from top.
 
-## 6.17 One-page checklist
+7.  Put `breakpoint()` inside a loop in one of your own scripts, and use `p`, `n`, and `c` to watch one variable change over three passes through the loop. Then delete the breakpoint and run `ruff check --select T100 .` to confirm none are left.
+
+## 6.18 One-page checklist
 
 - I can state the symptom clearly (expected vs actual).
 
@@ -521,6 +641,8 @@ When debugging takes more than a few minutes, keep a short journal:
 - I form hypotheses and test them with one-change experiments.
 
 - I use prints/assertions/logs to collect useful signals.
+
+- When rerunning with prints gets slow, I pause the program (`breakpoint()`, `python -m pdb`, `%debug`) and look around, and I remove every breakpoint before I commit.
 
 - I verify the fix and add a test to prevent regression.
 
