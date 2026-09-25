@@ -4,6 +4,26 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-25 · A welcoming narrative voice, book-wide
+
+**Decision** (the maintainer's request and answers, after the roadmap's topics were done):
+
+- **Every chapter gets a consistent voice:** informal, approachable, and welcoming to newcomers; honest about common confusion and frustration; narrative and persuasive rather than a list of facts; never academic or formal; and still authoritative. Link generously: official tutorials and documentation for tools, Wikipedia for concepts.
+- **Full rewrites are in scope,** voice, style, and structure, within the canonical chapter skeleton. Teaching sections become narrative; checklists, quick references, exercises, and templates stay as lists, because readers scan them.
+- **Rollout:** a pilot chapter first (`tabular-data`), then one pull request per part of the book.
+
+**Why.** The maintainer's words, 2026-09-25. Measured before the pilot: about two outbound links per 1,000 words, 13 Wikipedia links in the whole book (10 in one chapter), and 30–55% of non-code lines in most chapters were list items.
+
+**Where.** `AGENTS.md` ("Tone and Voice"), [`roadmap.md`](roadmap.md) (the rollout, part by part).
+
+## 2026-09-25 · The same column widths on every chapter
+
+**Decision:** the body column, the table of contents, and the navigation are the same width on every chapter page. Column widths are not to be changed; images may be resized to fit.
+
+**Why.** The maintainer noticed the widths changing from chapter to chapter. Quarto narrows the body only on pages with margin content, so 20 of 41 pages were 100 px wider in the body.
+
+**Where.** `styles/layout.css`, `AGENTS.md` ("Page layout"), `tools/layout-audit/audit.py widths`.
+
 ## 2026-09-25 · The review-thread screenshots: written by Claude Code, names blurred
 
 **Decision** (the maintainer's answers to a scoping round, after the request for a review comment had waited unnoticed since #37):

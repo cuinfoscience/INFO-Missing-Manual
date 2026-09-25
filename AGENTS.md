@@ -130,6 +130,7 @@ INFO-Missing-Manual/
 │   ├── appendix-glossary.qmd        # Appendix A (glossary with term anchors)
 │   └── appendix-ai-disclosure.qmd   # Appendix B (AI disclosure statement)
 │
+├── styles/layout.css                # one column layout for every chapter (see "Page layout")
 ├── graphics/                        # PNGs referenced from chapters
 │   ├── memes/                       # generated chapter memes (PNG + .spec hash)
 │   └── <slug>/                      # screenshots for one chapter, with provenance.json (tools/shots)
@@ -142,7 +143,7 @@ INFO-Missing-Manual/
     ├── shots/                       # screenshot toolkit, ported from Web-Data-Science-Book
     │   ├── recipes/                 # one YAML recipe per chapter with screenshots
     │   └── fixtures/                # pinned local programs to capture (JupyterLab, code-server)
-    └── layout-audit/                # browser checks on a rendered book (TOC visibility, column width)
+    └── layout-audit/                # browser checks on a rendered book (TOC visibility, column widths on every page)
 ```
 
 **Naming rules:**
@@ -228,11 +229,14 @@ Quarto auto-prefixes `Chapter` when rendering, so do **not** write "Chapter @sec
 
 ### Tone and Voice
 
-- **Friendly guide** — warm, second-person, like a knowledgeable senior colleague.
-- Always address the reader as **"you"** (not "the user," "the student," "one," or "a reader").
-- Empathetic about frustration; high expectations about capability.
-- Direct and imperative for instructions: "Run this command," "Check the version."
-- Non-judgmental about mistakes and questions.
+The book should read like a knowledgeable friend talking you through something, not like technical documentation. The maintainer set this in September 2026 (`docs/decisions.md`, 2026-09-25): informal, approachable, and welcoming to newcomers; honest about what confuses and frustrates people; never academic or formal; and still authoritative and persuasive. `chapters/tabular-data.qmd` is the model, rewritten as the pilot.
+
+- **Talk to the reader.** Address them as **"you"** (not "the user," "the student," "one," or "a reader"). Contractions are fine. Be direct and imperative for instructions ("Run this command," "Check the version"), and non-judgmental about mistakes and questions.
+- **Name the confusion before resolving it.** Most sections have a moment where newcomers get stuck: an error message that doesn't say what's wrong, a result that looks right and isn't, a term everyone uses and nobody defines. Say it out loud ("If that has happened to you, you're in good company"), then explain. Empathetic about frustration, high expectations about capability.
+- **Tell it as a story, not a list of facts.** Open a section with the situation or the problem it solves, and let each paragraph follow from the last: why this matters, what goes wrong, how to do it, what to watch for. A sequence of steps can still be prose, with each step bolded at the start of its paragraph (see "Cleaning, one decision at a time" in `tabular-data`). Keep lists for material a reader scans: learning objectives, checklists, quick references, exercises, templates, and short sets of genuinely parallel options.
+- **Persuade with reasons and examples, not formality.** Authority comes from explaining *why* and showing a concrete case (a row count that doubled, an error message, a real number), not from stiff phrasing. Avoid stock formal phrases: "it is important to note," "furthermore," "in order to," "utilize," "this chapter provides."
+- **Link generously.** Link a tool to its official documentation, preferring its tutorial or user guide over the API reference when one exists, and link concepts to Wikipedia (primary key, sentinel value, ISO 8601, data lineage). Link on first mention in a chapter, not every time. Check that every new link resolves before the pull request (`curl -sL -o /dev/null -w '%{http_code}' <url>`), and don't repeat a link that the chapter's Further reading already has.
+- **Every code block runs.** When you rewrite a chapter, run its code (on made-up data if need be) and fix what doesn't work; a friendly voice doesn't excuse a broken example.
 
 ### Canonical Chapter Structure
 
@@ -435,6 +439,18 @@ The `http.postBuffer=524288000` (500 MB) flag is per-invocation, so it does not 
 **Dependency.** The generator uses Python's standard library only (`urllib.request`); there is no `pip install` step. The build host needs outbound HTTPS to `api.memegen.link` on the first render after a meme's frontmatter changes; subsequent renders read the cached PNG and run offline. CI's GitHub Actions runners have outbound HTTPS by default, so no workflow changes are needed. See [memegen.link](https://github.com/jacebrowning/memegen) for template ids and font choices.
 
 ---
+
+## Page layout: one width for every chapter
+
+**Every chapter has the same column widths:** the body column is 678 CSS px in a 1280-px window (699 px at 1440 and wider), the table of contents is 300 px, and the left navigation is 226 px. Don't change these (the maintainer's rule, `docs/decisions.md`, 2026-09-25); make a figure smaller instead.
+
+Quarto doesn't do this by itself. It gives a page a narrower body and a wider table of contents (the `slimcontent` class) when the page has anything in the right margin (a figure caption, since `fig-cap-location: margin`, or a footnote), so until September 2026 chapters without figures or footnotes rendered 100 px wider in the body. `styles/layout.css` gives every page the same grid, and also stops long URLs and code from widening a page past the window. After any change to the theme, `_quarto.yml`'s `format: html`, or `styles/`, render and run:
+
+```bash
+tools/shots/.venv/bin/python tools/layout-audit/audit.py widths
+```
+
+It fails if any page's columns differ from the rest, or if any page scrolls sideways, at 1024, 1280, 1440, and 1920 px.
 
 ## Terminal figures
 
