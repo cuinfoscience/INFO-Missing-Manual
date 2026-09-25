@@ -4,6 +4,19 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-09-25 · A simulated peer review, anonymous, and a revision plan the maintainer decides
+
+**Decision** (the maintainer's request after Part VII, and a follow-up):
+
+- **After the voice rewrite, the whole book gets a peer review:** ten reviewers, 300–600 words each, drawn from computer science education, library and information science, the quantitative social sciences, and project management, covering every chapter between them, in the book's own voice, and mostly generative critique (what to add, cut, reorder, or rethink). The reviews go in one file in `docs/`, and a plan to revise the book is built from them.
+- **The reviews are simulated and labeled as such.** AI agents wrote them, each playing a reviewer; the file says so at the top, and its claims about the book were checked (one, about IRB coverage, was wrong and carries an editor's note).
+- **The reviewers are anonymous, identified by role only** (the maintainer's follow-up: "Strip the names of the personas for the peer reviews, keep anonymous"). Invented names on AI-written reviews could read as real people.
+- **The plan proposes; the maintainer decides.** Its eight decisions (chapter order, the default setup path, new chapters, a running project and practice repository, where exercise answers go, a humanities thread, the AI-disclosure wording, a length budget) wait on the maintainer. Phase 1, corrections that don't depend on them, can start any time.
+
+**Why.** The maintainer's words, 2026-09-25. A book written and rewritten largely by agents benefits from critique from the fields that will teach it; simulating that is cheap, but only honest when it is labeled and when nothing in it can be mistaken for a real person's opinion.
+
+**Where.** [`aar/2026-09-25-peer-review.md`](aar/2026-09-25-peer-review.md), [`plans/2026-09-25-peer-review-revisions.md`](plans/2026-09-25-peer-review-revisions.md), [`roadmap.md`](roadmap.md), [`README.md`](README.md) (how `aar/` is kept).
+
 ## 2026-09-25 · A welcoming narrative voice, book-wide
 
 **Decision** (the maintainer's request and answers, after the roadmap's topics were done):

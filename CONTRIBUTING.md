@@ -43,7 +43,7 @@ That is the whole cycle that the book's chapters on [version control](https://cu
 
 For anything beyond a line or two (a new section, a rewritten example, a new figure), work on your own computer so you can see the rendered book before you propose it.
 
-**Before you start something big,** such as a new chapter or a large rewrite, open a [Suggestion](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=suggestion.yml) first so we can agree on scope before you spend the time. The [roadmap](docs/roadmap.md) lists topics that are already wanted.
+**Before you start something big,** such as a new chapter or a large rewrite, open a [Suggestion](https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new?template=suggestion.yml) first so we can agree on scope before you spend the time. The [roadmap](docs/roadmap.md) lists topics that are already wanted, including the revisions planned after the book's September 2026 peer review; some of those wait on the author's decisions, so ask before starting one.
 
 **What you need:**
 
@@ -107,9 +107,10 @@ Assume good intent, explain rather than correct, and remember that everyone here
 |---|---|
 | `chapters/` | Every chapter and appendix, one `.qmd` file each |
 | `graphics/` | Images, including chapter memes and screenshots |
+| `styles/` | The page layout's CSS (the same column widths on every chapter) |
 | `.github/ISSUE_TEMPLATE/` | The five issue forms |
 | `tools/` | Helper tools (memes, figures, screenshots, the issue forms' chapter list), each with a README |
-| `docs/` | Project records: decisions, the roadmap, plans, and reviews |
+| `docs/` | Project records: where work stands, decisions, the roadmap, plans, and reviews |
 | [`AGENTS.md`](AGENTS.md) | The full style guide and maintenance notes, for people and AI agents |
 | [`README.md`](README.md) | What the book is, and how to build it |
 

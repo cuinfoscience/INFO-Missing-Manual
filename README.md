@@ -61,8 +61,10 @@ INFO-Missing-Manual/
 ├── chapters/                        # every chapter and appendix, one flat directory
 │                                    # part grouping and reading order live in _quarto.yml
 │
+├── styles/layout.css                # the same column widths on every chapter
 ├── graphics/                        # images used in chapters
-│   └── memes/                       # generated chapter memes (PNG + .spec hash)
+│   ├── memes/                       # generated chapter memes (PNG + .spec hash)
+│   └── <chapter>/                   # screenshots for one chapter, with provenance.json
 ├── tools/                           # supporting code, one folder per tool, each with a README
 │   ├── chapter-meme/                # the {{< chapter-meme >}} shortcode and its generator
 │   ├── terminal-figures/            # annotated terminal illustrations
@@ -115,6 +117,13 @@ quarto render --to html
 | **V — Communication** | Reading Scholarship, Writing Manuscripts, Writing a Thesis, Presenting, LaTeX | The genres an information scientist is asked to produce |
 | **VI — Project Management** | Project Management, Version Control, Collaboration, Automation, Secrets | Shipping and sustaining work with others |
 | **VII — Algorithmic Systems** | Using AI Tools, LLM Internals, AI Agents, Evaluating AI | Working with AI tools deliberately |
+| **Appendices** | Glossary, AI Disclosure | Terms defined once, and how AI was used to write the book |
+
+The introduction opens the book and a conclusion closes it, 41 pages in all.
+
+## Where the book is going
+
+In September 2026 every chapter was rewritten in the book's current voice (informal, welcoming, honest about what confuses people, and linked to official tutorials and Wikipedia), with every code example run and every fact re-checked. Ten simulated peer reviews of the whole book followed, and a plan to revise it from them: fix what they found wrong, reconsider the order of a few chapters, add a setup appendix and one running project, and perhaps new chapters on charts, on sharing and archiving data, and on writing at work. The plan waits on the author's decisions. The [roadmap](docs/roadmap.md) tracks it, and [`docs/handoff.md`](docs/handoff.md) says where work stands today.
 
 ## Contributing
 
@@ -122,9 +131,10 @@ Contributions of every size are welcome, from a typo report to a new chapter, an
 
 The short version of the style:
 
-- Each content chapter follows the canonical 8-section structure (Purpose → Why read this chapter → Running theme → numbered content sections → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference).
+- Each content chapter follows the same outline: Purpose → Why read this chapter → Running theme → numbered content sections → Stakes and politics → Worked examples → Templates → Exercises → One-page checklist → optional Quick reference → Further reading.
 - Every chapter begins with a `::: {.callout-tip}` "Prerequisites and see-also" block so readers know what to read first and what to read next.
-- Tone: friendly guide, second-person ("you"), empathetic but rigorous.
+- Voice: a knowledgeable friend talking you through it, not technical documentation. Second person ("you"), narrative rather than lists of facts, honest about what confuses people, and still authoritative. `chapters/tabular-data.qmd` is the model.
+- Every code block runs, every fact holds, and every reference is real.
 - Cross-references: `@sec-<slug>` (see the label table in `AGENTS.md`).
 - Citations: `[@bibkey]`, with entries in `references.bib`.
 - Formatting: `**bold**`, `*italic*`, `` `code` ``, fenced code blocks with language hints.
@@ -163,7 +173,7 @@ Released under the [MIT License](LICENSE).
 
 ## AI Disclosure
 
-Portions of this book were drafted with assistance from large language model tools, including Claude. All content has been reviewed and edited by the author. See the [AI Disclosure appendix](chapters/appendix-ai-disclosure.qmd) for the full statement.
+Portions of this book were drafted with assistance from large language model tools, including Claude. In September 2026, AI coding agents (Claude Code) rewrote every chapter in the book's current voice, running the code examples and checking links and facts as they went; each part of the book came to the author as a pull request, and the author merged each one. The ten peer reviews in [`docs/`](docs/aar/2026-09-25-peer-review.md) were also written by AI agents, and say so. See the [AI Disclosure appendix](chapters/appendix-ai-disclosure.qmd) for the full statement.
 
 ## Acknowledgments
 
