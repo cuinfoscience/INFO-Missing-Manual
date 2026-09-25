@@ -24,36 +24,33 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-[`pandas`](https://pandas.pydata.org/docs/) is the library that turns Python into a practical data-analysis tool. If you are taking a data science course and someone hands you a CSV, `pandas` is the thing you use to load it, poke at it, clean it, reshape it, and summarize it. It is usable from the first day, which is both its biggest strength and the reason it is easy to misuse.
+Your instructor's notebook ran perfectly in class. You copy a cell into your own project, point it at your own file, and pandas answers with a wall of red text. Or worse, with nothing at all: you set some values, print the table, and it hasn't changed.
 
-This chapter is an orientation for students who have literally never used `pandas` — or who have copied notebook cells from an instructor but never sat down to understand the pieces. The goal is not to teach every method (there are thousands, and the official reference in @sec-reading-docs is where you look them up). The goal is to give you the vocabulary and the mental model: what a Series and a DataFrame actually are, how indexing and selection work, how the common operations compose, and how to avoid the classic novice traps.
+That doesn't mean you're bad at this. [pandas](https://pandas.pydata.org/docs/) is how Python loads a table of data, pokes at it, reshapes it, and summarizes it. It's usable on the first day, which is why so many people use it for months without a picture of what's going on underneath. With that picture, most of its error messages stop being mysterious.
 
-If you know SQL, several sections will feel like translation. That is a feature — once you see pandas as "SQL against an in-memory table," a lot of it clicks. See @sec-sql-basics for the SQL side.
+This chapter gives you the picture: what a Series and a DataFrame are, how selecting rows and columns works, how the everyday operations fit together, and the traps that catch nearly every beginner, with the messages pandas 3 actually prints. It skips most of pandas' hundreds of methods (@sec-reading-docs shows how to look them up) and leaves cleaning and checking data to @sec-tabular-data. If you know SQL, think of pandas as SQL against a table in memory (@sec-sql-basics).
 
-## Learning objectives {.unnumbered}
+## Why read this chapter {.unnumbered}
 
-By the end of this chapter, you should be able to:
-
-1.  Explain what a Series and a DataFrame are, and how the index relates to them.
-2.  Create a DataFrame from a dict, a list of dicts, or a file.
-3.  Select rows and columns using `[]`, `.loc`, `.iloc`, and boolean masks — and know when to use each.
-4.  Use `.head`, `.tail`, `.info`, `.describe`, `.shape`, and `.dtypes` to inspect a new dataset in under a minute.
-5.  Apply the core data operations: filter, sort, add a column, aggregate, group-by, and join (merge).
-6.  Recognize and avoid the three classic pandas gotchas: chained assignment, `SettingWithCopyWarning`, and forgetting that most operations return a copy.
-7.  Know when to vectorize vs. when to write a Python loop (almost always vectorize).
-8.  Make random steps (sampling, splits, bootstraps) repeatable with one seeded generator passed through the analysis.
+-   You've been copying pandas cells from an instructor's notebook, and they work, but you couldn't explain what `df.loc[df["price"] > 10, "in_stock"]` actually says.
+-   You changed some values in a filtered table, pandas printed `ChainedAssignmentError`, and your DataFrame came out exactly the way it went in.
+-   You wrote `df = df.dropna(inplace=True)`, and the next line failed with `AttributeError: 'NoneType' object has no attribute 'head'`.
+-   You joined two conditions with `and` and got `ValueError: The truth value of a Series is ambiguous`, which doesn't say what to write instead.
+-   You sorted a table, asked for row `0`, and got a row that's plainly not the first one.
+-   Your notebook loops over every row of a big table, and you go make coffee every time you run it.
+-   You ran a random train/test split twice, got two different answers, and don't know which one to report.
 
 ## Running theme: pandas rewards vectorized thinking, and punishes loops {.unnumbered}
 
-Almost every pandas operation is a set-wise verb: "filter these rows," "add this column to all rows," "group by this and take the mean." When you find yourself writing `for row in df.itertuples()`, stop and think about the vectorized equivalent. Your code will be shorter, faster, and easier to read.
+Almost everything you do in pandas is a verb applied to a whole set at once: filter these rows, add this column to every row, group by this and take the mean. When you catch yourself writing `for row in df.itertuples()`, stop and look for the whole-column version; it'll be shorter, faster, and easier to read.
 
 ## The two data structures
 
-Everything in pandas is built on two data structures.
+Everything in pandas is built on two structures, and many confusing error messages make sense once you know which one you're holding. (For a quick tour alongside this chapter, try pandas' own [10 minutes to pandas](https://pandas.pydata.org/docs/user_guide/10min.html).)
 
-### Series: a labeled 1-D array
+### Series: a labeled column
 
-A **Series** is like a Python list, except every element has a label (the index). Think of it as a single column in a spreadsheet.
+A **Series** is like a Python list in which every value has a label. Think of it as one column of a spreadsheet, with the row names attached:
 
 ```python
 import pandas as pd
@@ -71,11 +68,11 @@ print(prices)
 # Name: price, dtype: float64
 ```
 
-You access values by label: `prices["bread"]` returns `14.50`. You also get vectorized operations for free: `prices * 1.1` returns a new Series with every price marked up 10%, without a loop.
+You get a value by its label: `prices["bread"]` gives `14.5`. And arithmetic works on the whole Series at once: `prices * 1.1` marks every price up 10% and returns a new Series, with no loop in sight. Writing one operation that applies to every element is called [array programming](https://en.wikipedia.org/wiki/Array_programming), or *vectorization*, and this chapter keeps coming back to it.
 
-### DataFrame: a labeled 2-D table
+### DataFrame: a labeled table
 
-A **DataFrame** is a dict of Series that share an index. Every column is a Series; every row is identified by the shared index.
+A **DataFrame** is a table: a set of Series that share one set of row labels, the **index**. The idea came to Python from R, which is why you'll hear about [data frames](https://en.wikipedia.org/wiki/Dataframe) in general, not just pandas ones.
 
 ```python
 df = pd.DataFrame({
@@ -96,13 +93,11 @@ In a notebook, the same DataFrame is drawn as a table instead of printed as text
 
 ![The DataFrame above, as JupyterLab 4.6 displays it with pandas 3.0, in September 2026. The index labels run in bold down the left and the column names in bold across the top; the index has no column name, because it is not a column.](/graphics/pandas-basics/dataframe-render.png){#fig-dataframe-render fig-alt="A JupyterLab code cell labelled [1] that builds a DataFrame from a dictionary with the keys price, quantity, and in_stock and the index apple, bread, milk, and cheese, then displays df. Below it, output [1] is a table: bold row labels apple, bread, milk, and cheese down the left; bold column headers price, quantity, and in_stock across the top; and the values 9.99, 3, True; 14.50, 1, True; 7.25, 2, False; and 22.00, 5, True."}
 
-The `index` is *not* a column — it's the row labels, and it is carried through most operations. You can always reset it to a default integer index with `df.reset_index()`, and promote a column to the index with `df.set_index("column_name")`.
+Here's where newcomers most often get lost: **the index is not a column.** It's the row labels, so `df.columns` doesn't list it. It travels with each row through filtering and sorting, which is what makes it useful, and what makes `.loc` and `.iloc` disagree once you've sorted (see the traps below). `df.reset_index()` turns the labels into an ordinary column and gives a fresh 0, 1, 2, … index; `df.set_index("column_name")` promotes a column to be the index. The guide to [pandas' data structures](https://pandas.pydata.org/docs/user_guide/dsintro.html) goes deeper.
 
 ## Creating a DataFrame
 
-Four common ways, in rough order of frequency:
-
-**From a file** (the most common):
+Most DataFrames arrive from a file, and the [IO tools guide](https://pandas.pydata.org/docs/user_guide/io.html) lists a reader for nearly every format (@sec-data-file-formats covers their quirks):
 
 ```python
 df = pd.read_csv("sales.csv")
@@ -110,240 +105,287 @@ df = pd.read_parquet("sales.parquet")
 df = pd.read_excel("report.xlsx", sheet_name="Q4")
 ```
 
-See @sec-data-file-formats for the quirks.
+The Excel line catches almost everyone once: pandas needs a separate package, [openpyxl](https://openpyxl.readthedocs.io/en/stable/), to read `.xlsx`, so the first try stops with ``ImportError: `Import openpyxl` failed.`` Your file is fine. Install openpyxl into the environment your notebook uses (see @sec-pkg-mgmt) and rerun the cell.
 
-**From a dict of columns:**
-
-```python
-df = pd.DataFrame({
-    "name": ["Alice", "Bob", "Carol"],
-    "age":  [30, 25, 35],
-})
-```
-
-**From a list of dicts (one per row):**
+To build a small table by hand, to test an idea or share a problem others can run, use **a dict of columns** (easiest to type), **a list of dicts, one per row** (the shape a [JSON](https://en.wikipedia.org/wiki/JSON) web API usually hands you, as @sec-http-apis shows; any missing key becomes `NaN`), or **a list of lists** plus the column names:
 
 ```python
+df = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [30, 25, 35]})
+
 df = pd.DataFrame([
     {"name": "Alice", "age": 30},
     {"name": "Bob",   "age": 25},
     {"name": "Carol", "age": 35},
 ])
-```
 
-This is what you usually get from a JSON API response (see @sec-http-apis).
-
-**From a list of lists, plus column names:**
-
-```python
-df = pd.DataFrame(
-    [["Alice", 30], ["Bob", 25]],
-    columns=["name", "age"],
-)
+df = pd.DataFrame([["Alice", 30], ["Bob", 25]], columns=["name", "age"])
 ```
 
 ## Inspecting a new DataFrame
 
-The first thing you should do with any new DataFrame is run these six commands, in a cell by themselves:
+The first thing to do with any new DataFrame is look at it, before you've formed opinions about what's in it:
 
 ```python
-df.shape        # (rows, columns) — is it the size you expected?
+df.shape        # (rows, columns): is it the size you expected?
 df.columns      # column names
-df.dtypes       # inferred types per column — any surprises?
+df.dtypes       # the type pandas guessed for each column: any surprises?
 df.head()       # first 5 rows
 df.tail()       # last 5 rows
-df.info()       # summary: counts, dtypes, memory usage
-df.describe()   # summary statistics for numeric columns
+df.info()       # row count, non-missing counts, types, memory
+df.describe()   # summary statistics for the numeric columns
 ```
 
-This takes ten seconds and catches 90% of "why is my analysis wrong?" bugs. See @sec-tabular-data for why validation is so important.
+(A notebook cell displays only its last value, so run these one per cell or wrap them in `print()`.)
+
+Each line answers a question you'd otherwise answer the hard way, hours later. `dtypes` is where surprises hide: text shows up as `str` in pandas 3 (`object` in pandas 2), so a price column listed as `str` has something in it that isn't a number. `tail()` is where a stray "Total" row lurks, and `describe()` makes an age of 999 jump out. It takes a minute and heads off a surprising share of "why is my analysis wrong?" bugs; @sec-tabular-data turns it into checks that run every time.
 
 ## Selecting columns and rows
 
+Selection is where pandas code looks most like line noise: single brackets, double brackets, `.loc`, `.iloc`, and comparisons inside brackets inside brackets. There's a logic to it, though, and the [indexing guide](https://pandas.pydata.org/docs/user_guide/indexing.html) has the full story.
+
 ### Columns
 
-Select a single column by name. The result is a Series.
+One column name gives you a Series; a *list* of names gives you a DataFrame:
 
 ```python
-df["price"]             # Series of prices
-df.price                # same (attribute access — works only for simple names)
+df["price"]                 # a Series
+df[["price", "quantity"]]   # a DataFrame
 ```
 
-Select multiple columns with a list. The result is a DataFrame.
+The double brackets aren't a typo: the outer pair selects, and the inner pair is an ordinary Python list. Leave it out, as in `df["price", "quantity"]`, and pandas looks for one column named `("price", "quantity")` and says `KeyError: ('price', 'quantity')`.
+
+You'll also see `df.price`. It's fine for a quick look, but it fails for names with spaces, loses to a method of the same name (a column called `count` gives you `df.count`), and can't create a column. In code you keep, use brackets.
+
+### Rows: `.loc` and `.iloc`
+
+For rows there are two tools. **`.loc` selects by label** (the index); **`.iloc` selects by integer position**, counting from zero like the rest of Python ([zero-based numbering](https://en.wikipedia.org/wiki/Zero-based_numbering)). Both take a row, a range, or a list, plus an optional second argument for columns:
 
 ```python
-df[["price", "quantity"]]
+df.loc["bread"]                     # the row labeled "bread"
+df.iloc[1]                          # the second row, whatever its label
+df.loc["apple":"milk"]              # label range: includes BOTH ends (3 rows)
+df.iloc[0:3]                        # position range: stops before 3 (3 rows)
+df.loc[["apple", "cheese"]]         # a list of labels
+df.iloc[[0, 3]]                     # a list of positions
+df.loc["apple", "price"]            # one cell, by label: 9.99
+df.loc["apple":"milk", "price"]     # three rows of one column: a Series
+df.loc[:, ["price", "quantity"]]    # every row, two columns
+df.iloc[0, 1]                       # one cell, by position: 3
 ```
 
-**Gotcha:** `df["price", "quantity"]` (no inner list) raises `KeyError`. The single brackets need a list for multiple columns.
-
-### Rows: `.loc` vs `.iloc`
-
-`.loc` selects by **label** (the index). `.iloc` selects by **integer position** (0-based).
-
-```python
-df.loc["bread"]          # row labeled "bread"
-df.iloc[1]               # second row, regardless of label
-```
-
-Both can take a range:
-
-```python
-df.loc["apple":"milk"]   # inclusive of both endpoints
-df.iloc[0:3]             # Python slice, excludes index 3
-```
-
-Both can take a list:
-
-```python
-df.loc[["apple", "cheese"]]
-df.iloc[[0, 3]]
-```
-
-Both accept a second argument for columns:
-
-```python
-df.loc["apple", "price"]              # single cell, by label
-df.loc["apple":"milk", "price"]       # a Series
-df.loc[:, ["price", "quantity"]]      # all rows, two columns
-df.iloc[0, 1]                         # single cell, by position
-```
-
-Rule of thumb: **use `.loc` almost always**, because your index is usually meaningful and labels survive sorting and filtering. Use `.iloc` when you genuinely need the first/last N rows or you are working with an unlabeled integer index.
+Notice the ranges: "from apple to milk" includes milk, while a position range stops just before its end, like any Python slice. The rule of thumb is to **use `.loc` almost always**, because your index usually means something and labels stay attached to their rows through sorting and filtering. Use `.iloc` when you really mean a position, like "the first ten rows."
 
 ### Boolean masks
 
-The most powerful selection is a boolean mask: a Series of `True`/`False` that filters rows.
+The selection you'll use most answers "which rows meet this condition?" A comparison on a column gives a Series of `True` and `False`, one per row, called a boolean **mask** (after [bit masks](https://en.wikipedia.org/wiki/Mask_(computing))). Inside brackets, it keeps the `True` rows:
 
 ```python
-df[df["price"] > 10]                     # rows where price > 10
-df[(df["price"] > 10) & (df["in_stock"])] # conjunction — note the parentheses
-df[df["name"].isin(["Alice", "Bob"])]    # membership
-df[df["note"].str.contains("refund", na=False)]  # regex-enabled string match
+df[df["price"] > 10]                          # rows where price is over 10
+df[(df["price"] > 10) & (df["in_stock"])]     # both conditions (note the parentheses)
+df[df["quantity"].isin([1, 2])]               # value is in a list
 ```
 
-Three things to remember about boolean masks:
+Conditions combine with `&` (and), `|` (or), and `~` (not), never Python's `and`, `or`, and `not`, and each gets its own parentheses; the traps below show why. The guide's [boolean indexing](https://pandas.pydata.org/docs/user_guide/indexing.html#boolean-indexing) section has more kinds of mask.
 
-1.  **Use `&` and `|`, not `and` / `or`.** The Python keywords operate on scalars, not arrays.
-2.  **Parenthesize every sub-condition.** `df[df["x"] > 1 & df["y"] < 2]` misbehaves because of operator precedence.
-3.  **Use `na=False`** on `.str.contains` to make NaNs behave like `False`.
+When you search free text that has gaps, add `na=False`, as in `orders["note"].str.contains("refund", na=False)`. pandas 3 already counts a missing note as "no match," but pandas 2 stopped with `ValueError: Cannot mask with non-boolean array containing NA / NaN values`. The guide to [working with text](https://pandas.pydata.org/docs/user_guide/text.html) covers the other `.str` methods.
 
 ## Adding, modifying, and dropping columns
 
+Once you can select, changing a table is mostly assignment:
+
 ```python
-df["revenue"] = df["price"] * df["quantity"]        # new column from arithmetic
-df["price"] = df["price"] * 1.1                     # overwrite a column
-df["discount_tier"] = pd.cut(df["price"], bins=[0, 10, 20, 100])   # derived categorical
-df = df.drop(columns=["discount_tier"])             # drop a column
-df = df.rename(columns={"price": "unit_price"})     # rename
+df["revenue"] = df["price"] * df["quantity"]                      # new column from arithmetic
+df["price"] = df["price"] * 1.1                                   # overwrite a column
+df["price_band"] = pd.cut(df["price"], bins=[0, 10, 20, 100])     # numbers into ranges
+df = df.drop(columns=["price_band"])                              # drop a column
+df = df.rename(columns={"price": "unit_price"})                   # rename
 ```
 
-`assign` returns a new DataFrame with added columns — useful in chained expressions:
+Look at which lines say `df = ...`. Setting `df["col"]` changes `df` directly, but `drop` and `rename` return a changed *copy*, lost unless you assign it; two traps below grow from that difference. ([`pd.cut`](https://pandas.pydata.org/docs/reference/api/pandas.cut.html) sorts numbers into ranges like `(10, 20]`.)
+
+To build several columns in one expression without touching `df`, use [`assign`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.assign.html). Each `lambda d:` gets the table as it stands at that step, so the second `assign` can use the first one's column:
 
 ```python
 (df
   .assign(revenue=lambda d: d["price"] * d["quantity"])
-  .assign(profit=lambda d: d["revenue"] - d["cost"])
+  .assign(big_order=lambda d: d["revenue"] > 50)
 )
 ```
 
 ## The classic novice traps
 
-### Chained assignment and `SettingWithCopyWarning`
+Every pandas user falls into these, usually more than once: each is pandas doing exactly what you told it, when that isn't quite what you meant. The output below is from pandas 3.0 ([released in January 2026](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html)), which changed several of them. Most tutorials, forum answers, and AI assistants learned their pandas from version 2, so if what you see doesn't match, check `pd.__version__` and the notes on version 2.
 
-This is the most confusing warning in pandas:
+### Chained assignment
+
+You want to mark everything over $10 as out of stock, so you write it the way you'd say it:
 
 ```python
 df[df["price"] > 10]["in_stock"] = False
-# SettingWithCopyWarning: A value is trying to be set on a copy of a slice from a DataFrame.
 ```
 
-The problem is that `df[df["price"] > 10]` returns a *temporary* slice, and you are modifying the temporary, not the original. Sometimes it works, sometimes it silently does nothing. Do not rely on it.
+pandas 3 answers with this (trimmed, and wrapped to fit):
 
-**Fix:** use `.loc` in one step.
+```text
+ChainedAssignmentError: A value is being set on a copy of a DataFrame or Series
+through chained assignment.
+Such chained assignment never works to update the original DataFrame or Series,
+because the intermediate object on which we are setting values always behaves
+as a copy (due to Copy-on-Write).
+```
+
+Print `df`, and bread and cheese are still `True`. Despite "Error" in its name, this is a *warning*: the cell keeps running, which makes it easy to miss.
+
+That line is two steps chained together: `df[df["price"] > 10]` builds a new, smaller table, and `["in_stock"] = False` changes *that* table, which is then thrown away. Under pandas 3's [Copy-on-Write](https://pandas.pydata.org/docs/user_guide/copy_on_write.html#chained-assignment) rules (named after a [general programming technique](https://en.wikipedia.org/wiki/Copy-on-write)), every selection behaves as its own copy, so an assignment chained onto one *never* reaches the original. **Do it in one step with `.loc`**, which takes the rows and the column together, and bread and cheese both become `False`:
 
 ```python
 df.loc[df["price"] > 10, "in_stock"] = False
 ```
 
-This says "for rows matching this condition, set this column," in a single expression pandas understands.
+The flip side is good news: when you take a subset on purpose (`expensive = df[df["price"] > 10]`, then `expensive["quantity"] = 0`), pandas 3 changes `expensive`, leaves `df` alone, and doesn't warn.
 
-### Forgetting that most methods return a copy
+::: {.callout-note}
+## If you're following a pandas 2 tutorial
+
+pandas 2 warned about both cases with `SettingWithCopyWarning: A value is trying to be set on a copy of a slice from a DataFrame`, even the harmless one, which is why older code is full of `.copy()` calls added just to quiet it; pandas 3 removed that warning. And the column-first form, `df["in_stock"][mask] = False`, *did* change `df` in pandas 2, so code written that way silently stops working in pandas 3. The `.loc` version works in both.
+:::
+
+### `inplace=True`, and methods that return a copy
+
+You sort your table, print it, and it's in the original order. Nothing is broken: `sort_values` returns a sorted copy, as do `drop`, `rename`, `dropna`, `reset_index`, and most other methods, so keep it with `df = df.sort_values("price")`. Many of them also take `inplace=True`, which changes `df` directly and usually returns `None`. So this line cleans the table and then replaces it with nothing:
 
 ```python
-df.sort_values("price")    # returns a sorted copy; df is unchanged
+df = df.dropna(inplace=True)
+df.head()
+# AttributeError: 'NoneType' object has no attribute 'head'
 ```
 
-If you want to keep the result, assign it:
+If you see `'NoneType' object has no attribute` right after a pandas method, look for an `inplace=True` with an assignment in front of it (@sec-reading-docs shows how the signature warns you). pandas 3 made this *less* predictable: a few methods, including `fillna`, `replace`, and `clip`, now return the DataFrame even with `inplace=True`, while `sort_values`, `dropna`, `drop`, `rename`, and most others still return `None`. Rather than memorizing which is which, **skip `inplace` and assign the result back.**
+
+### `and` where you meant `&`
+
+You want rows that are over $10 and in stock:
 
 ```python
-df = df.sort_values("price")
+df[(df["price"] > 10) and (df["in_stock"])]
+# ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(),
+# a.item(), a.any() or a.all().
 ```
 
-Most methods (`sort_values`, `drop`, `rename`, `dropna`, `reset_index`, ...) work this way. The `inplace=True` parameter exists on many of them but is discouraged in modern pandas — assigning back is clearer.
+Python's `and`, `or`, `not`, and `if` each need a single `True` or `False`. A comparison on a column gives one per row, and pandas won't guess whether you mean "are *any* true?" or "are *all* true?" You meant "combine these row by row," which is what `&` does: `df[(df["price"] > 10) & (df["in_stock"])]` returns bread and cheese. The same error comes from `if df["price"] > 10:`, where the fix is to ask what you mean, with `.any()` or `.all()`.
 
-### Mutating while iterating
+The parentheses matter just as much. `&` binds more tightly than `>` (see Python's [operator precedence table](https://docs.python.org/3/reference/expressions.html#operator-precedence)), so `df[df["price"] > 10 & df["in_stock"]]` means `df["price"] > (10 & df["in_stock"])`. Since `10 & True` is `0` (the bits are combined one by one), that asks for prices over 0, and you get all four rows back with no error and no warning. Parenthesize every condition, every time.
+
+### `is` where you meant `==`
+
+`==` asks "are these values equal?" `is` asks "are these the very same object in memory?" (an [identity comparison](https://docs.python.org/3/reference/expressions.html#is-not)), which is almost never what you mean with data:
+
+```python
+df[df["price"] is 22.0]
+# SyntaxWarning: "is" with a literal. Did you mean "=="?
+# KeyError: False
+```
+
+The column isn't the same object as the number, so `is` gives one `False`, and pandas looks for a column named `False`. Python's warning has it right: `df[df["price"] == 22.0]` returns the cheese row.
+
+Missing values fool `==` too, because `NaN` is designed [not to equal anything](https://en.wikipedia.org/wiki/NaN), itself included. On `s = pd.Series([9.99, np.nan, 7.25])`, `s == np.nan` is `False` for all three rows, even the missing one, while `s.isna()` finds it. Use `.isna()` (or `.notna()`) to find missing values, always.
+
+### `.loc` where you meant `.iloc`
+
+A table read from a CSV gets a default index of 0, 1, 2, …, so labels match positions and `.loc` and `.iloc` agree. That's why mixing them up goes unnoticed, until you sort:
+
+```python
+scores = pd.DataFrame({"student": ["Ana", "Ben", "Chen", "Dev"],
+                       "score": [88, 72, 95, 64]})
+ranked = scores.sort_values("score", ascending=False)
+print(ranked)
+#   student  score
+# 2    Chen     95
+# 0     Ana     88
+# 1     Ben     72
+# 3     Dev     64
+```
+
+You want the top scorer, so you ask for row 0. `ranked.loc[0]` gives Ana, whose *label* is still 0; `ranked.iloc[0]` gives Chen, first by *position*. Ranges get stranger: `ranked.iloc[0:2]` gives Chen and Ana, but `ranked.loc[0:2]` gives an empty table, because label 2 now comes *before* label 0. Say which you mean.
+
+(A pandas 2 note: plain brackets with a number on a text index, like `prices[0]`, used to fall back to position with a `FutureWarning`. In pandas 3 that raises `KeyError: 0`; write `prices.iloc[0]`.)
+
+### Looping over rows
+
+If you learned to program with lists, a loop feels like the natural way to change every row:
 
 ```python
 for i, row in df.iterrows():
-    df.loc[i, "adjusted"] = row["price"] * 1.1    # slow and error-prone
+    df.loc[i, "adjusted"] = row["price"] * 1.1    # slow, and easy to get wrong
+
+df["adjusted"] = df["price"] * 1.1                # the same result, vectorized
 ```
 
-This works but defeats the point of pandas. Vectorize instead:
+On the computer this chapter was tested on (pandas 3.0, September 2026), the loop took about 15 seconds for 100,000 rows, and the one-liner under 2 milliseconds. Your timings will differ; the gap won't. The loop runs Python code once per row, while the one-liner hands the whole column to [NumPy](https://numpy.org/doc/stable/user/absolute_beginners.html), the library underneath pandas, which does the arithmetic in compiled code. pandas' own guide says [iterating is generally slow](https://pandas.pydata.org/docs/user_guide/basics.html#iteration), and that changing what you're iterating over isn't guaranteed to work at all.
 
-```python
-df["adjusted"] = df["price"] * 1.1
-```
-
-A good rule: if you wrote `iterrows` or `itertuples`, your first instinct should be "how can I do this as a vectorized operation or a `.apply`?" There is almost always a way.
+So when you reach for `iterrows` or `itertuples`, ask how to say it for the whole column. `.str` and `.dt` work on whole columns of text and dates, and an if-else per row becomes [`np.where`](https://numpy.org/doc/stable/reference/generated/numpy.where.html): `np.where(df["price"] > 10, "premium", "standard")`. When there's truly no whole-column version, `.apply` is a middle ground (about 25 milliseconds in the same test). @sec-jupyter shows how to find what's actually slow.
 
 ## Aggregation and group-by
 
-Group-by is pandas's single most important verb. It splits the data into groups, applies a function to each group, and combines the results.
+Sooner or later every analysis asks something like "how much revenue did each category bring in?" That's `groupby`, and a huge share of real questions are group-bys in disguise. It works in the three steps Hadley Wickham named [split-apply-combine](https://www.jstatsoft.org/article/view/v040i01): split the rows into groups, apply a calculation to each, and combine the results. Take a small made-up table:
 
 ```python
-df.groupby("category")["revenue"].sum()
-df.groupby("category")["revenue"].agg(["sum", "mean", "count"])
-df.groupby(["category", "region"])["revenue"].mean().unstack()
+sales = pd.DataFrame({
+    "product":  ["pens", "paper", "ink", "stapler", "tape", "folders", "labels", "clips"],
+    "category": ["writing", "paper", "writing", "desk", "desk", "paper", "paper", "desk"],
+    "region":   ["west", "east", "west", "east", "west", "west", "east", "east"],
+    "price":    [2.50, 8.00, 12.00, 15.00, 3.00, 6.50, 4.00, 1.50],
+    "quantity": [40, 25, 10, 4, 30, 12, 20, 50],
+})
+sales["revenue"] = sales["price"] * sales["quantity"]
 ```
 
-A worked example: find the top three products by revenue within each category.
+Read a group-by left to right: group by category, take revenue, sum it.
 
 ```python
-(df
-  .groupby("category", group_keys=False)
-  .apply(lambda g: g.nlargest(3, "revenue"))
-)
+sales.groupby("category")["revenue"].sum()
+# category
+# desk       225.0
+# paper      358.0
+# writing    220.0
+# Name: revenue, dtype: float64
+
+sales.groupby("category")["revenue"].agg(["sum", "mean", "count"])
+sales.groupby(["category", "region"])["revenue"].mean().unstack()
 ```
 
-If you find yourself writing complex group-by logic, that is the moment to read the pandas User Guide chapter on `groupby` — see @sec-reading-docs.
+The second line computes three summaries at once. The third groups by two columns and spreads the regions across the top; its writing-and-east cell is `NaN`, because nothing in that category sold in the east. The [group by guide](https://pandas.pydata.org/docs/user_guide/groupby.html) takes it from there.
+
+For "the top two products in each category," sort, then take the first rows of each group: `sales.sort_values("revenue", ascending=False).groupby("category").head(2)`. Older answers online use `.groupby("category").apply(lambda g: g.nlargest(2, "revenue"))` instead. Be careful with those: in pandas 3, `apply` no longer passes the grouping column to your function, so the result quietly comes back without a `category` column (pandas 2 warned about the change).
 
 ## Merging (joining) DataFrames
 
-`merge` is the pandas equivalent of a SQL JOIN (see @sec-sql-basics).
+Orders are in one table and customers in another, and you want each order's customer city beside it. That's a merge, pandas' version of a SQL [join](https://en.wikipedia.org/wiki/Join_(SQL)) (see @sec-sql-basics); the [merging guide](https://pandas.pydata.org/docs/user_guide/merging.html) draws every kind:
 
 ```python
-merged = orders.merge(customers, on="customer_id", how="left")
+merged = orders.merge(customers, on="customer_id", how="left", validate="many_to_one")
 ```
 
-Parameters to care about:
+-   **`on`** names the column(s) to match on; use `left_on=` and `right_on=` if the names differ.
+-   **`how`** says which rows survive: `"inner"` (the default) keeps only rows that match on both sides; `"left"` or `"right"` keeps every row of that side; `"outer"` keeps everything.
+-   **`validate`** states the relationship you expect: `"one_to_one"`, `"one_to_many"`, `"many_to_one"`, or `"many_to_many"`. Use it every time.
 
--   `on`: the column name(s) to join on. Or use `left_on=` / `right_on=` if the column names differ.
--   `how`: `"inner"` (default, keeps only matching rows), `"left"`, `"right"`, `"outer"` (union).
--   **`validate`**: specify the expected cardinality (`"one_to_one"`, `"one_to_many"`, `"many_to_one"`, `"many_to_many"`). Use this *every time*. It catches bad merges immediately. See @sec-tabular-data.
+That last one matters most. If a customer was entered twice, a merge without `validate` quietly matches each of their orders twice, and every total grows; with it, pandas stops with `MergeError: Merge keys are not unique in right dataset; not a many-to-one merge`. @sec-tabular-data tells the full story of merges that multiply or drop rows.
 
 ## Sorting
 
 ```python
 df.sort_values("price")                        # ascending by one column
 df.sort_values("price", ascending=False)       # descending
-df.sort_values(["category", "price"])          # multi-column
-df.sort_index()                                # sort by index (labels)
+df.sort_values(["category", "price"])          # by category, then price within it
+df.sort_index()                                # by the index labels
 ```
+
+Like most methods, [`sort_values`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html) returns a sorted copy. Missing values go last in either direction. And text sorts by character code, so capitalized words come before lowercase ones (`"Banana"` before `"apple"`); pass `key=lambda col: col.str.lower()` to sort the way a person would.
 
 ## Randomness you can repeat
 
-Some analysis steps are random on purpose: drawing a sample to look at, splitting data into training and test sets, shuffling, or resampling for a bootstrap estimate. Run them twice and you get different answers:
+Some analysis steps are random on purpose: drawing a sample to look at, splitting data into [training and test sets](https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets), shuffling, or resampling for a [bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) estimate. Run them twice and you get different answers:
 
 ```python
 df = pd.DataFrame({
@@ -354,11 +396,11 @@ df.sample(3)["student"].tolist()   # ['Ben', 'Chen', 'Fay']
 df.sample(3)["student"].tolist()   # ['Eli', 'Dev', 'Ben']
 ```
 
-That's correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can't be reproduced or debugged. The fix is to control where the random numbers come from with a **seed**, a number that fixes the whole sequence of "random" draws that follows. `df.sample(3, random_state=42)` returns `['Ben', 'Fay', 'Ana']` every time.
+That's correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can't be reproduced or debugged. Computers make "random" numbers with a [pseudorandom number generator](https://en.wikipedia.org/wiki/Pseudorandom_number_generator), a formula whose output looks random but is fixed by where it starts. So the fix is to control that starting point with a **[seed](https://en.wikipedia.org/wiki/Random_seed)**, a number that fixes the whole sequence of "random" draws that follows. `df.sample(3, random_state=42)` returns `['Ben', 'Fay', 'Ana']` every time.
 
 ### One generator, passed along
 
-For more than one random step, create a single random number **generator** from one seed, near the top of your notebook or script, and hand it to every step that needs randomness:
+For more than one random step, create a single random number **generator** from one seed, near the top of your notebook or script, with NumPy's [`default_rng`](https://numpy.org/doc/stable/reference/random/generator.html), and hand it to every step that needs randomness:
 
 ```python
 import numpy as np
@@ -381,7 +423,7 @@ train, test = split(df, rng)
 estimate = bootstrap_mean(train["score"], rng)
 ```
 
-Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas' `random_state` accepts a generator like `rng`. Other libraries have their own way to take a seed (scikit-learn's functions have a `random_state` argument, for example), so check each one's documentation and give it the seed. Put the seed where people will see it: a constant at the top, a `--seed` option on a script (see @sec-scripts-vs-notebooks), and a line in your results that says which seed produced them.
+Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas' `random_state` accepts a generator like `rng`. Other libraries have their own way to take a seed (scikit-learn's functions have a `random_state` argument, for example, explained in its guide to [controlling randomness](https://scikit-learn.org/stable/common_pitfalls.html#controlling-randomness)), so check each one's documentation and give it the seed. Put the seed where people will see it: a constant at the top, a `--seed` option on a script (see @sec-scripts-vs-notebooks), and a line in your results that says which seed produced them.
 
 ### Why not `np.random.seed(42)`?
 
@@ -398,23 +440,25 @@ df.sample(3)["student"].tolist()   # ['Ana', 'Ben', 'Gus']
 
 Same seed, different sample. In a notebook, rerunning one cell, or running cells in a different order, has the same effect. A generator you pass explicitly belongs to your code alone, so nothing else can use up its numbers.
 
-The same goes for running work in parallel. Don't give every worker the same seed (they'd all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: `workers = rng.spawn(4)`.
+The same goes for running work in parallel. Don't give every worker the same seed (they'd all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: `workers = rng.spawn(4)` (NumPy explains why in its page on [parallel generation](https://numpy.org/doc/stable/reference/random/parallel.html)).
 
 ### What a seed does not promise
 
-A seed reproduces results on the same versions of your libraries. NumPy [says so explicitly](https://numpy.org/doc/stable/reference/random/compatibility.html): the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see @sec-virtual-environments). And don't go looking for the seed that gives the nicest result: a finding that holds for seed 42 but not for 7 or 1,000 isn't a finding. Rerun an important result with a few different seeds and report how much it moves.
+A seed reproduces results on the same versions of your libraries. NumPy [says so explicitly](https://numpy.org/doc/stable/reference/random/compatibility.html): the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see @sec-virtual-environments). And don't go looking for the seed that gives the nicest result, a quiet form of [data dredging](https://en.wikipedia.org/wiki/Data_dredging): a finding that holds for seed 42 but not for 7 or 1,000 isn't a finding. Rerun an important result with a few different seeds and report how much it moves.
 
 ## Stakes and politics
 
-pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.
+Load a CSV from a colleague in Berlin and the prices arrive as text: `1.234,50` isn't a number to pandas until you pass `decimal=","` and `thousands="."`, because [decimal separators](https://en.wikipedia.org/wiki/Decimal_separator) differ around the world. Parse dates from a London office and `03/04/2026` becomes March 4 rather than 3 April, without a word, unless a later row happens to say `15/04` and the parse fails. Leave one blank in a column of whole numbers and the whole column turns into decimals, because pandas' default integer type can't hold a missing value (the [nullable integer types](https://pandas.pydata.org/docs/user_guide/integer_na.html) can, if you ask).
 
-Three things to notice. First, *the dtype defaults assume Western numeric and date conventions*. Numbers are read as IEEE 754 floats; dates parse as month-day-year unless told otherwise (a common silent bug in non-US data); missing values silently coerce integer columns to floats because the original NumPy `int64` cannot hold `NaN`. None of these are bugs — they are documented choices — but they work cleanly for the data their authors most often handled, and less cleanly for everyone else's. Second, *merge and groupby defaults preferentially keep the populous side*. `merge(how="inner")` is the default, which silently discards rows that do not match — a behavior that is fine when you are joining a transactions table against a complete customer list, and quietly disastrous when you are joining unequal demographic groups whose representation in your matching key is itself unequal. Third, *the maintainers and contributors are not the user base*. pandas is overwhelmingly maintained by a small number of contributors, paid by a small number of US and European institutions, working in English. The bug reports that get prioritized are the ones that surface in their workflows; the rough edges that affect non-English text, right-to-left scripts, non-Gregorian calendars, and informal-economy data shapes get fixed when someone with the time and English fluency files a careful issue.
+None of these are bugs. They're documented defaults, and defaults carry a tool's history: pandas [began in 2008 at an investment firm](https://en.wikipedia.org/wiki/Pandas_(software)), built for financial data, and a decimal point and month-first dates are American conventions. The fixes exist, but only for people who know to ask. `merge` is the same: its default inner join silently drops every row without a match, and those rows are rarely random. A name spelled two ways, a town missing from a lookup table: who disappears depends on whose records were kept carelessly. And which rough edges get smoothed depends on who runs into them and has time to file a careful report with pandas' [volunteer contributors and small team of maintainers](https://pandas.pydata.org/about/team.html). (@sec-tabular-data covers the cleaning decisions that ride on top of these defaults.)
 
-See @sec-artifacts-politics for the broader framework, and @sec-tabular-data for the cleaning-decision politics that ride on top of these defaults. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.
 
 ## Worked examples
 
-### A one-minute exploration of a new dataset
+### A one-minute look at a new dataset
+
+The classic [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set), 150 flowers made famous by the statistician Ronald Fisher in 1936, is small enough to take in at once:
 
 ```python
 import pandas as pd
@@ -431,7 +475,11 @@ print(df.describe())
 print(df.groupby("species")["petal_length"].mean())
 ```
 
+The shape is `(150, 5)`: four measurements as `float64` and `species` as `str`. The last line answers the question: 1.462 for setosa, 4.260 for versicolor, and 5.552 for virginica.
+
 ### Filter, sort, derive, aggregate
+
+Which ten customers brought in the most revenue this year? As a chain, the code reads like the question:
 
 ```python
 # Load a cleaned dataset
@@ -439,17 +487,17 @@ df = pd.read_parquet("data/processed/sales.parquet")
 
 top_customers = (
     df
-    .query("date >= '2024-01-01'")               # filter
+    .query("date >= '2024-01-01'")                          # filter
     .assign(revenue=lambda d: d["price"] * d["quantity"])   # derive
-    .groupby("customer_id")["revenue"]           # group
-    .sum()                                       # aggregate
-    .sort_values(ascending=False)                # sort
-    .head(10)                                    # top 10
+    .groupby("customer_id")["revenue"]                      # group
+    .sum()                                                  # aggregate
+    .sort_values(ascending=False)                           # sort
+    .head(10)                                               # top 10
 )
 print(top_customers)
 ```
 
-The method-chain pattern (pandas calls this "fluent interface") makes long transformations readable top-to-bottom.
+Each line does one thing and feeds the next, a style called [method chaining](https://en.wikipedia.org/wiki/Method_chaining); [`query`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html) takes the filter as a string. When a chain misbehaves, comment out lines from the bottom up and look at each step's result.
 
 ### A join with validation
 
@@ -461,12 +509,12 @@ merged = orders.merge(
     customers,
     on="customer_id",
     how="left",
-    validate="many_to_one",     # one customer per order; crashes on bad data
+    validate="many_to_one",     # one customer per order; raises MergeError on bad data
 )
 assert len(merged) == len(orders), "Merge changed row count"
 ```
 
-The `validate` + assert pattern prevents the silent-duplication class of bugs.
+With `how="left"` every order survives, and `validate` guarantees none is duplicated, so the row count can't change. The `assert` states that promise, so bad data stops the script here instead of three charts later.
 
 ## Templates
 
@@ -501,36 +549,39 @@ result = (
 
 ## Exercises
 
-1.  Load a CSV from an open-data source into a DataFrame. Run the six inspection commands from section 3. Write one sentence for each about what you learned.
+1.  Load a CSV from an open-data source into a DataFrame. Run the seven inspection lines from "Inspecting a new DataFrame." Write one sentence for each about what you learned.
 2.  From the same DataFrame, select a single column as a Series and a list of two columns as a DataFrame. Confirm the types with `type()`.
 3.  Write three different ways to select the top 10 rows: by `.head(10)`, by `.iloc[:10]`, and by sort-then-head. Compare performance on a big DataFrame with `%timeit`.
-4.  Use `.loc` with a boolean mask to update a subset of rows in-place. Confirm no `SettingWithCopyWarning` appears.
-5.  Write a group-by that answers a real question about your data ("average price per category," "max revenue per customer"). Add a second aggregation to the same call.
-6.  Perform a `merge` and then `validate="one_to_one"`. Intentionally break it by duplicating a row in the right-hand DataFrame and confirm pandas raises.
-7.  Take a notebook cell you wrote as a for-loop over `iterrows` and rewrite it as a vectorized operation. Time both. Write down the speedup.
-8.  Find a random step in one of your notebooks (a `sample`, a split, a shuffle). Run the notebook twice and note what changes. Then create one generator with `np.random.default_rng(SEED)` at the top, pass it to every random step, and confirm two runs agree. Finally, try three other seeds and write down how much your result moves.
+4.  Write a chained assignment (`df[mask]["col"] = value`) on purpose and read the warning your pandas version prints. Then make the same change with `.loc` in one step, and confirm the warning is gone and `df` really changed.
+5.  Sort a DataFrame that has the default 0, 1, 2, … index, and compare `.loc[0]` with `.iloc[0]`. Explain the difference in one sentence.
+6.  Write a group-by that answers a real question about your data ("average price per category," "max revenue per customer"). Add a second aggregation to the same call.
+7.  Perform a `merge` with `validate="one_to_one"`. Break it on purpose by duplicating a row in the right-hand DataFrame, and confirm pandas raises a `MergeError`.
+8.  Take a notebook cell you wrote as a for-loop over `iterrows` and rewrite it as a vectorized operation. Time both. Write down the speedup.
+9.  Find a random step in one of your notebooks (a `sample`, a split, a shuffle). Run the notebook twice and note what changes. Then create one generator with `np.random.default_rng(SEED)` at the top, pass it to every random step, and confirm two runs agree. Finally, try three other seeds and write down how much your result moves.
 
 ## One-page checklist
 
 -   Every new DataFrame: run shape / dtypes / head / describe / isna before anything else.
--   Use `.loc` for label-based selection, `.iloc` for integer-based, and boolean masks for filters.
--   Boolean masks use `&` and `|`, not `and` / `or`. Parenthesize every sub-condition.
--   Most methods return a copy; assign the result (`df = df.sort_values(...)`).
+-   Use `.loc` for label-based selection, `.iloc` for position-based, and boolean masks for filters.
+-   Boolean masks use `&`, `|`, and `~`, not `and`, `or`, and `not`. Parenthesize every condition.
+-   Compare values with `==`, never `is`; find missing values with `.isna()`.
+-   Most methods return a copy; assign the result (`df = df.sort_values(...)`) and skip `inplace=True`.
 -   Never chain assignment (`df[mask]["col"] = value`). Use `df.loc[mask, "col"] = value`.
--   Vectorize first; reach for `iterrows` only when you truly cannot.
+-   Vectorize first; reach for `.apply` next, and `iterrows` only when you truly cannot avoid it.
 -   Merge with `validate="..."` every time.
 -   Random steps get `random_state=rng`, from one `np.random.default_rng(SEED)` made at the top; record the seed and your package versions.
+-   When a tutorial's output doesn't match yours, check `pd.__version__`.
 -   For reshaping and validation, read @sec-tabular-data first.
--   For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see @sec-reading-docs.
+-   For anything beyond this chapter, the pandas User Guide and API Reference are your friends; see @sec-reading-docs.
 
 ::: {.callout-note}
 ## 📚 Further reading
 
-- pandas, [User Guide](https://pandas.pydata.org/docs/user_guide/index.html) — conceptual explanations of indexing, merging, and reshaping; treat this as the textbook.
-- pandas, [API reference](https://pandas.pydata.org/docs/reference/index.html) — every method and parameter, with examples; treat this as the dictionary.
-- pandas, [Cheat Sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — a printable one-pager covering the most common operations; useful taped above your desk.
-- Wes McKinney, [*Python for Data Analysis*, 3rd edition](https://wesmckinney.com/book/) — the book by pandas's original author; the second half is dense reference, the first half is a clean introduction.
-- Wes McKinney, [Apache Arrow and the "10 Things I Hate About pandas"](https://wesmckinney.com/blog/apache-arrow-pandas-internals/) — the design retrospective from pandas's creator; useful context for the "Stakes and politics" framing above.
-- Polars, [User Guide](https://docs.pola.rs/user-guide/) — a fast, Rust-based DataFrame library with a different (lazy, expression-based) API; worth knowing exists when pandas runs out of room.
-- DuckDB, [Python API](https://duckdb.org/docs/api/python/overview) — an in-process analytic database that reads and writes pandas DataFrames directly; the right tool when SQL is the better fit for the question.
+- pandas, [User Guide](https://pandas.pydata.org/docs/user_guide/index.html) — the conceptual explanations of indexing, group-by, merging, and reshaping; treat it as the textbook.
+- pandas, [API reference](https://pandas.pydata.org/docs/reference/index.html) — every method and parameter, with examples; treat it as the dictionary.
+- pandas, [Cheat Sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — a printable summary of the most common operations, worth taping above your desk.
+- Wes McKinney, [*Python for Data Analysis*, 3rd edition](https://wesmckinney.com/book/) — the book by pandas' original author, free to read online; the first half is a clean introduction, the second half dense reference.
+- Wes McKinney, [Apache Arrow and the "10 Things I Hate About pandas"](https://wesmckinney.com/blog/apache-arrow-pandas-internals/) — pandas' creator on the design choices he'd make differently; useful context for the "Stakes and politics" section above.
+- Polars, [User Guide](https://docs.pola.rs/user-guide/) — a fast DataFrame library with a different, expression-based style; worth knowing about when pandas runs out of room.
+- DuckDB, [Python API](https://duckdb.org/docs/api/python/overview) — an in-process database that queries pandas DataFrames directly with SQL; the right tool when SQL is the better fit for the question.
 :::
