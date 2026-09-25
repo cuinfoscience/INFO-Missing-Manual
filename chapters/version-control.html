@@ -737,36 +737,46 @@ window.Quarto = {
   <li><a href="#the-standard-fork-contribution-flow" id="toc-the-standard-fork-contribution-flow" class="nav-link" data-scroll-target="#the-standard-fork-contribution-flow">The standard fork contribution flow</a></li>
   <li><a href="#keeping-your-fork-up-to-date" id="toc-keeping-your-fork-up-to-date" class="nav-link" data-scroll-target="#keeping-your-fork-up-to-date">Keeping your fork up to date</a></li>
   </ul></li>
-  <li><a href="#merge-conflicts-a-disciplined-resolution-playbook" id="toc-merge-conflicts-a-disciplined-resolution-playbook" class="nav-link" data-scroll-target="#merge-conflicts-a-disciplined-resolution-playbook"><span class="header-section-number">31.9</span> Merge conflicts: a disciplined resolution playbook</a>
+  <li><a href="#the-second-week-recover-set-aside-copy-and-replay" id="toc-the-second-week-recover-set-aside-copy-and-replay" class="nav-link" data-scroll-target="#the-second-week-recover-set-aside-copy-and-replay"><span class="header-section-number">31.9</span> The second week: recover, set aside, copy, and replay</a>
+  <ul class="collapse">
+  <li><a href="#the-rule-underneath-all-four" id="toc-the-rule-underneath-all-four" class="nav-link" data-scroll-target="#the-rule-underneath-all-four">The rule underneath all four</a></li>
+  <li><a href="#git-reflog-the-undo-for-your-undos" id="toc-git-reflog-the-undo-for-your-undos" class="nav-link" data-scroll-target="#git-reflog-the-undo-for-your-undos"><code>git reflog</code>: the undo for your undos</a></li>
+  <li><a href="#git-stash-set-work-aside-without-committing" id="toc-git-stash-set-work-aside-without-committing" class="nav-link" data-scroll-target="#git-stash-set-work-aside-without-committing"><code>git stash</code>: set work aside without committing</a></li>
+  <li><a href="#git-cherry-pick-copy-one-commit-to-another-branch" id="toc-git-cherry-pick-copy-one-commit-to-another-branch" class="nav-link" data-scroll-target="#git-cherry-pick-copy-one-commit-to-another-branch"><code>git cherry-pick</code>: copy one commit to another branch</a></li>
+  <li><a href="#git-rebase-replay-your-branch-on-top-of-main" id="toc-git-rebase-replay-your-branch-on-top-of-main" class="nav-link" data-scroll-target="#git-rebase-replay-your-branch-on-top-of-main"><code>git rebase</code>: replay your branch on top of <code>main</code></a></li>
+  <li><a href="#tidy-a-branch-before-review-git-rebase--i" id="toc-tidy-a-branch-before-review-git-rebase--i" class="nav-link" data-scroll-target="#tidy-a-branch-before-review-git-rebase--i">Tidy a branch before review: <code>git rebase -i</code></a></li>
+  </ul></li>
+  <li><a href="#merge-conflicts-a-disciplined-resolution-playbook" id="toc-merge-conflicts-a-disciplined-resolution-playbook" class="nav-link" data-scroll-target="#merge-conflicts-a-disciplined-resolution-playbook"><span class="header-section-number">31.10</span> Merge conflicts: a disciplined resolution playbook</a>
   <ul class="collapse">
   <li><a href="#what-a-conflict-is" id="toc-what-a-conflict-is" class="nav-link" data-scroll-target="#what-a-conflict-is">What a conflict is</a></li>
   <li><a href="#the-safe-sequence" id="toc-the-safe-sequence" class="nav-link" data-scroll-target="#the-safe-sequence">The safe sequence</a></li>
   <li><a href="#when-to-ask-for-help" id="toc-when-to-ask-for-help" class="nav-link" data-scroll-target="#when-to-ask-for-help">When to ask for help</a></li>
   </ul></li>
-  <li><a href="#special-considerations-for-data-science-projects" id="toc-special-considerations-for-data-science-projects" class="nav-link" data-scroll-target="#special-considerations-for-data-science-projects"><span class="header-section-number">31.10</span> Special considerations for data science projects</a>
+  <li><a href="#special-considerations-for-data-science-projects" id="toc-special-considerations-for-data-science-projects" class="nav-link" data-scroll-target="#special-considerations-for-data-science-projects"><span class="header-section-number">31.11</span> Special considerations for data science projects</a>
   <ul class="collapse">
   <li><a href="#gitignore-hygiene" id="toc-gitignore-hygiene" class="nav-link" data-scroll-target="#gitignore-hygiene"><code>.gitignore</code> hygiene</a></li>
   <li><a href="#notebooks-in-git" id="toc-notebooks-in-git" class="nav-link" data-scroll-target="#notebooks-in-git">Notebooks in Git</a></li>
   <li><a href="#large-files-and-datasets" id="toc-large-files-and-datasets" class="nav-link" data-scroll-target="#large-files-and-datasets">Large files and datasets</a></li>
   <li><a href="#releases-and-tags-optional" id="toc-releases-and-tags-optional" class="nav-link" data-scroll-target="#releases-and-tags-optional">Releases and tags (optional)</a></li>
   </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">31.11</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">31.12</span> Worked examples (outline)</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">31.12</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples-outline" id="toc-worked-examples-outline" class="nav-link" data-scroll-target="#worked-examples-outline"><span class="header-section-number">31.13</span> Worked examples (outline)</a>
   <ul class="collapse">
   <li><a href="#the-daily-loop" id="toc-the-daily-loop" class="nav-link" data-scroll-target="#the-daily-loop">The daily loop</a></li>
   <li><a href="#branch-pr-workflow" id="toc-branch-pr-workflow" class="nav-link" data-scroll-target="#branch-pr-workflow">Branch + PR workflow</a></li>
   <li><a href="#resolve-a-merge-conflict" id="toc-resolve-a-merge-conflict" class="nav-link" data-scroll-target="#resolve-a-merge-conflict">Resolve a merge conflict</a></li>
   <li><a href="#fork-contribution" id="toc-fork-contribution" class="nav-link" data-scroll-target="#fork-contribution">Fork contribution</a></li>
+  <li><a href="#recover-from-a-bad-reset" id="toc-recover-from-a-bad-reset" class="nav-link" data-scroll-target="#recover-from-a-bad-reset">Recover from a bad reset</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">31.13</span> Templates</a>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">31.14</span> Templates</a>
   <ul class="collapse">
   <li><a href="#template-a-commit-message" id="toc-template-a-commit-message" class="nav-link" data-scroll-target="#template-a-commit-message">Template A: Commit message</a></li>
   <li><a href="#template-b-pull-request-description" id="toc-template-b-pull-request-description" class="nav-link" data-scroll-target="#template-b-pull-request-description">Template B: Pull request description</a></li>
   <li><a href="#template-c-review-comment-taxonomy" id="toc-template-c-review-comment-taxonomy" class="nav-link" data-scroll-target="#template-c-review-comment-taxonomy">Template C: Review comment taxonomy</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">31.14</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">31.15</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-common-commands-student-set" id="toc-quick-reference-common-commands-student-set" class="nav-link" data-scroll-target="#quick-reference-common-commands-student-set"><span class="header-section-number">31.16</span> Quick reference: common commands (student set)</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">31.15</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">31.16</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-common-commands-student-set" id="toc-quick-reference-common-commands-student-set" class="nav-link" data-scroll-target="#quick-reference-common-commands-student-set"><span class="header-section-number">31.17</span> Quick reference: common commands (student set)</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/version-control.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -815,7 +825,7 @@ window.Quarto = {
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/version-control.png" class="img-fluid" alt="Fetch meme: Stop trying to make pull requests happen, it’s not going to happen."></p>
 </div>
-<p>Version control is the safety system for technical work. <a href="https://git-scm.com/doc">Git</a> records a history of changes so you can recover, compare, and collaborate without overwriting each other. <a href="https://docs.github.com/en">GitHub</a> adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices.</p>
+<p>Version control is the safety system for technical work. <a href="https://git-scm.com/doc">Git</a> records a history of changes so you can recover, compare, and collaborate without overwriting each other. <a href="https://docs.github.com/en">GitHub</a> adds shared hosting, review workflows, and discussion tools. This chapter teaches novice-friendly Git fundamentals and the everyday GitHub workflows students need: pushing and pulling, branches and merges, pull requests, forks, and review/commenting practices, followed by the “second week” tools for getting lost work back and reshaping a branch before review.</p>
 </section>
 <section id="learning-objectives" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
@@ -828,6 +838,7 @@ window.Quarto = {
 <li><p>Work with remotes (<code>origin</code>, <code>upstream</code>) and synchronize using fetch/pull/push.</p></li>
 <li><p>Use GitHub to open a pull request, respond to feedback, and merge.</p></li>
 <li><p>Resolve common merge conflicts with a disciplined playbook.</p></li>
+<li><p>Recover lost commits with the reflog, set unfinished work aside with <code>git stash</code>, copy a commit with <code>git cherry-pick</code>, and rebase or tidy a branch nobody else has pulled.</p></li>
 <li><p>Use forks for contributing to projects you do not control.</p></li>
 <li><p>Write good commit messages and PR descriptions; comment constructively in reviews.</p></li>
 </ol>
@@ -976,7 +987,7 @@ git commit       →  history</code></pre>
 <section id="merge-vs-rebase-novice-policy" class="level3">
 <h3 class="anchored" data-anchor-id="merge-vs-rebase-novice-policy">Merge vs rebase (novice policy)</h3>
 <p>When you are ready to integrate your branch with <code>main</code>, Git gives you two strategies. A <strong>merge</strong> creates a new commit — the <em>merge commit</em> — that ties the two branches together and preserves the full history of what each branch did in parallel. A <strong>rebase</strong> rewrites your branch’s commits so they appear to have been created <em>on top of</em> the latest <code>main</code>, producing a linear history with no branch points. The result is cleaner-looking but the history is edited: the commit hashes change, and the original order of events is gone.</p>
-<p>For student work, use <strong>merges</strong> by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the “cluttered” history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (<code>git rebase</code> on a branch that other people have already pulled can destroy their work), and the handbook’s advice is to defer that skill until a specific project policy asks for it. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.</p>
+<p>For student work, use <strong>merges</strong> by default. Merges are easier to reason about, they never rewrite commits anyone else might have pulled, and the “cluttered” history they produce is not actually a problem — it is an honest record of how the work happened. Rebase is a powerful tool once you understand it, but it has sharp edges (<code>git rebase</code> on a branch that other people have already pulled can destroy their work), and the handbook’s advice is to defer that skill until a specific project policy asks for it. When one does, “The second week” below shows how. If your instructor or team prefers rebase-and-merge, follow their policy; otherwise, stay with merges.</p>
 </section>
 <section id="undo-safely-intro" class="level3">
 <h3 class="anchored" data-anchor-id="undo-safely-intro">Undo safely (intro)</h3>
@@ -1101,8 +1112,122 @@ Figure&nbsp;31.2: This book’s own repository on GitHub, signed out, in Septemb
 <p>Once your local and forked <code>main</code> branches are current, you can branch off them with confidence. If you have a long-lived feature branch, merge the updated <code>main</code> into it the same day you see upstream has moved. Resolving a small conflict today is orders of magnitude easier than resolving a month’s worth of accumulated drift when you are trying to get a PR over the finish line.</p>
 </section>
 </section>
-<section id="merge-conflicts-a-disciplined-resolution-playbook" class="level2" data-number="31.9">
-<h2 data-number="31.9" class="anchored" data-anchor-id="merge-conflicts-a-disciplined-resolution-playbook"><span class="header-section-number">31.9</span> Merge conflicts: a disciplined resolution playbook</h2>
+<section id="the-second-week-recover-set-aside-copy-and-replay" class="level2" data-number="31.9">
+<h2 data-number="31.9" class="anchored" data-anchor-id="the-second-week-recover-set-aside-copy-and-replay"><span class="header-section-number">31.9</span> The second week: recover, set aside, copy, and replay</h2>
+<p>Once the daily loop (edit, stage, commit, push) is second nature, a different set of problems shows up. You reset a branch and lose two commits you wanted. You need to switch branches in the middle of an edit. A fix you made on one branch is needed on another today. A project asks you to rebase your pull request. This section covers the four commands for those moments: <code>git reflog</code>, <code>git stash</code>, <code>git cherry-pick</code>, and <code>git rebase</code>.</p>
+<p>The transcripts below come from a small practice repository, <code>thesis-analysis</code>, with a <code>main</code> branch and a <code>plots</code> branch. Your commit hashes will differ.</p>
+<section id="the-rule-underneath-all-four" class="level3">
+<h3 class="anchored" data-anchor-id="the-rule-underneath-all-four">The rule underneath all four</h3>
+<p>Two of these commands, <code>cherry-pick</code> and <code>rebase</code>, make <em>new</em> commits that copy old ones, with new hashes. That is harmless on a branch only you have, and damaging on a branch someone else has already pulled, because their copy still has the old commits. The rule from “Undo safely” above applies to everything in this section: <strong>rewrite only history that nobody else has.</strong> A branch you pushed for a pull request that nobody else has checked out is still yours; <code>main</code> never is.</p>
+</section>
+<section id="git-reflog-the-undo-for-your-undos" class="level3">
+<h3 class="anchored" data-anchor-id="git-reflog-the-undo-for-your-undos"><code>git reflog</code>: the undo for your undos</h3>
+<p>Git keeps a private diary of every place your branch has pointed: each commit, reset, switch, merge, and rebase. That diary is the <strong>reflog</strong>, and it is what makes most Git “disasters” recoverable. Suppose you meant to undo one commit and typed <code>HEAD~2</code> instead:</p>
+<pre class="text"><code>$ git log --oneline
+b75f6dc Write cleaned data to CSV
+6f23bac Drop rows with missing age
+122cf4c Add cleaning script
+5970f03 Add README
+$ git reset --hard HEAD~2
+HEAD is now at 122cf4c Add cleaning script</code></pre>
+<p>The two newest commits are gone from <code>git log</code>, but not from the reflog:</p>
+<pre class="text"><code>$ git reflog
+122cf4c HEAD@{0}: reset: moving to HEAD~2
+b75f6dc HEAD@{1}: commit: Write cleaned data to CSV
+6f23bac HEAD@{2}: commit: Drop rows with missing age
+122cf4c HEAD@{3}: commit: Add cleaning script
+5970f03 HEAD@{4}: commit (initial): Add README
+$ git reset --hard b75f6dc
+HEAD is now at b75f6dc Write cleaned data to CSV</code></pre>
+<p>Read the reflog from the top: the newest entry is the mistake, and the line below it is where you were just before. Resetting to that hash puts both commits back. If you’d rather look before you leap, <code>git switch -c rescue b75f6dc</code> makes a new branch at the lost commit and leaves your current branch alone.</p>
+<p>The reflog has limits worth knowing. It only records <em>commits</em>: edits you never committed aren’t in it, which is one more reason to commit often. It lives only on your computer, so it isn’t pushed and a fresh clone starts with an empty one. And Git eventually cleans it up; by default, a commit nothing else points to can be recovered for about a month.</p>
+</section>
+<section id="git-stash-set-work-aside-without-committing" class="level3">
+<h3 class="anchored" data-anchor-id="git-stash-set-work-aside-without-committing"><code>git stash</code>: set work aside without committing</h3>
+<p>Git won’t let you switch branches if the switch would overwrite changes you haven’t committed:</p>
+<pre class="text"><code>$ git switch main
+error: Your local changes to the following files would be overwritten by checkout:
+    plots.py
+Please commit your changes or stash them before you switch branches.
+Aborting</code></pre>
+<p>When the work isn’t ready to commit, <strong>stash</strong> it: Git saves your uncommitted changes, cleans the working tree, and gives the changes back when you ask.</p>
+<pre class="text"><code>$ git stash push -m "half-done axis labels"
+Saved working directory and index state On plots: half-done axis labels
+$ git stash list
+stash@{0}: On plots: half-done axis labels
+$ git switch main
+Switched to branch 'main'</code></pre>
+<p>Do what you needed to do on <code>main</code>, come back with <code>git switch plots</code>, and run <code>git stash pop</code> to get the changes back and remove them from the stash. Always add a message with <code>-m</code>, because a stash list of five entries named “WIP on plots” is no help a week later. And treat the stash as a coat check, not a closet: anything you mean to keep for more than a day belongs in a commit on a branch.</p>
+</section>
+<section id="git-cherry-pick-copy-one-commit-to-another-branch" class="level3">
+<h3 class="anchored" data-anchor-id="git-cherry-pick-copy-one-commit-to-another-branch"><code>git cherry-pick</code>: copy one commit to another branch</h3>
+<p>Sometimes one commit on a branch is needed elsewhere right away. You’re working on <code>plots</code> and fix a real bug in <code>clean.py</code> there (negative ages were getting through), and <code>main</code> needs the fix now, before <code>plots</code> is ready to merge. <code>git cherry-pick</code> copies a single commit onto the branch you’re on:</p>
+<pre class="text"><code>$ git log --oneline -1
+3543085 Drop negative ages
+$ git switch main
+Switched to branch 'main'
+$ git cherry-pick 3543085
+[main da9a91d] Drop negative ages
+ Date: Fri Sep 25 00:37:56 2026 +0000
+ 1 file changed, 1 insertion(+)</code></pre>
+<p>The copy on <code>main</code> has a new hash (<code>da9a91d</code>), because a commit’s hash covers its parent too. If the copied change conflicts with <code>main</code>, resolve it with the same playbook as a merge conflict, then run <code>git cherry-pick --continue</code>, or <code>git cherry-pick --abort</code> to back out. Cherry-pick is for the occasional commit, not a habit: if you find yourself copying a series of commits between branches, the branches probably want to be merged.</p>
+</section>
+<section id="git-rebase-replay-your-branch-on-top-of-main" class="level3">
+<h3 class="anchored" data-anchor-id="git-rebase-replay-your-branch-on-top-of-main"><code>git rebase</code>: replay your branch on top of <code>main</code></h3>
+<p>While you worked on <code>plots</code>, <code>main</code> moved on. <code>git log --graph</code> shows the two lines of work:</p>
+<pre class="text"><code>$ git log --oneline --graph --all
+* 41a3245 Document run order
+* da9a91d Drop negative ages
+| * 3543085 Drop negative ages
+| * 49de67a Label axes
+| * e441bb4 Start plotting script
+|/
+* b75f6dc Write cleaned data to CSV
+...</code></pre>
+<p>The chapter’s default is to merge <code>main</code> into your branch (see “Merge vs rebase” above). When a project asks you to <strong>rebase</strong> instead, Git sets your branch’s commits aside, moves the branch to the tip of <code>main</code>, and replays the commits there one at a time:</p>
+<pre class="text"><code>$ git switch plots
+Switched to branch 'plots'
+$ git rebase main
+warning: skipped previously applied commit 3543085
+hint: use --reapply-cherry-picks to include skipped commits
+hint: Disable this message with "git config advice.skippedCherryPicks false"
+Successfully rebased and updated refs/heads/plots.
+$ git log --oneline -4
+15c9c7b Label axes
+2ad1d07 Start plotting script
+41a3245 Document run order
+da9a91d Drop negative ages</code></pre>
+<p>Your work now sits on top of the latest <code>main</code>, as if you had started it today, and the history is one straight line. Git noticed that “Drop negative ages” was already on <code>main</code> (the cherry-pick) and skipped it. Every replayed commit has a new hash. That is why rebasing a branch someone else has pulled causes trouble, and why pushing a rebased branch you’d already pushed needs <code>git push --force-with-lease</code>, the careful form of force-push from the warning above.</p>
+<p>If a replayed commit conflicts, the rebase stops at that commit:</p>
+<pre class="text"><code>$ git rebase main
+...
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+error: could not apply 866f67a... Note plots order
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm &lt;conflicted_files&gt;", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".</code></pre>
+<p>Fix the file as in the merge-conflict playbook below, <code>git add</code> it, and run <code>git rebase --continue</code>. A rebase can stop more than once, once per commit that conflicts. If it gets confusing, <code>git rebase --abort</code> puts everything back as it was before you started. If you’ve already finished and don’t like the result, <code>git reset --hard ORIG_HEAD</code> undoes the whole rebase, because Git saves where your branch was in <code>ORIG_HEAD</code> before a rebase starts. The reflog has it too.</p>
+</section>
+<section id="tidy-a-branch-before-review-git-rebase--i" class="level3">
+<h3 class="anchored" data-anchor-id="tidy-a-branch-before-review-git-rebase--i">Tidy a branch before review: <code>git rebase -i</code></h3>
+<p>A branch often ends up with commits like “Add title”, “fix typo”, and “wip”. Before you open a pull request, an <strong>interactive rebase</strong> lets you combine, reword, reorder, or drop commits that haven’t been shared yet. <code>git rebase -i main</code> opens your editor with one line per commit on the branch, oldest first:</p>
+<pre class="text"><code>pick d055f5b Start plotting script
+pick fb5670f Label axes
+pick 181ef6f Add title
+pick 0b5c740 fix typo
+pick 8831ba3 wip</code></pre>
+<p>Below those lines, the file lists every command it accepts. Change <code>pick</code> to <code>fixup</code> (or <code>f</code>) on the last two lines to fold them into “Add title”, keeping only its message; <code>squash</code> does the same but lets you edit the combined message, <code>reword</code> changes one message, and <code>drop</code> deletes a commit. Save and close the editor, and Git replays the branch:</p>
+<pre class="text"><code>$ git log --oneline -3
+afe7f31 Add title
+fb5670f Label axes
+d055f5b Start plotting script</code></pre>
+<p>Everything about rebasing applies here too: new hashes, <code>--force-with-lease</code> if the branch was already pushed, and <code>ORIG_HEAD</code> or the reflog if you want the old version back. Many projects squash a pull request’s commits when they merge it anyway (see “PR merge strategies” above), so tidying is a courtesy to your reviewers, not a requirement. <em>Pro Git</em>’s chapter on <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History">rewriting history</a> covers the rest of what interactive rebase can do.</p>
+</section>
+</section>
+<section id="merge-conflicts-a-disciplined-resolution-playbook" class="level2" data-number="31.10">
+<h2 data-number="31.10" class="anchored" data-anchor-id="merge-conflicts-a-disciplined-resolution-playbook"><span class="header-section-number">31.10</span> Merge conflicts: a disciplined resolution playbook</h2>
 <section id="what-a-conflict-is" class="level3">
 <h3 class="anchored" data-anchor-id="what-a-conflict-is">What a conflict is</h3>
 <p>A merge conflict is what happens when two branches both changed the same lines of the same file in incompatible ways, and Git cannot tell which change you want to keep. Conflicts are not a sign that something has gone wrong — they are a normal part of any collaboration where two people edit the same area of the codebase. The right response is “okay, time to resolve this,” not panic.</p>
@@ -1114,13 +1239,13 @@ Figure&nbsp;31.2: This book’s own repository on GitHub, signed out, in Septemb
 CONFLICT (content): Merge conflict in src/cleaning.py
 Automatic merge failed; fix conflicts and then commit the result.</code></pre>
 <p><strong>Second, run <code>git status</code></strong> to confirm the list of conflicted files, then open each one in your editor. Conflicted files contain little markers that show you both versions of every contested region:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="op">=======</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"date"</span>])</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> feature<span class="op">-</span>strict<span class="op">-</span>cleaning</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="op">=======</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"date"</span>])</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> feature<span class="op">-</span>strict<span class="op">-</span>cleaning</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The lines between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> are the version that was on your branch; the lines between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-strict-cleaning</code> are the version coming in from the other branch. <strong>Third, decide the correct combined content</strong> — and “correct” almost never means “pick one side wholesale.” Read both versions, understand what each was trying to do, and write the merged version that preserves both intents:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"date"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"date"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Delete the conflict markers when you are done — they are not valid code and Git will not magically remove them for you.</p>
 <p><strong>Fourth, stage the resolved files</strong> with <code>git add</code>. Git uses staging as the signal that “I have finished resolving this file.” <strong>Fifth, run <code>git commit</code></strong> (or <code>git merge --continue</code>) to finalize the merge. Git produces a default commit message describing the merge; you can usually accept it. <strong>Sixth and most important, run a smoke test</strong> — execute the code, run any tests, open the notebook — to confirm that your manually-merged version actually works. A “successful” merge that produces broken code is the most common way for conflicts to silently introduce bugs.</p>
 </section>
@@ -1132,8 +1257,8 @@ Automatic merge failed; fix conflicts and then commit the result.</code></pre>
 </ul>
 </section>
 </section>
-<section id="special-considerations-for-data-science-projects" class="level2" data-number="31.10">
-<h2 data-number="31.10" class="anchored" data-anchor-id="special-considerations-for-data-science-projects"><span class="header-section-number">31.10</span> Special considerations for data science projects</h2>
+<section id="special-considerations-for-data-science-projects" class="level2" data-number="31.11">
+<h2 data-number="31.11" class="anchored" data-anchor-id="special-considerations-for-data-science-projects"><span class="header-section-number">31.11</span> Special considerations for data science projects</h2>
 <section id="gitignore-hygiene" class="level3">
 <h3 class="anchored" data-anchor-id="gitignore-hygiene"><code>.gitignore</code> hygiene</h3>
 <p>Data science projects accumulate files that <em>should not</em> be in Git — environment folders, caches, temporary outputs, secrets — and the tool for keeping them out is <code>.gitignore</code>. The file sits at the root of your repository and lists patterns that Git will refuse to track. Add it as one of your first commits, and adjust it as the project grows.</p>
@@ -1182,21 +1307,21 @@ data/processed/
 <section id="releases-and-tags-optional" class="level3">
 <h3 class="anchored" data-anchor-id="releases-and-tags-optional">Releases and tags (optional)</h3>
 <p>A <strong>tag</strong> is a name you attach to a specific commit that does not move as you continue to commit. Branches move; tags do not. Git tags are how you mark “this is the exact version of the project I submitted for the midterm” or “this is the version of the code used in the published figure,” so that you — or anyone else — can come back months later and reproduce exactly that state:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v1.0-midterm <span class="at">-m</span> <span class="st">"Midterm submission, 2025-03-10"</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin v1.0-midterm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v1.0-midterm <span class="at">-m</span> <span class="st">"Midterm submission, 2025-03-10"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin v1.0-midterm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>On GitHub, you can promote a tag to a <strong>release</strong>, which adds release notes and optional downloadable files (like a zipped data snapshot or a compiled PDF). Releases are the right mechanism for citation: a paper or report can reference <code>v1.0-midterm</code> and a reviewer can click through to the exact code that produced the results. You do not need releases for day-to-day work, but they are cheap to create and worth knowing about for the moments they matter.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="31.11">
-<h2 data-number="31.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">31.11</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="31.12">
+<h2 data-number="31.12" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">31.12</span> Stakes and politics</h2>
 <p>Almost everyone who learns Git has a story about “ruining” a repository with a force-push or a rebase they didn’t understand. Git is worth that trouble; it is one of the most useful skills in this handbook. But the trouble falls unevenly, and so does the power behind the one platform most people use Git through.</p>
 <p>First, <em>Git’s mental model is its own gatekeeper</em>. The distributed, branching, hash-tagged commit graph rewards one particular way of thinking and punishes everything else, and those horror stories reflect a real cognitive load that more visual tools (Google Docs’s revision history, Word’s track changes) impose far less. Fluency with Git is a real skill, and it is also a credentialing mechanism.</p>
 <p>Second, <em>GitHub is not Git</em>. Git is open and decentralized; GitHub is a single private platform now owned by Microsoft, which also owns the dominant editor (VS Code), substantial chunks of the LLM ecosystem (Copilot, OpenAI partnership), and the messaging tool many teams use for code review (Teams). The sentence “if it’s not on GitHub, it doesn’t exist” is true in many job markets and false in important ones, and the migration of open-source projects to a single corporate host concentrates a kind of infrastructural power that is uncomfortable to depend on. GitLab, Codeberg, and self-hosted Gitea exist precisely so that Git the protocol does not collapse into one company’s product.</p>
 <p>Third, <em>“if it’s not in Git, it didn’t happen”</em> is a useful slogan that quietly excludes work that does not fit Git’s model: dataset curation, oral knowledge, design conversations, mentoring labor. As with project management, the visible kind of work gets credit; the rest does not.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a tutorial says “host it on GitHub,” ask what changes if the platform does — and which work is still real even when Git cannot represent it.</p>
 </section>
-<section id="worked-examples-outline" class="level2" data-number="31.12">
-<h2 data-number="31.12" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">31.12</span> Worked examples (outline)</h2>
+<section id="worked-examples-outline" class="level2" data-number="31.13">
+<h2 data-number="31.13" class="anchored" data-anchor-id="worked-examples-outline"><span class="header-section-number">31.13</span> Worked examples (outline)</h2>
 <section id="the-daily-loop" class="level3">
 <h3 class="anchored" data-anchor-id="the-daily-loop">The daily loop</h3>
 <ul>
@@ -1221,9 +1346,15 @@ data/processed/
 <li>Fork, clone, add upstream, sync, open PR to upstream.</li>
 </ul>
 </section>
+<section id="recover-from-a-bad-reset" class="level3">
+<h3 class="anchored" data-anchor-id="recover-from-a-bad-reset">Recover from a bad reset</h3>
+<ul>
+<li>Make three commits, run <code>git reset --hard HEAD~2</code>, find the lost commit in <code>git reflog</code>, and reset back to it (or branch from it).</li>
+</ul>
 </section>
-<section id="templates" class="level2" data-number="31.13">
-<h2 data-number="31.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">31.13</span> Templates</h2>
+</section>
+<section id="templates" class="level2" data-number="31.14">
+<h2 data-number="31.14" class="anchored" data-anchor-id="templates"><span class="header-section-number">31.14</span> Templates</h2>
 <section id="template-a-commit-message" class="level3">
 <h3 class="anchored" data-anchor-id="template-a-commit-message">Template A: Commit message</h3>
 <pre><code> &lt;Short summary in imperative mood&gt;
@@ -1264,18 +1395,19 @@ Question: clarify intent, edge cases
 Nit: formatting, naming (non-blocking)</code></pre>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="31.14">
-<h2 data-number="31.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">31.14</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="31.15">
+<h2 data-number="31.15" class="anchored" data-anchor-id="exercises"><span class="header-section-number">31.15</span> Exercises</h2>
 <ol type="1">
 <li><p>Initialize a repo, add a README and <code>.gitignore</code>, and make three meaningful commits.</p></li>
 <li><p>Create a branch, make changes, push it, and open a PR.</p></li>
 <li><p>Review a classmate’s PR using the comment taxonomy; request one change and approve after revision.</p></li>
 <li><p>Create a merge conflict deliberately and resolve it using the playbook.</p></li>
 <li><p>Fork a repository, add an upstream remote, sync it, and open a PR from your fork.</p></li>
+<li><p>In a practice repository, lose two commits with <code>git reset --hard HEAD~2</code> and get them back with <code>git reflog</code>. Then make three small commits on a branch, fold them into one with <code>git rebase -i</code>, and undo the rebase with <code>git reset --hard ORIG_HEAD</code>.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="31.15">
-<h2 data-number="31.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">31.15</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="31.16">
+<h2 data-number="31.16" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">31.16</span> One-page checklist</h2>
 <ul>
 <li><p>I understand working tree vs staging vs commits.</p></li>
 <li><p>I can create branches and keep <code>main</code> stable.</p></li>
@@ -1283,11 +1415,12 @@ Nit: formatting, naming (non-blocking)</code></pre>
 <li><p>I can open, review, and merge pull requests.</p></li>
 <li><p>I can use forks and keep them synchronized with upstream.</p></li>
 <li><p>I can resolve merge conflicts methodically.</p></li>
+<li><p>I know <code>git reflog</code> can recover commits I thought I lost, and I rewrite history (rebase, cherry-pick, force-push) only on branches nobody else has pulled.</p></li>
 <li><p>I follow hygiene: <code>.gitignore</code>, no secrets, controlled notebook diffs.</p></li>
 </ul>
 </section>
-<section id="quick-reference-common-commands-student-set" class="level2" data-number="31.16">
-<h2 data-number="31.16" class="anchored" data-anchor-id="quick-reference-common-commands-student-set"><span class="header-section-number">31.16</span> Quick reference: common commands (student set)</h2>
+<section id="quick-reference-common-commands-student-set" class="level2" data-number="31.17">
+<h2 data-number="31.17" class="anchored" data-anchor-id="quick-reference-common-commands-student-set"><span class="header-section-number">31.17</span> Quick reference: common commands (student set)</h2>
 <pre><code># create/clone
 
 git init
@@ -1321,7 +1454,19 @@ git push -u origin &lt;branch&gt;
 # merge/conflicts
 
 git merge &lt;branch&gt;
-git merge --abort</code></pre>
+git merge --abort
+
+# second week
+
+git reflog
+git stash push -m "..."
+git stash pop
+git cherry-pick &lt;sha&gt;
+git rebase main
+git rebase --continue
+git rebase --abort
+git rebase -i main
+git push --force-with-lease</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1336,7 +1481,7 @@ git merge --abort</code></pre>
 <li>Scott Chacon and Ben Straub, <a href="https://git-scm.com/book/en/v2"><em>Pro Git</em></a> — the free, authoritative book on Git, written by one of its maintainers; chapters 1–3 cover the daily loop, chapters 4–7 cover collaboration and internals.</li>
 <li>GitHub, <a href="https://docs.github.com/en/get-started/using-git/about-git">Getting started with Git</a> — beginner-friendly overview of Git concepts paired with GitHub features.</li>
 <li>GitHub Education, <a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet (PDF)</a> — printable reference for everyday commands.</li>
-<li>Julia Evans, <a href="https://ohshitgit.com/">Oh shit, git!?!</a> — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.</li>
+<li>Katie Sylor-Miller, <a href="https://ohshitgit.com/">Oh shit, git!?!</a> — short, blunt recipes for the moments when Git appears to have eaten your work; the right page to bookmark before you hit your first detached HEAD.</li>
 <li><a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">Git Internals</a> — the chapter that demystifies the object database; the moment Git stops feeling like magic.</li>
 <li><a href="https://about.gitlab.com/">GitLab</a> and <a href="https://codeberg.org/">Codeberg</a> — open-core and non-profit alternatives to GitHub; useful to know exist when the “Stakes and politics” point about platform concentration above lands.</li>
 <li>Software Carpentry, <a href="https://swcarpentry.github.io/git-novice/">Version Control with Git</a> — a complete beginner workshop with exercises; pairs well with this chapter as a hands-on follow-up.</li>
