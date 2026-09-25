@@ -594,7 +594,7 @@ The `cd` puts you at the project root, so every relative path resolves the same 
 
 After a command works, write down what you ran. That sounds like overkill until you try to recreate a result three weeks later and realize Tuesday's command isn't quite Wednesday's, which had a slightly different flag. Keep a plain-text record of the commands behind each result that matters, in the project's `README.md` or a `notes.txt` beside the output:
 
-```markdown
+````markdown
 ## How to reproduce data/processed/cleaned.csv
 
 1. Ensure the virtual environment is active:
@@ -613,7 +613,7 @@ After a command works, write down what you ran. That sounds like overkill until 
    ```
 
 Produces: `data/processed/cleaned.csv` (expected ~5 MB, ~18,000 rows).
-```
+````
 
 A useful log records the **inputs** (which files, which environment), the **command itself** with every flag, and the **outputs** (what should exist afterward, and roughly how big). With those, anyone, including future you, can retrace the work. Keep it in version control next to the code, because a script is only as reproducible as the instructions for running it.
 
