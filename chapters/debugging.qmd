@@ -120,14 +120,14 @@ A common first mistake is trying to "fix" a library's code in `site-packages` be
 
 You don't need to memorize Python's [built-in exceptions](https://docs.python.org/3/library/exceptions.html). It's enough to recognize a handful of families, because each one tells you where to look first:
 
-| Family | Examples | What it usually means | Your first move |
-|---|---|---|---|
-| Name and scope | `NameError` | A variable Python has never heard of: a typo, a missing import, or a notebook cell you haven't run yet | Check the spelling, and run the cells above |
-| Type mismatch | `TypeError` | An operation on the wrong kind of object: adding text to a number, calling something that isn't a function, passing the wrong number of arguments | `print(type(x))` on each value involved |
-| Index and key | `IndexError`, `KeyError` | Reaching for a list item, dictionary key, or DataFrame column that doesn't exist: often a column-name typo or an off-by-one loop | `print(df.columns.tolist())` |
-| File and path | `FileNotFoundError`, `PermissionError` | The working directory or permissions, not the code | `pwd` and `ls` |
-| Parsing and format | `ValueError` | A value of the right type but the wrong shape: `'N/A'` where a number belongs, or a date in a format Python can't read | Look at the exact value named in the message |
-| Import and environment | `ModuleNotFoundError` | Which Python is running, and what's installed in *that* Python (see @sec-pkg-mgmt) | `which python` and `pip list` |
+| Family | What it usually means | Your first move |
+|---|---|---|
+| Name and scope (`NameError`) | A variable Python has never heard of: a typo, a missing import, or a notebook cell you haven't run yet | Check the spelling, and run the cells above |
+| Type mismatch (`TypeError`) | An operation on the wrong kind of object: adding text to a number, calling something that isn't a function, passing the wrong number of arguments | `print(type(x))` on each value involved |
+| Index and key (`IndexError`, `KeyError`) | Reaching for a list item, dictionary key, or DataFrame column that doesn't exist: often a column-name typo or an off-by-one loop | `print(df.columns.tolist())` |
+| File and path (`FileNotFoundError`, `PermissionError`) | The working directory or permissions, not the code | `pwd` and `ls` |
+| Parsing and format (`ValueError`) | A value of the right type but the wrong shape: `'N/A'` where a number belongs, or a date in a format Python can't read | Look at the exact value named in the message |
+| Import and environment (`ModuleNotFoundError`) | Which Python is running, and what's installed in *that* Python (see @sec-pkg-mgmt) | `which python` and `pip list` |
 
 The table is useful precisely because the last column tells you *what to do next*, not just what went wrong. For a fuller tour of the common exceptions and how to read the frames around them, see @sec-tracebacks.
 
