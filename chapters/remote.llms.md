@@ -426,7 +426,7 @@ ssh -N -L 8888:localhost:8888 agandler@server.cs.example.edu
 
 Three details matter here. First, `--ip=127.0.0.1` (equivalently, `localhost`) tells Jupyter to listen only on the server’s loopback interface, which means no one on the network can reach it directly — only something that is already on the server can. This is the single most important security setting, because Jupyter has full access to your account, and a Jupyter server exposed on `0.0.0.0` is effectively a shell open to the world. Second, the tunnel gives *your* laptop a way to reach the loopback-only Jupyter through the encrypted SSH channel. Third, the `token` in the URL is what authenticates you to Jupyter — do not share URLs that include the token, and treat a leaked token the same as a leaked password.
 
-If the server already has a Jupyter service set up by admins (JupyterHub or similar), use that instead — it handles all of the above for you and is the safer default.
+If the server already has a Jupyter service set up by admins (JupyterHub or similar), use that instead — it handles all of the above for you and is the safer default. Hosted platforms such as Google Colab, Kaggle, and GitHub Codespaces skip the server entirely; [sec-jupyter](#sec-jupyter) covers what changes when you use one.
 
 ## 13.8 Cloud computing basics (what novices must know)
 
