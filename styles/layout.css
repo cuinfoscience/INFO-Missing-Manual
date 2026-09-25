@@ -1,0 +1,44 @@
+/* One page grid for every chapter.
+ *
+ * Quarto adds `slimcontent` to a page's <body> when the page has anything in the
+ * right margin: a figure caption (fig-cap-location: margin), a footnote
+ * (reference-location: margin), or a .column-margin block. A slimcontent page gets
+ * a narrower body column and a wider right sidebar than a page without margin
+ * content, so chapters with no figures or footnotes rendered 100 px wider in the
+ * body, with a 200 px table of contents instead of 300 px, and the layout jumped
+ * from chapter to chapter.
+ *
+ * This gives every docked page the slimcontent grid, copied from Quarto's own
+ * rule, so the body column (678 px at 1280, 699 px at 1440 and up) and the table
+ * of contents (300 px) are the same width everywhere. Below 992 px Quarto's two
+ * grids are already identical. Check with:
+ *   tools/shots/.venv/bin/python tools/layout-audit/audit.py widths
+ * If Quarto changes its grid, copy the new `body.docked.slimcontent .page-columns`
+ * rule from site_libs/bootstrap/bootstrap-*.min.css into this one.
+ */
+@media (min-width: 992px) {
+  body.docked:not(.slimcontent):not(.fullcontent):not(.listing) .page-columns {
+    grid-template-columns: [screen-start] 1.5em [screen-start-inset page-start] minmax(50px, 100px) [page-start-inset] 50px [body-start-outset] 50px [body-start] 1.5em [body-content-start] minmax(450px, calc(750px - 3em)) [body-content-end] 1.5em [body-end] 50px [body-end-outset] minmax(0px, 200px) [page-end-inset] 50px [page-end] 5fr [screen-end-inset] 1.5em [screen-end];
+  }
+}
+
+/* Long URLs printed as link text (a reference in the margin, a bare <https://...>)
+ * can't break at a space, so they pushed the page wider than the window and
+ * forced a sideways scroll. Let them break anywhere. */
+main a,
+#quarto-margin-sidebar a,
+.column-margin a {
+  overflow-wrap: anywhere;
+}
+
+/* Code shouldn't widen the page either. Inline code in a heading or paragraph
+ * (tracebacks' "TypeError: unsupported operand ..." headings) refused to wrap, and
+ * a long token in a code block (a URL, a hash) overflowed even with
+ * code-overflow: wrap. Both may now break where they must. */
+main :not(pre) > code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+main pre code {
+  overflow-wrap: anywhere;
+}

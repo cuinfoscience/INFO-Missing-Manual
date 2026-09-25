@@ -117,6 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../tools/chapter-meme/chapter-meme.css">
+<link rel="stylesheet" href="../styles/layout.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -667,31 +668,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#running-theme-data-you-have-not-validated-is-data-you-cannot-trust" id="toc-running-theme-data-you-have-not-validated-is-data-you-cannot-trust" class="nav-link" data-scroll-target="#running-theme-data-you-have-not-validated-is-data-you-cannot-trust">Running theme: data you have not validated is data you cannot trust</a></li>
-  <li><a href="#wide-vs.-tidy-data" id="toc-wide-vs.-tidy-data" class="nav-link" data-scroll-target="#wide-vs.-tidy-data"><span class="header-section-number">21.1</span> Wide vs.&nbsp;tidy data</a>
+  <li><a href="#why-read-this-chapter" id="toc-why-read-this-chapter" class="nav-link" data-scroll-target="#why-read-this-chapter">Why read this chapter</a></li>
+  <li><a href="#running-theme-data-you-havent-checked-is-data-you-cant-trust" id="toc-running-theme-data-you-havent-checked-is-data-you-cant-trust" class="nav-link" data-scroll-target="#running-theme-data-you-havent-checked-is-data-you-cant-trust">Running theme: data you haven’t checked is data you can’t trust</a></li>
+  <li><a href="#wide-and-tidy-the-shape-of-a-table" id="toc-wide-and-tidy-the-shape-of-a-table" class="nav-link" data-scroll-target="#wide-and-tidy-the-shape-of-a-table"><span class="header-section-number">21.1</span> Wide and tidy: the shape of a table</a></li>
+  <li><a href="#keep-the-raw-file-untouched" id="toc-keep-the-raw-file-untouched" class="nav-link" data-scroll-target="#keep-the-raw-file-untouched"><span class="header-section-number">21.2</span> Keep the raw file untouched</a></li>
+  <li><a href="#cleaning-one-decision-at-a-time" id="toc-cleaning-one-decision-at-a-time" class="nav-link" data-scroll-target="#cleaning-one-decision-at-a-time"><span class="header-section-number">21.3</span> Cleaning, one decision at a time</a></li>
+  <li><a href="#check-your-data-before-you-trust-it" id="toc-check-your-data-before-you-trust-it" class="nav-link" data-scroll-target="#check-your-data-before-you-trust-it"><span class="header-section-number">21.4</span> Check your data before you trust it</a></li>
+  <li><a href="#seven-snags-youll-meet-and-how-to-get-past-them" id="toc-seven-snags-youll-meet-and-how-to-get-past-them" class="nav-link" data-scroll-target="#seven-snags-youll-meet-and-how-to-get-past-them"><span class="header-section-number">21.5</span> Seven snags you’ll meet (and how to get past them)</a>
   <ul class="collapse">
-  <li><a href="#wide" id="toc-wide" class="nav-link" data-scroll-target="#wide">Wide</a></li>
-  <li><a href="#tidy-long" id="toc-tidy-long" class="nav-link" data-scroll-target="#tidy-long">Tidy (long)</a></li>
-  <li><a href="#the-three-rules-of-tidy-data" id="toc-the-three-rules-of-tidy-data" class="nav-link" data-scroll-target="#the-three-rules-of-tidy-data">The three rules of tidy data</a></li>
-  <li><a href="#when-to-use-wide" id="toc-when-to-use-wide" class="nav-link" data-scroll-target="#when-to-use-wide">When to use wide</a></li>
-  <li><a href="#converting-between-the-two" id="toc-converting-between-the-two" class="nav-link" data-scroll-target="#converting-between-the-two">Converting between the two</a></li>
-  </ul></li>
-  <li><a href="#the-standard-cleaning-pipeline" id="toc-the-standard-cleaning-pipeline" class="nav-link" data-scroll-target="#the-standard-cleaning-pipeline"><span class="header-section-number">21.2</span> The standard cleaning pipeline</a></li>
-  <li><a href="#raw-vs.-cleaned-data" id="toc-raw-vs.-cleaned-data" class="nav-link" data-scroll-target="#raw-vs.-cleaned-data"><span class="header-section-number">21.3</span> Raw vs.&nbsp;cleaned data</a></li>
-  <li><a href="#validation-lightweight-checks-that-catch-the-most-bugs" id="toc-validation-lightweight-checks-that-catch-the-most-bugs" class="nav-link" data-scroll-target="#validation-lightweight-checks-that-catch-the-most-bugs"><span class="header-section-number">21.4</span> Validation: lightweight checks that catch the most bugs</a>
-  <ul class="collapse">
-  <li><a href="#what-to-validate" id="toc-what-to-validate" class="nav-link" data-scroll-target="#what-to-validate">What to validate</a></li>
-  </ul></li>
-  <li><a href="#the-seven-most-common-friction-points" id="toc-the-seven-most-common-friction-points" class="nav-link" data-scroll-target="#the-seven-most-common-friction-points"><span class="header-section-number">21.5</span> The seven most common friction points</a>
-  <ul class="collapse">
-  <li><a href="#column-names-with-spaces-caps-and-punctuation" id="toc-column-names-with-spaces-caps-and-punctuation" class="nav-link" data-scroll-target="#column-names-with-spaces-caps-and-punctuation">1. Column names with spaces, caps, and punctuation</a></li>
-  <li><a href="#numeric-columns-read-as-strings" id="toc-numeric-columns-read-as-strings" class="nav-link" data-scroll-target="#numeric-columns-read-as-strings">2. Numeric columns read as strings</a></li>
-  <li><a href="#dates-read-as-strings" id="toc-dates-read-as-strings" class="nav-link" data-scroll-target="#dates-read-as-strings">3. Dates read as strings</a></li>
-  <li><a href="#missing-value-sentinels" id="toc-missing-value-sentinels" class="nav-link" data-scroll-target="#missing-value-sentinels">4. Missing-value sentinels</a></li>
-  <li><a href="#silent-duplication-from-a-bad-merge" id="toc-silent-duplication-from-a-bad-merge" class="nav-link" data-scroll-target="#silent-duplication-from-a-bad-merge">5. Silent duplication from a bad merge</a></li>
-  <li><a href="#implicit-dropping-of-nan-rows" id="toc-implicit-dropping-of-nan-rows" class="nav-link" data-scroll-target="#implicit-dropping-of-nan-rows">6. Implicit dropping of NaN rows</a></li>
-  <li><a href="#mixed-types-in-a-numeric-column" id="toc-mixed-types-in-a-numeric-column" class="nav-link" data-scroll-target="#mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</a></li>
+  <li><a href="#column-names-with-spaces-and-punctuation" id="toc-column-names-with-spaces-and-punctuation" class="nav-link" data-scroll-target="#column-names-with-spaces-and-punctuation">1. Column names with spaces and punctuation</a></li>
+  <li><a href="#numbers-that-are-secretly-text" id="toc-numbers-that-are-secretly-text" class="nav-link" data-scroll-target="#numbers-that-are-secretly-text">2. Numbers that are secretly text</a></li>
+  <li><a href="#dates-that-are-secretly-text" id="toc-dates-that-are-secretly-text" class="nav-link" data-scroll-target="#dates-that-are-secretly-text">3. Dates that are secretly text</a></li>
+  <li><a href="#codes-that-stand-for-missing" id="toc-codes-that-stand-for-missing" class="nav-link" data-scroll-target="#codes-that-stand-for-missing">4. Codes that stand for “missing”</a></li>
+  <li><a href="#a-merge-that-quietly-multiplies-rows" id="toc-a-merge-that-quietly-multiplies-rows" class="nav-link" data-scroll-target="#a-merge-that-quietly-multiplies-rows">5. A merge that quietly multiplies rows</a></li>
+  <li><a href="#rows-that-disappear-along-the-way" id="toc-rows-that-disappear-along-the-way" class="nav-link" data-scroll-target="#rows-that-disappear-along-the-way">6. Rows that disappear along the way</a></li>
+  <li><a href="#a-column-with-a-bit-of-everything" id="toc-a-column-with-a-bit-of-everything" class="nav-link" data-scroll-target="#a-column-with-a-bit-of-everything">7. A column with a bit of everything</a></li>
   </ul></li>
   <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">21.6</span> Stakes and politics</a></li>
   <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">21.7</span> Worked examples</a>
@@ -751,33 +742,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/tabular-data.png" class="img-fluid" alt="What’s in the box meme: What’s in the file?"></p>
 </div>
-<p>Before you can analyze a dataset, you have to shape it, clean it, and convince yourself it is what you think it is. Novices skip this step constantly — load a CSV, call <code>.describe()</code>, and start plotting. The results look fine. A week later, a subtle bug reveals that half the rows were duplicated by a bad merge, or a date column was parsed as strings, or a “total” column is the sum of all the other columns plus itself. The analysis is wrong and the rewrites are painful.</p>
-<p>This chapter is a field guide to the practices that catch those bugs early. It covers what shape your data should be in (wide vs.&nbsp;tidy), how to clean it without corrupting it, how to validate it with lightweight checks, and the specific friction points that burn the most student hours. It deliberately does not teach pandas syntax — that is <a href="pandas-basics.html" class="quarto-xref"><span>Chapter 22</span></a> — or SQL — that is <a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>. Instead it teaches the <em>principles</em> that apply regardless of tool, so that when you pick up a new library you already know what good looks like.</p>
-<p>Read this chapter before the first time you work with a dataset you did not generate yourself. It is short, but it will save you hours of “why is my answer wrong?” later.</p>
+<p>Here’s a story that happens every semester. You download a dataset, load it into pandas, run <code>.describe()</code>, and everything looks reasonable, so you start making charts. A week later, a number in your results looks odd. You dig in and discover that a merge quietly doubled half the rows, or that the date column was never really dates, or that the “total” row at the bottom of the spreadsheet got averaged in with everything else. Now every chart is wrong, and you have to redo the week.</p>
+<p>If that has happened to you, you’re in good company: it happens to experienced analysts too. The data wasn’t hiding anything. A file that opens without an error <em>feels</em> trustworthy, and that feeling is exactly how most data bugs get in. The old line for this is <a href="https://en.wikipedia.org/wiki/Garbage_in,_garbage_out">garbage in, garbage out</a>, and the fix is a handful of habits that take minutes and catch these problems while they’re still cheap.</p>
+<p>This chapter is about those habits: what shape a table should be in, how to clean one without damaging it, how to check it before you trust it, and the specific snags that eat the most student hours. It doesn’t teach pandas syntax from scratch (that’s <a href="pandas-basics.html" class="quarto-xref"><span>Chapter 22</span></a>) or SQL (<a href="sql-basics.html" class="quarto-xref"><span>Chapter 23</span></a>). The ideas here hold whichever tool you use, so they’ll still be useful the next time you pick up a new one.</p>
 </section>
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol type="1">
-<li>Define wide vs.&nbsp;tidy (long) data and explain when each is appropriate.</li>
-<li>Recognize the three rules of tidy data (one variable per column, one observation per row, one type of observational unit per table).</li>
-<li>List the standard moves of a data-cleaning pipeline and their order.</li>
-<li>Write lightweight validation checks — shape, dtypes, null counts, key uniqueness, value ranges — that catch the most common bugs.</li>
-<li>Identify the seven most common sources of friction when loading a new dataset and apply the standard fix for each.</li>
-<li>Explain why cleaning should be reproducible, not a one-off manual process in a notebook.</li>
-<li>Distinguish between raw data (never modify) and cleaned data (derived, regenerable).</li>
-</ol>
+<section id="why-read-this-chapter" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
+<ul>
+<li>You made a chart from a CSV, then found out later that half the rows were duplicated, and you’d rather never lose a week that way again.</li>
+<li>You summed a price column and got <code>'12.50$89.25'</code> instead of a number, and you can’t see why pandas thinks prices are text.</li>
+<li>You merged two tables and ended up with more rows than you started with, and every total in your report quietly grew.</li>
+<li>Your data has one column per month or per survey question, and every analysis turns into a loop over column names.</li>
+<li>You fixed a file by hand in Excel, and now you can’t say what you changed or redo it when the next version arrives.</li>
+<li>Your instructor keeps saying “tidy data,” “validate,” and “primary key,” and you’d like to know what they mean in practice.</li>
+<li>You want a few lines of checks you can paste into any project, so bad data stops you at the start instead of at the end.</li>
+</ul>
 </section>
-<section id="running-theme-data-you-have-not-validated-is-data-you-cannot-trust" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="running-theme-data-you-have-not-validated-is-data-you-cannot-trust">Running theme: data you have not validated is data you cannot trust</h2>
-<p>Every dataset looks reasonable at first glance. Every dataset has problems. A ten-line validation block at the top of your analysis is cheaper than a week of wrong conclusions.</p>
+<section id="running-theme-data-you-havent-checked-is-data-you-cant-trust" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="running-theme-data-you-havent-checked-is-data-you-cant-trust">Running theme: data you haven’t checked is data you can’t trust</h2>
+<p>Every dataset looks fine at first glance, and almost every real one has problems. A few lines of checks at the top of your analysis cost minutes; a week of wrong conclusions costs a week.</p>
 </section>
-<section id="wide-vs.-tidy-data" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="wide-vs.-tidy-data"><span class="header-section-number">21.1</span> Wide vs.&nbsp;tidy data</h2>
-<p>The single most useful concept for working with tabular data is the distinction between <strong>wide</strong> and <strong>tidy</strong> (also called “long”) formats. The idea was popularized by Hadley Wickham’s <a href="https://vita.had.co.nz/papers/tidy-data.pdf">Tidy Data paper</a> and has since shaped every major data analysis library.</p>
-<section id="wide" class="level3">
-<h3 class="anchored" data-anchor-id="wide">Wide</h3>
-<p>In a <strong>wide</strong> dataset, each row is an entity and each column is a measurement <em>of</em> that entity. Classrooms, spreadsheets, and government reports usually give you wide data because it is easy for humans to read.</p>
+<section id="wide-and-tidy-the-shape-of-a-table" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="wide-and-tidy-the-shape-of-a-table"><span class="header-section-number">21.1</span> Wide and tidy: the shape of a table</h2>
+<p>Before cleaning anything, it helps to know what shape you’re aiming for, because the same information can be laid out in two very different ways.</p>
+<p>Most tables you receive from a teacher, a government website, or a spreadsheet look like this. Each row is a thing (here, a student), and each column is a measurement of that thing:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -802,10 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</section>
-<section id="tidy-long" class="level3">
-<h3 class="anchored" data-anchor-id="tidy-long">Tidy (long)</h3>
-<p>In a <strong>tidy</strong> dataset, each row is a single observation — one measurement of one attribute of one entity — and there are only as many columns as there are <em>kinds</em> of thing (variable name, value, entity identifiers).</p>
+<p>That’s <strong>wide</strong> data, and it’s built for human eyes: you can take in a whole student at a glance. Here is the same information in <strong>tidy</strong> (or long) form, where each row is a single observation, one score for one student in one subject:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -847,37 +832,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Same information, more rows, fewer columns. So why tidy? Because once your data is tidy:</p>
-<ul>
-<li>Every statistic you want is a group-by: <code>df.groupby("subject")["score"].mean()</code>.</li>
-<li>Plots are a single call: <code>sns.boxplot(data=df, x="subject", y="score")</code>.</li>
-<li>New subjects can be added without adding new columns.</li>
-<li>Filtering is trivial: <code>df[df["subject"] == "math"]</code>.</li>
-</ul>
-<p>Wide data resists all of these. You end up writing repetitive code, adding columns every time a new measurement type appears, and dealing with an ever-widening table.</p>
-</section>
-<section id="the-three-rules-of-tidy-data" class="level3">
-<h3 class="anchored" data-anchor-id="the-three-rules-of-tidy-data">The three rules of tidy data</h3>
-<p>Tidy data obeys three rules:</p>
-<ol type="1">
-<li><strong>Each variable forms a column.</strong> A variable is a measured property: height, price, date, category.</li>
-<li><strong>Each observation forms a row.</strong> An observation is a single unit of measurement: one customer on one day, one test score for one student.</li>
-<li><strong>Each type of observational unit forms a separate table.</strong> If your data has students <em>and</em> classes, they belong in two tables (with a join key), not one flattened table.</li>
-</ol>
-</section>
-<section id="when-to-use-wide" class="level3">
-<h3 class="anchored" data-anchor-id="when-to-use-wide">When to use wide</h3>
-<p>Tidy is the right shape for analysis and reshaping. Wide is the right shape for:</p>
-<ul>
-<li><strong>Human reading.</strong> Nobody wants to scroll through 60 rows when a 3x20 table would fit on the page.</li>
-<li><strong>Certain modeling tasks</strong> where each “feature” is a column.</li>
-<li><strong>Output / reporting.</strong> Pivot tidy data back to wide at the last step, for presentation.</li>
-</ul>
-<p>The rule of thumb: <strong>clean and analyze in tidy; pivot to wide only for display</strong>.</p>
-</section>
-<section id="converting-between-the-two" class="level3">
-<h3 class="anchored" data-anchor-id="converting-between-the-two">Converting between the two</h3>
-<p>In pandas, the functions are <code>melt</code> (wide → long) and <code>pivot</code> / <code>pivot_table</code> (long → wide):</p>
+<p>The tidy version looks worse at first: it’s longer, it repeats names, and it’s harder to read. It pays off the moment you start asking questions. The average score in each subject is one line, <code>df.groupby("subject")["score"].mean()</code>. A chart comparing subjects is one line too, with <a href="https://seaborn.pydata.org/generated/seaborn.boxplot.html"><code>sns.boxplot(data=df, x="subject", y="score")</code></a>. And when history scores arrive next month, they’re just more rows: no new columns, no code to change. With the wide table, every one of those questions means writing a loop over column names, and every new subject means editing the code again.</p>
+<p>The idea has a name, <a href="https://en.wikipedia.org/wiki/Tidy_data">tidy data</a>, from a 2014 paper by the statistician Hadley Wickham, and it has shaped how nearly every modern data library expects its input. It comes down to three rules. <strong>Each variable gets its own column:</strong> <code>subject</code> and <code>score</code> are two different things, so they’re two columns, not one column per subject. <strong>Each observation gets its own row:</strong> one score for one student in one subject. And <strong>each kind of thing gets its own table:</strong> if you also have information about the classes (teacher, room, time), that goes in a second table, joined to the first by a key, rather than repeated on every row of the scores.</p>
+<p>Wide still has its place. It’s the right shape for a table a person will read in a report, and some statistical models want one column per feature. The rule of thumb is to <em>clean and analyze in tidy form, and turn it wide only at the end, for display</em>. pandas moves between the two with <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.melt.html"><code>melt</code></a> (wide to tidy) and <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot.html"><code>pivot</code></a> (tidy to wide):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide -&gt; tidy</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tidy <span class="op">=</span> wide.melt(</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span><span class="st">"student"</span>,</span>
@@ -888,72 +845,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># tidy -&gt; wide</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>wide_again <span class="op">=</span> tidy.pivot(index<span class="op">=</span><span class="st">"student"</span>, columns<span class="op">=</span><span class="st">"subject"</span>, values<span class="op">=</span><span class="st">"score"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Learn these two functions early. They turn a “help me reshape my data” question into a one-liner.</p>
+<p>If you remember one thing from this section, remember those two functions. A surprising number of “how do I…?” questions about tables turn into one line once the data is tidy.</p>
 </section>
-</section>
-<section id="the-standard-cleaning-pipeline" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="the-standard-cleaning-pipeline"><span class="header-section-number">21.2</span> The standard cleaning pipeline</h2>
-<p>Most real datasets need roughly the same sequence of moves before they are usable. Do them in order; skipping steps or reordering them causes subtle bugs.</p>
-<ol type="1">
-<li><strong>Load the raw file without modifying it.</strong> Never overwrite the source file. The raw data is the ground truth you reproduce from. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>.</li>
-<li><strong>Normalize column names.</strong> Strip whitespace, lowercase, replace spaces and punctuation with underscores. A reproducible helper is better than hand-fixing. <code>df.columns = df.columns.str.strip().str.lower().str.replace(r"\W+", "_", regex=True)</code></li>
-<li><strong>Fix dtypes.</strong> Make sure numeric columns are numeric, dates are dates, categoricals are categorical. Do this right after loading, before anything else, because downstream operations silently misbehave on wrong dtypes.</li>
-<li><strong>Handle missing values explicitly.</strong> Decide whether to drop rows, drop columns, fill with a sentinel, or leave as NaN. Never let the default “drop NaN” behavior of a function be your policy — make the decision yourself.</li>
-<li><strong>Deduplicate.</strong> Check for and drop exact duplicate rows. Check for duplicates on your key column(s) — these almost always indicate a bad upstream join or a data-entry error.</li>
-<li><strong>Filter out-of-range values.</strong> Heights of 0 or 1000, ages of -5, dates in 2099. Use domain knowledge to decide what to drop or flag.</li>
-<li><strong>Reshape to tidy.</strong> If the input was wide, melt it now, once.</li>
-<li><strong>Derive new columns.</strong> Calculated fields (ratios, categories, flags) come last, after the base columns are trustworthy.</li>
-<li><strong>Save the cleaned output to a separate file.</strong> Use Parquet (see <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>). Never save the cleaned data on top of the raw file.</li>
-</ol>
-<p>Put every step in a script or notebook that runs end-to-end, from raw to cleaned, in one pass. If someone (including future you) ever needs to know “what did we do to this data?”, the answer should be “read this script.”</p>
-</section>
-<section id="raw-vs.-cleaned-data" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="raw-vs.-cleaned-data"><span class="header-section-number">21.3</span> Raw vs.&nbsp;cleaned data</h2>
-<p>Adopt this rule early: <strong>raw data is immutable.</strong> You never modify it. You never save over it. You keep it in a folder called <code>data/raw/</code> and treat it like a read-only museum exhibit.</p>
-<p>Cleaned data is a <em>derivative</em> of raw data, produced by a script. It lives in <code>data/processed/</code> or <code>data/cleaned/</code>. Anyone can delete it and regenerate it by rerunning the script.</p>
-<pre><code>project/
+<section id="keep-the-raw-file-untouched" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="keep-the-raw-file-untouched"><span class="header-section-number">21.2</span> Keep the raw file untouched</h2>
+<p>The first habit sounds almost too simple: <strong>never change the file you were given.</strong> Put it in a folder called <code>data/raw/</code>, and from then on treat it like a museum exhibit. You can look, but you don’t touch.</p>
+<p>It’s tempting to open the CSV in Excel, fix the obvious typo in a header, delete the junk rows at the bottom, and save. Everyone does it once. The trouble comes a month later, when someone asks what you changed, or a new version of the data arrives and you have to make the same fixes again from memory. So instead, write every change down as code: a script reads the raw file, cleans it, and saves the result somewhere else. The cleaned file is then a <em>product</em> of the raw file and the script, and you can delete it and remake it at any time.</p>
+<pre class="text"><code>project/
 ├── data/
-│   ├── raw/              # never modify
+│   ├── raw/              # exactly as you received it; never edited
 │   │   └── sales.csv
-│   ├── interim/          # optional: intermediate results
-│   └── processed/        # cleaned, validated, analysis-ready
+│   └── processed/        # made by the script; safe to delete and rebuild
 │       └── sales.parquet
 ├── src/
-│   └── clean_sales.py    # the script that turns raw into processed
+│   └── clean_sales.py    # the only thing that turns raw into processed
 └── notebooks/
     └── analysis.ipynb    # reads only from processed/</code></pre>
-<p>This separation does three things: it makes cleaning reproducible, it makes the lineage of any number in your report traceable, and it prevents the dreaded “I don’t remember which version of this file is the good one” situation. See <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a> for how this fits into overall project structure.</p>
+<p>Laid out this way, “what did we do to this data?” always has an answer: read <code>clean_sales.py</code>. Every number in your report can be traced back through the script to the original file, which is what people mean by <a href="https://en.wikipedia.org/wiki/Data_lineage">data lineage</a>. And you never again have to wonder which of <code>sales_final.csv</code> and <code>sales_final_v2_REAL.csv</code> is the good one. <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a> covers how this fits into a whole project.</p>
 </section>
-<section id="validation-lightweight-checks-that-catch-the-most-bugs" class="level2" data-number="21.4">
-<h2 data-number="21.4" class="anchored" data-anchor-id="validation-lightweight-checks-that-catch-the-most-bugs"><span class="header-section-number">21.4</span> Validation: lightweight checks that catch the most bugs</h2>
-<p>Validation does not have to be fancy. A ten-line block at the top of your analysis catches 90% of the problems you will encounter. Paste this pattern into every notebook or cleaning script:</p>
+<section id="cleaning-one-decision-at-a-time" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="cleaning-one-decision-at-a-time"><span class="header-section-number">21.3</span> Cleaning, one decision at a time</h2>
+<p><a href="https://en.wikipedia.org/wiki/Data_cleansing">Data cleaning</a> sounds like a chore you get through before the real work starts. It’s better to think of it as a series of decisions, each of which changes what your results will say. The order matters too, because each step makes the next one easier and safer. Most real datasets go through roughly the same sequence.</p>
+<p><strong>Start by loading the raw file as it is,</strong> and immediately <strong>tidy up the column names.</strong> Headers like <code>" Total Revenue ($)"</code>, with a stray space and punctuation, make every line of code clumsier. Convert them once to lowercase words joined by underscores (sometimes called <a href="https://en.wikipedia.org/wiki/Snake_case">snake case</a>), and you’ll never type the dollar sign again.</p>
+<p><strong>Next, fix the types.</strong> pandas guesses each column’s <a href="https://pandas.pydata.org/docs/user_guide/basics.html#basics-dtypes">type</a> when it reads a file, and it guesses wrong more often than you’d expect: one stray <code>"N/A"</code> makes a whole column of prices into text, and dates usually arrive as text too. Fix types right away, because almost everything later (sums, comparisons, sorting, date math) quietly does the wrong thing on the wrong type.</p>
+<p><strong>Then decide what missing values mean.</strong> A blank cell can mean “the answer is zero,” “nobody asked,” “the sensor failed,” or “this row is from before we collected that.” pandas’ <a href="https://pandas.pydata.org/docs/user_guide/missing_data.html">guide to missing data</a> explains the mechanics; the decision is yours. Drop the row, fill in a value, or keep the blank, but choose deliberately, and write down why. Don’t let some function’s default behavior make the choice for you.</p>
+<p><strong>Then look for duplicates,</strong> both rows that repeat exactly and rows that repeat the value that should be unique, such as an order number. A duplicated order number almost always means something went wrong upstream: an export ran twice, or a join matched more rows than it should have.</p>
+<p><strong>Then deal with impossible values:</strong> ages of −5, heights of 1,000 cm, dates in 2099. Your knowledge of the subject is what tells you what’s impossible, and whether to drop the value, fix it, or flag it for a closer look.</p>
+<p><strong>Only now reshape and derive.</strong> Melt the table to tidy form if it arrived wide, and add calculated columns such as ratios, categories, and flags. They come last because they’re only as trustworthy as the columns they’re built from.</p>
+<p><strong>Finally, save the result to a new file,</strong> ideally Parquet, which keeps your carefully fixed types (see <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>). Never save it on top of the raw file.</p>
+<p>Put all of this in one script that runs from top to bottom without you touching anything. It feels slower than clicking around the first time. By the third time the data changes, it’s much faster.</p>
+</section>
+<section id="check-your-data-before-you-trust-it" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="check-your-data-before-you-trust-it"><span class="header-section-number">21.4</span> Check your data before you trust it</h2>
+<p>Once you have a cleaned table, don’t take it on faith. A handful of checks, run every time, catches the large majority of problems while they’re still easy to fix. Python has a built-in tool that’s perfect for this, the <a href="https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement"><code>assert</code> statement</a>: it does nothing when a condition is true, and stops everything, with your message, when it’s false.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"Empty DataFrame"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(df.columns) <span class="op">==</span> EXPECTED_COLUMNS, <span class="ss">f"Columns changed: </span><span class="sc">{</span>df<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"order_id"</span>].is_unique, <span class="st">"Duplicate order IDs"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"date"</span>].notna().<span class="bu">all</span>(), <span class="st">"Missing dates"</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df[<span class="st">"quantity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">all</span>(), <span class="st">"Non-positive quantities"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"price"</span>].dtype.kind <span class="kw">in</span> <span class="st">"if"</span>, <span class="ss">f"Price is </span><span class="sc">{</span>df[<span class="st">'price'</span>]<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">, expected numeric"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is cheap, self-documenting, and fails loudly at the exact line that is wrong. Libraries like <code>pandera</code> and <code>great_expectations</code> offer more sophisticated schema validation, but for student work the plain <code>assert</code> pattern is plenty.</p>
-<section id="what-to-validate" class="level3">
-<h3 class="anchored" data-anchor-id="what-to-validate">What to validate</h3>
-<p>A useful mental model: validate five axes of every dataset you load.</p>
-<ol type="1">
-<li><strong>Shape.</strong> Number of rows and columns, both lower and upper bounds.</li>
-<li><strong>Columns.</strong> The expected column names, in the expected order.</li>
-<li><strong>Dtypes.</strong> Numeric columns are numeric; date columns are dates.</li>
-<li><strong>Keys and uniqueness.</strong> The column that should uniquely identify rows actually does. If you have a join key, it has the expected cardinality.</li>
-<li><strong>Values.</strong> Ranges, categories, missingness. Ages in 0-120, percentages in 0-1 (or 0-100, pick one), dates within your study window.</li>
-</ol>
-<p>Run these checks at the top of every analysis, even when you “know” the data is fine. You do not know until you have checked.</p>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> pd.api.types.is_numeric_dtype(df[<span class="st">"price"</span>]), <span class="ss">f"Price is </span><span class="sc">{</span>df[<span class="st">'price'</span>]<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">, expected numeric"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each line checks one thing you believe about the data, and says so in plain words. Start with the easy questions. Does the table have rows at all, and the columns you expected? Did each column come out as the right type, or is the price column secretly text? Then the subtler ones. Does the column that should identify each row, the table’s <a href="https://en.wikipedia.org/wiki/Primary_key">primary key</a>, actually have no repeats? And do the values make sense, with no ages of 212 and no percentages of 140?</p>
+<p>It can feel silly to check things you “know” are true. But you don’t know until you’ve checked, and the day a new export arrives with a renamed column, you’ll be glad the check stopped you at line 2 instead of letting you find out at the end. This kind of <a href="https://en.wikipedia.org/wiki/Data_validation">data validation</a> scales up, too: libraries like pandera and Great Expectations do the same job for bigger projects (see Further reading), and <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a> shows how to check data against a written data dictionary.</p>
 </section>
-</section>
-<section id="the-seven-most-common-friction-points" class="level2" data-number="21.5">
-<h2 data-number="21.5" class="anchored" data-anchor-id="the-seven-most-common-friction-points"><span class="header-section-number">21.5</span> The seven most common friction points</h2>
-<p>Here are the specific problems you will hit most often with real data, and the standard fix for each.</p>
-<section id="column-names-with-spaces-caps-and-punctuation" class="level3">
-<h3 class="anchored" data-anchor-id="column-names-with-spaces-caps-and-punctuation">1. Column names with spaces, caps, and punctuation</h3>
-<p><strong>Symptom:</strong> <code>df["Total Revenue"]</code> works but <code>df.Total Revenue</code> doesn’t, and the mixed-case names make every line uglier than it needs to be.</p>
-<p><strong>Fix:</strong> normalize column names immediately after loading.</p>
+<section id="seven-snags-youll-meet-and-how-to-get-past-them" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="seven-snags-youll-meet-and-how-to-get-past-them"><span class="header-section-number">21.5</span> Seven snags you’ll meet (and how to get past them)</h2>
+<p>Some problems come up so often with real data that they’re worth recognizing on sight. None of them means you did something wrong; they’re simply what data from the real world looks like.</p>
+<section id="column-names-with-spaces-and-punctuation" class="level3">
+<h3 class="anchored" data-anchor-id="column-names-with-spaces-and-punctuation">1. Column names with spaces and punctuation</h3>
+<p>You’ll know this one when <code>df["Total Revenue ($)"]</code> works but typing it gets old fast, and <code>df.total_revenue</code> doesn’t exist. Rename every column once, right after loading, with pandas’ <a href="https://pandas.pydata.org/docs/user_guide/text.html">string methods</a>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> (</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df.columns</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.strip()</span>
@@ -962,65 +901,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.strip(<span class="st">"_"</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="numeric-columns-read-as-strings" class="level3">
-<h3 class="anchored" data-anchor-id="numeric-columns-read-as-strings">2. Numeric columns read as strings</h3>
-<p><strong>Symptom:</strong> <code>df["price"].sum()</code> concatenates strings instead of adding numbers.</p>
-<p><strong>Fix:</strong> one bad value somewhere (a <code>"N/A"</code> or a <code>"$"</code> or a stray footnote) is making pandas treat the whole column as text (<code>str</code> in pandas 3, <code>object</code> in pandas 2). Use <code>pd.to_numeric(..., errors="coerce")</code> to convert and flag the culprits:</p>
+<section id="numbers-that-are-secretly-text" class="level3">
+<h3 class="anchored" data-anchor-id="numbers-that-are-secretly-text">2. Numbers that are secretly text</h3>
+<p>The giveaway is <code>df["price"].sum()</code> gluing strings together (<code>'12.50$89.25'</code>) instead of adding them. Somewhere in the column there’s a value pandas couldn’t read as a number, such as a <code>"N/A"</code>, a <code>$</code>, or a footnote marker, and one is enough to turn the whole column into text (<code>str</code> in pandas 3, <code>object</code> in pandas 2). <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html"><code>pd.to_numeric</code></a> with <code>errors="coerce"</code> converts what it can and turns the rest into missing values, which lets you find the culprits:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"price_num"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"price"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bad <span class="op">=</span> df[df[<span class="st">"price_num"</span>].isna() <span class="op">&amp;</span> df[<span class="st">"price"</span>].notna()]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unconvertible prices: </span><span class="sc">{</span><span class="bu">len</span>(bad)<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(bad[[<span class="st">"price"</span>]].drop_duplicates().head())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Then fix the source: use <code>na_values=</code> at read time (see <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>) or strip the junk explicitly.</p>
+<p>Look at what it prints before deciding what to do. Often the fix belongs at read time, with <code>na_values=</code> (see <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>), or in one line that strips the <code>$</code>.</p>
 </section>
-<section id="dates-read-as-strings" class="level3">
-<h3 class="anchored" data-anchor-id="dates-read-as-strings">3. Dates read as strings</h3>
-<p><strong>Symptom:</strong> <code>.dt.year</code> fails with <code>AttributeError: Can only use .dt accessor with datetimelike values</code>.</p>
-<p><strong>Fix:</strong> parse the column explicitly.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If the format is ambiguous (US <code>MM/DD/YYYY</code> vs.&nbsp;EU <code>DD/MM/YYYY</code>), pass <code>format=</code> explicitly — do not rely on inference for dates you care about.</p>
+<section id="dates-that-are-secretly-text" class="level3">
+<h3 class="anchored" data-anchor-id="dates-that-are-secretly-text">3. Dates that are secretly text</h3>
+<p>The error message is the clue here: <code>AttributeError: Can only use .dt accessor with datetimelike values</code>. The column looks like dates, but pandas is holding strings. Convert it with <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html"><code>pd.to_datetime</code></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%m/</span><span class="sc">%d</span><span class="st">/%Y"</span>, errors<span class="op">=</span><span class="st">"coerce"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Always give the <code>format=</code> when you know it. Is <code>03/04/2026</code> March 4 or April 3? It depends on <a href="https://en.wikipedia.org/wiki/Date_format_by_country">where the file came from</a>, and guessing wrong silently shuffles your months. If you control how dates are written, use the unambiguous <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> form, <code>2026-03-04</code>. pandas’ <a href="https://pandas.pydata.org/docs/user_guide/timeseries.html">time series guide</a> has much more on working with dates once they’re real dates.</p>
 </section>
-<section id="missing-value-sentinels" class="level3">
-<h3 class="anchored" data-anchor-id="missing-value-sentinels">4. Missing-value sentinels</h3>
-<p><strong>Symptom:</strong> a numeric column contains <code>-999</code>, <code>"unknown"</code>, or an empty string and your statistics are nonsense.</p>
-<p><strong>Fix:</strong> catch them at read time:</p>
+<section id="codes-that-stand-for-missing" class="level3">
+<h3 class="anchored" data-anchor-id="codes-that-stand-for-missing">4. Codes that stand for “missing”</h3>
+<p>Averages that make no sense (an average temperature of −380) often mean the column uses a stand-in for “no data,” such as <code>-999</code>, <code>"unknown"</code>, or <code>0</code>. That’s a <a href="https://en.wikipedia.org/wiki/Sentinel_value">sentinel value</a>: useful to whoever made the file, poison to your statistics until you convert it to a real missing value. Catch them as you read the file:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data.csv"</span>, na_values<span class="op">=</span>[<span class="st">"-999"</span>, <span class="st">"unknown"</span>, <span class="st">""</span>, <span class="st">"-"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or clean them after loading:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"temp"</span>] <span class="op">=</span> df[<span class="st">"temp"</span>].replace({<span class="op">-</span><span class="dv">999</span>: pd.NA})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>or replace them afterwards with <code>df["temp"] = df["temp"].replace({-999: pd.NA})</code>. The file’s documentation, if it has any, usually lists its codes; checking it takes a minute and can save the analysis.</p>
 </section>
-<section id="silent-duplication-from-a-bad-merge" class="level3">
-<h3 class="anchored" data-anchor-id="silent-duplication-from-a-bad-merge">5. Silent duplication from a bad merge</h3>
-<p><strong>Symptom:</strong> after a join, your row count doubled and none of your aggregates match.</p>
-<p><strong>Fix:</strong> merge with <code>validate=</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> df_a.merge(df_b, on<span class="op">=</span><span class="st">"customer_id"</span>, validate<span class="op">=</span><span class="st">"one_to_one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Pandas will raise immediately if the join is not the cardinality you claimed. Use <code>"one_to_one"</code>, <code>"one_to_many"</code>, <code>"many_to_one"</code>, or <code>"many_to_many"</code> as appropriate. Make the choice explicit every time.</p>
+<section id="a-merge-that-quietly-multiplies-rows" class="level3">
+<h3 class="anchored" data-anchor-id="a-merge-that-quietly-multiplies-rows">5. A merge that quietly multiplies rows</h3>
+<p>You join two tables and suddenly have more rows than you started with, and every total is too big. This happens when the key you joined on isn’t unique on the side where you assumed it was: two customer records share an ID, so every order for that customer matches twice. The fix is to tell pandas what kind of relationship you expect (its <a href="https://en.wikipedia.org/wiki/Cardinality_(data_modeling)">cardinality</a>) and let it check for you, using the <code>validate=</code> option of <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html"><code>merge</code></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, validate<span class="op">=</span><span class="st">"many_to_one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That line reads: many orders can share a customer, but each customer appears once. If that’s not true, pandas stops with an error instead of quietly inflating your numbers. The <a href="https://pandas.pydata.org/docs/user_guide/merging.html#merging-validation">merging guide</a> lists the options: <code>"one_to_one"</code>, <code>"one_to_many"</code>, <code>"many_to_one"</code>, and <code>"many_to_many"</code>. Saying which one you mean, every time, is one of the cheapest habits in this book.</p>
 </section>
-<section id="implicit-dropping-of-nan-rows" class="level3">
-<h3 class="anchored" data-anchor-id="implicit-dropping-of-nan-rows">6. Implicit dropping of NaN rows</h3>
-<p><strong>Symptom:</strong> your row count keeps shrinking as you chain operations, because functions like <code>.groupby</code>, <code>.dropna</code>, and <code>.merge</code> silently drop rows with missing keys.</p>
-<p><strong>Fix:</strong> check the shape before and after every operation during cleaning:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"before: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"after:  </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For groupby, pass <code>dropna=False</code> if you want NaN groups included.</p>
+<section id="rows-that-disappear-along-the-way" class="level3">
+<h3 class="anchored" data-anchor-id="rows-that-disappear-along-the-way">6. Rows that disappear along the way</h3>
+<p>Your table started with 5,000 rows, and somewhere along the chain of steps it became 4,812, and you’re not sure where. Some operations drop rows without saying so: <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>groupby</code></a> leaves out rows whose group key is missing unless you pass <code>dropna=False</code>, an inner merge drops rows that have no match, and a filter drops whatever doesn’t pass. Each might be exactly what you want. The problem is not knowing. While you’re cleaning, print the shape before and after each step:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"before: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"after:  </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If a count changes and you can’t say why, stop and find out before you go on.</p>
 </section>
-<section id="mixed-types-in-a-numeric-column" class="level3">
-<h3 class="anchored" data-anchor-id="mixed-types-in-a-numeric-column">7. Mixed types in a “numeric” column</h3>
-<p><strong>Symptom:</strong> a column has integers, floats, and a few strings (“N/A”, “n/a”, “unknown”). Reads as text (<code>str</code>, or <code>object</code> in pandas 2). Operations are slow and error-prone.</p>
-<p><strong>Fix:</strong> <code>pd.to_numeric(..., errors="coerce")</code> as in problem 2, then decide what to do with the NaNs. Do not silently <code>.dropna()</code> — that is the row you should be investigating.</p>
+<section id="a-column-with-a-bit-of-everything" class="level3">
+<h3 class="anchored" data-anchor-id="a-column-with-a-bit-of-everything">7. A column with a bit of everything</h3>
+<p>Mostly numbers, but also <code>"N/A"</code>, <code>"n/a"</code>, <code>"unknown"</code>, and a stray <code>"12 (est.)"</code>: the column reads as text and everything you do with it is slow and fragile. Use the <code>pd.to_numeric(..., errors="coerce")</code> approach from snag 2, then look at the values that became missing before you decide what to do with them. Resist the urge to <code>.dropna()</code> them away. The row that doesn’t fit is often the one that tells you something about how the data was made.</p>
 </section>
 </section>
 <section id="stakes-and-politics" class="level2" data-number="21.6">
 <h2 data-number="21.6" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">21.6</span> Stakes and politics</h2>
-<p>This chapter teaches a workflow built around <em>cleaning</em> data — handling missing values, fixing dtypes, deduplicating, validating shape and ranges. Each of those moves looks technical, and each one is also a political choice that anyone reading your conclusions will read your data through.</p>
-<p>Three things to notice. First, <em>what counts as missing</em>. A <code>NaN</code> in a survey response can mean “the respondent declined,” “the question did not apply,” “the survey software failed,” or “this row is from before the question existed.” Treating all four the same — most often by a quiet <code>.dropna()</code> — silently encodes the assumption that the missing rows are exchangeable with the present ones, which is rarely true. Missingness in real datasets is often <em>informative</em>: the people who did not answer the income question are not a random sample of respondents, they are a particular subset whose absence is itself a finding.</p>
-<p>Second, <em>what counts as an outlier</em>. A flagged outlier is a row that differs from the others. In a dataset of incomes, that might be a billionaire whose presence skews the mean — or it might be a household in deep poverty whose presence is exactly the population the analysis is supposed to inform. “Removing outliers” sometimes means cleaning data and sometimes means erasing the most policy-relevant cases. Third, <em>what counts as a duplicate</em>. Two rows with the same key are duplicates only if you decide the key is enough to identify them. The same person can appear twice for legitimate reasons (two visits, two purchases, two enrollments); collapsing them silently rewrites the underlying social facts.</p>
+<p>Suppose your survey dataset has 400 respondents, and 60 of them skipped the income question. One <code>.dropna()</code> later, you have a tidy table of 340, and every result you report describes those 340 people. But the people who skip an income question are rarely a random slice of respondents: they may be wary of how the answer will be used, or have an income that’s hard to put in one number, and they tend to differ from the people who answer in ways that matter. Dropping them didn’t clean the data; it changed who the data is about.</p>
+<p>Every step in this chapter carries that kind of decision. What counts as <a href="https://en.wikipedia.org/wiki/Missing_data">missing</a>: a declined answer, a question that didn’t apply, and a software failure are three different things that look identical as <code>NaN</code>. What counts as an <a href="https://en.wikipedia.org/wiki/Outlier">outlier</a>: in a dataset of incomes, the extreme row might be a billionaire who skews the mean, or a family in deep poverty who is exactly who a policy analysis is supposed to be about. What counts as a duplicate: the same person can appear twice for good reasons, such as two visits, two purchases, or two enrollments, and collapsing them quietly rewrites what happened. Cleaning looks technical, but each of these choices decides whose experience stays in the analysis.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: every cleaning step is a claim that the rows you removed do not matter. Write down which rows you removed and <em>why</em> — that note is part of your analysis, not separate from it.</p>
 </section>
 <section id="worked-examples" class="level2" data-number="21.7">
 <h2 data-number="21.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">21.7</span> Worked examples</h2>
 <section id="turning-wide-survey-data-into-tidy" class="level3">
 <h3 class="anchored" data-anchor-id="turning-wide-survey-data-into-tidy">Turning wide survey data into tidy</h3>
-<p>You have a survey export in wide format:</p>
+<p>A course survey arrives in wide form, one column per question, with answers from 1 (strongly disagree) to 5 (strongly agree):</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1045,121 +976,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>You want to count how many “agree” (4 or 5) responses each question got.</p>
-<p>Wide: ugly, repetitive.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q <span class="kw">in</span> [<span class="st">"q1_agree"</span>, <span class="st">"q2_agree"</span>, <span class="st">"q3_agree"</span>]:</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(q, (df[q] <span class="op">&gt;=</span> <span class="dv">4</span>).<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Tidy: one-liner.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tidy <span class="op">=</span> df.melt(id_vars<span class="op">=</span><span class="st">"respondent"</span>, var_name<span class="op">=</span><span class="st">"question"</span>, value_name<span class="op">=</span><span class="st">"score"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>tidy.groupby(<span class="st">"question"</span>)[<span class="st">"score"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> s: (s <span class="op">&gt;=</span> <span class="dv">4</span>).<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Adding a <code>q4_agree</code> later requires zero code changes in the tidy version.</p>
+<p>You want to know how many people agreed (answered 4 or 5) with each question. With the wide table, you end up looping over column names:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q <span class="kw">in</span> [<span class="st">"q1_agree"</span>, <span class="st">"q2_agree"</span>, <span class="st">"q3_agree"</span>]:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(q, (df[q] <span class="op">&gt;=</span> <span class="dv">4</span>).<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That works until the survey gains a fourth question and you have to remember to edit the list. Melt it to tidy form first, and the question becomes a group-by that doesn’t care how many questions there are:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tidy <span class="op">=</span> df.melt(id_vars<span class="op">=</span><span class="st">"respondent"</span>, var_name<span class="op">=</span><span class="st">"question"</span>, value_name<span class="op">=</span><span class="st">"score"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tidy.groupby(<span class="st">"question"</span>)[<span class="st">"score"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> s: (s <span class="op">&gt;=</span> <span class="dv">4</span>).<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When <code>q4_agree</code> shows up next term, this code handles it without a single change.</p>
 </section>
 <section id="a-full-cleaning-pipeline" class="level3">
 <h3 class="anchored" data-anchor-id="a-full-cleaning-pipeline">A full cleaning pipeline</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>EXPECTED_COLUMNS <span class="op">=</span> [<span class="st">"order_id"</span>, <span class="st">"date"</span>, <span class="st">"customer_id"</span>, <span class="st">"sku"</span>, <span class="st">"quantity"</span>, <span class="st">"revenue"</span>]</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_and_clean(path: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Load raw, treating common missing sentinels</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(path, na_values<span class="op">=</span>[<span class="st">""</span>, <span class="st">"-"</span>, <span class="st">"N/A"</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>])</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Normalize column names</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="dv">\W</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Fix dtypes</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"revenue"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"revenue"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"quantity"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"quantity"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Drop rows missing a key</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"order_id"</span>, <span class="st">"date"</span>])</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. Deduplicate</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span><span class="st">"order_id"</span>)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. Filter out-of-range values</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[(df[<span class="st">"quantity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (df[<span class="st">"revenue"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 7. Validate</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"Empty after cleaning"</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(df.columns) <span class="op">==</span> EXPECTED_COLUMNS, <span class="ss">f"Column drift: </span><span class="sc">{</span>df<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"order_id"</span>].is_unique, <span class="st">"Duplicate order_ids leaked through"</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"date"</span>].notna().<span class="bu">all</span>(), <span class="st">"Null dates leaked through"</span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>cleaned <span class="op">=</span> load_and_clean(<span class="st">"data/raw/sales.csv"</span>)</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>cleaned.to_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is reproducible, self-documenting, and will crash loudly if the source changes shape. Every project you do should have something like it.</p>
+<p>Here is everything from “Cleaning, one decision at a time” and “Check your data before you trust it” in one function, for an export of online orders. Read it top to bottom and notice that each step is one of the decisions described above, in the same order, and that the checks at the end stop the script if any of them went wrong:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>EXPECTED_COLUMNS <span class="op">=</span> [<span class="st">"order_id"</span>, <span class="st">"date"</span>, <span class="st">"customer_id"</span>, <span class="st">"sku"</span>, <span class="st">"quantity"</span>, <span class="st">"revenue"</span>]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_and_clean(path: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load, treating the file's usual "no data" codes as missing</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(path, na_values<span class="op">=</span>[<span class="st">""</span>, <span class="st">"-"</span>, <span class="st">"N/A"</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>])</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tidy column names</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="dv">\W</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fix types</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>, errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"revenue"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"revenue"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"quantity"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"quantity"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># An order without an ID or a date can't be used</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"order_id"</span>, <span class="st">"date"</span>])</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># One row per order</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span><span class="st">"order_id"</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove impossible values (a missing revenue fails this test too: see snag 6)</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[(df[<span class="st">"quantity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (df[<span class="st">"revenue"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check before handing it on</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"Empty after cleaning"</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(df.columns) <span class="op">==</span> EXPECTED_COLUMNS, <span class="ss">f"Column drift: </span><span class="sc">{</span>df<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"order_id"</span>].is_unique, <span class="st">"Duplicate order_ids leaked through"</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"date"</span>].notna().<span class="bu">all</span>(), <span class="st">"Null dates leaked through"</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>cleaned <span class="op">=</span> load_and_clean(<span class="st">"data/raw/sales.csv"</span>)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>cleaned.to_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rerun it whenever the raw file changes, and it either produces a clean table or tells you exactly which belief about the data stopped being true.</p>
 </section>
 <section id="catching-a-bad-merge" class="level3">
 <h3 class="anchored" data-anchor-id="catching-a-bad-merge">Catching a bad merge</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Without validate: you might not notice a doubled row count</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, validate<span class="op">=</span><span class="st">"many_to_one"</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Raises MergeError if customer_id is NOT unique in `customers`.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Five extra characters (<code>validate="many_to_one"</code>) catches the bug that would otherwise silently double every revenue figure in your final report.</p>
+<p>You have a table of orders and a table of customers, and you want the customer’s city on every order. You’re sure each customer appears once in the customer table, so say so:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, validate<span class="op">=</span><span class="st">"many_to_one"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If someone’s customer record was entered twice, this raises a <code>MergeError</code> right here, naming the problem, instead of letting that customer’s orders count twice in every revenue figure you report. One extra argument, and a whole class of bug is gone.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="21.8">
 <h2 data-number="21.8" class="anchored" data-anchor-id="templates"><span class="header-section-number">21.8</span> Templates</h2>
-<p><strong>A “load, clean, validate” skeleton to paste into every cleaning script:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>EXPECTED_COLUMNS <span class="op">=</span> [...]</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>KEY_COLUMN <span class="op">=</span> <span class="st">"..."</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_raw(path: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        path,</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        na_values<span class="op">=</span>[<span class="st">""</span>, <span class="st">"-"</span>, <span class="st">"N/A"</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>, <span class="st">"null"</span>],</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        parse_dates<span class="op">=</span>[...],</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_columns(df: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> (</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        df.columns</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.strip()</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.lower()</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="dv">\W</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.strip(<span class="st">"_"</span>)</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate(df: pd.DataFrame) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(df.columns) <span class="op">==</span> EXPECTED_COLUMNS</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[KEY_COLUMN].is_unique</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add dataset-specific checks below</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>A “load, clean, check” skeleton to start every cleaning script from:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>EXPECTED_COLUMNS <span class="op">=</span> [...]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>KEY_COLUMN <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_raw(path: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.read_csv(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        path,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        na_values<span class="op">=</span>[<span class="st">""</span>, <span class="st">"-"</span>, <span class="st">"N/A"</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>, <span class="st">"null"</span>],</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        parse_dates<span class="op">=</span>[...],</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_columns(df: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> (</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        df.columns</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.strip()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.lower()</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="dv">\W</span><span class="op">+</span><span class="vs">"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.strip(<span class="st">"_"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate(df: pd.DataFrame) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">list</span>(df.columns) <span class="op">==</span> EXPECTED_COLUMNS</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[KEY_COLUMN].is_unique</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add checks for this dataset below</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="exercises" class="level2" data-number="21.9">
 <h2 data-number="21.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.9</span> Exercises</h2>
 <ol type="1">
-<li>Take a wide dataset from your own work (a survey, a grade book, a classroom export) and write a one-line <code>melt</code> that converts it to tidy. Verify by counting rows.</li>
-<li>Write the reverse: take a tidy dataset and <code>pivot</code> it back to wide. Confirm the two are equivalent after reshaping.</li>
-<li>Pick a real CSV and write a 10-line validation block (shape, columns, dtypes, key uniqueness, one range check). Run it. Did anything fail?</li>
-<li>Intentionally break your validation block by adding a bad row (wrong dtype, missing key, out-of-range value). Confirm each type of failure produces a clear error.</li>
-<li>Take an analysis notebook of yours and move the cleaning logic into a separate script (<code>clean_foo.py</code>) that writes to <code>data/processed/foo.parquet</code>. Update the notebook to read only from the processed file.</li>
-<li>Write a <code>pandas</code> merge that you <em>expect</em> to be <code>one_to_one</code>, then add <code>validate="one_to_one"</code>. Now introduce a duplicate into the right-hand DataFrame and confirm pandas raises.</li>
-<li>Find a dataset with missing-value sentinels. Load it twice — once with default options, once with <code>na_values=</code>. Compare <code>.describe()</code>. How many of your statistics changed?</li>
+<li>Take a wide table from your own work (a survey export, a grade book) and turn it tidy with one <code>melt</code>. Check the result by counting rows: it should have (rows × measured columns) of them.</li>
+<li>Go the other way: <code>pivot</code> a tidy table back to wide and confirm you get the original values.</li>
+<li>Pick a real CSV and write a check block of about ten lines: shape, columns, types, key uniqueness, and one range check. Run it. Did anything fail? Were you surprised?</li>
+<li>Break your check block on purpose: add a row with text in a number column, one with a missing key, one with an impossible value. Does each failure give you a message you’d understand at 2 a.m.?</li>
+<li>Move the cleaning code from one of your notebooks into a script, <code>clean_something.py</code>, that writes to <code>data/processed/</code>. Change the notebook to read only the processed file.</li>
+<li>Write a merge you <em>expect</em> to be one-to-one and add <code>validate="one_to_one"</code>. Then duplicate a row in the right-hand table and watch pandas catch it.</li>
+<li>Find a dataset that uses a code like <code>-999</code> for missing values. Load it with and without <code>na_values=</code> and compare <code>.describe()</code>. How much did the averages move?</li>
 </ol>
 </section>
 <section id="one-page-checklist" class="level2" data-number="21.10">
 <h2 data-number="21.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">21.10</span> One-page checklist</h2>
 <ul>
-<li><strong>Never modify raw data.</strong> Keep it in <code>data/raw/</code>, read-only.</li>
-<li><strong>Cleaning is a script, not a notebook.</strong> Reproducible and rerunnable, top to bottom.</li>
-<li><strong>Load, normalize, fix dtypes, handle nulls, deduplicate, filter, reshape, derive, save.</strong> In that order.</li>
-<li><strong>Reshape to tidy for analysis; pivot to wide only for display.</strong></li>
-<li><strong>Validate five axes:</strong> shape, columns, dtypes, keys/uniqueness, values.</li>
-<li><strong>Pass <code>validate=</code> on every merge.</strong></li>
-<li><strong>Catch missing-value sentinels at read time</strong> with <code>na_values=</code>.</li>
-<li><strong>Parse dates explicitly.</strong> Do not rely on inference for load-bearing columns.</li>
-<li><strong>Paste a <code>assert</code> validation block at the top of every analysis.</strong></li>
-<li><strong>If row counts change silently, stop and investigate.</strong> It is almost always a bug.</li>
+<li>Keep the raw file untouched in <code>data/raw/</code>; every change lives in a script.</li>
+<li>Tidy the column names as soon as you load.</li>
+<li>Fix types right away: numbers as numbers, dates as dates.</li>
+<li>Decide what missing values mean, and write the decision down.</li>
+<li>Check for duplicates, especially in the column that should be unique.</li>
+<li>Clean and analyze in tidy form; go wide only for display.</li>
+<li>Give <code>format=</code> when you parse dates you care about.</li>
+<li>Catch “no data” codes with <code>na_values=</code> when you read the file.</li>
+<li>Pass <code>validate=</code> to every merge.</li>
+<li>Run a block of <code>assert</code> checks before every analysis.</li>
+<li>If a row count changes and you can’t say why, stop and find out.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
