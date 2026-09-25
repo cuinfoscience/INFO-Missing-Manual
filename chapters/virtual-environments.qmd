@@ -26,196 +26,245 @@ margin-header: |
 
 {{< chapter-meme >}}
 
-The single most common source of the "it worked yesterday" bug in Python data science is a confused [environment](appendix-glossary.qmd#term-environment). You install a package, try to import it, and Python says "no such module." You upgrade `pandas` for one project and suddenly a different project starts throwing errors. You fix the error in your terminal and the notebook still fails. All of these are symptoms of the same underlying problem: your computer has several Pythons, each with its own set of packages, and it is not obvious which one is running at any given time.
+You type `pip install pandas` and see `Successfully installed pandas`. Then you run your notebook, and the first cell says `ModuleNotFoundError: No module named 'pandas'`. You install it again; it's "already satisfied." The notebook still can't find it. Or it goes the other way: you upgrade a package for this week's assignment, and last semester's project falls over with errors you've never seen.
 
-A [virtual environment](appendix-glossary.qmd#term-virtual-environment) is the fix. A venv is a self-contained Python installation scoped to one project, with its own interpreter and its own packages. When you "activate" it, your shell and your tools point at that project's Python instead of the system-wide one. Different projects live in different venvs and do not interfere with each other.
+If that has happened to you, nothing is wrong with you or your computer. Almost every computer has several copies of Python, each with its own installed packages, and nothing on the screen tells you which one is running. pip put pandas into one Python; your notebook is running another. Confusion about your [environment](appendix-glossary.qmd#term-environment) is behind a large share of Python's "it worked yesterday" bugs.
 
-This chapter explains what a venv is (and is not), how to create and activate one with [`python -m venv`](https://docs.python.org/3/library/venv.html), how this compares to [`conda`](https://docs.conda.io/en/latest/), how to diagnose the "which Python is running?" question on any machine, and how to make sure [Jupyter](https://jupyter.org/documentation) and [VS Code](https://code.visualstudio.com/docs) are using the environment you think they are. @sec-pkg-mgmt covers `conda` in depth; this chapter focuses on `venv` and on the diagnostic skills that apply to both.
+A [virtual environment](appendix-glossary.qmd#term-virtual-environment), or **venv**, is the fix: a private Python for one project, with its own packages, that you switch on while you work on it. This chapter shows you how to make one with Python's built-in [`venv` module](https://docs.python.org/3/tutorial/venv.html), how to answer "which Python is running?" on any machine, how to get [Jupyter](https://jupyter.org/documentation) and [VS Code](https://code.visualstudio.com/docs) to use the environment you meant, how `venv` compares with [`conda`](https://docs.conda.io/en/latest/), and when you need a container instead. Conda's own commands and untangling version conflicts are in @sec-pkg-mgmt, though the diagnostic habits here work for conda too.
 
-## Learning objectives {.unnumbered}
+## Why read this chapter {.unnumbered}
 
-By the end of this chapter, you should be able to:
-
-1.  Explain what a virtual environment is, what problem it solves, and why every real project should have one.
-2.  Create a venv with `python -m venv .venv`, activate it on macOS/Linux and Windows, and deactivate it.
-3.  Install packages into the active venv with `pip install` and freeze them into `requirements.txt`.
-4.  Diagnose "which Python is running?" using `which python`, `python -c "import sys; print(sys.executable)"`, and `pip show <pkg>`.
-5.  Compare `venv` and `conda` and pick the right one for a project.
-6.  Make Jupyter and VS Code use your project's venv by registering a kernel and setting the interpreter.
-7.  Recognize and fix the three most common venv failure modes: not activated, wrong interpreter, stale activation in a new shell.
+-   You ran `pip install pandas`, it said `Successfully installed`, and your code still says `ModuleNotFoundError: No module named 'pandas'`.
+-   pip refused to install anything with `error: externally-managed-environment`, and the internet's suggestions (`sudo`, `--break-system-packages`) sound like a bad idea, because they are.
+-   Upgrading a package for one course broke a project from another course, and you'd like the two to stop interfering.
+-   Your prompt says `(.venv)`, yet the code is clearly running some other Python, or Jupyter and VS Code each seem to have picked a Python of their own.
+-   On Windows, activating an environment fails with `running scripts is disabled on this system`, and you're not sure what's safe to change.
+-   A classmate sent you their project, and you want it running on your laptop in five minutes rather than an afternoon.
+-   Your instructor mentioned conda, Docker, or containers, and you want to know whether you need them yet (usually not).
 
 ## Running theme: activate early, verify always {.unnumbered}
 
-A venv that is not activated is not helping you. Make activation the first thing you do when you open a terminal for a project, and verify with a one-liner that the right Python is in use before you install anything.
+A venv that isn't switched on isn't helping you, so make activating it the first thing you do in a new terminal, and spend two seconds checking which Python is running before you install anything.
 
 ## What a virtual environment actually is
 
-A venv is, mechanically, a directory on disk (typically named `.venv` or `venv` inside your project folder) that contains:
+Start with why your computer has more than one Python. A Mac may have Apple's `python3` from the developer tools, another from [Homebrew](https://docs.brew.sh/Language-Runtimes-and-Packages), another from python.org, and another inside Anaconda or Miniforge; Windows machines collect copies the same way. Each has its own installed packages, and when you type `python`, your shell runs whichever copy it finds first on your [`PATH`](appendix-glossary.qmd#term-path) (see @sec-terminal). Install with one Python, run with another, and you get `ModuleNotFoundError` for a package you *know* you installed.
 
--   A copy or symlink of a Python interpreter (for example `.venv/bin/python` on macOS/Linux, `.venv\Scripts\python.exe` on Windows).
--   A `lib/python3.11/site-packages/` directory where packages installed into this environment live.
--   A small `activate` script that, when sourced, modifies the shell's `PATH` so that typing `python` runs the venv's interpreter instead of the system one.
+Even with one Python, there's a second problem. Say last semester's project needs pandas 2 and this semester's course uses pandas 3. One Python holds one version of pandas at a time, so every upgrade for one project is a risk to the other. Programmers call this tangle [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell).
 
-That is the whole trick. There is no sandboxing and no virtualization. The venv's Python is just a different binary on disk; "activating" just puts it at the front of `PATH`. When you `pip install pandas` inside an activated venv, pip looks up which `python` is first on the `PATH`, finds the venv's interpreter, and installs `pandas` into *its* `site-packages`. Your system-wide Python is untouched.
+A virtual environment solves both, and it's less magical than it sounds. It's a folder, usually `.venv` inside your project, holding three things:
 
-The benefits are enormous:
+-   A `python` command that points at one of your existing Pythons (a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) at `.venv/bin/python` on macOS and Linux; `.venv\Scripts\python.exe` on Windows).
+-   Its own `site-packages` folder (`.venv/lib/python3.11/site-packages`, or `.venv\Lib\site-packages` on Windows), where everything you install goes.
+-   A few `activate` scripts that put the venv's commands at the front of your `PATH`.
 
--   **Isolation.** One project's `pandas==1.5` does not collide with another project's `pandas==2.2`.
--   **Reproducibility.** You can record exactly which packages your project needs in a `requirements.txt` file and a collaborator can recreate the same environment in 30 seconds.
--   **Cleanup.** If an environment gets corrupted, you delete the directory and make a new one. No system-wide uninstalls.
+That's the whole trick. There's no [sandbox](https://en.wikipedia.org/wiki/Sandbox_(computer_security)) and no virtual machine: "activating" just means that when you type `python` or `pip`, the shell finds the venv's copy first. Each venv has its own `site-packages`, so the pandas 2 project and the pandas 3 project each get their own pandas.
+
+Three things follow. **Isolation:** breaking packages in one venv can't touch another project, or the Python your operating system relies on. **Reproducibility:** a `requirements.txt` file records what's installed, and a collaborator rebuilds the environment with one command. **Disposability:** the official `venv` documentation calls environments "disposable," and means it as advice: if one gets into a strange state, delete `.venv` and make a new one.
+
+One consequence surprises people: a venv remembers the full path it was made at, so it can't be moved or copied. When we renamed a project folder after making its venv, activating still put `(.venv)` in the prompt, but `which python` pointed at the system Python. If you rename or move a project, recreate its `.venv`, and keep venvs out of synced folders (see @sec-filesystem-cloud).
 
 ## Creating and activating a venv
 
-The standard Python library ships with the `venv` module. There is no install step; if you have Python 3, you have venv.
-
-**Create a venv** in the current project directory:
+`venv` comes with Python 3, so there's nothing to install first. In a terminal, go to your project folder and run:
 
 ```bash
 python -m venv .venv
 ```
 
+`-m venv` means "run Python's `venv` module," and `.venv` is the folder to create (the name VS Code and most tutorials expect). It prints nothing when it works; the new folder is the sign of success.
+
 ::: {.callout-warning collapse="true"}
 ## If this didn't work
 
-The most common failure is **`python` is not on your PATH**, which shows up as `command not found` or as your terminal launching the wrong interpreter. On macOS and Linux, try `python3 -m venv .venv` instead — some systems ship `python3` without a plain `python`. On Windows, if `python` opens the Microsoft Store, go to Settings → Apps → Advanced app settings → App execution aliases and turn off the `python.exe` and `python3.exe` aliases, then reinstall Python from [python.org](https://www.python.org/downloads/).
+**`python: command not found` on a Mac or Linux.** Some systems have only `python3`. Run `python3 -m venv .venv` instead; once the venv is active, plain `python` works, because every venv includes one.
 
-If the command runs but creates an empty folder, check that the directory is writable (`ls -la` on macOS/Linux, right-click → Properties on Windows). Venv creation silently fails on synced cloud folders where Python cannot write fast enough — move the project off OneDrive or iCloud Drive and try again.
+**On Windows, `python` opens the Microsoft Store or isn't found.** Windows can put a placeholder `python` on your `PATH` that sends you to the Store. The [Python docs' troubleshooting table](https://docs.python.org/3/using/windows.html#troubleshooting) walks through the fix, starting with "Manage app execution aliases" in the Start menu. If you installed Python from python.org, `py -m venv .venv` often works when `python` doesn't.
+
+**`The virtual environment was not created successfully because ensurepip is not available`.** On Ubuntu, Debian, and WSL, `venv` ships in a separate system package. The error names the command that installs it (something like `apt install python3.12-venv`), which needs `sudo`.
+
+**A `PermissionError`, or a venv that acts strangely later.** Work in a folder you own under your home directory, and not one that OneDrive, iCloud Drive, or Dropbox syncs (a [sync client](appendix-glossary.qmd#term-sync-client) can fight with a venv's thousands of small files).
 
 Still stuck? See @sec-asking-questions for how to gather the evidence a helper will need.
 :::
 
-This creates a `.venv/` folder. Add `.venv/` to your `.gitignore` — you never commit a venv to git. See @sec-git-github.
+Keep the venv out of git: it's big, tied to your computer, and easy to rebuild. Add `.venv/` to your project's [`.gitignore`](https://git-scm.com/docs/gitignore) (see @sec-git-github). Since Python 3.13, `venv` also puts a tiny `.gitignore` inside `.venv`, but the line costs nothing and covers older Pythons.
 
-**Activate it** (the command differs by OS and shell):
+**Activate it.** The command depends on your operating system and shell, which is why a command from a tutorial may not work for you. The `venv` documentation (in Further reading) has the full table; these are the ones you're likely to need:
 
 ```bash
-# macOS / Linux, bash or zsh
+# macOS or Linux (bash or zsh)
 source .venv/bin/activate
 
 # Windows, PowerShell
 .venv\Scripts\Activate.ps1
 
-# Windows, cmd
+# Windows, Command Prompt (cmd)
 .venv\Scripts\activate.bat
+
+# Windows, Git Bash
+source .venv/Scripts/activate
 ```
 
-After activation your shell prompt usually changes to show the env name, e.g. `(.venv) you@host:~/project$`. If you don't see it, that is a hint something is off.
+(For the fish shell, it's `source .venv/bin/activate.fish`.) Activation prints nothing either. What changes is your prompt, which now starts with the environment's name in parentheses, and what `python` means (@fig-venv-prompt).
 
-![Illustration: A prompt before and after activating a virtual environment. The `(.venv)` prefix is the visible signal, and `which python` is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.](/graphics/venv-prompt.png){#fig-venv-prompt fig-alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python' prints '/Users/you/Project/.venv/bin/python'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards."}
+![Illustration: A prompt before and after activating a virtual environment. The `(.venv)` prefix is the visible signal, and `which python3` is the check that confirms it: the interpreter now resolves inside the project rather than to the system copy.](/graphics/venv-prompt.png){#fig-venv-prompt fig-alt="Illustration of a terminal window. Before activation, the prompt reads 'you@laptop Project %' and 'which python3' prints '/usr/bin/python3'. After running 'source .venv/bin/activate', the prompt reads '(.venv) you@laptop Project %' and 'which python3' prints '/Users/you/Project/.venv/bin/python3'. Numbered callouts mark the prompt before activation and the environment name added to it afterwards."}
 
-**Install packages** into the active venv:
+On Windows, PowerShell may refuse to run the script, with a red error that says, in part, `Activate.ps1 cannot be loaded because running scripts is disabled on this system`. Nothing is broken. That's PowerShell's [execution policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies), a safety setting that blocks scripts by default on Windows desktops. The Python docs suggest allowing local scripts for your own account, which doesn't need administrator rights:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+If you'd rather not (or a school-managed laptop won't let you), `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process` allows scripts in the current window only, or you can use `.venv\Scripts\activate.bat` from Command Prompt.
+
+Strictly, you don't *have* to activate: `.venv/bin/python analysis.py` (or `.venv\Scripts\python analysis.py`) uses the venv directly. Activation just lets you type plain `python`, and it's the step people forget, which is why the next section's checks matter.
+
+**Install packages** with the venv active:
 
 ```bash
 python -m pip install pandas numpy matplotlib
-# https://pip.pypa.io/en/stable/cli/pip_install/
 ```
 
-Using `python -m pip` (rather than just `pip`) is a small but valuable habit — it guarantees you are installing into the same Python that `python` runs. If `pip` and `python` ever get out of sync (a classic source of confusion), `python -m pip` sidesteps the problem entirely.
+Why `python -m pip` rather than plain `pip`? `python` and `pip` are separate commands that your shell looks up separately, and they don't always belong to the same Python. `python -m pip` means "the pip that belongs to this `python`," so the package lands where `python` will look for it. It's what the [pip documentation](https://pip.pypa.io/en/stable/getting-started/) recommends.
 
-**Record your dependencies** so others can reproduce the environment:
+If you forget to activate and try to install into the system Python, a recent Mac (with Homebrew's Python) or Ubuntu may stop you. Ubuntu's version of the message looks like this (trimmed):
+
+```text
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try apt install
+    python3-xyz, where xyz is the package you are trying to
+    install.
+
+    If you wish to install a non-Debian-packaged Python package,
+    create a virtual environment using python3 -m venv path/to/venv.
+    ...
+note: ... You can override this, at the risk of breaking your
+Python installation or OS, by passing --break-system-packages.
+```
+
+That's [PEP 668](https://peps.python.org/pep-0668/) at work: the operating system's Python belongs to the operating system, and it's telling you to use a venv. It's right. `--break-system-packages` means what it says, and `sudo pip install` (the first panel of this chapter's meme) risks the same damage. Activate your venv and install there.
+
+**Record your dependencies** so anyone, including you on another computer, can rebuild the environment:
 
 ```bash
 python -m pip freeze > requirements.txt
 ```
 
-Commit `requirements.txt` to git. A collaborator then recreates the env with:
+[`pip freeze`](https://pip.pypa.io/en/stable/cli/pip_freeze/) lists every package in the venv with its exact version, including the packages your packages depend on, so don't be alarmed by the length: pandas, matplotlib, Jupyter, and ipykernel in a fresh venv in September 2026 came to 106 lines. Commit that file to git, and anyone can rebuild the environment with `python -m pip install -r requirements.txt` (the last worked example shows the whole sequence).
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-```
-
-**Deactivate** when you are done:
+**Deactivate** when you're done, or just close the terminal:
 
 ```bash
 deactivate
 ```
 
-Deactivation just removes the venv from your `PATH`; it does not touch the files.
+That takes the venv off your `PATH` and restores your prompt, without touching its files. Every new terminal window or tab starts out *un*activated, which is the most common reason a venv that worked an hour ago "stopped working."
 
 ## Which Python am I running?
 
-This is the single most valuable diagnostic in this chapter. Paste it into your shell any time you are confused:
+This is the most useful question in the chapter, and answering it takes one line. Ask your shell which `python` it will run:
 
 ```bash
-which python          # macOS/Linux
-where python          # Windows
+which python                  # macOS, Linux, Git Bash
+where.exe python              # Windows (Command Prompt or PowerShell)
 ```
 
-Or, cross-platform, ask Python itself:
+(Plain `where python` silently does nothing in PowerShell, where `where` means something else; `where.exe` or [`Get-Command python`](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-command) works.) Or ask Python itself, which works everywhere:
 
 ```bash
 python -c "import sys; print(sys.executable)"
 ```
 
-The output should be the path to your venv's interpreter (for example `/home/you/project/.venv/bin/python`). If instead you see something like `/usr/bin/python3` or `/opt/homebrew/bin/python3`, your venv is **not** active and the next `pip install` will pollute your system Python.
+[`sys.executable`](https://docs.python.org/3/library/sys.html#sys.executable) is the full path of the running Python. With the venv active, it should be inside your project, like `/Users/you/project/.venv/bin/python`. If you see something like `/usr/bin/python3`, `/opt/homebrew/bin/python3`, or a path in `miniforge3` or `anaconda3`, the venv isn't active, and the next `pip install` will land outside your project. (On a Mac with no plain `python`, `which python` may say `python not found` until you activate.) For a yes-or-no answer, compare [`sys.prefix`](https://docs.python.org/3/library/sys.html#sys.prefix), which points at the venv when one is running, with `sys.base_prefix`, the Python the venv was made from:
 
-You can also ask which Python a specific package is installed into:
+```bash
+python -c "import sys; print(sys.prefix != sys.base_prefix)"
+```
+
+That prints `True` inside a venv and `False` outside one.
+
+The other half of the question is where a *package* is installed. [`pip show`](https://pip.pypa.io/en/stable/cli/pip_show/) tells you:
 
 ```bash
 python -m pip show pandas
 ```
 
-Look at the `Location:` line. If it says `.../.venv/lib/python3.11/site-packages`, pandas lives in your venv. If it says `.../.local/lib/python3.11/site-packages` or `/usr/lib/python3/dist-packages`, the install leaked out of the venv.
+pandas prints its entire license in the middle of the output, so scroll past it to the `Location:` line (trimmed here):
+
+```text
+Name: pandas
+Version: 3.0.6
+...
+Location: /Users/you/project/.venv/lib/python3.11/site-packages
+Requires: numpy, python-dateutil
+```
+
+A `Location:` inside `.venv` means the package is in your venv; `~/.local/lib/python3.11/site-packages` or `/usr/lib/python3/dist-packages` means it landed outside. And `WARNING: Package(s) not found: pandas` means this Python doesn't have it at all, which may be your whole answer.
 
 ## `venv` vs. `conda`
 
-Both `venv` and `conda` create isolated environments. They differ in a few important ways:
+Sooner or later a course or lab will hand you a conda environment, and you may wonder whether you've been doing it wrong. You haven't. Both make isolated environments; they differ in what they install and where they keep it.
 
-| Feature | `venv` + `pip` | `conda` |
+| | `venv` + `pip` | `conda` |
 |---|---|---|
-| Ships with Python | yes | no (install Miniconda or Anaconda) |
-| Manages non-Python packages | no | yes (e.g., CUDA, R, compilers) |
-| Package source | PyPI | conda-forge, bioconda, defaults, PyPI |
-| Environment directory | inside project (`.venv/`) | centralized (`~/miniconda3/envs/name/`) |
-| Good for | web/data science with pure-Python deps | data science with heavy native deps, cross-language stacks |
+| Comes with Python | yes | no (install Miniforge or Miniconda) |
+| Installs non-Python software | no | yes (CUDA, GDAL, R, compilers) |
+| Packages come from | PyPI | conda channels such as conda-forge |
+| Environment lives | in the project (`.venv/`) | in a central `envs` folder, by default |
+| Best for | most coursework and pure-Python projects | heavy compiled dependencies, mixed-language stacks |
 
-As a rough rule: **start with `venv` for most projects**. It is simpler, ships with Python, keeps the environment next to the code, and works identically everywhere. **Use `conda` when** you need compiled packages that are hard to install via pip (CUDA-enabled PyTorch, GDAL, certain bioinformatics tools) or when a course or collaborator has standardized on it. Mixing conda and pip in the same environment works most of the time but is a source of occasional pain — see @sec-pkg-mgmt for the rules.
+For most projects, **start with `venv`**: it's already on your computer, keeps the environment next to the code, and works the same everywhere. **Reach for conda** when you need compiled software that's painful to install with pip (GPU builds of PyTorch, GDAL for geographic data, many bioinformatics tools), or when your course has standardized on it. You can pip-install PyPI packages into a conda environment, but mixing the two has rules (see @sec-pkg-mgmt). The community's [Miniforge installer](https://conda-forge.org/download/) sets conda up with conda-forge as the default channel, and conda's guide to [managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) covers the commands.
 
-You can have both on the same machine — they do not conflict. Just do not try to "activate" a venv while a conda env is also active. Activate one or the other.
+Both can live on one computer; just don't stack them. If conda activates `base` in every new terminal (you'll see `(base)` in your prompt), run `conda deactivate` before activating a venv, so one environment is in charge. You may also meet [uv](https://docs.astral.sh/uv/pip/environments/), a much faster installer; it makes the same kind of `.venv` folder, so this chapter still applies.
 
 ## Jupyter and venvs
 
-Jupyter does not automatically see your venv. A Jupyter notebook runs Python through a [kernel](appendix-glossary.qmd#term-kernel), and by default it may be pointed at your system Python. This causes the classic bug: you `pip install pandas` in your venv, open a notebook, and `import pandas` fails.
+Here's the classic trap: you activate your venv, install pandas, start Jupyter, and `import pandas` fails anyway. A notebook doesn't run code with "the terminal's Python." It uses a [kernel](appendix-glossary.qmd#term-kernel), a separate Python process that Jupyter starts, and the kernel may belong to a different Python from the one you installed into.
 
-The fix is to register your venv as a Jupyter kernel. From inside the activated venv:
+The fix is to register your venv as a kernel. With the venv active, install [ipykernel](https://ipython.readthedocs.io/en/stable/install/kernel_install.html) and register it under a name you'll recognize:
 
 ```bash
 python -m pip install ipykernel
 python -m ipykernel install --user --name project-venv --display-name "Python (project-venv)"
 ```
 
-Now when you open a notebook in Jupyter Lab or VS Code, you can pick **Python (project-venv)** from the kernel dropdown. Inside the notebook, verify you are on the right kernel by running:
+The second command answers with a line like this (the folder differs on macOS and Windows):
+
+```text
+Installed kernelspec project-venv in /home/you/.local/share/jupyter/kernels/project-venv
+```
+
+`--name` is Jupyter's internal label; `--display-name` is what menus show. In JupyterLab or VS Code, pick **Python (project-venv)** as the kernel, then check in the first cell that the notebook really runs your venv:
 
 ```python
 import sys
 print(sys.executable)
 ```
 
-If that path points at your `.venv/bin/python`, you are good. If it points at `/usr/bin/python3`, switch the kernel. See @sec-jupyter for more on kernel management.
+If the path ends in `.venv/bin/python` (or `.venv\Scripts\python.exe`), you're set; otherwise, switch kernels. `jupyter kernelspec list` shows every kernel Jupyter knows about, and `jupyter kernelspec uninstall project-venv` removes one. A kernel remembers the full path to the venv's Python, so it survives recreating `.venv` in place, but if you move the project, register it again.
+
+In a notebook that needs one more package, [`%pip install seaborn`](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-pip) in a cell installs into the kernel's Python, exactly where you want it. @sec-jupyter has more on kernels.
 
 ## VS Code and venvs
 
-VS Code auto-detects venvs in your project directory. When you open a workspace with a `.venv/` folder inside, VS Code prompts: *"We noticed a new virtual environment. Would you like to select it?"* Click yes and VS Code will use that interpreter for IntelliSense, linting, and the integrated terminal.
+VS Code chooses a Python too, without asking your terminal, and it usually chooses well. According to [VS Code's Python environments guide](https://code.visualstudio.com/docs/python/environments), when you haven't picked one, it prefers a `.venv` or `venv` folder in the project over the system Python, uses it to run and debug code and for autocomplete, and activates it in new terminals.
 
-If it does not auto-detect, you can pick manually:
+The chosen environment's Python version shows in the status bar at the bottom of the window. If it's wrong, or VS Code missed a venv you just made, click it, or open the Command Palette (`Ctrl+Shift+P`, or `Cmd+Shift+P` on a Mac), run **Python: Select Interpreter**, and pick the entry whose path contains your project's `.venv`. Terminals opened *before* the switch keep the old environment, so open a new one and check with `which python`.
 
-1.  Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) to open the Command Palette.
-2.  Type "Python: Select Interpreter" and press Enter.
-3.  Pick the entry whose path contains your project's `.venv`.
-
-The selected interpreter shows in the bottom-right of the VS Code status bar. Click it any time to switch.
+Notebooks in VS Code pick their kernel separately, from the picker at the notebook's top right (see VS Code's [kernel management guide](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)); choose your venv there, and run the `sys.executable` check once.
 
 ## When venvs are not enough: containers
 
-A venv solves one specific problem: isolating Python *packages* across projects. It does not isolate the Python interpreter version itself reliably across machines, it does not isolate non-Python system libraries, and it does not isolate services your code depends on like Postgres or Redis. For most coursework, that is fine — a `requirements.txt` plus the right Python version on every collaborator's laptop is enough. For projects that touch native libraries, span operating systems, or need to deploy somewhere other than your own machine, you eventually need something stronger: a [container](https://www.docker.com/resources/what-container/).
+A venv isolates your project's Python packages, and nothing else: not Python itself, the operating system, or the non-Python software some packages need, like the geographic libraries under GeoPandas or a database. For most coursework that's fine. But you may meet a project that works on your machine and fails on a teammate's because the difference is below Python. That's what a **container** solves.
 
-A container is a packaged operating-system environment that runs the same way everywhere. Conceptually, a venv pins your Python packages; a container pins your *entire* userspace — the OS distribution, the system libraries, the Python interpreter, the installed packages, and the project code. A container that runs on your MacBook also runs on your collaborator's Windows laptop, on a Linux server, and on a cloud platform, byte-for-byte the same. The most common implementation you will encounter as a student is [Docker](https://docs.docker.com/get-started/).
+A [container](https://en.wikipedia.org/wiki/Containerization_(computing)) packages a whole user-space environment: a minimal Linux system, its libraries, a Python interpreter, your packages, and your code. If a venv pins your packages, a container pins nearly everything above the operating system's [kernel](https://en.wikipedia.org/wiki/Kernel_(operating_system)), which it shares with the machine it runs on. The same image runs the same way on your laptop, a teammate's, a university server, or a cloud service, with two caveats. On a Mac or Windows laptop, Docker Desktop runs Linux containers inside a [small virtual machine](https://docs.docker.com/desktop/features/vmm/). And because containers share the host's kernel, an image built for one processor needs emulation or a [multi-platform build](https://docs.docker.com/build/building/multi-platform/) to run on another (say, from an Apple silicon Mac to a typical `amd64` server). The tool you'll meet most is Docker, whose explanation of [what a container is](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) is a good first read.
 
 ### A minimal Dockerfile
 
-A `Dockerfile` is a recipe — a text file at the project root that describes how to build the image. For a simple Python project it is short:
+A container runs from an *image*, built from a recipe called a `Dockerfile` at the root of your project. For a simple Python project it's short:
 
 ```dockerfile
 # Dockerfile
@@ -229,32 +278,34 @@ COPY . .
 CMD ["python", "src/pipeline.py"]
 ```
 
-Five lines do real work: `FROM` picks a base image (Python 3.11 on a minimal Debian); `WORKDIR` sets the in-container directory; the first `COPY` and `RUN` install dependencies; the second `COPY` brings in your code; `CMD` says what to run when the container starts.
+Each of the six instructions does one job. `FROM` picks a starting image, here the [official Python image](https://hub.docker.com/_/python) with Python 3.11 on a minimal Debian Linux. `WORKDIR` sets the folder inside the container. The first `COPY` brings in just `requirements.txt`, and `RUN` installs the packages. The second `COPY` brings in your code, and `CMD` says what to run at start. Copying `requirements.txt` first isn't fussiness: Docker [caches each step](https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/), so when only your code changes, the next build skips the slow install. The [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) documents every instruction.
 
-Build the image and run it:
+Build the image, give it a name with `-t`, and run it:
 
 ```bash
 docker build -t my-project .
 docker run --rm my-project
 ```
 
-The `--rm` flag deletes the container after it exits, which is what you want for one-shot runs. To get a shell inside the container instead — the rough equivalent of "activating" the environment — add `-it` and override the command:
+`--rm` deletes the container when it exits, which suits one-off runs. For a shell *inside* the container, the rough equivalent of activating an environment, add `-it` and ask for `bash`:
 
 ```bash
 docker run --rm -it my-project bash
 ```
 
-Two patterns matter for development. To **edit code on your host and run it inside the container**, mount your project directory as a volume so changes show up live: `docker run --rm -it -v "$PWD":/app my-project bash`. To **expose a port** (for a Jupyter server, a Flask app, a database), add `-p host:container`: `docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0`.
+Two more options come up constantly. To **edit code on your computer and run it in the container**, mount your project folder with a [bind mount](https://docs.docker.com/engine/storage/bind-mounts/): `docker run --rm -it -v "$PWD":/app my-project bash`. To **reach a server in the container**, such as JupyterLab, [publish its port](https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/) with `-p host:container`: `docker run --rm -p 8888:8888 my-project jupyter lab --ip=0.0.0.0 --allow-root` (JupyterLab must be in `requirements.txt`, and it refuses to run as `root`, this image's default user, without `--allow-root`).
 
 ### Docker Compose for multi-service projects
 
-Most non-trivial projects need more than just Python. They need a database, maybe a message queue, sometimes a separate worker process. [Docker Compose](https://docs.docker.com/compose/) lets you describe all of those services in one `docker-compose.yml` and start them together with `docker compose up`:
+Some projects need several programs running at once, such as your code plus a database. [Docker Compose](https://docs.docker.com/compose/) describes them in one file, `compose.yaml`, and starts them together with `docker compose up`:
 
 ```yaml
 services:
   app:
     build: .
-    depends_on: [db]
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgres://user:pass@db:5432/app
   db:
@@ -263,40 +314,46 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d app"]
+      interval: 5s
+      retries: 5
 ```
 
-Two services start, the app waits for the database, and the whole pipeline reproduces on any machine that has Docker installed. This is genuinely magical the first time it works on a teammate's laptop with no setup other than `docker compose up`.
+`app` is built from your Dockerfile, and `db` is the official PostgreSQL image. Services reach each other [by service name](https://docs.docker.com/compose/how-tos/networking/), which is why the database's address is simply `db`. The `healthcheck` and `condition: service_healthy` lines are easy to leave out and matter: plain `depends_on` only *starts* the database first and doesn't wait until it accepts connections, so your app can crash on its first query ([startup order](https://docs.docker.com/compose/how-tos/startup-order/) explains). These passwords are fine for a practice database on your laptop; for anything real, keep them out of the file (see @sec-secrets). Older tutorials name the file `docker-compose.yml`, which Compose still reads.
+
+The first time a teammate clones your project, types `docker compose up`, and has everything running with no other setup, it feels like magic.
 
 ### When to actually reach for a container
 
-Containers are powerful but they are also a layer of complexity, and reaching for them too early creates more friction than it removes. A useful checklist of "yes, you actually need a container":
+Containers are one more layer to learn and debug, and reaching for them too early creates more friction than it removes. You probably need one when:
 
-- **You need to reproduce the exact same environment on a different operating system** — venv pins Python packages but not the OS or system libraries beneath them, and some packages behave differently on macOS vs Linux.
-- **Your code depends on system-level binaries** that are tedious to install — PostGIS, FFmpeg, headless Chromium for scraping, specific CUDA versions for GPU work.
-- **You need to run alongside a database or queue** that should be reproducible on every machine.
-- **You are deploying to a cloud target** — every major cloud platform runs containers natively, so packaging your project as a container is the lingua franca of "ship this somewhere."
+- **The same environment has to run on different operating systems,** and the differences are below Python, in system libraries a venv doesn't pin.
+- **Your code depends on system software that's tedious to install:** PostGIS, FFmpeg, headless Chromium for scraping, a specific CUDA version for GPU work.
+- **Your code runs alongside a database or queue** that every teammate should get the same way.
+- **You're deploying to a server or the cloud,** where containers are the common format for "run this somewhere."
 
-A useful checklist of "no, a venv is fine":
+A venv is plenty for:
 
-- **Pure-Python coursework** with a small `requirements.txt`.
-- **Notebooks for analysis** that read local files and produce figures.
+- **Pure-Python coursework** with a short `requirements.txt`.
+- **Analysis notebooks** that read local files and make figures.
 - **Anything you only ever run on your own laptop** for one semester.
 
-If you are unsure, default to venv. You can always graduate a project to a container later by adding a Dockerfile; you cannot easily undo the complexity once it is in.
+If you're not sure, start with a venv. You can add a Dockerfile later; taking the complexity back out is harder.
 
 ## Stakes and politics
 
-Virtual environments solve a real and unavoidable problem: different projects need different versions of the same package, and "the system Python" cannot serve them all at once. The political dimension is what the alternatives — and the absence of alternatives — look like for different students.
+In September 2026, this chapter's first worked example (pandas, matplotlib, and Jupyter in a fresh venv) came to 106 packages and about 500 MB on disk. On a laptop with campus Wi-Fi, that's a coffee break. On a capped phone hotspot, a shared lab computer where you can't install software, or a school-managed [Chromebook](https://en.wikipedia.org/wiki/Chromebook) where you can't install Python at all, it's a wall. "Just make a venv" quietly assumes a machine you control, disk space to spare, and a [data connection nobody meters](https://en.wikipedia.org/wiki/Data_cap).
 
-Two things to notice. First, *what venvs assume about your machine*. Creating, activating, and populating a venv from a `requirements.txt` requires an unmetered internet connection (the first install can be hundreds of megabytes), an editor that can be pointed at a custom interpreter, and a working `python` command on a system where you have write access to your home folder. Students using shared lab workstations, Chromebooks locked down by a school district, or capped mobile data plans hit different walls at different points in that workflow. Second, *what containers concentrate*. Docker, the dominant container runtime, is now owned by Docker, Inc. and gated by Docker Desktop's commercial terms for larger organizations; the underlying open standards (OCI) exist, but the convenient tooling is increasingly behind a corporate license. Adopting containers as the default isolation layer trades "skill that runs on your laptop" for "infrastructure dependency on a third party."
+Containers move the question from your laptop to a company. Docker Engine is open source, and container images follow the vendor-neutral [Open Container Initiative](https://en.wikipedia.org/wiki/Open_Container_Initiative) standards. But the easy on-ramp for Mac and Windows users, Docker Desktop, is licensed by Docker, Inc.: [free](https://docs.docker.com/subscription-billing/desktop-license/) for personal use, education, and small businesses, and a paid subscription for larger companies and government agencies. A workflow you learn for free in a course can come with a license question at your first job, which is exactly why it's worth knowing the standard is open and that alternatives such as [Podman](https://podman.io/) exist.
 
-See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when a tutorial says "just create a venv" or "just run it in a container," ask which prerequisites — bandwidth, disk, admin rights, paid licenses — that *just* is hiding.
+See @sec-artifacts-politics for the broader framework. The concrete prompt to carry forward: when a tutorial says "just create a venv" or "just run it in a container," ask which prerequisites (bandwidth, disk, admin rights, a paid license) that *just* is hiding.
 
 ## Worked examples
 
 ### Starting a new project from scratch
 
-You are starting a term project that will use pandas and matplotlib.
+You're starting a term project with pandas and matplotlib in notebooks. The order matters: make the venv, activate it, and only then install.
 
 ```bash
 mkdir term-project && cd term-project
@@ -310,53 +367,54 @@ git init && git add requirements.txt .gitignore
 git commit -m "Initial environment"
 ```
 
-Register the kernel so Jupyter can find it:
+Then register the venv as a kernel and start JupyterLab from inside it:
 
 ```bash
 python -m ipykernel install --user --name term-project --display-name "Python (term-project)"
 jupyter lab
 ```
 
-In Jupyter, the new kernel appears in the launcher. Open a notebook with it and you are good to go.
+The new kernel appears in JupyterLab's launcher. Open a notebook with it, run the `sys.executable` check once, and you're ready.
 
 ### Diagnosing "it worked yesterday"
 
-You open your terminal the next morning, run `python analysis.py`, and get:
+You open a terminal the next morning, run `python analysis.py`, and get:
 
-```
+```text
+Traceback (most recent call last):
+  File "/Users/you/term-project/analysis.py", line 1, in <module>
+    import pandas as pd
 ModuleNotFoundError: No module named 'pandas'
 ```
 
-**Step 1: check whether the venv is active.** Look at your shell prompt. Does it show `(.venv)`? No? Activate it:
+You installed pandas yesterday, so this feels like gaslighting. It isn't; work through three checks in order.
 
-```bash
-source .venv/bin/activate
-```
+**First, is the venv active?** No `(.venv)` at the start of your prompt means a new terminal nobody activated. Run `source .venv/bin/activate` and try again. Usually, that's the whole story.
 
-Rerun your script. Usually this fixes it — you forgot to activate.
-
-**Step 2: if still failing, check which Python.**
+**Second, if the prompt says `(.venv)` and it still fails, ask which Python is running:**
 
 ```bash
 which python
 python -c "import sys; print(sys.executable)"
 ```
 
-If the path does not contain `.venv`, activation silently failed (rare but happens with nested shells, tmux, or VS Code's integrated terminal on certain configurations). Deactivate, re-activate, and recheck.
+If the path doesn't contain your project's `.venv`, activation isn't doing what the prompt claims. Perhaps the project folder was renamed or moved after the venv was made: run `deactivate`, delete `.venv`, recreate it, and reinstall from `requirements.txt`. Or this terminal was opened before you selected the venv in VS Code; open a new one.
 
-**Step 3: confirm the package is installed in this venv.**
+**Third, if the right Python is running, ask whether it has pandas:**
 
 ```bash
 python -m pip show pandas
 ```
 
-If this says `WARNING: Package(s) not found: pandas`, reinstall:
+If it says `WARNING: Package(s) not found: pandas`, yesterday's install went into a different Python, probably from a terminal where the venv wasn't active. Install into this one:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
 ### A collaborator clones your project
+
+Because you committed `requirements.txt` and not `.venv/`, a teammate rebuilds the environment on their own machine:
 
 ```bash
 git clone https://github.com/you/term-project.git
@@ -366,13 +424,13 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-That is the whole setup. Five commands and any machine is running your project with the exact package versions you committed.
+Five commands, and their venv has exactly the versions you committed: when we tried it with the term project above, `pip freeze` in the new venv matched `requirements.txt` line for line.
 
 ## Templates
 
 **`.gitignore` entries for a venv project:**
 
-```
+```text
 .venv/
 __pycache__/
 *.pyc
@@ -380,46 +438,56 @@ __pycache__/
 .pytest_cache/
 ```
 
-**`requirements.txt` (generated by `pip freeze`):**
+**`requirements.txt`**, as `pip freeze` wrote it after installing pandas and matplotlib into a fresh venv in September 2026 (the other ten are what those two need):
 
-```
-matplotlib==3.8.3
-numpy==1.26.4
-pandas==2.2.1
+```text
+contourpy==1.3.3
+cycler==0.12.1
+fonttools==4.66.0
+kiwisolver==1.5.1
+matplotlib==3.11.2
+numpy==2.4.6
+packaging==26.3
+pandas==3.0.6
+pillow==12.3.0
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+six==1.17.0
 ```
 
-A version-pinned `requirements.txt` is reproducible but brittle. For libraries (code you publish for others to install), prefer loose constraints (`pandas>=2.0`). For application projects (your course work), prefer pins.
+Exact pins are reproducible but brittle: they may not install on a much newer Python. For coursework and analysis, pin, because you want the same results next month. For a library others will install alongside their own packages, use looser constraints such as `pandas>=2.0`. pip's [requirements file format](https://pip.pypa.io/en/stable/reference/requirements-file-format/) guide lists everything a line can say.
 
 ## Exercises
 
-1.  Create a fresh venv in an empty directory, activate it, and install `pandas`. Run `python -m pip show pandas` and confirm the `Location:` line is inside your venv.
-2.  Write down the output of `which python` (or `where python`) before and after activating a venv. Notice the path change.
-3.  Deliberately break the "which Python?" question: open a new terminal (do not activate the venv) and run `python -c "import pandas"`. Read the traceback (see @sec-tracebacks). Then activate the venv and run it again.
-4.  Pick an existing project of yours that does not use a venv. Create one, pip-install everything it needs, and freeze a `requirements.txt`. Commit to git.
-5.  Register a Jupyter kernel for a venv, open a notebook, and verify with `import sys; print(sys.executable)` that the notebook is running your venv's Python and not the system one.
-6.  Clone a classmate's project (or your own on another machine) and get it running from scratch using only `git clone`, `python -m venv`, `activate`, and `pip install -r requirements.txt`. Time yourself — it should take under two minutes.
-7.  Delete your `.venv/` directory and recreate it from `requirements.txt`. Confirm the project still runs. This is the key reproducibility test.
+1.  Create a fresh venv in an empty folder, activate it, and install `pandas`. Run `python -m pip show pandas` and confirm the `Location:` line is inside your venv.
+2.  Write down the output of `which python` (or `where.exe python` on Windows) before and after activating a venv. What changed, and why?
+3.  Break it on purpose: open a new terminal, don't activate the venv, and run `python -c "import pandas"`. Read the traceback (see @sec-tracebacks). Then activate the venv and run it again.
+4.  Pick an existing project of yours that doesn't use a venv. Create one, install everything the project needs, freeze a `requirements.txt`, and commit it to git.
+5.  Register a Jupyter kernel for a venv, open a notebook with it, and confirm with `import sys; print(sys.executable)` that the notebook is running your venv's Python and not the system one. Then find it in `jupyter kernelspec list`.
+6.  Clone a classmate's project (or your own, on another computer) and get it running using only `git clone`, `python -m venv`, activation, and `pip install -r requirements.txt`. Time yourself: once the packages download, it should take a few minutes.
+7.  Delete your `.venv/` folder and recreate it from `requirements.txt`. Confirm the project still runs. This is the real test of whether your project is reproducible.
 
 ## One-page checklist
 
--   Every project gets its own venv: `python -m venv .venv` at the project root.
+-   Every project gets its own venv: `python -m venv .venv` in the project folder.
 -   Add `.venv/` to `.gitignore`. Never commit a venv.
--   Activate before installing anything: `source .venv/bin/activate` (or the Windows equivalent).
--   Verify with `which python` or `python -c "import sys; print(sys.executable)"` before any `pip install`.
--   Use `python -m pip install` instead of bare `pip install`.
+-   Activate in every new terminal: `source .venv/bin/activate` (or `.venv\Scripts\Activate.ps1` on Windows).
+-   Check with `which python` or `python -c "import sys; print(sys.executable)"` before any `pip install`.
+-   Use `python -m pip install`, not bare `pip install`, and never `sudo pip`.
 -   Freeze dependencies to `requirements.txt` and commit that file.
--   Register the venv as a Jupyter kernel if you will use notebooks.
--   Point your editor (VS Code, PyCharm, etc.) at the venv interpreter.
--   If something is weird, the first diagnostic is *always* "which Python is running?"
+-   Moved or renamed the project? Delete `.venv` and recreate it.
+-   Register the venv as a Jupyter kernel if you use notebooks.
+-   Point VS Code (or your editor) at the venv's interpreter.
+-   When something is weird, the first question is *always* "which Python is running?"
 
 ::: {.callout-note}
 ## 📚 Further reading
 
-- Python docs, [`venv` — Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official module reference and command-line usage.
-- Python Packaging Authority, [Installing packages using pip and virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a tutorial-style walk-through, including pip usage inside a venv.
-- pyenv, [Simple Python Version Management](https://github.com/pyenv/pyenv) — the standard tool for managing multiple Python interpreters on one machine; pairs naturally with venv when you need both isolation and a non-default Python version.
-- [Real Python: Python Virtual Environments — A Primer](https://realpython.com/python-virtual-environments-a-primer/) — extended discussion of venv internals, common pitfalls, and alternatives.
-- Docker, Inc., [Get started](https://docs.docker.com/get-started/) — the official walkthrough for building, running, and sharing containers.
-- [Open Container Initiative](https://opencontainers.org/) — the vendor-neutral standard underneath Docker; useful to know exists when you wonder whether containerization requires Docker specifically (it does not).
-- [Play with Docker](https://labs.play-with-docker.com/) — a browser sandbox that gives you a temporary Docker host so you can experiment without installing anything locally.
+- **Python docs**, [`venv`: Creation of virtual environments](https://docs.python.org/3/library/venv.html) — the official reference, including the table of activation commands for every shell and a clear explanation of how venvs work.
+- **Python Packaging User Guide**, [Install packages in a virtual environment using pip and venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) — a step-by-step tutorial with macOS, Linux, and Windows commands side by side.
+- **pyenv**, [Simple Python Version Management](https://github.com/pyenv/pyenv) — the standard tool for installing several Python versions on one machine; pairs naturally with venv when a project needs a Python other than your default.
+- **Real Python**, [Python Virtual Environments: A Primer](https://realpython.com/python-virtual-environments-a-primer/) — a longer tour of venv internals, common pitfalls, and alternatives.
+- **Docker**, [Get started](https://docs.docker.com/get-started/) — the official walkthrough for building, running, and sharing containers.
+- **Open Container Initiative**, [opencontainers.org](https://opencontainers.org/) — the vendor-neutral standard underneath Docker; worth knowing about when you wonder whether containers require Docker specifically (they don't).
+- **Play with Docker**, [labs.play-with-docker.com](https://labs.play-with-docker.com/) — a browser sandbox that gives you a temporary Docker host, so you can experiment without installing anything.
 :::
