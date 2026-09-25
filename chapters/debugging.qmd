@@ -573,7 +573,7 @@ print(df["age"].dtype)               # is the column numeric or object?
 print(df["age"].isna().mean())       # how many are NaN?
 ```
 
-In this case the column is `object`, the head shows `'35'`, `'42'`, `'unknown'`, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the `'unknown'` sentinel, so `pd.to_numeric` produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (`na_values=['unknown']`) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.
+In this case the column is text (`str` in pandas 3, `object` in pandas 2), the head shows `'35'`, `'42'`, `'unknown'`, and the NaN rate is 80%. Hypothesis: ages were read as strings because of the `'unknown'` sentinel, so `pd.to_numeric` produced mostly NaNs, and your average call ignored them — leaving a near-zero result. The fix is to handle the missing values explicitly at load time (`na_values=['unknown']`) and to add a test that locks in an expected non-NaN rate going forward, so the next time someone changes the ingestion the silent failure cannot return. The general lesson is that debugging silent wrongness almost always comes down to inspecting intermediate representations rather than the final answer.
 
 ## Using AI tools in debugging
 

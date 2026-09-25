@@ -1,14 +1,14 @@
 # Hand-off note
 
-**Updated 2026-09-24,** after #49 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
+**Updated 2026-09-24,** after #50 merged. This note describes the present state. Rewrite it when a session stops or the state changes, and don't let it grow into a history: history lives in git, in [`decisions.md`](decisions.md), and in the AARs.
 
 ## Where things stand
 
 - **The book** has 39 chapters and appendices in seven parts, and renders with zero warnings.
 - **Merged 2026-09-24:** #35 (`AGENTS.md`, `docs/`, `tools/`, `CONTRIBUTING.md`), #36 (cloud storage; closed #34), #37 (the meme above the table of contents, closing #30; the JupyterLab screenshot pilot), and #38 (the repository-page screenshot, the contact-address User-Agent, the issue-forms check in CI, "Illustration:" captions). Each deploy passed.
 - **Order of work** ([`decisions.md`](decisions.md)): the screenshots first, then polish of the existing chapters, then new sections in the roadmap's new priority order. One pull request at a time; the maintainer merges.
-- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), #44 (the glossary terms linked on first use), #45 (three Stakes openings rewritten), #46 (interactive debuggers in `debugging`), #47 (second-week Git in `version-control`), #48 (hosted notebooks in `jupyter`), and #49 (data bigger than memory in `data-file-formats`). The polish of existing chapters is done.
-- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** the review-thread screenshots (`version-control`'s diff and `collaboration`), with `blur:` in `tools/shots`; the thread itself is on #47, written by Claude Code ([`decisions.md`](decisions.md), 2026-09-25).
+- **Merged since:** #39 (the `automation` screenshot, the reordered roadmap), #40 (the maintainer's hand capture for `http-apis`), #41 (the two VS Code screenshots, from a code-server fixture), #42 (the stranded trailing sections of `file-system` and `terminal`, folded in), #43 (`package-management`'s empty stubs, `jupyter`'s empty quick reference, `presenting`'s duplicate table), #44 (the glossary terms linked on first use), #45 (three Stakes openings rewritten), #46 (interactive debuggers in `debugging`), #47 (second-week Git in `version-control`), #48 (hosted notebooks in `jupyter`), #49 (data bigger than memory in `data-file-formats`), and #50 (the review-thread screenshots, and `blur:` in `tools/shots`). The polish of existing chapters is done.
+- **Open pull request from `claude/markdown-chapter-expansion-difpcc`:** pandas 3's `str` dtype, named alongside pandas 2's `object` wherever the book said text columns read as `object`.
 
 ## Waiting on the maintainer
 
@@ -40,6 +40,6 @@
 ## Next, when work resumes
 
 1. **Screenshots, when the maintainer is ready:** the operating-system panels (hand captures on macOS and Windows, recorded with `adopt`). M6, a CI check for screenshots, can come any time.
-2. **New sections, next for agents,** in the roadmap's order, one pull request each: data dictionaries (`project-management`), then data ethics and licensing. A small fix worth doing first: pandas 3's `str` dtype (roadmap, open follow-ups), since several chapters still say text columns read as `object`.
+2. **New sections, next for agents,** in the roadmap's order, one pull request each: data dictionaries (`project-management`), then data ethics and licensing.
 3. **Tooling:** teach `doctor` to check a fixture chapter's local server; a CI check for screenshots (plan M6).
 4. Re-check the "At CU Boulder" callouts in chapters 9 and 10 against OIT's pages each fall, and the hosted-notebook limits in `jupyter` (Colab, Kaggle, Codespaces) against their docs.
