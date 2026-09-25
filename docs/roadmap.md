@@ -23,7 +23,7 @@ In the maintainer's order of priority (September 2026). All of them come after t
 
 ### 2. Cloud notebooks and data too big for memory
 
-- [ ] **Cloud notebooks (Colab, Kaggle, Codespaces)** — add to `jupyter.qmd` or `remote.qmd`: what each platform is good for, how their environments differ from a local venv, and gotchas around persistence, secrets, and GPU access.
+- [x] **Cloud notebooks (Colab, Kaggle, Codespaces)** — added to `jupyter.qmd` in September 2026 as "Notebooks on someone else's computer": a comparison table, then persistence, environments, secrets (each platform's own store), GPUs, and what not to upload; `remote.qmd` points to it. The same pull request filled `jupyter`'s empty Exercises heading. Limits were checked against each platform's docs in September 2026; re-check them when the chapter is next reviewed.
 - [ ] **Out-of-memory data (chunked CSV, line-delimited JSON, Polars/DuckDB)** — extension of `data-file-formats.qmd`: when to graduate from `pd.read_csv` to chunking, streaming, or a different tool entirely.
 
 ### 3. Documenting and licensing data
