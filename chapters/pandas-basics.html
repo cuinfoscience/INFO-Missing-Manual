@@ -692,16 +692,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#aggregation-and-group-by" id="toc-aggregation-and-group-by" class="nav-link" data-scroll-target="#aggregation-and-group-by"><span class="header-section-number">22.7</span> Aggregation and group-by</a></li>
   <li><a href="#merging-joining-dataframes" id="toc-merging-joining-dataframes" class="nav-link" data-scroll-target="#merging-joining-dataframes"><span class="header-section-number">22.8</span> Merging (joining) DataFrames</a></li>
   <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting"><span class="header-section-number">22.9</span> Sorting</a></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">22.10</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">22.11</span> Worked examples</a>
+  <li><a href="#randomness-you-can-repeat" id="toc-randomness-you-can-repeat" class="nav-link" data-scroll-target="#randomness-you-can-repeat"><span class="header-section-number">22.10</span> Randomness you can repeat</a>
+  <ul class="collapse">
+  <li><a href="#one-generator-passed-along" id="toc-one-generator-passed-along" class="nav-link" data-scroll-target="#one-generator-passed-along">One generator, passed along</a></li>
+  <li><a href="#why-not-np.random.seed42" id="toc-why-not-np.random.seed42" class="nav-link" data-scroll-target="#why-not-np.random.seed42">Why not <code>np.random.seed(42)</code>?</a></li>
+  <li><a href="#what-a-seed-does-not-promise" id="toc-what-a-seed-does-not-promise" class="nav-link" data-scroll-target="#what-a-seed-does-not-promise">What a seed does not promise</a></li>
+  </ul></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">22.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">22.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#a-one-minute-exploration-of-a-new-dataset" id="toc-a-one-minute-exploration-of-a-new-dataset" class="nav-link" data-scroll-target="#a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</a></li>
   <li><a href="#filter-sort-derive-aggregate" id="toc-filter-sort-derive-aggregate" class="nav-link" data-scroll-target="#filter-sort-derive-aggregate">Filter, sort, derive, aggregate</a></li>
   <li><a href="#a-join-with-validation" id="toc-a-join-with-validation" class="nav-link" data-scroll-target="#a-join-with-validation">A join with validation</a></li>
   </ul></li>
-  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">22.12</span> Templates</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">22.13</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">22.14</span> One-page checklist</a></li>
+  <li><a href="#templates" id="toc-templates" class="nav-link" data-scroll-target="#templates"><span class="header-section-number">22.13</span> Templates</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">22.14</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">22.15</span> One-page checklist</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/pandas-basics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -765,6 +771,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Apply the core data operations: filter, sort, add a column, aggregate, group-by, and join (merge).</li>
 <li>Recognize and avoid the three classic pandas gotchas: chained assignment, <code>SettingWithCopyWarning</code>, and forgetting that most operations return a copy.</li>
 <li>Know when to vectorize vs.&nbsp;when to write a Python loop (almost always vectorize).</li>
+<li>Make random steps (sampling, splits, bootstraps) repeatable with one seeded generator passed through the analysis.</li>
 </ol>
 </section>
 <section id="running-theme-pandas-rewards-vectorized-thinking-and-punishes-loops" class="level2 unnumbered">
@@ -975,87 +982,137 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.sort_values([<span class="st">"category"</span>, <span class="st">"price"</span>])          <span class="co"># multi-column</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>df.sort_index()                                <span class="co"># sort by index (labels)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="22.10">
-<h2 data-number="22.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">22.10</span> Stakes and politics</h2>
+<section id="randomness-you-can-repeat" class="level2" data-number="22.10">
+<h2 data-number="22.10" class="anchored" data-anchor-id="randomness-you-can-repeat"><span class="header-section-number">22.10</span> Randomness you can repeat</h2>
+<p>Some analysis steps are random on purpose: drawing a sample to look at, splitting data into training and test sets, shuffling, or resampling for a bootstrap estimate. Run them twice and you get different answers:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"student"</span>: [<span class="st">"Ana"</span>, <span class="st">"Ben"</span>, <span class="st">"Chen"</span>, <span class="st">"Dev"</span>, <span class="st">"Eli"</span>, <span class="st">"Fay"</span>, <span class="st">"Gus"</span>, <span class="st">"Hana"</span>],</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"score"</span>: [<span class="dv">88</span>, <span class="dv">72</span>, <span class="dv">95</span>, <span class="dv">64</span>, <span class="dv">79</span>, <span class="dv">91</span>, <span class="dv">70</span>, <span class="dv">83</span>],</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Chen', 'Fay']</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Eli', 'Dev', 'Ben']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That’s correct behavior, and a problem for everyone who wants to check your work, including you next week: a result that changes on every run can’t be reproduced or debugged. The fix is to control where the random numbers come from with a <strong>seed</strong>, a number that fixes the whole sequence of “random” draws that follows. <code>df.sample(3, random_state=42)</code> returns <code>['Ben', 'Fay', 'Ana']</code> every time.</p>
+<section id="one-generator-passed-along" class="level3">
+<h3 class="anchored" data-anchor-id="one-generator-passed-along">One generator, passed along</h3>
+<p>For more than one random step, create a single random number <strong>generator</strong> from one seed, near the top of your notebook or script, and hand it to every step that needs randomness:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">2026</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(SEED)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split(df, rng):</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>rng)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.drop(test.index), test</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bootstrap_mean(scores, rng, n<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> [scores.sample(<span class="bu">len</span>(scores), replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>rng).mean() <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n)]</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(means)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>train, test <span class="op">=</span> split(df, rng)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>estimate <span class="op">=</span> bootstrap_mean(train[<span class="st">"score"</span>], rng)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run that from the top, and the test set is Ben and Fay and the estimate is 79.85, every time. pandas’ <code>random_state</code> accepts a generator like <code>rng</code>. Other libraries have their own way to take a seed (scikit-learn’s functions have a <code>random_state</code> argument, for example), so check each one’s documentation and give it the seed. Put the seed where people will see it: a constant at the top, a <code>--seed</code> option on a script (see <a href="scripting.html" class="quarto-xref"><span>Chapter 17</span></a>), and a line in your results that says which seed produced them.</p>
+</section>
+<section id="why-not-np.random.seed42" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-np.random.seed42">Why not <code>np.random.seed(42)</code>?</h3>
+<p>Many tutorials call <code>np.random.seed(42)</code> once at the top. That sets NumPy’s single, shared <strong>global</strong> generator, which any library in the program can draw from, and <code>df.sample()</code> without a <code>random_state</code> draws from it too. The result then depends on everything else that happened to draw numbers first:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ben', 'Fay', 'Ana']</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">5</span>)   <span class="co"># some other step draws numbers first</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>df.sample(<span class="dv">3</span>)[<span class="st">"student"</span>].tolist()   <span class="co"># ['Ana', 'Ben', 'Gus']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same seed, different sample. In a notebook, rerunning one cell, or running cells in a different order, has the same effect. A generator you pass explicitly belongs to your code alone, so nothing else can use up its numbers.</p>
+<p>The same goes for running work in parallel. Don’t give every worker the same seed (they’d all draw the same numbers) or share one generator between them. Ask the generator for independent children, one per worker: <code>workers = rng.spawn(4)</code>.</p>
+</section>
+<section id="what-a-seed-does-not-promise" class="level3">
+<h3 class="anchored" data-anchor-id="what-a-seed-does-not-promise">What a seed does not promise</h3>
+<p>A seed reproduces results on the same versions of your libraries. NumPy <a href="https://numpy.org/doc/stable/reference/random/compatibility.html">says so explicitly</a>: the same seed is promised the same numbers only on the same build of NumPy, and a new version may change them. So record your package versions alongside the seed (see <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>). And don’t go looking for the seed that gives the nicest result: a finding that holds for seed 42 but not for 7 or 1,000 isn’t a finding. Rerun an important result with a few different seeds and report how much it moves.</p>
+</section>
+</section>
+<section id="stakes-and-politics" class="level2" data-number="22.11">
+<h2 data-number="22.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">22.11</span> Stakes and politics</h2>
 <p>pandas is the closest thing data work has to a default toolkit, and the defaults are not neutral. The library is the result of specific design choices made by specific people in specific contexts, and those choices come along when you import it.</p>
 <p>Three things to notice. First, <em>the dtype defaults assume Western numeric and date conventions</em>. Numbers are read as IEEE 754 floats; dates parse as month-day-year unless told otherwise (a common silent bug in non-US data); missing values silently coerce integer columns to floats because the original NumPy <code>int64</code> cannot hold <code>NaN</code>. None of these are bugs — they are documented choices — but they work cleanly for the data their authors most often handled, and less cleanly for everyone else’s. Second, <em>merge and groupby defaults preferentially keep the populous side</em>. <code>merge(how="inner")</code> is the default, which silently discards rows that do not match — a behavior that is fine when you are joining a transactions table against a complete customer list, and quietly disastrous when you are joining unequal demographic groups whose representation in your matching key is itself unequal. Third, <em>the maintainers and contributors are not the user base</em>. pandas is overwhelmingly maintained by a small number of contributors, paid by a small number of US and European institutions, working in English. The bug reports that get prioritized are the ones that surface in their workflows; the rough edges that affect non-English text, right-to-left scripts, non-Gregorian calendars, and informal-economy data shapes get fixed when someone with the time and English fluency files a careful issue.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework, and <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> for the cleaning-decision politics that ride on top of these defaults. The concrete prompt to carry forward: when pandas does something surprising with your data, ask whether the default was designed for data like yours.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="22.11">
-<h2 data-number="22.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.11</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="22.12">
+<h2 data-number="22.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">22.12</span> Worked examples</h2>
 <section id="a-one-minute-exploration-of-a-new-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="a-one-minute-exploration-of-a-new-dataset">A one-minute exploration of a new dataset</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/iris.csv"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co"># A first question: average petal length per species?</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">"species"</span>)[<span class="st">"petal_length"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/raw/iris.csv"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># A first question: average petal length per species?</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">"species"</span>)[<span class="st">"petal_length"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="filter-sort-derive-aggregate" class="level3">
 <h3 class="anchored" data-anchor-id="filter-sort-derive-aggregate">Filter, sort, derive, aggregate</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a cleaned dataset</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>top_customers <span class="op">=</span> (</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    df</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01'"</span>)               <span class="co"># filter</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])   <span class="co"># derive</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"customer_id"</span>)[<span class="st">"revenue"</span>]           <span class="co"># group</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()                                       <span class="co"># aggregate</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)                <span class="co"># sort</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">10</span>)                                    <span class="co"># top 10</span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top_customers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a cleaned dataset</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/sales.parquet"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>top_customers <span class="op">=</span> (</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01'"</span>)               <span class="co"># filter</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    .assign(revenue<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"price"</span>] <span class="op">*</span> d[<span class="st">"quantity"</span>])   <span class="co"># derive</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"customer_id"</span>)[<span class="st">"revenue"</span>]           <span class="co"># group</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()                                       <span class="co"># aggregate</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)                <span class="co"># sort</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">10</span>)                                    <span class="co"># top 10</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top_customers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The method-chain pattern (pandas calls this “fluent interface”) makes long transformations readable top-to-bottom.</p>
 </section>
 <section id="a-join-with-validation" class="level3">
 <h3 class="anchored" data-anchor-id="a-join-with-validation">A join with validation</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    customers,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"customer_id"</span>,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    validate<span class="op">=</span><span class="st">"many_to_one"</span>,     <span class="co"># one customer per order; crashes on bad data</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(merged) <span class="op">==</span> <span class="bu">len</span>(orders), <span class="st">"Merge changed row count"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/orders.parquet"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> pd.read_parquet(<span class="st">"data/processed/customers.parquet"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> orders.merge(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    customers,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"customer_id"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    validate<span class="op">=</span><span class="st">"many_to_one"</span>,     <span class="co"># one customer per order; crashes on bad data</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(merged) <span class="op">==</span> <span class="bu">len</span>(orders), <span class="st">"Merge changed row count"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>validate</code> + assert pattern prevents the silent-duplication class of bugs.</p>
 </section>
 </section>
-<section id="templates" class="level2" data-number="22.12">
-<h2 data-number="22.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">22.12</span> Templates</h2>
+<section id="templates" class="level2" data-number="22.13">
+<h2 data-number="22.13" class="anchored" data-anchor-id="templates"><span class="header-section-number">22.13</span> Templates</h2>
 <p><strong>A “first look” block for any new DataFrame:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dtypes:"</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">head:"</span>)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">nulls per column:"</span>)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">numeric summary:"</span>)</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shape:"</span>, df.shape)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"columns:"</span>, df.columns.tolist())</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dtypes:"</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">head:"</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head())</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">nulls per column:"</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>())</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">numeric summary:"</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>A clean filter-derive-aggregate pipeline:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    df</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01' and region == 'west'"</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    .assign(profit<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">-</span> d[<span class="st">"cost"</span>])</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"product_id"</span>)[<span class="st">"profit"</span>]</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">"date &gt;= '2024-01-01' and region == 'west'"</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    .assign(profit<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"revenue"</span>] <span class="op">-</span> d[<span class="st">"cost"</span>])</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"product_id"</span>)[<span class="st">"profit"</span>]</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">20</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercises" class="level2" data-number="22.13">
-<h2 data-number="22.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">22.13</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="22.14">
+<h2 data-number="22.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">22.14</span> Exercises</h2>
 <ol type="1">
 <li>Load a CSV from an open-data source into a DataFrame. Run the six inspection commands from section 3. Write one sentence for each about what you learned.</li>
 <li>From the same DataFrame, select a single column as a Series and a list of two columns as a DataFrame. Confirm the types with <code>type()</code>.</li>
@@ -1064,10 +1121,11 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 <li>Write a group-by that answers a real question about your data (“average price per category,” “max revenue per customer”). Add a second aggregation to the same call.</li>
 <li>Perform a <code>merge</code> and then <code>validate="one_to_one"</code>. Intentionally break it by duplicating a row in the right-hand DataFrame and confirm pandas raises.</li>
 <li>Take a notebook cell you wrote as a for-loop over <code>iterrows</code> and rewrite it as a vectorized operation. Time both. Write down the speedup.</li>
+<li>Find a random step in one of your notebooks (a <code>sample</code>, a split, a shuffle). Run the notebook twice and note what changes. Then create one generator with <code>np.random.default_rng(SEED)</code> at the top, pass it to every random step, and confirm two runs agree. Finally, try three other seeds and write down how much your result moves.</li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="22.14">
-<h2 data-number="22.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">22.14</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="22.15">
+<h2 data-number="22.15" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">22.15</span> One-page checklist</h2>
 <ul>
 <li>Every new DataFrame: run shape / dtypes / head / describe / isna before anything else.</li>
 <li>Use <code>.loc</code> for label-based selection, <code>.iloc</code> for integer-based, and boolean masks for filters.</li>
@@ -1076,6 +1134,7 @@ Figure&nbsp;22.1: The DataFrame above, as JupyterLab 4.6 displays it with pandas
 <li>Never chain assignment (<code>df[mask]["col"] = value</code>). Use <code>df.loc[mask, "col"] = value</code>.</li>
 <li>Vectorize first; reach for <code>iterrows</code> only when you truly cannot.</li>
 <li>Merge with <code>validate="..."</code> every time.</li>
+<li>Random steps get <code>random_state=rng</code>, from one <code>np.random.default_rng(SEED)</code> made at the top; record the seed and your package versions.</li>
 <li>For reshaping and validation, read <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> first.</li>
 <li>For anything beyond this chapter, the pandas User Guide and API Reference are your friends — see <a href="reading-docs.html" class="quarto-xref"><span>Chapter 5</span></a>.</li>
 </ul>
