@@ -16,7 +16,7 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
     - [x] Pilot: `tabular-data` (September 2026)
     - [x] Part I — Practice of Technical Work (#62)
     - [x] Part II — Computing Environment (#63)
-    - [ ] Part III — Python Management
+    - [x] Part III — Python Management (#64)
     - [ ] Part IV — Working with Data (the rest of it)
     - [ ] Part V — Communication
     - [ ] Part VI — Project Management
@@ -58,7 +58,7 @@ From [`aar/2026-04-27-comprehensive-review.md`](aar/2026-04-27-comprehensive-rev
 - [x] **`jupyter.qmd` empty heading.** Filled in September 2026 with a table of the IPython conveniences the chapter teaches.
 - [x] **`presenting.qmd` duplicate table.** The copy in Templates was removed in September 2026; the Quick reference keeps it.
 - [x] **Worked examples that are still outlines.** Four chapters had one-line bullet outlines under "Worked examples (outline)": `version-control`, `collaboration`, `project-management`, and `automation`, all written out in September 2026, one pull request each, with real transcripts where the steps can run. `automation`'s also updated the chapter's pre-commit configuration to current releases (`ruff-check`).
-- [ ] **Wide tables on phones.** At 390 px, two pages scroll sideways because of tables wider than the screen (`jupyter`, `writing-thesis`); the voice rewrites fixed `common-formats` and `artifacts-have-politics` (#62) and `file-system` (#63). Each part's rewrite should fix its own. `tools/layout-audit/audit.py widths --widths 390` lists them. A fix must not change the desktop layout.
+- [ ] **Wide tables on phones.** At 390 px, one page scrolls sideways because of a table wider than the screen (`writing-thesis`); the voice rewrites fixed `common-formats` and `artifacts-have-politics` (#62), `file-system` (#63), and `jupyter` (#64). Each part's rewrite should fix its own. `tools/layout-audit/audit.py widths --widths 390` lists them. A fix must not change the desktop layout.
 - [x] **pandas 3 text columns.** pandas 3.0 reads text as the `str` dtype, not `object`, so advice such as "if a numeric column shows up as `object`, you have hidden strings" was out of date for new installs. Fixed in September 2026: the seven passages in `data-file-formats`, `tabular-data`, `debugging`, and `questions` name both (`str` in pandas 3, `object` in pandas 2), and `data-file-formats` has a short callout with a check that works in both (`pd.api.types.is_numeric_dtype`).
 - [x] **Stakes voice check.** Read side by side in September 2026: the content is specific, but fifteen openings used one of two stock moves. `package-management`, `version-control`, and `evaluating-ai` now open on a concrete case, and `AGENTS.md` asks new chapters to do the same ([`decisions.md`](decisions.md)).
 - [x] **Inline glossary links.** Linked in September 2026 on first use: auditing in `evaluating-ai`, Matilda effects in `writing-manuscripts`, open access in `reading-scholarship`, RLHF in `ai-llm` and `ai-agents`, and schema in `sql-basics`. The RLHF entry now points to `ai-agents` instead of `llm-internals`, which never mentions it.

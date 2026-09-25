@@ -332,6 +332,8 @@ df = pd.read_csv("data.csv")
 ```
 ````
 
+**A code block that shows another code block** (a README with its commands, a notes file) needs a longer outer fence: open it with four backticks followed by the language (`markdown`) and close it with four backticks. Three won't do, because a closing fence may be indented up to three spaces, so an inner three-backtick fence indented under a list item ends the outer block early and the rest of the example renders as ordinary text, with no warning. `scripting` and `terminal` both had this until September 2026.
+
 Non-executable code blocks are the default; the book does not currently use Jupyter/Python execution. If you add executable cells, use ` ```{python} ` and configure `execute: enabled: true`.
 
 **Citations:**

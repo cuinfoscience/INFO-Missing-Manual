@@ -451,11 +451,11 @@ FIGURES = {
         "line_height": 36,
         "legend_cols": 1,
         "lines": [
-            text("you@laptop Project % which python"),
+            text("you@laptop Project % which python3"),
             text("/usr/bin/python3", dim=True),
             text("you@laptop Project % source .venv/bin/activate"),
-            text("(.venv) you@laptop Project % which python"),
-            text("/Users/you/Project/.venv/bin/python", dim=True),
+            text("(.venv) you@laptop Project % which python3"),
+            text("/Users/you/Project/.venv/bin/python3", dim=True),
             text("(.venv) you@laptop Project % ", cursor=True),
         ],
         "annotations": [
@@ -464,7 +464,7 @@ FIGURES = {
                 "line": 0,
                 "start": 0,
                 "len": 20,
-                "label": "before activating: python resolves to the system copy",
+                "label": "before activating: python3 resolves to the system copy",
             },
             {
                 "n": 2,
@@ -501,12 +501,15 @@ FIGURES = {
             ),
             text("Collecting python-dateutil>=2.8.2", dim=True),
             text("Collecting pytz>=2020.1", dim=True),
+            text("Collecting tzdata>=2022.7", dim=True),
             text("Collecting six>=1.5", dim=True),
             text(
-                "Installing collected packages: pytz, six, numpy, python-dateutil, pandas",
+                "Installing collected packages: pytz, tzdata, six, numpy, python-dateutil, pandas",
                 dim=True,
             ),
-            text("Successfully installed numpy-2.1.2 pandas-2.2.3 pytz-2024.2 six-1.17.0"),
+            # pip prints this as one line; a terminal 80 columns wide wraps it.
+            text("Successfully installed numpy-2.1.2 pandas-2.2.3 python-dateutil-2.9.0.post0"),
+            text("pytz-2024.2 six-1.17.0 tzdata-2024.2"),
         ],
         "annotations": [
             {
@@ -518,10 +521,10 @@ FIGURES = {
             },
             {
                 "n": 2,
-                "line": 10,
+                "line": 12,
                 "where": "below",
                 "start": 0,
-                "len": 22,
+                "len": 36,
                 "label": "pip resolved and installed its dependencies too",
             },
         ],
