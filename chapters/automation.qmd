@@ -306,7 +306,7 @@ When one CSV is malformed, the pandas traceback appears right after `cleaning we
 
 ### When bash stops being the right tool
 
-Bash is good glue and a poor programming language, and it's worth noticing when you've crossed the line. Its arithmetic is integers only, so anything with decimals means calling out to another tool. It has no real data types, so parsing JSON, YAML, or CSV turns into fragile chains of `cut`, `awk`, and `sed`; [jq](https://jqlang.org/) is great for a quick look at JSON, but anything you'll maintain belongs in Python. Associative arrays (bash's dictionaries) arrived only in bash 4.0, in 2009, and the bash that ships with macOS is still the older 3.2, so a script that uses them breaks on a Mac. And length is a warning sign: [Google's shell style guide](https://google.github.io/styleguide/shellguide.html) says a script past 100 lines, or with complicated logic, should be rewritten in a more structured language now, before it grows further.
+Bash is good glue and a poor [programming language](appendix-glossary.qmd#term-programming-language), and it's worth noticing when you've crossed the line. Its arithmetic is integers only, so anything with decimals means calling out to another tool. It has no real data types, so parsing JSON, YAML, or CSV turns into fragile chains of `cut`, `awk`, and `sed`; [jq](https://jqlang.org/) is great for a quick look at JSON, but anything you'll maintain belongs in Python. Associative arrays (bash's dictionaries) arrived only in bash 4.0, in 2009, and the bash that ships with macOS is still the older 3.2, so a script that uses them breaks on a Mac. And length is a warning sign: [Google's shell style guide](https://google.github.io/styleguide/shellguide.html) says a script past 100 lines, or with complicated logic, should be rewritten in a more structured language now, before it grows further.
 
 The pattern that works is a small bash wrapper around Python. Bash moves to the right folder, picks the right environment, and sends output to a log; Python does the data work. Every example in this chapter is built that way.
 
@@ -536,7 +536,7 @@ On GitHub, CI means GitHub Actions, which is [free for public repositories](http
 
 ### Events, jobs, steps, and runners
 
-A workflow is a YAML file (see @sec-common-formats) in the folder `.github/workflows/`, and it starts by saying which [events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) should trigger it. Most projects want two, `push` and `pull_request`:
+A workflow is a [YAML](appendix-glossary.qmd#term-yaml) file (see @sec-common-formats) in the folder `.github/workflows/`, and it starts by saying which [events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) should trigger it. Most projects want two, `push` and `pull_request`:
 
 ```yaml
 on:

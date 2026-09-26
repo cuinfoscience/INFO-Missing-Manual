@@ -26,7 +26,7 @@ margin-header: |
 
 It's the night before a problem set is due, and you need one more library. You type `pip install`, it prints `Successfully installed`, and you get on with the assignment. Then you reopen last week's notebook, the one with all your results in it, and `import pandas` fails with `ValueError: numpy.dtype size changed, may indicate binary incompatibility`. You didn't touch pandas. You didn't touch that notebook. What happened?
 
-If something like that has happened to you, you're in good company, and there's even a name for it: [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell). The new library needed a newer NumPy, pip upgraded NumPy to get it, and the older pandas your notebook relied on can't work with the new NumPy. Nothing was wrong with your code. The trouble was in the pile of other people's software your code stands on, and in the habit almost everyone starts with: installing everything into one shared Python and hoping for the best.
+If something like that has happened to you, you're in good company, and there's even a name for it: [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell). The new library needed a newer NumPy, [pip](appendix-glossary.qmd#term-pip) upgraded NumPy to get it, and the older pandas your notebook relied on can't work with the new NumPy. Nothing was wrong with your code. The trouble was in the pile of other people's software your code stands on, and in the habit almost everyone starts with: installing everything into one shared Python and hoping for the best.
 
 This chapter is about the habits that end that: a separate environment for every project, a small text file that records what the project needs, and a calm, step-by-step way to untangle a conflict when one happens. It covers both of the tools you'll meet in data science, conda and pip, and when to use each. It doesn't go deep on how a virtual environment works under the hood (that's @sec-virtual-environments) or on connecting environments to Jupyter (@sec-jupyter), though it points to both where they matter.
 
@@ -50,7 +50,7 @@ Most of the confusion around package management comes from a few words used loos
 
 A [**package**](appendix-glossary.qmd#term-package) is third-party code you install, such as `pandas`, `numpy`, or `requests`. A **dependency** is another package that your package needs to work: pandas depends on NumPy, and matplotlib depends on Pillow, so installing pandas pulls in NumPy and installing matplotlib pulls in Pillow. Those have dependencies of their own, and a [**package manager**](https://en.wikipedia.org/wiki/Package_manager) exists to handle the whole tree. The ones you never asked for by name, called *transitive* dependencies, are behind most of the surprises in this chapter.
 
-Each dependency can come with a **version constraint**, written with operators like `>=`, `<`, `==`, and `!=`. A line like `numpy>=1.24,<2.0` means "any version from 1.24 up, but nothing from 2.0 on." (The exact rules are in the [version specifiers](https://packaging.python.org/en/latest/specifications/version-specifiers/) spec.) When you install something, the package manager has to find one version of every package that satisfies *every* constraint at once. That search is called *resolving* the dependencies, and when no answer exists, you have a conflict.
+Each dependency can come with a **version constraint**, written with operators like `>=`, `<`, `==`, and `!=`. A line like `numpy>=1.24,<2.0` means "any version from 1.24 up, but nothing from 2.0 on." (The exact rules are in the [version specifiers](https://packaging.python.org/en/latest/specifications/version-specifiers/) spec.) When you install something, the [package manager](appendix-glossary.qmd#term-package-manager) has to find one version of every package that satisfies *every* constraint at once. That search is called *resolving* the dependencies, and when no answer exists, you have a conflict.
 
 A Python **interpreter** is the `python` program that runs your code, and where it lives decides where packages get installed. An [**environment**](appendix-glossary.qmd#term-environment) is an isolated set of installed packages tied to one interpreter. You can have many on the same computer, one per project, and they don't interfere with each other, because each has its own interpreter (or a link to one) and its own folder of packages:
 
@@ -62,7 +62,7 @@ A Python **interpreter** is the `python` program that runs your code, and where 
 ~/miniforge3/envs/research/          # another conda environment
 ```
 
-Environments become [reproducible](https://en.wikipedia.org/wiki/Reproducibility) when you write down what's in them, in a small text file you commit alongside your code. Conda's version of that file is `environment.yml`; pip's is `requirements.txt`. Both list package names and, optionally, version constraints. A stricter kind, a **lockfile**, records the *exact* version of every package the resolver chose.
+Environments become [reproducible](https://en.wikipedia.org/wiki/Reproducibility) when you write down what's in them, in a small text file you commit alongside your code. Conda's version of that file is `environment.yml`; pip's is `requirements.txt`. Both list package names and, optionally, version constraints. A stricter kind, a **lockfile**, records the *exact* [version](appendix-glossary.qmd#term-version) of every package the resolver chose.
 
 ## Choosing tools: conda, pip, and venv
 
@@ -480,7 +480,7 @@ In September 2026, that command chose `numpy-1.26.4` and `urllib3-1.26.20`; with
 
 ### Lockfiles
 
-A **lockfile** records the exact version of every package the resolver chose, transitive dependencies included, and sometimes a checksum of each file. A tool generates it after resolving, so installing from it is fast and predictable, and two collaborators installing the same lockfile get the same versions months apart. That ends "it resolved differently on my machine."
+A **lockfile** records the exact version of every package the resolver chose, transitive dependencies included, and sometimes a [checksum](appendix-glossary.qmd#term-checksum) of each file. A tool generates it after resolving, so installing from it is fast and predictable, and two collaborators installing the same lockfile get the same versions months apart. That ends "it resolved differently on my machine."
 
 For conda, [conda-lock](https://conda.github.io/conda-lock/) makes lockfiles for each operating system from one `environment.yml`. For pip, [pip-tools](https://pip-tools.readthedocs.io/) turns a short `requirements.in` into a fully pinned `requirements.txt` with `pip-compile`, and [Poetry](https://python-poetry.org/docs/), [Pipenv](https://pipenv.pypa.io/), and uv (the tool in this chapter's meme, a much faster installer whose `uv pip install` works like `pip install`) each have their own lockfile format. For coursework, a `requirements.txt` with exact pins is usually enough. Know the idea, so you recognize it when a course or lab adopts one.
 
