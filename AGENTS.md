@@ -11,7 +11,7 @@ People contributing for the first time start at `CONTRIBUTING.md`, the novice-fa
 The book's records live in `docs/`: after-action reports (AARs) and reviews, plans, the roadmap, the decision log, and the hand-off note. `docs/README.md` says how each kind is kept. They are how one session's lessons reach the next, so use them:
 
 - **Before starting work,** read `docs/handoff.md` (where work stands: what is done, paused, waiting on the maintainer, or known to be broken) and `docs/decisions.md` (standing decisions and the reason for each). Don't reverse a recorded decision on your own; if you think one is wrong, say so and let the maintainer decide.
-- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged, and before touching `tools/shots` or adding a screenshot, read "Patterns and pitfalls" in `tools/shots/README.md`, this book's screenshot AAR (`docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md`), and the screenshot plan with the upstream AARs it links (in the companion book *Web Data Science*).
+- **Before working in an area a record covers,** read that record. AARs and reviews are in `docs/aar/`, plans for larger work in `docs/plans/`, and the chapter backlog in `docs/roadmap.md`. For example, read the comprehensive review (`docs/aar/2026-04-27-comprehensive-review.md`) before restructuring a chapter it flagged, and before touching `tools/shots` or adding a screenshot, read "Patterns and pitfalls" in `tools/shots/README.md`, this book's screenshot AAR (`docs/aar/AAR_INFO-Missing-Manual_2026-09-24.md`), and the screenshot plan with the upstream AARs it links (in the companion book *Web Data Science*). Before rewriting a chapter's voice, read the voice plan (`docs/plans/2026-09-25-voice-rollout.md`: its brief, review steps, and lessons) and its AAR (`docs/aar/AAR_INFO-Missing-Manual_2026-09-25.md`); before starting any revision from the September 2026 peer review, read the revision plan (`docs/plans/2026-09-25-peer-review-revisions.md`) and the reviews it cites (`docs/aar/2026-09-25-peer-review.md`).
 - **When the state changes, update the records in the same pull request.** Rewrite `handoff.md` when a session stops or work pauses; add an entry to `decisions.md` when the maintainer decides something; tick off `roadmap.md` items when they land.
 - **After a sprint, or a failure worth learning from,** write an AAR in `docs/aar/` named `AAR_INFO-Missing-Manual_<YYYY-MM-DD>.md`: what the written rules said should happen, what happened, why the two differed, and what changes as a result.
 - **Write rules down.** A rule the maintainer states in conversation does not survive the session. Put it in this file or in `decisions.md`, in the same pull request.
@@ -80,7 +80,7 @@ INFO-Missing-Manual/
 ├── _quarto.yml                      # book config (HTML + PDF, llms-txt: true)
 ├── index.qmd                        # landing page (Introduction)
 ├── conclusion.qmd                   # final chapter
-├── references.bib                   # BibTeX bibliography (22 entries)
+├── references.bib                   # BibTeX bibliography (51 entries)
 ├── CONTRIBUTING.md                  # the novice-facing contributing guide (start here as a person)
 ├── .github/
 │   ├── workflows/build-book.yml     # CI: renders + publishes on push/PR
@@ -143,7 +143,7 @@ INFO-Missing-Manual/
     ├── shots/                       # screenshot toolkit, ported from Web-Data-Science-Book
     │   ├── recipes/                 # one YAML recipe per chapter with screenshots
     │   └── fixtures/                # pinned local programs to capture (JupyterLab, code-server)
-    └── layout-audit/                # browser checks on a rendered book (TOC visibility, column widths on every page)
+    └── layout-audit/                # browser checks on a rendered book (TOC visibility, column widths, sideways scroll)
 ```
 
 **Naming rules:**
@@ -290,7 +290,7 @@ Every chapter ends with a Further reading callout using the cornerstone's patter
 :::
 ```
 
-Curation rules: 3–7 items per chapter, mix of books/articles, official docs, and community resources, one sentence of annotation each. Prefer durable sources (books, official docs, well-maintained community sites) over blog posts that will rot. Do not duplicate items already linked from the chapter body. New external resources go here as plain links rather than as new `references.bib` entries — the book uses `[@key]` citations sparingly (currently only `documentation.qmd`, `automation.qmd`, and `artifacts-have-politics.qmd`) to preserve the reference-handbook feel.
+Curation rules: 3–7 items per chapter, mix of books/articles, official docs, and community resources, one sentence of annotation each. Prefer durable sources (books, official docs, well-maintained community sites) over blog posts that will rot. Do not duplicate items already linked from the chapter body. New external resources go here as plain links rather than as new `references.bib` entries — the book uses `[@key]` citations sparingly (currently only `index.qmd`, `documentation.qmd`, `automation.qmd`, and `artifacts-have-politics.qmd`) to preserve the reference-handbook feel.
 
 ### Prerequisites and see-also callout (chapter independence)
 
@@ -454,7 +454,7 @@ Quarto doesn't do this by itself. It gives a page a narrower body and a wider ta
 tools/shots/.venv/bin/python tools/layout-audit/audit.py widths
 ```
 
-It fails if any page's columns differ from the rest, or if any page scrolls sideways, at 1024, 1280, 1440, and 1920 px.
+It fails if any page's columns differ from the rest, or if any page scrolls sideways, at 1024, 1280, 1440, and 1920 px. Run it again with `--widths 390` for a phone: a table wider than the screen makes a page scroll sideways there, and since #66 none does. Keep tables to three short columns where you can.
 
 ## Terminal figures
 
@@ -549,6 +549,8 @@ Readers report problems through GitHub **issue forms** in `.github/ISSUE_TEMPLAT
 ## Backlog
 
 The chapter backlog lives in `docs/roadmap.md`: the history of the gap analysis, the topics still waiting, and the review follow-ups that are still open. Each item there would be a reasonable first PR for a contributor. Follow the canonical chapter structure (see Style Guide), add a new chapter to `_quarto.yml` and to the label table above, and tick the item off in the roadmap in the same PR.
+
+The next large piece of work is the revision planned after the September 2026 peer review (`docs/plans/2026-09-25-peer-review-revisions.md`). Its Phase 1 corrections can start any time; the other phases wait on eight decisions the maintainer hasn't made yet, listed at the top of the plan and in `docs/handoff.md`. Don't make those decisions for them: a new chapter, a reordered part, or a running example changes the book's shape for every reader and every course that assigns it.
 
 ---
 
