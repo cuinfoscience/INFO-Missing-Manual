@@ -122,6 +122,7 @@ You don't need to memorize Python's [built-in exceptions](https://docs.python.or
 
 | Family | What it usually means | Your first move |
 |---|---|---|
+| Syntax (`SyntaxError`, `IndentationError`) | Python couldn't read the file, so nothing ran: an unclosed bracket or quote, a missing colon, indentation that doesn't line up | Look at the caret, then the line above |
 | Name and scope (`NameError`) | A variable Python has never heard of: a typo, a missing import, or a notebook cell you haven't run yet | Check the spelling, and run the cells above |
 | Type mismatch (`TypeError`) | An operation on the wrong kind of object: adding text to a number, calling something that isn't a function, passing the wrong number of arguments | `print(type(x))` on each value involved |
 | Index and key (`IndexError`, `KeyError`) | Reaching for a list item, dictionary key, or DataFrame column that doesn't exist: often a column-name typo or an off-by-one loop | `print(df.columns.tolist())` |
@@ -161,7 +162,19 @@ Take the failing code and delete, aggressively, anything that isn't needed to tr
 
 MREs are usually taught as something you make to ask for help (see @sec-asking-questions), but they're just as valuable as a debugging tool in their own right. Building one forces you to learn three things you may not have noticed: *which inputs actually matter* (the ones you can't delete without losing the failure), *which call is the immediate trigger* (the line you can't remove), and *what you were silently assuming* (whatever you have to add back to make it fail at all). Most of the time, by the time you've finished shrinking the example, you've found the bug. Computer scientists have even automated the process, under the name *delta debugging* (Zeller's *The Debugging Book*, in Further reading, shows how).
 
-A few techniques make shrinking faster. The most useful is to **replace your real data with a few lines of made-up data.** pandas reads from an [`io.StringIO`](https://docs.python.org/3/library/io.html#io.StringIO) object exactly as it reads from a file, so a short string of inline CSV is enough to recreate most data-loading bugs:
+A few techniques make shrinking faster. The most useful is to **replace your real data with a few values you make up.** Say a script that averages quiz scores from a 200-student gradebook reports a class average in the 50s, and you know it was in the 80s. Throw away the gradebook and keep three scores you can add in your head:
+
+```python
+scores = [88, 92, 79]
+total = 0
+for i in range(1, len(scores)):
+    total += scores[i]
+print(total / len(scores))   # 57.0
+```
+
+Those three average 86.33, and the script prints `57.0`. With numbers this small you can do the arithmetic yourself: 92 + 79 is 171, and 171 / 3 is 57, so the loop never added the 88. `range(1, len(scores))` starts at position 1, and Python counts from 0, a classic [off-by-one error](https://en.wikipedia.org/wiki/Off-by-one_error). Looping over the items themselves (`for score in scores: total += score`) can't skip one, and prints `86.33333333333333`.
+
+The same trick works when the data comes in through pandas, which reads from an [`io.StringIO`](https://docs.python.org/3/library/io.html#io.StringIO) object exactly as it reads from a file, so a short string of inline CSV is enough to recreate most data-loading bugs:
 
 ```python
 import pandas as pd
@@ -174,7 +187,7 @@ df["age"].mean()   # TypeError: Cannot perform reduction 'mean' with string dtyp
 
 Three lines of data, and the bug is in plain sight: one `'unknown'` turned the whole `age` column into text, and you can't average text. (In pandas 2 the message is worded differently, but it's still a `TypeError`.) Notice that the made-up value is `'unknown'` and not `'N/A'`: pandas already treats `'N/A'` as missing, so an MRE built with it wouldn't fail. Getting an MRE to fail is itself a lesson about what pandas does by default.
 
-Along the same lines, **hard-code a small example**: a three-row DataFrame or a five-item list is almost always enough to reproduce a logic bug, and it's small enough to reason about end to end. **Delete code aggressively**; if removing a block doesn't change the symptom, the block wasn't involved. And **freeze any randomness.** If a bug only appears sometimes, fix the [random seeds](https://docs.python.org/3/library/random.html#random.seed) (`random.seed(0)`, `numpy.random.seed(0)`, `torch.manual_seed(0)`) so that "sometimes" becomes "every time on this seed," which you can debug.
+A three-row DataFrame or a five-item list, hard-coded like these, is almost always enough to reproduce a logic bug, and small enough to reason about end to end. Two more habits help. **Delete code aggressively**; if removing a block doesn't change the symptom, the block wasn't involved. And **freeze any randomness.** If a bug only appears sometimes, fix the [random seeds](https://docs.python.org/3/library/random.html#random.seed) (`random.seed(0)`, `numpy.random.seed(0)`, `torch.manual_seed(0)`) so that "sometimes" becomes "every time on this seed," which you can debug.
 
 ## Hypotheses and controlled experiments
 
