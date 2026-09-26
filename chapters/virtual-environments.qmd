@@ -55,7 +55,7 @@ Even with one Python, there's a second problem. Say last semester's project need
 A virtual environment solves both, and it's less magical than it sounds. It's a folder, usually `.venv` inside your project, holding three things:
 
 -   A `python` command that points at one of your existing Pythons (a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) at `.venv/bin/python` on macOS and Linux; `.venv\Scripts\python.exe` on Windows).
--   Its own `site-packages` folder (`.venv/lib/python3.11/site-packages`, or `.venv\Lib\site-packages` on Windows), where everything you install goes.
+-   Its own `site-packages` folder (`.venv/lib/python3.12/site-packages`, or `.venv\Lib\site-packages` on Windows), where everything you install goes.
 -   A few `activate` scripts that put the venv's commands at the front of your `PATH`.
 
 That's the whole trick. There's no [sandbox](https://en.wikipedia.org/wiki/Sandbox_(computer_security)) and no virtual machine: "activating" just means that when you type `python` or `pip`, the shell finds the venv's copy first. Each venv has its own `site-packages`, so the pandas 2 project and the pandas 3 project each get their own pandas.
@@ -198,11 +198,11 @@ pandas prints its entire license in the middle of the output, so scroll past it 
 Name: pandas
 Version: 3.0.6
 ...
-Location: /Users/you/project/.venv/lib/python3.11/site-packages
+Location: /Users/you/project/.venv/lib/python3.12/site-packages
 Requires: numpy, python-dateutil
 ```
 
-A `Location:` inside `.venv` means the package is in your venv; `~/.local/lib/python3.11/site-packages` or `/usr/lib/python3/dist-packages` means it landed outside. And `WARNING: Package(s) not found: pandas` means this Python doesn't have it at all, which may be your whole answer.
+A `Location:` inside `.venv` means the package is in your venv; `~/.local/lib/python3.12/site-packages` or `/usr/lib/python3/dist-packages` means it landed outside. And `WARNING: Package(s) not found: pandas` means this Python doesn't have it at all, which may be your whole answer.
 
 ## `venv` vs. `conda`
 
@@ -268,17 +268,17 @@ A container runs from an *image*, built from a recipe called a `Dockerfile` at t
 
 ```dockerfile
 # Dockerfile
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 CMD ["python", "src/pipeline.py"]
 ```
 
-Each of the six instructions does one job. `FROM` picks a starting image, here the [official Python image](https://hub.docker.com/_/python) with Python 3.11 on a minimal Debian Linux. `WORKDIR` sets the folder inside the container. The first `COPY` brings in just `requirements.txt`, and `RUN` installs the packages. The second `COPY` brings in your code, and `CMD` says what to run at start. Copying `requirements.txt` first isn't fussiness: Docker [caches each step](https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/), so when only your code changes, the next build skips the slow install. The [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) documents every instruction.
+Each of the six instructions does one job. `FROM` picks a starting image, here the [official Python image](https://hub.docker.com/_/python) with Python 3.12 on a minimal Debian Linux. `WORKDIR` sets the folder inside the container. The first `COPY` brings in just `requirements.txt`, and `RUN` installs the packages. The second `COPY` brings in your code, and `CMD` says what to run at start. Copying `requirements.txt` first isn't fussiness: Docker [caches each step](https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/), so when only your code changes, the next build skips the slow install. The [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) documents every instruction.
 
 Build the image, give it a name with `-t`, and run it:
 
@@ -464,7 +464,7 @@ Exact pins are reproducible but brittle: they may not install on a much newer Py
 3.  Break it on purpose: open a new terminal, don't activate the venv, and run `python -c "import pandas"`. Read the traceback (see @sec-tracebacks). Then activate the venv and run it again.
 4.  Pick an existing project of yours that doesn't use a venv. Create one, install everything the project needs, freeze a `requirements.txt`, and commit it to git.
 5.  Register a Jupyter kernel for a venv, open a notebook with it, and confirm with `import sys; print(sys.executable)` that the notebook is running your venv's Python and not the system one. Then find it in `jupyter kernelspec list`.
-6.  Clone a classmate's project (or your own, on another computer) and get it running using only `git clone`, `python -m venv`, activation, and `pip install -r requirements.txt`. Time yourself: once the packages download, it should take a few minutes.
+6.  Clone a classmate's project (or your own, on another computer) and get it running using only `git clone`, `python -m venv`, activation, and `python -m pip install -r requirements.txt`. Time yourself: once the packages download, it should take a few minutes.
 7.  Delete your `.venv/` folder and recreate it from `requirements.txt`. Confirm the project still runs. This is the real test of whether your project is reproducible.
 
 ## One-page checklist

@@ -237,7 +237,7 @@ The path should be inside your project's `.venv` folder (or, for conda, inside `
 
 ### Install and record dependencies
 
-Once the venv is active, upgrade pip itself (an old pip can miss prebuilt packages made for newer systems and try to build them from source instead), then install what you need. Always run pip as `python -m pip` rather than plain `pip`: that guarantees you're using the pip that belongs to the Python you just checked, not some other pip that installs somewhere else.
+Once the venv is active, upgrade pip itself (an old pip can miss prebuilt packages made for newer systems and try to build them from source instead), then install what you need. Always run pip as [`python -m pip`](https://pip.pypa.io/en/stable/user_guide/#running-pip) rather than plain `pip`: it installs into whichever Python `python` is, so it can't put packages into some other Python than the one you just checked and will run.
 
 ```bash
 python -m pip install --upgrade pip
@@ -255,7 +255,7 @@ If pip reports `ResolutionImpossible` above a list of conflicting constraints, y
 
 When pip installs something, it installs that package's dependencies too, and the output shows all of them (@fig-pip-install-success).
 
-![Illustration: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports six, because pip resolved and installed pandas's dependencies as well.](/graphics/pip-install-success.png){#fig-pip-install-success fig-alt="Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, tzdata, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 python-dateutil-2.9.0.post0 pytz-2024.2 six-1.17.0 tzdata-2024.2'. Numbered callouts mark the single package requested and the full list of packages actually installed."}
+![Illustration: A successful `python -m pip install pandas`. You asked for one package; the `Successfully installed` line reports six, because pip resolved and installed pandas's dependencies as well.](/graphics/pip-install-success.png){#fig-pip-install-success fig-alt="Illustration of a terminal window running 'python -m pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, tzdata, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 python-dateutil-2.9.0.post0 pytz-2024.2 six-1.17.0 tzdata-2024.2'. Numbered callouts mark the single package requested and the full list of packages actually installed."}
 
 Record what you installed in a `requirements.txt` file so a teammate, or future you, can recreate the environment. The quickest way is [`pip freeze`](https://pip.pypa.io/en/stable/cli/pip_freeze/):
 
@@ -377,7 +377,7 @@ python -m pip install pandas scikit-learn
 
 **Step 3: read the resolver's explanation.** Both tools explain conflicts in readable terms, so read slowly. You're looking for two things: **which shared package is contested**, and **which of the packages you asked for** are pulling it in opposite directions. In the example above, NumPy is contested, and pandas 2.2.0 and OpenCV 4.12 are pulling. Pip's page on [dependency resolution](https://pip.pypa.io/en/stable/topics/dependency-resolution/) has more on reading these messages.
 
-**Step 4: choose a way out.** There are five, and one of them almost always works. (Before committing to one, `pip install --dry-run` shows what pip *would* install without installing anything; the worked example "Untangling a real conflict" uses it.)
+**Step 4: choose a way out.** There are five, and one of them almost always works. (Before committing to one, `python -m pip install --dry-run` shows what pip *would* install without installing anything; the worked example "Untangling a real conflict" uses it.)
 
 -   **Pin a compatible version** of one of the packages you asked for: an older release that accepts the other's range. Here, an OpenCV from before 4.12 still accepts NumPy 1.
 -   **Relax a constraint you don't need.** If *you* pinned `pandas==2.2.0` for no particular reason, loosen it (`"pandas>=2.2"`) and let the resolver pick a pandas that works with NumPy 2.
@@ -697,7 +697,7 @@ python -m pip check
 2.  Create a new venv, install one package, write `requirements.txt`, then delete `.venv` and recreate it from the file.
 3.  In a fresh environment, install two packages whose requirements conflict (the pandas and OpenCV pair from this chapter works). Read the error and name the contested package.
 4.  Fix that conflict by pinning one package, then check your fix with `--dry-run` and a smoke test.
-5.  Install something with pip in one command, then upgrade one of its dependencies in a second command until pip warns you. Run `pip check` and read what it says.
+5.  Install something with pip in one command, then upgrade one of its dependencies in a second command until pip warns you. Run `python -m pip check` and read what it says.
 6.  Make a notebook use the wrong interpreter on purpose (start Jupyter from outside your environment), show the `sys.executable` mismatch, then fix it.
 7.  Write a short "environment README" for a project: how to create, activate, and check the environment.
 
@@ -712,7 +712,7 @@ python -m pip check
 -   I can read a resolver's error and name the contested package.
 -   I fix conflicts by pinning, relaxing, splitting, or recreating, not by guessing.
 -   I use conda channels deliberately, with strict priority.
--   I run `pip check` and a smoke test before trusting an environment.
+-   I run `python -m pip check` and a smoke test before trusting an environment.
 
 ## Quick reference: commands students use most
 

@@ -484,7 +484,7 @@ FIGURES = {
         "line_height": 30,
         "legend_cols": 1,
         "lines": [
-            text("(.venv) you@laptop Project % pip install pandas"),
+            text("(.venv) you@laptop Project % python -m pip install pandas"),
             text("Collecting pandas", dim=True),
             text(
                 "  Downloading pandas-2.2.3-cp312-cp312-macosx_11_0_arm64.whl (11.3 MB)",
@@ -516,7 +516,7 @@ FIGURES = {
                 "n": 1,
                 "line": 0,
                 "start": 29,
-                "len": 18,
+                "len": 28,
                 "label": "the one package you asked for",
             },
             {
