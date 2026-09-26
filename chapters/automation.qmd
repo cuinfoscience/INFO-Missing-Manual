@@ -532,7 +532,7 @@ The lock is a folder because `mkdir` either creates it or fails, in one step, so
 
 You open a pull request, a teammate approves it, you merge, and the next morning `main` doesn't run: the change worked on your laptop and broke something you didn't think to test. [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) exists for that morning. It has two halves. Integrate often: small changes merged frequently, not month-long branches merged in one terrifying go. And verify automatically: every push and pull request triggers a run of your tests, linter, and other checks on a fresh machine, with the result posted where everyone can see it. A problem gets caught at the moment it's introduced, in one small change, while the person who made it still remembers why.
 
-On GitHub, CI means GitHub Actions, which is [free for public repositories](https://docs.github.com/en/billing/concepts/product-billing/github-actions) on GitHub's standard machines. Its [quickstart](https://docs.github.com/en/actions/get-started/quickstart) gets a first workflow running in a few minutes; the rest of this section explains what's inside one.
+On GitHub, CI means GitHub Actions, which is [free for public repositories](https://docs.github.com/en/billing/concepts/product-billing/github-actions) on GitHub's standard machines. Private repositories are a different story: each account gets a monthly quota of free minutes that depends on its plan (2,000 a month on GitHub Free, according to that page in September 2026), and once they're used up, workflows stop running until the next month unless you've added a payment method. At three minutes a run, that's more than 600 runs a month, and a matrix (see "Keeping CI fast") spends it three times as fast. GitHub's [quickstart](https://docs.github.com/en/actions/get-started/quickstart) gets a first workflow running in a few minutes; the rest of this section explains what's inside one.
 
 ### Events, jobs, steps, and runners
 
@@ -645,7 +645,7 @@ strategy:
     python-version: ["3.10", "3.11", "3.12"]
 ```
 
-A library that promises to support all three versions needs that; a class project just triples its minutes, so pick the version you use. As a rule of thumb, aim for runs under five minutes: when CI takes fifteen, people push, switch to something else, and never come back to check. If it creeps up, measure which steps are slow, cache more, and move slow tests into a separate job that runs only on `main`.
+A library that promises to support all three versions needs that; a class project just triples its minutes, which in a private repository come out of that monthly quota, so pick the version you use. As a rule of thumb, aim for runs under five minutes: when CI takes fifteen, people push, switch to something else, and never come back to check. If it creeps up, measure which steps are slow, cache more, and move slow tests into a separate job that runs only on `main`.
 
 ### Keeping CI safe
 
