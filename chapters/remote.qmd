@@ -375,7 +375,33 @@ The `Ctrl+b` then `d` step is two separate key presses: hold Ctrl and press `b`,
 
 [High-performance computing](https://en.wikipedia.org/wiki/High-performance_computing) (HPC) clusters, the kind most research universities run, split the work between a **login node** and many **compute nodes**. You SSH into the login node, a modest machine shared by everyone logged in, meant for editing files and submitting jobs. The heavy work runs on compute nodes, handed out by a **scheduler**; [Slurm](https://en.wikipedia.org/wiki/Slurm_Workload_Manager) is the most common, and you may also meet PBS, LSF, or SGE.
 
-The rule that matters most: **don't run heavy work on the login node.** One person's big pandas job there slows everyone to a crawl, and some clusters kill such processes automatically. A typical Slurm workflow:
+The rule that matters most: **don't run heavy work on the login node.** One person's big pandas job there slows everyone to a crawl, and some clusters kill such processes automatically.
+
+Before your first job, you need a Python environment on the cluster, and this is where many first jobs fail. It's tempting to `rsync` your laptop's `.venv` up with the project. It won't work. A virtual environment (@sec-virtual-environments) isn't a self-contained copy of Python: it points, by full path, at the Python that built it, and on your laptop that path doesn't exist on the cluster. The compiled parts of packages such as numpy and pandas are built for one operating system and one Python version (their file names even say so, `...cpython-312-darwin.so` on a Mac and `...cpython-312-x86_64-linux-gnu.so` on Linux), and a venv made on Windows keeps its scripts in `Scripts\`, so there's no `bin/activate` to source at all. Python's [own documentation](https://docs.python.org/3/library/venv.html) says a venv is not movable or copyable: you recreate it where it will run. You can see the pointer in any venv; this one was built on a Linux machine:
+
+```text
+$ head -4 .venv/pyvenv.cfg
+home = /usr/bin
+include-system-site-packages = false
+version = 3.12.3
+executable = /usr/bin/python3.12
+```
+
+So build the venv on the cluster, from the Python the cluster provides. Clusters offer software as **environment modules**, managed by a tool such as [Lmod](https://lmod.readthedocs.io/en/latest/010_user.html), and `module load` puts one particular Python on your `PATH`. Module names differ from cluster to cluster, so don't copy one from a tutorial (including this one): run `module avail python` on your cluster and pick from its list. A short install like this is usually fine on the login node, though some clusters ask you to use an interactive job; your cluster's documentation says. Compute nodes usually see the same home and project folders as the login node, which is why a venv built there works inside a job:
+
+```bash
+# On the login node, once per project
+module avail python              # which Pythons does this cluster offer?
+module load python/3.12          # an example name; use one from your cluster's list
+which python3                    # should be the module's Python, not /usr/bin/python3
+cd ~/projects/sales
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+deactivate
+```
+
+Then write the job script. A typical Slurm workflow:
 
 ```bash
 # SSH into the login node
@@ -390,7 +416,7 @@ cat > run_analysis.sbatch <<'EOF'
 #SBATCH --time=02:00:00
 #SBATCH --output=logs/%x-%j.out
 
-module load python/3.11
+module load python/3.12          # the same module the venv was built with
 source ~/projects/sales/.venv/bin/activate
 cd ~/projects/sales
 python scripts/analyze.py
@@ -407,7 +433,7 @@ sbatch run_analysis.sbatch
 squeue -u agandler
 ```
 
-The `#SBATCH` lines ask for resources (8 cores, 16 GB of memory, at most two hours); the rest is an ordinary shell script that runs on whichever compute node Slurm assigns. In the log name, `%x` becomes the job name and `%j` the job number. The job starts when resources free up, in seconds or hours. The `mkdir -p logs` line prevents a baffling failure: if the folder named in `--output` doesn't exist, the job can fail without leaving any output to explain why. Slurm's [quick start guide](https://slurm.schedmd.com/quickstart.html) explains the commands, and your own cluster's documentation lists the local partitions, accounts, and software modules; read it before your first submission.
+The `#SBATCH` lines ask for resources (8 cores, 16 GB of memory, at most two hours); the rest is an ordinary shell script that runs on whichever compute node Slurm assigns. In the log name, `%x` becomes the job name and `%j` the job number. The job starts when resources free up, in seconds or hours. The `mkdir -p logs` line prevents a baffling failure: if the folder named in `--output` doesn't exist, the job can fail without leaving any output to explain why. The `module load` line comes before `source` for a reason. By [default](https://slurm.schedmd.com/sbatch.html), `sbatch` hands the job a copy of your login session's environment, so a job without that line may work today, because you happened to have the module loaded when you submitted, and fail next week when you didn't. The venv's `python` is a link to the module's Python, which may not even start without the settings `module load` makes. Load the same module, by the same name, in every job script that uses the venv. Slurm's [quick start guide](https://slurm.schedmd.com/quickstart.html) explains the commands, and your own cluster's documentation lists the local partitions, accounts, and software modules; read it before your first submission.
 
 ### Working in your editor
 
