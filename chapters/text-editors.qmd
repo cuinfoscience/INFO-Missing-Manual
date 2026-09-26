@@ -145,6 +145,12 @@ FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales.csv'
 
 The first `File` line is the one from your code, and the last line says what went wrong. `Ctrl`-click (`Cmd`-click on macOS) the path `analyze.py` in the terminal and VS Code opens the file at line 12. Fix one thing (maybe you never downloaded the data, or it lives in `data/processed/`), save, and rerun.
 
+### When the Run button uses a different Python
+
+Here's a trap that catches a lot of people in their first week. You run `pip install pandas` in a terminal, click the Run button at the top right of the editor (you can see it in @fig-vscode-overview), and get `ModuleNotFoundError: No module named 'pandas'`. You did install it. The catch is that VS Code doesn't ask your terminal which Python to use. It picks an interpreter of its own and runs your file with that one, and if you installed pandas into a different Python (from the Terminal app, say, or from a VS Code terminal you opened before a venv existed), the Python that runs your file has never heard of it. Notebooks have a second chooser, the kernel picker at a notebook's top right, which can land on yet another Python.
+
+The fix takes a few seconds once you know where to look. The version of the Python VS Code picked shows in the status bar at the bottom of the window. Click it, or run **Python: Select Interpreter** from the command palette (`Ctrl+Shift+P`, or `Cmd+Shift+P` on macOS), and choose the environment you installed into, usually the one whose path contains your project's `.venv`. Then open a new terminal, so the terminal and the Run button agree. [VS Code's guide to Python environments](https://code.visualstudio.com/docs/python/environments) explains how it chooses, and "VS Code and venvs" in @sec-virtual-environments shows how to check which Python a terminal or a notebook is really running.
+
 ### Editor features that help beginners
 
 Modern editors quietly do a lot of checking you'd otherwise do by hand, because they understand the language you're writing. Four features are worth knowing by name.
