@@ -103,6 +103,56 @@ Every LaTeX document has the same three parts, and once you can see them, any te
 
 Older templates often add `\usepackage[utf8]{inputenc}`. It's harmless but unnecessary: UTF-8 has been the default since the [April 2018 release of LaTeX](https://www.latex-project.org/news/latex2e-news/ltnews28.pdf).
 
+## Other languages and scripts
+
+Thanks to that UTF-8 default, accented Latin letters just work: type José, Gdańsk, or São Paulo into the first document and pdfLaTeX, Overleaf's default compiler, prints them. Now add a name in Chinese or a word in Arabic, say `Letters from José 李 and مرحبا.`, and the compile stops:
+
+```text
+! LaTeX Error: Unicode character 李 (U+674E)
+               not set up for use with LaTeX.
+```
+
+You get one of these for every character it can't set, and if you click past the red box, the PDF quietly leaves those characters out. pdfLaTeX can print only the characters some loaded package has set up for it. (Greek and Cyrillic can be set up that way, with `babel`, as Overleaf's guide to [non-Latin languages](https://docs.overleaf.com/troubleshooting-and-support/typesetting-non-latin-languages) explains.)
+
+For everything else, switch to one of the two Unicode engines, XeLaTeX or LuaLaTeX, which can use any font installed on the computer, and load [`fontspec`](https://ctan.org/pkg/fontspec) to pick a font that has your characters. On Overleaf, open Settings (the gear icon, or File, then Settings), choose Compiler, and pick XeLaTeX or LuaLaTeX from the Compiler menu. Locally, run `latexmk -lualatex main.tex`. This compiles with either engine:
+
+```latex
+% Compile with XeLaTeX or LuaLaTeX, not pdfLaTeX.
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{Noto Serif}                       % Latin, Greek, Cyrillic
+\newfontfamily\chinesefont{Noto Serif CJK SC}  % Chinese
+
+\begin{document}
+
+Letters from José {\chinesefont 李}, Zoë, Ольга, and Σοφία.
+
+\end{document}
+```
+
+`\setmainfont` sets the font for the whole document, and `\newfontfamily` defines a command, `\chinesefont` here, that switches to a second font for a stretch of text, since few fonts cover every script. Overleaf has both fonts; on your own computer, use any installed font with the characters you need. If you forget to change the compiler, `fontspec` tells you: `The fontspec package requires either XeTeX or LuaTeX.`
+
+A right-to-left script such as Arabic or Hebrew needs more than a font: something has to lay the text out right to left, even in the middle of an English sentence. That's the job of [`babel`](https://ctan.org/pkg/babel) or [`polyglossia`](https://ctan.org/pkg/polyglossia). With LuaLaTeX and `babel`, you can type each script as it comes and let `babel` pick its font:
+
+```latex
+% Compile with LuaLaTeX.
+\documentclass[11pt]{article}
+\usepackage[english, bidi=basic]{babel}
+\babelprovide[import, onchar=ids fonts]{arabic}
+\babelprovide[import, onchar=ids fonts]{chinese}
+\babelfont{rm}{Noto Serif}
+\babelfont[arabic]{rm}{Noto Naskh Arabic}
+\babelfont[chinese]{rm}{Noto Serif CJK SC}
+
+\begin{document}
+
+Letters from José 李 and مرحبا.
+
+\end{document}
+```
+
+Overleaf's guide to [multilingual typesetting with babel and fontspec](https://www.overleaf.com/learn/latex/Multilingual_typesetting_on_Overleaf_using_babel_and_fontspec) covers more languages, and its non-Latin languages page points to dedicated classes for documents written mostly in Chinese, Japanese, or Korean.
+
 ## Syntax you'll actually use
 
 LaTeX has thousands of commands, and most papers use a few dozen. These are the ones you'll reach for; for anything else, search "latex" plus what you want, and the answer is usually on Overleaf's help pages or TeX StackExchange.
@@ -288,7 +338,7 @@ Each `frame` is a slide, titled in the braces after `\begin{frame}`. The `<2->` 
 Package beamerthememetropolis Warning: You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts on input line 95.
 ```
 
-It's harmless; the slides compile in a standard font. For the intended Fira fonts, switch the compiler to XeLaTeX (on Overleaf, in the project menu's [compiler setting](https://docs.overleaf.com/getting-started/recompiling-your-project/selecting-a-tex-live-version-and-latex-compiler)). Overleaf's [Beamer guide](https://www.overleaf.com/learn/latex/Beamer) covers the rest.
+It's harmless; the slides compile in a standard font. For the intended Fira fonts, switch the compiler to XeLaTeX (on Overleaf, under Settings, then [Compiler](https://docs.overleaf.com/getting-started/recompiling-your-project/selecting-a-tex-live-version-and-latex-compiler)). Overleaf's [Beamer guide](https://www.overleaf.com/learn/latex/Beamer) covers the rest.
 
 ## Local installation (optional)
 
@@ -328,6 +378,8 @@ Escape it as `\_`. The same error appears if you forget an equation's closing `$
 `! Misplaced alignment tab character &.` `&` separates table columns, so anywhere else write `\&`, as in `Smith \& Jones`. In a `.bib` file, a journal like `New Media & Society` passes through BibTeX untouched and the error points to `main.bbl`, a file you never wrote; the fix goes in the `.bib` file.
 
 ``! LaTeX Error: File `booktab.sty' not found.`` On Overleaf, which has nearly every package, it's a typo (`booktab` for `booktabs`). Locally, the package may be missing: `tlmgr install <name>` for TeX Live, or MiKTeX's console.
+
+`! LaTeX Error: Unicode character 李 (U+674E) not set up for use with LaTeX.` pdfLaTeX can't print that character. Switch to XeLaTeX or LuaLaTeX and load a font that has it, as "Other languages and scripts" explains.
 
 `LaTeX Warning: Citation ... undefined.` The bibliography step hasn't run, or the key isn't in your `.bib` file. If it survives a full compile, BibTeX's log, `main.blg`, says `I didn't find a database entry for "matias2019civc"` about a mistyped key.
 
@@ -507,9 +559,20 @@ Compile it and you get twelve slides from the nine you wrote (the title and eigh
 
 ## Templates
 
-A minimal `article`:
+A minimal `article`, tagged for screen readers (see "Stakes and politics"):
 
 ```latex
+% Tagged PDF. Needs the LaTeX release of 2025-06-01 or later (on Overleaf,
+% pick the newest TeX Live under Settings, Compiler); older releases
+% reject the tagging key. Some classes and packages don't support
+% tagging yet; check yours at
+% https://latex3.github.io/tagging-project/tagging-status/
+\DocumentMetadata{
+  lang        = en,
+  pdfstandard = ua-2,
+  pdfstandard = a-4f,
+  tagging     = on
+}
 \documentclass[11pt]{article}
 \usepackage{amsmath, graphicx, booktabs, microtype, hyperref, cleveref}
 \title{}

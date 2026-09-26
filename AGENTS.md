@@ -320,7 +320,7 @@ Inline `(see @sec-foo)` references are also fine inside prose — the two mechan
 
 **Lists:** plain markdown; no pandoc-style list options. Quarto respects list spacing automatically.
 
-**Code blocks:** fenced blocks with a language hint where it helps highlighting.
+**Code blocks:** fenced blocks with a language hint where it helps highlighting. Shell commands install with `python -m pip` (or `%pip` in a notebook), so a package lands in the Python that runs it, and examples use Python 3.12 unless the version is the point (peer-review Phase 1, #70).
 
 ````markdown
 ```bash

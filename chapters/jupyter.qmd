@@ -58,7 +58,7 @@ That machinery has three parts. The **server** is the program you start when you
 You type in a cell  →  browser  →  Jupyter server  →  kernel  →  result back up the chain
 ```
 
-The kernel is the piece that surprises people, because **it remembers everything**. It works like the Python prompt you get by typing `python` in a terminal (a [read–eval–print loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), or REPL): when a cell runs `df = pd.read_csv("data.csv")`, `df` lives in the kernel's memory until the kernel restarts, whether or not that cell is still on the page. Run cells out of order, redefine a variable, or delete a cell after running it, and what's on screen no longer matches what's in memory. People call this **hidden state**, and it's why "it works in my notebook" so often means "it works with whatever my kernel happens to remember right now." The only way to be sure a notebook is correct is to restart the kernel and run every cell from the top, a habit that comes up again and again below.
+The kernel is the piece that surprises people, because **it remembers everything**. It works like the Python prompt you get by typing `python` in a terminal (a [read–eval–print loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), or [REPL](appendix-glossary.qmd#term-repl)): when a cell runs `df = pd.read_csv("data.csv")`, `df` lives in the kernel's memory until the kernel restarts, whether or not that cell is still on the page. Run cells out of order, redefine a variable, or delete a cell after running it, and what's on screen no longer matches what's in memory. People call this **hidden state**, and it's why "it works in my notebook" so often means "it works with whatever my kernel happens to remember right now." The only way to be sure a notebook is correct is to restart the kernel and run every cell from the top, a habit that comes up again and again below.
 
 ## Launching Jupyter the right way
 
@@ -87,7 +87,7 @@ print(os.getcwd())
 /Users/you/Courses/INFO-3010/Project/notebooks
 ```
 
-Run the same line in a terminal at the project root and you'll get a different answer. That's the first thing to check whenever a path misbehaves. The same goes for imports: `from src.cleaning import clean_sales` fails in a notebook saved in `notebooks/`, because Python looks for `src` in the notebook's folder. Paths starting with `../` are fine for quick work, but they break when the notebook moves, and they don't match the paths a script uses. @sec-scripts-vs-notebooks shows the dependable fix for both: make your code an installable package (`pip install -e .`), and build every path from one project-root anchor, so `from sales.paths import DATA_RAW` works the same in every notebook and script.
+Run the same line in a terminal at the project root and you'll get a different answer. That's the first thing to check whenever a path misbehaves. The same goes for imports: `from src.cleaning import clean_sales` fails in a notebook saved in `notebooks/`, because Python looks for `src` in the notebook's folder. Paths starting with `../` are fine for quick work, but they break when the notebook moves, and they don't match the paths a script uses. @sec-scripts-vs-notebooks shows the dependable fix for both: make your code an installable package (`python -m pip install -e .`), and build every path from one project-root anchor, so `from sales.paths import DATA_RAW` works the same in every notebook and script.
 
 ### When your files aren't there
 
@@ -255,7 +255,7 @@ Put together, a typical first cell looks like this:
 %matplotlib inline
 
 import pandas as pd
-from sales.cleaning import clean_sales    # your package, installed with pip install -e .
+from sales.cleaning import clean_sales    # your package, installed with python -m pip install -e .
 from sales.paths import DATA_RAW
 
 %time df = pd.read_csv(DATA_RAW / "sales.csv")
@@ -387,10 +387,10 @@ print("numpy:   ", np.__version__)
 ```
 
 ```text
-python:   3.11.15
+python:   3.12.3
 platform: Linux-6.18.44-fc-v37-x86_64-with-glibc2.39
 pandas:   3.0.6
-numpy:    2.4.6
+numpy:    2.5.3
 ```
 
 The fuller habit is an environment file in the project that pins every dependency (see @sec-virtual-environments and @sec-pkg-mgmt): `environment.yml` for conda, or `requirements.txt` or `pyproject.toml` for pip. Commit it alongside the notebook, and add one line to the README saying how to recreate the environment from it. With the file and the code, anyone, including you on a new laptop, can get back to the same setup.
@@ -441,6 +441,8 @@ $ source .venv/bin/activate
 (.venv) $ python -m ipykernel install --user \
               --name=info3010 --display-name="INFO 3010 (venv)"
 ```
+
+The `python -m pip` in the middle is on purpose. It [installs into whichever Python `python` is](https://pip.pypa.io/en/stable/user_guide/#running-pip), so with the venv active, ipykernel can't land anywhere else. Plain `pip` is a separate command that can belong to a different Python, and that mismatch is how this whole problem starts.
 
 Reload JupyterLab and "INFO 3010 (venv)" appears in the kernel list, which is much easier to pick out than a row of identical "Python 3 (ipykernel)" entries. `jupyter kernelspec list` shows every kernel you've registered, and IPython's [kernel installation guide](https://ipython.readthedocs.io/en/stable/install/kernel_install.html) covers the details. And if you just need one package in the kernel you're already using, `%pip install pandas` in a cell installs it into exactly that environment.
 

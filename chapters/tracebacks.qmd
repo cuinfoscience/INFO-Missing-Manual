@@ -186,6 +186,18 @@ SyntaxError: '(' was never closed
 
 A [`SyntaxError`](https://docs.python.org/3/library/exceptions.html#SyntaxError) is different from every other error in this list, and you can see it in the output: there's no `Traceback (most recent call last)` header and no stack. Python couldn't even read the file, so nothing ran. Recent versions of Python give much friendlier messages here than older ones did. You'll see things like `'(' was never closed`, `expected ':'` (a `def`, `for`, `if`, or `while` line missing its colon), and `Missing parentheses in call to 'print'. Did you mean print(...)?`, which is what you get from old Python 2 code like `print "hello"`. Sometimes all you get is a plain `SyntaxError: invalid syntax`. Look at the caret first, then at the line or two above it: an unclosed bracket or quote on one line often isn't noticed until the next.
 
+One `SyntaxError` catches nearly everyone once. You type `python`, and then, at Python's `>>>` prompt, the install command from your instructions:
+
+```text
+>>> pip install pandas
+  File "<stdin>", line 1
+    pip install pandas
+        ^^^^^^^
+SyntaxError: invalid syntax
+```
+
+The command is fine; it's in the wrong place. `pip install` is for your shell, the prompt that ends in `$`, `%`, or `>`, and `>>>` means you're talking to Python, which tries to read the line as Python code. Leave Python with `exit()` (or `Ctrl + D`; on Windows, `Ctrl + Z` and then Enter) and run the command at the shell prompt. In a Jupyter notebook, where every cell is Python, run `%pip install pandas` in a cell instead. @sec-terminal shows how to tell the prompts apart. (Python 3.13 and later name the file `<python-input-0>` instead of `<stdin>`.)
+
 ### IndentationError: whitespace that doesn't line up
 
 ```text

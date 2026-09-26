@@ -26,7 +26,7 @@ margin-header: |
 
 It's the night before a problem set is due, and you need one more library. You type `pip install`, it prints `Successfully installed`, and you get on with the assignment. Then you reopen last week's notebook, the one with all your results in it, and `import pandas` fails with `ValueError: numpy.dtype size changed, may indicate binary incompatibility`. You didn't touch pandas. You didn't touch that notebook. What happened?
 
-If something like that has happened to you, you're in good company, and there's even a name for it: [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell). The new library needed a newer NumPy, pip upgraded NumPy to get it, and the older pandas your notebook relied on can't work with the new NumPy. Nothing was wrong with your code. The trouble was in the pile of other people's software your code stands on, and in the habit almost everyone starts with: installing everything into one shared Python and hoping for the best.
+If something like that has happened to you, you're in good company, and there's even a name for it: [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell). The new library needed a newer NumPy, [pip](appendix-glossary.qmd#term-pip) upgraded NumPy to get it, and the older pandas your notebook relied on can't work with the new NumPy. Nothing was wrong with your code. The trouble was in the pile of other people's software your code stands on, and in the habit almost everyone starts with: installing everything into one shared Python and hoping for the best.
 
 This chapter is about the habits that end that: a separate environment for every project, a small text file that records what the project needs, and a calm, step-by-step way to untangle a conflict when one happens. It covers both of the tools you'll meet in data science, conda and pip, and when to use each. It doesn't go deep on how a virtual environment works under the hood (that's @sec-virtual-environments) or on connecting environments to Jupyter (@sec-jupyter), though it points to both where they matter.
 
@@ -50,7 +50,7 @@ Most of the confusion around package management comes from a few words used loos
 
 A [**package**](appendix-glossary.qmd#term-package) is third-party code you install, such as `pandas`, `numpy`, or `requests`. A **dependency** is another package that your package needs to work: pandas depends on NumPy, and matplotlib depends on Pillow, so installing pandas pulls in NumPy and installing matplotlib pulls in Pillow. Those have dependencies of their own, and a [**package manager**](https://en.wikipedia.org/wiki/Package_manager) exists to handle the whole tree. The ones you never asked for by name, called *transitive* dependencies, are behind most of the surprises in this chapter.
 
-Each dependency can come with a **version constraint**, written with operators like `>=`, `<`, `==`, and `!=`. A line like `numpy>=1.24,<2.0` means "any version from 1.24 up, but nothing from 2.0 on." (The exact rules are in the [version specifiers](https://packaging.python.org/en/latest/specifications/version-specifiers/) spec.) When you install something, the package manager has to find one version of every package that satisfies *every* constraint at once. That search is called *resolving* the dependencies, and when no answer exists, you have a conflict.
+Each dependency can come with a **version constraint**, written with operators like `>=`, `<`, `==`, and `!=`. A line like `numpy>=1.24,<2.0` means "any version from 1.24 up, but nothing from 2.0 on." (The exact rules are in the [version specifiers](https://packaging.python.org/en/latest/specifications/version-specifiers/) spec.) When you install something, the [package manager](appendix-glossary.qmd#term-package-manager) has to find one version of every package that satisfies *every* constraint at once. That search is called *resolving* the dependencies, and when no answer exists, you have a conflict.
 
 A Python **interpreter** is the `python` program that runs your code, and where it lives decides where packages get installed. An [**environment**](appendix-glossary.qmd#term-environment) is an isolated set of installed packages tied to one interpreter. You can have many on the same computer, one per project, and they don't interfere with each other, because each has its own interpreter (or a link to one) and its own folder of packages:
 
@@ -62,7 +62,7 @@ A Python **interpreter** is the `python` program that runs your code, and where 
 ~/miniforge3/envs/research/          # another conda environment
 ```
 
-Environments become [reproducible](https://en.wikipedia.org/wiki/Reproducibility) when you write down what's in them, in a small text file you commit alongside your code. Conda's version of that file is `environment.yml`; pip's is `requirements.txt`. Both list package names and, optionally, version constraints. A stricter kind, a **lockfile**, records the *exact* version of every package the resolver chose.
+Environments become [reproducible](https://en.wikipedia.org/wiki/Reproducibility) when you write down what's in them, in a small text file you commit alongside your code. Conda's version of that file is `environment.yml`; pip's is `requirements.txt`. Both list package names and, optionally, version constraints. A stricter kind, a **lockfile**, records the *exact* [version](appendix-glossary.qmd#term-version) of every package the resolver chose.
 
 ## Choosing tools: conda, pip, and venv
 
@@ -237,7 +237,7 @@ The path should be inside your project's `.venv` folder (or, for conda, inside `
 
 ### Install and record dependencies
 
-Once the venv is active, upgrade pip itself (an old pip can miss prebuilt packages made for newer systems and try to build them from source instead), then install what you need. Always run pip as `python -m pip` rather than plain `pip`: that guarantees you're using the pip that belongs to the Python you just checked, not some other pip that installs somewhere else.
+Once the venv is active, upgrade pip itself (an old pip can miss prebuilt packages made for newer systems and try to build them from source instead), then install what you need. Always run pip as [`python -m pip`](https://pip.pypa.io/en/stable/user_guide/#running-pip) rather than plain `pip`: it installs into whichever Python `python` is, so it can't put packages into some other Python than the one you just checked and will run.
 
 ```bash
 python -m pip install --upgrade pip
@@ -255,7 +255,7 @@ If pip reports `ResolutionImpossible` above a list of conflicting constraints, y
 
 When pip installs something, it installs that package's dependencies too, and the output shows all of them (@fig-pip-install-success).
 
-![Illustration: A successful `pip install pandas`. You asked for one package; the `Successfully installed` line reports six, because pip resolved and installed pandas's dependencies as well.](/graphics/pip-install-success.png){#fig-pip-install-success fig-alt="Illustration of a terminal window running 'pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, tzdata, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 python-dateutil-2.9.0.post0 pytz-2024.2 six-1.17.0 tzdata-2024.2'. Numbered callouts mark the single package requested and the full list of packages actually installed."}
+![Illustration: A successful `python -m pip install pandas`. You asked for one package; the `Successfully installed` line reports six, because pip resolved and installed pandas's dependencies as well.](/graphics/pip-install-success.png){#fig-pip-install-success fig-alt="Illustration of a terminal window running 'python -m pip install pandas'. The output collects pandas, shows a download progress bar, then collects numpy, python-dateutil, pytz, tzdata, and six, and ends with 'Successfully installed numpy-2.1.2 pandas-2.2.3 python-dateutil-2.9.0.post0 pytz-2024.2 six-1.17.0 tzdata-2024.2'. Numbered callouts mark the single package requested and the full list of packages actually installed."}
 
 Record what you installed in a `requirements.txt` file so a teammate, or future you, can recreate the environment. The quickest way is [`pip freeze`](https://pip.pypa.io/en/stable/cli/pip_freeze/):
 
@@ -377,7 +377,7 @@ python -m pip install pandas scikit-learn
 
 **Step 3: read the resolver's explanation.** Both tools explain conflicts in readable terms, so read slowly. You're looking for two things: **which shared package is contested**, and **which of the packages you asked for** are pulling it in opposite directions. In the example above, NumPy is contested, and pandas 2.2.0 and OpenCV 4.12 are pulling. Pip's page on [dependency resolution](https://pip.pypa.io/en/stable/topics/dependency-resolution/) has more on reading these messages.
 
-**Step 4: choose a way out.** There are five, and one of them almost always works. (Before committing to one, `pip install --dry-run` shows what pip *would* install without installing anything; the worked example "Untangling a real conflict" uses it.)
+**Step 4: choose a way out.** There are five, and one of them almost always works. (Before committing to one, `python -m pip install --dry-run` shows what pip *would* install without installing anything; the worked example "Untangling a real conflict" uses it.)
 
 -   **Pin a compatible version** of one of the packages you asked for: an older release that accepts the other's range. Here, an OpenCV from before 4.12 still accepts NumPy 1.
 -   **Relax a constraint you don't need.** If *you* pinned `pandas==2.2.0` for no particular reason, loosen it (`"pandas>=2.2"`) and let the resolver pick a pandas that works with NumPy 2.
@@ -480,7 +480,7 @@ In September 2026, that command chose `numpy-1.26.4` and `urllib3-1.26.20`; with
 
 ### Lockfiles
 
-A **lockfile** records the exact version of every package the resolver chose, transitive dependencies included, and sometimes a checksum of each file. A tool generates it after resolving, so installing from it is fast and predictable, and two collaborators installing the same lockfile get the same versions months apart. That ends "it resolved differently on my machine."
+A **lockfile** records the exact version of every package the resolver chose, transitive dependencies included, and sometimes a [checksum](appendix-glossary.qmd#term-checksum) of each file. A tool generates it after resolving, so installing from it is fast and predictable, and two collaborators installing the same lockfile get the same versions months apart. That ends "it resolved differently on my machine."
 
 For conda, [conda-lock](https://conda.github.io/conda-lock/) makes lockfiles for each operating system from one `environment.yml`. For pip, [pip-tools](https://pip-tools.readthedocs.io/) turns a short `requirements.in` into a fully pinned `requirements.txt` with `pip-compile`, and [Poetry](https://python-poetry.org/docs/), [Pipenv](https://pipenv.pypa.io/), and uv (the tool in this chapter's meme, a much faster installer whose `uv pip install` works like `pip install`) each have their own lockfile format. For coursework, a `requirements.txt` with exact pins is usually enough. Know the idea, so you recognize it when a course or lab adopts one.
 
@@ -697,7 +697,7 @@ python -m pip check
 2.  Create a new venv, install one package, write `requirements.txt`, then delete `.venv` and recreate it from the file.
 3.  In a fresh environment, install two packages whose requirements conflict (the pandas and OpenCV pair from this chapter works). Read the error and name the contested package.
 4.  Fix that conflict by pinning one package, then check your fix with `--dry-run` and a smoke test.
-5.  Install something with pip in one command, then upgrade one of its dependencies in a second command until pip warns you. Run `pip check` and read what it says.
+5.  Install something with pip in one command, then upgrade one of its dependencies in a second command until pip warns you. Run `python -m pip check` and read what it says.
 6.  Make a notebook use the wrong interpreter on purpose (start Jupyter from outside your environment), show the `sys.executable` mismatch, then fix it.
 7.  Write a short "environment README" for a project: how to create, activate, and check the environment.
 
@@ -712,7 +712,7 @@ python -m pip check
 -   I can read a resolver's error and name the contested package.
 -   I fix conflicts by pinning, relaxing, splitting, or recreating, not by guessing.
 -   I use conda channels deliberately, with strict priority.
--   I run `pip check` and a smoke test before trusting an environment.
+-   I run `python -m pip check` and a smoke test before trusting an environment.
 
 ## Quick reference: commands students use most
 

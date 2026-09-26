@@ -47,7 +47,7 @@ Pick the editor that fits the job in front of you, and put your energy into the 
 
 ## What an editor is really doing
 
-A surprising amount of computing happens in plain text: your Python scripts, your configuration files (`.gitignore`, `pyproject.toml`, `_quarto.yml`), your data when it's CSV or JSON, your logs, and your README. A text editor is the one workbench that opens all of them.
+A surprising amount of computing happens in plain text: your Python scripts, your configuration files (`.gitignore`, `pyproject.toml`, `_quarto.yml`), your data when it's CSV or JSON, your logs, and your README. A [text editor](appendix-glossary.qmd#term-text-editor) is the one workbench that opens all of them.
 
 That's also why a text editor is the wrong tool for some files. Open a Word document in VS Code and you get a screen of gibberish, because a `.docx` isn't text at all: it's a zip archive of XML files ([Office Open XML](https://en.wikipedia.org/wiki/Office_Open_XML)) that only makes sense to a program that knows how to unpack it. Images, Excel workbooks, and Parquet files are binary too. If a file opens as garbage, it's usually not broken, just not text.
 
@@ -144,6 +144,12 @@ FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/sales.csv'
 ```
 
 The first `File` line is the one from your code, and the last line says what went wrong. `Ctrl`-click (`Cmd`-click on macOS) the path `analyze.py` in the terminal and VS Code opens the file at line 12. Fix one thing (maybe you never downloaded the data, or it lives in `data/processed/`), save, and rerun.
+
+### When the Run button uses a different Python
+
+Here's a trap that catches a lot of people in their first week. You run `pip install pandas` in a terminal, click the Run button at the top right of the editor (you can see it in @fig-vscode-overview), and get `ModuleNotFoundError: No module named 'pandas'`. You did install it. The catch is that VS Code doesn't ask your terminal which Python to use. It picks an interpreter of its own and runs your file with that one, and if you installed pandas into a different Python (from the Terminal app, say, or from a VS Code terminal you opened before a venv existed), the Python that runs your file has never heard of it. Notebooks have a second chooser, the kernel picker at a notebook's top right, which can land on yet another Python.
+
+The fix takes a few seconds once you know where to look. The version of the Python VS Code picked shows in the status bar at the bottom of the window. Click it, or run **Python: Select Interpreter** from the command palette (`Ctrl+Shift+P`, or `Cmd+Shift+P` on macOS), and choose the environment you installed into, usually the one whose path contains your project's `.venv`. Then open a new terminal, so the terminal and the Run button agree. [VS Code's guide to Python environments](https://code.visualstudio.com/docs/python/environments) explains how it chooses, and "VS Code and venvs" in @sec-virtual-environments shows how to check which Python a terminal or a notebook is really running.
 
 ### Editor features that help beginners
 
