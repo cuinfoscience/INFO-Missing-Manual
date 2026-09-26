@@ -1,6 +1,6 @@
 # Plan: revising the whole book after the September 2026 peer review
 
-**Status:** proposed, waiting on the maintainer's decisions in "Decide first." Written 2026-09-25 from the ten simulated reviews in [`aar/2026-09-25-peer-review.md`](../aar/2026-09-25-peer-review.md) (R1–R10 below), after the voice rewrite (#61–#68). Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
+**Status:** Phase 1 done (#70); the rest proposed, waiting on the maintainer's decisions in "Decide first." Written 2026-09-25 from the ten simulated reviews in [`aar/2026-09-25-peer-review.md`](../aar/2026-09-25-peer-review.md) (R1–R10 below), after the voice rewrite (#61–#68). Progress goes in [`handoff.md`](../handoff.md) and the checklist in [`roadmap.md`](../roadmap.md).
 
 ## What the reviews say, in one paragraph
 
