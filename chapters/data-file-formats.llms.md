@@ -12,7 +12,7 @@
 
 Here’s a scene from every intro data course. You get a dataset and type the line every [pandas](https://pandas.pydata.org/docs/) tutorial promises will work: `pd.read_csv("data.csv")`. Sometimes it does. Other times you get a wall of red text about a “codec,” or a DataFrame with one enormous column, or, worst of all, a table that loads without complaint and is quietly wrong: prices stored as text, dates that are only strings, a `-999` dragging every average below zero.
 
-None of that means you’re bad at this. pandas has to guess at the habits of whoever made the file (which character separates columns, which values mean “nothing here”), and when it guesses wrong, the fix is almost always one argument, once you know which one to reach for. This chapter is a field guide to the formats you’ll meet most: [CSV](../chapters/appendix-glossary.llms.md#term-csv) (and its cousin TSV), [JSON](../chapters/appendix-glossary.llms.md#term-json), Excel, and [Parquet](../chapters/appendix-glossary.llms.md#term-parquet), plus the text encodings underneath them and what to do when a file is too big to load. It doesn’t cover cleaning a table once it’s loaded (that’s [sec-tabular-data](#sec-tabular-data)), pandas itself ([sec-pandas-basics](#sec-pandas-basics)), fetching JSON from an API ([sec-http-apis](#sec-http-apis)), or JSON as a configuration format ([sec-common-formats](#sec-common-formats)).
+None of that means you’re bad at this. pandas has to guess at the habits of whoever made the file (which character separates columns, which values mean “nothing here”), and when it guesses wrong, the fix is almost always one argument, once you know which one to reach for. This chapter is a field guide to the formats you’ll meet most: [CSV](../chapters/appendix-glossary.llms.md#term-csv) (and its cousin TSV), [JSON](../chapters/appendix-glossary.llms.md#term-json), Excel, Stata and SPSS files, and [Parquet](../chapters/appendix-glossary.llms.md#term-parquet), plus the text encodings underneath them and what to do when a file is too big to load. It doesn’t cover cleaning a table once it’s loaded (that’s [sec-tabular-data](#sec-tabular-data)), pandas itself ([sec-pandas-basics](#sec-pandas-basics)), fetching JSON from an API ([sec-http-apis](#sec-http-apis)), or JSON as a configuration format ([sec-common-formats](#sec-common-formats)).
 
 ## Why read this chapter
 
@@ -22,6 +22,7 @@ None of that means you’re bad at this. pandas has to guess at the habits of wh
 - Boston ZIP codes lost their leading zero, or 3 April turned into March 4, and nothing warned you either time.
 - An API gave you nested JSON, and `pd.read_json` answered with `ValueError: Mixing dicts with non-Series may lead to ambiguous ordering`.
 - Someone emailed you a spreadsheet with a title banner, merged cells, and five sheets, and you need one clean table out of it.
+- The survey you need came from an archive as a `.dta` or `.sav` file, and you don’t have Stata or SPSS.
 - Your notebook’s kernel keeps dying on a big file, and you want to know whether Parquet, DuckDB, or Polars would help.
 
 ## Running theme: never trust a file you just read
@@ -303,7 +304,41 @@ df.to_excel("cleaned.xlsx", index=False)
 
 Pass `index=False` (to `to_csv`, too), or whoever reads the file finds a mystery first column called `Unnamed: 0`. And a sheet holds at most 1,048,576 rows ([Microsoft’s limits](https://support.microsoft.com/en-us/excel/excel-specifications-and-limits)); the old `.xls` format holds 65,536, a limit that once mattered a great deal (see “Stakes and politics”).
 
-## 20.5 Parquet: the format for real data work
+## 20.5 Stata and SPSS files: data that carries its codebook
+
+Download survey data from an archive like [ICPSR](https://en.wikipedia.org/wiki/Inter-university_Consortium_for_Political_and_Social_Research) and you’ll often be offered a Stata file (`.dta`) or an SPSS file (`.sav`), the formats of two statistics programs long popular in the social sciences. You don’t need either program to read them. What makes these files worth knowing is that they carry part of their own codebook: alongside the numbers, they store **value labels**, the words each code stands for (1 means “Not at all,” 3 means “A great deal”).
+
+pandas reads Stata files with [`pd.read_stata`](https://pandas.pydata.org/docs/user_guide/io.html#io-stata-reader), and by default (`convert_categoricals=True`) it turns each labeled column into a category that shows the labels instead of the codes. Here’s a made-up four-person survey with a labeled `trust` question:
+
+``` python
+df = pd.read_stata("survey.dta")
+print(df)
+print(df["trust"].cat.categories.tolist())
+```
+
+``` text
+   id         trust  age
+0   1    Not at all   34
+1   2  A great deal   51
+2   3      Somewhat   28
+3   4  A great deal   45
+['Not at all', 'Somewhat', 'A great deal']
+```
+
+The categories keep the order of their codes, so sorting, grouping, and cross-tabulating put “Not at all” first instead of alphabetizing. When you need the numbers, say to average a scale, read the codes instead: `pd.read_stata("survey.dta", convert_categoricals=False)` gives `1, 3, 2, 3` for the same column. The question wording, which Stata calls a *variable label*, is in the file too:
+
+``` python
+with pd.io.stata.StataReader("survey.dta") as reader:
+    print(reader.variable_labels())
+```
+
+``` text
+{'id': '', 'trust': 'Trust in local news', 'age': ''}
+```
+
+[`pd.read_spss`](https://pandas.pydata.org/docs/user_guide/io.html#io-spss-reader) works the same way, value labels and all, but it needs a package that doesn’t come with pandas, [pyreadstat](https://ofajardo.github.io/pyreadstat_documentation/_build/html/index.html). Without it, you get `` ImportError: `Import pyreadstat` failed. ``; install it with `python -m pip install pyreadstat`. Expect one difference: SPSS stores every number as a floating-point number, so the same survey’s IDs and ages come back as `1.0` and `34.0`. (SAS files have `pd.read_sas`, which brings back the codes without their labels.) If you convert any of these files to CSV to share, the labels become plain text and the codes are gone, so write both into your data dictionary (see “When not to use Parquet” below).
+
+## 20.6 Parquet: the format for real data work
 
 [Parquet](https://en.wikipedia.org/wiki/Apache_Parquet) is a binary format built for analysis. It stores data column by column ([columnar storage](https://en.wikipedia.org/wiki/Column-oriented_DBMS)), compresses each column, and records each column’s type. You can’t read it in a text editor, and don’t need to: you’ll mostly write it yourself, as a faster, more faithful copy of data you’ve loaded and cleaned. pandas reads and writes it with the pyarrow library (`python -m pip install pyarrow` if it’s missing).
 
@@ -334,7 +369,9 @@ raw.to_parquet("data/processed/sales.parquet")
 df = pd.read_parquet("data/processed/sales.parquet")
 ```
 
-## 20.6 Data bigger than memory
+Sharing and archiving are the other times to reach for CSV. Parquet is a fine working format, but when you hand data to someone else, post it with a paper, or deposit it in an archive, the safest choice is still a UTF-8 CSV with a data dictionary beside it. Anyone can open plain text with whatever program they have, now and very likely decades from now; a Parquet file needs a library that understands it. Archives agree: the UK Data Service lists CSV among its [recommended formats](https://ukdataservice.ac.uk/learning-hub/research-data-management/format-your-data/recommended-formats/) for tabular data. What a CSV loses is what makes Parquet pleasant, the types and what each column means, and the data dictionary puts those back in a form a person can read ([sec-project-management](#sec-project-management) shows how to write one). So keep Parquet inside your pipeline, and export a CSV and its dictionary for whoever comes after you.
+
+## 20.7 Data bigger than memory
 
 Sooner or later a file is too big for the tools above. In a notebook, the cell runs for a while and then Jupyter says *“The kernel appears to have died. It will restart automatically.”* In a script, you get a `MemoryError`, or your whole computer slows to a crawl as it starts using the disk as memory. The file isn’t broken. It just doesn’t fit, and the fix is to change how you read it, not to buy a new laptop. pandas’ guide to [scaling to large datasets](https://pandas.pydata.org/docs/user_guide/scale.html) covers the same ground.
 
@@ -449,7 +486,7 @@ Table 20.1: Computing mean revenue per store from a 184 MB CSV of five million 
 
 If a question still doesn’t fit, work on a sample while you figure out what you’re asking. DuckDB can draw one as it reads (`SELECT * FROM 'sales.csv' USING SAMPLE 1%` returns roughly 1% of the rows). Then run the final version on a bigger computer: your university’s research computing cluster or a cloud machine (see [sec-remote-computing](#sec-remote-computing)).
 
-## 20.7 Text encoding in general
+## 20.8 Text encoding in general
 
 Encoding problems confuse people because they’re invisible: a file looks fine in one program and garbled in another, and nothing says why. The idea is simple, though. A computer stores text as bytes, and a [character encoding](https://en.wikipedia.org/wiki/Character_encoding) is the rule for turning bytes into characters. [Unicode](https://en.wikipedia.org/wiki/Unicode) gives every character in every writing system a number, and UTF-8 is the standard way to write those numbers as bytes; make it your default. Older encodings like Windows-1252 and [Latin-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) use one byte per character, so they have room for only 256: enough for Western European languages, and nothing for Greek, Cyrillic, Chinese, or most of the world’s writing.
 
@@ -477,7 +514,7 @@ df.to_csv("out.csv", index=False, encoding="utf-8")
 
 If someone will double-click it open in Excel, use `encoding="utf-8-sig"` instead: Excel [opens a UTF-8 CSV correctly when it starts with a BOM](https://support.microsoft.com/en-us/excel/opening-csv-utf-8-files-correctly-in-excel), and without one may show them mojibake.
 
-## 20.8 Stakes and politics
+## 20.9 Stakes and politics
 
 In the autumn of 2020, nearly 16,000 positive COVID-19 tests in England went unreported for days. The labs’ CSV files were fine. The failure came when Public Health England pulled them into Excel templates saved in the old `.xls` format, which holds only about 65,000 rows. Each test took several rows, so a template filled up at around 1,400 cases, and, as the [BBC reported](https://www.bbc.com/news/technology-54423988), further cases were simply left off, with no error. Contact tracing for those people started late while the virus kept spreading. Nobody decided to drop those cases. A file format did, and its limit stayed invisible until someone went looking.
 
@@ -485,7 +522,7 @@ Most format decisions have smaller stakes, but the pattern repeats: defaults ser
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you choose or accept a data format, ask whose data it holds cleanly and whose it will truncate, garble, or drop without telling you.
 
-## 20.9 Worked examples
+## 20.10 Worked examples
 
 ### A “normal” CSV that is not normal
 
@@ -577,7 +614,7 @@ print(df)
 
 The header is right, and two messy-layout problems show. The `NaN`s in `region` are merged cells (fix with `ffill()`), and the empty `revenue` column means a script wrote this file without calculating its formulas; open and save it in Excel, or compute `units * price` yourself.
 
-## 20.10 Templates
+## 20.11 Templates
 
 **A defensive `read_csv` that handles the common quirks:**
 
@@ -603,7 +640,7 @@ print("nulls per column:")
 print(df.isna().sum())
 ```
 
-## 20.11 Exercises
+## 20.12 Exercises
 
 1.  Take a CSV file from a real data source (a government open-data portal, a Kaggle dataset, or your course). Open it in a text editor and note the delimiter, the header row, and any missing-value codes. Then load it with `pd.read_csv`, passing the right parameters the first time.
 2.  Save a small CSV with accented names using `encoding="cp1252"`. Read it with the default UTF-8 and read the `UnicodeDecodeError`. Then read it correctly, and once more with `encoding="latin-1"`: did anything change, and would you have noticed?
@@ -614,7 +651,7 @@ print(df.isna().sum())
 7.  Take the largest CSV you have (or make one by repeating a small file many times). Measure its memory with `df.memory_usage(deep=True).sum()`, then compute one grouped mean three ways: pandas on the whole file, pandas in chunks, and DuckDB. Check that the answers match.
 8.  Turn the validation snippet in Templates into a reusable function `validate(df)` that prints the report. Put it in a module you can import from any notebook.
 
-## 20.12 One-page checklist
+## 20.13 One-page checklist
 
 - Open unfamiliar CSVs in a text editor first; note the delimiter, encoding, and header layout.
 - Default to UTF-8. On a `UnicodeDecodeError`, try `cp1252`; `latin-1` never errors, even when it’s wrong.
@@ -623,7 +660,8 @@ print(df.isna().sum())
 - Use `parse_dates=` at read time, with `date_format=` when dates might be day first.
 - Check `df.shape`, `df.columns`, `df.dtypes`, and `df.head()` in the cell right after every `read_*`.
 - If a numeric column shows up as `str` (pandas 3) or `object` (pandas 2), you have hidden strings. Use `pd.to_numeric(..., errors="coerce")` to find them.
-- Use Parquet for intermediate files and anything over ~100 MB.
+- Use Parquet for intermediate files and anything over ~100 MB; share and archive a UTF-8 CSV with a data dictionary.
+- Read Stata and SPSS files with `pd.read_stata` and `pd.read_spss` (which needs pyreadstat); value labels arrive as categories.
 - If a file won’t fit in memory: read fewer columns, read in chunks (keeping sums and counts, not means), or query it with DuckDB or Polars.
 - Always pass `index=False` when writing a CSV or Excel file unless you want the row index as a column.
 - When in doubt, `df.head()` and `df.tail()`, and trust your eyes over your assumptions.

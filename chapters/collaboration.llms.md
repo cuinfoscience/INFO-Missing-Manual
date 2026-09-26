@@ -368,7 +368,23 @@ At the end of a project, a milestone, or a semester, a short [retrospective](htt
 
 What makes one worth the time is that **every pain point becomes an issue or a documentation change.** “The environment kept breaking” becomes an issue to pin dependencies; “I never knew what was in progress” becomes a commitment to weekly planning. A retrospective with no follow-ups is a gripe session; one that ends with three issues filed is how a team gets better.
 
-## 32.10 Stakes and politics
+## 32.10 Contributing to someone else’s project
+
+Everything so far assumes a team you know. An open-source project is different. The maintainers have never heard of you, they may be one or two people working on it in their spare time, and a pull request from a stranger is extra work for them before it’s a gift. So if your first contribution gets a slow or short reply, even a good contribution, it probably isn’t about you. What maintainers want is a change that’s easy to say yes to, and most of what they expect follows from that.
+
+**Read the house rules first.** Most projects keep them in `CONTRIBUTING.md` and a code of conduct, the files from “A minimum set of files” above, seen from the other side: how to set up the project, how branches and pull requests work, which checks must pass, and how people are expected to treat each other. This book’s own [`CONTRIBUTING.md`](https://github.com/cuinfoscience/INFO-Missing-Manual/blob/main/CONTRIBUTING.md) is a short, real example.
+
+**Search before you open anything.** Your bug may already be reported, or your idea already discussed and turned down, so search the open *and* closed issues. Adding what you know to an existing issue helps more than filing a duplicate. Many projects mark easy starting points with a [`good first issue` label](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels).
+
+**Ask before a big change.** A typo fix or a broken link can go straight to a pull request. For a new feature or a rewrite, open an issue first and ask whether the maintainers want it, and comment on an issue before you start on it, so two people don’t do the same work. Weeks spent on something that doesn’t fit the project’s plans is a painful way for a first contribution to end.
+
+**Keep it small, and make it pass.** Everything in “Making your changes easy to review” applies twice over: one purpose per pull request, a description that says how to test it, and green automated checks before you ask anyone to look.
+
+**Respond, and be patient.** Answer review comments the way “Keep threads tidy, and close every loop” describes, and push fixes to the same branch. If a week goes by with no reply, one polite comment asking whether anyone has had a chance to look is fine; a daily ping isn’t. And if the maintainers decide not to take your change, it’s their call: they’re the ones who will look after it long after you’ve moved on.
+
+GitHub’s Open Source Guides cover all of this in [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/), including how to tell whether a project is active enough to be worth your time.
+
+## 32.11 Stakes and politics
 
 In 2017, Josh Terrell and colleagues published a [large study of pull requests on GitHub](https://doi.org/10.7717/peerj-cs.111) that compared how often contributions from women and from men were accepted. Overall, women’s pull requests were accepted more often than men’s. But among outsiders to a project whose gender a reviewer could identify, men’s were accepted more often.
 
@@ -376,7 +392,7 @@ Review is where one person decides whether another’s work is good enough, so i
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you write a review comment, ask how it will read to someone with less context, less status, or less English fluency than you have today.
 
-## 32.11 Worked examples
+## 32.12 Worked examples
 
 These follow a three-person team cleaning and analyzing a course survey, the same project as the worked examples in [sec-git-github](#sec-git-github).
 
@@ -479,7 +495,7 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
 
 **Open an issue for anything you found but didn’t fix,** such as “the Qualtrics export includes preview responses; should we filter those?”, and link it from the summary. [Figure fig-github-pr-review-comment](#fig-github-pr-review-comment) shows the same habit at the scale of one comment: the reply says where the fix went, and the thread is resolved.
 
-## 32.12 Templates
+## 32.13 Templates
 
 ### Template A: PR checklist
 
@@ -517,7 +533,7 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
     * Style/testing expectations
     * Where to ask questions
 
-## 32.13 Exercises
+## 32.14 Exercises
 
 1.  Write a README for a small class project, then hand it to a classmate and watch (silently) while they try to run the project from it. Fix every place they got stuck.
 
@@ -529,7 +545,7 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
 
 5.  Close an issue with a summary of what changed, what remains, and how to reproduce the result.
 
-## 32.14 One-page checklist
+## 32.15 One-page checklist
 
 - Work is tracked in issues and pull requests, not only in chat.
 
@@ -543,7 +559,7 @@ now logs how many rows each rule drops (#15). Dashboard rerun:
 
 - After merge, issues are closed with a clear summary and links.
 
-## 32.15 Quick reference: collaboration norms
+## 32.16 Quick reference: collaboration norms
 
 - Prefer artifacts over memory.
 

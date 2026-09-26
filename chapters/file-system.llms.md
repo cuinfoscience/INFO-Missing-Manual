@@ -278,6 +278,8 @@ University storage is generous while you’re enrolled, and it goes away soon af
 
 > **NOTE:**
 >
+> These are one school’s answers; at another school, use the list as a template and fill in your own. Your IT office’s pages (search your school’s name with “OneDrive”, “Google storage”, or “alumni accounts”) should tell you which cloud storage comes with your account and how much, how long you keep your files and email after you graduate, whether there’s a VPN for off-campus access, and whether your courses run a JupyterHub.
+>
 > - **OneDrive** comes with every current student account: 5 TB, with files up to 250 GB. OIT notes the quota may change as Microsoft moves to pooled storage. ([OIT: OneDrive](https://oit.colorado.edu/services/messaging-collaboration/microsoft-365/applications/onedrive))
 > - **Google Drive** on your CU account is limited to 5 GB, and OIT points you to OneDrive for large files. ([OIT: Google storage limits](https://oit.colorado.edu/services/messaging-collaboration/google-workspace/google-storage-limitations))
 > - **After graduation,** you have “approximately 90 days after your degree conferral date” to save files from your CU Google and Microsoft accounts. After that you lose access and the files are deleted, and OIT can’t move them for you. Your CU email lasts one year after your degree posts. ([OIT: alumni FAQ](https://oit.colorado.edu/accounts/alumni/faq))

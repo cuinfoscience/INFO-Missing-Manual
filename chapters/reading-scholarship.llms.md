@@ -80,7 +80,7 @@ Sooner or later you’ll click a promising title and land on a publisher’s pag
 
 **Start with your library.** Your university pays for subscriptions so you don’t have to, though access often works only on the campus network or after signing in through the library. Search from the library’s website, or use Google Scholar, which shows library links (such as “Find it@” plus your school’s name) beside results your library subscribes to; [its help page](https://scholar.google.com/intl/en/scholar/help.html) says what to do if yours don’t appear.
 
-**Look for a free version.** Many papers also exist as a preprint on arXiv or a similar server, in the authors’ university repository, or on their own website. In Google Scholar, click “All versions” under a result and look for a \[PDF\] link. The free [Unpaywall](https://unpaywall.org/) browser extension does that search for you and flags a legal [open-access](../chapters/appendix-glossary.llms.md#term-open-access) copy when it finds one.
+**Look for a free version.** Many papers also exist as a preprint on arXiv or a similar server, in the authors’ [university repository](../chapters/appendix-glossary.llms.md#term-repository), or on their own website. In Google Scholar, click “All versions” under a result and look for a \[PDF\] link. The free [Unpaywall](https://unpaywall.org/) browser extension does that search for you and flags a legal [open-access](../chapters/appendix-glossary.llms.md#term-open-access) copy when it finds one.
 
 **Ask.** Email the author; many researchers will happily send a copy. For a book chapter or an article your library lacks, [interlibrary loan](https://en.wikipedia.org/wiki/Interlibrary_loan) can usually get a scan from another library, often at no charge to students.
 
@@ -97,6 +97,8 @@ You found a paper that says exactly what you hoped, and now you have to decide w
 **Is it still standing?** Papers are sometimes [retracted](https://en.wikipedia.org/wiki/Retraction_in_academic_publishing) for serious errors or misconduct, and the PDF you downloaded doesn’t know. Look it up in the [Retraction Watch database](https://retractiondatabase.org/), or let Zotero do it: it [checks your library against that database](https://www.zotero.org/blog/retracted-item-notification/) and warns you about retracted items.
 
 **What do later papers say?** Google Scholar’s “Cited by” link lists the papers that cite this one. A big number means the paper is widely discussed, not that it’s right, so skim a few recent citing papers to see whether they build on it or push back.
+
+**How did they measure it?** The questions so far judge the paper from the outside; this one looks inside. Find the two or three key variables (usually the outcome and whatever is supposed to explain it) and, for each one, how the authors turned the concept into something they could count, the operationalization from “Reading across disciplines” above. Then ask whether that measure really captures the concept, which methodologists call [construct validity](https://en.wikipedia.org/wiki/Construct_validity). A study of “political engagement” that counts retweets of politicians, or of “learning” that counts minutes logged into a course site, may be measuring something narrower than its title promises, or something else entirely. The methods section says what was measured, and the limitations section is often where the authors admit how far the measure falls short. A paper can be peer reviewed, widely cited, and never retracted, and still rest on a number that doesn’t mean what the abstract says it means.
 
 ## 25.7 Note-taking systems
 
@@ -208,11 +210,11 @@ A reading-note template you can paste at the top of every new note:
 
 ## Claim
 
-(What does the paper argue?)
+(What does the paper argue? Note the page: p. 14.)
 
 ## Evidence
 
-(How is the claim supported? Methods, data, key results.)
+(How is the claim supported? Methods, data, key results, each with its page.)
 
 ## Critique / gap
 
@@ -226,8 +228,12 @@ A reading-note template you can paste at the top of every new note:
 
 ## Quotes worth keeping
 
-> ...
+(Copied word for word, always in quotation marks, with the page.)
+
+> "..." (p. 14)
 ```
+
+Two habits in that template will save you later. **Note the page for every quote and claim** (`p. 14`, or a section name for a web article without page numbers), so you can cite it without hunting and check it against the original. And **anything you copy from the source keeps its quotation marks in your notes, even half a sentence.** Months from now, when you’re drafting from these notes, an unmarked line looks exactly like something you wrote, and that’s a common way accidental [plagiarism](https://en.wikipedia.org/wiki/Plagiarism) happens: not a decision to cheat, just a note that forgot where its words came from. When you paraphrase, write it in your own words from the start, and note the page anyway.
 
 A literature-map concept-matrix template (paste into a new Markdown file and edit):
 
@@ -253,7 +259,8 @@ A literature-map concept-matrix template (paste into a new Markdown file and edi
 - Did you read the abstract, introduction, and conclusions before the body?
 - Did you look at every figure and read every caption?
 - Did you write a one-sentence summary in your own words?
-- Did you check whether it was peer reviewed, and whether it has been retracted?
+- Does every line you copied into your notes keep its quotation marks and a page number?
+- Did you check whether it was peer reviewed, whether it has been retracted, and how it measured its key variables?
 - Did you save it to Zotero with the right tags and collection, and note its citation key?
 - For second-pass papers, did you write a structured note (claim / evidence / critique / connections)?
 - For third-pass papers, did you try to re-create the core method yourself?

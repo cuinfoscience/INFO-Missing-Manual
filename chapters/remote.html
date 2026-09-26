@@ -1064,35 +1064,52 @@ sftp&gt; bye</code></pre>
 <section id="clusters-login-node-and-compute-nodes" class="level3">
 <h3 class="anchored" data-anchor-id="clusters-login-node-and-compute-nodes">Clusters: login node and compute nodes</h3>
 <p><a href="https://en.wikipedia.org/wiki/High-performance_computing">High-performance computing</a> (HPC) clusters, the kind most research universities run, split the work between a <strong>login node</strong> and many <strong>compute nodes</strong>. You SSH into the login node, a modest machine shared by everyone logged in, meant for editing files and submitting jobs. The heavy work runs on compute nodes, handed out by a <strong>scheduler</strong>; <a href="https://en.wikipedia.org/wiki/Slurm_Workload_Manager">Slurm</a> is the most common, and you may also meet PBS, LSF, or SGE.</p>
-<p>The rule that matters most: <strong>don’t run heavy work on the login node.</strong> One person’s big pandas job there slows everyone to a crawl, and some clusters kill such processes automatically. A typical Slurm workflow:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SSH into the login node</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@cluster.cs.example.edu</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a small submission script</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> run_analysis.sbatch <span class="op">&lt;&lt;'EOF'</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=sales-analysis</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=16G</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=02:00:00</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=logs/%x-%j.out</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">module load python/3.11</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">source ~/projects/sales/.venv/bin/activate</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">cd ~/projects/sales</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">python scripts/analyze.py</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Slurm won't create the log folder for you</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit the job</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> run_analysis.sbatch</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># → Submitted batch job 12345</span></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Check on it later (squeue --me works too)</span></span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> agandler</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>#SBATCH</code> lines ask for resources (8 cores, 16 GB of memory, at most two hours); the rest is an ordinary shell script that runs on whichever compute node Slurm assigns. In the log name, <code>%x</code> becomes the job name and <code>%j</code> the job number. The job starts when resources free up, in seconds or hours. The <code>mkdir -p logs</code> line prevents a baffling failure: if the folder named in <code>--output</code> doesn’t exist, the job can fail without leaving any output to explain why. Slurm’s <a href="https://slurm.schedmd.com/quickstart.html">quick start guide</a> explains the commands, and your own cluster’s documentation lists the local partitions, accounts, and software modules; read it before your first submission.</p>
+<p>The rule that matters most: <strong>don’t run heavy work on the login node.</strong> One person’s big pandas job there slows everyone to a crawl, and some clusters kill such processes automatically.</p>
+<p>Before your first job, you need a Python environment on the cluster, and this is where many first jobs fail. It’s tempting to <code>rsync</code> your laptop’s <code>.venv</code> up with the project. It won’t work. A virtual environment (<a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>) isn’t a self-contained copy of Python: it points, by full path, at the Python that built it, and on your laptop that path doesn’t exist on the cluster. The compiled parts of packages such as numpy and pandas are built for one operating system and one Python version (their file names even say so, <code>...cpython-312-darwin.so</code> on a Mac and <code>...cpython-312-x86_64-linux-gnu.so</code> on Linux), and a venv made on Windows keeps its scripts in <code>Scripts\</code>, so there’s no <code>bin/activate</code> to source at all. Python’s <a href="https://docs.python.org/3/library/venv.html">own documentation</a> says a venv is not movable or copyable: you recreate it where it will run. You can see the pointer in any venv; this one was built on a Linux machine:</p>
+<pre class="text"><code>$ head -4 .venv/pyvenv.cfg
+home = /usr/bin
+include-system-site-packages = false
+version = 3.12.3
+executable = /usr/bin/python3.12</code></pre>
+<p>So build the venv on the cluster, from the Python the cluster provides. Clusters offer software as <strong>environment modules</strong>, managed by a tool such as <a href="https://lmod.readthedocs.io/en/latest/010_user.html">Lmod</a>, and <code>module load</code> puts one particular Python on your <code>PATH</code>. Module names differ from cluster to cluster, so don’t copy one from a tutorial (including this one): run <code>module avail python</code> on your cluster and pick from its list. A short install like this is usually fine on the login node, though some clusters ask you to use an interactive job; your cluster’s documentation says. Compute nodes usually see the same home and project folders as the login node, which is why a venv built there works inside a job:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On the login node, once per project</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> avail python              <span class="co"># which Pythons does this cluster offer?</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load python/3.12          <span class="co"># an example name; use one from your cluster's list</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python3                    <span class="co"># should be the module's Python, not /usr/bin/python3</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/projects/sales</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="ex">deactivate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then write the job script. A typical Slurm workflow:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SSH into the login node</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@cluster.cs.example.edu</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Write a small submission script</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> run_analysis.sbatch <span class="op">&lt;&lt;'EOF'</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=sales-analysis</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=16G</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=02:00:00</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=logs/%x-%j.out</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="st">module load python/3.12          # the same module the venv was built with</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="st">source ~/projects/sales/.venv/bin/activate</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="st">cd ~/projects/sales</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="st">python scripts/analyze.py</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Slurm won't create the log folder for you</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> logs</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit the job</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> run_analysis.sbatch</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># → Submitted batch job 12345</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Check on it later (squeue --me works too)</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> agandler</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>#SBATCH</code> lines ask for resources (8 cores, 16 GB of memory, at most two hours); the rest is an ordinary shell script that runs on whichever compute node Slurm assigns. In the log name, <code>%x</code> becomes the job name and <code>%j</code> the job number. The job starts when resources free up, in seconds or hours. The <code>mkdir -p logs</code> line prevents a baffling failure: if the folder named in <code>--output</code> doesn’t exist, the job can fail without leaving any output to explain why. The <code>module load</code> line comes before <code>source</code> for a reason. By <a href="https://slurm.schedmd.com/sbatch.html">default</a>, <code>sbatch</code> hands the job a copy of your login session’s environment, so a job without that line may work today, because you happened to have the module loaded when you submitted, and fail next week when you didn’t. The venv’s <code>python</code> is a link to the module’s Python, which may not even start without the settings <code>module load</code> makes. Load the same module, by the same name, in every job script that uses the venv. Slurm’s <a href="https://slurm.schedmd.com/quickstart.html">quick start guide</a> explains the commands, and your own cluster’s documentation lists the local partitions, accounts, and software modules; read it before your first submission.</p>
 </section>
 <section id="working-in-your-editor" class="level3">
 <h3 class="anchored" data-anchor-id="working-in-your-editor">Working in your editor</h3>
@@ -1109,13 +1126,13 @@ Remote: file tree, terminal, Python runtime, data files</code></pre>
 <section id="remote-jupyter-notebooks" class="level3">
 <h3 class="anchored" data-anchor-id="remote-jupyter-notebooks">Remote Jupyter notebooks</h3>
 <p>Using Jupyter on a server from your laptop’s browser is common enough to get its own section, partly because the naive way is dangerously insecure. The safe way: start Jupyter on the server listening only on localhost, open an SSH tunnel, and browse through the tunnel.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On the server, inside tmux so it survives a disconnect</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab <span class="at">--no-browser</span> <span class="at">--ip</span><span class="op">=</span>127.0.0.1 <span class="at">--port</span><span class="op">=</span>8888</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># On your laptop, in a second terminal</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-N</span> <span class="at">-L</span> 8888:localhost:8888 agandler@server.cs.example.edu</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Then open the URL Jupyter printed, which includes ?token=...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On the server, inside tmux so it survives a disconnect</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab <span class="at">--no-browser</span> <span class="at">--ip</span><span class="op">=</span>127.0.0.1 <span class="at">--port</span><span class="op">=</span>8888</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># On your laptop, in a second terminal</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-N</span> <span class="at">-L</span> 8888:localhost:8888 agandler@server.cs.example.edu</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Then open the URL Jupyter printed, which includes ?token=...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>--ip=127.0.0.1</code> is the setting that keeps you safe. <a href="https://jupyter-server.readthedocs.io/en/latest/operators/security.html">Access to Jupyter means running arbitrary code</a> as you, so a Jupyter listening on <code>0.0.0.0</code> is reachable by anyone on the network, and if its token leaks or has been turned off, they have a shell as you. The token in the URL is the password: keep token URLs out of chats and screenshots.</p>
 <p>On a shared server, someone else may already be using port 8888. Jupyter then says <code>The port 8888 is already in use, trying another port.</code> and prints a URL with <code>8889</code>. Match your tunnel to the port in the URL, or your browser will reach someone else’s server and ask for a token you don’t have. The worked example below walks through a full session.</p>
 <p>If your institution runs <a href="https://jupyterhub.readthedocs.io/en/stable/">JupyterHub</a> or a similar service, use that; it handles all of this for you. Hosted platforms such as Google Colab, Kaggle, and GitHub Codespaces skip the server entirely (<a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>), and the <a href="https://jupyter.org/documentation">Jupyter documentation</a> covers the rest.</p>
@@ -1152,13 +1169,13 @@ Alerts:         50% → email
 <section id="key-hygiene" class="level3">
 <h3 class="anchored" data-anchor-id="key-hygiene">Key hygiene</h3>
 <p>Your private SSH key is the most sensitive file on your laptop, so treat it that way. Give it a <strong>passphrase</strong>. Keep it in <code>~/.ssh/</code> and nowhere that syncs or gets shared: not Dropbox, not a GitHub repository (even a private one), not a zip you email yourself. And keep its permissions tight, which <code>ssh-keygen</code> does for you and copying files around can undo:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: only you should be able to read the private key</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> ~/.ssh/id_ed25519</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -rw-------  ... id_ed25519   ← correct (600)</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix it if not</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 ~/.ssh/id_ed25519</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 644 ~/.ssh/id_ed25519.pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: only you should be able to read the private key</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> ~/.ssh/id_ed25519</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -rw-------  ... id_ed25519   ← correct (600)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix it if not</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 ~/.ssh/id_ed25519</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 644 ~/.ssh/id_ed25519.pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If the permissions are too loose, SSH makes the problem very visible: it prints <code>WARNING: UNPROTECTED PRIVATE KEY FILE!</code>, then <code>Permissions 0644 for '/Users/you/.ssh/id_ed25519' are too open.</code> and <code>This private key will be ignored.</code> The <code>chmod 600</code> above is the whole fix.</p>
 <p>Avoid key sprawl, too: one key per computer for your personal work, and a separate key only for a real reason (a service demands its own, or an employer hands you one). When you retire a computer, remove its public key from the <code>authorized_keys</code> files it was installed in.</p>
 <p>If a private key may have leaked (a lost laptop, a key committed to a repository), <strong>rotate it right away</strong>: make a new pair, install the new public key everywhere the old one worked, remove the old public key from those places, and delete the old private key.</p>
@@ -1166,15 +1183,15 @@ Alerts:         50% → email
 <section id="least-privilege" class="level3">
 <h3 class="anchored" data-anchor-id="least-privilege">Least privilege</h3>
 <p>Most machines have an all-powerful account (<code>root</code> on Linux) and a way for trusted users to act as it briefly (<code>sudo</code>). The <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege">principle of least privilege</a> says: <strong>do normal work as an ordinary user and elevate only for the specific commands that need it,</strong> for the same reason you shouldn’t browse the web from a Windows administrator account. An ordinary user can’t wipe out system files by accident or edit other people’s files, and most of the time that’s exactly the protection you want.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal work: run as yourself, with packages in a virtual environment</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> analyze.py</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install some-package    <span class="co"># inside an activated .venv</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Elevate only for the specific command that needs it</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install postgresql</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># NOT this:</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-i</span>        <span class="co"># opening a root shell and living in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal work: run as yourself, with packages in a virtual environment</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> analyze.py</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install some-package    <span class="co"># inside an activated .venv</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Elevate only for the specific command that needs it</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install postgresql</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># NOT this:</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-i</span>        <span class="co"># opening a root shell and living in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>(On recent Ubuntu, <code>pip install --user</code> outside a virtual environment is refused with an <code>externally-managed-environment</code> error, which is one more reason to keep a <code>.venv</code> per project; see <a href="virtual-environments.html" class="quarto-xref"><span>Chapter 15</span></a>.)</p>
 <p>The same goes for data: if a project needs one table, request read access to that table, not admin rights to the database, and don’t copy sensitive data anywhere with weaker access controls than where it came from. <a href="secrets.html" class="quarto-xref"><span>Chapter 34</span></a> covers the credentials that grant this access.</p>
 </section>
@@ -1193,16 +1210,16 @@ Bad:   SSH open to 0.0.0.0/0 (the whole internet)
 <section id="keep-a-session-log" class="level3">
 <h3 class="anchored" data-anchor-id="keep-a-session-log">Keep a session log</h3>
 <p>A tiny plain-text log per server or project takes a minute per session and pays for itself the first time you need to remember what you did last Tuesday:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ~/notes/server-log.md</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-08 — cluster.cs.example.edu</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Logged in to check on sales-analysis job</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Job 12345 finished successfully; moved outputs to reports/2026-04-08/</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Noticed free space on /scratch is at 92%; cleaned up old checkpoints</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-10 — cluster.cs.example.edu</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Submitted new batch job with updated parameters</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Updated run_analysis.sbatch (committed to git)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># ~/notes/server-log.md</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-08 — cluster.cs.example.edu</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Logged in to check on sales-analysis job</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Job 12345 finished successfully; moved outputs to reports/2026-04-08/</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Noticed free space on /scratch is at 92%; cleaned up old checkpoints</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2026-04-10 — cluster.cs.example.edu</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Submitted new batch job with updated parameters</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Updated run_analysis.sbatch (committed to git)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The bigger habit is <strong>version control</strong> (<a href="version-control.html" class="quarto-xref"><span>Chapter 31</span></a>): commit every change to a script on the server, and the code behind every result you keep. “Which version of the code made this output?” should always have an answer, and Git is by far the easiest way to get one after the fact.</p>
 </section>
 </section>
@@ -1215,15 +1232,15 @@ Bad:   SSH open to 0.0.0.0/0 (the whole internet)
 <p><strong>Is your internet working?</strong> Load a web page. If that fails, the problem is your Wi-Fi, not the server.</p>
 <p><strong>Is the VPN up, if you need one?</strong> A dropped VPN is the most common reason SSH “suddenly stopped working.”</p>
 <p><strong>Does the name resolve?</strong> <code>ssh: Could not resolve hostname server.cs.example.edu: Name or service not known</code> (the wording after the last colon varies by system) means the name lookup (DNS) failed: a typo, or an internal name that only resolves on the campus network, which points back to the VPN. In <code>ssh -v</code> output, a line like <code>debug1: Connecting to server.cs.example.edu [198.51.100.17] port 22.</code> means the name resolved.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Can you reach the port?</strong> A resolved name still doesn’t mean a firewall will let you through. On macOS and Linux, <code>nc</code> tests the port directly (<code>-w 5</code> gives up after five seconds):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nc</span> <span class="at">-vz</span> <span class="at">-w</span> 5 server.cs.example.edu 22</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "... succeeded!"            → the port is reachable</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "... Connection refused"    → the machine is there, nothing listening on that port</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># no answer, then a timeout   → a firewall or the network is dropping your packets</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nc</span> <span class="at">-vz</span> <span class="at">-w</span> 5 server.cs.example.edu 22</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "... succeeded!"            → the port is reachable</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "... Connection refused"    → the machine is there, nothing listening on that port</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># no answer, then a timeout   → a firewall or the network is dropping your packets</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>(You may see advice to <code>ping</code> the server first. Some servers and firewalls block ping on purpose, so a failed ping doesn’t prove much; testing the SSH port does.)</p>
 <p><strong>Right username, right key?</strong> Your username on the server is usually not your laptop’s, and if you have several keys, SSH may be offering the wrong one. <code>-i</code> forces a specific key, and <code>-v</code> shows every key SSH tries:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/id_ed25519 <span class="at">-v</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/id_ed25519 <span class="at">-v</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="host-key-warnings-stop-then-verify" class="level3">
 <h3 class="anchored" data-anchor-id="host-key-warnings-stop-then-verify">Host key warnings: stop, then verify</h3>
@@ -1235,10 +1252,10 @@ IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
 Someone could be eavesdropping on you right now (man-in-the-middle attack)!
 It is also possible that a host key has just been changed.</code></pre>
 <p>The server showed a different key from the one SSH saved in <code>known_hosts</code>, and SSH refuses to continue. Usually something ordinary happened: the server was rebuilt or had its keys replaced. Occasionally someone really is impersonating it. You can’t tell which from your end, so don’t clear the warning just because it’s in your way. <strong>Check through a channel you trust</strong> (an announcement from your instructor, an email from the admins, your cluster’s status page), and once you’ve confirmed the change was expected, remove the old entry and reconnect:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the saved key for that host</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-R</span> server.cs.example.edu</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconnect; SSH will ask you to accept the new key</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the saved key for that host</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-R</span> server.cs.example.edu</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconnect; SSH will ask you to accept the new key</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@server.cs.example.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use <code>ssh-keygen -R</code> rather than editing <code>known_hosts</code> by hand: on many Linux systems the hostnames in that file are hashed, so you can’t find the line by reading it. If you can’t confirm the change, don’t connect; missing a day of work beats typing your password into someone else’s server.</p>
 </section>
 <section id="connections-that-keep-dropping" class="level3">
@@ -1255,7 +1272,7 @@ It is also possible that a host key has just been changed.</code></pre>
 <p><code>Permission denied (publickey)</code> (sometimes <code>(publickey,password)</code>) is the most common failure once the connection itself works, and <code>ssh -v</code> tells you which of three causes it is.</p>
 <p><strong>The wrong username.</strong> You typed your laptop username. On cloud VMs the username depends on the image; on AWS it’s <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/managing-users.html"><code>ubuntu</code> for Ubuntu, <code>ec2-user</code> for Amazon Linux, and <code>admin</code> for Debian</a>, almost never your own name.</p>
 <p><strong>The wrong key, or no key loaded.</strong> <code>ssh-add -l</code> lists what the agent has, and <code>ssh-add ~/.ssh/id_ed25519</code> adds yours. Then check what SSH offered and whether the server took it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-iE</span> <span class="st">"offering|accepts|authenticated"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> agandler@server.cs.example.edu <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-iE</span> <span class="st">"offering|accepts|authenticated"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A <code>Server accepts key</code> line followed by <code>Authenticated to ...</code> means the key worked. Only <code>Offering public key</code> lines, then <code>Permission denied</code>, mean the server doesn’t recognize any key you offered.</p>
 <p><strong>A problem on the server’s side.</strong> The public key never made it into <code>~/.ssh/authorized_keys</code>, that file or your <code>~/.ssh</code> folder is writable by other users (the SSH server then ignores it), or your account is disabled. If you have another way in (a password, a web console), fix it from there; if not, ask whoever runs the server to install your public key, and send the <code>.pub</code> file, never the private one.</p>
 </section>
@@ -1295,11 +1312,11 @@ agandler@server ~ $ exit</code></pre>
 <section id="moving-a-dataset-to-a-server-and-checking-it-arrived" class="level3">
 <h3 class="anchored" data-anchor-id="moving-a-dataset-to-a-server-and-checking-it-arrived">Moving a dataset to a server, and checking it arrived</h3>
 <p>You have a folder of raw data on your laptop and need it on the server. Start with an <code>rsync</code> dry run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzPn</span> data/raw/ agandler@server.cs.example.edu:~/projects/sales/data/raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzPn</span> data/raw/ agandler@server.cs.example.edu:~/projects/sales/data/raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Read the list. If you see <code>raw/sales.csv</code> where you expected <code>sales.csv</code>, you left the trailing slash off the source. When it looks right, run it without the <code>n</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> data/raw/ agandler@server.cs.example.edu:~/projects/sales/data/raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> data/raw/ agandler@server.cs.example.edu:~/projects/sales/data/raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If the Wi-Fi drops halfway, run the same command again: <code>rsync</code> skips what already arrived. Then confirm the data landed, with sizes (SSH runs the quoted command on the server and prints the result):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@server.cs.example.edu <span class="st">"ls -lh ~/projects/sales/data/raw/"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> agandler@server.cs.example.edu <span class="st">"ls -lh ~/projects/sales/data/raw/"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For a single file, <code>scp data/raw/sales.csv agandler@server.cs.example.edu:~/projects/sales/data/raw/</code> is just as good.</p>
 </section>
 <section id="running-remote-jupyter-through-an-ssh-tunnel" class="level3">
@@ -1326,11 +1343,11 @@ agandler@server sales $ source .venv/bin/activate
 <p><strong>Give it your public key.</strong> When the form asks about SSH keys, paste the contents of <code>~/.ssh/id_ed25519.pub</code>, <em>never</em> the private key. If the console offers to generate a key pair instead, that’s fine; download the private key immediately, store it in <code>~/.ssh/</code> with <code>chmod 600</code>, and don’t lose it.</p>
 <p><strong>Open SSH to your address only.</strong> In the firewall or security group settings, allow inbound SSH (port 22) from your <em>current</em> IP address, not <code>0.0.0.0/0</code> (many consoles have a “My IP” option), and leave every other port closed. This one choice is the difference between a quiet experiment and a server the internet’s login bots find within minutes.</p>
 <p><strong>Connect and update.</strong> Log in to the public IP the console shows, with the username for your image (<code>ubuntu</code> for Ubuntu on AWS):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/id_ed25519 ubuntu@203.0.113.42</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside: update and install your tools</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install python3-venv git tmux</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/id_ed25519 ubuntu@203.0.113.42</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside: update and install your tools</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install python3-venv git tmux</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Do your work, then shut it down properly.</strong> This is the step people forget. <em>Stopping</em> a VM pauses it: compute charges stop, but you keep paying for its disk (and, on AWS, for a public IP you’ve reserved for it). <em>Terminating</em> it (“delete” on Google Cloud and Azure) destroys it and ends the charges. Terminate a throwaway experiment; stop a machine you’ll need tomorrow. Either way, check the billing dashboard afterwards that nothing you forgot is still running. A VM left on for a month by accident is an expensive mistake, and a common one.</p>
 </section>
 </section>
@@ -1363,19 +1380,19 @@ agandler@server sales $ source .venv/bin/activate
 </section>
 <section id="quick-reference-common-ssh-commands" class="level2" data-number="13.15">
 <h2 data-number="13.15" class="anchored" data-anchor-id="quick-reference-common-ssh-commands"><span class="header-section-number">13.15</span> Quick reference: common SSH commands</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@hostname                       <span class="co"># log in</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-p</span> 2222 username@hostname               <span class="co"># non-default port</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/my_key username@hostname      <span class="co"># use a specific key</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> username@hostname                    <span class="co"># show every step (debugging)</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-N</span> <span class="at">-L</span> 8888:localhost:8888 username@hostname   <span class="co"># tunnel only, no shell</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"you@example.com"</span>  <span class="co"># make a key pair</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ssh-copy-id</span> username@hostname               <span class="co"># install your public key (macOS/Linux)</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-R</span> hostname                      <span class="co"># forget a server's saved key</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> localfile username@hostname:/remote/path/</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> localdir/ username@hostname:/remote/dir/   <span class="co"># add -n to preview</span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sftp</span> username@hostname</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new <span class="at">-s</span> work                            <span class="co"># start a session; detach with Ctrl+b, then d</span></span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> attach <span class="at">-t</span> work                         <span class="co"># reattach later</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> username@hostname                       <span class="co"># log in</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-p</span> 2222 username@hostname               <span class="co"># non-default port</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/my_key username@hostname      <span class="co"># use a specific key</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-v</span> username@hostname                    <span class="co"># show every step (debugging)</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-N</span> <span class="at">-L</span> 8888:localhost:8888 username@hostname   <span class="co"># tunnel only, no shell</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"you@example.com"</span>  <span class="co"># make a key pair</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ssh-copy-id</span> username@hostname               <span class="co"># install your public key (macOS/Linux)</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-R</span> hostname                      <span class="co"># forget a server's saved key</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> localfile username@hostname:/remote/path/</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> localdir/ username@hostname:/remote/dir/   <span class="co"># add -n to preview</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sftp</span> username@hostname</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new <span class="at">-s</span> work                            <span class="co"># start a session; detach with Ctrl+b, then d</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> attach <span class="at">-t</span> work                         <span class="co"># reattach later</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="quick-reference-vocabulary" class="level2" data-number="13.16">
 <h2 data-number="13.16" class="anchored" data-anchor-id="quick-reference-vocabulary"><span class="header-section-number">13.16</span> Quick reference: vocabulary</h2>

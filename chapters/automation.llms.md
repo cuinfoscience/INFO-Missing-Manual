@@ -292,7 +292,7 @@ When one CSV is malformed, the pandas traceback appears right after `cleaning we
 
 ### When bash stops being the right tool
 
-Bash is good glue and a poor programming language, and it’s worth noticing when you’ve crossed the line. Its arithmetic is integers only, so anything with decimals means calling out to another tool. It has no real data types, so parsing JSON, YAML, or CSV turns into fragile chains of `cut`, `awk`, and `sed`; [jq](https://jqlang.org/) is great for a quick look at JSON, but anything you’ll maintain belongs in Python. Associative arrays (bash’s dictionaries) arrived only in bash 4.0, in 2009, and the bash that ships with macOS is still the older 3.2, so a script that uses them breaks on a Mac. And length is a warning sign: [Google’s shell style guide](https://google.github.io/styleguide/shellguide.html) says a script past 100 lines, or with complicated logic, should be rewritten in a more structured language now, before it grows further.
+Bash is good glue and a poor [programming language](../chapters/appendix-glossary.llms.md#term-programming-language), and it’s worth noticing when you’ve crossed the line. Its arithmetic is integers only, so anything with decimals means calling out to another tool. It has no real data types, so parsing JSON, YAML, or CSV turns into fragile chains of `cut`, `awk`, and `sed`; [jq](https://jqlang.org/) is great for a quick look at JSON, but anything you’ll maintain belongs in Python. Associative arrays (bash’s dictionaries) arrived only in bash 4.0, in 2009, and the bash that ships with macOS is still the older 3.2, so a script that uses them breaks on a Mac. And length is a warning sign: [Google’s shell style guide](https://google.github.io/styleguide/shellguide.html) says a script past 100 lines, or with complicated logic, should be rewritten in a more structured language now, before it grows further.
 
 The pattern that works is a small bash wrapper around Python. Bash moves to the right folder, picks the right environment, and sends output to a log; Python does the data work. Every example in this chapter is built that way.
 
@@ -518,11 +518,11 @@ The lock is a folder because `mkdir` either creates it or fails, in one step, so
 
 You open a pull request, a teammate approves it, you merge, and the next morning `main` doesn’t run: the change worked on your laptop and broke something you didn’t think to test. [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) exists for that morning. It has two halves. Integrate often: small changes merged frequently, not month-long branches merged in one terrifying go. And verify automatically: every push and pull request triggers a run of your tests, linter, and other checks on a fresh machine, with the result posted where everyone can see it. A problem gets caught at the moment it’s introduced, in one small change, while the person who made it still remembers why.
 
-On GitHub, CI means GitHub Actions, which is [free for public repositories](https://docs.github.com/en/billing/concepts/product-billing/github-actions) on GitHub’s standard machines. Its [quickstart](https://docs.github.com/en/actions/get-started/quickstart) gets a first workflow running in a few minutes; the rest of this section explains what’s inside one.
+On GitHub, CI means GitHub Actions, which is [free for public repositories](https://docs.github.com/en/billing/concepts/product-billing/github-actions) on GitHub’s standard machines. Private repositories are a different story: each account gets a monthly quota of free minutes that depends on its plan (2,000 a month on GitHub Free, according to that page in September 2026), and once they’re used up, workflows stop running until the next month unless you’ve added a payment method. At three minutes a run, that’s more than 600 runs a month, and a matrix (see “Keeping CI fast”) spends it three times as fast. GitHub’s [quickstart](https://docs.github.com/en/actions/get-started/quickstart) gets a first workflow running in a few minutes; the rest of this section explains what’s inside one.
 
 ### Events, jobs, steps, and runners
 
-A workflow is a YAML file (see [sec-common-formats](#sec-common-formats)) in the folder `.github/workflows/`, and it starts by saying which [events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) should trigger it. Most projects want two, `push` and `pull_request`:
+A workflow is a [YAML](../chapters/appendix-glossary.llms.md#term-yaml) file (see [sec-common-formats](#sec-common-formats)) in the folder `.github/workflows/`, and it starts by saying which [events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) should trigger it. Most projects want two, `push` and `pull_request`:
 
 ``` yaml
 on:
@@ -633,7 +633,7 @@ strategy:
     python-version: ["3.10", "3.11", "3.12"]
 ```
 
-A library that promises to support all three versions needs that; a class project just triples its minutes, so pick the version you use. As a rule of thumb, aim for runs under five minutes: when CI takes fifteen, people push, switch to something else, and never come back to check. If it creeps up, measure which steps are slow, cache more, and move slow tests into a separate job that runs only on `main`.
+A library that promises to support all three versions needs that; a class project just triples its minutes, which in a private repository come out of that monthly quota, so pick the version you use. As a rule of thumb, aim for runs under five minutes: when CI takes fifteen, people push, switch to something else, and never come back to check. If it creeps up, measure which steps are slow, cache more, and move slow tests into a separate job that runs only on `main`.
 
 ### Keeping CI safe
 

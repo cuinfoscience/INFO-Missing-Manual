@@ -248,13 +248,13 @@ version = "0.1.0"
 dependencies = ["pandas"]
 ```
 
-Then, with your project’s virtual environment active, run this once from the project root:
+Then, with your project’s virtual environment active, run this once from the project root. Running pip as `python -m pip` [installs into whichever Python `python` is](https://pip.pypa.io/en/stable/user_guide/#running-pip), so your package can’t end up in a different Python from the one that runs your code:
 
 ``` bash
-pip install -e .
+python -m pip install -e .
 ```
 
-The `-e` stands for *editable*: instead of copying your code somewhere, pip points the environment at your `src/` folder ([pip’s guide to local installs](https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs) explains the details). From then on, `from sales.cleaning import clean_sales` works in every script, notebook, and terminal that uses that environment, from any folder, and edits to your `.py` files take effect without reinstalling. You only rerun `pip install -e .` when you change `pyproject.toml` itself, say to add a dependency. The Packaging User Guide’s [tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/) and its guide to [writing `pyproject.toml`](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) go further when you’re ready.
+The `-e` stands for *editable*: instead of copying your code somewhere, pip points the environment at your `src/` folder ([pip’s guide to local installs](https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs) explains the details). From then on, `from sales.cleaning import clean_sales` works in every script, notebook, and terminal that uses that environment, from any folder, and edits to your `.py` files take effect without reinstalling. You only rerun `python -m pip install -e .` when you change `pyproject.toml` itself, say to add a dependency. The Packaging User Guide’s [tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/) and its guide to [writing `pyproject.toml`](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) go further when you’re ready.
 
 **Patch `sys.path` by hand (a quick fix for one notebook).** At the top of a notebook in `notebooks/`, you can tell Python where to look:
 
@@ -391,7 +391,7 @@ def parse_args():
     return p.parse_args()
 ```
 
-That’s enough to give your script a real [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface). Here’s what Python 3.11 prints for `--help`:
+That’s enough to give your script a real [command-line interface](https://en.wikipedia.org/wiki/Command-line_interface). Here’s what Python 3.12 prints for `--help`:
 
 ``` text
 $ python scripts/clean.py --help
@@ -496,7 +496,7 @@ Magics like `%autoreload` and shell lines like `!ls` only mean something inside 
 
 ### Keeping a notebook and a script in sync with Jupytext
 
-Sometimes you want both: a notebook to work in and a plain-text file to review. [Jupytext](https://jupytext.org/using/paired-notebooks/) pairs a notebook with a `.py` file in “percent” format, where special comments mark each cell. Install it (`pip install jupytext`) and pair a notebook once:
+Sometimes you want both: a notebook to work in and a plain-text file to review. [Jupytext](https://jupytext.org/using/paired-notebooks/) pairs a notebook with a `.py` file in “percent” format, where special comments mark each cell. Install it (`python -m pip install jupytext`) and pair a notebook once:
 
 ``` bash
 jupytext --set-formats ipynb,py:percent notebooks/analysis.ipynb
@@ -572,7 +572,7 @@ Any project someone else might run, including future you, deserves a “How to r
    ```bash
    python -m venv .venv
    source .venv/bin/activate        # on Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
+   python -m pip install -r requirements.txt
    ```
 
 2. Place the raw data at `data/raw/sales.csv` (download link: ...).
@@ -595,7 +595,7 @@ Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook.
 Expected outputs: `data/processed/sales_clean.csv` (~5 MB).
 ````
 
-(If your project uses the `src/sales` package from this chapter, add `pip install -e .` to step 1.) The exact commands save everyone from “I just have to type that thing I remember from last month.” The expected runtime and output size are a sanity check: if cleaning takes five minutes instead of thirty seconds, or the file is 50 KB instead of 5 MB, something’s wrong. A good “How to run” section gets people unblocked without having to ask you a single question.
+(If your project uses the `src/sales` package from this chapter, add `python -m pip install -e .` to step 1.) The exact commands save everyone from “I just have to type that thing I remember from last month.” The expected runtime and output size are a sanity check: if cleaning takes five minutes instead of thirty seconds, or the file is 50 KB instead of 5 MB, something’s wrong. A good “How to run” section gets people unblocked without having to ask you a single question.
 
 ### Keep notebooks friendly to version control
 
@@ -627,7 +627,7 @@ def clean_sales(df: pd.DataFrame) -> pd.DataFrame:
     return df.dropna(subset=["customer_id", "date"])
 ```
 
-With the package installed (`pip install -e .`, once), replace the three cells in the notebook with one import and one call:
+With the package installed (`python -m pip install -e .`, once), replace the three cells in the notebook with one import and one call:
 
 ``` python
 from sales.cleaning import clean_sales
@@ -689,7 +689,7 @@ print("python:", sys.executable)
 print("cwd:   ", os.getcwd())
 ```
 
-If `python` isn’t the interpreter inside your project’s `.venv`, the notebook is running a different kernel, one where your package was never installed. Switch kernels, or register your environment as a kernel (see [sec-jupyter](#sec-jupyter)). If the interpreter is right, check how the terminal import succeeded: if you never ran `pip install -e .`, it only worked because the terminal was sitting in `src/`, and the notebook’s folder is `notebooks/`. Install the package into that environment and the import works everywhere.
+If `python` isn’t the interpreter inside your project’s `.venv`, the notebook is running a different kernel, one where your package was never installed. Switch kernels, or register your environment as a kernel (see [sec-jupyter](#sec-jupyter)). If the interpreter is right, check how the terminal import succeeded: if you never ran `python -m pip install -e .`, it only worked because the terminal was sitting in `src/`, and the notebook’s folder is `notebooks/`. Install the package into that environment and the import works everywhere.
 
 ### Cleaning up a converted notebook
 
@@ -775,7 +775,7 @@ dependencies = ["pandas"]
 
 2.  Refactor the script so the summary logic is a function and the rest is only an entry point, with an `if __name__ == "__main__":` guard.
 
-3.  Move that function into a `src/` package, install it with `pip install -e .`, and use it from a notebook on two different datasets.
+3.  Move that function into a `src/` package, install it with `python -m pip install -e .`, and use it from a notebook on two different datasets.
 
 4.  Add a command-line interface with `--input` and `--output` flags, and paste its `--help` output into your README.
 
@@ -787,7 +787,7 @@ dependencies = ["pandas"]
 
 - My script has a `main()` and an `if __name__ == "__main__":` guard, so importing it doesn’t run the analysis.
 - Reusable logic lives in functions in a `src/` package, not copied between notebook cells.
-- My package is installed in the project environment with `pip install -e .`, so imports work from any folder.
+- My package is installed in the project environment with `python -m pip install -e .`, so imports work from any folder.
 - Paths are built from one anchor (`PROJECT_ROOT`), not the working directory, and never hardcoded to my laptop.
 - Notebooks that import my code start with `%load_ext autoreload` and `%autoreload 2` and a smoke-test cell.
 - My script takes its inputs from the command line, checks them early, and prints the settings it ran with.
@@ -801,7 +801,7 @@ dependencies = ["pandas"]
 |----|----|
 | Run a script | `python scripts/run_cleaning.py --input ... --output ...` |
 | See a script’s options | `python scripts/run_cleaning.py --help` |
-| Make `src/` importable everywhere | `pip install -e .` (once, from the project root) |
+| Make `src/` importable everywhere | `python -m pip install -e .` (once, from the project root) |
 | Reload edited modules in a notebook | `%load_ext autoreload` then `%autoreload 2` |
 | Find where an import comes from | `print(module.__file__)` |
 | Notebook to script | `jupyter nbconvert --to script nb.ipynb --output-dir scripts/` |

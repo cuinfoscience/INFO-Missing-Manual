@@ -2,7 +2,7 @@
 
 > **TIP:**
 >
-> **Prerequisites (read first if unfamiliar):** [sec-llm-internals](#sec-llm-internals).
+> **Prerequisites (read first if unfamiliar):** [sec-llm-internals](#sec-llm-internals), [sec-pandas-basics](#sec-pandas-basics), [sec-tabular-data](#sec-tabular-data).
 >
 > **See also:** [sec-ai-agents](#sec-ai-agents), [sec-debugging](#sec-debugging).
 
@@ -72,11 +72,11 @@ For the formal version, see the U.S. National Institute of Standards and Technol
 
 ## 38.4 Build a small evaluation set
 
-An **evaluation set** is a collection of inputs where you already know what a good output looks like. Everything else in this chapter depends on it, and it’s less work than it sounds: twenty examples that probe where the system might stumble tell you more than fifty easy ones that all pass.
+An **evaluation set** is a collection of inputs where you already know what a good output looks like. Everything else in this chapter depends on it, and it’s less work than it sounds. The catch is that people ask one set to do two different jobs, and no set can do both.
 
-**Start from real inputs,** with names and personal details removed. Toy examples you write yourself are cleaner and easier than the real thing. If inputs come in kinds (short and long, one language and another), sample from each on purpose, which is [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling), so rare kinds aren’t left out.
+**To say how accurate the tool is, you need a random sample of real inputs,** with names and personal details removed. Draw them at random, so every comment had the same chance of being picked; that’s what lets the model’s score on them stand in for its score on everything else. Toy examples you write yourself won’t do, since they’re cleaner and easier than the real thing. If inputs come in kinds (short and long, one language and another), you can draw at random within each kind, which is [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling), so rare kinds aren’t left out; if you take extra of a rare kind, weight each kind back to its real share when you report an overall number.
 
-**Add the edges,** the inputs you suspect will be hard:
+**To catch a change that breaks something, you need a hard-case suite.** This one you pick by hand, and twenty items that probe where the system might stumble tell you more than fifty easy ones that all pass. Start with the edges, the inputs you suspect will be hard:
 
 - very short inputs, and very long ones near the context limit
 - unusual formatting: emoji, accented characters, code, tables
@@ -84,9 +84,13 @@ An **evaluation set** is a collection of inputs where you already know what a go
 - ambiguous inputs that could honestly be read two ways
 - inputs outside what the system is meant to handle
 
-**Add every failure you find,** so the same mistake can’t come back unnoticed. **And keep the set like raw data** (see [sec-tabular-data](#sec-tabular-data)): save it as a CSV, commit it, note where each example came from, and never quietly edit an answer to make a new prompt look better.
+Then **add every failure you find,** so the same mistake can’t come back unnoticed. Rerun the suite after every change as a pass-or-fail check, but never report its score as the tool’s accuracy. You chose those items *because* they’re hard, and you chose how many of each kind to include, so the score reflects your choices, not your data: a suite that’s half ambiguous comments scores far below what the tool does on ordinary ones, and a suite of old failures you’ve since fixed scores far above it.
 
-Here’s the set this chapter uses: sixteen invented course-survey comments. Two people labeled each one independently (`rater_a`, `rater_b`), then talked through their disagreements and settled a final answer (`gold`). The `model` column is simulated for this chapter, not a real model’s output. The `english` column records whether the writer said English was their first language or an additional one, which you’ll need for auditing.
+**Hold part of the random sample back.** While you tune a prompt or a rubric, you look at the items it gets wrong and reword until they come out right. Each fix fits the prompt a little more closely to *those* items, so its score on them overstates how it will do on new ones, the same way a practice exam you’ve already seen the answers to overstates what you know. So split the random sample before you start: a development part you look at and tune on as much as you like, and a test part you score once, at the end, for the number you report. Machine learning calls these [training, validation, and test sets](https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets); the idea is the same with a prompt in place of a model. If you go back and tune after seeing the test score, the test part has become development data, and an honest number needs fresh items.
+
+**And keep every set like raw data** (see [sec-tabular-data](#sec-tabular-data)): save it as a CSV, commit it, note where each example came from, and never quietly edit an answer to make a new prompt look better.
+
+Here’s the set this chapter uses: sixteen invented course-survey comments. Imagine they were drawn at random from the 2,000 in the survey (a real project would hold some back, but sixteen is too few to split). Two people labeled each one independently (`rater_a`, `rater_b`), then talked through their disagreements and settled a final answer (`gold`). The `model` column is simulated for this chapter, not a real model’s output. The `english` column records whether the writer said English was their first language or an additional one, which you’ll need for auditing.
 
 ``` text
 id,english,comment,rater_a,rater_b,gold,model
@@ -189,6 +193,10 @@ Kappa by hand:    0.72
 
 Is 0.72 good? You’ll often see the Landis and Koch (1977) scale, which calls 0.61 to 0.80 “substantial,” but the [Wikipedia article on Cohen’s kappa](https://en.wikipedia.org/wiki/Cohen%27s_kappa) notes those cutoffs rest on opinion, not evidence. More useful is reading the disagreements. All three (comments 2, 8, and 12) involve “mixed,” so the rubric’s definition of mixed needs work. Every disagreement is a small bug report about your rubric: fix the wording, relabel, and measure again.
 
+Cohen’s kappa handles exactly two raters who both labeled every item. With three or more coders, or some items one coder skipped, content analysts use [Krippendorff’s alpha](https://en.wikipedia.org/wiki/Krippendorff%27s_alpha), which allows any number of coders, missing codes, and ordered scales; the [`krippendorff`](https://pypi.org/project/krippendorff/) package computes it, and for this chapter’s two raters it comes out at 0.73, next to kappa’s 0.72.
+
+One thing neither number can tell you is whether the labels are *right*. Kappa and alpha measure [reliability](https://en.wikipedia.org/wiki/Reliability_(statistics)#Difference_from_validity) (do the coders give the same answer?), not [validity](https://en.wikipedia.org/wiki/Validity_(statistics)) (does the label capture what you mean by it?). Two coders who share a misreading of the rubric, or a coder and a model that share a blind spot, can agree perfectly and both be wrong. Agreement shows your ruler is consistent; whether it measures the right thing is for you to check against the real comments.
+
 ### Spot-check what you can’t label
 
 When a system produces far more output than you could ever label, read a sample of it, drawn from every kind of input and not only the common ones. Look at each output beside its input so you can see *why* it went wrong. A spot-check won’t give you a precise number, but it’s how you find failure modes you didn’t know to put in the set.
@@ -252,7 +260,7 @@ Negative has perfect recall and poor precision: the confusion matrix’s story i
 
 ### How sure can you be?
 
-Here’s the question almost everyone skips: if the model got 75% of *these* sixteen right, what would it get on the other 1,984? A [confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) puts a range around the number, and the easiest way to get one is the [bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)): treat your evaluation set as the population, draw thousands of same-sized sets from it with replacement, score each, and see how far the scores spread. NumPy’s [random generator](https://numpy.org/doc/stable/reference/random/index.html) does the drawing:
+Here’s the question almost everyone skips: if the model got 75% of *these* sixteen right, what would it get on the other 1,984? (It’s a fair question only because the sixteen stand in for a random sample; a hard-case suite’s score says nothing about the rest.) A [confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) puts a range around the number, and the easiest way to get one is the [bootstrap](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)): treat your evaluation set as the population, draw thousands of same-sized sets from it with replacement, score each, and see how far the scores spread. NumPy’s [random generator](https://numpy.org/doc/stable/reference/random/index.html) does the drawing:
 
 ``` python
 import numpy as np
@@ -269,7 +277,20 @@ print(f"Accuracy {correct.mean():.2f}, 95% interval {low:.2f} to {high:.2f}")
 Accuracy 0.75, 95% interval 0.50 to 0.94
 ```
 
-Honest, and humbling: on this evidence the real accuracy could be anything from a coin flip to excellent. The fix is more examples. The same bootstrap on larger sets, each 75% correct, gives:
+Honest, and humbling: on this evidence the real accuracy could be anything from a coin flip to excellent. For a single proportion like this one there’s also a formula, the [Wilson score interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Wilson_score_interval), which behaves well even with small sets and needs no resampling. SciPy (installed along with scikit-learn) computes it with [`binomtest`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html):
+
+``` python
+from scipy.stats import binomtest
+
+ci = binomtest(k=12, n=16).proportion_ci(method="wilson")
+print(f"Wilson interval: {ci.low:.2f} to {ci.high:.2f}")
+```
+
+``` text
+Wilson interval: 0.51 to 0.90
+```
+
+It’s the same story, and it gives any score a range: “92% on 50 items” (46 right) is 0.81 to 0.97. The fix is more examples. The same bootstrap on larger sets, each 75% correct, gives:
 
 | Items in the set | 95% interval around 75% |
 |------------------|-------------------------|
@@ -278,7 +299,50 @@ Honest, and humbling: on this evidence the real accuracy could be anything from 
 | 200              | 0.69 to 0.81            |
 | 1,000            | 0.72 to 0.78            |
 
-Two hundred labeled examples turns “somewhere between a coin flip and excellent” into “about 75%, give or take six points.” Report the interval (or at least the number of examples) beside every score. And when two prompts’ intervals overlap a lot, the “better” one may just have been luckier.
+Two hundred labeled examples turns “somewhere between a coin flip and excellent” into “about 75%, give or take six points.” Report the interval (or at least the number of examples) beside every score.
+
+### Comparing two prompts on the same items
+
+Sooner or later you’ll have prompt A and prompt B and want to know which is better. The tempting move is to set their two intervals side by side and see whether they overlap. That throws away the most useful fact you have: both prompts saw the *same* items. Some comments are easy for any prompt and some are hard for any prompt, and that difference between items is much of what makes each interval wide. Compare the prompts item by item and it cancels out.
+
+Here’s a simulated prompt B that fixes three of A’s four mistakes and makes one new one. A **paired bootstrap** resamples items, not scores, so each draw keeps an item’s two results together:
+
+``` python
+# Prompt B's labels (simulated): it fixes comments 2, 10, and 14, and breaks comment 6
+df["model_b"] = df["model"]
+fixed = df["id"].isin([2, 10, 14])
+df.loc[fixed, "model_b"] = df.loc[fixed, "gold"]
+df.loc[df["id"] == 6, "model_b"] = "positive"
+
+a = df["correct"].to_numpy()
+b = (df["model_b"] == df["gold"]).to_numpy()
+rng = np.random.default_rng(42)
+diffs = []
+for _ in range(10_000):
+    rows = rng.integers(0, len(a), len(a))    # the same items for both prompts
+    diffs.append(b[rows].mean() - a[rows].mean())
+print(f"B minus A: {b.mean() - a.mean():+.3f}, 95% interval", np.percentile(diffs, [2.5, 97.5]))
+```
+
+``` text
+B minus A: +0.125, 95% interval [-0.125  0.375]
+```
+
+For right-or-wrong outcomes there’s also a classic test, [McNemar’s test](https://en.wikipedia.org/wiki/McNemar%27s_test). It looks only at the items where the prompts disagree, since the eleven both got right and the one both got wrong say nothing about which is better. If the prompts were equally good, each disagreement would be a coin flip, so the exact version is a binomial test on those items:
+
+``` python
+only_b = (b & ~a).sum()    # items B got right and A got wrong
+only_a = (a & ~b).sum()
+print(f"B alone right: {only_b}, A alone right: {only_a}")
+print(f"McNemar exact p-value: {binomtest(only_b, only_b + only_a).pvalue:.3f}")
+```
+
+``` text
+B alone right: 3, A alone right: 1
+McNemar exact p-value: 0.625
+```
+
+Both say the same thing: 87.5% against 75% looks like progress, but three wins to one is well within luck. ([statsmodels’ `mcnemar`](https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html) with `exact=True` gives the same p-value.) On a larger random sample the paired comparison can find a real difference that two overlapping intervals would hide, which is why it’s the one to report. And picking the winner is tuning too, so compare prompts on the development part and save the test part for the winner’s final score.
 
 ## 38.7 Automated checks that run on every change
 
@@ -385,7 +449,7 @@ Everything so far measures the system on inputs you expect. **Red-teaming**, nam
 - exploit a bias to get a wrong answer
 - make it reveal its system prompt or other confidential details
 
-The [OWASP Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/) is a good checklist of what attackers try. Red-teaming works best when someone other than the builder does it, since you’re too close to imagine every way a stranger might misuse your system, so trade with a classmate. If your system is an agent that takes actions, [sec-ai-agents](#sec-ai-agents) covers what to add. Every successful attack becomes a new row in your evaluation set.
+The [OWASP Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/) is a good checklist of what attackers try. Red-teaming works best when someone other than the builder does it, since you’re too close to imagine every way a stranger might misuse your system, so trade with a classmate. If your system is an agent that takes actions, [sec-ai-agents](#sec-ai-agents) covers what to add. Every successful attack becomes a new row in your hard-case suite.
 
 ## 38.9 Keep measuring after you ship
 
@@ -473,7 +537,7 @@ See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework.
 
 ### Building an evaluation suite for a summarization system
 
-You want to know whether your summarization prompt is any good, and whether a change makes it better or worse. **Collect 20 real documents** from the domain it will summarize; toy documents will mislead you. **Write a rubric** with three dimensions, say completeness, accuracy (nothing made up), and conciseness, each scored 0 to 2. **Have two people score 10 summaries independently** and compute kappa for each dimension; wherever they disagree, reword the rubric until they don’t. Those 10 settled examples are your **calibration set**. **Build an LLM judge from the rubric,** score the same 10, and compare with the human scores, checking both kappa and whether the judge runs high; refine it, or keep people on the dimensions it can’t score. Then **run the suite on all 20** to set a baseline with a bootstrap interval, and rerun it after every prompt change so you can tell whether a change helped by more than the noise.
+You want to know whether your summarization prompt is any good, and whether a change makes it better or worse. **Collect 20 real documents at random** from the domain it will summarize; toy documents will mislead you. **Split them** into 10 for development and 10 you set aside. **Write a rubric** with three dimensions, say completeness, accuracy (nothing made up), and conciseness, each scored 0 to 2. **Have two people score the 10 development summaries independently** and compute kappa for each dimension; wherever they disagree, reword the rubric until they don’t. Those 10 settled examples are your **calibration set**. **Build an LLM judge from the rubric** and tune it on the same 10. Then have the people score the other 10, which neither the rubric nor the judge has seen, and compare the judge with them there, checking both kappa and whether the judge runs high; keep people on any dimension it can’t score. Those held-out 10 give your baseline, with an interval. After that, **compare each prompt change with a paired comparison** on the development documents, and keep a hard-case suite of the documents that have tripped the system up, rerun after every change.
 
 ### Auditing a classification system for demographic disparities
 
@@ -497,10 +561,11 @@ You’ve shipped an AI feature and want to know if it’s quietly getting worse.
 
 - Decide which quality dimensions matter before you look at outputs.
 - Write a rubric with specific, answerable questions.
-- Build the evaluation set from real inputs, with edge cases and every failure you find, and version it.
-- Measure agreement between two human raters (Cohen’s kappa) before trusting gold labels.
+- Estimate accuracy from a random sample of real inputs, and hold part of it back from all tuning; keep edge cases and every failure you find in a separate hard-case suite. Version both.
+- Measure agreement between human raters (Cohen’s kappa, or Krippendorff’s alpha for more coders) before trusting gold labels, and remember that agreement isn’t correctness.
 - Report accuracy with a confusion matrix, and precision and recall for the labels that matter.
-- Put a bootstrap interval, or at least the number of examples, beside every score.
+- Put an interval (bootstrap or Wilson), or at least the number of examples, beside every score.
+- Compare two prompts or models on the same items with a paired comparison, not two separate scores.
 - Validate any automated scorer, including an LLM judge, against human scores, and check whether it runs high.
 - Rerun the evaluation after every prompt, model, or configuration change, before redeploying.
 - Log inputs, outputs, and metadata with personal details removed, and alert on falling scores, not only errors.

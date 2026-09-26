@@ -957,9 +957,9 @@ ModuleNotFoundError: No module named 'src'</code></pre>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"sales"</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span><span class="st">"pandas"</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Then, with your project’s virtual environment active, run this once from the project root:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>-e</code> stands for <em>editable</em>: instead of copying your code somewhere, pip points the environment at your <code>src/</code> folder (<a href="https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs">pip’s guide to local installs</a> explains the details). From then on, <code>from sales.cleaning import clean_sales</code> works in every script, notebook, and terminal that uses that environment, from any folder, and edits to your <code>.py</code> files take effect without reinstalling. You only rerun <code>pip install -e .</code> when you change <code>pyproject.toml</code> itself, say to add a dependency. The Packaging User Guide’s <a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">tutorial</a> and its guide to <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/">writing <code>pyproject.toml</code></a> go further when you’re ready.</p>
+<p>Then, with your project’s virtual environment active, run this once from the project root. Running pip as <code>python -m pip</code> <a href="https://pip.pypa.io/en/stable/user_guide/#running-pip">installs into whichever Python <code>python</code> is</a>, so your package can’t end up in a different Python from the one that runs your code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-e</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-e</code> stands for <em>editable</em>: instead of copying your code somewhere, pip points the environment at your <code>src/</code> folder (<a href="https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs">pip’s guide to local installs</a> explains the details). From then on, <code>from sales.cleaning import clean_sales</code> works in every script, notebook, and terminal that uses that environment, from any folder, and edits to your <code>.py</code> files take effect without reinstalling. You only rerun <code>python -m pip install -e .</code> when you change <code>pyproject.toml</code> itself, say to add a dependency. The Packaging User Guide’s <a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">tutorial</a> and its guide to <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/">writing <code>pyproject.toml</code></a> go further when you’re ready.</p>
 <p><strong>Patch <code>sys.path</code> by hand (a quick fix for one notebook).</strong> At the top of a notebook in <code>notebooks/</code>, you can tell Python where to look:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -1061,7 +1061,7 @@ OK      /Users/you/sales-project/data/raw/sales.csv</code></pre>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    p.add_argument(<span class="st">"--seed"</span>, <span class="bu">type</span><span class="op">=</span><span class="bu">int</span>, default<span class="op">=</span><span class="dv">0</span>,</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">help</span><span class="op">=</span><span class="st">"random seed for reproducibility"</span>)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p.parse_args()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That’s enough to give your script a real <a href="https://en.wikipedia.org/wiki/Command-line_interface">command-line interface</a>. Here’s what Python 3.11 prints for <code>--help</code>:</p>
+<p>That’s enough to give your script a real <a href="https://en.wikipedia.org/wiki/Command-line_interface">command-line interface</a>. Here’s what Python 3.12 prints for <code>--help</code>:</p>
 <pre class="text"><code>$ python scripts/clean.py --help
 usage: clean.py [-h] --input INPUT --output OUTPUT [--seed SEED]
 
@@ -1139,7 +1139,7 @@ NameError: name 'get_ipython' is not defined</code></pre>
 </section>
 <section id="keeping-a-notebook-and-a-script-in-sync-with-jupytext" class="level3">
 <h3 class="anchored" data-anchor-id="keeping-a-notebook-and-a-script-in-sync-with-jupytext">Keeping a notebook and a script in sync with Jupytext</h3>
-<p>Sometimes you want both: a notebook to work in and a plain-text file to review. <a href="https://jupytext.org/using/paired-notebooks/">Jupytext</a> pairs a notebook with a <code>.py</code> file in “percent” format, where special comments mark each cell. Install it (<code>pip install jupytext</code>) and pair a notebook once:</p>
+<p>Sometimes you want both: a notebook to work in and a plain-text file to review. <a href="https://jupytext.org/using/paired-notebooks/">Jupytext</a> pairs a notebook with a <code>.py</code> file in “percent” format, where special comments mark each cell. Install it (<code>python -m pip install jupytext</code>) and pair a notebook once:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jupytext</span> <span class="at">--set-formats</span> ipynb,py:percent notebooks/analysis.ipynb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The paired <code>notebooks/analysis.py</code> is ordinary Python:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %% [markdown]</span></span>
@@ -1194,7 +1194,7 @@ NameError: name 'get_ipython' is not defined</code></pre>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   <span class="in">```bash</span></span>
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>   <span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>   <span class="bu">source</span> .venv/bin/activate        <span class="co"># on Windows: .venv\Scripts\activate</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>   <span class="in">```</span></span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Place the raw data at <span class="in">`data/raw/sales.csv`</span> (download link: ...).</span>
@@ -1215,7 +1215,7 @@ NameError: name 'get_ipython' is not defined</code></pre>
 <span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>Expected runtime: ~30 seconds for cleaning, ~2 minutes for the notebook.</span>
 <span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>Expected outputs: <span class="in">`data/processed/sales_clean.csv`</span> (~5 MB).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>(If your project uses the <code>src/sales</code> package from this chapter, add <code>pip install -e .</code> to step 1.) The exact commands save everyone from “I just have to type that thing I remember from last month.” The expected runtime and output size are a sanity check: if cleaning takes five minutes instead of thirty seconds, or the file is 50 KB instead of 5 MB, something’s wrong. A good “How to run” section gets people unblocked without having to ask you a single question.</p>
+<p>(If your project uses the <code>src/sales</code> package from this chapter, add <code>python -m pip install -e .</code> to step 1.) The exact commands save everyone from “I just have to type that thing I remember from last month.” The expected runtime and output size are a sanity check: if cleaning takes five minutes instead of thirty seconds, or the file is 50 KB instead of 5 MB, something’s wrong. A good “How to run” section gets people unblocked without having to ask you a single question.</p>
 </section>
 <section id="keep-notebooks-friendly-to-version-control" class="level3">
 <h3 class="anchored" data-anchor-id="keep-notebooks-friendly-to-version-control">Keep notebooks friendly to version control</h3>
@@ -1242,7 +1242,7 @@ NameError: name 'get_ipython' is not defined</code></pre>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower()</span>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>, <span class="st">"date"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>With the package installed (<code>pip install -e .</code>, once), replace the three cells in the notebook with one import and one call:</p>
+<p>With the package installed (<code>python -m pip install -e .</code>, once), replace the three cells in the notebook with one import and one call:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sales.cleaning <span class="im">import</span> clean_sales</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sales.paths <span class="im">import</span> DATA_RAW</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1289,7 +1289,7 @@ wrote 3 rows to data/processed/sales_clean.csv</code></pre>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:   "</span>, os.getcwd())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If <code>python</code> isn’t the interpreter inside your project’s <code>.venv</code>, the notebook is running a different kernel, one where your package was never installed. Switch kernels, or register your environment as a kernel (see <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>). If the interpreter is right, check how the terminal import succeeded: if you never ran <code>pip install -e .</code>, it only worked because the terminal was sitting in <code>src/</code>, and the notebook’s folder is <code>notebooks/</code>. Install the package into that environment and the import works everywhere.</p>
+<p>If <code>python</code> isn’t the interpreter inside your project’s <code>.venv</code>, the notebook is running a different kernel, one where your package was never installed. Switch kernels, or register your environment as a kernel (see <a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a>). If the interpreter is right, check how the terminal import succeeded: if you never ran <code>python -m pip install -e .</code>, it only worked because the terminal was sitting in <code>src/</code>, and the notebook’s folder is <code>notebooks/</code>. Install the package into that environment and the import works everywhere.</p>
 </section>
 <section id="cleaning-up-a-converted-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="cleaning-up-a-converted-notebook">Cleaning up a converted notebook</h3>
@@ -1368,7 +1368,7 @@ wrote 3 rows to data/processed/sales_clean.csv</code></pre>
 <ol type="1">
 <li><p>Write a script that loads a CSV and prints a short summary (rows, columns, missing values per column).</p></li>
 <li><p>Refactor the script so the summary logic is a function and the rest is only an entry point, with an <code>if __name__ == "__main__":</code> guard.</p></li>
-<li><p>Move that function into a <code>src/</code> package, install it with <code>pip install -e .</code>, and use it from a notebook on two different datasets.</p></li>
+<li><p>Move that function into a <code>src/</code> package, install it with <code>python -m pip install -e .</code>, and use it from a notebook on two different datasets.</p></li>
 <li><p>Add a command-line interface with <code>--input</code> and <code>--output</code> flags, and paste its <code>--help</code> output into your README.</p></li>
 <li><p>Convert one of your notebooks to a script with <code>nbconvert</code>, get it running from a fresh terminal, and list at least three hidden-state problems you had to fix.</p></li>
 <li><p>Write a short paragraph explaining whether your current project should be a notebook, a script, or a hybrid, and why.</p></li>
@@ -1379,7 +1379,7 @@ wrote 3 rows to data/processed/sales_clean.csv</code></pre>
 <ul>
 <li>My script has a <code>main()</code> and an <code>if __name__ == "__main__":</code> guard, so importing it doesn’t run the analysis.</li>
 <li>Reusable logic lives in functions in a <code>src/</code> package, not copied between notebook cells.</li>
-<li>My package is installed in the project environment with <code>pip install -e .</code>, so imports work from any folder.</li>
+<li>My package is installed in the project environment with <code>python -m pip install -e .</code>, so imports work from any folder.</li>
 <li>Paths are built from one anchor (<code>PROJECT_ROOT</code>), not the working directory, and never hardcoded to my laptop.</li>
 <li>Notebooks that import my code start with <code>%load_ext autoreload</code> and <code>%autoreload 2</code> and a smoke-test cell.</li>
 <li>My script takes its inputs from the command line, checks them early, and prints the settings it ran with.</li>
@@ -1412,7 +1412,7 @@ wrote 3 rows to data/processed/sales_clean.csv</code></pre>
 </tr>
 <tr class="odd">
 <td>Make <code>src/</code> importable everywhere</td>
-<td><code>pip install -e .</code> (once, from the project root)</td>
+<td><code>python -m pip install -e .</code> (once, from the project root)</td>
 </tr>
 <tr class="even">
 <td>Reload edited modules in a notebook</td>

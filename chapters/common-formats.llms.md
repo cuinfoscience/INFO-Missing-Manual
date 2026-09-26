@@ -12,7 +12,7 @@
 
 Here’s a scene that plays out in every class that uses GitHub or Quarto. You open `_quarto.yml` to add one line, a part title for the new section of your project, `- part: Part II: Results`. You save, run `quarto render`, and get `bad indentation of a mapping entry`, with a squiggle under a colon. You didn’t change any indentation. You didn’t touch any code. You added one line to what looks like a plain list, and the message blames something you never did.
 
-If that’s happened to you, you’re not missing some talent everyone else has. You’ve run into a file format that nobody formally taught you, whose rules are simple but strict. (The problem in that line is the second colon: YAML reads `Part II:` as the start of another key. Put the title in quotes and it works.) The same thing happens with the other two formats you meet constantly outside of code: a README that looks fine in your editor and turns into a wall of text on GitHub, or an API response you edited by hand that Python now refuses to read.
+If that’s happened to you, you’re not missing some talent everyone else has. You’ve run into a file format that nobody formally taught you, whose rules are simple but strict. (The problem in that line is the second colon: [YAML](../chapters/appendix-glossary.llms.md#term-yaml) reads `Part II:` as the start of another key. Put the title in quotes and it works.) The same thing happens with the other two formats you meet constantly outside of code: a README that looks fine in your editor and turns into a wall of text on GitHub, or an API response you edited by hand that Python now refuses to read.
 
 This chapter covers those three formats: **Markdown**, the way technical people write for each other; **YAML**, the way tools are configured; and **JSON**, the way programs pass data around. Markdown gets the most space, because you’ll write it every week for the rest of your career. The goal isn’t to make you a format expert. It’s to give you enough fluency to read a config file, write a formatted document, and fix a broken file by reading the error instead of guessing. It doesn’t cover formats for storing datasets, such as CSV and Parquet (that’s [sec-data-file-formats](#sec-data-file-formats)), or what to put *in* a README ([sec-documentation](#sec-documentation)).
 
@@ -515,7 +515,56 @@ python -c "import yaml, sys; yaml.safe_load(open(sys.argv[1]))" myfile.yml
 >
 > Many editors (VS Code, Sublime Text, JetBrains IDEs) check JSON and YAML as you type, built in or through a plugin. If you see a red squiggly underline in a config file, the editor is already telling you where the problem is.
 
-## 4.6 Stakes and politics
+## 4.6 When Python writes the file
+
+So far you’ve been the one typing the file. Just as often your code writes it, and then Python has a surprise for anyone whose data holds names like Björk, places like São Paulo, or text in a script other than Latin:
+
+``` python
+import json
+import yaml
+
+record = {"artist": "Björk", "cities": ["Reykjavík", "São Paulo", "Москва", "東京"]}
+
+print(json.dumps(record))
+print(yaml.safe_dump(record))
+```
+
+``` text
+{"artist": "Bj\u00f6rk", "cities": ["Reykjav\u00edk", "S\u00e3o Paulo", "\u041c\u043e\u0441\u043a\u0432\u0430", "\u6771\u4eac"]}
+artist: "Bj\xF6rk"
+cities:
+- "Reykjav\xEDk"
+- "S\xE3o Paulo"
+- "\u041C\u043E\u0441\u043A\u0432\u0430"
+- "\u6771\u4EAC"
+```
+
+Nothing is broken. By default, both libraries replace every character outside plain [ASCII](https://en.wikipedia.org/wiki/ASCII) with an escape code, and any parser turns `Bj\u00f6rk` back into `Björk` when it reads the file. But no person can proofread `\u6771\u4eac` as 東京, or search the file for “Björk” and find it. To get readable text, ask for it: pass `ensure_ascii=False` to [`json.dumps`](https://docs.python.org/3/library/json.html#json.dumps) or `json.dump`, and `allow_unicode=True` to PyYAML’s `yaml.dump` or `yaml.safe_dump`.
+
+When you write to a file, add one more thing, `encoding="utf-8"`:
+
+``` python
+with open("record.json", "w", encoding="utf-8") as f:
+    json.dump(record, f, ensure_ascii=False, indent=2)
+
+with open("record.yml", "w", encoding="utf-8") as f:
+    yaml.safe_dump(record, f, allow_unicode=True)
+```
+
+Now `record.yml` reads the way you’d hope:
+
+``` yaml
+artist: Björk
+cities:
+- Reykjavík
+- São Paulo
+- Москва
+- 東京
+```
+
+Without `encoding=`, [`open`](https://docs.python.org/3/library/functions.html#open) uses whatever encoding your computer’s settings name. On a Mac or Linux that’s almost always [UTF-8](https://en.wikipedia.org/wiki/UTF-8). On Windows it has usually been an older encoding that depends on the system’s language (cp1252 on an English-language machine), which has no way to write Москва or 東京, so the script that works for your teammate stops on yours with `UnicodeEncodeError: 'charmap' codec can't encode characters`. Starting with [Python 3.15](https://peps.python.org/pep-0686/), UTF-8 becomes the default everywhere, but writing `encoding="utf-8"` costs nothing and works on every version. Read the file back with the same `encoding="utf-8"`.
+
+## 4.7 Stakes and politics
 
 Say you’re configuring a survey that runs in five countries, listed by their two-letter [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2): `countries: [DE, FR, GB, NO, SE]`. Load that file with PyYAML and you get back `['DE', 'FR', 'GB', False, 'SE']`. Under YAML 1.1, `NO` is one of the ways to spell false, so Norway quietly becomes a boolean. Developers call it [the Norway problem](https://hitchdev.com/strictyaml/why/implicit-typing-removed/), and it’s the same trap as `yes` and `3.10` above, landing on a country.
 
@@ -523,7 +572,7 @@ Nobody set out to drop Norway from anyone’s data. Years earlier, someone decid
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when a format guesses what your values mean, ask whose words and names its guesses were built around, and quote the values it might get wrong.
 
-## 4.7 Worked examples
+## 4.8 Worked examples
 
 ### 1. Writing a project README in Markdown
 
@@ -630,7 +679,7 @@ This one points at line 5, but nothing is wrong with line 5. The parser finished
 
 Three errors, three runs, and you never had to guess. That last lesson carries over to almost every parser you’ll use: when an error points at a line that looks fine, look at the end of the line *before* it.
 
-## 4.8 Exercises
+## 4.9 Exercises
 
 1.  Write a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks the way you meant.
 
@@ -659,7 +708,7 @@ Three errors, three runs, and you never had to guess. That last lesson carries o
 
 7.  Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Name each feature and explain what it does.
 
-## 4.9 One-page checklist
+## 4.10 One-page checklist
 
 - **Markdown:** headings with `#`, emphasis with `*` and `**`, code with backticks, lists with `-` or `1.`, links with `[text](url)`, images with `![alt](path)`. A blank line separates paragraphs; a single newline is just a space.
 - **Markdown layout:** blank lines around every heading, list, and code block; nested list markers lined up with the text of the item above (two spaces under `-`, three under `1.`).
@@ -670,7 +719,7 @@ Three errors, three runs, and you never had to guess. That last lesson carries o
 - **When in doubt, validate:** `python -m json.tool` for JSON, `yamllint` for YAML, a previewer for Markdown. If the error points at a line that looks fine, check the line before it.
 - **Know which format you’re editing** before you start typing. The extension (`.md`, `.yml` or `.yaml`, `.json`) tells you.
 
-## 4.10 Quick reference: syntax at a glance
+## 4.11 Quick reference: syntax at a glance
 
 | Feature   | Markdown            | YAML            | JSON             |
 |-----------|---------------------|-----------------|------------------|

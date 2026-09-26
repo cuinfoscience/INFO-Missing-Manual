@@ -69,7 +69,7 @@ To check what kind of shell you’re in, run `echo $SHELL`, which prints your de
 
 ### Terminal, shell, and command
 
-People use “terminal” and “shell” as if they meant the same thing, which gets confusing when documentation treats them as different. They are. The **terminal** (technically a [terminal emulator](https://en.wikipedia.org/wiki/Terminal_emulator)) is the application window you type in: Terminal.app on macOS, Windows Terminal, GNOME Terminal or Konsole on Linux. It handles fonts, colors, and key presses. The **[shell](https://en.wikipedia.org/wiki/Shell_(computing))** is the program running *inside* that window that actually interprets what you type: usually [`bash`](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) or [`zsh`](https://www.zsh.org/) on macOS and Linux, and PowerShell or `cmd.exe` on Windows. A **command** is what you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
+People use “terminal” and “shell” as if they meant the same thing, which gets confusing when documentation treats them as different. They are. The [**terminal**](../chapters/appendix-glossary.llms.md#term-terminal) (technically a [terminal emulator](https://en.wikipedia.org/wiki/Terminal_emulator)) is the application window you type in: Terminal.app on macOS, Windows Terminal, GNOME Terminal or Konsole on Linux. It handles fonts, colors, and key presses. The **[shell](https://en.wikipedia.org/wiki/Shell_(computing))** is the program running *inside* that window that actually interprets what you type: usually [`bash`](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) or [`zsh`](https://www.zsh.org/) on macOS and Linux, and PowerShell or `cmd.exe` on Windows. A **command** is what you ask the shell to run: a program name followed by some arguments, like `ls -l data/`.
 
 When you press Enter, a short sequence happens, and every error message you’ll meet comes from one of its steps. The shell reads the line you typed. It expands any shortcuts you used: patterns like `*.csv`, variables like `$HOME`, and command substitutions like `$(date)`. It looks for the program you named in a list of folders called [`PATH`](https://en.wikipedia.org/wiki/PATH_(variable)). It starts that program, hands it your arguments, and shows you whatever the program prints. When the program finishes, it hands back a small number called an [**exit code**](https://en.wikipedia.org/wiki/Exit_status): `0` means “everything worked,” and anything else means “something went wrong.” Then the shell shows a fresh prompt and waits.
 
@@ -91,9 +91,13 @@ Every prompt you meet is built from the same few pieces, even when the details d
 
 Figure 11.2: Illustration: The anatomy of a prompt on macOS. Every shell shows some version of these pieces: who you are, where you are, and where your typing begins.
 
+> **TIP:**
+>
+> The characters just before your cursor tell you who’s listening. A line ending in `$` or `%`, or one like `PS C:\Users\you>` in PowerShell, is the shell, ready for commands like `ls`, `cd`, and `pip install pandas`. Three greater-than signs, `>>>`, mean you’re inside Python itself (typing `python` on its own takes you there), and it expects Python code like `1 + 1` or `import pandas`. Each one misreads the other’s commands: a shell command typed at `>>>` fails with `SyntaxError: invalid syntax` ([sec-tracebacks](#sec-tracebacks) shows the exact error), and Python typed at the shell prompt usually gets `command not found`. To leave Python and get your shell back, type `exit()` and press Enter, or press `Ctrl + D` (on Windows, `Ctrl + Z` and then Enter), as [Python’s tutorial](https://docs.python.org/3/tutorial/interpreter.html) explains.
+
 ### Why bother, when the GUI is right there
 
-Finder and File Explorer work, and they don’t make you memorize anything. The command line earns its place by doing four things they can’t. It’s **fast for repetitive work**: moving fifty PDFs into a `readings/` folder is `mv *.pdf readings/` at the prompt, and a lot of careful dragging in the GUI. It’s **composable**, in the spirit of the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy): small tools that each do one job, joined with pipes, add up to far more than a panel of single-purpose buttons. It’s **automatable**, because anything you can type once you can save in a script and run again next week. And it’s **remote-friendly**: it’s how you do real work on a server you’ll never see in person (see [sec-remote-computing](#sec-remote-computing)). MIT’s [Missing Semester](https://missing.csail.mit.edu/2026/course-shell/) course makes the same case, and its first lecture is a good companion to this chapter.
+Finder and File Explorer work, and they don’t make you memorize anything. The [command line](../chapters/appendix-glossary.llms.md#term-cli) earns its place by doing four things they can’t. It’s **fast for repetitive work**: moving fifty PDFs into a `readings/` folder is `mv *.pdf readings/` at the prompt, and a lot of careful dragging in the [GUI](../chapters/appendix-glossary.llms.md#term-gui). It’s **composable**, in the spirit of the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy): small tools that each do one job, joined with pipes, add up to far more than a panel of single-purpose buttons. It’s **automatable**, because anything you can type once you can save in a script and run again next week. And it’s **remote-friendly**: it’s how you do real work on a server you’ll never see in person (see [sec-remote-computing](#sec-remote-computing)). MIT’s [Missing Semester](https://missing.csail.mit.edu/2026/course-shell/) course makes the same case, and its first lecture is a good companion to this chapter.
 
 ## 11.2 Orientation and safety first
 
@@ -166,6 +170,10 @@ $ man tar                    # open the manual, then inside it:
   /EXAMPLES                  # jump to the examples section
   q                          # quit
 ```
+
+`q` gets you out of `man` and `less`, but most programs have no quit key of their own, and sooner or later one will run much longer than you expected, or sit on an empty line doing nothing because it’s waiting for input you never meant to give (`cat` or `grep` with no file name does this). The way out of all of them is **`Ctrl + C`**, which [interrupts](https://en.wikipedia.org/wiki/Control-C) whatever is running and gives you the prompt back. You’ll see `^C` where you pressed it, and a Python script prints a `KeyboardInterrupt` traceback on its way out, which is only the program reporting that you stopped it.
+
+The catch is that in a terminal, `Ctrl + C` usually isn’t copy. On a Mac, copy with `⌘ + C` as everywhere else; most Linux terminals copy with `Ctrl + Shift + C`. [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions#copy) splits the difference: `Ctrl + C` copies when you’ve selected text and interrupts the running command when you haven’t, and `Ctrl + Shift + C` copies too.
 
 ### Quoting and spaces
 
@@ -285,7 +293,7 @@ find ~/Courses -name "lab*.py"    # every lab*.py below ~/Courses
 find data/ -name "*.json" -type f # only files, not folders
 ```
 
-Quote the pattern, so that `find` does the matching instead of the shell. And start in the narrowest folder that could hold the answer, because `find` searches everything below its starting point: `find / -name "*.csv"` walks your entire disk, and you’ll wait a long time for a pile of results you didn’t want. Start at your project folder, or at `~`, never at `/`.
+Quote the pattern, so that `find` does the matching instead of the shell. And start in the narrowest folder that could hold the answer, because `find` searches everything below its starting point: `find / -name "*.csv"` walks your entire disk, and you’ll wait a long time for a pile of results you didn’t want (`Ctrl + C` stops it). Start at your project folder, or at `~`, never at `/`.
 
 A few more tests are worth knowing (the [`find` manual page](https://man7.org/linux/man-pages/man1/find.1.html) has the rest): `-type f` keeps only files and `-type d` only folders, `-mtime -7` answers “what did I change this week?”, and `-size +100M` tracks down what’s filling your disk.
 
@@ -645,6 +653,14 @@ zsh: command not found: pthon        # a typo: fix the spelling
 $ python --version                   # is python there at all?
 $ which python                       # and which copy is it?
 ```
+
+In PowerShell the same typo gets a longer message that means exactly the same thing. Windows PowerShell 5.1, the version built into Windows, says:
+
+``` text
+pthon : The term 'pthon' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+```
+
+and then a few more lines (`At line:1 char:1`, `CategoryInfo`, and so on) that you can skip. The newer PowerShell 7 words it slightly differently: `The term 'pthon' is not recognized as a name of a cmdlet, function, script file, or executable program.` Either way, check the spelling first, and use `Get-Command python` where this chapter uses `which python`.
 
 **`No such file or directory`** means the program ran but couldn’t find the file you pointed it at. Almost always, the name is spelled differently from what’s on disk, you’re in a different folder than you think, or the file has a hidden extension (`.csv.txt`) your file browser wasn’t showing.
 

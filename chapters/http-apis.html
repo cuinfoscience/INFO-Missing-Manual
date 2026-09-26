@@ -689,12 +689,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#timeouts-are-not-optional" id="toc-timeouts-are-not-optional" class="nav-link" data-scroll-target="#timeouts-are-not-optional">Timeouts are not optional</a></li>
   </ul></li>
   <li><a href="#checking-the-response" id="toc-checking-the-response" class="nav-link" data-scroll-target="#checking-the-response"><span class="header-section-number">24.4</span> Checking the response</a></li>
-  <li><a href="#from-json-to-a-dataframe" id="toc-from-json-to-a-dataframe" class="nav-link" data-scroll-target="#from-json-to-a-dataframe"><span class="header-section-number">24.5</span> From JSON to a DataFrame</a></li>
+  <li><a href="#from-json-to-a-dataframe" id="toc-from-json-to-a-dataframe" class="nav-link" data-scroll-target="#from-json-to-a-dataframe"><span class="header-section-number">24.5</span> From JSON to a DataFrame</a>
+  <ul class="collapse">
+  <li><a href="#save-the-raw-response-before-you-parse-it" id="toc-save-the-raw-response-before-you-parse-it" class="nav-link" data-scroll-target="#save-the-raw-response-before-you-parse-it">Save the raw response before you parse it</a></li>
+  </ul></li>
   <li><a href="#api-keys-and-secrets" id="toc-api-keys-and-secrets" class="nav-link" data-scroll-target="#api-keys-and-secrets"><span class="header-section-number">24.6</span> API keys and secrets</a></li>
   <li><a href="#rate-limits-and-being-polite" id="toc-rate-limits-and-being-polite" class="nav-link" data-scroll-target="#rate-limits-and-being-polite"><span class="header-section-number">24.7</span> Rate limits and being polite</a>
   <ul class="collapse">
   <li><a href="#retry-on-429-with-backoff" id="toc-retry-on-429-with-backoff" class="nav-link" data-scroll-target="#retry-on-429-with-backoff">Retry on 429, with backoff</a></li>
   <li><a href="#respect-robots.txt-and-read-the-terms" id="toc-respect-robots.txt-and-read-the-terms" class="nav-link" data-scroll-target="#respect-robots.txt-and-read-the-terms">Respect <code>robots.txt</code>, and read the terms</a></li>
+  <li><a href="#when-the-data-is-about-people" id="toc-when-the-data-is-about-people" class="nav-link" data-scroll-target="#when-the-data-is-about-people">When the data is about people</a></li>
   </ul></li>
   <li><a href="#pages-of-results" id="toc-pages-of-results" class="nav-link" data-scroll-target="#pages-of-results"><span class="header-section-number">24.8</span> Pages of results</a></li>
   <li><a href="#when-not-to-use-requests-directly" id="toc-when-not-to-use-requests-directly" class="nav-link" data-scroll-target="#when-not-to-use-requests-directly"><span class="header-section-number">24.9</span> When <em>not</em> to use <code>requests</code> directly</a></li>
@@ -756,7 +760,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="chapter-meme-inline d-lg-none">
 <p><img src="../graphics/memes/http-apis.png" class="img-fluid" alt="Hagrid Meme: Tried to scrape a website, got the entire campus blocked."></p>
 </div>
-<p>You found the perfect data for your term project, and it lives behind an API. You paste one of its URLs into your browser, data comes back, and the hard part seems over. So you write a loop over 3,000 IDs, start it, and go to dinner. When you come back, the notebook is stuck on item 1,412. Or it crashed with <code>KeyError: 'results'</code>, because response 1,413 wasn’t data at all but a message saying you’d made too many requests.</p>
+<p>You found the perfect data for your term project, and it lives behind an <a href="../chapters/appendix-glossary.html#term-api">API</a>. You paste one of its URLs into your browser, data comes back, and the hard part seems over. So you write a loop over 3,000 IDs, start it, and go to dinner. When you come back, the notebook is stuck on item 1,412. Or it crashed with <code>KeyError: 'results'</code>, because response 1,413 wasn’t data at all but a message saying you’d made too many requests.</p>
 <p>If that’s happened to you, you’re in good company. Almost everyone’s first data-collection script works for ten requests and falls over somewhere in the next thousand. Networks are unreliable, servers get busy, and the people who run them set rules about how fast you may ask, and none of that shows up when you test one URL in a browser.</p>
 <p>This chapter covers what an HTTP request is, how to poke at an API with <code>curl</code>, how to write the Python version with <code>requests</code>, how to turn the JSON that comes back into a DataFrame, and how to handle keys, errors, rate limits, and pages of results. It won’t make you a backend engineer, and it doesn’t cover scraping pages that were never meant to be data (the companion book <a href="https://cuinfoscience.github.io/Web-Data-Science-Book/"><em>Web Data Science</em></a> goes much further into both). It will get you from “I can only use the datasets I’m handed” to “I can go and get the data I need.”</p>
 </section>
@@ -1028,20 +1032,59 @@ Figure&nbsp;24.1: The start of the GitHub API’s response for pandas’ reposit
 1  dates  101  Fix dates</code></pre>
 <p>Each row is now one label on one issue, the tidy shape <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> recommends. Issue 102 has vanished, because it had no labels to make rows from: right for a table of labels, but worth knowing before you count anything. <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> has more on JSON as a file format.</p>
 <p>The habit that saves the most time: the first few times you call a new API, print <code>payload.keys()</code> and one record before writing code for it.</p>
+<section id="save-the-raw-response-before-you-parse-it" class="level3">
+<h3 class="anchored" data-anchor-id="save-the-raw-response-before-you-parse-it">Save the raw response before you parse it</h3>
+<p>Everything so far parses a response the moment it arrives, which is fine while you’re exploring. Once you’re collecting for real, it costs you later. Say you find a bug in your flattening code a week in: to fix the DataFrame, you have to ask the API for everything again, and it may not give you the same answer, because posts get edited and deleted and agencies revise their numbers. So write each response to disk exactly as it arrived, in <code>data/raw/</code> (the read-only folder <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a> describes), with the time you asked in the file name, and parse from the file. This example asks the <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation">World Bank’s indicators API</a>, which needs no key, for three countries’ populations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timezone</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.worldbank.org/v2/country/US;CA;MX/indicator/SP.POP.TOTL"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"format"</span>: <span class="st">"json"</span>, <span class="st">"date"</span>: <span class="st">"2024"</span>},</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"my-term-project/0.1 (contact: you@example.edu)"</span>},</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Save exactly what came back, named for when you asked (in UTC)</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>stamp <span class="op">=</span> datetime.now(timezone.utc).strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">T%H%M%SZ"</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>raw_path <span class="op">=</span> Path(<span class="st">"data/raw"</span>) <span class="op">/</span> <span class="ss">f"worldbank-population-</span><span class="sc">{</span>stamp<span class="sc">}</span><span class="ss">.json"</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>raw_path.parent.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>raw_path.write_bytes(resp.content)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw_path)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse from the file, not from resp</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(raw_path, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    meta, records <span class="op">=</span> json.load(f)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(meta[<span class="st">"lastupdated"</span>])</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.json_normalize(records)</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[[<span class="st">"country.value"</span>, <span class="st">"date"</span>, <span class="st">"value"</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>data/raw/worldbank-population-2026-09-26T185340Z.json
+2026-07-13
+   country.value  date      value
+0         Canada  2024   41262329
+1         Mexico  2024  130861007
+2  United States  2024  340003797</code></pre>
+<p>The file holds <code>resp.content</code>, the bytes the server sent, rather than <code>resp.text</code>, Python’s decoding of them. The time is in <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a>, so the names sort in order wherever you are, and it has no colons (<code>185340</code>, not <code>18:53:40</code>), which Windows doesn’t allow in <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file">file names</a>. The <code>lastupdated</code> line shows why the date matters: the World Bank says it last updated this data in July 2026, and next year’s request may bring back different numbers. Now a parsing bug means re-running your code on the file, not re-requesting everything, and the file shows what the API returned on that date. In a loop over pages, put the page number in the name too.</p>
+</section>
 </section>
 <section id="api-keys-and-secrets" class="level2" data-number="24.6">
 <h2 data-number="24.6" class="anchored" data-anchor-id="api-keys-and-secrets"><span class="header-section-number">24.6</span> API keys and secrets</h2>
 <p>Most useful APIs want to know who’s asking, so they give you an <a href="https://en.wikipedia.org/wiki/API_key">API key</a> (or a token, which works the same way here) to send with every request. Wherever it goes, the key must not live in your code. A key typed into a notebook ends up in a commit, and commits end up on GitHub, where automated scanners look for exactly that. Keep it in an <a href="https://en.wikipedia.org/wiki/Environment_variable">environment variable</a> instead, and read it with <code>os.environ</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]   <span class="co"># a KeyError here means it isn't set</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"Boulder,US"</span>, <span class="st">"appid"</span>: api_key},</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]   <span class="co"># a KeyError here means it isn't set</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>{<span class="st">"q"</span>: <span class="st">"Boulder,US"</span>, <span class="st">"appid"</span>: api_key},</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The square brackets are deliberate. If the variable isn’t set, the script stops right there with <code>KeyError: 'OPENWEATHER_API_KEY'</code>, naming the problem. The softer <code>os.environ.get(...)</code> would hand you <code>None</code>, and you’d find out later from a 401 (from OpenWeather, <code>"Invalid API key"</code>).</p>
 <p>One trap comes with APIs like this one that take the key in the URL: <code>raise_for_status()</code> prints the full URL, key included (<code>401 Client Error: Unauthorized for url: https://api.openweathermap.org/data/2.5/weather?q=Boulder%2CUS&amp;appid=not-a-real-key</code>). In a notebook, that message is saved in the cell’s output, and the output is saved in the file you commit. Clear outputs before committing a notebook that talks to an API (<a href="jupyter.html" class="quarto-xref"><span>Chapter 16</span></a> shows how).</p>
 <p>In practice, keep keys in a <code>.env</code> file that git ignores and load it with <a href="https://pypi.org/project/python-dotenv/"><code>python-dotenv</code></a>; there’s a template at the end of this chapter, and <a href="secrets.html" class="quarto-xref"><span>Chapter 34</span></a> covers the whole workflow, including what to do if a key leaks.</p>
@@ -1050,43 +1093,47 @@ Figure&nbsp;24.1: The start of the GitHub API’s response for pandas’ reposit
 <h2 data-number="24.7" class="anchored" data-anchor-id="rate-limits-and-being-polite"><span class="header-section-number">24.7</span> Rate limits and being polite</h2>
 <p>Every API runs on somebody’s servers, shared with everyone using it, so nearly every API caps how many requests you may make in a period (GitHub: 60 an hour without a key). Go over and you’ll usually get a <code>429</code>, often with a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After"><code>Retry-After</code></a> header saying how many seconds to wait. Not every API follows the textbook: GitHub may answer with a 403 <em>or</em> a 429 when you run out, and says to watch its <code>x-ratelimit-remaining</code> header.</p>
 <p>Treat a 429 less as an obstacle than as the server telling you how to be a good guest. The first courtesy costs one line: pause between requests, and stay comfortably under the documented limit.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item_id <span class="kw">in</span> ids:</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://api.example.com/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    process(resp.json())</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.2</span>)      <span class="co"># at most about 5 requests per second</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item_id <span class="kw">in</span> ids:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://api.example.com/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    process(resp.json())</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.2</span>)      <span class="co"># at most about 5 requests per second</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A loop that takes twenty minutes and finishes beats one that takes five and gets your key suspended.</p>
 <section id="retry-on-429-with-backoff" class="level3">
 <h3 class="anchored" data-anchor-id="retry-on-429-with-backoff">Retry on 429, with backoff</h3>
 <p>Even careful loops hit the occasional 429. The polite response is to wait and try again, and if the server doesn’t say how long, to wait longer after each failure: <a href="https://en.wikipedia.org/wiki/Exponential_backoff">exponential backoff</a>, which gives a struggling server more room each time instead of a steady hammering.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_with_retry(url, headers<span class="op">=</span><span class="va">None</span>, params<span class="op">=</span><span class="va">None</span>, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries):</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>            retry_after <span class="op">=</span> resp.headers.get(<span class="st">"Retry-After"</span>, <span class="st">""</span>)</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>            wait <span class="op">=</span> <span class="bu">int</span>(retry_after) <span class="cf">if</span> retry_after.isdigit() <span class="cf">else</span> <span class="dv">2</span> <span class="op">**</span> attempt</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Gave up on </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss"> after </span><span class="sc">{</span>max_retries<span class="sc">}</span><span class="ss"> attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_with_retry(url, headers<span class="op">=</span><span class="va">None</span>, params<span class="op">=</span><span class="va">None</span>, max_retries<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries):</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> requests.get(url, headers<span class="op">=</span>headers, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span>:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>            retry_after <span class="op">=</span> resp.headers.get(<span class="st">"Retry-After"</span>, <span class="st">""</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>            wait <span class="op">=</span> <span class="bu">int</span>(retry_after) <span class="cf">if</span> retry_after.isdigit() <span class="cf">else</span> <span class="dv">2</span> <span class="op">**</span> attempt</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>            time.sleep(wait)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Gave up on </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss"> after </span><span class="sc">{</span>max_retries<span class="sc">}</span><span class="ss"> attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>When <code>Retry-After</code> is a number of seconds, the function waits that long; otherwise <code>2 ** attempt</code> waits 1, 2, 4, 8, then 16 seconds. (<code>Retry-After</code> may also be a date, which <code>int()</code> would crash on, hence <code>isdigit()</code>.) Against a test server that answered 429 twice with <code>Retry-After: 1</code>, it returned the data after about two seconds; after five failures it gives up rather than looping forever. For bigger projects, <a href="https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry">urllib3’s <code>Retry</code></a> can do all this for you, attached through a <a href="https://requests.readthedocs.io/en/latest/user/advanced/#transport-adapters">transport adapter</a>.</p>
 </section>
 <section id="respect-robots.txt-and-read-the-terms" class="level3">
 <h3 class="anchored" data-anchor-id="respect-robots.txt-and-read-the-terms">Respect <code>robots.txt</code>, and read the terms</h3>
 <p>APIs come with terms that say what you may do. Ordinary web pages usually don’t, but most sites publish a <a href="https://en.wikipedia.org/wiki/Robots.txt"><code>robots.txt</code></a> file at their root saying which paths automated tools should stay out of, and sometimes how long to wait between requests. It’s a request rather than a lock, and honoring it is the minimum courtesy of <a href="https://en.wikipedia.org/wiki/Web_scraping">web scraping</a>. Python’s <a href="https://docs.python.org/3/library/urllib.robotparser.html"><code>urllib.robotparser</code></a> reads it for you:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.robotparser <span class="im">import</span> RobotFileParser</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>robots <span class="op">=</span> RobotFileParser(<span class="st">"https://example.com/robots.txt"</span>)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>robots.read()</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>robots.can_fetch(<span class="st">"my-term-project"</span>, <span class="st">"https://example.com/private/data.html"</span>)  <span class="co"># True or False</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>robots.crawl_delay(<span class="st">"my-term-project"</span>)  <span class="co"># seconds to wait between requests, or None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.robotparser <span class="im">import</span> RobotFileParser</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>robots <span class="op">=</span> RobotFileParser(<span class="st">"https://example.com/robots.txt"</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>robots.read()</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>robots.can_fetch(<span class="st">"my-term-project"</span>, <span class="st">"https://example.com/private/data.html"</span>)  <span class="co"># True or False</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>robots.crawl_delay(<span class="st">"my-term-project"</span>)  <span class="co"># seconds to wait between requests, or None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A site’s terms of service can also forbid automated collection that <code>robots.txt</code> never mentions, and ignoring either can get your address blocked. On a campus network, many people’s traffic can leave through the same few addresses, so a block aimed at your script can land on everyone around you. If you aren’t sure a plan is acceptable, ask your instructor before you run it.</p>
+</section>
+<section id="when-the-data-is-about-people" class="level3">
+<h3 class="anchored" data-anchor-id="when-the-data-is-about-people">When the data is about people</h3>
+<p>Rate limits and <code>robots.txt</code> protect the server. They say nothing about the people in the data, and much of what gets collected through APIs is about people: posts, profiles, comments, reviews. Collecting that for research can make your project <a href="https://en.wikipedia.org/wiki/Human_subject_research">human-subjects research</a>, which at a university may need review by an <a href="https://en.wikipedia.org/wiki/Institutional_review_board">institutional review board</a> (IRB), the committee that checks research involving people for ethical problems. The posts being public doesn’t settle the question, and the answer isn’t always obvious, so let the people whose job it is make the call: ask your instructor about a class assignment, and ask your IRB about a thesis or anything you hope to publish, <em>before</em> you collect, not after. Asking costs an email; data you gathered without a review you needed may be data you can’t use. Whatever the answer, request and keep only the fields your question needs (a study of when people post doesn’t need their usernames), decide in advance what you’ll do when someone deletes a post you’ve already saved, and check what the API’s terms of service say about both. <a href="project-management.html" class="quarto-xref"><span>Chapter 30</span></a> covers keeping data like this out of your repository.</p>
 </section>
 </section>
 <section id="pages-of-results" class="level2" data-number="24.8">
@@ -1111,99 +1158,99 @@ Figure&nbsp;24.1: The start of the GitHub API’s response for pandas’ reposit
 <section id="fetch-a-github-repositorys-metadata" class="level3">
 <h3 class="anchored" data-anchor-id="fetch-a-github-repositorys-metadata">Fetch a GitHub repository’s metadata</h3>
 <p>Everything above in its smallest form: a descriptive <code>User-Agent</code>, a timeout, a status check, then the data.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>,</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1 (contact: you@example.edu)"</span>},</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>repo <span class="op">=</span> resp.json()</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>repo[<span class="st">'full_name'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>repo[<span class="st">'stargazers_count'</span>]<span class="sc">:,}</span><span class="ss"> stars"</span>)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Last updated: </span><span class="sc">{</span>repo[<span class="st">'updated_at'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> requests.get(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.github.com/repos/pandas-dev/pandas"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1 (contact: you@example.edu)"</span>},</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>resp.raise_for_status()</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>repo <span class="op">=</span> resp.json()</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>repo[<span class="st">'full_name'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>repo[<span class="st">'stargazers_count'</span>]<span class="sc">:,}</span><span class="ss"> stars"</span>)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Last updated: </span><span class="sc">{</span>repo[<span class="st">'updated_at'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>GitHub’s documentation for <a href="https://docs.github.com/en/rest/repos/repos#get-a-repository">getting a repository</a> lists every key in the response; when you’re unsure what a field is called, that page (or the JSON itself, as in <a href="#fig-browser-json" class="quarto-xref">Figure&nbsp;<span>24.1</span></a>) beats guessing.</p>
 </section>
 <section id="collect-every-page-of-results" class="level3">
 <h3 class="anchored" data-anchor-id="collect-every-page-of-results">Collect every page of results</h3>
 <p>This fetches every issue in a repository by following GitHub’s <code>Link</code> header until there’s no <code>next</code> page. It reads a token from the environment and uses a <a href="https://requests.readthedocs.io/en/latest/user/advanced/#session-objects"><code>Session</code></a>, so the headers are set once and the connection is reused:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> list_issues(owner, repo):</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    session <span class="op">=</span> requests.Session()</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    session.headers.update({</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>os<span class="sc">.</span>environ[<span class="st">'GITHUB_TOKEN'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1 (contact: you@example.edu)"</span>,</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://api.github.com/repos/</span><span class="sc">{</span>owner<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>repo<span class="sc">}</span><span class="ss">/issues"</span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {<span class="st">"state"</span>: <span class="st">"all"</span>, <span class="st">"per_page"</span>: <span class="dv">100</span>}</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    issues <span class="op">=</span> []</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> url:</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> session.get(url, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        issues.extend(resp.json())</span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> resp.links.get(<span class="st">"next"</span>, {}).get(<span class="st">"url"</span>)   <span class="co"># None on the last page</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        params <span class="op">=</span> <span class="va">None</span>   <span class="co"># the next URL already carries the parameters</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="fl">0.5</span>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> issues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> list_issues(owner, repo):</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    session <span class="op">=</span> requests.Session()</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    session.headers.update({</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>os<span class="sc">.</span>environ[<span class="st">'GITHUB_TOKEN'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"term-project/0.1 (contact: you@example.edu)"</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://api.github.com/repos/</span><span class="sc">{</span>owner<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>repo<span class="sc">}</span><span class="ss">/issues"</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {<span class="st">"state"</span>: <span class="st">"all"</span>, <span class="st">"per_page"</span>: <span class="dv">100</span>}</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    issues <span class="op">=</span> []</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> url:</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> session.get(url, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        issues.extend(resp.json())</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> resp.links.get(<span class="st">"next"</span>, {}).get(<span class="st">"url"</span>)   <span class="co"># None on the last page</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>        params <span class="op">=</span> <span class="va">None</span>   <span class="co"># the next URL already carries the parameters</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="fl">0.5</span>)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> issues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Two details are easy to miss. After the first request, <code>params</code> becomes <code>None</code>, because GitHub’s <code>next</code> URL already includes <code>state</code> and <code>per_page</code>. And GitHub counts every pull request as an issue, so the list includes pull requests, each marked by a <code>pull_request</code> key you can filter on. <code>pd.json_normalize(issues)</code> then turns the list into a DataFrame.</p>
 </section>
 <section id="handle-a-flaky-weather-api" class="level3">
 <h3 class="anchored" data-anchor-id="handle-a-flaky-weather-api">Handle a flaky weather API</h3>
 <p>A function you’ll call hundreds of times has to survive every failure from this chapter: a server that doesn’t answer, a network that drops, a 429 or 5xx that will probably clear up, and a bad key that won’t.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> current_weather(city):</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>            resp <span class="op">=</span> requests.get(</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{<span class="st">"q"</span>: city, <span class="st">"appid"</span>: API_KEY, <span class="st">"units"</span>: <span class="st">"metric"</span>},</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>                timeout<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> (requests.Timeout, requests.<span class="pp">ConnectionError</span>):</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">2</span> <span class="op">**</span> attempt)          <span class="co"># the network hiccuped: wait, then retry</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span> <span class="kw">or</span> resp.status_code <span class="op">&gt;=</span> <span class="dv">500</span>:</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>            retry_after <span class="op">=</span> resp.headers.get(<span class="st">"Retry-After"</span>, <span class="st">""</span>)</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="bu">int</span>(retry_after) <span class="cf">if</span> retry_after.isdigit() <span class="cf">else</span> <span class="dv">2</span> <span class="op">**</span> attempt)</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">401</span>:</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"OpenWeather rejected the key: check OPENWEATHER_API_KEY"</span>)</span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()               <span class="co"># any other 4xx: retrying won't help</span></span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp.json()</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Failed to fetch weather for </span><span class="sc">{</span>city<span class="sc">}</span><span class="ss"> after 3 attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> os.environ[<span class="st">"OPENWEATHER_API_KEY"</span>]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> current_weather(city):</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>            resp <span class="op">=</span> requests.get(</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"https://api.openweathermap.org/data/2.5/weather"</span>,</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{<span class="st">"q"</span>: city, <span class="st">"appid"</span>: API_KEY, <span class="st">"units"</span>: <span class="st">"metric"</span>},</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>                timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> (requests.Timeout, requests.<span class="pp">ConnectionError</span>):</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">2</span> <span class="op">**</span> attempt)          <span class="co"># the network hiccuped: wait, then retry</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">429</span> <span class="kw">or</span> resp.status_code <span class="op">&gt;=</span> <span class="dv">500</span>:</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>            retry_after <span class="op">=</span> resp.headers.get(<span class="st">"Retry-After"</span>, <span class="st">""</span>)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="bu">int</span>(retry_after) <span class="cf">if</span> retry_after.isdigit() <span class="cf">else</span> <span class="dv">2</span> <span class="op">**</span> attempt)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> resp.status_code <span class="op">==</span> <span class="dv">401</span>:</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"OpenWeather rejected the key: check OPENWEATHER_API_KEY"</span>)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        resp.raise_for_status()               <span class="co"># any other 4xx: retrying won't help</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> resp.json()</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Failed to fetch weather for </span><span class="sc">{</span>city<span class="sc">}</span><span class="ss"> after 3 attempts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Network and server trouble get retried with backoff. A bad key stops at once with a message saying what to fix, one that (unlike <code>raise_for_status()</code>) doesn’t print the key. Anything else raises, and after three attempts the function gives up. With a made-up key it stops with the 401 message; against a test server that returned 429 twice, it succeeded on the third try.</p>
 </section>
 </section>
 <section id="templates" class="level2" data-number="24.12">
 <h2 data-number="24.12" class="anchored" data-anchor-id="templates"><span class="header-section-number">24.12</span> Templates</h2>
 <p><strong>A defensive GET helper</strong> to import from your notebooks instead of rewriting the same lines:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_json(url, <span class="op">*</span>, params<span class="op">=</span><span class="va">None</span>, headers<span class="op">=</span><span class="va">None</span>, timeout<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    default_headers <span class="op">=</span> {</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"my-project/0.1 (contact: you@example.edu)"</span>,</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> headers:</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        default_headers.update(headers)</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(url, params<span class="op">=</span>params, headers<span class="op">=</span>default_headers, timeout<span class="op">=</span>timeout)</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_json(url, <span class="op">*</span>, params<span class="op">=</span><span class="va">None</span>, headers<span class="op">=</span><span class="va">None</span>, timeout<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    default_headers <span class="op">=</span> {</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"User-Agent"</span>: <span class="st">"my-project/0.1 (contact: you@example.edu)"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Accept"</span>: <span class="st">"application/json"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> headers:</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        default_headers.update(headers)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(url, params<span class="op">=</span>params, headers<span class="op">=</span>default_headers, timeout<span class="op">=</span>timeout)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>A <code>.env</code> file</strong> (paired with <a href="secrets.html" class="quarto-xref"><span>Chapter 34</span></a>), with placeholders where your real keys go. Add <code>.env</code> to <code>.gitignore</code> before you put anything real in it:</p>
 <pre class="text"><code>OPENWEATHER_API_KEY=paste-your-key-here
 GITHUB_TOKEN=paste-your-token-here</code></pre>
 <p>Load it at the top of your script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="exercises" class="level2" data-number="24.13">
 <h2 data-number="24.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.13</span> Exercises</h2>
@@ -1223,6 +1270,7 @@ GITHUB_TOKEN=paste-your-token-here</code></pre>
 <li>Try a new API with <code>curl -i</code> first, and read the status line.</li>
 <li>Pass <code>timeout=</code> to every request.</li>
 <li>Call <code>resp.raise_for_status()</code> or check <code>resp.ok</code> before <code>resp.json()</code>.</li>
+<li>Save each raw response to <code>data/raw/</code> with a UTC timestamp in its name, and parse from the file.</li>
 <li>If <code>resp.json()</code> fails, print <code>resp.status_code</code> and <code>resp.text[:300]</code>.</li>
 <li>Pass query parameters as a <code>params=</code> dictionary, not by hand in the URL.</li>
 <li>Send a descriptive <code>User-Agent</code> with a way to contact you.</li>
@@ -1231,6 +1279,7 @@ GITHUB_TOKEN=paste-your-token-here</code></pre>
 <li>Sleep between requests; handle 429 with <code>Retry-After</code> or exponential backoff.</li>
 <li>Assume a list endpoint is paginated until you’ve checked.</li>
 <li>Read <code>robots.txt</code> and the terms of service before collecting from a website.</li>
+<li>Collecting posts, profiles, or comments for research? Ask your IRB before you start.</li>
 <li>Prefer an official SDK when one exists, and a bulk download when you need everything.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">

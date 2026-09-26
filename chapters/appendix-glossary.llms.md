@@ -2,15 +2,19 @@
 
 You’re halfway through a chapter, you hit a word like “kernel” or “PATH,” and nobody ever told you what it means. This page is for that moment. The terms are in alphabetical order, each with a short, plain definition and a pointer to the chapter that teaches it properly, so you can look one up and get straight back to what you were doing. When a chapter uses one of these words for the first time, it usually links here (a mention of a **package** in [sec-pkg-mgmt](#sec-pkg-mgmt), for example, jumps straight to its entry below).
 
-A lot of these words name layers of the software on your computer: the operating system at the bottom, then the file system, the shell, Python, its packages, and finally your own code. Together they’re sometimes called the [technology stack](https://en.wikipedia.org/wiki/Solution_stack). When something breaks, figuring out *which layer* is misbehaving is half the battle, and knowing its name makes the other half, searching for help or asking someone, a lot easier.
+A lot of these words name layers of the software on your computer: the operating system at the bottom, then the file system, the shell, Python, its packages, and finally your own code. Together they’re sometimes called the [technology stack](https://en.wikipedia.org/wiki/Solution_stack). When something breaks, figuring out *which layer* is misbehaving is half the battle, and knowing its name makes the other half, searching for help or asking someone, a lot easier. Other words here are the vocabulary of looking after data so that someone else can find, trust, and reuse it: provenance, metadata, a license, a DOI.
 
 ### Algorithmic audit
 
 A close look at an AI or algorithmic system to find out whether it’s fair, safe, or accurate for the people it affects, including the failures nobody planned for. Who runs it matters: a **first-party** audit is done by the company that built the system, a **second-party** audit by the organization using it, and a **third-party** audit by an independent group with the access and the reason to find problems. Most audits in practice are first-party, so “we audited it” doesn’t by itself mean much. See [sec-evaluating-ai](#sec-evaluating-ai), and [sec-artifacts-politics](#sec-artifacts-politics) for why who holds the power matters.
 
+### API (application programming interface)
+
+A published set of rules for how one program can ask another for data or services. In data work it usually means a *web API*: URLs that a service such as GitHub or the World Bank publishes for programs to call, which send back data (usually JSON) instead of a web page. Many APIs want an *API key* with each request, a secret that identifies you and belongs in an environment variable, never in your code. See [sec-http-apis](#sec-http-apis) and [sec-secrets](#sec-secrets).
+
 ### Application
 
-A program you open to get something done, like Microsoft Word, Excel, Google Chrome, or Apple Mail. Applications are built separately for each operating system, which is why a Mac app won’t run on Windows, and they need your permission to read and save files in some places.
+A program you open to get something done, like Microsoft Word, Excel, Google Chrome, or Apple Mail. Applications are built separately for each operating system, which is why a Mac app won’t run on Windows, and they need your permission to read and save files in some places. See [sec-os-management](#sec-os-management).
 
 ### Breakpoint
 
@@ -19,6 +23,10 @@ A line where a running program pauses so you can look around inside it with a de
 ### Channel
 
 A named place [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/channels.html) downloads packages from. Anaconda and Miniconda start with Anaconda’s own `defaults` channel, while Miniforge starts with **conda-forge**, a community channel with far more packages. If conda says it can’t find a package, or two packages won’t install together, the channel is one of the first things to check. See [sec-pkg-mgmt](#sec-pkg-mgmt).
+
+### Checksum
+
+A short fingerprint computed from every byte of a file, like the 64-character string that `sha256sum survey.csv` prints. Change even one byte and the fingerprint changes, so a checksum you record when a file arrives lets you prove later that the file you analyzed is the one you downloaded, or that a big copy between computers arrived intact. See [sec-project-management](#sec-project-management) and [sec-terminal](#sec-terminal).
 
 ### Command line interface (CLI)
 
@@ -32,6 +40,14 @@ A plain-text file format for tables: each row is a line, and the columns are sep
 
 A small table that explains a dataset one column at a time: each column’s name, its type, what it means in plain words, its units, the values it’s allowed to take, and how missing values are marked. Keep it as a file next to the data, and someone else (or you, six months from now) can use the data correctly, and a short script can check new data against it. A *codebook* is the survey-research version, which adds each question’s exact wording and what its answer codes mean (`1` = “strongly disagree”). See [sec-project-management](#sec-project-management).
 
+### De-identification
+
+Removing or disguising the details in a dataset that could reveal who a person is. *Direct identifiers* such as names, email addresses, and student IDs are the obvious ones, but *indirect* ones can single someone out in combination (a zip code, a birth date, and a gender together), which is how supposedly anonymous data keeps getting [re-identified](https://en.wikipedia.org/wiki/Data_re-identification). The usual practice is to replace each person with a code and keep the key that links codes to people apart from the data, with fewer people able to open it; as long as that key exists, privacy laws such as the EU’s GDPR still count the data as personal. See [sec-project-management](#sec-project-management) and [sec-secrets](#sec-secrets).
+
+### DOI (Digital Object Identifier)
+
+A permanent ID for a paper, a dataset, or a release of some code, like `10.1371/journal.pcbi.1005510`. Put `https://doi.org/` in front of it and you land on the work wherever it’s hosted now, so a DOI keeps working after a website reorganizes, which is why citation styles ask for one. Data repositories such as Zenodo give each deposit a DOI, and Zenodo can do the same for each GitHub release of your code. See [sec-git-github](#sec-git-github) and [sec-writing-manuscripts](#sec-writing-manuscripts).
+
 ### Driver
 
 A small program that lets the operating system talk to a piece of hardware, such as your Wi-Fi card, printer, graphics card, or trackpad. Your operating system keeps most drivers up to date through its own updates, so install drivers only from the operating system or the hardware’s maker, never from a “driver updater” site. See [sec-os-management](#sec-os-management).
@@ -40,13 +56,21 @@ A small program that lets the operating system talk to a piece of hardware, such
 
 Everything your code runs *inside* of, beyond the code itself. In Python talk it usually means one Python interpreter and the packages installed for it, and you can have many on the same computer, one per project. More broadly, a program’s environment also includes its environment variables (like `PATH`) and the folder it was started from. When code works on one computer and fails on another, a different environment is the usual suspect. See [sec-pkg-mgmt](#sec-pkg-mgmt) and [sec-virtual-environments](#sec-virtual-environments).
 
+### Environment variable
+
+A named setting, like `PATH` or `HOME`, that a running program carries with it; a program you start from a terminal gets a copy of the terminal’s. Many tools read their settings from environment variables, which makes one the usual home for an API key or password: your code mentions only the variable’s name, and each person who runs it supplies their own value. See [sec-terminal](#sec-terminal) and [sec-secrets](#sec-secrets).
+
 ### File system
 
 The part of your computer that stores your files and folders, keeps track of where each one is, and decides who’s allowed to read or change it. Every file has an address in it, called a *path*, like `Documents/thesis/data/survey.csv`. See [sec-filesystem](#sec-filesystem).
 
+### Git
+
+The most widely used [version control](https://en.wikipedia.org/wiki/Version_control) system: a program that records the history of a project folder as a series of snapshots, called *commits*, so you can see what changed, go back to an earlier state, and combine work from several people. Git runs on your own computer. GitHub is a separate website that hosts copies of Git repositories and adds pull requests, issues, and reviews on top. See [sec-git-github](#sec-git-github) and [sec-collaboration](#sec-collaboration).
+
 ### Graphical user interface (GUI)
 
-The windows, icons, menus, and buttons you click to use a computer, as opposed to typing commands. Finder on macOS and File Explorer on Windows are GUIs for your file system. You’ll sometimes hear GUI pronounced “gooey.”
+The windows, icons, menus, and buttons you click to use a computer, as opposed to typing commands. Finder on macOS and File Explorer on Windows are GUIs for your file system. You’ll sometimes hear GUI pronounced “gooey.” See [sec-terminal](#sec-terminal) for what typing commands can do that clicking can’t.
 
 ### JSON (JavaScript Object Notation)
 
@@ -64,6 +88,10 @@ The kind of AI model behind ChatGPT, Claude, Gemini, and GitHub Copilot. It’s 
 
 Code someone else wrote that adds abilities to a programming language. Python on its own covers the basics; libraries like `numpy`, `pandas`, and `matplotlib` add fast math, data tables, and plotting. In Python, “library” and “package” are used almost interchangeably. When a traceback shows a path containing `site-packages/`, that’s a library you installed. See [sec-pkg-mgmt](#sec-pkg-mgmt).
 
+### License
+
+The terms that say what other people may do with a piece of work: copy it, change it, share it, sell it. Without one, copyright law’s default applies and nobody else has clear permission to reuse what you’ve published, which is why a public repository needs a `LICENSE` file ([choosealicense.com](https://choosealicense.com/) helps you pick one, such as MIT for code, or CC BY or CC0 for data and writing). It cuts both ways: the license on data you download decides whether you’re allowed to put it in a public repository or share it at all. See [sec-project-management](#sec-project-management).
+
 ### Markdown
 
 A simple way to format plain text with ordinary characters: `#` for a heading, `**bold**` for bold, `-` for a list item, and backticks for `code`. The raw file stays readable, and tools turn it into a nicely formatted page. It’s how README files, GitHub issues, Jupyter text cells, and Quarto books like this one are written. See [sec-common-formats](#sec-common-formats).
@@ -71,6 +99,10 @@ A simple way to format plain text with ordinary characters: `#` for a heading, `
 ### Matilda effect
 
 The pattern of women’s contributions to research being under-cited and credited to someone else, often a male colleague. The historian of science Margaret Rossiter named it in 1993, after the suffragist Matilda Joslyn Gage, as a counterpart to the [Matthew effect](https://en.wikipedia.org/wiki/Matthew_effect), in which people who already have credit get more of it. The same pattern shows up for scholars of color and scholars outside the most powerful institutions and countries. See [sec-writing-manuscripts](#sec-writing-manuscripts) and [Wikipedia’s article](https://en.wikipedia.org/wiki/Matilda_effect).
+
+### Metadata
+
+Data about data: a description of a file or dataset rather than its contents. A file’s name, size, and last-modified date are metadata, and so are a commit’s author, date, and message; for a dataset, its provenance note and data dictionary are the metadata that let someone else find, understand, and cite it. Metadata can also say more than you meant to, like the author’s name stored inside a PDF you submit for anonymous review. See [sec-project-management](#sec-project-management), [sec-git-github](#sec-git-github), and [sec-writing-manuscripts](#sec-writing-manuscripts).
 
 ### Network drive
 
@@ -108,6 +140,10 @@ A file format for tables that’s built for analysis. It stores data column by c
 
 An environment variable holding the [list of folders](https://en.wikipedia.org/wiki/PATH_(variable)) your shell searches, in order, when you type a command like `python`. `command not found` means the program isn’t in any of those folders, and running the “wrong” Python usually means a different one comes first on the list. (Don’t confuse it with a lowercase *path*, the address of a file, like `data/survey.csv`.) See [sec-terminal](#sec-terminal).
 
+### Personal data
+
+Any information about a person who can be identified from it, on its own or combined with other information: a name, an email address, a student ID, a photo, or a zip code and birth date together. Laws such as the EU’s [GDPR](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation), and in the US FERPA for students’ education records, limit how it may be collected, stored, and shared, and research that collects it may need review by an institutional review board (IRB). Unlike a leaked password, leaked personal data can’t be changed or taken back. See [sec-project-management](#sec-project-management), [sec-secrets](#sec-secrets), and [sec-artifacts-politics](#sec-artifacts-politics).
+
 ### `pip`
 
 Python’s built-in package manager, which installs packages from the [Python Package Index (PyPI)](https://pypi.org/): `pip install pandas`. Run it inside an activated virtual environment, so packages land in your project and not in some other Python on your computer. See [sec-pkg-mgmt](#sec-pkg-mgmt) and [sec-virtual-environments](#sec-virtual-environments).
@@ -116,9 +152,17 @@ Python’s built-in package manager, which installs packages from the [Python Pa
 
 A language for writing instructions a computer can carry out, like Python, R, JavaScript, Java, or C++. Most share the same big ideas (variables, loops, functions), so learning a second one is much easier than the first, even though the exact way you write things differs.
 
+### Provenance
+
+The record of where a dataset came from and what has happened to it since: its source, when you got it, its license or terms of use, any limits on who may see it, and each step that changed it along the way. Write it down in a `provenance.md` beside the data, or in the README, the moment you download the file, because in three weeks you won’t remember. See [sec-project-management](#sec-project-management) and [sec-filesystem](#sec-filesystem).
+
 ### REPL (Read–Eval–Print Loop)
 
 An interactive prompt that reads a line of code, runs it, prints the result, and waits for the next one (the [name](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) spells out that loop). Type `python` with nothing after it in a terminal and you’re in Python’s REPL; type `exit()` to leave. A Jupyter kernel works the same way, which is why it remembers everything you’ve run. See [sec-jupyter](#sec-jupyter).
+
+### Repository
+
+A word with three meanings in research computing, and it helps to know which one someone means. A **Git repository** is a project folder whose whole history Git tracks, in a hidden `.git` folder inside it, and usually has a copy on a host such as GitHub. A **data repository**, such as Zenodo, OSF, or ICPSR, archives datasets and other research materials for the long term and can give each one a DOI so others can find and cite it, while an **institutional repository** is a university library’s archive of its own researchers’ papers, theses, and data, and often where a free open-access copy of a paper lives. See [sec-git-github](#sec-git-github) and [sec-reading-scholarship](#sec-reading-scholarship).
 
 ### RLHF (Reinforcement Learning from Human Feedback)
 

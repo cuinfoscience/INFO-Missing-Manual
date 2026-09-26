@@ -89,7 +89,57 @@ Every LaTeX document has the same three parts, and once you can see them, any te
 
 Older templates often add `\usepackage[utf8]{inputenc}`. It’s harmless but unnecessary: UTF-8 has been the default since the [April 2018 release of LaTeX](https://www.latex-project.org/news/latex2e-news/ltnews28.pdf).
 
-## 29.4 Syntax you’ll actually use
+## 29.4 Other languages and scripts
+
+Thanks to that UTF-8 default, accented Latin letters just work: type José, Gdańsk, or São Paulo into the first document and pdfLaTeX, Overleaf’s default compiler, prints them. Now add a name in Chinese or a word in Arabic, say `Letters from José 李 and مرحبا.`, and the compile stops:
+
+``` text
+! LaTeX Error: Unicode character 李 (U+674E)
+               not set up for use with LaTeX.
+```
+
+You get one of these for every character it can’t set, and if you click past the red box, the PDF quietly leaves those characters out. pdfLaTeX can print only the characters some loaded package has set up for it. (Greek and Cyrillic can be set up that way, with `babel`, as Overleaf’s guide to [non-Latin languages](https://docs.overleaf.com/troubleshooting-and-support/typesetting-non-latin-languages) explains.)
+
+For everything else, switch to one of the two Unicode engines, XeLaTeX or LuaLaTeX, which can use any font installed on the computer, and load [`fontspec`](https://ctan.org/pkg/fontspec) to pick a font that has your characters. On Overleaf, open Settings (the gear icon, or File, then Settings), choose Compiler, and pick XeLaTeX or LuaLaTeX from the Compiler menu. Locally, run `latexmk -lualatex main.tex`. This compiles with either engine:
+
+``` latex
+% Compile with XeLaTeX or LuaLaTeX, not pdfLaTeX.
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{Noto Serif}                       % Latin, Greek, Cyrillic
+\newfontfamily\chinesefont{Noto Serif CJK SC}  % Chinese
+
+\begin{document}
+
+Letters from José {\chinesefont 李}, Zoë, Ольга, and Σοφία.
+
+\end{document}
+```
+
+`\setmainfont` sets the font for the whole document, and `\newfontfamily` defines a command, `\chinesefont` here, that switches to a second font for a stretch of text, since few fonts cover every script. Overleaf has both fonts; on your own computer, use any installed font with the characters you need. If you forget to change the compiler, `fontspec` tells you: `The fontspec package requires either XeTeX or LuaTeX.`
+
+A right-to-left script such as Arabic or Hebrew needs more than a font: something has to lay the text out right to left, even in the middle of an English sentence. That’s the job of [`babel`](https://ctan.org/pkg/babel) or [`polyglossia`](https://ctan.org/pkg/polyglossia). With LuaLaTeX and `babel`, you can type each script as it comes and let `babel` pick its font:
+
+``` latex
+% Compile with LuaLaTeX.
+\documentclass[11pt]{article}
+\usepackage[english, bidi=basic]{babel}
+\babelprovide[import, onchar=ids fonts]{arabic}
+\babelprovide[import, onchar=ids fonts]{chinese}
+\babelfont{rm}{Noto Serif}
+\babelfont[arabic]{rm}{Noto Naskh Arabic}
+\babelfont[chinese]{rm}{Noto Serif CJK SC}
+
+\begin{document}
+
+Letters from José 李 and مرحبا.
+
+\end{document}
+```
+
+Overleaf’s guide to [multilingual typesetting with babel and fontspec](https://www.overleaf.com/learn/latex/Multilingual_typesetting_on_Overleaf_using_babel_and_fontspec) covers more languages, and its non-Latin languages page points to dedicated classes for documents written mostly in Chinese, Japanese, or Korean.
+
+## 29.5 Syntax you’ll actually use
 
 LaTeX has thousands of commands, and most papers use a few dozen. These are the ones you’ll reach for; for anything else, search “latex” plus what you want, and the answer is usually on Overleaf’s help pages or TeX StackExchange.
 
@@ -178,7 +228,7 @@ If a float still lands somewhere odd, don’t fight it yet: placement changes wi
 
 The order is deliberate. `hyperref` changes how many other packages work, so its manual asks you to load it after nearly everything else, and `cleveref` must come after `hyperref`. When two packages clash, the order is the first thing to check. (`microtype` makes tiny spacing adjustments so lines justify evenly with fewer hyphens; you’ll rarely notice it, which is the point.)
 
-## 29.5 Document classes and journal templates
+## 29.6 Document classes and journal templates
 
 Most venues want your paper in their own template, and the first one you open can look like a wall of code you’re afraid to touch. Remember the three parts: the template is mostly preamble, and your job is mostly the body. Overleaf keeps a gallery of templates ([^2]), the easiest place to start.
 
@@ -198,7 +248,7 @@ For the [camera-ready](https://en.wikipedia.org/wiki/Camera-ready) version, remo
 
 **Thesis templates** come from your university. Ask your graduate program whether to use the official class (usually), a student-maintained one (sometimes better), or a generic class with a custom title page; [sec-writing-thesis](#sec-writing-thesis) has the rest of the paperwork.
 
-## 29.6 Bibliographies with BibTeX and BibLaTeX
+## 29.7 Bibliographies with BibTeX and BibLaTeX
 
 LaTeX bibliographies use two files: `main.tex`, your manuscript, and `references.bib`, a plain-text list of sources, each with a *citation key* like `matias2019civic`. You cite with `\cite{key}`, and a separate program builds the reference list in whatever style the venue wants. That program is either the classic [BibTeX](https://en.wikipedia.org/wiki/BibTeX), which the ACM and IEEE templates use, or the newer [BibLaTeX](https://ctan.org/pkg/biblatex) with its helper [Biber](https://ctan.org/pkg/biber), which is more flexible about styles and Unicode. Use whichever your template uses.
 
@@ -230,7 +280,7 @@ $bibtex_use = 2;     # run BibTeX or Biber whenever it's needed
 
 Overleaf [reads a `latexmkrc`](https://docs.overleaf.com/managing-projects-and-files/the-latexmkrc-file) too. Its guides to bibliographies [with BibTeX](https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex) and [with BibLaTeX](https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex) cover the rest.
 
-## 29.7 Beamer for presentations
+## 29.8 Beamer for presentations
 
 Retyping equations into PowerPoint is miserable. Beamer is LaTeX’s class for slides: the source format you already know, one `frame` per slide, and math that looks just like your paper’s (see [sec-presenting](#sec-presenting) for what makes a talk good). A minimal talk with the `metropolis` theme ([^4]):
 
@@ -274,9 +324,9 @@ Each `frame` is a slide, titled in the braces after `\begin{frame}`. The `<2->` 
 Package beamerthememetropolis Warning: You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts on input line 95.
 ```
 
-It’s harmless; the slides compile in a standard font. For the intended Fira fonts, switch the compiler to XeLaTeX (on Overleaf, in the project menu’s [compiler setting](https://docs.overleaf.com/getting-started/recompiling-your-project/selecting-a-tex-live-version-and-latex-compiler)). Overleaf’s [Beamer guide](https://www.overleaf.com/learn/latex/Beamer) covers the rest.
+It’s harmless; the slides compile in a standard font. For the intended Fira fonts, switch the compiler to XeLaTeX (on Overleaf, under Settings, then [Compiler](https://docs.overleaf.com/getting-started/recompiling-your-project/selecting-a-tex-live-version-and-latex-compiler)). Overleaf’s [Beamer guide](https://www.overleaf.com/learn/latex/Beamer) covers the rest.
 
-## 29.8 Local installation (optional)
+## 29.9 Local installation (optional)
 
 Everything in this chapter works on Overleaf. Install LaTeX locally when you want to write offline, when a big project compiles slowly, or when you want Git and your usual editor. Three good choices:
 
@@ -286,7 +336,7 @@ Everything in this chapter works on Overleaf. Install LaTeX locally when you wan
 
 For an editor, VS Code with the **LaTeX Workshop** extension ([^8]) is a strong free choice (see [sec-text-editors](#sec-text-editors)); TeXShop, TeXstudio, Emacs with AUCTeX, and Vim with vimtex are fine too, and one you know beats one that’s new. A local project also makes files Overleaf hides from you (`main.aux`, `main.log`, `main.bbl`, and more), so keep them out of Git with the `.gitignore` in Templates.
 
-## 29.9 Reading LaTeX errors without panicking
+## 29.10 Reading LaTeX errors without panicking
 
 When a compile fails, the log is the scary part: hundreds of lines about fonts and packages, with the one that matters buried in the middle. The secret: **look for lines that start with `!`.** Those are the errors; the rest is mostly LaTeX thinking out loud. (Overleaf’s logs panel lists errors and warnings with clickable line numbers.) Every error has the same shape: a message, then `l.` and a line number, with the line broken where TeX stopped reading. Here’s `\toprule` without `booktabs` loaded:
 
@@ -315,6 +365,8 @@ Escape it as `\_`. The same error appears if you forget an equation’s closing 
 
 `` ! LaTeX Error: File `booktab.sty' not found. `` On Overleaf, which has nearly every package, it’s a typo (`booktab` for `booktabs`). Locally, the package may be missing: `tlmgr install <name>` for TeX Live, or MiKTeX’s console.
 
+`! LaTeX Error: Unicode character 李 (U+674E) not set up for use with LaTeX.` pdfLaTeX can’t print that character. Switch to XeLaTeX or LuaLaTeX and load a font that has it, as “Other languages and scripts” explains.
+
 `LaTeX Warning: Citation ... undefined.` The bibliography step hasn’t run, or the key isn’t in your `.bib` file. If it survives a full compile, BibTeX’s log, `main.blg`, says `I didn't find a database entry for "matias2019civc"` about a mistyped key.
 
 `! Missing \endcsname inserted.` Usually a command inside a `\label` or `\ref`, like `\label{sec:\textit{intro}}`. Keep labels to letters, digits, colons, and hyphens.
@@ -323,11 +375,11 @@ Two messages look alarming and aren’t errors. `Overfull \hbox (120.69057pt too
 
 When a message makes no sense, try Overleaf’s Recompile from scratch (in the menu beside Recompile), which clears leftover helper files that can keep a fixed error alive. Then bisect: comment out half the body with `%`, recompile, and halve whichever half still fails. Overleaf’s [guide to errors](https://www.overleaf.com/learn/latex/Errors) explains many more messages. And since Overleaf [produces a PDF despite errors](https://docs.overleaf.com/getting-started/recompiling-your-project) by default, don’t leave errors sitting because the PDF looks fine: later ones are often side effects of earlier ones, so fix them from the top down.
 
-## 29.10 AI assistance with LaTeX
+## 29.11 AI assistance with LaTeX
 
 LLMs are good at LaTeX (see [sec-ai-llm](#sec-ai-llm)). They’ll turn a Markdown table into a `tabular`, explain an error that has stumped you for ten minutes, clean stray characters out of a `.bib` file, and write a `latexmkrc`. They’re bad at *math correctness*: an LLM will happily typeset an equation with a sign flipped or a subscript on the wrong variable, and because it’s beautifully typeset, it looks right. Check every step of anything it derives. Ask the way you’d ask a person: what you’re trying to do, the error message exactly as the log shows it, the source around that line, and whether you’re on Overleaf or a local install.
 
-## 29.11 Stakes and politics
+## 29.12 Stakes and politics
 
 Run `pdfinfo` on the PDF from this chapter’s first document, and one line of its output reads `Tagged: no`. The text is in the file, but nothing marks which line is a heading, what order the columns are read in, or what a figure shows. A [screen reader](https://en.wikipedia.org/wiki/Screen_reader) user gets a flat stream of words, and equations can come out as strings of symbols. Most LaTeX papers you’ve read were made this way, because an untagged PDF is what `pdflatex` has always produced unless someone asks for more.
 
@@ -335,7 +387,7 @@ Asking for more is getting easier. The LaTeX Project’s [tagging instructions](
 
 See [sec-artifacts-politics](#sec-artifacts-politics) for the broader framework. The concrete prompt to carry forward: when you submit a LaTeX-typeset document, ask whether the people who need to read it actually can.
 
-## 29.12 Worked examples
+## 29.13 Worked examples
 
 ### From Word outline to a compiled LaTeX article on Overleaf
 
@@ -491,11 +543,22 @@ You want a clean lab-meeting deck with the method’s equation typeset properly:
 
 Compile it and you get twelve slides from the nine you wrote (the title and eight frames), because `metropolis` adds a divider slide for each `\section`, which `\tableofcontents` also lists. `[standout]` gives the last frame a dark background, and the one overlay makes the PDF 13 pages. Note `18\%`: a bare `%` starts a comment and silently hides the rest of the line. And “about 250,000” is written out, because in LaTeX `~` is a non-breaking space, not “approximately.”
 
-## 29.13 Templates
+## 29.14 Templates
 
-A minimal `article`:
+A minimal `article`, tagged for screen readers (see “Stakes and politics”):
 
 ``` latex
+% Tagged PDF. Needs the LaTeX release of 2025-06-01 or later (on Overleaf,
+% pick the newest TeX Live under Settings, Compiler); older releases
+% reject the tagging key. Some classes and packages don't support
+% tagging yet; check yours at
+% https://latex3.github.io/tagging-project/tagging-status/
+\DocumentMetadata{
+  lang        = en,
+  pdfstandard = ua-2,
+  pdfstandard = a-4f,
+  tagging     = on
+}
 \documentclass[11pt]{article}
 \usepackage{amsmath, graphicx, booktabs, microtype, hyperref, cleveref}
 \title{}
@@ -590,7 +653,7 @@ A `.gitignore` for a LaTeX project (the last four lines are for Beamer and BibLa
 
 Add `main.pdf` too if you’d rather not track the compiled PDF.
 
-## 29.14 Exercises
+## 29.15 Exercises
 
 1.  Compile your first Overleaf document. Share the read-only link with a classmate.
 2.  Take a Markdown document with two citations and convert it into a LaTeX article with a `.bib` file generated from Zotero.
@@ -598,7 +661,7 @@ Add `main.pdf` too if you’d rather not track the compiled PDF.
 4.  Build and present a five-slide Beamer deck on a topic of your choice.
 5.  Diagnose three deliberately broken `.tex` files (provided as exercises, or generated by deleting one `\usepackage{}` line at a time from a working document) and submit the fixes. Note the error message you used to find each problem.
 
-## 29.15 One-page checklist
+## 29.16 One-page checklist
 
 - Did you start a new project from a venue-appropriate template?
 - Is your `.bib` file generated from Zotero with stable Better BibTeX keys?
@@ -611,7 +674,7 @@ Add `main.pdf` too if you’d rather not track the compiled PDF.
 - Did you load `hyperref` after most other packages and `cleveref` after `hyperref`?
 - When the log shows errors, did you fix them from the first `!` line down?
 
-## 29.16 Quick reference: the LaTeX commands you’ll use most
+## 29.17 Quick reference: the LaTeX commands you’ll use most
 
 | Purpose | Command |
 |----|----|

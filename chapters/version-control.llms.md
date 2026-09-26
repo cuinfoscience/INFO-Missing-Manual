@@ -34,9 +34,9 @@ Small commits with clear messages, small pull requests, and frequent syncing mak
 
 Most Git confusion comes from not having a picture of what Git is doing, so start with the picture.
 
-A **repository** is your project folder plus a hidden `.git` folder inside it. Everything Git knows (every saved version, branch, author, and date) lives in `.git`. Delete it and you have an ordinary folder again.
+A [**repository**](../chapters/appendix-glossary.llms.md#term-repository) is your project folder plus a hidden `.git` folder inside it. Everything Git knows (every saved version, branch, author, and date) lives in `.git`. Delete it and you have an ordinary folder again.
 
-A **[commit](https://en.wikipedia.org/wiki/Commit_(version_control))** is a snapshot of every tracked file at one moment, plus a little metadata: who made it, when, a message saying why, and an ID. The ID is a [hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function) computed from the snapshot and its history, usually shown by its first seven characters. `git log` lists commits, newest first:
+A **[commit](https://en.wikipedia.org/wiki/Commit_(version_control))** is a snapshot of every tracked file at one moment, plus a little [metadata](../chapters/appendix-glossary.llms.md#term-metadata): who made it, when, a message saying why, and an ID. The ID is a [hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function) computed from the snapshot and its history, usually shown by its first seven characters. `git log` lists commits, newest first:
 
 ``` text
 $ git log --oneline -3
@@ -618,7 +618,7 @@ git tag -a v1.0-midterm -m "Midterm submission, 2026-03-10"
 git push origin v1.0-midterm
 ```
 
-On GitHub a tag can become a **release**, with notes and optional downloads such as a data snapshot or a PDF. Releases make code citable: a report can point at `v1.0-midterm`, and a reader can click through to the code behind the results. Connect the repository to the archive Zenodo, and each release also gets a DOI, a permanent identifier ([referencing and citing content](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content)). You won’t need releases day to day, but they’re cheap when the moment comes.
+On GitHub a tag can become a **release**, with notes and optional downloads such as a data snapshot or a PDF. Releases make code citable: a report can point at `v1.0-midterm`, and a reader can click through to the code behind the results. Connect the repository to the archive Zenodo, and each release also gets a [DOI](../chapters/appendix-glossary.llms.md#term-doi), a permanent identifier ([referencing and citing content](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content)). You won’t need releases day to day, but they’re cheap when the moment comes.
 
 ## 31.12 Stakes and politics
 

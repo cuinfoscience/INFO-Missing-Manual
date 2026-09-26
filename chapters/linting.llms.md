@@ -88,7 +88,7 @@ Black reads its settings from `pyproject.toml`, the [standard project configurat
 ``` toml
 [tool.black]
 line-length = 100
-target-version = ["py311"]
+target-version = ["py312"]
 ```
 
 That’s nearly [everything you can configure](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file). Black also promises its output [won’t change within a calendar year](https://black.readthedocs.io/en/stable/the_black_code_style/index.html#stability-policy), so pin it in your requirements (`black~=26.0`) and everyone on the team formats identically.
@@ -159,7 +159,7 @@ Like Black, `ruff` reads `pyproject.toml`, with the linter’s settings in a `[t
 ``` toml
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 # Which rule sets to enable. See https://docs.astral.sh/ruff/rules/
@@ -293,7 +293,7 @@ python -m pip install ruff
 cat > pyproject.toml <<'EOF'
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
@@ -371,7 +371,7 @@ A bug like this hides until the second call, where it looks like bad data. A lin
 ``` toml
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]

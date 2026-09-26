@@ -389,7 +389,7 @@ Ask instead why the program can’t write where you told it to. Almost always th
 
 1.  Take a recent error. Ask an assistant for three hypotheses and two checks for each. Run the checks and record which hypotheses you eliminated.
 2.  Draft a help request (Goal, Expected, Actual, Steps to reproduce, Context, What I tried). Ask an assistant to make it clearer without changing any facts. Compare the versions, remove anything it invented, then post it.
-3.  Ask an assistant for three published papers, with DOIs, on a topic from one of your courses. Look each up on [Google Scholar](https://scholar.google.com/) or at `https://doi.org/<the DOI>`. How many exist, and do they say what the assistant claimed?
+3.  Ask an assistant for three published papers, with [DOIs](../chapters/appendix-glossary.llms.md#term-doi), on a topic from one of your courses. Look each up on [Google Scholar](https://scholar.google.com/) or at `https://doi.org/<the DOI>`. How many exist, and do they say what the assistant claimed?
 4.  Ask for a README skeleton for one of your projects. Follow every command in a fresh environment, then add a Verify section and one troubleshooting entry you’ve confirmed.
 5.  Ask for a small function with unit tests. Add one edge-case test of your own, run everything, and revise until all the tests pass.
 6.  Find the AI policy for each course you’re taking this term. Where one is silent, write down the question you’d ask the instructor.

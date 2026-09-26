@@ -889,31 +889,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
+<td>Syntax (<code>SyntaxError</code>, <code>IndentationError</code>)</td>
+<td>Python couldn’t read the file, so nothing ran: an unclosed bracket or quote, a missing colon, indentation that doesn’t line up</td>
+<td>Look at the caret, then the line above</td>
+</tr>
+<tr class="even">
 <td>Name and scope (<code>NameError</code>)</td>
 <td>A variable Python has never heard of: a typo, a missing import, or a notebook cell you haven’t run yet</td>
 <td>Check the spelling, and run the cells above</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Type mismatch (<code>TypeError</code>)</td>
 <td>An operation on the wrong kind of object: adding text to a number, calling something that isn’t a function, passing the wrong number of arguments</td>
 <td><code>print(type(x))</code> on each value involved</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Index and key (<code>IndexError</code>, <code>KeyError</code>)</td>
 <td>Reaching for a list item, dictionary key, or DataFrame column that doesn’t exist: often a column-name typo or an off-by-one loop</td>
 <td><code>print(df.columns.tolist())</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>File and path (<code>FileNotFoundError</code>, <code>PermissionError</code>)</td>
 <td>The working directory or permissions, not the code</td>
 <td><code>pwd</code> and <code>ls</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Parsing and format (<code>ValueError</code>)</td>
 <td>A value of the right type but the wrong shape: <code>'N/A'</code> where a number belongs, or a date in a format Python can’t read</td>
 <td>Look at the exact value named in the message</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Import and environment (<code>ModuleNotFoundError</code>)</td>
 <td>Which Python is running, and what’s installed in <em>that</em> Python (see <a href="package-management.html" class="quarto-xref"><span>Chapter 14</span></a>)</td>
 <td><code>which python</code> and <code>pip list</code></td>
@@ -947,15 +952,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="strip-it-down-to-a-minimal-example">Strip it down to a minimal example</h3>
 <p>Take the failing code and delete, aggressively, anything that isn’t needed to trigger the bug. Each deletion that <em>still</em> fails tells you that code was irrelevant. The endpoint is a <a href="https://en.wikipedia.org/wiki/Minimal_reproducible_example">minimal reproducible example</a> (an MRE): a tiny script, usually under 20 lines, that fails the same way with nothing else in the way.</p>
 <p>MREs are usually taught as something you make to ask for help (see <a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>), but they’re just as valuable as a debugging tool in their own right. Building one forces you to learn three things you may not have noticed: <em>which inputs actually matter</em> (the ones you can’t delete without losing the failure), <em>which call is the immediate trigger</em> (the line you can’t remove), and <em>what you were silently assuming</em> (whatever you have to add back to make it fail at all). Most of the time, by the time you’ve finished shrinking the example, you’ve found the bug. Computer scientists have even automated the process, under the name <em>delta debugging</em> (Zeller’s <em>The Debugging Book</em>, in Further reading, shows how).</p>
-<p>A few techniques make shrinking faster. The most useful is to <strong>replace your real data with a few lines of made-up data.</strong> pandas reads from an <a href="https://docs.python.org/3/library/io.html#io.StringIO"><code>io.StringIO</code></a> object exactly as it reads from a file, so a short string of inline CSV is enough to recreate most data-loading bugs:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">"name,age</span><span class="ch">\n</span><span class="st">ada,35</span><span class="ch">\n</span><span class="st">lin,unknown</span><span class="ch">\n</span><span class="st">"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"age"</span>].mean()   <span class="co"># TypeError: Cannot perform reduction 'mean' with string dtype</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A few techniques make shrinking faster. The most useful is to <strong>replace your real data with a few values you make up.</strong> Say a script that averages quiz scores from a 200-student gradebook reports a class average in the 50s, and you know it was in the 80s. Throw away the gradebook and keep three scores you can add in your head:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="dv">88</span>, <span class="dv">92</span>, <span class="dv">79</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(scores)):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    total <span class="op">+=</span> scores[i]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(total <span class="op">/</span> <span class="bu">len</span>(scores))   <span class="co"># 57.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Those three average 86.33, and the script prints <code>57.0</code>. With numbers this small you can do the arithmetic yourself: 92 + 79 is 171, and 171 / 3 is 57, so the loop never added the 88. <code>range(1, len(scores))</code> starts at position 1, and Python counts from 0, a classic <a href="https://en.wikipedia.org/wiki/Off-by-one_error">off-by-one error</a>. Looping over the items themselves (<code>for score in scores: total += score</code>) can’t skip one, and prints <code>86.33333333333333</code>.</p>
+<p>The same trick works when the data comes in through pandas, which reads from an <a href="https://docs.python.org/3/library/io.html#io.StringIO"><code>io.StringIO</code></a> object exactly as it reads from a file, so a short string of inline CSV is enough to recreate most data-loading bugs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">"name,age</span><span class="ch">\n</span><span class="st">ada,35</span><span class="ch">\n</span><span class="st">lin,unknown</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"age"</span>].mean()   <span class="co"># TypeError: Cannot perform reduction 'mean' with string dtype</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three lines of data, and the bug is in plain sight: one <code>'unknown'</code> turned the whole <code>age</code> column into text, and you can’t average text. (In pandas 2 the message is worded differently, but it’s still a <code>TypeError</code>.) Notice that the made-up value is <code>'unknown'</code> and not <code>'N/A'</code>: pandas already treats <code>'N/A'</code> as missing, so an MRE built with it wouldn’t fail. Getting an MRE to fail is itself a lesson about what pandas does by default.</p>
-<p>Along the same lines, <strong>hard-code a small example</strong>: a three-row DataFrame or a five-item list is almost always enough to reproduce a logic bug, and it’s small enough to reason about end to end. <strong>Delete code aggressively</strong>; if removing a block doesn’t change the symptom, the block wasn’t involved. And <strong>freeze any randomness.</strong> If a bug only appears sometimes, fix the <a href="https://docs.python.org/3/library/random.html#random.seed">random seeds</a> (<code>random.seed(0)</code>, <code>numpy.random.seed(0)</code>, <code>torch.manual_seed(0)</code>) so that “sometimes” becomes “every time on this seed,” which you can debug.</p>
+<p>A three-row DataFrame or a five-item list, hard-coded like these, is almost always enough to reproduce a logic bug, and small enough to reason about end to end. Two more habits help. <strong>Delete code aggressively</strong>; if removing a block doesn’t change the symptom, the block wasn’t involved. And <strong>freeze any randomness.</strong> If a bug only appears sometimes, fix the <a href="https://docs.python.org/3/library/random.html#random.seed">random seeds</a> (<code>random.seed(0)</code>, <code>numpy.random.seed(0)</code>, <code>torch.manual_seed(0)</code>) so that “sometimes” becomes “every time on this seed,” which you can debug.</p>
 </section>
 </section>
 <section id="hypotheses-and-controlled-experiments" class="level2" data-number="6.6">
@@ -970,12 +982,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="designing-a-controlled-experiment" class="level3">
 <h3 class="anchored" data-anchor-id="designing-a-controlled-experiment">Designing a controlled experiment</h3>
 <p>A controlled experiment changes exactly one thing and watches exactly one outcome. That one-thing rule is the whole point: change two things and you can’t read the result. Most experiments are tiny: print a variable just before the line that crashes, swap one suspicious input for a value you know is good, run the same code in a fresh terminal or a new virtual environment to rule out leftover state, or comment out one transformation to see whether the bug is upstream or downstream of it.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two controlled experiments, one question each</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- before merge ---"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_a.shape, df_b.shape)              <span class="co"># experiment 1: the shapes going in</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> df_a.merge(df_b, on<span class="op">=</span><span class="st">"id"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- after merge ---"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.shape)                         <span class="co"># experiment 2: the shape coming out</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two controlled experiments, one question each</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- before merge ---"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_a.shape, df_b.shape)              <span class="co"># experiment 1: the shapes going in</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> df_a.merge(df_b, on<span class="op">=</span><span class="st">"id"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- after merge ---"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.shape)                         <span class="co"># experiment 2: the shape coming out</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Whatever you try, <em>write down</em> what you did and what happened. Even when the bug survives, the run was progress: you’ve ruled something out, and the space left to search just got smaller.</p>
 </section>
 </section>
@@ -986,17 +998,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="strategic-printing">Strategic printing</h3>
 <p>Print debugging goes wrong when it turns into printing everything and scrolling through the flood. It goes right when each print answers a question. Print a label with every value (<code>print("rows after merge:", len(df))</code>, not <code>print(len(df))</code>), so you know what you’re looking at. Print just before and just after the line you suspect. Print shapes, types, and small samples, never whole datasets. And when you’re done, delete the prints, or turn the ones worth keeping into log messages (see “Logging” below).</p>
 <p>In data work, a handful of prints answer most questions:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)                  <span class="co"># how many rows and columns?</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)                 <span class="co"># is each column the type you think?</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">3</span>))                <span class="co"># what do the values actually look like?</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"col"</span>].isna().mean())   <span class="co"># what fraction of this column is missing?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)                  <span class="co"># how many rows and columns?</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.dtypes)                 <span class="co"># is each column the type you think?</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">3</span>))                <span class="co"># what do the values actually look like?</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"col"</span>].isna().mean())   <span class="co"># what fraction of this column is missing?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="assertions-your-assumptions-written-down" class="level3">
 <h3 class="anchored" data-anchor-id="assertions-your-assumptions-written-down">Assertions: your assumptions, written down</h3>
 <p>An assertion is a statement that should be true. Python’s <a href="https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement"><code>assert</code> statement</a> does nothing when it is, and stops the program with your message when it isn’t. That’s what makes assertions so useful when you’re starting out: they turn silent wrongness into loud wrongness, at the moment it happens instead of three steps later.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"DataFrame has no rows"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns, <span class="st">"Missing expected column: date"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"age"</span>].<span class="bu">min</span>() <span class="op">&gt;=</span> <span class="dv">0</span>, <span class="st">"Negative age values present"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.shape[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"DataFrame has no rows"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns, <span class="st">"Missing expected column: date"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df[<span class="st">"age"</span>].<span class="bu">min</span>() <span class="op">&gt;=</span> <span class="dv">0</span>, <span class="st">"Negative age values present"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Any assumption you’re holding in your head (“this can’t be empty,” “that column is always there”) is a candidate for an assertion. <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> shows how a short block of them at the top of an analysis catches bad data before it spreads.</p>
 </section>
 </section>
@@ -1008,21 +1020,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="breakpoint-stop-here"><code>breakpoint()</code>: stop here</h3>
 <p>Python comes with a debugger, <a href="https://docs.python.org/3/library/pdb.html"><code>pdb</code></a>, and a built-in function, <a href="https://docs.python.org/3/library/functions.html#breakpoint"><code>breakpoint()</code></a>, that starts it. Put <code>breakpoint()</code> on a line of its own and run the script as usual. When Python reaches that line, it stops before running the next one and hands you the debugger’s prompt. A line where a program stops like this is a <a href="../chapters/appendix-glossary.html#term-breakpoint">breakpoint</a>.</p>
 <p>Here is a small script, <code>ages.py</code>, with a silent bug. The ages it can read are 35, 42, and 29, which average 35.3, but it prints <code>26.5</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_age(values):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">breakpoint</span>()</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> v.isdigit():</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            total <span class="op">+=</span> <span class="bu">int</span>(v)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">/</span> count</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_age(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_age(values):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">breakpoint</span>()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> v.isdigit():</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            total <span class="op">+=</span> <span class="bu">int</span>(v)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">/</span> count</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_age(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run it, and it stops at the first pass through the loop. Each time it stops, print the three variables that matter with <code>p</code>, then continue to the next stop with <code>c</code>:</p>
 <pre class="text"><code>$ python ages.py
 &gt; .../project/ages.py(9)mean_age()
@@ -1116,17 +1128,17 @@ Table&nbsp;6.1: The <code>pdb</code> commands that cover most debugging sessions
 <section id="after-a-crash-post-mortem-debugging" class="level3">
 <h3 class="anchored" data-anchor-id="after-a-crash-post-mortem-debugging">After a crash: post-mortem debugging</h3>
 <p>When a program crashes, the traceback tells you where (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). <strong>Post-mortem debugging</strong> lets you look around at that exact moment, with every variable still in place. Suppose an earlier version of the script, <code>crash.py</code>, converted every value with no check at all:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_age(values):</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> <span class="bu">int</span>(v)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">/</span> <span class="bu">len</span>(values)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_age(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_age(values):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> <span class="bu">int</span>(v)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">/</span> <span class="bu">len</span>(values)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_age(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run it under <code>pdb</code> with <code>python -m pdb</code>. It stops before the first line; type <code>c</code> to run the program. When the program raises an exception nothing catches, <code>pdb</code> prints the traceback and opens a prompt at the failing line:</p>
 <pre class="text"><code>$ python -m pdb crash.py
 &gt; .../project/crash.py(1)&lt;module&gt;()
@@ -1182,17 +1194,17 @@ Running 'cont' or 'step' will restart the program
 <section id="a-minimal-python-logging-setup" class="level3">
 <h3 class="anchored" data-anchor-id="a-minimal-python-logging-setup">A minimal Python logging setup</h3>
 <p>You don’t need a complicated configuration. This is enough for most projects:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>logging.INFO,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"</span><span class="sc">%(asctime)s</span><span class="st"> </span><span class="sc">%(levelname)s</span><span class="st"> </span><span class="sc">%(message)s</span><span class="st">"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>logger <span class="op">=</span> logging.getLogger(<span class="va">__name__</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>logger.info(<span class="st">"Starting pipeline"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>logger.info(<span class="st">"Loaded </span><span class="sc">%d</span><span class="st"> rows from </span><span class="sc">%s</span><span class="st">"</span>, <span class="bu">len</span>(df), <span class="st">"data/survey.csv"</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>logger.debug(<span class="st">"Hidden unless the level is DEBUG"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>logging.INFO,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"</span><span class="sc">%(asctime)s</span><span class="st"> </span><span class="sc">%(levelname)s</span><span class="st"> </span><span class="sc">%(message)s</span><span class="st">"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>logger <span class="op">=</span> logging.getLogger(<span class="va">__name__</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>logger.info(<span class="st">"Starting pipeline"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>logger.info(<span class="st">"Loaded </span><span class="sc">%d</span><span class="st"> rows from </span><span class="sc">%s</span><span class="st">"</span>, <span class="bu">len</span>(df), <span class="st">"data/survey.csv"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>logger.debug(<span class="st">"Hidden unless the level is DEBUG"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Each message comes out stamped with the time and its level, like <code>2026-09-25 13:37:31,751 INFO Starting pipeline</code>. From there, replace your debugging prints with <code>logger.info(...)</code> or <code>logger.debug(...)</code>.</p>
 </section>
 <section id="keep-secrets-out-of-your-logs" class="level3">
@@ -1214,14 +1226,14 @@ Running 'cont' or 'step' will restart the program
 <section id="write-the-test-that-would-have-caught-the-bug" class="level3">
 <h3 class="anchored" data-anchor-id="write-the-test-that-would-have-caught-the-bug">Write the test that would have caught the bug</h3>
 <p>After you fix a bug, ask what condition was violated, and write a test that fails on the old code and passes on the new. That’s a <a href="https://en.wikipedia.org/wiki/Regression_testing">regression test</a>: it exists so this particular bug can never quietly return. For the <code>ages.py</code> bug above, once <code>count += 1</code> is indented inside the <code>if</code> (and the <code>breakpoint()</code> is gone), a regression test for <a href="https://docs.pytest.org/en/stable/getting-started.html">pytest</a> is three lines of real content:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_ages.py</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ages <span class="im">import</span> mean_age</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_skips_values_that_are_not_ages():</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> mean_age([<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]) <span class="op">==</span> pytest.approx(<span class="fl">35.33</span>, <span class="bu">abs</span><span class="op">=</span><span class="fl">0.01</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_ages.py</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ages <span class="im">import</span> mean_age</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_skips_values_that_are_not_ages():</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> mean_age([<span class="st">"35"</span>, <span class="st">"42"</span>, <span class="st">"unknown"</span>, <span class="st">"29"</span>]) <span class="op">==</span> pytest.approx(<span class="fl">35.33</span>, <span class="bu">abs</span><span class="op">=</span><span class="fl">0.01</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run <code>pytest</code> in the same folder. On the fixed code it passes; put <code>count += 1</code> back where it was, and it fails with <code>assert 26.5 == 35.33 ± 0.01</code>. The same idea works for other bugs: if a column was missing, test that the required columns exist; if parsing failed on an odd value, test that the value is handled; if a function returned the wrong units, test that its result falls in the expected range.</p>
 </section>
 <section id="tests-should-give-the-same-answer-every-time" class="level3">
@@ -1236,11 +1248,11 @@ Running 'cont' or 'step' will restart the program
 <h3 class="anchored" data-anchor-id="notebook-hazards">Notebook hazards</h3>
 <p>Notebooks are wonderful for exploration and treacherous for debugging, because they invite hidden state. The classic traps are running cells out of order (so the variable on screen isn’t the variable in memory), redefining a function in a later cell and forgetting that results from earlier cells came from the old version, keeping a stale DataFrame around after you thought you’d replaced it, and installing a package into one environment while the notebook’s kernel runs in another.</p>
 <p>The single most reliable countermeasure is restarting the kernel and running every cell from the top (in JupyterLab, <strong>Kernel → Restart Kernel and Run All Cells</strong>). If your code doesn’t work after a clean restart, it doesn’t work, and any success you saw before was an illusion made of leftover state. Beyond that, give each cell one clear job, so it’s harder to create side effects by accident. And when something is truly mysterious, print the basics to confirm the world is what you think it is:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># When confused, dump the basics</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pandas <span class="im">as</span> pd</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pandas:"</span>, pd.__version__)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df type:"</span>, <span class="bu">type</span>(df), <span class="st">"df id:"</span>, <span class="bu">id</span>(df), <span class="st">"df shape:"</span>, df.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># When confused, dump the basics</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, pandas <span class="im">as</span> pd</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"python:"</span>, sys.executable)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pandas:"</span>, pd.__version__)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df type:"</span>, <span class="bu">type</span>(df), <span class="st">"df id:"</span>, <span class="bu">id</span>(df), <span class="st">"df shape:"</span>, df.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>id(df)</code> changes between two cells you expected to share a DataFrame, you’re looking at two different objects.</p>
 </section>
 <section id="command-line-and-operating-system-bugs" class="level3">
@@ -1268,35 +1280,35 @@ Running 'cont' or 'step' will restart the program
 <section id="file-not-found-that-is-really-wrong-folder" class="level3">
 <h3 class="anchored" data-anchor-id="file-not-found-that-is-really-wrong-folder">“File not found” that is really “wrong folder”</h3>
 <p>You run a script and Python stops with <code>FileNotFoundError: [Errno 2] No such file or directory: 'data/input.csv'</code>. You can see the file right there in your project. Rather than editing the path at random, stop and gather evidence about where the script thinks it is:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"data dir:"</span>, os.listdir(<span class="st">"data"</span>) <span class="cf">if</span> os.path.isdir(<span class="st">"data"</span>) <span class="cf">else</span> <span class="st">"missing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cwd:"</span>, os.getcwd())</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"data dir:"</span>, os.listdir(<span class="st">"data"</span>) <span class="cf">if</span> os.path.isdir(<span class="st">"data"</span>) <span class="cf">else</span> <span class="st">"missing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If <code>cwd</code> is the project folder and <code>data dir</code> lists the file, the path is fine and something else is going on (check the spelling and the extension). If <code>cwd</code> is some other folder, you’ve found it. A relative path like <code>data/input.csv</code> is looked up relative to wherever you <em>ran</em> the script from, not where the script lives, so the bug isn’t in your code at all: you just ran it from a different place. That’s the hypothesis, and there are two ways to test it. Run the script from the project folder and see if the error goes away, or better, build the path from the script’s own location with <a href="https://docs.python.org/3/library/pathlib.html"><code>pathlib</code></a>, so it works no matter where you run it from:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>HERE <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>DATA <span class="op">=</span> HERE <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"input.csv"</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> DATA.exists(), <span class="ss">f"Missing </span><span class="sc">{</span>DATA<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>HERE <span class="op">=</span> Path(<span class="va">__file__</span>).resolve().parent</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>DATA <span class="op">=</span> HERE <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"input.csv"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> DATA.exists(), <span class="ss">f"Missing </span><span class="sc">{</span>DATA<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That assertion is the verification step: it turns a silent assumption (“the file is here”) into a loud check that fails immediately, with the full path in the message, if the assumption ever breaks again. The lesson carries well beyond this one error: many “code” failures are about context, not logic. Confirm where you are before you change what you do.</p>
 </section>
 <section id="it-runs-but-the-results-are-wrong" class="level3">
 <h3 class="anchored" data-anchor-id="it-runs-but-the-results-are-wrong">“It runs, but the results are wrong”</h3>
 <p>Silent wrongness is harder than a crash, because nothing tells you where to look. Suppose a survey’s age column has some answers recorded as <code>unknown</code>. Earlier in the semester, averaging it crashed with the <code>TypeError</code> from the MRE above, so someone (maybe a chatbot, maybe you at 11 p.m.) added a fix that made the error go away:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">"name,age</span><span class="ch">\n</span><span class="st">ada,35</span><span class="ch">\n</span><span class="st">lin,unknown</span><span class="ch">\n</span><span class="st">sam,42</span><span class="ch">\n</span><span class="st">kai,unknown</span><span class="ch">\n</span><span class="st">rae,29</span><span class="ch">\n</span><span class="st">max,51</span><span class="ch">\n</span><span class="st">"</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"age"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"age"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>).fillna(<span class="dv">0</span>)   <span class="co"># the quick fix</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].mean())    <span class="co"># 26.166666666666668</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="st">"name,age</span><span class="ch">\n</span><span class="st">ada,35</span><span class="ch">\n</span><span class="st">lin,unknown</span><span class="ch">\n</span><span class="st">sam,42</span><span class="ch">\n</span><span class="st">kai,unknown</span><span class="ch">\n</span><span class="st">rae,29</span><span class="ch">\n</span><span class="st">max,51</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"age"</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">"age"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>).fillna(<span class="dv">0</span>)   <span class="co"># the quick fix</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].mean())    <span class="co"># 26.166666666666668</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>No error, and an average age of 26.2 for a group you know is mostly in their thirties and forties. The symptom statement: when I average the ages, I expect something near 40, but I get 26.2. The move is to stop looking at the final answer and inspect what the column holds on its way there:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].head())           <span class="co"># 35.0, 0.0, 42.0, 0.0, 29.0</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].dtype)            <span class="co"># float64</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].value_counts())   <span class="co"># 0.0 appears twice</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].head())           <span class="co"># 35.0, 0.0, 42.0, 0.0, 29.0</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].dtype)            <span class="co"># float64</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].value_counts())   <span class="co"># 0.0 appears twice</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The column is numeric now, but two people are zero years old. The hypothesis: <code>errors="coerce"</code> turned each <code>unknown</code> into a missing value, and <code>.fillna(0)</code> then turned each missing value into a real age of zero, which drags the average down. That zero is a <a href="https://en.wikipedia.org/wiki/Sentinel_value">sentinel value</a> you created yourself. The fix is to let missing stay missing. Tell <code>read_csv</code> that <code>unknown</code> means “no data,” and pandas skips those rows when it averages:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw), na_values<span class="op">=</span>[<span class="st">"unknown"</span>])</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].mean())           <span class="co"># 39.25</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df[<span class="st">"age"</span>].dropna() <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">all</span>(), <span class="st">"An age of 0 or less: check how missing ages were coded"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(StringIO(raw), na_values<span class="op">=</span>[<span class="st">"unknown"</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"age"</span>].mean())           <span class="co"># 39.25</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df[<span class="st">"age"</span>].dropna() <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">all</span>(), <span class="st">"An age of 0 or less: check how missing ages were coded"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The average is now 39.25, from the four people who gave an age, and the assertion guards the next version of the data: if anyone ever fills the gaps with zeros again, the script stops instead of quietly reporting a younger population. The general lesson is that debugging silent wrongness almost always means inspecting the intermediate results rather than the final answer, and that a “fix” which makes an error disappear hasn’t been verified until you’ve checked the numbers it produces. <a href="tabular-data.html" class="quarto-xref"><span>Chapter 21</span></a> covers codes like <code>unknown</code> and <code>-999</code> in more depth.</p>
 </section>
 </section>

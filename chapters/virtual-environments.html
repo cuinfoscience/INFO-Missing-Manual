@@ -767,7 +767,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A virtual environment solves both, and it’s less magical than it sounds. It’s a folder, usually <code>.venv</code> inside your project, holding three things:</p>
 <ul>
 <li>A <code>python</code> command that points at one of your existing Pythons (a <a href="https://en.wikipedia.org/wiki/Symbolic_link">symbolic link</a> at <code>.venv/bin/python</code> on macOS and Linux; <code>.venv\Scripts\python.exe</code> on Windows).</li>
-<li>Its own <code>site-packages</code> folder (<code>.venv/lib/python3.11/site-packages</code>, or <code>.venv\Lib\site-packages</code> on Windows), where everything you install goes.</li>
+<li>Its own <code>site-packages</code> folder (<code>.venv/lib/python3.12/site-packages</code>, or <code>.venv\Lib\site-packages</code> on Windows), where everything you install goes.</li>
 <li>A few <code>activate</code> scripts that put the venv’s commands at the front of your <code>PATH</code>.</li>
 </ul>
 <p>That’s the whole trick. There’s no <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)">sandbox</a> and no virtual machine: “activating” just means that when you type <code>python</code> or <code>pip</code>, the shell finds the venv’s copy first. Each venv has its own <code>site-packages</code>, so the pandas 2 project and the pandas 3 project each get their own pandas.</p>
@@ -867,9 +867,9 @@ Python installation or OS, by passing --break-system-packages.</code></pre>
 <pre class="text"><code>Name: pandas
 Version: 3.0.6
 ...
-Location: /Users/you/project/.venv/lib/python3.11/site-packages
+Location: /Users/you/project/.venv/lib/python3.12/site-packages
 Requires: numpy, python-dateutil</code></pre>
-<p>A <code>Location:</code> inside <code>.venv</code> means the package is in your venv; <code>~/.local/lib/python3.11/site-packages</code> or <code>/usr/lib/python3/dist-packages</code> means it landed outside. And <code>WARNING: Package(s) not found: pandas</code> means this Python doesn’t have it at all, which may be your whole answer.</p>
+<p>A <code>Location:</code> inside <code>.venv</code> means the package is in your venv; <code>~/.local/lib/python3.12/site-packages</code> or <code>/usr/lib/python3/dist-packages</code> means it landed outside. And <code>WARNING: Package(s) not found: pandas</code> means this Python doesn’t have it at all, which may be your whole answer.</p>
 </section>
 <section id="venv-vs.-conda" class="level2" data-number="15.4">
 <h2 data-number="15.4" class="anchored" data-anchor-id="venv-vs.-conda"><span class="header-section-number">15.4</span> <code>venv</code> vs.&nbsp;<code>conda</code></h2>
@@ -946,15 +946,15 @@ Requires: numpy, python-dateutil</code></pre>
 <h3 class="anchored" data-anchor-id="a-minimal-dockerfile">A minimal Dockerfile</h3>
 <p>A container runs from an <em>image</em>, built from a recipe called a <code>Dockerfile</code> at the root of your project. For a simple Python project it’s short:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.11-slim</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> python:3.12-slim</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> requirements.txt .</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">pip</span> install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--no-cache-dir</span> <span class="at">-r</span> requirements.txt</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"src/pipeline.py"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Each of the six instructions does one job. <code>FROM</code> picks a starting image, here the <a href="https://hub.docker.com/_/python">official Python image</a> with Python 3.11 on a minimal Debian Linux. <code>WORKDIR</code> sets the folder inside the container. The first <code>COPY</code> brings in just <code>requirements.txt</code>, and <code>RUN</code> installs the packages. The second <code>COPY</code> brings in your code, and <code>CMD</code> says what to run at start. Copying <code>requirements.txt</code> first isn’t fussiness: Docker <a href="https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/">caches each step</a>, so when only your code changes, the next build skips the slow install. The <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile reference</a> documents every instruction.</p>
+<p>Each of the six instructions does one job. <code>FROM</code> picks a starting image, here the <a href="https://hub.docker.com/_/python">official Python image</a> with Python 3.12 on a minimal Debian Linux. <code>WORKDIR</code> sets the folder inside the container. The first <code>COPY</code> brings in just <code>requirements.txt</code>, and <code>RUN</code> installs the packages. The second <code>COPY</code> brings in your code, and <code>CMD</code> says what to run at start. Copying <code>requirements.txt</code> first isn’t fussiness: Docker <a href="https://docs.docker.com/get-started/docker-concepts/building-images/using-the-build-cache/">caches each step</a>, so when only your code changes, the next build skips the slow install. The <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile reference</a> documents every instruction.</p>
 <p>Build the image, give it a name with <code>-t</code>, and run it:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-project .</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> my-project</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1089,7 +1089,7 @@ six==1.17.0</code></pre>
 <li>Break it on purpose: open a new terminal, don’t activate the venv, and run <code>python -c "import pandas"</code>. Read the traceback (see <a href="tracebacks.html" class="quarto-xref"><span>Chapter 7</span></a>). Then activate the venv and run it again.</li>
 <li>Pick an existing project of yours that doesn’t use a venv. Create one, install everything the project needs, freeze a <code>requirements.txt</code>, and commit it to git.</li>
 <li>Register a Jupyter kernel for a venv, open a notebook with it, and confirm with <code>import sys; print(sys.executable)</code> that the notebook is running your venv’s Python and not the system one. Then find it in <code>jupyter kernelspec list</code>.</li>
-<li>Clone a classmate’s project (or your own, on another computer) and get it running using only <code>git clone</code>, <code>python -m venv</code>, activation, and <code>pip install -r requirements.txt</code>. Time yourself: once the packages download, it should take a few minutes.</li>
+<li>Clone a classmate’s project (or your own, on another computer) and get it running using only <code>git clone</code>, <code>python -m venv</code>, activation, and <code>python -m pip install -r requirements.txt</code>. Time yourself: once the packages download, it should take a few minutes.</li>
 <li>Delete your <code>.venv/</code> folder and recreate it from <code>requirements.txt</code>. Confirm the project still runs. This is the real test of whether your project is reproducible.</li>
 </ol>
 </section>

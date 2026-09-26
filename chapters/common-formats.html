@@ -707,16 +707,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#when-to-use-which-format" id="toc-when-to-use-which-format" class="nav-link" data-scroll-target="#when-to-use-which-format"><span class="header-section-number">4.4</span> When to use which format</a></li>
   <li><a href="#validating-files" id="toc-validating-files" class="nav-link" data-scroll-target="#validating-files"><span class="header-section-number">4.5</span> Validating files</a></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">4.6</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">4.7</span> Worked examples</a>
+  <li><a href="#when-python-writes-the-file" id="toc-when-python-writes-the-file" class="nav-link" data-scroll-target="#when-python-writes-the-file"><span class="header-section-number">4.6</span> When Python writes the file</a></li>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">4.7</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">4.8</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#writing-a-project-readme-in-markdown" id="toc-writing-a-project-readme-in-markdown" class="nav-link" data-scroll-target="#writing-a-project-readme-in-markdown">1. Writing a project README in Markdown</a></li>
   <li><a href="#reading-a-quarto-yaml-config" id="toc-reading-a-quarto-yaml-config" class="nav-link" data-scroll-target="#reading-a-quarto-yaml-config">2. Reading a Quarto YAML config</a></li>
   <li><a href="#fixing-a-broken-json-file" id="toc-fixing-a-broken-json-file" class="nav-link" data-scroll-target="#fixing-a-broken-json-file">3. Fixing a broken JSON file</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.8</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">4.9</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-syntax-at-a-glance" id="toc-quick-reference-syntax-at-a-glance" class="nav-link" data-scroll-target="#quick-reference-syntax-at-a-glance"><span class="header-section-number">4.10</span> Quick reference: syntax at a glance</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.9</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">4.10</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-syntax-at-a-glance" id="toc-quick-reference-syntax-at-a-glance" class="nav-link" data-scroll-target="#quick-reference-syntax-at-a-glance"><span class="header-section-number">4.11</span> Quick reference: syntax at a glance</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/common-formats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -766,7 +767,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="../graphics/memes/common-formats.png" class="img-fluid" alt="Running Away Balloon Meme: a balloon labeled ‘CSV’ is running away from a person labeled ‘MD, YAML, JSON’ who are chasing them."></p>
 </div>
 <p>Here’s a scene that plays out in every class that uses GitHub or Quarto. You open <code>_quarto.yml</code> to add one line, a part title for the new section of your project, <code>- part: Part II: Results</code>. You save, run <code>quarto render</code>, and get <code>bad indentation of a mapping entry</code>, with a squiggle under a colon. You didn’t change any indentation. You didn’t touch any code. You added one line to what looks like a plain list, and the message blames something you never did.</p>
-<p>If that’s happened to you, you’re not missing some talent everyone else has. You’ve run into a file format that nobody formally taught you, whose rules are simple but strict. (The problem in that line is the second colon: YAML reads <code>Part II:</code> as the start of another key. Put the title in quotes and it works.) The same thing happens with the other two formats you meet constantly outside of code: a README that looks fine in your editor and turns into a wall of text on GitHub, or an API response you edited by hand that Python now refuses to read.</p>
+<p>If that’s happened to you, you’re not missing some talent everyone else has. You’ve run into a file format that nobody formally taught you, whose rules are simple but strict. (The problem in that line is the second colon: <a href="../chapters/appendix-glossary.html#term-yaml">YAML</a> reads <code>Part II:</code> as the start of another key. Put the title in quotes and it works.) The same thing happens with the other two formats you meet constantly outside of code: a README that looks fine in your editor and turns into a wall of text on GitHub, or an API response you edited by hand that Python now refuses to read.</p>
 <p>This chapter covers those three formats: <strong>Markdown</strong>, the way technical people write for each other; <strong>YAML</strong>, the way tools are configured; and <strong>JSON</strong>, the way programs pass data around. Markdown gets the most space, because you’ll write it every week for the rest of your career. The goal isn’t to make you a format expert. It’s to give you enough fluency to read a config file, write a formatted document, and fix a broken file by reading the error instead of guessing. It doesn’t cover formats for storing datasets, such as CSV and Parquet (that’s <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a>), or what to put <em>in</em> a README (<a href="documentation.html" class="quarto-xref"><span>Chapter 3</span></a>).</p>
 </section>
 <section id="why-read-this-chapter" class="level2 unnumbered">
@@ -1206,60 +1207,93 @@ Tip
 </div>
 </div>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">4.6</span> Stakes and politics</h2>
+<section id="when-python-writes-the-file" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="when-python-writes-the-file"><span class="header-section-number">4.6</span> When Python writes the file</h2>
+<p>So far you’ve been the one typing the file. Just as often your code writes it, and then Python has a surprise for anyone whose data holds names like Björk, places like São Paulo, or text in a script other than Latin:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> {<span class="st">"artist"</span>: <span class="st">"Björk"</span>, <span class="st">"cities"</span>: [<span class="st">"Reykjavík"</span>, <span class="st">"São Paulo"</span>, <span class="st">"Москва"</span>, <span class="st">"東京"</span>]}</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(record))</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(yaml.safe_dump(record))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>{"artist": "Bj\u00f6rk", "cities": ["Reykjav\u00edk", "S\u00e3o Paulo", "\u041c\u043e\u0441\u043a\u0432\u0430", "\u6771\u4eac"]}
+artist: "Bj\xF6rk"
+cities:
+- "Reykjav\xEDk"
+- "S\xE3o Paulo"
+- "\u041C\u043E\u0441\u043A\u0432\u0430"
+- "\u6771\u4EAC"</code></pre>
+<p>Nothing is broken. By default, both libraries replace every character outside plain <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> with an escape code, and any parser turns <code>Bj\u00f6rk</code> back into <code>Björk</code> when it reads the file. But no person can proofread <code>\u6771\u4eac</code> as 東京, or search the file for “Björk” and find it. To get readable text, ask for it: pass <code>ensure_ascii=False</code> to <a href="https://docs.python.org/3/library/json.html#json.dumps"><code>json.dumps</code></a> or <code>json.dump</code>, and <code>allow_unicode=True</code> to PyYAML’s <code>yaml.dump</code> or <code>yaml.safe_dump</code>.</p>
+<p>When you write to a file, add one more thing, <code>encoding="utf-8"</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"record.json"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    json.dump(record, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"record.yml"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    yaml.safe_dump(record, f, allow_unicode<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now <code>record.yml</code> reads the way you’d hope:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">artist</span><span class="kw">:</span><span class="at"> Björk</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cities</span><span class="kw">:</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Reykjavík</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> São Paulo</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Москва</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 東京</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Without <code>encoding=</code>, <a href="https://docs.python.org/3/library/functions.html#open"><code>open</code></a> uses whatever encoding your computer’s settings name. On a Mac or Linux that’s almost always <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a>. On Windows it has usually been an older encoding that depends on the system’s language (cp1252 on an English-language machine), which has no way to write Москва or 東京, so the script that works for your teammate stops on yours with <code>UnicodeEncodeError: 'charmap' codec can't encode characters</code>. Starting with <a href="https://peps.python.org/pep-0686/">Python 3.15</a>, UTF-8 becomes the default everywhere, but writing <code>encoding="utf-8"</code> costs nothing and works on every version. Read the file back with the same <code>encoding="utf-8"</code>.</p>
+</section>
+<section id="stakes-and-politics" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">4.7</span> Stakes and politics</h2>
 <p>Say you’re configuring a survey that runs in five countries, listed by their two-letter <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">country codes</a>: <code>countries: [DE, FR, GB, NO, SE]</code>. Load that file with PyYAML and you get back <code>['DE', 'FR', 'GB', False, 'SE']</code>. Under YAML 1.1, <code>NO</code> is one of the ways to spell false, so Norway quietly becomes a boolean. Developers call it <a href="https://hitchdev.com/strictyaml/why/implicit-typing-removed/">the Norway problem</a>, and it’s the same trap as <code>yes</code> and <code>3.10</code> above, landing on a country.</p>
 <p>Nobody set out to drop Norway from anyone’s data. Years earlier, someone decided which words a parser should treat as English answers rather than as data, and the cost of that choice fell on whatever happened to collide with the list. YAML 1.2 dropped the rule in 2009, but widely used parsers still follow the older one, so the default you get depends on the library someone else picked.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when a format guesses what your values mean, ask whose words and names its guesses were built around, and quote the values it might get wrong.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">4.7</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">4.8</span> Worked examples</h2>
 <section id="writing-a-project-readme-in-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="writing-a-project-readme-in-markdown">1. Writing a project README in Markdown</h3>
 <p>You’ve just started a class project analyzing campus dining data, and your teammates need to know how to get it running. Here’s a README that tells them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Campus Dining Analysis</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>Analysis of CU Boulder dining hall traffic patterns for INFO 2301.</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Clone this repository.</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Create a virtual environment: <span class="in">`python -m venv .venv`</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Activate it: <span class="in">`source .venv/bin/activate`</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Install dependencies: <span class="in">`pip install -r requirements.txt`</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>The raw data is in <span class="in">`data/raw/dining_traffic.csv`</span> (not tracked in git).</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>Download it from the shared Google Drive link in the project doc.</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Usage</span></span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/clean_data.py</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/analyze.py</span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Team</span></span>
-<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Alice** — data cleaning</span>
-<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bob** — visualization</span>
-<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Carol** — statistical analysis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Campus Dining Analysis</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>Analysis of CU Boulder dining hall traffic patterns for INFO 2301.</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Clone this repository.</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Create a virtual environment: <span class="in">`python -m venv .venv`</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Activate it: <span class="in">`source .venv/bin/activate`</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Install dependencies: <span class="in">`pip install -r requirements.txt`</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>The raw data is in <span class="in">`data/raw/dining_traffic.csv`</span> (not tracked in git).</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>Download it from the shared Google Drive link in the project doc.</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Usage</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/clean_data.py</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/analyze.py</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Team</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Alice** — data cleaning</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bob** — visualization</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Carol** — statistical analysis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Notice how much of this chapter it uses: headings to break it into sections a teammate can jump to, a numbered list for steps that happen in order, backticks around every command and path, and a fenced code block, with a language hint, for commands to run.</p>
 <p>Notice the fences around the example, too. Because the README contains its own triple-backtick code block, the whole example is wrapped in a <em>four</em>-backtick fence. A fenced code block only ends at a fence at least as long as the one that opened it, so the inner <code>```</code> lines stay inside the example instead of ending it early. You’ll need the same trick whenever you write documentation <em>about</em> Markdown.</p>
 </section>
 <section id="reading-a-quarto-yaml-config" class="level3">
 <h3 class="anchored" data-anchor-id="reading-a-quarto-yaml-config">2. Reading a Quarto YAML config</h3>
 <p>Here’s a snippet from a <code>_quarto.yml</code>. Before reading the explanation below it, try describing its structure yourself:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Project"</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Alice"</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> index.qmd</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"Part I"</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> intro.qmd</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> methods.qmd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">book</span><span class="kw">:</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Project"</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Alice"</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">chapters</span><span class="kw">:</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> index.qmd</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">part</span><span class="kw">:</span><span class="at"> </span><span class="st">"Part I"</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">chapters</span><span class="kw">:</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> intro.qmd</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> methods.qmd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The top-level key <code>book</code> holds three keys, <code>title</code>, <code>author</code>, and <code>chapters</code>, which you can tell belong together because they’re indented the same amount. <code>chapters</code> holds a list with two items, marked by the two dashes at the same indent. The first item is just a filename, <code>index.qmd</code>. The second item is itself a small set of keys: a <code>part</code> title and its own nested <code>chapters</code> list, holding <code>intro.qmd</code> and <code>methods.qmd</code>. If you added a third chapter to Part I, its dash would need to line up with <code>- intro.qmd</code>. Line it up with <code>- part:</code> instead and it becomes a third item in the outer list, so the chapter lands after Part I instead of inside it, with no error to warn you. (Quarto’s guide to <a href="https://quarto.org/docs/projects/quarto-projects.html">project files</a> has more on what goes in <code>_quarto.yml</code>.)</p>
 </section>
 <section id="fixing-a-broken-json-file" class="level3">
@@ -1272,24 +1306,24 @@ Tip
   "source": "CU Dining Services"
 }</code></pre>
 <p>Rather than hunting by eye, save it as <code>broken.json</code> and let the validator find the problems one at a time:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> json.tool broken.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> json.tool broken.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>Expecting property name enclosed in double quotes: line 2 column 3 (char 4)</code></pre>
 <p>Line 2, column 3 is the <code>'</code> before <code>name</code>. <strong>Replace the single quotes</strong> around <code>name</code> and <code>dining_data</code> with double quotes and run it again:</p>
 <pre class="text"><code>Illegal trailing comma before end of array: line 3 column 38 (char 64)</code></pre>
 <p>That’s the comma after <code>"count"</code>. <strong>Delete the trailing comma</strong> and run it again. (Python versions before 3.13 describe this one less helpfully, as <code>Expecting value: line 3 column 39</code>, but they point at the same spot.)</p>
 <pre class="text"><code>Expecting ',' delimiter: line 5 column 3 (char 84)</code></pre>
 <p>This one points at line 5, but nothing is wrong with line 5. The parser finished <code>"rows": 1500</code> on line 4, expected a comma, and only noticed it was missing when it reached the next key. <strong>Add the comma at the end of line 4.</strong> Run the validator once more, and this time it prints the whole file back, neatly indented, instead of an error. That means it’s valid. Here’s the corrected file:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"dining_data"</span><span class="fu">,</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"columns"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"date"</span><span class="ot">,</span> <span class="st">"hall"</span><span class="ot">,</span> <span class="st">"count"</span><span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"rows"</span><span class="fu">:</span> <span class="dv">1500</span><span class="fu">,</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"source"</span><span class="fu">:</span> <span class="st">"CU Dining Services"</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"dining_data"</span><span class="fu">,</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"columns"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"date"</span><span class="ot">,</span> <span class="st">"hall"</span><span class="ot">,</span> <span class="st">"count"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"rows"</span><span class="fu">:</span> <span class="dv">1500</span><span class="fu">,</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"source"</span><span class="fu">:</span> <span class="st">"CU Dining Services"</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three errors, three runs, and you never had to guess. That last lesson carries over to almost every parser you’ll use: when an error points at a line that looks fine, look at the end of the line <em>before</em> it.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.8</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.9</span> Exercises</h2>
 <ol type="1">
 <li><p>Write a Markdown document with at least one heading, one ordered list, one unordered list, one code block, and one link. Render it on GitHub or in a Markdown previewer and confirm it looks the way you meant.</p></li>
 <li><p>Add a table and a task list to your document from exercise 1. Preview it in two different renderers, for example your editor’s Markdown preview and a GitHub gist. Note any differences between the two, and work out which of the features you used are GFM extensions rather than core Markdown.</p></li>
@@ -1297,21 +1331,21 @@ Tip
 <li><p>Find a public JSON API (for example, <code>https://api.github.com/users/octocat</code>) and look at the response. Find the objects, arrays, strings, numbers, booleans, and nulls in it.</p></li>
 <li><p>Break a valid JSON file on purpose, three different ways: one trailing comma, one single-quoted string, and one missing comma. Run <code>python -m json.tool</code> after each and read the error message. Which messages pointed straight at the problem, and which pointed somewhere else?</p></li>
 <li><p>Convert this YAML to equivalent JSON by hand, then check your JSON with <code>python -m json.tool</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"analysis"</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">"1.0"</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">dependencies</span><span class="kw">:</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pandas</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> numpy</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> matplotlib</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">settings</span><span class="kw">:</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">debug</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">output_dir</span><span class="kw">:</span><span class="at"> results</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"analysis"</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">"1.0"</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pandas</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> numpy</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> matplotlib</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">settings</span><span class="kw">:</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">debug</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">output_dir</span><span class="kw">:</span><span class="at"> results</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Find a Markdown document (a GitHub README, a Jupyter notebook, or a Quarto file) that uses at least three different formatting features. Name each feature and explain what it does.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">4.9</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">4.10</span> One-page checklist</h2>
 <ul>
 <li><strong>Markdown:</strong> headings with <code>#</code>, emphasis with <code>*</code> and <code>**</code>, code with backticks, lists with <code>-</code> or <code>1.</code>, links with <code>[text](url)</code>, images with <code>![alt](path)</code>. A blank line separates paragraphs; a single newline is just a space.</li>
 <li><strong>Markdown layout:</strong> blank lines around every heading, list, and code block; nested list markers lined up with the text of the item above (two spaces under <code>-</code>, three under <code>1.</code>).</li>
@@ -1323,8 +1357,8 @@ Tip
 <li><strong>Know which format you’re editing</strong> before you start typing. The extension (<code>.md</code>, <code>.yml</code> or <code>.yaml</code>, <code>.json</code>) tells you.</li>
 </ul>
 </section>
-<section id="quick-reference-syntax-at-a-glance" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="quick-reference-syntax-at-a-glance"><span class="header-section-number">4.10</span> Quick reference: syntax at a glance</h2>
+<section id="quick-reference-syntax-at-a-glance" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="quick-reference-syntax-at-a-glance"><span class="header-section-number">4.11</span> Quick reference: syntax at a glance</h2>
 <table class="caption-top table">
 <thead>
 <tr class="header">

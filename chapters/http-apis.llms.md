@@ -10,7 +10,7 @@
 
 ![Hagrid Meme: Tried to scrape a website, got the entire campus blocked.](../graphics/memes/http-apis.png)
 
-You found the perfect data for your term project, and it lives behind an API. You paste one of its URLs into your browser, data comes back, and the hard part seems over. So you write a loop over 3,000 IDs, start it, and go to dinner. When you come back, the notebook is stuck on item 1,412. Or it crashed with `KeyError: 'results'`, because response 1,413 wasn’t data at all but a message saying you’d made too many requests.
+You found the perfect data for your term project, and it lives behind an [API](../chapters/appendix-glossary.llms.md#term-api). You paste one of its URLs into your browser, data comes back, and the hard part seems over. So you write a loop over 3,000 IDs, start it, and go to dinner. When you come back, the notebook is stuck on item 1,412. Or it crashed with `KeyError: 'results'`, because response 1,413 wasn’t data at all but a message saying you’d made too many requests.
 
 If that’s happened to you, you’re in good company. Almost everyone’s first data-collection script works for ten requests and falls over somewhere in the next thousand. Networks are unreliable, servers get busy, and the people who run them set rules about how fast you may ask, and none of that shows up when you test one URL in a browser.
 
@@ -313,6 +313,52 @@ Each row is now one label on one issue, the tidy shape [sec-tabular-data](#sec-t
 
 The habit that saves the most time: the first few times you call a new API, print `payload.keys()` and one record before writing code for it.
 
+### Save the raw response before you parse it
+
+Everything so far parses a response the moment it arrives, which is fine while you’re exploring. Once you’re collecting for real, it costs you later. Say you find a bug in your flattening code a week in: to fix the DataFrame, you have to ask the API for everything again, and it may not give you the same answer, because posts get edited and deleted and agencies revise their numbers. So write each response to disk exactly as it arrived, in `data/raw/` (the read-only folder [sec-project-management](#sec-project-management) describes), with the time you asked in the file name, and parse from the file. This example asks the [World Bank’s indicators API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation), which needs no key, for three countries’ populations:
+
+``` python
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+import requests
+
+resp = requests.get(
+    "https://api.worldbank.org/v2/country/US;CA;MX/indicator/SP.POP.TOTL",
+    params={"format": "json", "date": "2024"},
+    headers={"User-Agent": "my-term-project/0.1 (contact: you@example.edu)"},
+    timeout=10,
+)
+resp.raise_for_status()
+
+# Save exactly what came back, named for when you asked (in UTC)
+stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M%SZ")
+raw_path = Path("data/raw") / f"worldbank-population-{stamp}.json"
+raw_path.parent.mkdir(parents=True, exist_ok=True)
+raw_path.write_bytes(resp.content)
+print(raw_path)
+
+# Parse from the file, not from resp
+with open(raw_path, encoding="utf-8") as f:
+    meta, records = json.load(f)
+print(meta["lastupdated"])
+df = pd.json_normalize(records)
+print(df[["country.value", "date", "value"]])
+```
+
+``` text
+data/raw/worldbank-population-2026-09-26T185340Z.json
+2026-07-13
+   country.value  date      value
+0         Canada  2024   41262329
+1         Mexico  2024  130861007
+2  United States  2024  340003797
+```
+
+The file holds `resp.content`, the bytes the server sent, rather than `resp.text`, Python’s decoding of them. The time is in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time), so the names sort in order wherever you are, and it has no colons (`185340`, not `18:53:40`), which Windows doesn’t allow in [file names](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file). The `lastupdated` line shows why the date matters: the World Bank says it last updated this data in July 2026, and next year’s request may bring back different numbers. Now a parsing bug means re-running your code on the file, not re-requesting everything, and the file shows what the API returned on that date. In a loop over pages, put the page number in the name too.
+
 ## 24.6 API keys and secrets
 
 Most useful APIs want to know who’s asking, so they give you an [API key](https://en.wikipedia.org/wiki/API_key) (or a token, which works the same way here) to send with every request. Wherever it goes, the key must not live in your code. A key typed into a notebook ends up in a commit, and commits end up on GitHub, where automated scanners look for exactly that. Keep it in an [environment variable](https://en.wikipedia.org/wiki/Environment_variable) instead, and read it with `os.environ`:
@@ -391,6 +437,10 @@ robots.crawl_delay("my-term-project")  # seconds to wait between requests, or No
 ```
 
 A site’s terms of service can also forbid automated collection that `robots.txt` never mentions, and ignoring either can get your address blocked. On a campus network, many people’s traffic can leave through the same few addresses, so a block aimed at your script can land on everyone around you. If you aren’t sure a plan is acceptable, ask your instructor before you run it.
+
+### When the data is about people
+
+Rate limits and `robots.txt` protect the server. They say nothing about the people in the data, and much of what gets collected through APIs is about people: posts, profiles, comments, reviews. Collecting that for research can make your project [human-subjects research](https://en.wikipedia.org/wiki/Human_subject_research), which at a university may need review by an [institutional review board](https://en.wikipedia.org/wiki/Institutional_review_board) (IRB), the committee that checks research involving people for ethical problems. The posts being public doesn’t settle the question, and the answer isn’t always obvious, so let the people whose job it is make the call: ask your instructor about a class assignment, and ask your IRB about a thesis or anything you hope to publish, *before* you collect, not after. Asking costs an email; data you gathered without a review you needed may be data you can’t use. Whatever the answer, request and keep only the fields your question needs (a study of when people post doesn’t need their usernames), decide in advance what you’ll do when someone deletes a post you’ve already saved, and check what the API’s terms of service say about both. [sec-project-management](#sec-project-management) covers keeping data like this out of your repository.
 
 ## 24.8 Pages of results
 
@@ -550,6 +600,7 @@ load_dotenv()
 - Try a new API with `curl -i` first, and read the status line.
 - Pass `timeout=` to every request.
 - Call `resp.raise_for_status()` or check `resp.ok` before `resp.json()`.
+- Save each raw response to `data/raw/` with a UTC timestamp in its name, and parse from the file.
 - If `resp.json()` fails, print `resp.status_code` and `resp.text[:300]`.
 - Pass query parameters as a `params=` dictionary, not by hand in the URL.
 - Send a descriptive `User-Agent` with a way to contact you.
@@ -558,6 +609,7 @@ load_dotenv()
 - Sleep between requests; handle 429 with `Retry-After` or exponential backoff.
 - Assume a list endpoint is paginated until you’ve checked.
 - Read `robots.txt` and the terms of service before collecting from a website.
+- Collecting posts, profiles, or comments for research? Ask your IRB before you start.
 - Prefer an official SDK when one exists, and a bulk download when you need everything.
 
 > **NOTE:**

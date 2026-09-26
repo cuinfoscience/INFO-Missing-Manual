@@ -869,6 +869,13 @@ ModuleNotFoundError: No module named 'seaborn'</code></pre>
                ^
 SyntaxError: '(' was never closed</code></pre>
 <p>A <a href="https://docs.python.org/3/library/exceptions.html#SyntaxError"><code>SyntaxError</code></a> is different from every other error in this list, and you can see it in the output: there’s no <code>Traceback (most recent call last)</code> header and no stack. Python couldn’t even read the file, so nothing ran. Recent versions of Python give much friendlier messages here than older ones did. You’ll see things like <code>'(' was never closed</code>, <code>expected ':'</code> (a <code>def</code>, <code>for</code>, <code>if</code>, or <code>while</code> line missing its colon), and <code>Missing parentheses in call to 'print'. Did you mean print(...)?</code>, which is what you get from old Python 2 code like <code>print "hello"</code>. Sometimes all you get is a plain <code>SyntaxError: invalid syntax</code>. Look at the caret first, then at the line or two above it: an unclosed bracket or quote on one line often isn’t noticed until the next.</p>
+<p>One <code>SyntaxError</code> catches nearly everyone once. You type <code>python</code>, and then, at Python’s <code>&gt;&gt;&gt;</code> prompt, the install command from your instructions:</p>
+<pre class="text"><code>&gt;&gt;&gt; pip install pandas
+  File "&lt;stdin&gt;", line 1
+    pip install pandas
+        ^^^^^^^
+SyntaxError: invalid syntax</code></pre>
+<p>The command is fine; it’s in the wrong place. <code>pip install</code> is for your shell, the prompt that ends in <code>$</code>, <code>%</code>, or <code>&gt;</code>, and <code>&gt;&gt;&gt;</code> means you’re talking to Python, which tries to read the line as Python code. Leave Python with <code>exit()</code> (or <code>Ctrl + D</code>; on Windows, <code>Ctrl + Z</code> and then Enter) and run the command at the shell prompt. In a Jupyter notebook, where every cell is Python, run <code>%pip install pandas</code> in a cell instead. <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a> shows how to tell the prompts apart. (Python 3.13 and later name the file <code>&lt;python-input-0&gt;</code> instead of <code>&lt;stdin&gt;</code>.)</p>
 </section>
 <section id="indentationerror-whitespace-that-doesnt-line-up" class="level3">
 <h3 class="anchored" data-anchor-id="indentationerror-whitespace-that-doesnt-line-up">IndentationError: whitespace that doesn’t line up</h3>
@@ -939,17 +946,17 @@ FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'</code></pre>
 <pre class="text"><code>The above exception was the direct cause of the following exception:</code></pre>
 <p>Both mean the same basic thing: some code caught the first error and, while dealing with it, a second error was raised. Python shows you both, oldest first, so the block at the top is where the trouble began and the block at the bottom is where it ended. The two phrases tell you <em>how</em> the second error came about, and that changes which one you fix.</p>
 <p><strong>“During handling of the above exception”</strong> usually means the error-handling code itself had a bug. This script tries to turn price strings into numbers and fall back to “not a number” when it can’t:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prices.py</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>raw_prices <span class="op">=</span> [<span class="st">"12.50"</span>, <span class="st">"89.25"</span>, <span class="st">"call for price"</span>]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>prices <span class="op">=</span> []</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> raw <span class="kw">in</span> raw_prices:</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        prices.append(<span class="bu">float</span>(raw))</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        prices.append(flaot(<span class="st">"nan"</span>))</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prices)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prices.py</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>raw_prices <span class="op">=</span> [<span class="st">"12.50"</span>, <span class="st">"89.25"</span>, <span class="st">"call for price"</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>prices <span class="op">=</span> []</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> raw <span class="kw">in</span> raw_prices:</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        prices.append(<span class="bu">float</span>(raw))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        prices.append(flaot(<span class="st">"nan"</span>))</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prices)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>Traceback (most recent call last):
   File "/Users/you/project/prices.py", line 6, in &lt;module&gt;
     prices.append(float(raw))
@@ -1049,11 +1056,11 @@ KeyError: 'date'</code></pre>
 <section id="a-keyerror-in-pandas" class="level3">
 <h3 class="anchored" data-anchor-id="a-keyerror-in-pandas">1. A KeyError in pandas</h3>
 <p>You have a small file of sales, <code>sales.csv</code>, whose first line is <code>Date,store,amount</code>. You run this script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sales_report.py</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sales_report.py</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"sales.csv"</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>and get:</p>
 <pre class="text"><code>Traceback (most recent call last):
   File "/Users/you/project/.venv/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3641, in get_loc
@@ -1080,20 +1087,20 @@ KeyError: 'date'</code></pre>
 <p><strong>Read the last line first.</strong> <code>KeyError: 'date'</code>: something asked for a key called <code>date</code> and didn’t find it.</p>
 <p><strong>Find your frame.</strong> The top block is entirely pandas: its first frame is in <code>site-packages</code>, and the rest are compiled <code>.pyx</code> files. That block is pandas looking the name up internally, and you can skip it. In the bottom block, scanning up from the bottom, you pass <code>base.py</code> and <code>frame.py</code> and reach <code>sales_report.py</code>, line 4. The markers under that line (<code>~~^^^^^^^^</code>) point at <code>df["date"]</code>, not at <code>.dt.year</code> or <code>.value_counts()</code>. So the problem isn’t the date handling at all; pandas can’t find a column called <code>date</code>.</p>
 <p><strong>Look at what’s really there.</strong> Run <code>print(df.columns.tolist())</code>, and you’ll see <code>['Date', 'store', 'amount']</code>. The column has a capital D. You could type <code>df["Date"]</code>, but it’s more durable to clean every name once, right after loading, so the next file’s <code>" Date "</code> doesn’t bite you either:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.strip().<span class="bu">str</span>.lower()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Expect the next error.</strong> With the name fixed, the same line now fails with <code>AttributeError: Can only use .dt accessor with datetimelike values</code>, the error from earlier in this chapter, because the column is still text. Convert it, and the script prints the year counts:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"date"</span>].dt.year.value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Fixing one error and meeting the next is normal. It’s progress, not failure: each traceback is further down the script than the last.</p>
 </section>
 <section id="a-numeric-column-that-wont-average" class="level3">
 <h3 class="anchored" data-anchor-id="a-numeric-column-that-wont-average">2. A “numeric” column that won’t average</h3>
 <p>Your file <code>measurements.csv</code> has a <code>reading</code> column of numbers, with a few gaps. You run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># measurements_report.py</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># measurements_report.py</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>and get:</p>
 <pre class="text"><code>Traceback (most recent call last):
   File "/Users/you/project/measurements_report.py", line 4, in &lt;module&gt;
@@ -1120,32 +1127,32 @@ TypeError: Cannot perform reduction 'mean' with string dtype</code></pre>
 <p><strong>Read the last line first.</strong> pandas can’t take the mean of a column whose type is <em>string</em>. That’s surprising, because <code>reading</code> is supposed to hold numbers.</p>
 <p><strong>Find your frame.</strong> Six frames are pandas; one is yours, at the very top: line 4, the <code>.mean()</code> call. But <code>.mean()</code> isn’t the mistake. It’s doing its job on a column that came out of <code>read_csv</code> as text, so the problem started one line earlier, when the file was read.</p>
 <p><strong>Find the value that made it text.</strong> <code>print(df.dtypes)</code> confirms that <code>reading</code> is <code>str</code>. To see which values couldn’t be read as numbers, convert with <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html"><code>pd.to_numeric</code></a> and look at what turned into missing:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>as_numbers <span class="op">=</span> pd.to_numeric(df[<span class="st">"reading"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[as_numbers.isna() <span class="op">&amp;</span> df[<span class="st">"reading"</span>].notna()])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>as_numbers <span class="op">=</span> pd.to_numeric(df[<span class="st">"reading"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[as_numbers.isna() <span class="op">&amp;</span> df[<span class="st">"reading"</span>].notna()])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This prints one row, site <code>D</code>, whose reading is the text <code>no reading</code>. (The file also has an <code>N/A</code>, but <code>read_csv</code> already treats that as missing, so it doesn’t show up.) One stray string was enough to make the whole column text.</p>
 <p><strong>Fix it where the file is read.</strong> Tell <code>read_csv</code> that <code>no reading</code> means missing, and the mean works (it prints <code>3.65</code> for this file):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>, na_values<span class="op">=</span>[<span class="st">"no reading"</span>])</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"measurements.csv"</span>, na_values<span class="op">=</span>[<span class="st">"no reading"</span>])</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"reading"</span>].mean())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you’d tried <code>df["reading"].astype(float)</code> instead, you’d have gotten <code>ValueError: could not convert string to float: 'no reading'</code>, which names the culprit directly. Different route, same cause. See <a href="data-file-formats.html" class="quarto-xref"><span>Chapter 20</span></a> for the other ways missing values hide in files.</p>
 </section>
 <section id="a-chained-traceback-from-a-web-request" class="level3">
 <h3 class="anchored" data-anchor-id="a-chained-traceback-from-a-web-request">3. A chained traceback from a web request</h3>
 <p>This script asks a web server for a user’s profile and parses the reply as <a href="../chapters/appendix-glossary.html#term-json">JSON</a>, wrapping any parsing failure in an error of its own:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fetch.py</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_user(user_id):</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://example.com/users/</span><span class="sc">{</span>user_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(resp.text)</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> load_user(<span class="dv">42</span>)</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> json.JSONDecodeError <span class="im">as</span> e:</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"failed to load user profile"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fetch.py</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_user(user_id):</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(<span class="ss">f"https://example.com/users/</span><span class="sc">{</span>user_id<span class="sc">}</span><span class="ss">"</span>, timeout<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(resp.text)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> load_user(<span class="dv">42</span>)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> json.JSONDecodeError <span class="im">as</span> e:</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"failed to load user profile"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It prints:</p>
 <pre class="text"><code>Traceback (most recent call last):
   File "/Users/you/project/fetch.py", line 12, in &lt;module&gt;
@@ -1172,8 +1179,8 @@ Traceback (most recent call last):
 RuntimeError: failed to load user profile</code></pre>
 <p><strong>Read the last line, then the top block.</strong> The final error is a <a href="https://docs.python.org/3/library/exceptions.html#RuntimeError"><code>RuntimeError</code></a> that your own code raised on line 14, and all it says is that loading failed. It’s “the direct cause” phrase, so the reason is in the block above: a <a href="https://docs.python.org/3/library/json.html#json.JSONDecodeError"><code>JSONDecodeError</code></a> from <a href="https://docs.python.org/3/library/json.html#json.loads"><code>json.loads</code></a>, on line 8 of your file. <code>Expecting value: line 1 column 1 (char 0)</code> means the very first character of the reply wasn’t valid JSON, which in practice means the reply was empty or wasn’t JSON at all.</p>
 <p><strong>Look at what the server sent.</strong> Before the <code>json.loads</code> line, print the status and the start of the body:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.status_code)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.text[:<span class="dv">60</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.status_code)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resp.text[:<span class="dv">60</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It prints <code>404</code>, then <code>&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;title&gt;Example Domain&lt;/</code>. The server answered with an <a href="https://en.wikipedia.org/wiki/HTTP_404">HTTP 404</a> “not found” page written in HTML (unsurprisingly: <a href="https://en.wikipedia.org/wiki/Example.com">example.com</a> is a domain reserved for examples and has no user profiles). Nothing was wrong with the JSON parser; you were feeding it a web page. The durable fix is to check <a href="https://requests.readthedocs.io/en/latest/user/quickstart/#response-status-codes"><code>resp.status_code</code></a> before parsing, so the error you get says “the server said 404” instead of something about line 1, column 1. <a href="http-apis.html" class="quarto-xref"><span>Chapter 24</span></a> covers status codes and how to handle them.</p>
 </section>
 </section>

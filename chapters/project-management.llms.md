@@ -14,7 +14,7 @@ It’s the night before your group’s final project is due. The figures are in 
 
 If that sounds familiar, you’re in good company. Most student projects that go wrong go wrong this way, for reasons that have little to do with code: scattered files, a blurry goal, data nobody can trace, and decisions buried in private messages. The cure, [project management](https://en.wikipedia.org/wiki/Project_management), sounds like Gantt charts and status meetings, but for a small data project it’s much lighter: a one-page plan, a folder layout with an obvious home for every file, a few notes about the data, a README a stranger can follow, and a shared list of what needs doing.
 
-This chapter covers those habits, from a project’s first day to the check you run before handing it in, and its worked examples follow one small project, `coffee-sales`, through them. It doesn’t teach Git ([sec-git-github](#sec-git-github)), code review ([sec-collaboration](#sec-collaboration)), or automation ([sec-automation](#sec-automation)), but it shows where each fits.
+This chapter covers those habits, from a project’s first day to the check you run before handing it in, and its worked examples follow one small project, `coffee-sales`, through them. It doesn’t teach [Git](../chapters/appendix-glossary.llms.md#term-git) ([sec-git-github](#sec-git-github)), code review ([sec-collaboration](#sec-collaboration)), or automation ([sec-automation](#sec-automation)), but it shows where each fits.
 
 ## Why read this chapter
 
@@ -159,7 +159,7 @@ Code you can rewrite. Data you received once, from someone, under some terms, an
 
 ### Provenance: where did this data come from?
 
-Before you do anything else with a dataset, write down four things: **where it came from** (a URL, a file path, an API endpoint), **when you got it**, **its license or terms of use**, and **any access restrictions or privacy concerns**. That record is its provenance, the first link in its [data lineage](https://en.wikipedia.org/wiki/Data_lineage). Put it in a `provenance.md` beside the data or in the README, the moment you download the file; in three weeks you won’t remember.
+Before you do anything else with a dataset, write down four things: **where it came from** (a URL, a file path, an API endpoint), **when you got it**, **its [license](../chapters/appendix-glossary.llms.md#term-license) or terms of use**, and **any access restrictions or privacy concerns**. That record is its [provenance](../chapters/appendix-glossary.llms.md#term-provenance), the first link in its [data lineage](https://en.wikipedia.org/wiki/Data_lineage). Put it in a `provenance.md` beside the data or in the README, the moment you download the file; in three weeks you won’t remember.
 
 ``` markdown
 # data/raw/sales/
@@ -292,7 +292,7 @@ Because the dictionary is a file in your repository, its history is your schema�
 
 ### Sensitive data
 
-If the data might contain [personal information](https://en.wikipedia.org/wiki/Personal_data), treat it as sensitive from the moment it lands. List the columns that identify people (names, emails, phone numbers, addresses, student IDs), and keep access to as few people as possible. Sensitive data often shouldn’t live in the repository at all, even in an ignored folder: one careless `git add -A` or mistyped `.gitignore` line commits it, and once it’s pushed, copies may exist that you can’t delete. Before you share even aggregate results, check that nobody can be picked out through a small group or an unusual combination of attributes; [re-identification](https://en.wikipedia.org/wiki/Data_re-identification) from “anonymous” data is easier than it sounds. A leak can’t be undone, and a little paranoia costs almost nothing.
+If the data might contain [personal information](https://en.wikipedia.org/wiki/Personal_data), treat it as sensitive from the moment it lands. List the columns that identify people (names, emails, phone numbers, addresses, student IDs), and keep access to as few people as possible. Sensitive data often shouldn’t live in the repository at all, even in an ignored folder: one careless `git add -A` or mistyped `.gitignore` line commits it, and once it’s pushed, copies may exist that you can’t delete. Before you share even aggregate results, check that nobody can be picked out through a small group or an unusual combination of attributes; [re-identification](https://en.wikipedia.org/wiki/Data_re-identification) from “[anonymous](../chapters/appendix-glossary.llms.md#term-de-identification)” data is easier than it sounds. A leak can’t be undone, and a little paranoia costs almost nothing.
 
 ## 30.5 Documentation that makes a project runnable
 
