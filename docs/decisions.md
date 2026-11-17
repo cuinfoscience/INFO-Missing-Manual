@@ -4,6 +4,20 @@ Standing decisions for the book and its tools, newest first. Each entry gives th
 
 Entries dated before September 2026 were reconstructed from commit messages, pull requests, and the old `CLAUDE.md` when this log was started, and cite the PR that carried each one.
 
+## 2026-11-16 · How to take screenshots goes in Chapter 10, text first, annotated hand captures later
+
+**Decision** (the maintainer's request, "add a top-level section to chapter 10 (or propose an alternative) about how to take screenshots in macOS, Windows, and Linux", and their answers to a scoping round):
+
+- **Placement:** a top-level section in `file-system` (Chapter 10), `{#sec-filesystem-screenshots}`, framed around where a screenshot lands, since every screenshot is a file (or only a clipboard entry) that newcomers lose. Chosen over `operating-system` and over a new appendix.
+- **Scope:** a subsection per system: macOS, Windows 11, Linux (GNOME), and ChromeOS (GNOME as Ubuntu's and Fedora's default; ChromeOS because the peer review found Chromebooks missing). Shortcuts, where the file goes, the clipboard-only variants, and changing the save folder; then a short checklist of habits for hiding private information before sharing, with no opening story. Screen recordings, pulling text out of images, and annotating were not chosen.
+- **Length:** longer, with a subsection per system.
+- **Figures:** annotated screenshots of the macOS and Windows tools, captured by hand by the maintainer, with numbered markers in the book's style. `tools/shots` is to be extended so a hand capture recorded with `adopt` can carry markers placed by position, recorded in its provenance. GNOME and ChromeOS get text and tables only.
+- **Sequencing:** the text lands first with no figure references, so nothing renders broken; the toolkit change and the figures follow in later pull requests.
+
+**Why.** The maintainer's answers, 2026-11-16. Several chapters tell readers to use "a screenshot if the text can't be selected", and none said how to take one.
+
+**Where.** `chapters/file-system.qmd`; [`roadmap.md`](roadmap.md); [`handoff.md`](handoff.md) (what to capture).
+
 ## 2026-09-25 · A simulated peer review, anonymous, and a revision plan the maintainer decides
 
 **Decision** (the maintainer's request after Part VII, and a follow-up):

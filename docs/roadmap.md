@@ -30,6 +30,11 @@ Larger pieces with a written plan, waiting on the maintainer's decisions (listed
     - [ ] Phase 5: new chapters, as approved (charts and figures; sharing, archiving, and data ethics; writing at work)
     - [ ] Phase 6: practice you can check, part by part
 
+- [ ] **How to take screenshots, in Chapter 10** ([`decisions.md`](decisions.md), 2026-11-16): a section in `file-system` per system (macOS, Windows 11, GNOME, ChromeOS), where each capture lands, and habits for hiding private information.
+    - [x] The text, with no figures (#71)
+    - [ ] `tools/shots`: numbered markers placed by position on a hand capture recorded with `adopt`
+    - [ ] Annotated figures from the maintainer's macOS and Windows captures
+
 ## Chapter and section candidates
 
 In the maintainer's order of priority (September 2026). All of them come after the screenshots and the polish of existing chapters (see "Order of work" in [`decisions.md`](decisions.md)).
