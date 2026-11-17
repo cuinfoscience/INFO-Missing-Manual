@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,18 +75,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../chapters/operating-system.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-9a01bfd6df65136af83067365c1c6ba8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-eb8f170073725aebc42af3c4860b2e9c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-9a01bfd6df65136af83067365c1c6ba8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ae58ef20739a5ad0a373949d97dd65dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8fca77448fe56e31a3eb196189d80e5d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-ae58ef20739a5ad0a373949d97dd65dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -120,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles/layout.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -143,6 +144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -172,13 +174,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -272,6 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -286,13 +295,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../chapters/file-system.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../chapters/file-system.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -303,14 +312,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Missing Manual for Information Scientists</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/cuinfoscience/INFO-Missing-Manual" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=|url|" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -329,13 +338,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Part I — Practice of Technical Work</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Part I — Practice of Technical Work</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/questions.html" class="sidebar-item-text sidebar-link">
@@ -382,13 +388,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Part II — Computing Environment</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Part II — Computing Environment</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/operating-system.html" class="sidebar-item-text sidebar-link">
@@ -423,13 +426,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Part III — Python Management</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Part III — Python Management</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/package-management.html" class="sidebar-item-text sidebar-link">
@@ -470,13 +470,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Part IV — Working with Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Part IV — Working with Data</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/data-file-formats.html" class="sidebar-item-text sidebar-link">
@@ -511,13 +508,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text">Part V — Communication</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Part V — Communication</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/reading-scholarship.html" class="sidebar-item-text sidebar-link">
@@ -552,13 +546,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text">Part VI — Project Management</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Part VI — Project Management</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/project-management.html" class="sidebar-item-text sidebar-link">
@@ -593,13 +584,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Part VII — Algorithmic Systems</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-controls="quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-7-label">Part VII — Algorithmic Systems</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" aria-labelledby="quarto-sidebar-section-7-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ai-llm.html" class="sidebar-item-text sidebar-link">
@@ -634,13 +622,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-controls="quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-8-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-8" aria-labelledby="quarto-sidebar-section-8-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/appendix-glossary.html" class="sidebar-item-text sidebar-link">
@@ -663,7 +648,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
 <p><img src="../graphics/memes/file-system.png" class="chapter-meme img-fluid" alt="No Idea Dog Meme: Where Did I Save That File?"></p>
 </div></div>
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
@@ -679,14 +664,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#search-strategies-that-work" id="toc-search-strategies-that-work" class="nav-link" data-scroll-target="#search-strategies-that-work">Search strategies that work</a></li>
   <li><a href="#sort-and-view-for-diagnosis" id="toc-sort-and-view-for-diagnosis" class="nav-link" data-scroll-target="#sort-and-view-for-diagnosis">Sort and view for diagnosis</a></li>
   </ul></li>
-  <li><a href="#file-operations-and-safety" id="toc-file-operations-and-safety" class="nav-link" data-scroll-target="#file-operations-and-safety"><span class="header-section-number">10.6</span> File operations and safety</a>
+  <li><a href="#sec-filesystem-screenshots" id="toc-sec-filesystem-screenshots" class="nav-link" data-scroll-target="#sec-filesystem-screenshots"><span class="header-section-number">10.6</span> Screenshots: taking them, and finding them again</a>
+  <ul class="collapse">
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
+  <li><a href="#windows-11" id="toc-windows-11" class="nav-link" data-scroll-target="#windows-11">Windows 11</a></li>
+  <li><a href="#linux-gnome" id="toc-linux-gnome" class="nav-link" data-scroll-target="#linux-gnome">Linux (GNOME)</a></li>
+  <li><a href="#chromeos" id="toc-chromeos" class="nav-link" data-scroll-target="#chromeos">ChromeOS</a></li>
+  <li><a href="#before-you-share-a-screenshot" id="toc-before-you-share-a-screenshot" class="nav-link" data-scroll-target="#before-you-share-a-screenshot">Before you share a screenshot</a></li>
+  </ul></li>
+  <li><a href="#file-operations-and-safety" id="toc-file-operations-and-safety" class="nav-link" data-scroll-target="#file-operations-and-safety"><span class="header-section-number">10.7</span> File operations and safety</a>
   <ul class="collapse">
   <li><a href="#copy-vs-move-vs-rename" id="toc-copy-vs-move-vs-rename" class="nav-link" data-scroll-target="#copy-vs-move-vs-rename">Copy vs move vs rename</a></li>
   <li><a href="#delete-and-recover" id="toc-delete-and-recover" class="nav-link" data-scroll-target="#delete-and-recover">Delete and recover</a></li>
   <li><a href="#unzipping-an-archive" id="toc-unzipping-an-archive" class="nav-link" data-scroll-target="#unzipping-an-archive">Unzipping an archive</a></li>
   <li><a href="#permissions-basics-just-enough" id="toc-permissions-basics-just-enough" class="nav-link" data-scroll-target="#permissions-basics-just-enough">Permissions basics (just enough)</a></li>
   </ul></li>
-  <li><a href="#sec-filesystem-cloud" id="toc-sec-filesystem-cloud" class="nav-link" data-scroll-target="#sec-filesystem-cloud"><span class="header-section-number">10.7</span> Files in the cloud: sync, access, and sharing</a>
+  <li><a href="#sec-filesystem-cloud" id="toc-sec-filesystem-cloud" class="nav-link" data-scroll-target="#sec-filesystem-cloud"><span class="header-section-number">10.8</span> Files in the cloud: sync, access, and sharing</a>
   <ul class="collapse">
   <li><a href="#sync-backup-and-sharing-are-different-jobs" id="toc-sync-backup-and-sharing-are-different-jobs" class="nav-link" data-scroll-target="#sync-backup-and-sharing-are-different-jobs">Sync, backup, and sharing are different jobs</a></li>
   <li><a href="#online-only-files-the-name-is-here-the-contents-are-not" id="toc-online-only-files-the-name-is-here-the-contents-are-not" class="nav-link" data-scroll-target="#online-only-files-the-name-is-here-the-contents-are-not">Online-only files: the name is here, the contents are not</a></li>
@@ -697,34 +690,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sharing-links-and-permissions" id="toc-sharing-links-and-permissions" class="nav-link" data-scroll-target="#sharing-links-and-permissions">Sharing links and permissions</a></li>
   <li><a href="#your-university-account-will-not-last-forever" id="toc-your-university-account-will-not-last-forever" class="nav-link" data-scroll-target="#your-university-account-will-not-last-forever">Your university account will not last forever</a></li>
   </ul></li>
-  <li><a href="#common-student-pitfalls-and-how-to-avoid-them" id="toc-common-student-pitfalls-and-how-to-avoid-them" class="nav-link" data-scroll-target="#common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.8</span> Common student pitfalls (and how to avoid them)</a></li>
-  <li><a href="#bridging-to-the-terminal-and-programming" id="toc-bridging-to-the-terminal-and-programming" class="nav-link" data-scroll-target="#bridging-to-the-terminal-and-programming"><span class="header-section-number">10.9</span> Bridging to the terminal and programming</a>
+  <li><a href="#common-student-pitfalls-and-how-to-avoid-them" id="toc-common-student-pitfalls-and-how-to-avoid-them" class="nav-link" data-scroll-target="#common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.9</span> Common student pitfalls (and how to avoid them)</a></li>
+  <li><a href="#bridging-to-the-terminal-and-programming" id="toc-bridging-to-the-terminal-and-programming" class="nav-link" data-scroll-target="#bridging-to-the-terminal-and-programming"><span class="header-section-number">10.10</span> Bridging to the terminal and programming</a>
   <ul class="collapse">
   <li><a href="#why-file-habits-matter-for-code" id="toc-why-file-habits-matter-for-code" class="nav-link" data-scroll-target="#why-file-habits-matter-for-code">Why file habits matter for code</a></li>
   <li><a href="#cross-platform-path-handling-conceptual" id="toc-cross-platform-path-handling-conceptual" class="nav-link" data-scroll-target="#cross-platform-path-handling-conceptual">Cross-platform path handling (conceptual)</a></li>
   </ul></li>
-  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">10.10</span> Stakes and politics</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">10.11</span> Worked examples</a>
+  <li><a href="#stakes-and-politics" id="toc-stakes-and-politics" class="nav-link" data-scroll-target="#stakes-and-politics"><span class="header-section-number">10.11</span> Stakes and politics</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples"><span class="header-section-number">10.12</span> Worked examples</a>
   <ul class="collapse">
   <li><a href="#building-a-course-workspace-from-scratch" id="toc-building-a-course-workspace-from-scratch" class="nav-link" data-scroll-target="#building-a-course-workspace-from-scratch">Building a course workspace from scratch</a></li>
   <li><a href="#turning-a-messy-downloads-folder-into-a-clean-project" id="toc-turning-a-messy-downloads-folder-into-a-clean-project" class="nav-link" data-scroll-target="#turning-a-messy-downloads-folder-into-a-clean-project">Turning a messy Downloads folder into a clean project</a></li>
   <li><a href="#diagnosing-file-not-found" id="toc-diagnosing-file-not-found" class="nav-link" data-scroll-target="#diagnosing-file-not-found">Diagnosing “file not found”</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.12</span> Exercises</a></li>
-  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">10.13</span> One-page checklist</a></li>
-  <li><a href="#quick-reference-key-locations" id="toc-quick-reference-key-locations" class="nav-link" data-scroll-target="#quick-reference-key-locations"><span class="header-section-number">10.14</span> Quick reference: key locations</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.13</span> Exercises</a></li>
+  <li><a href="#one-page-checklist" id="toc-one-page-checklist" class="nav-link" data-scroll-target="#one-page-checklist"><span class="header-section-number">10.14</span> One-page checklist</a></li>
+  <li><a href="#quick-reference-key-locations" id="toc-quick-reference-key-locations" class="nav-link" data-scroll-target="#quick-reference-key-locations"><span class="header-section-number">10.15</span> Quick reference: key locations</a>
   <ul class="collapse">
   <li><a href="#windows-typical" id="toc-windows-typical" class="nav-link" data-scroll-target="#windows-typical">Windows (typical)</a></li>
   <li><a href="#macos-typical" id="toc-macos-typical" class="nav-link" data-scroll-target="#macos-typical">macOS (typical)</a></li>
+  <li><a href="#linux-gnome-and-chromeos" id="toc-linux-gnome-and-chromeos" class="nav-link" data-scroll-target="#linux-gnome-and-chromeos">Linux (GNOME) and ChromeOS</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/edit/main/chapters/file-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/INFO-Missing-Manual/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../chapters/file-system.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/operating-system.html">Part II — Computing Environment</a></li><li class="breadcrumb-item"><a href="../chapters/file-system.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-filesystem" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Local File System</span></span></h1>
 </div>
@@ -767,12 +761,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>It’s 11 p.m., the lab is due at midnight, and your notebook ran fine on Sunday. Since then you’ve done something responsible: you moved the lab out of <code>Downloads</code> into a tidy new <code>Courses</code> folder. Now the first cell fails with <code>FileNotFoundError</code>, and you can see the data file sitting right there in Finder. Nothing is wrong with the file, and nothing is wrong with the code. What changed is <em>where the code was looking from</em>, and nobody ever told you that was a thing.</p>
 <p>If that has happened to you, you’re in good company. Most of the frustration beginners run into with computers isn’t about code at all. It’s losing track of files, not knowing where a download went, and breaking things by moving or renaming them.</p>
-<p>This chapter fills that gap, on <strong>Windows</strong> (File Explorer) and <strong>macOS</strong> (Finder): how files, folders, and paths fit together; how to get around quickly; how to organize work so it scales from one assignment to a semester-long project; how to find things, copy and delete safely, and live with cloud sync; and how all of it connects to your code. It doesn’t teach the terminal itself (that’s <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>) or operating-system settings and backups (<a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>).</p>
+<p>This chapter fills that gap, on <strong>Windows</strong> (File Explorer) and <strong>macOS</strong> (Finder): how files, folders, and paths fit together; how to get around quickly; how to organize work so it scales from one assignment to a semester-long project; how to find things (screenshots included), copy and delete safely, and live with cloud sync; and how all of it connects to your code. It doesn’t teach the terminal itself (that’s <a href="terminal.html" class="quarto-xref"><span>Chapter 11</span></a>) or operating-system settings and backups (<a href="operating-system.html" class="quarto-xref"><span>Chapter 9</span></a>).</p>
 </section>
 <section id="why-read-this-chapter" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="why-read-this-chapter">Why read this chapter</h2>
 <ul>
-<li>You saved a handout from Canvas five minutes ago, and now you can’t find it anywhere on your computer.</li>
+<li>You saved a handout from Canvas, or took a screenshot, five minutes ago, and now you can’t find it anywhere on your computer.</li>
 <li>Your notebook worked yesterday, and today it says <code>No such file or directory: 'data/raw/survey.csv'</code> even though you can see the file right there.</li>
 <li>You renamed <code>data.csv</code> and it quietly became <code>data.csv.txt</code>, or <code>data</code> with no extension at all, and now nothing opens it properly.</li>
 <li>A path you copied, like <code>C:\Users\you\OneDrive - Example University\Documents</code>, breaks the moment you paste it into a terminal.</li>
@@ -802,7 +796,7 @@ Relative path (either):    ../data.csv              (one folder up)</code></pre>
 <p>When you open File Explorer (the manila-folder icon, usually pinned to the taskbar), three parts of the window are worth learning by name. The <strong>sidebar</strong> down the left has shortcuts to places like Quick Access and This PC. The <strong>main pane</strong> shows what’s inside the folder you’ve selected. And the <strong>address bar</strong> across the top shows where you are as a row of clickable segments called <em>breadcrumbs</em>. Click any segment to jump straight back to that folder: deep inside <code>C:\Users\you\Documents\project\notebooks\drafts</code>, one click on <code>Documents</code> saves you five clicks of the Back button. Click the empty space at the end of the address bar and the breadcrumbs turn into the full path as text, which you can copy, or replace with a path you type and <code>Enter</code> to jump there. To copy a file’s own path for a script, right-click it and choose <strong>Copy as path</strong> (on Windows 10, hold <code>Shift</code> while you right-click).</p>
 <p>A few File Explorer skills pay off quickly. <strong>Search</strong> can cover the current folder or the whole computer, and that difference matters: searching all of This PC for <code>data.csv</code> finds every CSV you’ve ever saved, while searching from inside your project folder finds the one you meant. <strong>Sort and view</strong> options (right-click in the main pane, or use the View menu) order files by name, date modified, type, or size, and sorting by date modified is the fastest answer to “what did I save yesterday?”</p>
 <p>Two View settings deserve special mention, because newcomers usually discover them the hard way. <strong>File name extensions</strong> is off by default, which is how <code>data.csv</code> and <code>data.csv.txt</code> can look identical to you while being completely different files to your code. Turn it on and leave it on; Microsoft’s page on <a href="https://support.microsoft.com/en-us/windows/common-file-name-extensions-in-windows-da4a4430-8e76-89c5-59f7-1cdbbc75cb01">common file name extensions</a> shows where the switch lives. <strong>Hidden items</strong> reveals <a href="https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory">hidden files and folders</a>, such as <code>.env</code> files and <code>.git</code> folders, which you’ll occasionally need while troubleshooting. Turn that one on only for the diagnosis and off again afterwards, so you don’t delete a system file by accident.</p>
-<p>One more thing to know about Windows: if you sign in with a Microsoft or school account, your <code>Documents</code> folder may not really live on your laptop. <strong>OneDrive</strong> can keep it in the cloud and leave placeholders on your disk that download only when you open them. The small icons next to each file tell you which is which, and they matter for code, because a script that reads a placeholder has to wait for a download first. <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a> explains the icons and how to keep a folder fully on your computer.</p>
+<p>One more thing to know about Windows: if you sign in with a Microsoft or school account, your <code>Documents</code> folder may not really live on your laptop. <strong>OneDrive</strong> can keep it in the cloud and leave placeholders on your disk that download only when you open them. The small icons next to each file tell you which is which, and they matter for code, because a script that reads a placeholder has to wait for a download first. <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a> explains the icons and how to keep a folder fully on your computer.</p>
 </section>
 <section id="access-and-navigation-on-macos" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="access-and-navigation-on-macos"><span class="header-section-number">10.3</span> Access and navigation on macOS</h2>
@@ -810,7 +804,7 @@ Relative path (either):    ../data.csv              (one folder up)</code></pre>
 <p>Here’s the part that confuses people coming from Windows: Finder hides the full path by default. Turn on <strong>View → Show Path Bar</strong> and it appears along the bottom of every window. To copy a file’s full path for a script, select it and press <code>Option + Command + C</code>.</p>
 <p>Finder’s search box (top right, or <code>Command + F</code>) searches your whole Mac unless you tell it otherwise, so click the current folder’s name in the bar under the search field to limit it. You can narrow results further by kind, date, and other details, which is the easiest way to find “that report from last week” whose name you’ve forgotten. Macs also have <a href="https://support.apple.com/guide/mac-help/tag-files-and-folders-mchlp15236/mac"><strong>tags</strong></a>, the colored dots you sometimes see beside file names. A tag works like a label: mark a file “INFO 3010” or “needs review” without moving it, then click the tag in the sidebar to see everything that has it. Tags are an underused habit that pays off on long projects.</p>
 <p>A few folders are hidden by default: the Mac’s system folders, your <code>~/Library</code> folder, and anything whose name starts with a dot. Treat them as off-limits unless you have a reason to be there, because they hold settings for macOS and your apps, and a stray edit can break things in ways that are hard to trace. When you do need to see them (most often <code>~/.ssh</code>, for SSH keys; see <a href="remote.html" class="quarto-xref"><span>Chapter 13</span></a>), press <code>Command + Shift + .</code> in any Finder window to toggle hidden items. Look at what you came to see, then toggle them off again so you don’t drag the wrong thing to the Trash.</p>
-<p>The Mac has its own version of OneDrive’s placeholders. With <strong>Optimize Mac Storage</strong> on, macOS moves iCloud Drive files you haven’t opened lately to the cloud when your disk gets full, leaving placeholders that download again when you open them. It’s the same problem with the same fix, both in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>: for any folder where you run code, make sure the files are really on your Mac.</p>
+<p>The Mac has its own version of OneDrive’s placeholders. With <strong>Optimize Mac Storage</strong> on, macOS moves iCloud Drive files you haven’t opened lately to the cloud when your disk gets full, leaving placeholders that download again when you open them. It’s the same problem with the same fix, both in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a>: for any folder where you run code, make sure the files are really on your Mac.</p>
 </section>
 <section id="organizing-work-conventions-that-scale" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="organizing-work-conventions-that-scale"><span class="header-section-number">10.4</span> Organizing work: conventions that scale</h2>
@@ -855,8 +849,85 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
   cleaned.csv.tmp 2026-03-14  10:41              0   &lt;-- aborted write, delete</code></pre>
 </section>
 </section>
-<section id="file-operations-and-safety" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="file-operations-and-safety"><span class="header-section-number">10.6</span> File operations and safety</h2>
+<section id="sec-filesystem-screenshots" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-filesystem-screenshots"><span class="header-section-number">10.6</span> Screenshots: taking them, and finding them again</h2>
+<p>Someone helping you with an error asks for a screenshot, so you press the keys you saw in a video, and nothing seems to happen. Or something did happen (the screen flashed, a little preview slid into the corner) and now you can’t find the picture anywhere. If that’s where you are, you’re in good company. A screenshot is a file like any other, so it lands in a folder someone else chose for you, under a name someone else chose. And some shortcuts don’t make a file at all: they put the picture on the <strong>clipboard</strong>, the temporary spot that holds whatever you last copied, where it stays only until you copy something else. No folder search will ever find it.</p>
+<p>Each system below covers the same ground: the whole screen, one window, or a region you drag; where the file goes; how to copy to the clipboard instead; and how to change the folder. Here’s the shortcut you’ll use most, for a region, on each:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Region shortcut</th>
+<th>Where it goes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>macOS</td>
+<td><code>Shift + Command + 4</code></td>
+<td>Desktop</td>
+</tr>
+<tr class="even">
+<td>Windows 11</td>
+<td><code>Windows logo key + Shift + S</code></td>
+<td>Clipboard, and your Screenshots folder</td>
+</tr>
+<tr class="odd">
+<td>Linux (GNOME)</td>
+<td><code>Print Screen</code>, then drag</td>
+<td><code>Pictures/Screenshots</code>, and the clipboard</td>
+</tr>
+<tr class="even">
+<td>ChromeOS</td>
+<td><code>Shift + Ctrl + Show windows</code></td>
+<td><code>Downloads</code>, and the clipboard</td>
+</tr>
+</tbody>
+</table>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">macOS</h3>
+<p>Apple’s guide, <a href="https://support.apple.com/guide/mac-help/take-a-screenshot-mh26782/mac">Take screenshots or screen recordings on Mac</a>, lists three shortcuts. <code>Shift + Command + 3</code> captures the whole screen. <code>Shift + Command + 4</code> turns the pointer into a crosshair: drag over the area you want and let go. For one window, press <code>Shift + Command + 4</code> and then the Space bar; the pointer becomes a camera, and you click the window. Press <code>Esc</code> to cancel a region or window capture.</p>
+<p>Each one saves a PNG file to your <strong>Desktop</strong>, with a name that begins with “Screenshot” and includes the date and time. That name sorts well by date, but it’s full of spaces, so rename a screenshot before your code goes anywhere near it.</p>
+<p>The confusing part is the <strong>floating thumbnail</strong>, the small preview that appears in the bottom-right corner after each capture. It stays there for a few seconds, and the file isn’t saved until it goes away, so if you dash to the Desktop right away, the screenshot isn’t there yet. Wait it out, swipe the thumbnail to the right to save at once, or click it to mark the picture up first. If you drag the thumbnail into a document or a Finder window, the picture goes there instead of the Desktop.</p>
+<p>To skip the file altogether, add <code>Control</code> to any of the shortcuts: <code>Control + Shift + Command + 4</code> copies the region to the clipboard, ready to paste with <code>Command + V</code>, and nothing lands on your Desktop.</p>
+<p>To change where screenshots go, press <code>Shift + Command + 5</code> to open the Screenshot app, click <strong>Options</strong>, and under <strong>Save to</strong> choose a folder, or <strong>Other Location</strong> to pick your own. The same menu has <strong>Show Floating Thumbnail</strong>, if you’d rather do without the delay. One more trap: if iCloud’s Desktop &amp; Documents Folders option is on (<a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a>), your Desktop lives in iCloud Drive, so every screenshot saved there is uploaded too.</p>
+</section>
+<section id="windows-11" class="level3">
+<h3 class="anchored" data-anchor-id="windows-11">Windows 11</h3>
+<p>On Windows, screenshots belong to the <a href="https://support.microsoft.com/en-us/windows/use-snipping-tool-to-capture-screenshots-00246869-1843-655f-f220-97299b865f6b">Snipping Tool</a>, and its keys have changed over the years, which is why the advice you find online so often disagrees. The one to learn is <code>Windows logo key + Shift + S</code>: the screen dims, a toolbar appears, and you drag a rectangle. The same toolbar has a window mode, for capturing one window, and a full-screen mode. On current versions of Windows 11, Microsoft’s <a href="https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec">list of keyboard shortcuts</a> says <code>Print Screen</code> (<code>PrtSc</code> on many keyboards) opens that same toolbar. If you’d rather it didn’t, turn off <strong>Use the Print Screen button to open screen snipping</strong> in <strong>Settings &gt; Accessibility &gt; Keyboard</strong>, and Print Screen goes back to copying the whole screen to the clipboard.</p>
+<p>Where the picture ends up depends on the shortcut, and this is where people lose them. A capture with <code>Windows logo key + Shift + S</code> goes to the clipboard, and on current versions the Snipping Tool also saves it automatically to your Screenshots folder. <code>Windows logo key + Print Screen</code> captures the whole screen and saves it straight to a file in the Screenshots folder inside <code>Pictures</code>. And <code>Alt + Print Screen</code> copies just the active window to the clipboard and saves nothing: paste it with <code>Ctrl + V</code> into a chat, an email, or a document before you copy anything else.</p>
+<p>To change the folder, or to stop the automatic saving, open the Snipping Tool, select <strong>See more</strong> (the <code>...</code> button), then <strong>Settings</strong>. The trap on Windows is OneDrive. If its folder backup includes Pictures (<a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a>), <code>Pictures\Screenshots</code> lives inside OneDrive, so every screenshot you take is uploaded to the cloud, and to your school’s account if that’s the one you signed in with. Look for them in <code>Pictures\Screenshots</code> inside your OneDrive folder, and think twice before capturing anything you wouldn’t want stored there.</p>
+</section>
+<section id="linux-gnome" class="level3">
+<h3 class="anchored" data-anchor-id="linux-gnome">Linux (GNOME)</h3>
+<p>Many Linux distributions use the GNOME desktop; if yours looks different, its own help pages will have its keys. <a href="https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html">GNOME’s help page on screenshots</a> starts with the <code>Print Screen</code> key (GNOME calls it <strong>Print</strong>), which opens an overlay. Drag the handles around a region, or click <strong>Screen</strong> for the whole screen or <strong>Window</strong> to pick one window, then click the big round button. Two shortcuts skip the overlay: <code>Shift + Print Screen</code> captures the whole screen, and <code>Alt + Print Screen</code> captures the window you’re working in.</p>
+<p>Every capture is saved to <code>Pictures/Screenshots</code> in your home folder, with a name that begins with “Screenshot” and includes the date and time, and it’s also copied to the clipboard, so you can paste it right away. That means there’s no clipboard-only shortcut to learn, and it also means the folder quietly fills up with every picture you only meant to paste once. Clear it out now and then, starting with anything private. GNOME’s help doesn’t describe a setting to change the folder, so move the ones you want to keep into your project folder.</p>
+</section>
+<section id="chromeos" class="level3">
+<h3 class="anchored" data-anchor-id="chromeos">ChromeOS</h3>
+<p>Google’s Chromebook Help page, <a href="https://support.google.com/chromebook/answer/10474268">Take a screenshot or record your screen</a>, covers the screen capture tool, and its <a href="https://support.google.com/chromebook/answer/183101">keyboard shortcuts page</a> has the quick keys. <code>Ctrl + Show windows</code> captures the whole screen. <code>Shift + Ctrl + Show windows</code> opens the screen capture toolbar at the bottom of the screen, where you choose <strong>Screenshot</strong> and then a partial screenshot (drag a region), a window screenshot, or a full-screen one. If your Chromebook has a Screenshot key, pressing it starts a screenshot too, and on an external keyboard without a Show windows key, <code>Ctrl + Shift + F5</code> takes its place. You can also open the tool from the menu at the bottom right: select the time, then <strong>Screen capture</strong>.</p>
+<p>Screenshots are saved to your <code>Downloads</code> folder (open the Files app with <code>Shift + Alt + M</code> to find it), and, as on GNOME, each one is copied to the clipboard as well. The trap is the folder itself: <code>Downloads</code> already collects every handout and file you’ve ever downloaded, so screenshots vanish into the pile. To send them somewhere else, press <code>Shift + Ctrl + Show windows</code>, select <strong>Settings</strong> in the toolbar, then <strong>Select folder</strong>.</p>
+</section>
+<section id="before-you-share-a-screenshot" class="level3">
+<h3 class="anchored" data-anchor-id="before-you-share-a-screenshot">Before you share a screenshot</h3>
+<p>A screenshot shows everything on the screen, not just the part you meant to show. Before you send one:</p>
+<ul>
+<li><strong>Crop to what matters:</strong> the error dialog, not your whole desktop.</li>
+<li><strong>Cover private details with solid, opaque boxes.</strong> A see-through highlighter leaves the text readable, and a blur can leave enough of the shapes to read or guess.</li>
+<li><strong>Then make a clean copy.</strong> Save the edited picture as a new file, or better, take a fresh screenshot of only the region you need, since some editors have been <a href="https://en.wikipedia.org/wiki/ACropalypse">caught keeping</a> the cropped-out part inside the saved file.</li>
+<li><strong>Look for what you didn’t mean to include:</strong> names, email addresses, student IDs, open browser tabs and bookmarks, notifications and chat previews, and file paths that contain your username (<code>C:\Users\&lt;you&gt;\</code>, <code>/Users/&lt;you&gt;/</code>).</li>
+<li><strong>Turn on Do Not Disturb or Focus mode</strong> before you capture, so a message doesn’t slide into the picture.</li>
+<li><strong>Paste error text as text.</strong> Nobody can search or copy a picture of an error, so put the text alongside the screenshot (<a href="questions.html" class="quarto-xref"><span>Chapter 2</span></a>).</li>
+</ul>
+</section>
+</section>
+<section id="file-operations-and-safety" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="file-operations-and-safety"><span class="header-section-number">10.7</span> File operations and safety</h2>
 <section id="copy-vs-move-vs-rename" class="level3">
 <h3 class="anchored" data-anchor-id="copy-vs-move-vs-rename">Copy vs move vs rename</h3>
 <p>Copy, move, and rename look almost the same in a file manager, and they have very different consequences for any code that uses the file. <strong>Copy</strong> leaves the original where it was and makes a second, independent file, so changing one doesn’t touch the other. That makes it the safe choice for experiments: copy <code>dataset.csv</code> to <code>dataset-experiment.csv</code>, mangle the copy however you like, and if it goes wrong you throw the copy away. <strong>Move</strong> keeps a single file but changes where it lives. <strong>Rename</strong> leaves it in the same folder but changes its name, which is exactly what every script and notebook knows it by.</p>
@@ -894,8 +965,8 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <p>The habit that prevents nearly all of this is to <strong>do your real work inside your home folder</strong> and treat everything outside it as read-only. <code>~/Courses/</code>, <code>~/Projects/</code>, <code>~/Documents/</code>: all fine. <code>/usr/local/</code>, <code>C:\Windows\</code>, <code>/System/</code>: leave them alone. If a tutorial tells you to <a href="https://en.wikipedia.org/wiki/Sudo"><code>sudo</code></a> something while you’re still learning, pause. There’s almost always a way that doesn’t need administrator rights, and using them casually is the fastest way to break your computer.</p>
 </section>
 </section>
-<section id="sec-filesystem-cloud" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="sec-filesystem-cloud"><span class="header-section-number">10.7</span> Files in the cloud: sync, access, and sharing</h2>
+<section id="sec-filesystem-cloud" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="sec-filesystem-cloud"><span class="header-section-number">10.8</span> Files in the cloud: sync, access, and sharing</h2>
 <p>Much of what feels like “your computer” now lives somewhere else too, and that’s where a lot of the most baffling file problems come from. A <a href="../chapters/appendix-glossary.html#term-sync-client"><strong>sync client</strong></a> (OneDrive, iCloud Drive, Google Drive, Dropbox) keeps a folder on your disk matched to a copy in the cloud. Your university gives you storage you reach through a browser or a network drive. A course’s JupyterHub keeps your notebooks on its own server. Each of these behaves differently when the network drops, when two computers edit the same file, and when your account ends, so it’s worth knowing which one you’re using and choosing on purpose.</p>
 <section id="sync-backup-and-sharing-are-different-jobs" class="level3">
 <h3 class="anchored" data-anchor-id="sync-backup-and-sharing-are-different-jobs">Sync, backup, and sharing are different jobs</h3>
@@ -1072,16 +1143,16 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 </div>
 </section>
 </section>
-<section id="common-student-pitfalls-and-how-to-avoid-them" class="level2" data-number="10.8">
-<h2 data-number="10.8" class="anchored" data-anchor-id="common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.8</span> Common student pitfalls (and how to avoid them)</h2>
+<section id="common-student-pitfalls-and-how-to-avoid-them" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="common-student-pitfalls-and-how-to-avoid-them"><span class="header-section-number">10.9</span> Common student pitfalls (and how to avoid them)</h2>
 <p>A handful of mistakes cause nearly all the file pain beginners go through. You’ve met each one earlier in the chapter; here they are together, so you’ll recognize them when they happen.</p>
 <p><strong>Working out of <code>Downloads</code> or <code>Desktop</code> forever.</strong> Duplicates pile up, <code>final-2.csv</code> sits next to <code>final-3.csv</code> next to <code>data.csv</code>, and three weeks later nothing can be found. Make a stable home under <code>Courses</code> or <code>Projects</code> and move work there the moment it arrives.</p>
-<p><strong>Confusing cloud sync with local storage.</strong> A notebook hangs on, or can’t find, a data file you can plainly see, because the file is a placeholder your code reached before it downloaded. Keep projects out of synced folders, or pin them so they stay downloaded (<a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>).</p>
+<p><strong>Confusing cloud sync with local storage.</strong> A notebook hangs on, or can’t find, a data file you can plainly see, because the file is a placeholder your code reached before it downloaded. Keep projects out of synced folders, or pin them so they stay downloaded (<a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a>).</p>
 <p><strong>Changing an extension by accident.</strong> You rename <code>data.csv</code> to <code>data</code> because the extension was hidden, or save a CSV “as text” and get <code>data.csv.txt</code>; now the file opens in the wrong program, or your code can’t find it. Turn on file extensions in File Explorer, or in Finder’s settings (<a href="https://support.apple.com/guide/mac-help/show-or-hide-filename-extensions-on-mac-mchlp2304/mac">Apple’s steps</a>), and leave them on.</p>
 <p><strong>Moving folders after you’ve written code that depends on them.</strong> Pick your project root early and don’t move it casually, and inside the project use <em>relative</em> paths, so everything keeps working as long as the project stays together. If you need an absolute path, build it at run time from <code>__file__</code> (next section) rather than typing <code>/Users/alex/...</code> into your code: a hard-coded path breaks the moment anyone else runs the project, including you on a new laptop.</p>
 </section>
-<section id="bridging-to-the-terminal-and-programming" class="level2" data-number="10.9">
-<h2 data-number="10.9" class="anchored" data-anchor-id="bridging-to-the-terminal-and-programming"><span class="header-section-number">10.9</span> Bridging to the terminal and programming</h2>
+<section id="bridging-to-the-terminal-and-programming" class="level2" data-number="10.10">
+<h2 data-number="10.10" class="anchored" data-anchor-id="bridging-to-the-terminal-and-programming"><span class="header-section-number">10.10</span> Bridging to the terminal and programming</h2>
 <section id="why-file-habits-matter-for-code" class="level3">
 <h3 class="anchored" data-anchor-id="why-file-habits-matter-for-code">Why file habits matter for code</h3>
 <p>When you run a script or a notebook, it quietly receives one piece of context that controls nearly every path it reads or writes: the <a href="https://en.wikipedia.org/wiki/Working_directory"><strong>current working directory</strong></a>, or CWD. A relative path like <code>data/raw/survey.csv</code> isn’t an address on disk. It’s an instruction: “start from the current working directory, find a folder called <code>data</code>, then a folder inside it called <code>raw</code>, then a file called <code>survey.csv</code>.” Change the CWD and the same path means something completely different, or nothing at all.</p>
@@ -1115,14 +1186,14 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <p>Two small habits make the rest go smoothly. <strong>Keep paths short,</strong> since deep project trees run into the Windows path limit and make every error message harder to read. And <strong>avoid special characters</strong> in any file name your code will touch: spaces, parentheses, accented letters, and curly quotes all work fine in the file manager and all occasionally break in a terminal or a script. Stick to letters, digits, hyphens, and underscores, and you’ll never have to learn which layer of which tool mangled the quoting.</p>
 </section>
 </section>
-<section id="stakes-and-politics" class="level2" data-number="10.10">
-<h2 data-number="10.10" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">10.10</span> Stakes and politics</h2>
+<section id="stakes-and-politics" class="level2" data-number="10.11">
+<h2 data-number="10.11" class="anchored" data-anchor-id="stakes-and-politics"><span class="header-section-number">10.11</span> Stakes and politics</h2>
 <p>CU Boulder gives you “approximately 90 days” after your degree is conferred to save your files from your university Google and Microsoft accounts; after that they’re deleted (see the callout above). It’s easy to find that out only when you go looking for an old project and it’s gone. The storage felt like yours for four years. It was always on someone else’s terms.</p>
 <p>The same is true every day you use a synced folder. Deletion, recovery, account suspension, and quota changes are decisions made by the vendor and your university, not by you, and a setup screen that moves Documents into OneDrive with one click makes that choice before you know there was one. When sync fails, with a conflicted copy or a placeholder where your script needed real bytes, the cost of figuring out the gap between what the screen shows and what the disk holds falls on you, usually without anyone having explained that the gap exists.</p>
 <p>See <a href="artifacts-have-politics.html" class="quarto-xref"><span>Chapter 8</span></a> for the broader framework. The concrete prompt to carry forward: when you decide where a project lives, ask whose rules the storage runs under and what happens when the network, or your account, is gone.</p>
 </section>
-<section id="worked-examples" class="level2" data-number="10.11">
-<h2 data-number="10.11" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">10.11</span> Worked examples</h2>
+<section id="worked-examples" class="level2" data-number="10.12">
+<h2 data-number="10.12" class="anchored" data-anchor-id="worked-examples"><span class="header-section-number">10.12</span> Worked examples</h2>
 <section id="building-a-course-workspace-from-scratch" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-course-workspace-from-scratch">Building a course workspace from scratch</h3>
 <p>You’re starting a semester with three classes. Before you download a single handout, make the home that will hold all of them. Open a terminal in your home folder and run:</p>
@@ -1154,19 +1225,20 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <p><strong>Third, only if both of those pass, check whether the file is stranded in the cloud:</strong> a placeholder is on your disk, but its contents aren’t. On Windows the sync icon beside the file tells you; on a Mac, look for the cloud icon in Finder, or use <strong>Get Info</strong> (<code>Command + I</code>) to see how much of it is on disk. Download it (or pin its folder) and try again. One of these three checks solves most “file not found” errors; only after all three pass should you go looking in the code.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="10.12">
-<h2 data-number="10.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.12</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="10.13">
+<h2 data-number="10.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.13</span> Exercises</h2>
 <ol type="1">
 <li><p>Create a project folder structure and explain (in one paragraph) why each folder exists.</p></li>
 <li><p>Rename 10 files using a consistent naming convention; justify the convention.</p></li>
 <li><p>Find all <code>.csv</code> files in your course workspace using your operating system’s search.</p></li>
 <li><p>Make a “raw data is immutable” rule: copy raw data, produce processed data, and document the transformation.</p></li>
 <li><p>Break and fix: move a folder referenced by a notebook or script; then repair it using relative paths.</p></li>
-<li><p>Find out whether your Documents folder is synced (OneDrive’s folder backup on Windows, iCloud’s Desktop &amp; Documents Folders on macOS). If it is, choose a folder outside sync for your projects, write down its full path, and check one data file with the size comparison in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.7</span></a>.</p></li>
+<li><p>Find out whether your Documents folder is synced (OneDrive’s folder backup on Windows, iCloud’s Desktop &amp; Documents Folders on macOS). If it is, choose a folder outside sync for your projects, write down its full path, and check one data file with the size comparison in <a href="#sec-filesystem-cloud" class="quarto-xref"><span>Section 10.8</span></a>.</p></li>
+<li><p>Take a screenshot of a region of your screen and find the file it made. Then change where screenshots are saved to a project folder or a <code>Screenshots</code> folder you choose, take another, and check that it lands there. Before you share either one, go through “Before you share a screenshot” in <a href="#sec-filesystem-screenshots" class="quarto-xref"><span>Section 10.6</span></a>.</p></li>
 </ol>
 </section>
-<section id="one-page-checklist" class="level2" data-number="10.13">
-<h2 data-number="10.13" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">10.13</span> One-page checklist</h2>
+<section id="one-page-checklist" class="level2" data-number="10.14">
+<h2 data-number="10.14" class="anchored" data-anchor-id="one-page-checklist"><span class="header-section-number">10.14</span> One-page checklist</h2>
 <ul>
 <li><p>I know where my project root is.</p></li>
 <li><p>My project uses a consistent folder structure.</p></li>
@@ -1178,11 +1250,12 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <li><p>I share files with specific people, not “anyone with the link,” when they contain data about people.</p></li>
 <li><p>I know when my university account ends, and I keep my own copy of anything I want after that.</p></li>
 <li><p>I can show extensions and hidden items when troubleshooting, and hide hidden items afterward.</p></li>
+<li><p>I know where my screenshots land, and I crop and check them for private details before I share them.</p></li>
 <li><p>I avoid working in system directories and respect permissions.</p></li>
 </ul>
 </section>
-<section id="quick-reference-key-locations" class="level2" data-number="10.14">
-<h2 data-number="10.14" class="anchored" data-anchor-id="quick-reference-key-locations"><span class="header-section-number">10.14</span> Quick reference: key locations</h2>
+<section id="quick-reference-key-locations" class="level2" data-number="10.15">
+<h2 data-number="10.15" class="anchored" data-anchor-id="quick-reference-key-locations"><span class="header-section-number">10.15</span> Quick reference: key locations</h2>
 <section id="windows-typical" class="level3">
 <h3 class="anchored" data-anchor-id="windows-typical">Windows (typical)</h3>
 <ul>
@@ -1190,6 +1263,7 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <li><p>Documents, Downloads, and Desktop under your user home (or inside OneDrive, if its folder backup is on)</p></li>
 <li><p>OneDrive: <code>C:\Users\&lt;you&gt;\OneDrive\</code> for a personal account, <code>C:\Users\&lt;you&gt;\OneDrive - &lt;organization&gt;\</code> for a school or work account</p></li>
 <li><p>Google Drive for desktop: its own drive letter, usually <code>G:\</code></p></li>
+<li><p>Screenshots: <code>C:\Users\&lt;you&gt;\Pictures\Screenshots\</code> (inside OneDrive, if its folder backup includes Pictures)</p></li>
 </ul>
 </section>
 <section id="macos-typical" class="level3">
@@ -1199,6 +1273,14 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
 <li><p>Documents, Downloads, and Desktop under your user home (or inside iCloud Drive, if Desktop &amp; Documents Folders is on)</p></li>
 <li><p>iCloud Drive: <code>~/Library/Mobile Documents/com~apple~CloudDocs/</code>, shown as <em>iCloud Drive</em> in the Finder sidebar</p></li>
 <li><p>OneDrive, Google Drive, and Dropbox: folders under <code>~/Library/CloudStorage/</code></p></li>
+<li><p>Screenshots: the Desktop, unless you’ve changed it under <strong>Options</strong> in the Screenshot app (<code>Shift + Command + 5</code>)</p></li>
+</ul>
+</section>
+<section id="linux-gnome-and-chromeos" class="level3">
+<h3 class="anchored" data-anchor-id="linux-gnome-and-chromeos">Linux (GNOME) and ChromeOS</h3>
+<ul>
+<li><p>GNOME screenshots: <code>~/Pictures/Screenshots/</code></p></li>
+<li><p>ChromeOS screenshots: <code>Downloads</code>, in the Files app</p></li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1230,15 +1312,50 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -1313,11 +1430,30 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
         var filterRegex = new RegExp('/' + window.location.host + '/');
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -1331,10 +1467,72 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
             if (link.getAttribute("rel") === null) {
               link.setAttribute("rel", "noopener");
             }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
             // default icon
             link.classList.add("external");
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -1348,6 +1546,7 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1510,44 +1709,54 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1646,7 +1855,10 @@ data/processed/   2026-03-14  10:42   &lt;DIR&gt;
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/operating-system.html" class="pagination-link" aria-label="Operating System">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Operating System</span></span>
